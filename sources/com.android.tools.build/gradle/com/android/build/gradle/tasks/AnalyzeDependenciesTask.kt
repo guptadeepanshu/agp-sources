@@ -19,7 +19,6 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.AnchorOutputType
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -176,7 +175,7 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                 .getArtifactCollection(
                     AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.CLASSES)
+                    AndroidArtifacts.ArtifactType.CLASSES_JAR)
 
             task.apiDirectDependenciesConfiguration = scope
                 .variantDependencies
@@ -194,10 +193,10 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
             variantScope.artifacts.producesDir(
                 artifactType = InternalArtifactType.ANALYZE_DEPENDENCIES_REPORT,
-                operationType = BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider = taskProvider,
                 productProvider = AnalyzeDependenciesTask::outputDirectory,
-                fileName = "analyzeDependencies")
+                fileName = "analyzeDependencies"
+            )
         }
     }
 

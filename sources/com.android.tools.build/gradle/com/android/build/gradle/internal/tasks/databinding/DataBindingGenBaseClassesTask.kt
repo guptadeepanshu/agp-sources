@@ -21,7 +21,6 @@ import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.processing.ScopedException
 import android.databinding.tool.store.LayoutInfoInput
 import android.databinding.tool.util.L
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
@@ -47,7 +46,6 @@ import java.io.Serializable
 import java.util.ArrayList
 import javax.inject.Inject
 import javax.tools.Diagnostic
-import kotlin.reflect.KFunction
 
 /**
  * Generates base classes from data binding info files.
@@ -67,9 +65,9 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val layoutInfoDirectory: DirectoryProperty
     // the package name for the module / app
-    private lateinit var packageNameSupplier: KFunction<String>
+    private lateinit var packageNameSupplier: () -> String
     @get:Input val packageName: String
-        get() = packageNameSupplier.call()
+        get() = packageNameSupplier()
     // list of artifacts from dependencies
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -167,12 +165,11 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
-                DataBindingGenBaseClassesTask::classInfoBundleDir)
+                DataBindingGenBaseClassesTask::classInfoBundleDir
+            )
             variantScope.artifacts.producesDir(
                 InternalArtifactType.DATA_BINDING_BASE_CLASS_SOURCE_OUT,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 DataBindingGenBaseClassesTask::sourceOutFolder
             )
@@ -186,7 +183,7 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
                 task.layoutInfoDirectory)
             val variantData = variantScope.variantData
             val artifacts = variantScope.artifacts
-            task.packageNameSupplier = variantData.variantConfiguration::getOriginalApplicationId
+            task.packageNameSupplier = { variantData.variantDslInfo.originalApplicationId }
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.DATA_BINDING_BASE_CLASS_LOGS_DEPENDENCY_ARTIFACTS,
                 task.mergedArtifactsFromDependencies
@@ -198,7 +195,7 @@ abstract class DataBindingGenBaseClassesTask : AndroidVariantTask() {
             // needed to decide whether data binding should encode errors or not
             task.encodeErrors = variantScope.globalScope
                 .projectOptions[BooleanOption.IDE_INVOKED_FROM_IDE]
-            task.enableViewBinding = variantScope.globalScope.extension.viewBinding.isEnabled
+            task.enableViewBinding = variantScope.globalScope.buildFeatures.viewBinding
         }
     }
 

@@ -16,9 +16,18 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.DependenciesInfo
+import com.android.build.api.variant.ApplicationVariant
+import com.android.build.api.variant.ApplicationVariantProperties
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.BaseVariantOutput
+import com.android.build.gradle.api.ViewBindingOptions
+import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.ExtraModelInfo
+import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.options.ProjectOptions
@@ -28,36 +37,74 @@ import org.gradle.api.Project
 
 /** The `android` extension for base feature module (application plugin).  */
 open class BaseAppModuleExtension(
-    project: Project,
+    dslScope: DslScope,
     projectOptions: ProjectOptions,
     globalScope: GlobalScope,
-    buildTypes: NamedDomainObjectContainer<BuildType>,
-    productFlavors: NamedDomainObjectContainer<ProductFlavor>,
-    signingConfigs: NamedDomainObjectContainer<SigningConfig>,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
-    isBaseModule: Boolean
+    private val publicExtensionImpl: ApplicationExtensionImpl
 ) : AppExtension(
-    project,
+    dslScope,
     projectOptions,
     globalScope,
-    buildTypes,
-    productFlavors,
-    signingConfigs,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
-    isBaseModule
-) {
+    true
+), ApplicationExtension<
+        BuildType,
+        CmakeOptions,
+        CompileOptions,
+        DefaultConfig,
+        ExternalNativeBuild,
+        JacocoOptions,
+        NdkBuildOptions,
+        ProductFlavor,
+        SigningConfig,
+        TestOptions,
+        TestOptions.UnitTestOptions> by publicExtensionImpl,
+    ActionableVariantObjectOperationsExecutor<ApplicationVariant, ApplicationVariantProperties> by publicExtensionImpl {
+
+    override val dataBinding: DataBindingOptions =
+        dslScope.objectFactory.newInstance(
+            DataBindingOptions::class.java,
+            publicExtensionImpl.buildFeatures,
+            projectOptions,
+            dslScope
+        )
+
+    override val viewBinding: ViewBindingOptions =
+        dslScope.objectFactory.newInstance(
+            ViewBindingOptionsImpl::class.java,
+            publicExtensionImpl.buildFeatures,
+            projectOptions,
+            dslScope
+        )
+
+    // this is needed because the impl class needs this but the interface does not,
+    // so CommonExtension does not define it, which means, that even though it's part of
+    // ApplicationExtensionImpl, the implementation by delegate does not bring it.
+    fun buildFeatures(action: Action<ApplicationBuildFeatures>) {
+        publicExtensionImpl.buildFeatures(action)
+    }
+
+    fun dependenciesInfo(action: Action<DependenciesInfo>) {
+        publicExtensionImpl.dependenciesInfo(action)
+    }
 
     var dynamicFeatures: MutableSet<String> = mutableSetOf()
 
+    /**
+     * Set of asset pack subprojects to be included in the app's bundle.
+     */
+    var assetPacks: MutableSet<String> = mutableSetOf()
+
     val bundle: BundleOptions =
-        project.objects.newInstance(
+        dslScope.objectFactory.newInstance(
             BundleOptions::class.java,
-            project.objects,
-            extraModelInfo.deprecationReporter
+            dslScope.objectFactory,
+            dslScope.deprecationReporter
         )
 
     fun bundle(action: Action<BundleOptions>) {

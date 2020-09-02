@@ -21,38 +21,42 @@ import static com.android.builder.core.BuilderConstants.RELEASE;
 
 import com.android.annotations.NonNull;
 import com.android.build.OutputFile;
-import com.android.build.VariantOutput.FilterType;
+import com.android.build.api.component.ComponentIdentity;
+import com.android.build.api.variant.impl.ApplicationVariantImpl;
+import com.android.build.api.variant.impl.ApplicationVariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
+import com.android.build.api.variant.impl.VariantOutputImpl;
+import com.android.build.api.variant.impl.VariantOutputList;
+import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.VariantModel;
-import com.android.build.gradle.internal.api.ApplicationVariantImpl;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantDslInfoImpl;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.ApkData;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.OutputFactory;
+import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.StringOption;
 import com.android.builder.core.VariantType;
 import com.android.builder.core.VariantTypeImpl;
-import com.android.builder.errors.EvalIssueReporter;
-import com.android.builder.errors.EvalIssueReporter.Type;
-import com.android.builder.profile.Recorder;
+import com.android.builder.errors.IssueReporter;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.ide.common.build.SplitOutputMatcher;
 import com.android.resources.Density;
 import com.android.utils.Pair;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,28 +68,62 @@ import org.gradle.api.NamedDomainObjectContainer;
  *
  * <p>This can be an app project, or a test-only project, though the default behavior is app.
  */
-public class ApplicationVariantFactory extends BaseVariantFactory implements VariantFactory {
+public class ApplicationVariantFactory extends BaseVariantFactory {
 
     public ApplicationVariantFactory(@NonNull GlobalScope globalScope) {
         super(globalScope);
     }
 
+    @NonNull
+    @Override
+    public VariantImpl createVariantObject(
+            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo) {
+        return globalScope
+                .getDslScope()
+                .getObjectFactory()
+                .newInstance(ApplicationVariantImpl.class, variantDslInfo, componentIdentity);
+    }
+
+    @NonNull
+    @Override
+    public VariantPropertiesImpl createVariantPropertiesObject(
+            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope) {
+        return globalScope
+                .getDslScope()
+                .getObjectFactory()
+                .newInstance(
+                        ApplicationVariantPropertiesImpl.class,
+                        globalScope.getDslScope(),
+                        variantScope,
+                        variantScope.getArtifacts().getOperations(),
+                        componentIdentity);
+    }
+
     @Override
     @NonNull
     public BaseVariantData createVariantData(
-            @NonNull GradleVariantConfiguration variantConfiguration,
-            @NonNull TaskManager taskManager,
-            @NonNull Recorder recorder) {
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfoImpl variantDslInfo,
+            @NonNull VariantImpl publicVariantApi,
+            @NonNull VariantPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources,
+            @NonNull TaskManager taskManager) {
         ApplicationVariantData variant =
                 new ApplicationVariantData(
-                        globalScope, taskManager, variantConfiguration, recorder);
-        computeOutputs(variantConfiguration, variant, true);
+                        globalScope,
+                        taskManager,
+                        variantScope,
+                        variantDslInfo,
+                        publicVariantApi,
+                        publicVariantPropertiesApi,
+                        variantSources);
+        computeOutputs(variantDslInfo, variant, true);
 
         return variant;
     }
 
     protected void computeOutputs(
-            @NonNull GradleVariantConfiguration variantConfiguration,
+            @NonNull VariantDslInfo variantDslInfo,
             @NonNull ApplicationVariantData variant,
             boolean includeMainApk) {
         BaseExtension extension = globalScope.getExtension();
@@ -93,7 +131,6 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
 
         Set<String> densities = variant.getFilters(OutputFile.FilterType.DENSITY);
         Set<String> abis = variant.getFilters(OutputFile.FilterType.ABI);
-        Set<String> languages = variant.getFilters(OutputFile.FilterType.LANGUAGE);
 
         checkSplitsConflicts(variant, abis);
 
@@ -103,23 +140,16 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
         }
 
         OutputFactory outputFactory = variant.getOutputFactory();
+        populateMultiApkOutputs(abis, densities, outputFactory, includeMainApk);
 
-        switch (variant.getMultiOutputPolicy()) {
-            case MULTI_APK:
-                populateMultiApkOutputs(abis, densities, outputFactory, includeMainApk);
-                break;
-            case SPLITS:
-                populatePureSplitsOutputs(
-                        abis,
-                        densities,
-                        languages,
-                        outputFactory,
-                        variantConfiguration,
-                        includeMainApk);
-                break;
-        }
+        outputFactory
+                .finalizeApkDataList()
+                .forEach(
+                        apkData ->
+                                variant.getPublicVariantPropertiesApi().addVariantOutput(apkData));
 
-        restrictEnabledOutputs(variantConfiguration, variant.getOutputScope().getApkDatas());
+        restrictEnabledOutputs(
+                variantDslInfo, variant.getPublicVariantPropertiesApi().getOutputs());
     }
 
     private void populateMultiApkOutputs(
@@ -171,38 +201,6 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
         }
     }
 
-    private void populatePureSplitsOutputs(
-            Set<String> abis,
-            Set<String> densities,
-            Set<String> languages,
-            OutputFactory outputFactory,
-            GradleVariantConfiguration variantConfiguration,
-            boolean includeMainApk) {
-        // Pure splits always have a main apk.
-        if (includeMainApk) {
-            outputFactory.addMainApk();
-        }
-
-        Iterable<ApkData> producedApks =
-                Iterables.concat(
-                        generateApkDataFor(FilterType.ABI, abis, outputFactory),
-                        generateApkDataFor(FilterType.DENSITY, densities, outputFactory),
-                        generateApkDataFor(FilterType.LANGUAGE, languages, outputFactory));
-
-        producedApks.forEach(
-                apk -> {
-                    apk.setVersionCode(variantConfiguration.getVersionCodeSerializableSupplier());
-                    apk.setVersionName(variantConfiguration.getVersionNameSerializableSupplier());
-                });
-    }
-
-    private ImmutableList<ApkData> generateApkDataFor(
-            FilterType filterType, Set<String> filters, OutputFactory outputFactory) {
-        return filters.stream()
-                .map(f -> outputFactory.addConfigurationSplit(filterType, f))
-                .collect(ImmutableList.toImmutableList());
-    }
-
     private void checkSplitsConflicts(
             @NonNull ApplicationVariantData variantData, @NonNull Set<String> abiFilters) {
 
@@ -218,15 +216,15 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
 
         // check supportedAbis in Ndk configuration versus ABI splits.
         Set<String> ndkConfigAbiFilters =
-                variantData.getVariantConfiguration().getNdkConfig().getAbiFilters();
+                variantData.getVariantDslInfo().getNdkConfig().getAbiFilters();
         if (ndkConfigAbiFilters == null || ndkConfigAbiFilters.isEmpty()) {
             return;
         }
 
         // if we have any ABI splits, whether it's a full or pure ABI splits, it's an error.
-        EvalIssueReporter issueReporter = globalScope.getErrorHandler();
+        IssueReporter issueReporter = globalScope.getDslScope().getIssueReporter();
         issueReporter.reportError(
-                EvalIssueReporter.Type.GENERIC,
+                IssueReporter.Type.GENERIC,
                 String.format(
                         "Conflicting configuration : '%1$s' in ndk abiFilters "
                                 + "cannot be present when splits abi filters are set : %2$s",
@@ -234,9 +232,9 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
     }
 
     private void restrictEnabledOutputs(
-            GradleVariantConfiguration configuration, List<ApkData> apkDataList) {
+            VariantDslInfo variantDslInfo, VariantOutputList variantOutputs) {
 
-        Set<String> supportedAbis = configuration.getSupportedAbis();
+        Set<String> supportedAbis = variantDslInfo.getSupportedAbis();
         ProjectOptions projectOptions = globalScope.getProjectOptions();
         String buildTargetAbi =
                 projectOptions.get(BooleanOption.BUILD_ONLY_TARGET_ABI)
@@ -249,6 +247,12 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
 
         String buildTargetDensity = projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY);
         Density density = Density.getEnum(buildTargetDensity);
+
+        List<ApkData> apkDataList =
+                variantOutputs
+                        .stream()
+                        .map(VariantOutputImpl::getApkData)
+                        .collect(Collectors.toList());
 
         List<ApkData> apksToGenerate =
                 SplitOutputMatcher.computeBestOutput(
@@ -265,9 +269,10 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
             globalScope
-                    .getErrorHandler()
+                    .getDslScope()
+                    .getIssueReporter()
                     .reportWarning(
-                            EvalIssueReporter.Type.GENERIC,
+                            IssueReporter.Type.GENERIC,
                             String.format(
                                     "Cannot build selected target ABI: %1$s, "
                                             + (splits.isEmpty()
@@ -282,10 +287,10 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
             return;
         }
 
-        apkDataList.forEach(
-                apkData -> {
-                    if (!apksToGenerate.contains(apkData)) {
-                        apkData.disable();
+        variantOutputs.forEach(
+                variantOutput -> {
+                    if (!apksToGenerate.contains(variantOutput.getApkData())) {
+                        variantOutput.isEnabled().set(false);
                     }
                 });
     }
@@ -294,16 +299,16 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
     @NonNull
     public Class<? extends BaseVariantImpl> getVariantImplementationClass(
             @NonNull BaseVariantData variantData) {
-        return ApplicationVariantImpl.class;
+        return com.android.build.gradle.internal.api.ApplicationVariantImpl.class;
     }
 
     @NonNull
     @Override
-    public Collection<VariantType> getVariantConfigurationTypes() {
+    public VariantType getVariantType() {
         if (globalScope.getExtension().getBaseFeature()) {
-            return ImmutableList.of(VariantTypeImpl.BASE_APK);
+            return VariantTypeImpl.BASE_APK;
         }
-        return ImmutableList.of(VariantTypeImpl.OPTIONAL_APK);
+        return VariantTypeImpl.OPTIONAL_APK;
     }
 
     @Override
@@ -312,15 +317,18 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
     }
 
     @Override
-    public void validateModel(@NonNull VariantModel model) {
+    public void validateModel(@NonNull VariantInputModel model) {
+        super.validateModel(model);
 
         validateVersionCodes(model);
 
-        if (getVariantConfigurationTypes().stream().noneMatch(VariantType::isFeatureSplit)) {
+        if (!getVariantType().isDynamicFeature()) {
             return;
         }
 
-        EvalIssueReporter issueReporter = globalScope.getErrorHandler();
+        // below is for dynamic-features only.
+
+        IssueReporter issueReporter = globalScope.getDslScope().getIssueReporter();
         for (BuildTypeData buildType : model.getBuildTypes().values()) {
             if (buildType.getBuildType().isMinifyEnabled()) {
                 issueReporter.reportError(
@@ -330,6 +338,30 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
                                 + buildType.getBuildType().getName()
                                 + "'.\nTo enable minification for a dynamic feature "
                                 + "module, set minifyEnabled to true in the base module.");
+            }
+        }
+
+        // check if any of the build types or flavors have a signing config.
+        String message =
+                "Signing configuration should not be declared in build types of "
+                        + "dynamic-feature. Dynamic-features use the signing configuration "
+                        + "declared in the application module.";
+        for (BuildTypeData buildType : model.getBuildTypes().values()) {
+            if (buildType.getBuildType().getSigningConfig() != null) {
+                issueReporter.reportWarning(
+                        Type.SIGNING_CONFIG_DECLARED_IN_DYNAMIC_FEATURE, message);
+            }
+        }
+
+        message =
+                "Signing configuration should not be declared in product flavors of "
+                        + "dynamic-feature. Dynamic-features use the signing configuration "
+                        + "declared in the application module.";
+        for (ProductFlavorData<ProductFlavor> productFlavor : model.getProductFlavors().values()) {
+            if (productFlavor.getProductFlavor().getSigningConfig() != null) {
+
+                issueReporter.reportWarning(
+                        Type.SIGNING_CONFIG_DECLARED_IN_DYNAMIC_FEATURE, message);
             }
         }
     }
@@ -346,9 +378,8 @@ public class ApplicationVariantFactory extends BaseVariantFactory implements Var
         buildTypes.create(RELEASE);
     }
 
-    private void validateVersionCodes(@NonNull VariantModel model) {
-
-        EvalIssueReporter issueReporter = globalScope.getErrorHandler();
+    private void validateVersionCodes(@NonNull VariantInputModel model) {
+        IssueReporter issueReporter = globalScope.getDslScope().getIssueReporter();
 
         Integer versionCode = model.getDefaultConfig().getProductFlavor().getVersionCode();
         if (versionCode != null && versionCode < 1) {

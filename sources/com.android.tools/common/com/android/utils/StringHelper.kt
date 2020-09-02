@@ -89,24 +89,6 @@ fun String.usLocaleCapitalize(): String {
 }
 
 /**
- * Returns this string capitalized.
- *
- * This is unlikely to be what you need. Prefer to use [String.appendCapitalized], [StringBuilder.appendCapitalized] or [String.capitalizeAndAppend].
- *
- * @param word the word to be capitalized
- * @return the capitalized word.
- */
-@Deprecated(
-    message = "Replaced by usLocaleCapitalize() to avoid conflict with " +
-            "the kotlin standard library method of the same name.",
-    replaceWith = ReplaceWith(
-        expression = "this.usLocaleCapitalize()",
-        imports = ["com.android.utils.usLocaleCapitalize"]
-    )
-)
-fun String.capitalize(): String = this.usLocaleCapitalize()
-
-/**
  * Returns this string decapitalized, with US locale.
  */
 fun String.usLocaleDecapitalize(): String {
@@ -229,7 +211,7 @@ fun Iterable<String>.combineAsCamelCase(): String {
 }
 
 fun <T> combineAsCamelCase(
-    objectList: Collection<T>, mapFunction: Function<T, String>
+    objectList: Collection<T>, mapFunction: (T) -> String
 ): String {
     val sb = StringBuilder(objectList.size * 20)
     combineAsCamelCase(sb, objectList, mapFunction)
@@ -239,16 +221,16 @@ fun <T> combineAsCamelCase(
 fun <T> combineAsCamelCase(
     sb: StringBuilder,
     objectList: Collection<T>,
-    mapFunction: Function<T, String>
+    mapFunction: (T) -> String
 ) {
 
     var first = true
-    for (`object` in objectList) {
+    for (obj in objectList) {
         if (first) {
-            sb.append(mapFunction.apply(`object`))
+            sb.append(mapFunction(obj))
             first = false
         } else {
-            sb.appendCapitalized(mapFunction.apply(`object`))
+            sb.appendCapitalized(mapFunction(obj))
         }
     }
 }

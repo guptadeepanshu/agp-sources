@@ -19,7 +19,7 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PROCESSED_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
@@ -32,9 +32,7 @@ import com.google.gson.reflect.TypeToken
 import com.google.wireless.android.sdk.stats.AnnotationProcessorInfo
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.compile.JavaCompile
 import java.io.File
 import java.io.FileReader
@@ -72,7 +70,7 @@ fun JavaCompile.configureProperties(scope: VariantScope) {
     val compileOptions = scope.globalScope.extension.compileOptions
 
     this.options.bootstrapClasspath = scope.bootClasspath
-    this.classpath = scope.getJavaClasspath(COMPILE_CLASSPATH, CLASSES)
+    this.classpath = scope.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR)
 
     this.sourceCompatibility = compileOptions.sourceCompatibility.toString()
     this.targetCompatibility = compileOptions.targetCompatibility.toString()
@@ -87,7 +85,7 @@ fun JavaCompile.configureProperties(scope: VariantScope) {
 fun JavaCompile.configurePropertiesForAnnotationProcessing(
     scope: VariantScope, sourcesOutputFolder: DirectoryProperty
 ) {
-    val processorOptions = scope.variantConfiguration.javaCompileOptions.annotationProcessorOptions
+    val processorOptions = scope.variantDslInfo.javaCompileOptions.annotationProcessorOptions
     val compileOptions = this.options
 
     configureAnnotationProcessorPath(scope)
@@ -114,14 +112,7 @@ fun JavaCompile.configurePropertiesForAnnotationProcessing(
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
 fun JavaCompile.configureAnnotationProcessorPath(scope: VariantScope) {
-    val processorOptions = scope.variantConfiguration.javaCompileOptions.annotationProcessorOptions
-
     var processorPath = scope.getArtifactFileCollection(ANNOTATION_PROCESSOR, ALL, PROCESSED_JAR)
-    if (java.lang.Boolean.TRUE == processorOptions.includeCompileClasspath) {
-        // We need to query for PROCESSED_JAR instead of CLASSES because annotation processors
-        // require both classes and resources
-        processorPath = processorPath.plus(scope.getJavaClasspath(COMPILE_CLASSPATH, PROCESSED_JAR))
-    }
     this.options.annotationProcessorPath = processorPath
 }
 
@@ -141,17 +132,14 @@ data class SerializableArtifact(
  * NOTE: The format of the annotation processor names is currently not consistent. If the processors
  * are specified from the DSL's annotation processor options, the format is
  * "com.example.processor.SampleProcessor". If the processors are auto-detected on the annotation
- * processor or compile classpath, the format is
- * "processor.jar (com.example.processor:processor:1.0)".
+ * processor classpath, the format is "processor.jar (com.example.processor:processor:1.0)".
  *
  * @return the map from annotation processors to Boolean values indicating whether they are
  * incremental or not
  */
 fun detectAnnotationProcessors(
-    apOptionIncludeCompileClasspath: Boolean?,
     apOptionClassNames: List<String>,
-    processorClasspath: Collection<SerializableArtifact>,
-    compileClasspath: Collection<SerializableArtifact>
+    processorClasspath: Collection<SerializableArtifact>
 ): Map<String, Boolean> {
     val processors = mutableMapOf<String, Boolean>()
 
@@ -165,14 +153,9 @@ fun detectAnnotationProcessors(
         }
     } else {
         // If the processor names are not specified, the Java compiler will auto-detect them on the
-        // annotation processor or compile classpath.
+        // annotation processor classpath.
         val processorArtifacts = mutableMapOf<SerializableArtifact, Boolean>()
         processorArtifacts.putAll(detectAnnotationProcessors(processorClasspath))
-
-        // Add those on the compile classpath only when includeCompileClasspath is true.
-        if (java.lang.Boolean.TRUE == apOptionIncludeCompileClasspath) {
-            processorArtifacts.putAll(detectAnnotationProcessors(compileClasspath))
-        }
 
         processors.putAll(processorArtifacts.mapKeys { it.key.displayName })
     }
@@ -201,72 +184,27 @@ fun detectAnnotationProcessors(
         if (artifactFile.isDirectory) {
             if (File(artifactFile, ANNOTATION_PROCESSORS_INDICATOR_FILE).exists()) {
                 processors[artifact] =
-                    File(artifactFile, INCREMENTAL_ANNOTATION_PROCESSORS_INDICATOR_FILE).exists()
+                        File(artifactFile, INCREMENTAL_ANNOTATION_PROCESSORS_INDICATOR_FILE)
+                            .exists()
             }
         } else if (artifactFile.isFile) {
-            when (CachedAnnotationProcessorDetector.getJarApStatus(artifactFile)) {
-                CachedAnnotationProcessorDetector.ApStatus.INCREMENTAL -> {
-                    processors[artifact] = true
+            try {
+                JarFile(artifactFile).use { jarFile ->
+                    if (jarFile.getJarEntry(ANNOTATION_PROCESSORS_INDICATOR_FILE) != null) {
+                        processors[artifact] = jarFile.getJarEntry(
+                            INCREMENTAL_ANNOTATION_PROCESSORS_INDICATOR_FILE
+                        ) != null
+                    }
                 }
-                CachedAnnotationProcessorDetector.ApStatus.NONE -> {}
-                CachedAnnotationProcessorDetector.ApStatus.NON_INCREMENTAL -> {
-                    processors[artifact] = false
-                }
+            } catch (e: IOException) {
+                // Can happen when we encounter a folder instead of a jar; for instance, in
+                // sub-modules. We're just displaying a warning, so there's no need to stop the
+                // build here. See http://issuetracker.google.com/64283041.
             }
         }
     }
 
     return processors
-}
-
-object CachedAnnotationProcessorDetector {
-    private val cachedJars = mutableMapOf<File, ApStatus>()
-
-    fun getJarApStatus(file: File): ApStatus {
-        synchronized(cachedJars) {
-            val cachedApStatus = cachedJars[file]
-            if (cachedApStatus == null) {
-                try {
-                    JarFile(file).use { jar ->
-                        if (jar.getJarEntry(ANNOTATION_PROCESSORS_INDICATOR_FILE) != null) {
-                            val incrementalEntry =
-                                jar.getJarEntry(INCREMENTAL_ANNOTATION_PROCESSORS_INDICATOR_FILE)
-                            cachedJars[file] =
-                                if (incrementalEntry != null) {
-                                    ApStatus.INCREMENTAL
-                                } else {
-                                    ApStatus.NON_INCREMENTAL
-                                }
-                        } else {
-                            cachedJars[file] = ApStatus.NONE
-                        }
-                    }
-                } catch (e: IOException) {
-                    // An IOException might indicate the file is a directory or the file can't be
-                    // opened for some reason, but we'd rather report NONE than fail the build here.
-                    cachedJars[file] = ApStatus.NONE
-                }
-                // If cachedJars[file] is null, it indicates a bug in the above code, but we return
-                // NONE in this case because we don't want to fail the build.
-                return cachedJars[file] ?: ApStatus.NONE
-            } else {
-                return cachedApStatus
-            }
-        }
-    }
-
-    enum class ApStatus {
-        INCREMENTAL,
-        NONE,
-        NON_INCREMENTAL
-    }
-
-    @JvmStatic
-    fun clearCache() {
-        synchronized(cachedJars) {
-            cachedJars.clear()
-        }
-    }
 }
 
 /**

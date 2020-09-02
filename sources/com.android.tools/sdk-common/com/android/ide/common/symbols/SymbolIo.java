@@ -24,9 +24,13 @@ import com.android.ide.common.xml.AndroidManifestParser;
 import com.android.resources.ResourceType;
 import com.android.resources.ResourceVisibility;
 import com.android.utils.FileUtils;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Interner;
+import com.google.common.collect.Interners;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,6 +51,8 @@ import org.xml.sax.SAXException;
 
 /**
  * Reads and writes symbol tables to files.
+ *
+ * <p>Instantiatable as has interning caches for symbols to reduce memory use.
  *
  * <pre>
  * AAR Format:
@@ -97,7 +103,9 @@ public final class SymbolIo {
 
     public static final String ANDROID_ATTR_PREFIX = "android_";
 
-    private SymbolIo() {}
+    private final Interner<Symbol> symbolInterner = Interners.newStrongInterner();
+
+    public SymbolIo() {}
 
     /**
      * Loads a symbol table from a symbol file created by aapt.
@@ -110,7 +118,7 @@ public final class SymbolIo {
     @NonNull
     public static SymbolTable readFromAapt(@NonNull File file, @Nullable String tablePackage)
             throws IOException {
-        return read(file, tablePackage, ReadConfiguration.AAPT);
+        return new SymbolIo().read(file, tablePackage, ReadConfiguration.AAPT);
     }
 
     /**
@@ -125,7 +133,7 @@ public final class SymbolIo {
     @NonNull
     public static SymbolTable readFromAaptNoValues(
             @NonNull File file, @Nullable String tablePackage) throws IOException {
-        return read(file, tablePackage, ReadConfiguration.AAPT_NO_VALUES);
+        return new SymbolIo().read(file, tablePackage, ReadConfiguration.AAPT_NO_VALUES);
     }
 
     /**
@@ -142,7 +150,8 @@ public final class SymbolIo {
     public static SymbolTable readFromAaptNoValues(
             @NonNull BufferedReader reader, @NonNull String filename, @Nullable String tablePackage)
             throws IOException {
-        return read(reader.lines(), filename, tablePackage, ReadConfiguration.AAPT_NO_VALUES);
+        return new SymbolIo()
+                .read(reader.lines(), filename, tablePackage, ReadConfiguration.AAPT_NO_VALUES);
     }
 
     /**
@@ -154,19 +163,19 @@ public final class SymbolIo {
      * @throws IOException failed to read the table
      */
     @NonNull
-    public static SymbolTable readFromPartialRFile(
-            @NonNull File file, @Nullable String tablePackage) throws IOException {
+    public SymbolTable readFromPartialRFile(@NonNull File file, @Nullable String tablePackage)
+            throws IOException {
         return read(file, tablePackage, ReadConfiguration.PARTIAL_FILE);
     }
 
     @NonNull
     public static SymbolTable readFromPublicTxtFile(
             @NonNull File file, @Nullable String tablePackage) throws IOException {
-        return read(file, tablePackage, ReadConfiguration.PUBLIC_FILE);
+        return new SymbolIo().read(file, tablePackage, ReadConfiguration.PUBLIC_FILE);
     }
 
     @NonNull
-    private static SymbolTable read(
+    private SymbolTable read(
             @NonNull File file,
             @Nullable String tablePackage,
             @NonNull ReadConfiguration readConfiguration)
@@ -178,7 +187,7 @@ public final class SymbolIo {
     }
 
     @NonNull
-    private static SymbolTable read(
+    private SymbolTable read(
             @NonNull Stream<String> lines,
             @NonNull String filename,
             @Nullable String tablePackage,
@@ -186,8 +195,13 @@ public final class SymbolIo {
             throws IOException {
         Iterator<String> linesIterator = lines.iterator();
         int startLine = checkFileTypeHeader(linesIterator, readConfiguration, filename);
-        SymbolTable.Builder table =
-                new SymbolLineReader(readConfiguration, linesIterator, filename, startLine)
+        SymbolTable.FastBuilder table =
+                new SymbolLineReader(
+                                readConfiguration,
+                                linesIterator,
+                                filename,
+                                symbolInterner,
+                                startLine)
                         .readLines();
         if (tablePackage != null) {
             table.tablePackage(tablePackage);
@@ -205,7 +219,8 @@ public final class SymbolIo {
      * @throws IOException failed to read the table
      */
     @NonNull
-    public static SymbolTable readSymbolListWithPackageName(@NonNull Path file) throws IOException {
+    @VisibleForTesting
+    SymbolTable readSymbolListWithPackageName(@NonNull Path file) throws IOException {
         return readWithPackage(file, ReadConfiguration.SYMBOL_LIST_WITH_PACKAGE);
     }
 
@@ -218,11 +233,11 @@ public final class SymbolIo {
      */
     @NonNull
     public static SymbolTable readRDef(@NonNull Path file) throws IOException {
-        return readWithPackage(file, ReadConfiguration.R_DEF);
+        return new SymbolIo().readWithPackage(file, ReadConfiguration.R_DEF);
     }
 
     @NonNull
-    private static SymbolTable readWithPackage(
+    private SymbolTable readWithPackage(
             @NonNull Path file, @NonNull ReadConfiguration readConfiguration) throws IOException {
         try (Stream<String> lines = Files.lines(file, UTF_8)) {
             Iterator<String> linesIterator = lines.iterator();
@@ -234,8 +249,13 @@ public final class SymbolIo {
                                 + file);
             }
             String tablePackage = linesIterator.next().trim();
-            SymbolTable.Builder table =
-                    new SymbolLineReader(readConfiguration, linesIterator, filePath, startLine + 1)
+            SymbolTable.FastBuilder table =
+                    new SymbolLineReader(
+                                    readConfiguration,
+                                    linesIterator,
+                                    filePath,
+                                    symbolInterner,
+                                    startLine + 1)
                             .readLines();
 
             table.tablePackage(tablePackage);
@@ -276,7 +296,7 @@ public final class SymbolIo {
     }
 
     private static class SymbolLineReader {
-        @NonNull private final SymbolTable.Builder table = SymbolTable.builder();
+        @NonNull private final SymbolTable.FastBuilder table;
 
         @NonNull private final Iterator<String> lines;
         @NonNull private final String filename;
@@ -293,7 +313,9 @@ public final class SymbolIo {
                 @NonNull ReadConfiguration readConfiguration,
                 @NonNull Iterator<String> lines,
                 @NonNull String filename,
+                @NonNull Interner<Symbol> symbolInterner,
                 int startLine) {
+            this.table = new SymbolTable.FastBuilder(symbolInterner);
             this.readConfiguration = readConfiguration;
             this.lines = lines;
             this.filename = filename;
@@ -310,7 +332,7 @@ public final class SymbolIo {
         }
 
         @NonNull
-        SymbolTable.Builder readLines() throws IOException {
+        SymbolTable.FastBuilder readLines() throws IOException {
             if (!lines.hasNext()) {
                 return table;
             }
@@ -351,7 +373,7 @@ public final class SymbolIo {
 
                         if (data.resourceType == ResourceType.ATTR) {
                             table.add(
-                                    new Symbol.AttributeSymbol(
+                                    Symbol.attributeSymbol(
                                             data.name,
                                             value,
                                             data.maybeDefinition,
@@ -359,7 +381,7 @@ public final class SymbolIo {
                                             canonicalName));
                         } else {
                             table.add(
-                                    new Symbol.NormalSymbol(
+                                    Symbol.normalSymbol(
                                             data.resourceType,
                                             data.name,
                                             value,
@@ -380,7 +402,8 @@ public final class SymbolIo {
             return table;
         }
 
-        private void handleStyleable(@NonNull SymbolTable.Builder table, @NonNull SymbolData data)
+        private void handleStyleable(
+                @NonNull SymbolTable.FastBuilder table, @NonNull SymbolData data)
                 throws IOException {
             if (readConfiguration.singleLineStyleable) {
                 String canonicalName =
@@ -388,7 +411,7 @@ public final class SymbolIo {
                                 ? SymbolUtils.canonicalizeValueResourceName(data.name)
                                 : data.name;
                 table.add(
-                        new Symbol.StyleableSymbol(
+                        Symbol.styleableSymbol(
                                 data.name,
                                 ImmutableList.of(),
                                 data.children,
@@ -448,7 +471,7 @@ public final class SymbolIo {
                             ? SymbolUtils.canonicalizeValueResourceName(data.name)
                             : data.name;
             table.add(
-                    new Symbol.StyleableSymbol(
+                    Symbol.styleableSymbol(
                             canonicalName, values, childNames, data.accessibility, data.name));
         }
 
@@ -733,6 +756,22 @@ public final class SymbolIo {
         @NonNull
         abstract SymbolData parseLine(@NonNull String line) throws IOException;
     }
+
+    /**
+     * Load symbol tables of each library on which the main library/application depends on.
+     *
+     * @param libraries libraries which the main library/application depends on
+     * @return a set of `symbol table for each library
+     */
+    public ImmutableSet<SymbolTable> loadDependenciesSymbolTables(Iterable<File> libraries)
+            throws IOException {
+        ImmutableSet.Builder<SymbolTable> tables = ImmutableSet.builder();
+        for (File dependency : libraries) {
+            tables.add(readSymbolListWithPackageName(dependency.toPath()));
+        }
+        return tables.build();
+    }
+
     /**
      * Writes a symbol table to a symbol file.
      *
@@ -857,6 +896,57 @@ public final class SymbolIo {
                     writer.write('\n');
                 }
             }
+        }
+    }
+
+    /**
+     * Writes a file listing the resources provided by the resource file.
+     *
+     * <p>This uses the partial r (go/partial-r) format of
+     * {@code "<access qualifier> <java type> <symbol type> <resource name>" }.
+     *
+     * @param table The SymbolTable to be written as a partial R file.
+     * @param file The file path of the file to be written.
+     */
+    public static void writePartialR(@NonNull SymbolTable table, @NonNull Path file) {
+        try (BufferedWriter writer = Files.newBufferedWriter(file)) {
+            // Loop resource types to keep order.
+            for (ResourceType resType : ResourceType.values()) {
+                List<Symbol> symbols = table.getSymbolByResourceType(resType);
+                for (Symbol s : symbols) {
+                    writer.write(s.getResourceVisibility().getName());
+                    writer.write(' ');
+                    writer.write(s.getJavaType().getTypeName());
+                    writer.write(' ');
+                    writer.write(s.getResourceType().getName());
+                    writer.write(' ');
+                    writer.write(s.getCanonicalName());
+                    writer.write('\n');
+
+                    // Declare styleables having attributes defined in their node
+                    // listed in the children list.
+                    if (s.getJavaType() == SymbolJavaType.INT_LIST) {
+                        Preconditions.checkArgument(
+                                s.getResourceType() == ResourceType.STYLEABLE,
+                                "Only resource type 'styleable' has java type 'int[]'");
+                        List<String> children = s.getChildren();
+                        for (String child : children) {
+                            writer.write(s.getResourceVisibility().getName());
+                            writer.write(' ');
+                            writer.write(SymbolJavaType.INT.getTypeName());
+                            writer.write(' ');
+                            writer.write(ResourceType.STYLEABLE.getName());
+                            writer.write(' ');
+                            writer.write(s.getCanonicalName());
+                            writer.write('_');
+                            writer.write(SymbolUtils.canonicalizeValueResourceName(child));
+                            writer.write('\n');
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

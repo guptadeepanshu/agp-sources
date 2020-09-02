@@ -22,11 +22,12 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.res.Aapt2CompileRunnable
-import com.android.build.gradle.internal.res.getAapt2FromMaven
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
+import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.toImmutableList
@@ -54,6 +55,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -132,6 +134,9 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
     @get:Internal
     @VisibleForTesting internal var log: Logger? = null
 
+    @get:Internal
+    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+
     /**
      * Reading the R files and building symbol tables is costly, and is wasteful to repeat,
      * hence, use a LoadingCache.
@@ -205,7 +210,8 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
             jarOutputs(outputClassesJar, rewrittenClasses)
             jarOutputs(outputRClassesJar, rewrittenRClasses)
 
-            val aapt2ServiceKey = registerAaptService(aapt2FromMaven, logger = LoggerWrapper(logger))
+            val aapt2ServiceKey = aapt2DaemonBuildService.get()
+                .registerAaptService(aapt2FromMaven.singleFile, logger = LoggerWrapper(logger))
 
             val outputCompiledResources = File(intermediateDirectory, "compiled_namespaced_res")
             // compile the rewritten resources
@@ -363,7 +369,7 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
 
     private fun compile(
         rewrittenResourcesMap: Map<DependenciesGraph.Node, File>,
-        aapt2ServiceKey: Aapt2ServiceKey,
+        aapt2ServiceKey: Aapt2DaemonServiceKey,
         forkJoinPool: ForkJoinPool,
         outputDirectory: File
     ): Map<DependenciesGraph.Node, File> {
@@ -425,14 +431,13 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.NAMESPACED_CLASSES_JAR,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 AutoNamespaceDependenciesTask::outputClassesJar,
-                "namespaced-classes.jar")
+                "namespaced-classes.jar"
+            )
 
             variantScope.artifacts.producesFile(
                 InternalArtifactType.COMPILE_ONLY_NAMESPACED_DEPENDENCIES_R_JAR,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 AutoNamespaceDependenciesTask::outputRClassesJar,
                 "namespaced-R.jar"
@@ -440,13 +445,12 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
 
             variantScope.artifacts.producesDir(
                 InternalArtifactType.RES_CONVERTED_NON_NAMESPACED_REMOTE_DEPENDENCIES,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
-                AutoNamespaceDependenciesTask::outputStaticLibraries)
+                AutoNamespaceDependenciesTask::outputStaticLibraries
+            )
 
             variantScope.artifacts.producesDir(
                 InternalArtifactType.NAMESPACED_MANIFESTS,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 AutoNamespaceDependenciesTask::outputRewrittenManifests
             )
@@ -505,6 +509,7 @@ abstract class AutoNamespaceDependenciesTask : NonIncrementalTask() {
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
                 variantScope.globalScope.projectOptions
             )
+            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
         }
     }
 

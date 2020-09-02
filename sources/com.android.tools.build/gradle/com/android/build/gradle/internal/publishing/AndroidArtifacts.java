@@ -34,6 +34,7 @@ public class AndroidArtifacts {
 
     // types for main artifacts
     private static final String TYPE_AAR = "aar";
+    private static final String TYPE_PROCESSED_AAR = "processed-aar";
     private static final String TYPE_APK = "apk";
     private static final String TYPE_JAR = ArtifactTypeDefinition.JAR_TYPE;
     private static final String TYPE_BUNDLE = "aab";
@@ -46,11 +47,16 @@ public class AndroidArtifacts {
     // they can be used)
     private static final String TYPE_PROCESSED_JAR = "processed-jar";
 
-    // types for AAR content
     private static final String TYPE_CLASSES = "android-classes";
+
+    // types published by an Android library
+    private static final String TYPE_CLASSES_JAR = "android-classes-jar"; // In AAR
+    private static final String TYPE_CLASSES_DIR = "android-classes-directory"; // Not in AAR
     private static final String TYPE_NON_NAMESPACED_CLASSES = "non-namespaced-android-classes";
     private static final String TYPE_SHARED_CLASSES = "android-shared-classes";
     private static final String TYPE_DEX = "android-dex";
+    private static final String TYPE_DEX_AND_KEEP_RULES = "android-dex-and-keep-rules";
+    private static final String TYPE_KEEP_RULES = "android-keep-rules";
     private static final String TYPE_JAVA_RES = "android-java-res";
     private static final String TYPE_SHARED_JAVA_RES = "android-shared-java-res";
     private static final String TYPE_MANIFEST = "android-manifest";
@@ -82,6 +88,7 @@ public class AndroidArtifacts {
     private static final String TYPE_DATA_BINDING_BASE_CLASS_LOG_ARTIFACT =
             "android-databinding-class-log";
     private static final String TYPE_EXPLODED_AAR = "android-exploded-aar";
+    private static final String TYPE_AAR_OR_JAR = "android-aar-or-jar";
     private static final String TYPE_COMPILED_DEPENDENCIES_RESOURCES =
             "android-compiled-dependencies-resources";
     private static final String TYPE_MODULE_BUNDLE = "android-module-bundle";
@@ -96,7 +103,7 @@ public class AndroidArtifacts {
 
     // types for feature-split content.
     private static final String TYPE_FEATURE_SET_METADATA = "android-feature-all-metadata";
-    private static final String TYPE_FEATURE_APPLICATION_ID = "android-feature-application-id";
+    private static final String TYPE_BASE_MODULE_METADATA = "android-base-module-metadata";
     private static final String TYPE_FEATURE_RESOURCE_PKG = "android-feature-res-ap_";
     private static final String TYPE_FEATURE_DEX = "android-feature-dex";
     private static final String TYPE_FEATURE_SIGNING_CONFIG = "android-feature-signing-config";
@@ -108,8 +115,6 @@ public class AndroidArtifacts {
             "android-reverse-metadata-feature-decl";
     private static final String TYPE_REVERSE_METADATA_FEATURE_MANIFEST =
             "android-reverse-metadata-feature-manifest";
-    private static final String TYPE_REVERSE_METADATA_BASE_DECLARATION =
-            "android-reverse-metadata-base-module-decl";
     private static final String TYPE_REVERSE_METADATA_CLASSES = "android-reverse-metadata-classes";
     private static final String TYPE_REVERSE_METADATA_JAVA_RES =
             "android-reverse-metadata-java-res";
@@ -121,6 +126,19 @@ public class AndroidArtifacts {
     public static final String TYPE_PLATFORM_ATTR = "android-platform-attr";
 
     private static final String TYPE_NAVIGATION_JSON = "android-navigation-json";
+
+    private static final String TYPE_PREFAB_PACKAGE = "android-prefab";
+
+    private static final String TYPE_DESUGAR_LIB_PROJECT_KEEP_RULES =
+            "android-desugar-lib-project-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_SUBPROJECT_KEEP_RULES =
+            "android-desugar-lib-subproject-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES =
+            "android-desugar-lib-external-libs-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES =
+            "android-desugar-lib-mixed-scope-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES =
+            "android-desugar-lib-external-file-keep-rules";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -221,7 +239,28 @@ public class AndroidArtifacts {
 
     /** Artifact published by modules for consumption by other modules. */
     public enum ArtifactType {
+
+        /**
+         * A jar or directory containing classes.
+         *
+         * <p>If it is a directory, it must contain class files only and not jars.
+         */
         CLASSES(TYPE_CLASSES),
+
+        /** A jar containing classes. */
+        CLASSES_JAR(TYPE_CLASSES_JAR),
+
+        /**
+         * A directory containing classes.
+         *
+         * <p>IMPORTANT: The directory may contain either class files only (preferred) or a single
+         * jar only, see {@link ClassesDirFormat}. Because of this, DO NOT CONSUME this artifact
+         * type directly, use {@link #CLASSES} or {@link #CLASSES_JAR} instead. (We have {@link
+         * com.android.build.gradle.internal.dependency.ClassesDirToClassesTransform} from {@link
+         * #CLASSES_DIR} to {@link #CLASSES} to normalize the format.)
+         */
+        CLASSES_DIR(TYPE_CLASSES_DIR),
+
         // classes.jar files from libraries that are not namespaced yet, and need to be rewritten to
         // be namespace aware.
         NON_NAMESPACED_CLASSES(TYPE_NON_NAMESPACED_CLASSES),
@@ -235,6 +274,11 @@ public class AndroidArtifacts {
         PROCESSED_JAR(TYPE_PROCESSED_JAR),
         // published dex folder for bundle
         DEX(TYPE_DEX),
+        // dex and keep rules(shrinking desugar lib), a folder with a subfolder named dex
+        // which contains dex files, and with a file named keep_rules
+        DEX_AND_KEEP_RULES(TYPE_DEX_AND_KEEP_RULES),
+        // a file named keep_rules for shrinking desugar lib
+        KEEP_RULES(TYPE_KEEP_RULES),
 
         // manifest is published to both to compare and detect provided-only library dependencies.
         MANIFEST(TYPE_MANIFEST),
@@ -272,6 +316,14 @@ public class AndroidArtifacts {
         DEFINED_ONLY_SYMBOL_LIST(TYPE_DEFINED_ONLY_SYMBOL),
         JNI(TYPE_JNI),
         SHARED_JNI(TYPE_SHARED_JNI),
+
+        /**
+         * A directory containing a Prefab package.json file and associated modules.
+         *
+         * <p>Processed by Prefab to generate inputs for ExternalNativeBuild modules to consume
+         * dependencies from AARs. https://google.github.io/prefab/
+         */
+        PREFAB_PACKAGE(TYPE_PREFAB_PACKAGE),
         ANNOTATIONS(TYPE_EXT_ANNOTATIONS),
         PUBLIC_RES(TYPE_PUBLIC_RES),
         UNFILTERED_PROGUARD_RULES(TYPE_UNFILTERED_PROGUARD_RULES),
@@ -296,7 +348,7 @@ public class AndroidArtifacts {
         // bundle.
         LIB_DEPENDENCIES(TYPE_LIB_DEPENDENCIES),
 
-        // Feature split related artifacts.
+        // Dynamic Feature related artifacts.
 
         // file containing the metadata for the full feature set. This contains the feature names,
         // the res ID offset, both tied to the feature module path. Published by the base for the
@@ -304,9 +356,9 @@ public class AndroidArtifacts {
         FEATURE_SET_METADATA(TYPE_FEATURE_SET_METADATA),
         FEATURE_SIGNING_CONFIG(TYPE_FEATURE_SIGNING_CONFIG),
 
-        // file containing the application ID to synchronize all base + dynamic feature. This is
-        // published by the base feature and installed application module.
-        FEATURE_APPLICATION_ID_DECLARATION(TYPE_FEATURE_APPLICATION_ID),
+        // file containing the base module info (appId, versionCode, debuggable, ...).
+        // This is published by the base module and read by the dynamic feature modules
+        BASE_MODULE_METADATA(TYPE_BASE_MODULE_METADATA),
 
         // ?
         FEATURE_RESOURCE_PKG(TYPE_FEATURE_RESOURCE_PKG),
@@ -327,15 +379,24 @@ public class AndroidArtifacts {
         // Reverse Metadata artifacts
         REVERSE_METADATA_FEATURE_DECLARATION(TYPE_REVERSE_METADATA_FEATURE_DECLARATION),
         REVERSE_METADATA_FEATURE_MANIFEST(TYPE_REVERSE_METADATA_FEATURE_MANIFEST),
-        REVERSE_METADATA_BASE_MODULE_DECLARATION(TYPE_REVERSE_METADATA_BASE_DECLARATION),
         REVERSE_METADATA_CLASSES(TYPE_REVERSE_METADATA_CLASSES),
         REVERSE_METADATA_JAVA_RES(TYPE_REVERSE_METADATA_JAVA_RES),
 
         // types for querying only. Not publishable.
         AAR(TYPE_AAR),
+        // Artifact type for processed aars (the aars may need to be processed, e.g. jetified to
+        // AndroidX, before they can be used)
+        PROCESSED_AAR(TYPE_PROCESSED_AAR),
         EXPLODED_AAR(TYPE_EXPLODED_AAR),
+        AAR_OR_JAR(TYPE_AAR_OR_JAR), // See ArtifactUtils for how this is used.
 
-        NAVIGATION_JSON(TYPE_NAVIGATION_JSON);
+        NAVIGATION_JSON(TYPE_NAVIGATION_JSON),
+
+        DESUGAR_LIB_PROJECT_KEEP_RULES(TYPE_DESUGAR_LIB_PROJECT_KEEP_RULES),
+        DESUGAR_LIB_SUBPROJECT_KEEP_RULES(TYPE_DESUGAR_LIB_SUBPROJECT_KEEP_RULES),
+        DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES),
+        DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES(TYPE_DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES),
+        DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES);
 
         @NonNull private final String type;
 
@@ -347,5 +408,48 @@ public class AndroidArtifacts {
         public String getType() {
             return type;
         }
+    }
+
+    /**
+     * The format of the directory with artifact type {@link
+     * AndroidArtifacts.ArtifactType#CLASSES_DIR}.
+     *
+     * <p>See {@link #CONTAINS_SINGLE_JAR} for why we need this format.
+     */
+    public enum ClassesDirFormat {
+
+        /** The directory contains class files only. */
+        CONTAINS_CLASS_FILES_ONLY,
+
+        /**
+         * The directory contains a single jar only.
+         *
+         * <p>The need for this format arises when we want to publish all classes to a directory,
+         * but the input classes contain jars (e.g., R.jar or those provided by external
+         * users/plugins via the AGP API). There are a few approaches, and only the last one works:
+         *
+         * <p>1. Unzip the jars into the directory: This operation may fail due to OS differences
+         * (e.g., case sensitivity, char encoding). It is also inefficient to zip and unzip classes
+         * multiple times.
+         *
+         * <p>2. Put the jars inside the directory: The directory is usually put on a classpath, and
+         * the jars inside the directory would not be recognized as part of the classpath. Here are
+         * 2 attempts to fix it: 2a) At the consumer's side, modify the classpath to include the
+         * jars inside the directory. This is possible at the task/transform's execution but not
+         * possible at task graph creation. Therefore, Gradle would not apply input normalization
+         * correctly to the jars inside the directory. 2b) Add a transform to convert the directory
+         * into a jar. This transform takes all the class files inside the jars and merge them into
+         * a jar. Then, we can let consumers consume the jar instead of the directory. This is
+         * possible but not as efficient as #3 below.
+         *
+         * <p>3. Merge all the class files inside the jars into a single jar inside the directory,
+         * then add a transform to convert the directory into a jar where the transform simply
+         * selects the jar inside the directory as its output jar (see {@link
+         * com.android.build.gradle.internal.dependency.ClassesDirToClassesTransform}). This is
+         * better than 2b because 2b includes copying files when publishing and zipping files when
+         * transforming, whereas this includes zipping files when publishing and nearly a no-op when
+         * transforming.
+         */
+        CONTAINS_SINGLE_JAR
     }
 }

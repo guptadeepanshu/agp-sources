@@ -19,16 +19,15 @@ package com.android.build.gradle.internal.dsl;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.api.JavaCompileOptions;
+import com.android.build.gradle.internal.api.dsl.DslScope;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.scope.CodeShrinker;
+import com.android.builder.core.AbstractBuildType;
 import com.android.builder.core.BuilderConstants;
-import com.android.builder.core.DefaultBuildType;
-import com.android.builder.errors.EvalIssueReporter;
-import com.android.builder.errors.EvalIssueReporter.Type;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.internal.ClassFieldImpl;
 import com.android.builder.model.BaseConfig;
 import com.android.builder.model.ClassField;
-import com.google.common.annotations.VisibleForTesting;
+import com.android.builder.model.CodeShrinker;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import java.io.Serializable;
@@ -37,14 +36,14 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.Incubating;
-import org.gradle.api.Project;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Internal;
 
 /** DSL object to configure build types. */
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue", "Convert2Lambda"})
-public class BuildType extends DefaultBuildType implements CoreBuildType, Serializable {
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue", "Convert2Lambda", "deprecation"})
+public class BuildType extends AbstractBuildType
+        implements CoreBuildType, Serializable, com.android.build.api.dsl.BuildType {
 
     private static final long serialVersionUID = 1L;
 
@@ -71,14 +70,12 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
         OLD_DSL,
     }
 
-    @NonNull private final Project project;
+    @NonNull private DslScope dslScope;
     @NonNull private final NdkOptions ndkConfig;
     @NonNull private final ExternalNativeBuildOptions externalNativeBuildOptions;
     @NonNull
     private final com.android.build.gradle.internal.dsl.JavaCompileOptions javaCompileOptions;
     @NonNull private final ShaderOptions shaderOptions;
-    @NonNull private final EvalIssueReporter issueReporter;
-    @NonNull private final DeprecationReporter deprecationReporter;
     @NonNull private final PostProcessingBlock postProcessingBlock;
 
     @Nullable private PostProcessingConfiguration postProcessingConfiguration;
@@ -91,46 +88,22 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
     private final Property<Boolean> isDefault;
 
     @Inject
-    public BuildType(
-            @NonNull String name,
-            @NonNull Project project,
-            @NonNull ObjectFactory objectFactory,
-            @NonNull EvalIssueReporter issueReporter,
-            @NonNull DeprecationReporter deprecationReporter) {
+    public BuildType(@NonNull String name, @NonNull DslScope dslScope) {
         super(name);
-        this.project = project;
-        this.issueReporter = issueReporter;
-        this.deprecationReporter = deprecationReporter;
+        this.dslScope = dslScope;
 
+        ObjectFactory objectFactory = dslScope.getObjectFactory();
         javaCompileOptions =
                 objectFactory.newInstance(
                         com.android.build.gradle.internal.dsl.JavaCompileOptions.class,
-                        objectFactory);
+                        objectFactory,
+                        dslScope.getDeprecationReporter());
         shaderOptions = objectFactory.newInstance(ShaderOptions.class);
         ndkConfig = objectFactory.newInstance(NdkOptions.class);
         externalNativeBuildOptions =
                 objectFactory.newInstance(ExternalNativeBuildOptions.class, objectFactory);
-        postProcessingBlock = objectFactory.newInstance(PostProcessingBlock.class, project);
+        postProcessingBlock = objectFactory.newInstance(PostProcessingBlock.class, dslScope);
         isDefault = objectFactory.property(Boolean.class).convention(false);
-    }
-
-    @VisibleForTesting
-    BuildType(
-            @NonNull String name,
-            @NonNull Project project,
-            @NonNull EvalIssueReporter issueReporter,
-            @NonNull DeprecationReporter deprecationReporter) {
-
-        super(name);
-        this.project = project;
-        this.issueReporter = issueReporter;
-        this.deprecationReporter = deprecationReporter;
-        javaCompileOptions = new com.android.build.gradle.internal.dsl.JavaCompileOptions();
-        shaderOptions = new ShaderOptions();
-        ndkConfig = new NdkOptions();
-        externalNativeBuildOptions = new ExternalNativeBuildOptions();
-        postProcessingBlock = new PostProcessingBlock(project);
-        isDefault = project.getObjects().property(Boolean.class).convention(false);
     }
 
     private ImmutableList<String> matchingFallbacks;
@@ -268,6 +241,27 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
         return isDefault;
     }
 
+    // Temp HACK. we need a way to access the Property<Boolean> from Kotlin
+    // DO NOT USE
+    @Deprecated
+    public Property<Boolean> getIsDefaultProp() {
+        return isDefault;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return this.isDefault.get();
+    }
+
+    @Override
+    public void setDefault(boolean isDefault) {
+        this.isDefault.set(isDefault);
+    }
+
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault.set(isDefault);
+    }
+
     @Override
     protected void _initWith(@NonNull BaseConfig that) {
         super._initWith(that);
@@ -285,7 +279,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
         isCrunchPngsDefault = thatBuildType.isCrunchPngsDefault();
         matchingFallbacks = ImmutableList.copyOf(thatBuildType.getMatchingFallbacks());
         // we don't want to dynamically link these values. We just want to copy the current value.
-        isDefault.set(thatBuildType.getIsDefault().get());
+        isDefault.set(thatBuildType.isDefault());
     }
 
     /** Override as DSL objects have no reason to be compared for equality. */
@@ -324,7 +318,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
                     String.format(
                             "BuildType(%s): buildConfigField '%s' value is being replaced: %s -> %s",
                             getName(), name, alreadyPresent.getValue(), value);
-            issueReporter.reportWarning(Type.GENERIC, message);
+            dslScope.getIssueReporter().reportWarning(Type.GENERIC, message);
         }
         addBuildConfigField(new ClassFieldImpl(type, name, value));
     }
@@ -350,7 +344,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
                     String.format(
                             "BuildType(%s): resValue '%s' value is being replaced: %s -> %s",
                             getName(), name, alreadyPresent.getValue(), value);
-            issueReporter.reportWarning(Type.GENERIC, message);
+            dslScope.getIssueReporter().reportWarning(Type.GENERIC, message);
         }
         addResValue(new ClassFieldImpl(type, name, value));
     }
@@ -371,7 +365,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
     @NonNull
     public BuildType proguardFile(@NonNull Object proguardFile) {
         checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "proguardFile");
-        getProguardFiles().add(project.file(proguardFile));
+        getProguardFiles().add(dslScope.file(proguardFile));
         return this;
     }
 
@@ -422,7 +416,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
     @NonNull
     public BuildType testProguardFile(@NonNull Object proguardFile) {
         checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "testProguardFile");
-        getTestProguardFiles().add(project.file(proguardFile));
+        getTestProguardFiles().add(dslScope.file(proguardFile));
         return this;
     }
 
@@ -468,7 +462,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
     public BuildType consumerProguardFile(@NonNull Object proguardFile) {
         checkPostProcessingConfiguration(
                 PostProcessingConfiguration.OLD_DSL, "consumerProguardFile");
-        getConsumerProguardFiles().add(project.file(proguardFile));
+        getConsumerProguardFiles().add(dslScope.file(proguardFile));
         return this;
     }
 
@@ -601,8 +595,9 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
     public void setUseProguard(boolean useProguard) {
         checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "setUseProguard");
         if (dslChecksEnabled.get()) {
-            deprecationReporter.reportObsoleteUsage(
-                    "useProguard", DeprecationReporter.DeprecationTarget.DSL_USE_PROGUARD);
+            dslScope.getDeprecationReporter()
+                    .reportObsoleteUsage(
+                            "useProguard", DeprecationReporter.DeprecationTarget.DSL_USE_PROGUARD);
         }
     }
 
@@ -689,7 +684,7 @@ public class BuildType extends DefaultBuildType implements CoreBuildType, Serial
                 default:
                     throw new AssertionError("Unknown value " + used);
             }
-            issueReporter.reportError(Type.GENERIC, message, methodName);
+            dslScope.getIssueReporter().reportError(Type.GENERIC, message, methodName);
         }
     }
 

@@ -24,7 +24,10 @@ import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.options.BooleanOption;
 import java.io.File;
-import java.util.function.Supplier;
+import javax.inject.Inject;
+import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskProvider;
@@ -37,17 +40,28 @@ import org.gradle.api.tasks.TaskProvider;
  * that contained the build environment information needed for data binding, but it is now no longer
  * the case. We'll rename it later.
  */
+@CacheableTask
 public abstract class DataBindingExportBuildInfoTask extends NonIncrementalTask {
 
-    private Supplier<LayoutXmlProcessor> xmlProcessor;
+    private final Property<LayoutXmlProcessor> xmlProcessor;
 
     private boolean useAndroidX;
 
     private File emptyClassOutDir;
 
+    @Inject
+    public DataBindingExportBuildInfoTask(ObjectFactory objectFactory) {
+        xmlProcessor = objectFactory.property(LayoutXmlProcessor.class);
+    }
+
     @Input
     public boolean isUseAndroidX() {
         return useAndroidX;
+    }
+
+    @Input
+    public String getGeneratedClassFileName() {
+        return xmlProcessor.get().getInfoClassFullName();
     }
 
     @OutputDirectory
@@ -92,7 +106,12 @@ public abstract class DataBindingExportBuildInfoTask extends NonIncrementalTask 
             super.configure(task);
             VariantScope variantScope = getVariantScope();
 
-            task.xmlProcessor = variantScope.getVariantData()::getLayoutXmlProcessor;
+            task.xmlProcessor.set(
+                    variantScope
+                            .getGlobalScope()
+                            .getProject()
+                            .provider(variantScope.getVariantData()::getLayoutXmlProcessor));
+            task.xmlProcessor.disallowChanges();
             task.useAndroidX =
                     variantScope
                             .getGlobalScope()

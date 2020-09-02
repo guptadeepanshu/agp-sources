@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.signing.SigningConfigData
@@ -76,7 +75,6 @@ abstract class SigningConfigWriterTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.SIGNING_CONFIG,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 SigningConfigWriterTask::outputDirectory
             )
@@ -90,7 +88,7 @@ abstract class SigningConfigWriterTask : NonIncrementalTask() {
                 task.validatedSigningOutput
             )
 
-            task.signingConfigData = variantScope.variantConfiguration.signingConfig?.let {
+            task.signingConfigData = variantScope.variantDslInfo.signingConfig?.let {
                 task.storeFilePath = it.storeFile?.path
                 SigningConfigData.fromSigningConfig(it)
             }

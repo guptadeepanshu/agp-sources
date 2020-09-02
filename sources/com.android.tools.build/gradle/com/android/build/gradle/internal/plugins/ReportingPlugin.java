@@ -20,14 +20,20 @@ import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
 import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
 import static com.android.builder.core.BuilderConstants.FD_REPORTS;
 
+import com.android.build.gradle.internal.api.dsl.DslScope;
+import com.android.build.gradle.internal.dsl.DslVariableFactory;
 import com.android.build.gradle.internal.dsl.TestOptions;
+import com.android.build.gradle.internal.errors.DeprecationReporterImpl;
+import com.android.build.gradle.internal.errors.SyncIssueReporterImpl;
+import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl;
 import com.android.build.gradle.internal.tasks.AndroidReportTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.test.report.ReportType;
-import java.io.File;
-import javax.inject.Inject;
+import com.android.build.gradle.internal.variant2.DslScopeImpl;
+import com.android.build.gradle.options.ProjectOptions;
+import com.android.build.gradle.options.SyncOptions;
+import com.android.utils.FileUtils;
 import org.gradle.api.Project;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.tasks.TaskCollection;
 
@@ -39,13 +45,9 @@ import org.gradle.api.tasks.TaskCollection;
  */
 class ReportingPlugin implements org.gradle.api.Plugin<Project> {
 
-    private final ObjectFactory objectFactory;
     private TestOptions extension;
 
-    @Inject
-    public ReportingPlugin(ObjectFactory objectFactory) {
-        this.objectFactory = objectFactory;
-    }
+    public ReportingPlugin() {}
 
     @Override
     public void apply(final Project project) {
@@ -53,7 +55,28 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
         // it's evaluated last.
         project.evaluationDependsOnChildren();
 
-        extension = project.getExtensions().create("android", TestOptions.class, objectFactory);
+        ProjectOptions projectOptions = new ProjectOptions(project);
+
+        SyncIssueReporterImpl syncIssueHandler =
+                new SyncIssueReporterImpl(
+                        SyncOptions.getModelQueryMode(projectOptions), project.getLogger());
+
+        DeprecationReporterImpl deprecationReporter =
+                new DeprecationReporterImpl(syncIssueHandler, projectOptions, project.getPath());
+
+        DslScope dslScope =
+                new DslScopeImpl(
+                        syncIssueHandler,
+                        deprecationReporter,
+                        project.getObjects(),
+                        project.getLogger(),
+                        new BuildFeatureValuesImpl(projectOptions),
+                        project.getProviders(),
+                        new DslVariableFactory(syncIssueHandler),
+                        project.getLayout(),
+                        project::file);
+
+        extension = project.getExtensions().create("android", TestOptions.class, dslScope);
 
         final AndroidReportTask mergeReportsTask = project.getTasks().create("mergeAndroidReports",
                 AndroidReportTask.class);
@@ -62,23 +85,41 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
                 + "projects.");
         mergeReportsTask.setReportType(ReportType.MULTI_PROJECT);
 
-        mergeReportsTask.setResultsDir(() -> {
-            String resultsDir = extension.getResultsDir();
-            if (resultsDir == null) {
-                return new File(project.getBuildDir(), FD_ANDROID_RESULTS);
-            } else {
-                return project.file(resultsDir);
-            }
-        });
+        mergeReportsTask
+                .getResultsDir()
+                .set(
+                        project.provider(
+                                () -> {
+                                    String resultsDir = extension.getResultsDir();
+                                    if (resultsDir == null) {
+                                        return project.getLayout()
+                                                .getBuildDirectory()
+                                                .dir(FD_ANDROID_RESULTS)
+                                                .get();
+                                    } else {
+                                        return project.getLayout()
+                                                .getProjectDirectory()
+                                                .dir(resultsDir);
+                                    }
+                                }));
 
-        mergeReportsTask.setReportsDir(() -> {
-            String reportsDir = extension.getReportDir();
-            if (reportsDir == null) {
-                return new File(new File(project.getBuildDir(),  FD_REPORTS), FD_ANDROID_TESTS);
-            } else {
-                return project.file(reportsDir);
-            }
-        });
+        mergeReportsTask
+                .getReportsDir()
+                .set(
+                        project.provider(
+                                () -> {
+                                    String reportsDir = extension.getReportDir();
+                                    if (reportsDir == null) {
+                                        return project.getLayout()
+                                                .getBuildDirectory()
+                                                .dir(FileUtils.join(FD_REPORTS, FD_ANDROID_TESTS))
+                                                .get();
+                                    } else {
+                                        return project.getLayout()
+                                                .getProjectDirectory()
+                                                .dir(reportsDir);
+                                    }
+                                }));
 
         // gather the subprojects
         project.afterEvaluate(prj -> {

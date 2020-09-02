@@ -23,7 +23,7 @@ import com.android.build.gradle.internal.ndk.NdkHandler
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
-import com.android.builder.errors.EvalIssueReporter
+import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.BuildToolInfo
@@ -40,7 +40,8 @@ open class SdkComponents(
     project: Project,
     private val sdkLoadStrategy: SdkLoadingStrategy,
     private val sdkHandlerSupplier: Supplier<SdkHandler>,
-    val ndkHandlerSupplier: Supplier<NdkHandler>) {
+    val ndkHandlerSupplier: Supplier<NdkHandler>,
+    private val issueReporter: IssueReporter) {
 
     private val projectRootDir = project.rootDir
 
@@ -48,9 +49,9 @@ open class SdkComponents(
         fun createSdkComponents(
             project: Project,
             projectOptions: ProjectOptions,
-            extensionSupplier: Supplier<BaseExtension?>,
+            extensionSupplier: Supplier<BaseExtension>,
             logger: ILogger,
-            evalIssueReporter: EvalIssueReporter): SdkComponents {
+            issueReporter: IssueReporter): SdkComponents {
 
             val sdkSourceSet = SdkLocationSourceSet(project.rootDir)
 
@@ -58,7 +59,7 @@ open class SdkComponents(
                 val sdkHandler = SdkHandler(
                     sdkSourceSet,
                     logger,
-                    evalIssueReporter)
+                    issueReporter)
                 sdkHandler.setSdkLibData(
                     SdkLibDataFactory(
                         !project.gradle.startParameter.isOffline && projectOptions.get(BooleanOption.ENABLE_SDK_DOWNLOAD),
@@ -78,22 +79,27 @@ open class SdkComponents(
                 Supplier { extensionSupplier.get()?.compileSdkVersion },
                 Supplier { extensionSupplier.get()?.buildToolsRevision },
                 projectOptions.get(BooleanOption.USE_ANDROID_X),
-                evalIssueReporter)
+                issueReporter)
 
             val sdkLoadWithFallback = SdkLoadingStrategy(
                 directLoadingStrategy, fullScanLoadingStrategy)
 
             val ndkHandlerSupplier = Suppliers.memoize {
                 NdkHandler(
-                    evalIssueReporter,
+                    issueReporter,
                     projectOptions.get(BooleanOption.ENABLE_SIDE_BY_SIDE_NDK),
                     extensionSupplier.get()?.ndkVersion,
-                    extensionSupplier.get()!!.compileSdkVersion,
+                    extensionSupplier.get()!!.compileSdkVersion!!,
                     project.rootDir)
             }
 
-            return SdkComponents(project, sdkLoadWithFallback, sdkHandlerSupplier, ndkHandlerSupplier)
-
+            return SdkComponents(
+                project,
+                sdkLoadWithFallback,
+                sdkHandlerSupplier,
+                ndkHandlerSupplier,
+                issueReporter
+            )
         }
     }
 
@@ -140,7 +146,7 @@ open class SdkComponents(
         sdkHandlerSupplier.get().installCMake(version)
     }
 
-    fun getSdkFolder(): File? {
-        return SdkLocator.getSdkLocation(projectRootDir).directory
+    fun getSdkDirectory(): File {
+        return SdkLocator.getSdkDirectory(projectRootDir, issueReporter)
     }
 }

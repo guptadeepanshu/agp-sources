@@ -40,6 +40,7 @@ public abstract class SigningOptions {
         public abstract Builder setMinSdkVersion(int version);
         public abstract Builder setValidation(@Nonnull Validation validation);
         public abstract Builder setExecutor(@Nullable RunnablesExecutor executor);
+        public abstract Builder setSdkDependencyData(@Nullable byte[] sdkDependencyData);
 
         abstract SigningOptions autoBuild();
 
@@ -83,6 +84,10 @@ public abstract class SigningOptions {
 
     @Nullable
     public abstract RunnablesExecutor getExecutor();
+
+  /** SDK dependencies of the APK */
+  @Nullable
+  public abstract byte[] getSdkDependencyData();
 
     public enum Validation {
         /** Always perform signature validation */

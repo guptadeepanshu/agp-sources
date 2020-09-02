@@ -32,13 +32,12 @@ import com.android.build.api.transform.QualifiedContent.Scope;
 import com.android.build.api.transform.QualifiedContent.ScopeType;
 import com.android.build.api.transform.Transform;
 import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.pipeline.OriginalStream;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
@@ -68,7 +67,8 @@ import com.android.build.gradle.tasks.MergeResources;
 import com.android.build.gradle.tasks.MergeSourceSetFolders;
 import com.android.build.gradle.tasks.VerifyLibraryResourcesTask;
 import com.android.build.gradle.tasks.ZipMergingTask;
-import com.android.builder.errors.EvalIssueReporter.Type;
+import com.android.builder.errors.IssueReporter;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.profile.Recorder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
@@ -115,7 +115,7 @@ public class LibraryTaskManager extends TaskManager {
     public void createTasksForVariantScope(
             @NonNull final VariantScope variantScope,
             @NonNull List<VariantScope> variantScopesForLint) {
-        final GradleVariantConfiguration variantConfig = variantScope.getVariantConfiguration();
+        final VariantDslInfo variantDslInfo = variantScope.getVariantDslInfo();
 
         GlobalScope globalScope = variantScope.getGlobalScope();
 
@@ -162,7 +162,7 @@ public class LibraryTaskManager extends TaskManager {
                 globalScope.getProjectBaseName());
 
         // Only verify resources if in Release and not namespaced.
-        if (!variantScope.getVariantConfiguration().getBuildType().isDebuggable()
+        if (!variantScope.getVariantDslInfo().isDebuggable()
                 && !variantScope.getGlobalScope().getExtension().getAaptOptions().getNamespaced()) {
             createVerifyLibraryResTask(variantScope);
         }
@@ -206,7 +206,7 @@ public class LibraryTaskManager extends TaskManager {
             taskFactory.register(new ExtractAnnotations.CreationAction(variantScope));
         }
 
-        final boolean instrumented = variantConfig.getBuildType().isTestCoverageEnabled();
+        final boolean instrumented = variantDslInfo.isTestCoverageEnabled();
 
         TransformManager transformManager = variantScope.getTransformManager();
 
@@ -220,6 +220,8 @@ public class LibraryTaskManager extends TaskManager {
         List<Transform> customTransforms = extension.getTransforms();
         List<List<Object>> customTransformsDependencies = extension.getTransformsDependencies();
 
+        final IssueReporter issueReporter = globalScope.getDslScope().getIssueReporter();
+
         for (int i = 0, count = customTransforms.size(); i < count; i++) {
             Transform transform = customTransforms.get(i);
 
@@ -230,13 +232,11 @@ public class LibraryTaskManager extends TaskManager {
                     Sets.difference(transform.getScopes(), TransformManager.PROJECT_ONLY);
             if (!difference.isEmpty()) {
                 String scopes = difference.toString();
-                globalScope
-                        .getErrorHandler()
-                        .reportError(
-                                Type.GENERIC,
-                                String.format(
-                                        "Transforms with scopes '%s' cannot be applied to library projects.",
-                                        scopes));
+                issueReporter.reportError(
+                        Type.GENERIC,
+                        String.format(
+                                "Transforms with scopes '%s' cannot be applied to library projects.",
+                                scopes));
             }
 
             List<Object> deps = customTransformsDependencies.get(i);
@@ -266,7 +266,17 @@ public class LibraryTaskManager extends TaskManager {
                 new BundleLibraryClasses.CreationAction(
                         variantScope,
                         AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR,
                         excludeDataBindingClassesIfNecessary(variantScope)));
+
+        // Also create a directory containing the same classes for incremental dexing
+        taskFactory.register(
+                new BundleLibraryClasses.CreationAction(
+                        variantScope,
+                        AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS,
+                        AndroidArtifacts.ArtifactType.CLASSES_DIR,
+                        excludeDataBindingClassesIfNecessary(variantScope)));
+
         taskFactory.register(new BundleLibraryJavaRes.CreationAction(variantScope));
 
         taskFactory.register(new LibraryDexingTask.CreationAction(variantScope));
@@ -291,7 +301,7 @@ public class LibraryTaskManager extends TaskManager {
         createMergeJavaResTask(variantScope);
 
         // ----- Minify next -----
-        maybeCreateJavaCodeShrinkerTransform(variantScope);
+        maybeCreateJavaCodeShrinkerTask(variantScope);
         maybeCreateResourcesShrinkerTasks(variantScope);
 
         // now add a task that will take all the classes and java resources and package them
@@ -301,7 +311,6 @@ public class LibraryTaskManager extends TaskManager {
         taskFactory.register(
                 new LibraryAarJarsTask.CreationAction(
                         variantScope,
-                        extension.getPackageBuildConfig(),
                         excludeDataBindingClassesIfNecessary(variantScope)));
 
 
@@ -355,7 +364,7 @@ public class LibraryTaskManager extends TaskManager {
         final VariantDependencies variantDependencies = variantScope.getVariantDependencies();
 
         AdhocComponentWithVariants component =
-                globalScope.getComponentFactory().adhoc(variantScope.getFullVariantName());
+                globalScope.getComponentFactory().adhoc(variantScope.getName());
 
         final Configuration apiPub = variantDependencies.getElements(API_PUBLICATION);
         final Configuration runtimePub = variantDependencies.getElements(RUNTIME_PUBLICATION);
@@ -383,7 +392,7 @@ public class LibraryTaskManager extends TaskManager {
         // Old style publishing. This is likely to go away at some point.
         if (extension
                 .getDefaultPublishConfig()
-                .equals(variantScope.getVariantConfiguration().getFullName())) {
+                .equals(variantScope.getVariantDslInfo().getComponentIdentity().getName())) {
             VariantHelper.setupArchivesConfig(project, variantDependencies.getRuntimeClasspath());
 
             // add the artifact that will be published.
@@ -425,7 +434,6 @@ public class LibraryTaskManager extends TaskManager {
                     .getArtifacts()
                     .producesFile(
                             InternalArtifactType.PUBLIC_RES.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             MergeResources::getPublicFile,
                             FN_PUBLIC_TXT);
@@ -488,13 +496,14 @@ public class LibraryTaskManager extends TaskManager {
                 new BundleLibraryClasses.CreationAction(
                         scope,
                         AndroidArtifacts.PublishedConfigType.API_ELEMENTS,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR,
                         excludeDataBindingClassesIfNecessary(scope)));
     }
 
     @NonNull
     private Supplier<List<String>> excludeDataBindingClassesIfNecessary(
             @NonNull VariantScope variantScope) {
-        if (!extension.getDataBinding().isEnabled()) {
+        if (!globalScope.getBuildFeatures().getDataBinding()) {
             return Collections::emptyList;
         }
 

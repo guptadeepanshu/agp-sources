@@ -19,10 +19,12 @@ import com.android.apksig.ApkSignerEngine;
 import com.android.apksig.ApkVerifier;
 import com.android.apksig.DefaultApkSignerEngine;
 import com.android.apksig.apk.ApkFormatException;
+import com.android.apksig.internal.apk.ApkSigningBlockUtils;
 import com.android.apksig.util.DataSink;
 import com.android.apksig.util.DataSource;
 import com.android.apksig.util.DataSources;
 import com.android.tools.build.apkzlib.utils.IOExceptionRunnable;
+import com.android.tools.build.apkzlib.utils.SigningBlockUtils;
 import com.android.tools.build.apkzlib.zip.StoredEntry;
 import com.android.tools.build.apkzlib.zip.ZFile;
 import com.android.tools.build.apkzlib.zip.ZFileExtension;
@@ -32,6 +34,7 @@ import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.primitives.Bytes;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -85,6 +88,12 @@ public class SigningExtension {
   /** Names of APK entries which have been processed by {@link #signer}. */
   private final Set<String> signerProcessedOutputEntryNames = new HashSet<>();
 
+  /** Signing block Id for SDK dependency block. */
+  static final int DEPENDENCY_INFO_BLOCK_ID = 0x504b4453;
+
+  /** SDK dependencies of the APK */
+  @Nullable private byte[] sdkDependencyData;
+
   /**
    * Cached contents of the most recently output APK Signing Block or {@code null} if the block
    * hasn't yet been output.
@@ -124,6 +133,9 @@ public class SigningExtension {
             .setV3SigningEnabled(false)
             .setCreatedBy("1.0 (Android)")
             .build();
+    if (opts.getSdkDependencyData() != null) {
+      sdkDependencyData = opts.getSdkDependencyData();
+    }
     if (opts.getExecutor() != null) {
       signer.setExecutor(opts.getExecutor());
     }
@@ -260,8 +272,7 @@ public class SigningExtension {
     }
   }
 
-  private void copyStreamToDataSink(InputStream inputStream, DataSink dataSink)
-          throws IOException {
+  private void copyStreamToDataSink(InputStream inputStream, DataSink dataSink) throws IOException {
     int bytesRead;
     byte[] buffer = digestBuffer.get();
     while ((bytesRead = inputStream.read(buffer)) > 0) {
@@ -349,7 +360,7 @@ public class SigningExtension {
     byte[] apkSigningBlock;
     byte[] centralDirBytes = zFile.getCentralDirectoryBytes();
     byte[] eocdBytes = zFile.getEocdBytes();
-    ApkSignerEngine.OutputApkSigningBlockRequest addV2SignatureRequest;
+    ApkSignerEngine.OutputApkSigningBlockRequest2 addV2SignatureRequest;
     // This event may arrive a second time -- after we write out the APK Signing Block. Thus, we
     // cache the block to speed things up. The cached block is invalidated by any changes to the
     // file (as reported to this extension).
@@ -363,7 +374,7 @@ public class SigningExtension {
           zFile.getCentralDirectoryOffset() - zFile.getExtraDirectoryOffset();
       DataSource zipEntries = zFile.asDataSource(0, zipEntriesSizeBytes);
       try {
-        addV2SignatureRequest = signer.outputZipSections(zipEntries, centralDir, eocd);
+        addV2SignatureRequest = signer.outputZipSections2(zipEntries, centralDir, eocd);
       } catch (NoSuchAlgorithmException
           | InvalidKeyException
           | SignatureException
@@ -371,10 +382,31 @@ public class SigningExtension {
           | IOException e) {
         throw new IOException("Failed to generate v2 signature", e);
       }
-      apkSigningBlock =
-          (addV2SignatureRequest != null)
-              ? addV2SignatureRequest.getApkSigningBlock()
-              : new byte[0];
+
+      if (addV2SignatureRequest != null) {
+        apkSigningBlock = addV2SignatureRequest.getApkSigningBlock();
+        if (sdkDependencyData != null) {
+          apkSigningBlock =
+              SigningBlockUtils.addToSigningBlock(
+                  apkSigningBlock, sdkDependencyData, DEPENDENCY_INFO_BLOCK_ID);
+        }
+        apkSigningBlock =
+            Bytes.concat(
+                new byte[addV2SignatureRequest.getPaddingSizeBeforeApkSigningBlock()],
+                apkSigningBlock);
+      } else {
+        apkSigningBlock = new byte[0];
+        if (sdkDependencyData != null) {
+          apkSigningBlock =
+              SigningBlockUtils.addToSigningBlock(
+                  apkSigningBlock, sdkDependencyData, DEPENDENCY_INFO_BLOCK_ID);
+          int paddingSize =
+              ApkSigningBlockUtils.generateApkSigningBlockPadding(
+                      zipEntries, /* apkSigningBlockPaddingSupported */ true)
+                  .getSecond();
+          apkSigningBlock = Bytes.concat(new byte[paddingSize], apkSigningBlock);
+        }
+      }
       cachedApkSigningBlock = apkSigningBlock;
     }
 

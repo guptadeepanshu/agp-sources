@@ -20,12 +20,14 @@ import com.android.SdkConstants
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.utils.DESUGAR_LIB_DEX
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
+import com.android.builder.dexing.KeepRulesConfig
 import com.android.builder.dexing.runL8
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.attributes.Attribute
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
@@ -59,18 +61,21 @@ abstract class L8DexDesugarLibTransform : TransformAction<L8DexDesugarLibTransfo
             outputDir.toPath(),
             parameters.libConfiguration.get(),
             parameters.bootClasspath.map { it.toPath() },
-            parameters.minSdkVersion.get()
+            parameters.minSdkVersion.get(),
+            KeepRulesConfig(null, null)
             )
     }
 }
 
+val ATTR_L8_MIN_SDK: Attribute<String> = Attribute.of("l8-min-sdk", String::class.java)
+
 data class DesugarLibConfiguration(
-    private val libConfiguration: String,
+    private val libConfiguration: Provider<String>,
     private val bootClasspath: FileCollection,
     private val minSdkVersion: Int) {
 
     /**
-     * Registers the transform which converts desugar_jdk_libs.jar to its dex file
+     * Registers the transform which converts desugar lib jar to its dex file
      */
     fun registerTransform(
         dependencyHandler: DependencyHandler
@@ -83,18 +88,23 @@ data class DesugarLibConfiguration(
             }
             spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, ArtifactTypeDefinition.JAR_TYPE)
             spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, DESUGAR_LIB_DEX)
+            spec.from.attribute(ATTR_L8_MIN_SDK, minSdkVersion.toString())
+            spec.to.attribute(ATTR_L8_MIN_SDK, minSdkVersion.toString())
         }
     }
 }
 
 fun getDesugarLibConfigurations(scopes: Collection<VariantScope>): Set<DesugarLibConfiguration> {
-    return scopes.map { getDesugarLibConfiguration(it) }.toSet()
+    return scopes
+        .filter { it.isCoreLibraryDesugaringEnabled }
+        .map { getDesugarLibConfiguration(it) }
+        .toSet()
 }
 
 private fun getDesugarLibConfiguration(scope: VariantScope): DesugarLibConfiguration {
     val libConfiguration = getDesugarLibConfig(scope.globalScope.project)
     val bootClasspath = scope.bootClasspath.filter { it.name == SdkConstants.FN_FRAMEWORK_LIBRARY }
-    val minSdkVersion = scope.variantConfiguration.minSdkVersion.apiLevel
+    val minSdkVersion = scope.variantDslInfo.minSdkVersionWithTargetDeviceApi.featureLevel
 
     return DesugarLibConfiguration(libConfiguration, bootClasspath, minSdkVersion)
 }

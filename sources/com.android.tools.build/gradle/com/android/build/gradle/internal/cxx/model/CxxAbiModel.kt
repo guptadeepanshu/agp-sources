@@ -78,6 +78,11 @@ interface CxxAbiModel {
      * model if the file is absent.
      */
     val buildSettings: BuildSettingsConfiguration
+
+    /**
+     * The directory containing generated Prefab imports, if any.
+     */
+    val prefabFolder: File
 }
 
 /**
@@ -102,7 +107,6 @@ val CxxAbiModel.objFolder: File
     get() = when(variant.module.buildSystem) {
         NativeBuildSystem.CMAKE -> FileUtils.join(cxxBuildFolder, "CMakeFiles")
         NativeBuildSystem.NDK_BUILD -> FileUtils.join(variant.objFolder, abi.tag)
-        else -> throw RuntimeException(variant.module.buildSystem.toString())
     }
 
 /**
@@ -138,3 +142,18 @@ val CxxAbiModel.modelOutputFile: File
  */
 val CxxAbiModel.jsonGenerationLoggingRecordFile: File
     get() = FileUtils.join(originalCxxBuildFolder, "json_generation_record.json")
+
+/**
+ * The prefab configuration used when building this project
+ *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/prefab_config.json
+ */
+val CxxAbiModel.prefabConfigFile: File
+    get() = FileUtils.join(originalCxxBuildFolder, "prefab_config.json")
+
+fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean {
+    // Prefab will fail if we try to create ARMv5/MIPS/MIPS64 modules. r17 was the first NDK version
+    // that we can guarantee will not be used to use those ABIs.
+    return (variant.module.project.isPrefabEnabled
+            && variant.prefabPackageDirectoryList.isNotEmpty()
+            && variant.module.ndkVersion.major >= 17)
+}

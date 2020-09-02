@@ -19,15 +19,14 @@ package com.android.build.gradle.internal.tasks.databinding
 import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.FeaturePackageInfo
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.utils.FileUtils
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
@@ -36,7 +35,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.io.Serializable
-import java.util.function.Supplier
 import javax.inject.Inject
 
 /**
@@ -56,12 +54,8 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
 
     @get:OutputDirectory abstract val outFolder: DirectoryProperty
 
-    private lateinit var resOffsetSupplier: Supplier<Int>
-
-    @Suppress("MemberVisibilityCanBePrivate")
     @get:Input
-    val resOffset: Int
-        get() = resOffsetSupplier.get()
+    abstract val resOffset: Property<Int>
 
     /**
      * In a feature, we only need to generate code for its Runtime dependencies as compile
@@ -77,7 +71,7 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
             it.submit(
                 ExportFeatureInfoRunnable::class.java, ExportFeatureInfoParams(
                     outFolder = outFolder.get().asFile,
-                    resOffset = resOffset,
+                    resOffset = resOffset.get(),
                     directDependencies = directDependencies.asFileTree.files
                 )
             )
@@ -97,9 +91,9 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.FEATURE_DATA_BINDING_FEATURE_INFO,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
-                DataBindingExportFeatureInfoTask::outFolder)
+                DataBindingExportFeatureInfoTask::outFolder
+            )
         }
 
         override fun configure(task: DataBindingExportFeatureInfoTask) {
@@ -109,7 +103,8 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
                     AndroidArtifacts.ArtifactType.DATA_BINDING_ARTIFACT)
-            task.resOffsetSupplier = FeatureSetMetadata.getInstance().getResOffsetSupplierForTask(variantScope, task)
+            task.resOffset.set(variantScope.resOffset)
+            task.resOffset.disallowChanges()
         }
     }
 }

@@ -66,6 +66,7 @@ public interface IDevice extends IShellEnabledDevice {
         SCREEN_RECORD,      // screen recorder available?
         PROCSTATS,          // procstats service (dumpsys procstats) available
         ABB_EXEC,           // Android Binder Bridge available
+        REAL_PKG_NAME,      // Reports the real package name, instead of inferring from client description
     }
 
     /** Device level hardware features. */
@@ -305,6 +306,22 @@ public interface IDevice extends IShellEnabledDevice {
      * @return the <code>Client</code> object or <code>null</code> if no match was found.
      */
     Client getClient(String applicationName);
+
+    /**
+     * Force stop an application by its application name. This removes all pending alarms and queued
+     * computation.
+     *
+     * @param applicationName the name of the application
+     */
+    default void forceStop(String applicationName) {}
+
+    /**
+     * Kills an application by its application name. This only destroy the activities, leaving its
+     * state in the Android system alone.
+     *
+     * @param applicationName the name of the application
+     */
+    default void kill(String applicationName) {}
 
     /**
      * Returns a {@link SyncService} object to push / pull files to and from the device.

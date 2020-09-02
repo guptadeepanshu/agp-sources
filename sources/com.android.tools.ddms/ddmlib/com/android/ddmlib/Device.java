@@ -85,7 +85,7 @@ final class Device implements IDevice {
 
     private static final String LOG_TAG = "Device";
     private static final char SEPARATOR = '-';
-    private static final String UNKNOWN_PACKAGE = "";   //$NON-NLS-1$
+    static final String UNKNOWN_PACKAGE = "";
 
     private static final long GET_PROP_TIMEOUT_MS = 250;
     private static final long INITIAL_GET_PROP_TIMEOUT_MS = 2000;
@@ -314,6 +314,8 @@ final class Device implements IDevice {
                 return getVersion().isGreaterOrEqualThan(19);
             case ABB_EXEC:
                 return getAdbFeatures().contains("abb_exec");
+            case REAL_PKG_NAME:
+                return getVersion().compareTo(AndroidVersion.VersionCodes.Q, "R") >= 0;
             default:
                 return false;
         }
@@ -763,6 +765,30 @@ final class Device implements IDevice {
         return null;
     }
 
+    @Override
+    public void forceStop(String applicationName) {
+        try {
+            // Force stop the app, even in case it's in the crashed state.
+            executeShellCommand("am force-stop " + applicationName, new NullOutputReceiver());
+        } catch (IOException
+                | TimeoutException
+                | AdbCommandRejectedException
+                | ShellCommandUnresponsiveException ignored) {
+        }
+    }
+
+    @Override
+    public void kill(String applicationName) {
+        try {
+            // Kills the app, even in case it's in the crashed state.
+            executeShellCommand("am kill " + applicationName, new NullOutputReceiver());
+        } catch (IOException
+                | TimeoutException
+                | AdbCommandRejectedException
+                | ShellCommandUnresponsiveException ignored) {
+        }
+    }
+
     void addClient(Client client) {
         synchronized (mClients) {
             mClients.add(client);
@@ -833,7 +859,7 @@ final class Device implements IDevice {
 
     private void addClientInfo(Client client) {
         ClientData cd = client.getClientData();
-        setClientInfo(cd.getPid(), cd.getClientDescription());
+        setClientInfo(cd.getPid(), cd.getPackageName());
     }
 
     private void updateClientInfo(Client client, int changeMask) {
@@ -861,8 +887,7 @@ final class Device implements IDevice {
 
     @Override
     public String getClientName(int pid) {
-        String pkgName = mClientInfo.get(pid);
-        return pkgName == null ? UNKNOWN_PACKAGE : pkgName;
+        return mClientInfo.getOrDefault(pid, UNKNOWN_PACKAGE);
     }
 
     @Override

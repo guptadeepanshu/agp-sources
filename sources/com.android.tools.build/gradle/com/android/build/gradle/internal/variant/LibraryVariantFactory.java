@@ -20,24 +20,27 @@ import static com.android.builder.core.BuilderConstants.DEBUG;
 import static com.android.builder.core.BuilderConstants.RELEASE;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.ComponentIdentity;
+import com.android.build.api.variant.impl.LibraryVariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
+import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.VariantModel;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
 import com.android.build.gradle.internal.api.LibraryVariantImpl;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantDslInfoImpl;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.builder.core.VariantType;
 import com.android.builder.core.VariantTypeImpl;
-import com.android.builder.errors.EvalIssueReporter;
-import com.android.builder.errors.EvalIssueReporter.Type;
-import com.android.builder.profile.Recorder;
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
+import com.android.builder.errors.IssueReporter;
+import com.android.builder.errors.IssueReporter.Type;
 import org.gradle.api.NamedDomainObjectContainer;
 
 public class LibraryVariantFactory extends BaseVariantFactory {
@@ -46,17 +49,51 @@ public class LibraryVariantFactory extends BaseVariantFactory {
         super(globalScope);
     }
 
+    @NonNull
+    @Override
+    public VariantImpl createVariantObject(
+            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo) {
+        return globalScope
+                .getDslScope()
+                .getObjectFactory()
+                .newInstance(
+                        com.android.build.api.variant.impl.LibraryVariantImpl.class,
+                        variantDslInfo,
+                        componentIdentity);
+    }
+
+    @NonNull
+    @Override
+    public VariantPropertiesImpl createVariantPropertiesObject(
+            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope) {
+        return globalScope
+                .getDslScope()
+                .getObjectFactory()
+                .newInstance(
+                        LibraryVariantPropertiesImpl.class,
+                        globalScope.getDslScope(),
+                        variantScope,
+                        variantScope.getArtifacts().getOperations(),
+                        componentIdentity);
+    }
+
     @Override
     @NonNull
     public BaseVariantData createVariantData(
-            @NonNull GradleVariantConfiguration variantConfiguration,
-            @NonNull TaskManager taskManager,
-            @NonNull Recorder recorder) {
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfoImpl variantDslInfo,
+            @NonNull VariantImpl publicVariantApi,
+            @NonNull VariantPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources,
+            @NonNull TaskManager taskManager) {
         return new LibraryVariantData(
                 globalScope,
                 taskManager,
-                variantConfiguration,
-                recorder);
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
     }
 
     @Override
@@ -68,8 +105,8 @@ public class LibraryVariantFactory extends BaseVariantFactory {
 
     @NonNull
     @Override
-    public Collection<VariantType> getVariantConfigurationTypes() {
-        return ImmutableList.of(VariantTypeImpl.LIBRARY);
+    public VariantType getVariantType() {
+        return VariantTypeImpl.LIBRARY;
     }
 
     @Override
@@ -77,12 +114,12 @@ public class LibraryVariantFactory extends BaseVariantFactory {
         return true;
     }
 
-    /***
-     * Prevent customization of applicationId or applicationIdSuffix.
-     */
+    /** * Prevent customization of applicationId or applicationIdSuffix. */
     @Override
-    public void validateModel(@NonNull VariantModel model) {
-        EvalIssueReporter issueReporter = globalScope.getErrorHandler();
+    public void validateModel(@NonNull VariantInputModel model) {
+        super.validateModel(model);
+
+        IssueReporter issueReporter = globalScope.getDslScope().getIssueReporter();
 
         if (model.getDefaultConfig().getProductFlavor().getApplicationId() != null) {
             String applicationId = model.getDefaultConfig().getProductFlavor().getApplicationId();

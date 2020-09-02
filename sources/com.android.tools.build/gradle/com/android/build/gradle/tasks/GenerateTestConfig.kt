@@ -18,7 +18,6 @@ package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.dsl.TestOptions
 import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_FOR_LOCAL_TEST
@@ -107,7 +106,6 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
             variantScope.artifacts
                 .producesDir(
                     InternalArtifactType.UNIT_TEST_CONFIG_DIRECTORY,
-                    BuildArtifactsHolder.OperationType.INITIAL,
                     taskProvider,
                     GenerateTestConfig::outputDirectory,
                     fileName = "out"
@@ -152,9 +150,9 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
             resourceApk = scope.artifacts.getFinalProduct(APK_FOR_LOCAL_TEST)
             mergedAssets = testedScope.artifacts.getFinalProduct(MERGED_ASSETS)
             mergedManifest = testedScope.artifacts.getFinalProduct(MERGED_MANIFESTS)
-            mainApkInfo = testedScope.outputScope.mainSplit
+            mainApkInfo = testedScope.variantData.publicVariantPropertiesApi.outputs.getMainSplit().apkData
             packageNameOfFinalRClassProvider = {
-                testedScope.variantConfiguration.originalApplicationId
+                testedScope.variantDslInfo.originalApplicationId
             }
         }
 

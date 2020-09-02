@@ -24,7 +24,11 @@ import com.android.ide.common.process.ProcessInfo
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.ide.common.process.ProcessOutputHandler
 import com.android.ide.common.process.ProcessResult
+import org.gradle.api.Action
 import org.gradle.api.logging.Logger
+import org.gradle.process.BaseExecSpec
+import org.gradle.process.ExecResult
+import org.gradle.process.ExecSpec
 import java.io.File
 import java.io.IOException
 
@@ -46,13 +50,19 @@ class ProcessOutputJunction(
     outputBaseName: String,
     private val logPrefix: String,
     private val lifecycle: (String) -> Unit,
-    private val execute: (ProcessInfo, ProcessOutputHandler) -> ProcessResult
+    private val execute: (ProcessInfo, ProcessOutputHandler, (Action<in BaseExecSpec>) -> ExecResult) -> ProcessResult
 ) {
     private var logErrorToInfo: Boolean = false
     private var logOutputToInfo: Boolean = false
+    private var isJavaProcess: Boolean = false
     private val stderrFile = File(outputFolder, "$outputBaseName.stderr.txt")
     private val stdoutFile = File(outputFolder, "$outputBaseName.stdout.txt")
     private val commandFile = File(outputFolder, "$outputBaseName.command.txt")
+
+    fun javaProcess(): ProcessOutputJunction {
+        isJavaProcess = true
+        return this
+    }
 
     fun logStdoutToInfo(): ProcessOutputJunction {
         logOutputToInfo = true
@@ -64,7 +74,7 @@ class ProcessOutputJunction(
         return this
     }
 
-    fun execute(processHandler: DefaultProcessOutputHandler) {
+    fun execute(processHandler: DefaultProcessOutputHandler, execOperations: (Action<in BaseExecSpec>) -> ExecResult) {
         commandFile.parentFile.mkdirs()
         commandFile.delete()
         infoln(process.toString())
@@ -72,7 +82,9 @@ class ProcessOutputJunction(
         stderrFile.delete()
         stdoutFile.delete()
         try {
-            execute(process.createProcess(), processHandler)
+            val proc =
+                if (isJavaProcess) process.createJavaProcess() else process.createProcess()
+            execute(proc, processHandler, execOperations)
                 .rethrowFailure()
                 .assertNormalExitValue()
         } catch (e: ProcessException) {
@@ -91,7 +103,7 @@ class ProcessOutputJunction(
      * should use execute() instead.
      */
     @Throws(BuildCommandException::class, IOException::class)
-    fun executeAndReturnStdoutString(): String {
+    fun executeAndReturnStdoutString(execOperations: (Action<in ExecSpec>) -> ExecResult): String {
         val handler = DefaultProcessOutputHandler(
             stderrFile,
             stdoutFile,
@@ -100,7 +112,7 @@ class ProcessOutputJunction(
             logErrorToInfo,
             logOutputToInfo
         )
-        execute(handler)
+        execute(handler, execOperations)
         return stdoutFile.readText()
     }
 
@@ -108,7 +120,7 @@ class ProcessOutputJunction(
      * Execute the process.
      */
     @Throws(BuildCommandException::class, IOException::class)
-    fun execute() {
+    fun execute(execOperations: (Action<in BaseExecSpec>) -> ExecResult) {
         val handler = DefaultProcessOutputHandler(
             stderrFile,
             stdoutFile,
@@ -117,7 +129,7 @@ class ProcessOutputJunction(
             logErrorToInfo,
             logOutputToInfo
         )
-        execute(handler)
+        execute(handler, execOperations)
     }
 }
 
@@ -141,7 +153,7 @@ fun createProcessOutputJunction(
         outputBaseName,
         logPrefix,
         { message -> logger.lifecycle(message) },
-        { processInfo: ProcessInfo, outputHandler: ProcessOutputHandler ->
+        { processInfo: ProcessInfo, outputHandler: ProcessOutputHandler, _ ->
             processExecutor.execute(
                 processInfo,
                 outputHandler

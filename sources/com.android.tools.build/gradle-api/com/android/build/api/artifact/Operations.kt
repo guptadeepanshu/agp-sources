@@ -54,8 +54,8 @@ interface Operations {
      * Initiates an append request to a [ArtifactType.Multiple] artifact type.
      *
      * @param taskProvider the [TaskProvider] for the task producing an instance of [FILE_TYPE]
-     * @param with the method reference to get the [Provider] to retrieve the produced [FILE_TYPE]
-     * when needed.
+     * @param with the method reference to get the [FileSystemLocationProperty] to retrieve the
+     * produced [FILE_TYPE] when needed.
      *
      * The artifact type must be [ArtifactType.Multiple] and [ArtifactType.Appendable]
      *
@@ -92,7 +92,7 @@ interface Operations {
      */
     fun <TASK: Task, FILE_TYPE: FileSystemLocation> append(
         taskProvider: TaskProvider<TASK>,
-        with: (TASK)-> Provider<FILE_TYPE>
+        with: (TASK)-> FileSystemLocationProperty<FILE_TYPE>
     ): AppendRequest<FILE_TYPE>
 
     /**
@@ -139,7 +139,7 @@ interface Operations {
      */
     fun <TASK: Task, FILE_TYPE: FileSystemLocation> transform(
         taskProvider: TaskProvider<TASK>,
-        from: (TASK)-> Property<FILE_TYPE>,
+        from: (TASK)-> FileSystemLocationProperty<FILE_TYPE>,
         into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
     ): TransformRequest<FILE_TYPE>
 
@@ -195,7 +195,7 @@ interface Operations {
     fun <TASK: Task, FILE_TYPE: FileSystemLocation> transformAll(
         taskProvider: TaskProvider<TASK>,
         from: (TASK)-> ListProperty<FILE_TYPE>,
-        into: (TASK) -> Provider<FILE_TYPE>
+        into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
     ): MultipleTransformRequest<FILE_TYPE>
 
     /**
@@ -306,7 +306,7 @@ interface AppendRequest<FILE_TYPE: FileSystemLocation> {
      * @param type the artifact type which must be of the right [FILE_TYPE], but also
      * [ArtifactType.Appendable] and [ArtifactType.Multiple]
      */
-    fun <ARTIFACT_TYPE> to(type: ARTIFACT_TYPE)
+    fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE): AppendRequest<FILE_TYPE>
             where ARTIFACT_TYPE: ArtifactType<FILE_TYPE>,
                   ARTIFACT_TYPE: ArtifactType.Appendable
 }

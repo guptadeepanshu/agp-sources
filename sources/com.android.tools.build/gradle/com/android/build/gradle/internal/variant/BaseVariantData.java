@@ -24,27 +24,26 @@ import android.databinding.tool.LayoutXmlProcessor;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.OutputFile;
-import com.android.build.gradle.BaseExtension;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.AndroidSourceSet;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.Splits;
 import com.android.build.gradle.internal.dsl.VariantOutputFactory;
-import com.android.build.gradle.internal.pipeline.TransformManager;
+import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.OutputFactory;
-import com.android.build.gradle.internal.scope.OutputScope;
 import com.android.build.gradle.internal.scope.TaskContainer;
 import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.scope.VariantScopeImpl;
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.core.VariantType;
 import com.android.builder.model.SourceProvider;
-import com.android.builder.profile.Recorder;
 import com.android.ide.common.blame.MergingLog;
 import com.android.ide.common.blame.SourceFile;
 import com.android.utils.StringHelper;
@@ -72,6 +71,7 @@ import org.gradle.api.file.ConfigurableFileTree;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.logging.Logging;
+import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.resources.TextResource;
 import org.gradle.api.tasks.Sync;
@@ -81,8 +81,8 @@ public abstract class BaseVariantData {
 
     @NonNull
     protected final TaskManager taskManager;
-    @NonNull
-    private final GradleVariantConfiguration variantConfiguration;
+    @NonNull private final VariantDslInfo variantDslInfo;
+    @NonNull private final VariantSources variantSources;
 
     private VariantDependencies variantDependency;
 
@@ -118,17 +118,24 @@ public abstract class BaseVariantData {
     @NonNull private final OutputFactory outputFactory;
     public VariantOutputFactory variantOutputFactory;
 
-    private final MultiOutputPolicy multiOutputPolicy;
-
     private final MutableTaskContainer taskContainer;
     public TextResource applicationIdTextResource;
+    private final ComponentImpl publicVariantApi;
+    private final ComponentPropertiesImpl publicVariantPropertiesApi;
 
     public BaseVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration variantConfiguration,
-            @NonNull Recorder recorder) {
-        this.variantConfiguration = variantConfiguration;
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull ComponentImpl publicVariantApi,
+            @NonNull ComponentPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources) {
+        this.scope = variantScope;
+        this.variantDslInfo = variantDslInfo;
+        this.publicVariantApi = publicVariantApi;
+        this.publicVariantPropertiesApi = publicVariantPropertiesApi;
+        this.variantSources = variantSources;
         this.taskManager = taskManager;
 
         final Splits splits = globalScope.getExtension().getSplits();
@@ -137,47 +144,28 @@ public abstract class BaseVariantData {
                         || splits.getAbi().isEnable()
                         || splits.getLanguage().isEnable();
 
-        // eventually, this will require a more open ended comparison.
-        multiOutputPolicy =
-                (globalScope.getExtension().getGeneratePureSplits()
-                                        || variantConfiguration.getType().isHybrid()) // == FEATURE
-                                && variantConfiguration.getMinSdkVersionValue() >= 21
-                        ? MultiOutputPolicy.SPLITS
-                        : MultiOutputPolicy.MULTI_APK;
-
         // warn the user if we are forced to ignore the generatePureSplits flag.
-        if (splitsEnabled
-                && globalScope.getExtension().getGeneratePureSplits()
-                && multiOutputPolicy != MultiOutputPolicy.SPLITS) {
-            Logging.getLogger(BaseVariantData.class).warn(
-                    String.format("Variant %s, MinSdkVersion %s is too low (<21) "
-                                    + "to support pure splits, reverting to full APKs",
-                            variantConfiguration.getFullName(),
-                            variantConfiguration.getMinSdkVersion().getApiLevel()));
+        if (splitsEnabled && globalScope.getExtension().getGeneratePureSplits()) {
+            Logging.getLogger(BaseVariantData.class)
+                    .warn(
+                            String.format(
+                                    "Variant %s requested removed pure splits support, reverted to full splits",
+                                    publicVariantApi.getName()));
         }
 
-        final Project project = globalScope.getProject();
-        scope =
-                new VariantScopeImpl(
-                        globalScope,
-                        new TransformManager(
-                                globalScope.getProject(),
-                                globalScope.getErrorHandler(),
-                                recorder),
-                        this);
-        outputFactory = new OutputFactory(globalScope.getProjectBaseName(), variantConfiguration);
-
-        TaskManager.configureScopeForNdk(scope);
+        outputFactory = new OutputFactory(globalScope.getProjectBaseName(), variantDslInfo);
 
         // this must be created immediately since the variant API happens after the task that
         // depends on this are created.
-        extraGeneratedResFolders = globalScope.getProject().files();
-        preJavacGeneratedBytecodeLatest = globalScope.getProject().files();
-        allPreJavacGeneratedBytecode = project.files();
-        allPostJavacGeneratedBytecode = project.files();
+        final ObjectFactory objectFactory = globalScope.getDslScope().getObjectFactory();
+        extraGeneratedResFolders = objectFactory.fileCollection();
+        preJavacGeneratedBytecodeLatest = objectFactory.fileCollection();
+        allPreJavacGeneratedBytecode = objectFactory.fileCollection();
+        allPostJavacGeneratedBytecode = objectFactory.fileCollection();
 
         taskContainer = scope.getTaskContainer();
-        applicationIdTextResource = project.getResources().getText().fromString("");
+        applicationIdTextResource =
+                globalScope.getProject().getResources().getText().fromString("");
     }
 
     @NonNull
@@ -187,7 +175,7 @@ public abstract class BaseVariantData {
             final MergingLog mergingLog = new MergingLog(resourceBlameLogDir);
             layoutXmlProcessor =
                     new LayoutXmlProcessor(
-                            getVariantConfiguration().getOriginalApplicationId(),
+                            getVariantDslInfo().getOriginalApplicationId(),
                             taskManager
                                     .getDataBindingBuilder()
                                     .createJavaFileWriter(scope.getClassOutputForDataBinding()),
@@ -211,23 +199,28 @@ public abstract class BaseVariantData {
     }
 
     @NonNull
-    public OutputScope getOutputScope() {
-        return outputFactory.getOutput();
-    }
-
-    @NonNull
     public OutputFactory getOutputFactory() {
         return outputFactory;
     }
 
     @NonNull
-    public MultiOutputPolicy getMultiOutputPolicy() {
-        return multiOutputPolicy;
+    public VariantDslInfo getVariantDslInfo() {
+        return variantDslInfo;
     }
 
     @NonNull
-    public GradleVariantConfiguration getVariantConfiguration() {
-        return variantConfiguration;
+    public ComponentImpl getPublicVariantApi() {
+        return publicVariantApi;
+    }
+
+    @NonNull
+    public ComponentPropertiesImpl getPublicVariantPropertiesApi() {
+        return publicVariantPropertiesApi;
+    }
+
+    @NonNull
+    public VariantSources getVariantSources() {
+        return variantSources;
     }
 
     public void setVariantDependency(@NonNull VariantDependencies variantDependency) {
@@ -243,23 +236,18 @@ public abstract class BaseVariantData {
     public abstract String getDescription();
 
     @NonNull
-    public String getApplicationId() {
-        return variantConfiguration.getApplicationId();
-    }
-
-    @NonNull
     public VariantType getType() {
-        return variantConfiguration.getType();
+        return variantDslInfo.getVariantType();
     }
 
     @NonNull
     public String getName() {
-        return variantConfiguration.getFullName();
+        return publicVariantApi.getName();
     }
 
     @NonNull
     public String getTaskName(@NonNull String prefix, @NonNull String suffix) {
-        return StringHelper.appendCapitalized(prefix, variantConfiguration.getFullName(), suffix);
+        return StringHelper.appendCapitalized(prefix, publicVariantApi.getName(), suffix);
     }
 
     @NonNull
@@ -543,7 +531,7 @@ public abstract class BaseVariantData {
     }
 
     public LinkedHashMap<String, FileCollection> getAndroidResources() {
-        return getVariantConfiguration()
+        return variantSources
                 .getSortedSourceProviders()
                 .stream()
                 .collect(
@@ -573,7 +561,7 @@ public abstract class BaseVariantData {
             ImmutableList.Builder<ConfigurableFileTree> sourceSets = ImmutableList.builder();
 
             // First the actual source folders.
-            List<SourceProvider> providers = variantConfiguration.getSortedSourceProviders();
+            List<SourceProvider> providers = variantSources.getSortedSourceProviders();
             for (SourceProvider provider : providers) {
                 sourceSets.addAll(
                         ((AndroidSourceSet) provider).getJava().getSourceDirectoryTrees());
@@ -606,10 +594,8 @@ public abstract class BaseVariantData {
                 sourceSets.add(project.fileTree(aidlFC).builtBy(aidlFC));
             }
 
-            BaseExtension extension = scope.getGlobalScope().getExtension();
-            boolean isDataBindingEnabled = extension.getDataBinding().isEnabled();
-            boolean isViewBindingEnabled = extension.getViewBinding().isEnabled();
-            if (isDataBindingEnabled || isViewBindingEnabled) {
+            final BuildFeatureValues features = scope.getGlobalScope().getBuildFeatures();
+            if (features.getDataBinding() || features.getViewBinding()) {
                 if (scope.getTaskContainer().getDataBindingExportBuildInfoTask() != null) {
                     sourceSets.add(
                             project.fileTree(scope.getClassOutputForDataBinding())
@@ -626,7 +612,7 @@ public abstract class BaseVariantData {
                 }
             }
 
-            if (!variantConfiguration.getRenderscriptNdkModeEnabled()
+            if (!variantDslInfo.getRenderscriptNdkModeEnabled()
                     && taskContainer.getRenderscriptCompileTask() != null) {
                 Provider<Directory> rsFC =
                         scope.getArtifacts()
@@ -642,46 +628,9 @@ public abstract class BaseVariantData {
         return defaultJavaSources;
     }
 
-    /**
-     * Returns the Java folders needed for code coverage report.
-     *
-     * <p>This includes all the source folders except for the ones containing R and buildConfig.
-     */
-    @NonNull
-    public FileCollection getJavaSourceFoldersForCoverage() {
-        ConfigurableFileCollection fc = scope.getGlobalScope().getProject().files();
-
-        // First the actual source folders.
-        List<SourceProvider> providers = variantConfiguration.getSortedSourceProviders();
-        for (SourceProvider provider : providers) {
-            for (File sourceFolder : provider.getJavaDirectories()) {
-                if (sourceFolder.isDirectory()) {
-                    fc.from(sourceFolder);
-                }
-            }
-        }
-
-        // then all the generated src folders, except the ones for the R/Manifest and
-        // BuildConfig classes.
-        fc.from(
-                scope.getArtifacts()
-                        .getFinalProduct(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR.INSTANCE));
-
-        if (!variantConfiguration.getRenderscriptNdkModeEnabled()) {
-            fc.from(
-                    scope.getArtifacts()
-                            .getFinalProduct(
-                                    InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE));
-        }
-
-        return fc;
-    }
-
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .addValue(variantConfiguration.getFullName())
-                .toString();
+        return MoreObjects.toStringHelper(this).addValue(publicVariantApi.getName()).toString();
     }
 
     @NonNull

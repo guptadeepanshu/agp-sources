@@ -16,15 +16,12 @@
 
 package com.android.build.gradle.internal.ndk
 
-import com.android.SdkConstants.FN_LOCAL_PROPERTIES
-import com.android.build.gradle.internal.cxx.configure.findNdkPath
-
 import com.android.SdkConstants
+import com.android.SdkConstants.FN_LOCAL_PROPERTIES
 import com.android.build.gradle.internal.SdkLocator
 import com.android.build.gradle.internal.cxx.configure.ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION
-import com.android.build.gradle.internal.cxx.configure.NdkLocatorRecord
-import com.android.build.gradle.internal.cxx.json.PlainFileGsonTypeAdaptor
-import com.android.builder.errors.EvalIssueReporter
+import com.android.build.gradle.internal.cxx.configure.findNdkPath
+import com.android.builder.errors.IssueReporter
 import com.android.builder.sdk.InstallFailedException
 import com.android.builder.sdk.LicenceNotAcceptedException
 import com.android.builder.sdk.SdkLibData
@@ -33,20 +30,13 @@ import com.android.repository.Revision
 import com.android.repository.Revision.parseRevision
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Charsets
-import com.google.gson.GsonBuilder
+import org.gradle.api.InvalidUserDataException
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStreamReader
 import java.util.Properties
-import org.gradle.api.InvalidUserDataException
-import java.io.FileWriter
-
-val GSON = GsonBuilder()
-    .registerTypeAdapter(File::class.java, PlainFileGsonTypeAdaptor())
-    .setPrettyPrinting()
-    .create()!!
 
 sealed class NdkInstallStatus {
     /**
@@ -92,33 +82,30 @@ sealed class NdkInstallStatus {
  * Handles NDK related information.
  */
 class NdkHandler(
-    private val evalIssueReporter: EvalIssueReporter,
+    private val issueReporter: IssueReporter,
     private val enableSideBySideNdk: Boolean,
     private val ndkVersionFromDsl: String?,
     private val compileSdkVersion: String,
     private val projectDir: File
 ) {
     private var ndkInstallStatus: NdkInstallStatus? = null
-    private var sideBySideLocatorRecord: NdkLocatorRecord? = null
 
     /**
      * Return true if the user specific an explicit NDK version in build.gradle.
      */
-    val userExplicityRequestedNdkVersion = ndkVersionFromDsl != null
+    val userExplicitlyRequestedNdkVersion = ndkVersionFromDsl != null
 
     private fun findNdk(): File? {
         return if (enableSideBySideNdk) {
-            val record = findNdkPath(evalIssueReporter, ndkVersionFromDsl,
-                projectDir)
-            sideBySideLocatorRecord = record
-            record.ndkFolder
+            findNdkPath(issueReporter, ndkVersionFromDsl, projectDir)
         } else {
-            findNdkDirectory(projectDir)
+            findNdkDirectory(projectDir, issueReporter)
         }
     }
 
     private fun getNdkInfo(ndkDirectory: File, revision: Revision): NdkInfo {
         return when {
+            revision.major >= 21 -> NdkR21Info(ndkDirectory)
             revision.major >= 19 -> NdkR19Info(ndkDirectory)
             revision.major >= 14 -> NdkR14Info(ndkDirectory)
             else -> DefaultNdkInfo(ndkDirectory)
@@ -190,28 +177,9 @@ class NdkHandler(
         return threePart.toString()
     }
 
-    /**
-     * Write the side-by-side NDK locator to file.
-     */
-    fun writeNdkLocatorRecord(file : File) {
-        if (sideBySideLocatorRecord != null) {
-            file.parentFile.mkdirs()
-            FileWriter(file).use { writer->
-                GSON.toJson(sideBySideLocatorRecord, writer)
-            }
-        }
-    }
-
     sealed class FindRevisionResult {
         data class Found(val revision: Revision) : FindRevisionResult()
         data class Error(val message: String) : FindRevisionResult()
-
-        fun getOrThrow(): Revision {
-            when (this) {
-                is Found -> return revision
-                is Error -> throw RuntimeException(message)
-            }
-        }
     }
 
     companion object {
@@ -253,20 +221,20 @@ class NdkHandler(
             val properties = readProperties(sourceProperties)
             val version = properties.getProperty("Pkg.Revision")
             return if (version != null) {
-                FindRevisionResult.Found(Revision.parseRevision(version))
+                FindRevisionResult.Found(parseRevision(version))
             } else {
                 FindRevisionResult.Error("Could not parse Pkg.Revision from $sourceProperties")
             }
         }
 
-        private fun findNdkDirectory(projectDir: File): File? {
+        private fun findNdkDirectory(projectDir: File, issueReporter: IssueReporter): File? {
             val localProperties = File(projectDir, FN_LOCAL_PROPERTIES)
             var properties = Properties()
             if (localProperties.isFile) {
                 properties = readProperties(localProperties)
             }
 
-            return findNdkDirectory(properties, projectDir)
+            return findNdkDirectory(properties, projectDir, issueReporter)
         }
 
         /**
@@ -279,7 +247,11 @@ class NdkHandler(
          *
          * Return null if NDK directory is not found.
          */
-        private fun findNdkDirectory(properties: Properties, projectDir: File): File? {
+        private fun findNdkDirectory(
+            properties: Properties,
+            projectDir: File,
+            issueReporter: IssueReporter
+        ): File? {
             val ndkDirProp = properties.getProperty("ndk.dir")
             if (ndkDirProp != null) {
                 return File(ndkDirProp)
@@ -290,13 +262,11 @@ class NdkHandler(
                 return File(ndkEnvVar)
             }
 
-            val sdkFolder = SdkLocator.getSdkLocation(projectDir).directory
-            if (sdkFolder != null) {
-                // Worth checking if the NDK came bundled with the SDK
-                val ndkBundle = File(sdkFolder, SdkConstants.FD_NDK)
-                if (ndkBundle.isDirectory) {
-                    return ndkBundle
-                }
+            val sdkFolder = SdkLocator.getSdkDirectory(projectDir, issueReporter)
+            // Worth checking if the NDK came bundled with the SDK
+            val ndkBundle = File(sdkFolder, SdkConstants.FD_NDK)
+            if (ndkBundle.isDirectory) {
+                return ndkBundle
             }
             return null
         }

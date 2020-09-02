@@ -23,7 +23,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.COMPILE_ONLY_NAMESPACED_R_CLASS_JAR
 import com.android.build.gradle.internal.res.namespaced.JarRequest
 import com.android.build.gradle.internal.res.namespaced.JarWorkerRunnable
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -34,6 +33,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.file.ReproducibleFileVisitor
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -50,6 +50,7 @@ import java.util.zip.Deflater
  * - dependent features to compile against these classes without bundling them.
  * - unit tests to compile and run them against these classes.
  */
+@CacheableTask
 abstract class BundleAllClasses : NonIncrementalTask() {
 
     @get:OutputFile
@@ -135,7 +136,6 @@ abstract class BundleAllClasses : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.APP_CLASSES,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 BundleAllClasses::outputJar,
                 "classes.jar"

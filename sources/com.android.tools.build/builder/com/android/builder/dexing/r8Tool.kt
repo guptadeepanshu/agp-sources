@@ -40,9 +40,9 @@ import com.android.tools.r8.StringConsumer
 import com.android.tools.r8.Version
 import com.android.tools.r8.origin.Origin
 import com.android.tools.r8.utils.ArchiveResourceProvider
-import com.android.utils.PathUtils.toSystemIndependentPath
 import com.google.common.io.ByteStreams
 import java.io.BufferedOutputStream
+import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -76,11 +76,16 @@ fun runR8(
     inputJavaResources: Collection<Path>,
     javaResourcesJar: Path,
     libraries: Collection<Path>,
+    classpath: Collection<Path>,
     toolConfig: ToolConfig,
     proguardConfig: ProguardConfig,
     mainDexListConfig: MainDexListConfig,
     messageReceiver: MessageReceiver,
-    useFullR8: Boolean = false
+    useFullR8: Boolean = false,
+    featureJars: Collection<Path>,
+    featureDexDir: Path?,
+    libConfiguration: String? = null,
+    outputKeepRules: Path? = null
 ) {
     val logger: Logger = Logger.getLogger("R8")
     if (logger.isLoggable(Level.FINE)) {
@@ -91,6 +96,8 @@ fun runR8(
         logger.fine("Program classes: $inputClasses")
         logger.fine("Java resources: $inputJavaResources")
         logger.fine("Library classes: $libraries")
+        logger.fine("Classpath classes: $classpath")
+        outputKeepRules?.let{ logger.fine("Keep rules for shrinking desugar lib: $it") }
     }
     val r8CommandBuilder = CompatProguardCommandBuilder(!useFullR8, D8DiagnosticsHandler(messageReceiver, "R8"))
 
@@ -108,6 +115,11 @@ fun runR8(
             mainDexListConfig.mainDexListOutput?.let {
                 r8CommandBuilder.setMainDexListConsumer(StringConsumer.FileConsumer(it))
             }
+        }
+        if (libConfiguration != null) {
+            r8CommandBuilder
+                .addSpecialLibraryConfiguration(libConfiguration)
+                .setDesugaredLibraryKeepRuleConsumer(StringConsumer.FileConsumer(outputKeepRules!!))
         }
     }
 
@@ -210,9 +222,30 @@ fun runR8(
 
     r8CommandBuilder.addProgramResourceProvider(r8ProgramResourceProvider)
 
-    ClassFileProviderFactory(libraries).use { libClasspath ->
-        r8CommandBuilder.addLibraryResourceProvider(libClasspath.orderedProvider)
-        R8.run(r8CommandBuilder.build())
+    for (featureJar in featureJars) {
+        if (featureDexDir == null){
+            throw RuntimeException("featureDexDir must be non-null if featureJars.isNotEmpty()")
+        }
+        r8CommandBuilder.addFeatureSplit {
+            it.addProgramResourceProvider(ArchiveProgramResourceProvider.fromArchive(featureJar))
+            it.setProgramConsumer(
+                DexIndexedConsumer.DirectoryConsumer(
+                    Files.createDirectories(
+                        File(featureDexDir.toFile(), featureJar.toFile().nameWithoutExtension)
+                            .toPath()
+                    )
+                )
+            )
+            return@addFeatureSplit it.build()
+        }
+    }
+
+    ClassFileProviderFactory(libraries).use { libraryClasses ->
+        ClassFileProviderFactory(classpath).use { classpathClasses ->
+            r8CommandBuilder.addLibraryResourceProvider(libraryClasses.orderedProvider)
+            r8CommandBuilder.addClasspathResourceProvider(classpathClasses.orderedProvider)
+            R8.run(r8CommandBuilder.build())
+        }
     }
 
     proguardConfig.proguardOutputFiles?.proguardMapOutput?.let {

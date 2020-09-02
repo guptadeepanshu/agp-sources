@@ -20,8 +20,8 @@ import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.build.gradle.internal.testing.ConnectedDeviceProvider;
 import com.android.build.gradle.internal.variant.BaseVariantData;
-import com.android.builder.testing.ConnectedDeviceProvider;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
@@ -57,7 +57,7 @@ public abstract class UninstallTask extends NonIncrementalTask {
     @Override
     protected void doTaskAction() throws DeviceException, ExecutionException {
         final Logger logger = getLogger();
-        final String applicationId = variant.getApplicationId();
+        final String applicationId = variant.getVariantDslInfo().getApplicationId();
 
         logger.info("Uninstalling app: {}", applicationId);
 
@@ -75,7 +75,7 @@ public abstract class UninstallTask extends NonIncrementalTask {
                                 "Uninstalling {} (from {}:{}) from device '{}' ({}).",
                                 applicationId,
                                 getProject().getName(),
-                                variant.getVariantConfiguration().getFullName(),
+                                variant.getName(),
                                 device.getName(),
                                 device.getSerialNumber());
                     }
@@ -124,8 +124,7 @@ public abstract class UninstallTask extends NonIncrementalTask {
         @NonNull
         @Override
         public String getName() {
-            return StringHelper.appendCapitalized(
-                    "uninstall", getVariantScope().getVariantConfiguration().getFullName());
+            return StringHelper.appendCapitalized("uninstall", getVariantScope().getName());
         }
 
         @NonNull

@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.ndk
 
 import com.android.build.gradle.internal.core.Abi
+import com.android.build.gradle.tasks.NativeBuildSystem
 import com.google.common.base.Preconditions.checkArgument
 import com.google.common.base.Preconditions.checkState
 import java.io.File
@@ -24,7 +25,7 @@ import java.io.File
 /**
  * NdkInfo for r19.
  */
-class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
+open class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
 
     // TODO: Add metadata to the NDK to populate this list?
     // https://github.com/android-ndk/ndk/issues/966
@@ -39,6 +40,11 @@ class NdkR19Info(val root: File) : DefaultNdkInfo(root) {
         return if (abi == Abi.MIPS) {
             Abi.MIPS64
         } else abi
+    }
+
+    override fun getDefaultStl(buildSystem: NativeBuildSystem): Stl = when (buildSystem) {
+        NativeBuildSystem.CMAKE -> Stl.LIBCXX_STATIC
+        NativeBuildSystem.NDK_BUILD -> Stl.SYSTEM
     }
 
     override fun getStlSharedObjectFile(stl: Stl, abi: Abi): File {

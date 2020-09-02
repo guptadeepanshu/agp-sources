@@ -368,6 +368,8 @@ public final class SdkConstants {
     public static final String FD_MAIN = "main"; //$NON-NLS-1$
     /** Default test source set folder name, i.e. "androidTest" */
     public static final String FD_TEST = "androidTest"; //$NON-NLS-1$
+    /** Default unit test source set folder name, i.e. "test" */
+    public static final String FD_UNIT_TEST = "test"; //$NON-NLS-1$
     /** Default java code folder name, i.e. "java" */
     public static final String FD_JAVA = "java"; //$NON-NLS-1$
     /** Default native code folder name, i.e. "jni" */
@@ -746,6 +748,7 @@ public final class SdkConstants {
             AndroidxName.of("android.support.v4.widget.", "NestedScrollView");
     public static final AndroidxName CLASS_VIEW_PAGER =
             AndroidxName.of("android.support.v4.view.", "ViewPager");
+    public static final String CLASS_VIEW_PAGER2 = "androidx.viewpager2.widget.ViewPager2";
     public static final AndroidxName CLASS_DRAWER_LAYOUT =
             AndroidxName.of("android.support.v4.widget.", "DrawerLayout");
 
@@ -836,7 +839,9 @@ public final class SdkConstants {
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_CHAIN =
             AndroidxName.of("android.support.constraint.", "Chain");
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_LAYER =
-            AndroidxName.of("android.support.constraint.", "Layer");
+            AndroidxName.of("android.support.constraint.helper.", "Layer");
+    public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_FLOW =
+      AndroidxName.of("android.support.constraint.helper.", "Flow");
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_CONSTRAINTS =
             AndroidxName.of("android.support.constraint.", "Constraints");
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_REFERENCE =
@@ -874,6 +879,11 @@ public final class SdkConstants {
     public static final String EXO_PLAYER_ARTIFACT_ID = "exoplayer";
     public static final String EXO_PLAYER_ARTIFACT =
             EXO_PLAYER_GROUP_ID + ":" + EXO_PLAYER_ARTIFACT_ID;
+
+    /* Compose constants */
+    public static final String CLASS_COMPOSE = "androidx.compose.Compose";
+    public static final String CLASS_COMPOSE_VIEW_ADAPTER =
+            "androidx.ui.tooling.preview.ComposeViewAdapter";
 
     /**
      * Returns the appropriate name for the 'mksdcard' command, which is 'mksdcard.exe' for Windows
@@ -923,15 +933,6 @@ public final class SdkConstants {
         }
 
         return "Other";
-    }
-
-    /**
-     * Returns current platform's UI name
-     *
-     * @return the platform version string.
-     */
-    public static String currentPlatformVersion() {
-        return System.getProperty("os.version"); //$NON-NLS-1$
     }
 
     private static String ext(String windowsExtension, String nonWindowsExtension) {
@@ -1079,6 +1080,8 @@ public final class SdkConstants {
     public static final String TAG_RESOURCE = "resource";
     public static final String TAG_MODULE = "module";
     public static final String TAG_NAV_GRAPH = "nav-graph";
+    public static final String TAG_QUERIES = "queries";
+    public static final String TAG_INTENT = "intent";
 
     // Tags: Resources
     public static final String TAG_RESOURCES = "resources"; //$NON-NLS-1$
@@ -1128,6 +1131,7 @@ public final class SdkConstants {
     public static final String TAG_INCLUDE = "include";
     public static final String TAG_DEEP_LINK = "deepLink";
     public static final String TAG_NAVIGATION = "navigation";
+    public static final String ATTR_MODULE_NAME = "moduleName";
 
     public static final String VIEW = "View"; //$NON-NLS-1$
     public static final String VIEW_GROUP = "ViewGroup"; //$NON-NLS-1$
@@ -1206,6 +1210,7 @@ public final class SdkConstants {
     public static final AndroidxName NESTED_SCROLL_VIEW = CLASS_NESTED_SCROLL_VIEW;
     public static final AndroidxName DRAWER_LAYOUT = CLASS_DRAWER_LAYOUT;
     public static final AndroidxName VIEW_PAGER = CLASS_VIEW_PAGER;
+    public static final String VIEW_PAGER2 = CLASS_VIEW_PAGER2;
     public static final AndroidxName GRID_LAYOUT_V7 = CLASS_GRID_LAYOUT_V7;
     public static final AndroidxName TOOLBAR_V7 = CLASS_TOOLBAR_V7;
     public static final AndroidxName RECYCLER_VIEW = CLASS_RECYCLER_VIEW_V7;
@@ -1242,12 +1247,15 @@ public final class SdkConstants {
     public static final String TAG_GRADIENT = "gradient";
     public static final String TAG_INSET = "inset"; //$NON-NLS-1$
     public static final String TAG_LAYER_LIST = "layer-list"; //$NON-NLS-1$
+    public static final String TAG_NINE_PATCH = "nine-patch";
     public static final String TAG_PATH = "path";
     public static final String TAG_RIPPLE = "ripple";
+    public static final String TAG_ROTATE = "rotate";
     public static final String TAG_SHAPE = "shape";
     public static final String TAG_SELECTOR = "selector"; //$NON-NLS-1$
     public static final String TAG_TRANSITION = "transition"; //$NON-NLS-1$
     public static final String TAG_VECTOR = "vector"; //$NON-NLS-1$
+    public static final String TAG_LEVEL_LIST = "level-list";
 
     // Tags: Data-Binding
     public static final String TAG_LAYOUT = "layout"; //$NON-NLS-1$
@@ -1285,6 +1293,7 @@ public final class SdkConstants {
     public static final String ATTR_AUTHORITIES = "authorities"; //$NON-NLS-1$
     public static final String ATTR_MULTIPROCESS = "multiprocess"; //$NON-NLS-1$
     public static final String ATTR_SPLIT = "split";
+    public static final String ATTR_SHARED_USER_ID = "sharedUserId";
     public static final String ATTR_FUNCTIONAL_TEST = "functionalTest";
     public static final String ATTR_HANDLE_PROFILING = "handleProfiling";
     public static final String ATTR_TARGET_PACKAGE = "targetPackage";
@@ -1296,6 +1305,7 @@ public final class SdkConstants {
     public static final String ATTR_REQUIRED = "required";
     public static final String ATTR_ON_DEMAND = "onDemand";
     public static final String MANIFEST_ATTR_TITLE = "title";
+    public static final String ATTR_TARGET_ACTIVITY = "targetActivity";
 
     // Attributes: Resources
     public static final String ATTR_ATTR = "attr";
@@ -1412,6 +1422,26 @@ public final class SdkConstants {
     public static final String ATTR_HEIGHT = "height"; //$NON-NLS-1$
     public static final String ATTR_NAV_GRAPH = "navGraph";
     public static final String ATTR_USE_TAG = "useTag";
+
+    // ConstraintLayout Flow
+    public static final String ATTR_FLOW_WRAP_MODE = "flow_wrapMode";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_MAX_ELEMENTS_WRAP = "flow_maxElementsWrap";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_FIRST_HORIZONTAL_BIAS = "flow_firstHorizontalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_FIRST_HORIZONTAL_STYLE = "flow_firstHorizontalStyle";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_HORIZONTAL_BIAS = "flow_horizontalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_HORIZONTAL_STYLE = "flow_horizontalStyle";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_HORIZONTAL_ALIGN = "flow_horizontalAlign";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_HORIZONTAL_GAP = "flow_horizontalGap";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_LAST_HORIZONTAL_BIAS = "flow_lastHorizontalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_LAST_HORIZONTAL_STYLE = "flow_lastHorizontalStyle";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_FIRST_VERTICAL_BIAS = "flow_firstVerticalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_FIRST_VERTICAL_STYLE = "flow_firstVerticalStyle";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_VERTICAL_BIAS = "flow_verticalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_VERTICAL_STYLE = "flow_verticalStyle";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_VERTICAL_ALIGN = "flow_verticalAlign";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_VERTICAL_GAP = "flow_verticalGap";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_LAST_VERTICAL_BIAS = "flow_lastVerticalBias";  //$NON-NLS-1$
+    public static final String ATTR_FLOW_LAST_VERTICAL_STYLE = "flow_lastVerticalStyle";  //$NON-NLS-1$
 
     // Attributes: Drawable
     public static final String ATTR_VIEWPORT_HEIGHT = "viewportHeight";
@@ -1692,6 +1722,10 @@ public final class SdkConstants {
 
     // MotionLayout
     public static final String ATTR_MOTION_TARGET = "motionTarget";
+    public static final String ATTR_MOTION_WAVE_OFFSET = "waveOffset";
+    public static final String ATTR_MOTION_TARGET_ID = "targetId";
+    public static final String ATTR_MOTION_TOUCH_ANCHOR_ID = "touchAnchorId";
+    public static final String ATTR_MOTION_TOUCH_REGION_ID = "touchRegionId";
 
     // AbsListView
     public static final String ATTR_LIST_SELECTOR = "listSelector";
@@ -2205,7 +2239,6 @@ public final class SdkConstants {
     public static final String ANDROID_LAYOUT_RESOURCE_PREFIX = "@android:layout/"; //$NON-NLS-1$
     public static final String ANDROID_STYLE_RESOURCE_PREFIX = "@android:style/"; //$NON-NLS-1$
     public static final String ANDROID_COLOR_RESOURCE_PREFIX = "@android:color/"; //$NON-NLS-1$
-    public static final String ANDROID_NEW_ID_PREFIX = "@android:+id/"; //$NON-NLS-1$
     public static final String ANDROID_ID_PREFIX = "@android:id/"; //$NON-NLS-1$
     public static final String ANDROID_DRAWABLE_PREFIX = "@android:drawable/"; //$NON-NLS-1$
     public static final String ANDROID_STRING_PREFIX = "@android:string/"; //$NON-NLS-1$
@@ -2407,6 +2440,41 @@ public final class SdkConstants {
         public static final String ATTR_SUMMARY_OFF = "summaryOff";
         public static final String ATTR_SWITCH_TEXT_ON = "switchTextOn";
         public static final String ATTR_SWITCH_TEXT_OFF = "switchTextOff";
+    }
+
+    public static class MotionSceneTags {
+        public static final String MOTION_SCENE = "MotionScene";
+        public static final String TRANSITION = "Transition";
+        public static final String STATE_SET = "StateSet";
+        public static final String CONSTRAINT_SET = "ConstraintSet";
+        public static final String CONSTRAINT = "Constraint";
+        public static final String KEY_FRAME_SET = "KeyFrameSet";
+        public static final String KEY_ATTRIBUTE = "KeyAttribute";
+        public static final String KEY_CYCLE = "KeyCycle";
+        public static final String KEY_POSITION = "KeyPosition";
+        public static final String KEY_TRIGGER = "KeyTrigger";
+        public static final String KEY_TIME_CYCLE = "KeyTimeCycle";
+        public static final String ON_CLICK = "OnClick";
+        public static final String ON_SWIPE = "OnSwipe";
+        public static final String LAYOUT = "Layout";
+        public static final String MOTION = "Motion";
+        public static final String PROPERTY_SET = "PropertySet";
+        public static final String TRANSFORM = "Transform";
+        public static final String CUSTOM_ATTRIBUTE = "CustomAttribute";
+        public static final String STATE = "State";
+        public static final String VARIANT = "Variant";
+    }
+
+    public static class MotionSceneAttributes {
+        public static final String ATTR_CUSTOM_ATTRIBUTE_NAME = "attributeName";
+        public static final String ATTR_CUSTOM_COLOR_VALUE = "customColorValue";
+        public static final String ATTR_CUSTOM_COLOR_DRAWABLE_VALUE = "customColorDrawableValue";
+        public static final String ATTR_CUSTOM_INTEGER_VALUE = "customIntegerValue";
+        public static final String ATTR_CUSTOM_FLOAT_VALUE = "customFloatValue";
+        public static final String ATTR_CUSTOM_STRING_VALUE = "customStringValue";
+        public static final String ATTR_CUSTOM_DIMENSION_VALUE = "customDimension";
+        public static final String ATTR_CUSTOM_PIXEL_DIMENSION_VALUE = "customPixelDimension";
+        public static final String ATTR_CUSTOM_BOOLEAN_VALUE = "customBoolean";
     }
 
     // Text Alignment values.
@@ -2628,7 +2696,7 @@ public final class SdkConstants {
     public static final String VALUE_HORIZONTAL = "horizontal"; //$NON-NLS-1$
 
     public static final String GRADLE_PLUGIN_NAME = "com.android.tools.build:gradle:";
-    public static final String GRADLE_MINIMUM_VERSION = "5.6.4";
+    public static final String GRADLE_MINIMUM_VERSION = "6.1.1";
     public static final String GRADLE_LATEST_VERSION = GRADLE_MINIMUM_VERSION;
     public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "1.0.0";
     public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "3.3.2";
@@ -2649,7 +2717,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "28.0.3";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "29.0.2";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";
@@ -2677,6 +2745,7 @@ public final class SdkConstants {
     public static final String ANDROIDX_ANNOTATIONS_ARTIFACT = "androidx.annotation:annotation";
     public static final String ANDROIDX_SUPPORT_LIB_ARTIFACT = "androidx.legacy:legacy-support-v4";
     public static final String ANDROIDX_VIEW_PAGER_LIB_ARTIFACT = "androidx.viewpager:viewpager";
+    public static final String ANDROIDX_VIEW_PAGER2_LIB_ARTIFACT = "androidx.viewpager2:viewpager2";
     public static final String ANDROIDX_APPCOMPAT_LIB_ARTIFACT = "androidx.appcompat:appcompat";
     public static final String ANDROIDX_CONSTRAINT_LAYOUT_LIB_ARTIFACT =
             "androidx.constraintlayout:constraintlayout";
@@ -2741,6 +2810,8 @@ public final class SdkConstants {
             AndroidxName.of("android.databinding.", "InverseBindingMethod");
     public static final AndroidxName INVERSE_BINDING_METHODS_ANNOTATION =
             AndroidxName.of("android.databinding.", "InverseBindingMethods");
+    public static final AndroidxName INVERSE_METHOD_ANNOTATION =
+            AndroidxName.of("android.databinding.", "InverseMethod");
     public static final AndroidxName CLASS_LIVE_DATA =
             AndroidxName.of("android.arch.lifecycle.", "LiveData");
     public static final AndroidxName CLASS_OBSERVABLE_BOOLEAN =
@@ -2798,4 +2869,6 @@ public final class SdkConstants {
 
     /** Folder where configuration files for R8 and other tools are located in jar files */
     public static final String TOOLS_CONFIGURATION_FOLDER = "meta-inf/" + COM_ANDROID_TOOLS_FOLDER;
+
+    public static final String FD_PREFAB_PACKAGE = "prefab";
 }

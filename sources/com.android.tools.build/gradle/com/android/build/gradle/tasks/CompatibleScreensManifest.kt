@@ -18,28 +18,29 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.VariantOutput
+import com.android.build.api.variant.impl.VariantPropertiesImpl
 import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.BuildElements
 import com.android.build.gradle.internal.scope.BuildOutput
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPATIBLE_SCREEN_MANIFEST
-import com.android.build.gradle.internal.scope.OutputScope
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.TaskInputHelper
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.resources.Density
 import com.android.utils.FileUtils
 import com.google.common.base.Charsets
 import com.google.common.io.Files
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
@@ -57,30 +58,37 @@ import java.io.IOException
 abstract class CompatibleScreensManifest : NonIncrementalTask() {
 
     @get:Input
+    abstract val applicationId: Property<String>
+
+    @get:Input
+    abstract val variantType: Property<String>
+
+    @get:Input
     lateinit var screenSizes: Set<String>
         internal set
 
     @get:OutputDirectory
     abstract val outputFolder: DirectoryProperty
 
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val apkList: RegularFileProperty
+    @get:Nested
+    abstract val apkDataList : ListProperty<ApkData>
 
     @get:Input
     @get:Optional
-    lateinit var minSdkVersion: Provider<String?> internal set
+    abstract val minSdkVersion: Property<String?>
 
     override fun doTaskAction() {
 
         BuildElements(
-            ExistingBuildElements.loadApkList(apkList.get().asFile).mapNotNull {
-            val generatedManifest = generate(it)
-            if (generatedManifest != null)
-                BuildOutput(COMPATIBLE_SCREEN_MANIFEST, it, generatedManifest)
-            else
-                null
-        }.toList()).save(outputFolder.get().asFile)
+            applicationId = applicationId.get(),
+            variantType = variantType.get(),
+            elements = apkDataList.get().mapNotNull {
+                val generatedManifest = generate(it)
+                if (generatedManifest != null)
+                    BuildOutput(COMPATIBLE_SCREEN_MANIFEST, it, generatedManifest)
+                else
+                    null
+            }.toList()).save(outputFolder.get().asFile)
     }
 
     private fun generate(apkData: ApkData): File? {
@@ -129,7 +137,7 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
     private fun convert(density: String, vararg densitiesToConvert: Density): String {
         for (densityToConvert in densitiesToConvert) {
             if (densityToConvert.resourceValue == density) {
-                return Integer.toString(densityToConvert.dpiValue)
+                return densityToConvert.dpiValue.toString()
             }
         }
         return density
@@ -147,7 +155,6 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 COMPATIBLE_SCREEN_MANIFEST,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 CompatibleScreensManifest::outputFolder
             )
@@ -157,15 +164,23 @@ abstract class CompatibleScreensManifest : NonIncrementalTask() {
             super.configure(task)
 
             task.screenSizes = screenSizes
+            val variantProperties = variantScope.variantData.publicVariantPropertiesApi
+            task.applicationId.setDisallowChanges(variantProperties.applicationId)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(InternalArtifactType.APK_LIST,
-                task.apkList)
+            task.variantType.set(variantScope.variantData.type.toString())
+            task.variantType.disallowChanges()
 
-            val config = variantScope.variantConfiguration
-            task.minSdkVersion = TaskInputHelper.memoizeToProvider(task.project) {
-                val minSdk = config.mergedFlavor.minSdkVersion
-                minSdk?.apiString
+            variantProperties.outputs.getEnabledVariantOutputs().forEach {
+                task.apkDataList.add(it.apkData)
             }
+            task.apkDataList.disallowChanges()
+
+            task.minSdkVersion.set(
+                task.project.provider {
+                    variantScope.variantDslInfo.minSdkVersion.apiString
+                }
+            )
+            task.minSdkVersion.disallowChanges()
         }
     }
 }

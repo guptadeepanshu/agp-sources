@@ -29,7 +29,6 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.ExistingBuildElements;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
@@ -39,17 +38,17 @@ import com.android.build.gradle.internal.test.InstrumentationTestAnalytics;
 import com.android.build.gradle.internal.test.report.CompositeTestResults;
 import com.android.build.gradle.internal.test.report.ReportType;
 import com.android.build.gradle.internal.test.report.TestReport;
+import com.android.build.gradle.internal.testing.OnDeviceOrchestratorTestRunner;
+import com.android.build.gradle.internal.testing.ShardedTestRunner;
+import com.android.build.gradle.internal.testing.SimpleTestRunnable;
+import com.android.build.gradle.internal.testing.SimpleTestRunner;
+import com.android.build.gradle.internal.testing.TestRunner;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.ProjectOptions;
-import com.android.builder.internal.testing.SimpleTestRunnable;
 import com.android.builder.model.TestOptions;
-import com.android.builder.testing.OnDeviceOrchestratorTestRunner;
-import com.android.builder.testing.ShardedTestRunner;
-import com.android.builder.testing.SimpleTestRunner;
-import com.android.builder.testing.TestRunner;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
 import com.android.ide.common.process.ProcessExecutor;
@@ -93,6 +92,7 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.internal.logging.ConsoleRenderer;
+import org.gradle.process.ExecOperations;
 import org.xml.sax.SAXException;
 
 /** Run instrumentation tests for a given variant */
@@ -109,7 +109,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     private DeviceProvider deviceProvider;
     private final DirectoryProperty coverageDir;
     private File reportsDir;
-    private File resultsDir;
     private FileCollection buddyApks;
     private FileCollection testTargetManifests;
     private ProcessExecutor processExecutor;
@@ -124,6 +123,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     private boolean codeCoverageEnabled;
     private TestOptions.Execution testExecution;
     private Configuration dependencies;
+    @NonNull private final ExecOperations execOperations;
 
     /**
      * The workers object is of type ExecutorServiceAdapter instead of WorkerExecutorFacade to
@@ -139,8 +139,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
     @Nullable private Collection<String> installOptions;
 
     @Inject
-    public DeviceProviderInstrumentTestTask(ObjectFactory objectFactory) {
+    public DeviceProviderInstrumentTestTask(
+            ObjectFactory objectFactory, @NonNull ExecOperations execOperations) {
         coverageDir = objectFactory.directoryProperty();
+        this.execOperations = execOperations;
     }
 
     @Override
@@ -153,7 +155,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                     throw new InvalidUserDataException(message);
                 });
 
-        File resultsOutDir = getResultsDir();
+        File resultsOutDir = getResultsDir().get().getAsFile();
         FileUtils.cleanOutputDir(resultsOutDir);
 
         final File additionalTestOutputDir;
@@ -183,7 +185,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             emptyCoverageFile.createNewFile();
             success = true;
         } else {
-            GradleProcessExecutor gradleProcessExecutor = new GradleProcessExecutor(getProject());
+            GradleProcessExecutor gradleProcessExecutor =
+                    new GradleProcessExecutor(execOperations::exec);
             success =
                     deviceProvider.use(
                             () -> {
@@ -281,13 +284,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
     @Override
     @OutputDirectory
-    public File getResultsDir() {
-        return resultsDir;
-    }
-
-    public void setResultsDir(File resultsDir) {
-        this.resultsDir = resultsDir;
-    }
+    public abstract DirectoryProperty getResultsDir();
 
     @Optional
     @OutputDirectory
@@ -463,7 +460,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                             .producesDir(
                                     InternalArtifactType.CONNECTED_ANDROID_TEST_ADDITIONAL_OUTPUT
                                             .INSTANCE,
-                                    BuildArtifactsHolder.OperationType.INITIAL,
                                     taskProvider,
                                     DeviceProviderInstrumentTestTask::getAdditionalTestOutputDir,
                                     deviceProvider.getName());
@@ -472,7 +468,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .getArtifacts()
                         .producesDir(
                                 InternalArtifactType.CODE_COVERAGE.INSTANCE,
-                                BuildArtifactsHolder.OperationType.INITIAL,
                                 taskProvider,
                                 DeviceProviderInstrumentTestTask::getCoverageDir,
                                 deviceProvider.getName());
@@ -486,7 +481,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                     InternalArtifactType
                                             .DEVICE_PROVIDER_ANDROID_TEST_ADDITIONAL_OUTPUT
                                             .INSTANCE,
-                                    BuildArtifactsHolder.OperationType.INITIAL,
                                     taskProvider,
                                     DeviceProviderInstrumentTestTask::getAdditionalTestOutputDir,
                                     deviceProvider.getName());
@@ -495,7 +489,6 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .getArtifacts()
                         .producesDir(
                                 InternalArtifactType.DEVICE_PROVIDER_CODE_COVERAGE.INSTANCE,
-                                BuildArtifactsHolder.OperationType.APPEND,
                                 taskProvider,
                                 DeviceProviderInstrumentTestTask::getCoverageDir,
                                 deviceProvider.getName());
@@ -591,7 +584,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 default:
                     throw new AssertionError("Unknown value " + executionEnum);
             }
-            task.codeCoverageEnabled = scope.getVariantConfiguration().isTestCoverageEnabled();
+            task.codeCoverageEnabled = scope.getVariantDslInfo().isTestCoverageEnabled();
             task.dependencies = scope.getVariantDependencies().getRuntimeClasspath();
             task.testExecution = executionEnum;
 
@@ -614,7 +607,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 rootLocation = scope.getGlobalScope().getBuildDir() + "/" +
                         FD_OUTPUTS + "/" + FD_ANDROID_RESULTS;
             }
-            task.resultsDir = project.file(rootLocation + subFolder);
+            task.getResultsDir().set(new File(rootLocation + subFolder));
 
             rootLocation = scope.getGlobalScope().getExtension().getTestOptions().getReportDir();
             if (rootLocation == null) {

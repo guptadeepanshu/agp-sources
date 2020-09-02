@@ -17,37 +17,22 @@
 package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
-import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.api.dsl.DslScope;
 import org.gradle.api.NamedDomainObjectFactory;
-import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
 import org.gradle.api.model.ObjectFactory;
 
 /** Factory to create ProductFlavor object using an {@link ObjectFactory} to add the DSL methods. */
 public class ProductFlavorFactory implements NamedDomainObjectFactory<ProductFlavor> {
 
-    @NonNull private final ObjectFactory objectFactory;
-    @NonNull
-    private final Project project;
-    @NonNull
-    private final Logger logger;
-    @NonNull private final DeprecationReporter deprecationReporter;
+    @NonNull private DslScope dslScope;
 
-    public ProductFlavorFactory(
-            @NonNull ObjectFactory objectFactory,
-            @NonNull Project project,
-            @NonNull DeprecationReporter deprecationReporter,
-            @NonNull Logger logger) {
-        this.objectFactory = objectFactory;
-        this.project = project;
-        this.deprecationReporter = deprecationReporter;
-        this.logger = logger;
+    public ProductFlavorFactory(@NonNull DslScope dslScope) {
+        this.dslScope = dslScope;
     }
 
     @NonNull
     @Override
-    public ProductFlavor create(String name) {
-        return objectFactory.newInstance(
-                ProductFlavor.class, name, project, objectFactory, deprecationReporter, logger);
+    public ProductFlavor create(@NonNull String name) {
+        return dslScope.getObjectFactory().newInstance(ProductFlavor.class, name, dslScope);
     }
 }

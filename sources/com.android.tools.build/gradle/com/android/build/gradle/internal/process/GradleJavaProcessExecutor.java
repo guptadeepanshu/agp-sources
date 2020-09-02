@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.process;
 
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.ide.common.process.JavaProcessExecutor;
 import com.android.ide.common.process.JavaProcessInfo;
 import com.android.ide.common.process.ProcessException;
@@ -25,8 +26,8 @@ import com.android.ide.common.process.ProcessOutputHandler;
 import com.android.ide.common.process.ProcessResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Function;
 import org.gradle.api.Action;
-import org.gradle.api.Project;
 import org.gradle.process.ExecResult;
 import org.gradle.process.JavaExecSpec;
 
@@ -36,11 +37,11 @@ import org.gradle.process.JavaExecSpec;
  */
 public class GradleJavaProcessExecutor implements JavaProcessExecutor {
 
-    @NonNull
-    private final Project project;
+    @NonNull private final Function<Action<? super JavaExecSpec>, ExecResult> execOperations;
 
-    public GradleJavaProcessExecutor(@NonNull Project project) {
-        this.project = project;
+    public GradleJavaProcessExecutor(
+            @NonNull Function<Action<? super JavaExecSpec>, ExecResult> execOperations) {
+        this.execOperations = execOperations;
     }
 
     @NonNull
@@ -48,17 +49,19 @@ public class GradleJavaProcessExecutor implements JavaProcessExecutor {
     public ProcessResult execute(
             @NonNull JavaProcessInfo javaProcessInfo,
             @NonNull ProcessOutputHandler processOutputHandler) {
-        project.getLogger().info("Executing java process: ", javaProcessInfo.toString());
+        LoggerWrapper.getLogger(GradleJavaProcessExecutor.class)
+                .info("Executing java process: ", javaProcessInfo.toString());
         ProcessOutput output = processOutputHandler.createOutput();
 
         ExecResult result;
         try {
-            result = project.javaexec(new ExecAction(javaProcessInfo, output));
+            result = execOperations.apply(new ExecAction(javaProcessInfo, output));
         } finally {
             try {
                 output.close();
             } catch (IOException e) {
-                project.getLogger().warn("Exception while closing sub process streams", e);
+                LoggerWrapper.getLogger(GradleJavaProcessExecutor.class)
+                        .warning("Exception while closing sub process streams", e);
             }
         }
 
@@ -73,14 +76,12 @@ public class GradleJavaProcessExecutor implements JavaProcessExecutor {
 
     private static class ExecAction implements Action<JavaExecSpec> {
 
-        @NonNull
-        private final JavaProcessInfo javaProcessInfo;
+        @NonNull private final JavaProcessInfo javaProcessInfo;
 
-        @NonNull
-        private final ProcessOutput processOutput;
+        @NonNull private final ProcessOutput processOutput;
 
-        private ExecAction(@NonNull JavaProcessInfo javaProcessInfo,
-                @NonNull ProcessOutput processOutput) {
+        private ExecAction(
+                @NonNull JavaProcessInfo javaProcessInfo, @NonNull ProcessOutput processOutput) {
             this.javaProcessInfo = javaProcessInfo;
             this.processOutput = processOutput;
         }

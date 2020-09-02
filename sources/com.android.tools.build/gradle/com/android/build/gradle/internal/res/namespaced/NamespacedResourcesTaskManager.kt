@@ -16,12 +16,11 @@
 
 package com.android.build.gradle.internal.res.namespaced
 
-import com.android.build.api.artifact.ArtifactType
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.SingleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.options.BooleanOption
@@ -52,7 +51,7 @@ class NamespacedResourcesTaskManager(
      * TODO: Test support, Synthesize non-namespaced output.
      */
     fun createNamespacedResourceTasks(
-            packageOutputType: ArtifactType<Directory>?,
+            packageOutputType: SingleArtifactType<Directory>?,
             baseName: String,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
 
@@ -97,11 +96,12 @@ class NamespacedResourcesTaskManager(
     }
 
     private fun createNamespacedAppProcessTask(
-            packageOutputType: ArtifactType<Directory>?,
+            packageOutputType: SingleArtifactType<Directory>?,
             baseName: String,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
        taskFactory.register(
            LinkApplicationAndroidResourcesTask.NamespacedCreationAction(
+               variantScope.variantData.publicVariantPropertiesApi,
                variantScope,
                useAaptToGenerateLegacyMultidexMainDexProguardRules,
                baseName
@@ -113,7 +113,7 @@ class NamespacedResourcesTaskManager(
     }
 
     private fun createNamespacedLibraryTestProcessResourcesTask(
-            packageOutputType: ArtifactType<Directory>?) {
+            packageOutputType: SingleArtifactType<Directory>?) {
         taskFactory.register(ProcessAndroidAppResourcesTask.CreationAction(variantScope))
         if (packageOutputType != null) {
             variantScope.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
@@ -123,7 +123,7 @@ class NamespacedResourcesTaskManager(
     private fun createCompileResourcesTask() {
         for((sourceSetName, artifacts) in variantScope.variantData.androidResources) {
             val name = "compile".appendCapitalized(sourceSetName) +
-                    "ResourcesFor".appendCapitalized(variantScope.fullVariantName)
+                    "ResourcesFor".appendCapitalized(variantScope.name)
             // TODO : figure out when we need explicit task dependency and potentially remove it.
             taskFactory.register(CompileSourceSetResources.CreationAction(
                     name = name,

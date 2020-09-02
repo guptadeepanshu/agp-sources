@@ -17,7 +17,6 @@ package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
 import com.android.build.gradle.internal.coverage.JacocoConfigurations;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
@@ -114,7 +113,6 @@ public abstract class JacocoTask extends AndroidVariantTask {
                     .getArtifacts()
                     .producesDir(
                             InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             JacocoTask::getOutput,
                             "out");
@@ -123,7 +121,6 @@ public abstract class JacocoTask extends AndroidVariantTask {
                     .getArtifacts()
                     .producesDir(
                             InternalArtifactType.JACOCO_INSTRUMENTED_JARS.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             JacocoTask::getOutputJars,
                             "out");

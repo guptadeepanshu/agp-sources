@@ -21,8 +21,7 @@ import com.android.build.gradle.internal.api.dsl.DslScope
 import com.android.build.gradle.internal.dsl.AndroidSourceSetFactory
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.scope.DelayedActionsExecutor
-import com.android.builder.errors.EvalIssueException
-import com.android.builder.errors.EvalIssueReporter
+import com.android.builder.errors.IssueReporter
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
@@ -31,8 +30,6 @@ import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-
-val dependencyUrl = "http://d.android.com/r/tools/update-dependency-configurations.html"
 
 class SourceSetManager(
         project: Project,
@@ -84,7 +81,6 @@ class SourceSetManager(
                                 else "$implementationName' and '$apiName",
                                 compileName,
                                 dslScope.deprecationReporter,
-                                dependencyUrl,
                                 DeprecationReporter.DeprecationTarget.CONFIG_NAME))
 
         val packageConfigDescription: String
@@ -106,7 +102,6 @@ class SourceSetManager(
                                 runtimeOnlyName,
                                 apkName,
                                 dslScope.deprecationReporter,
-                                dependencyUrl,
                                 DeprecationReporter.DeprecationTarget.CONFIG_NAME))
 
         val providedName = sourceSet.providedConfigurationName
@@ -119,7 +114,6 @@ class SourceSetManager(
                                 compileOnlyName,
                                 providedName,
                                 dslScope.deprecationReporter,
-                                dependencyUrl,
                                 DeprecationReporter.DeprecationTarget.CONFIG_NAME))
 
         // then the new configurations.
@@ -132,7 +126,6 @@ class SourceSetManager(
                                     implementationName,
                                     apiName,
                                     dslScope.deprecationReporter,
-                                    dependencyUrl,
                                     DeprecationReporter.DeprecationTarget.CONFIG_NAME))
         }
 
@@ -170,7 +163,7 @@ class SourceSetManager(
      */
     private fun createConfiguration(
             name: String, description: String, canBeResolved: Boolean = false): Configuration {
-        logger.info("Creating configuration {}", name)
+        logger.debug("Creating configuration {}", name)
 
         val configuration = configurations.maybeCreate(name)
 
@@ -199,13 +192,17 @@ class SourceSetManager(
             if (!configuredSourceSets.contains(sourceSet.name)) {
                 val message = ("The SourceSet '${sourceSet.name}' is not recognized " +
                         "by the Android Gradle Plugin. Perhaps you misspelled something?")
-                dslScope.issueReporter.reportError(EvalIssueReporter.Type.GENERIC, message)
+                dslScope.issueReporter.reportError(IssueReporter.Type.GENERIC, message)
             }
         }
     }
 
     fun executeAction(action: Action<NamedDomainObjectContainer<AndroidSourceSet>>) {
         action.execute(sourceSetsContainer)
+    }
+
+    fun executeAction(action: NamedDomainObjectContainer<AndroidSourceSet>.() -> Unit) {
+        action.invoke(sourceSetsContainer)
     }
 
     fun runBuildableArtifactsActions() {
@@ -218,7 +215,6 @@ class RenamedConfigurationAction(
     private val replacement: String,
     private val oldName: String,
     private val deprecationReporter: DeprecationReporter,
-    private val url: String? = null,
     private val deprecationTarget: DeprecationReporter.DeprecationTarget = DeprecationReporter.DeprecationTarget.CONFIG_NAME) : Action<Dependency> {
     private var warningPrintedAlready = false
 
@@ -226,7 +222,7 @@ class RenamedConfigurationAction(
         if (!warningPrintedAlready) {
             warningPrintedAlready = true
             deprecationReporter.reportRenamedConfiguration(
-                replacement, oldName, deprecationTarget, url)
+                replacement, oldName, deprecationTarget)
         }
     }
 }

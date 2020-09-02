@@ -21,6 +21,7 @@ import com.android.annotations.NonNull;
 import com.android.build.VariantOutput;
 import com.android.build.api.artifact.ArtifactType;
 import com.android.build.gradle.internal.scope.BuildOutput;
+import com.android.build.gradle.internal.scope.ExistingBuildElements;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
@@ -34,9 +35,13 @@ public class BuildOutputsSupplier implements BuildOutputSupplier<Collection<Earl
 
     @NonNull private final List<File> outputFolders;
     @NonNull private final List<ArtifactType> outputTypes;
+    private final int metadataFileVersion;
 
     public BuildOutputsSupplier(
-            @NonNull List<ArtifactType> outputTypes, @NonNull List<File> outputFolders) {
+            int metadataFileVersion,
+            @NonNull List<ArtifactType> outputTypes,
+            @NonNull List<File> outputFolders) {
+        this.metadataFileVersion = metadataFileVersion;
         this.outputFolders = outputFolders;
         this.outputTypes = outputTypes;
     }
@@ -50,13 +55,21 @@ public class BuildOutputsSupplier implements BuildOutputSupplier<Collection<Earl
                     if (!outputFolder.exists()) {
                         return;
                     }
-                    Collection<EarlySyncBuildOutput> previous =
-                            EarlySyncBuildOutput.load(outputFolder)
-                                    .stream()
-                                    .filter(
-                                            buildOutput ->
-                                                    outputTypes.contains(buildOutput.getType()))
-                                    .collect(Collectors.toList());
+                    Collection<EarlySyncBuildOutput> previous;
+                    try {
+                        previous =
+                                EarlySyncBuildOutput.load(metadataFileVersion, outputFolder)
+                                        .stream()
+                                        .filter(
+                                                buildOutput ->
+                                                        outputTypes.contains(buildOutput.getType()))
+                                        .collect(Collectors.toList());
+                    } catch (Exception e) {
+                        // we cannot load the previous listing file, probably because of file
+                        // format differences. It's not very problematic, the sync should still go
+                        // through and things will fall into place after the next build.
+                        return;
+                    }
 
                     if (previous.isEmpty()) {
                         outputTypes.forEach(
@@ -67,7 +80,12 @@ public class BuildOutputsSupplier implements BuildOutputSupplier<Collection<Earl
                                     File[] files = outputFolder.listFiles();
                                     if (files != null && files.length > 0) {
                                         for (File file : files) {
-                                            processFile(taskOutputType, file, outputs);
+                                            if (!file.getName()
+                                                    .equals(
+                                                            ExistingBuildElements
+                                                                    .METADATA_FILE_NAME)) {
+                                                processFile(taskOutputType, file, outputs);
+                                            }
                                         }
                                     }
                                 });
@@ -100,14 +118,13 @@ public class BuildOutputsSupplier implements BuildOutputSupplier<Collection<Earl
                                 file));
             }
         } else {
-            VariantOutput.OutputType fileOutputType =
-                    taskOutputType == InternalArtifactType.AAR.INSTANCE
-                                    || taskOutputType == InternalArtifactType.APK.INSTANCE
-                            ? VariantOutput.OutputType.MAIN
-                            : VariantOutput.OutputType.SPLIT;
             outputs.add(
                     new EarlySyncBuildOutput(
-                            taskOutputType, fileOutputType, ImmutableList.of(), 0, file));
+                            taskOutputType,
+                            VariantOutput.OutputType.MAIN,
+                            ImmutableList.of(),
+                            0,
+                            file));
         }
     }
 

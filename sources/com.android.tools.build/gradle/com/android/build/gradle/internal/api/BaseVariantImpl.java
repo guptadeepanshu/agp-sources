@@ -23,11 +23,14 @@ import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.JavaCompileOptions;
 import com.android.build.gradle.api.SourceKind;
+import com.android.build.gradle.internal.DependencyConfigurator;
 import com.android.build.gradle.internal.VariantManager;
+import com.android.build.gradle.internal.core.VariantDslInfoImpl;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
+import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.VariantScope;
@@ -39,7 +42,7 @@ import com.android.build.gradle.tasks.GenerateBuildConfig;
 import com.android.build.gradle.tasks.MergeResources;
 import com.android.build.gradle.tasks.MergeSourceSetFolders;
 import com.android.build.gradle.tasks.RenderscriptCompile;
-import com.android.builder.errors.EvalIssueReporter;
+import com.android.builder.errors.IssueReporter;
 import com.android.builder.model.BuildType;
 import com.android.builder.model.ProductFlavor;
 import com.android.builder.model.SourceProvider;
@@ -78,6 +81,10 @@ public abstract class BaseVariantImpl implements BaseVariant {
     public static final String TASK_ACCESS_DEPRECATION_URL =
             "https://d.android.com/r/tools/task-configuration-avoidance";
 
+    // TODO : b/142687686
+    public static final String USE_PROPERTIES_DEPRECATION_URL =
+            "https://d.android.com/r/tools/use-properties";
+
     @NonNull private final ObjectFactory objectFactory;
 
     @NonNull protected final ReadOnlyObjectProvider readOnlyObjectProvider;
@@ -103,7 +110,7 @@ public abstract class BaseVariantImpl implements BaseVariant {
     @Override
     @NonNull
     public String getName() {
-        return getVariantData().getVariantConfiguration().getFullName();
+        return getVariantData().getVariantDslInfo().getComponentIdentity().getName();
     }
 
     @Override
@@ -115,19 +122,19 @@ public abstract class BaseVariantImpl implements BaseVariant {
     @Override
     @NonNull
     public String getDirName() {
-        return getVariantData().getVariantConfiguration().getDirName();
+        return getVariantData().getVariantDslInfo().getDirName();
     }
 
     @Override
     @NonNull
     public String getBaseName() {
-        return getVariantData().getVariantConfiguration().getBaseName();
+        return getVariantData().getVariantDslInfo().getBaseName();
     }
 
     @NonNull
     @Override
     public String getFlavorName() {
-        return getVariantData().getVariantConfiguration().getFlavorName();
+        return getVariantData().getVariantDslInfo().getComponentIdentity().getFlavorName();
     }
 
     @NonNull
@@ -139,34 +146,41 @@ public abstract class BaseVariantImpl implements BaseVariant {
     @Override
     @NonNull
     public BuildType getBuildType() {
-        return readOnlyObjectProvider.getBuildType(
-                getVariantData().getVariantConfiguration().getBuildType());
+        // cast for VariantDslInfoImpl since we need to return this.
+        // this is to be removed when we can get rid of the old API.
+        final VariantDslInfoImpl variantDslInfo =
+                (VariantDslInfoImpl) getVariantData().getVariantDslInfo();
+        return readOnlyObjectProvider.getBuildType(variantDslInfo.getBuildTypeObj());
     }
 
     @Override
     @NonNull
     public List<ProductFlavor> getProductFlavors() {
         return new ImmutableFlavorList(
-                getVariantData().getVariantConfiguration().getProductFlavors(),
+                getVariantData().getVariantDslInfo().getProductFlavorList(),
                 readOnlyObjectProvider);
     }
 
     @Override
     @NonNull
     public ProductFlavor getMergedFlavor() {
-        return getVariantData().getVariantConfiguration().getMergedFlavor();
+        // cast for VariantDslInfoImpl since we need to return this.
+        // this is to be removed when we can get rid of the old API.
+        final VariantDslInfoImpl variantDslInfo =
+                (VariantDslInfoImpl) getVariantData().getVariantDslInfo();
+        return variantDslInfo.getMergedFlavor();
     }
 
     @NonNull
     @Override
     public JavaCompileOptions getJavaCompileOptions() {
-        return getVariantData().getVariantConfiguration().getJavaCompileOptions();
+        return getVariantData().getVariantDslInfo().getJavaCompileOptions();
     }
 
     @NonNull
     @Override
     public List<SourceProvider> getSourceSets() {
-        return getVariantData().getVariantConfiguration().getSortedSourceProviders();
+        return getVariantData().getVariantSources().getSortedSourceProviders();
     }
 
     @NonNull
@@ -179,9 +193,10 @@ public abstract class BaseVariantImpl implements BaseVariant {
                 getVariantData()
                         .getScope()
                         .getGlobalScope()
-                        .getErrorHandler()
+                        .getDslScope()
+                        .getIssueReporter()
                         .reportError(
-                                EvalIssueReporter.Type.GENERIC,
+                                IssueReporter.Type.GENERIC,
                                 "Unknown SourceKind value: " + folderType);
         }
 
@@ -211,21 +226,20 @@ public abstract class BaseVariantImpl implements BaseVariant {
     public String getApplicationId() {
         BaseVariantData variantData = getVariantData();
 
-        // this getter cannot work for dynamic features or for feature plugins (both base
-        // and non base) as the applicationId comes from somewhere else and cannot be known
-        // at config time.
-        if (variantData.getType().isDynamicFeature() || variantData.getType().isHybrid()) {
+        // this getter cannot work for dynamic features as the applicationId comes from somewhere
+        // else and cannot be known at config time.
+        if (variantData.getType().isDynamicFeature()) {
             variantData
                     .getScope()
                     .getGlobalScope()
                     .getDslScope()
                     .getIssueReporter()
                     .reportError(
-                            EvalIssueReporter.Type.GENERIC,
-                            "variant.getApplicationId() is not supported by feature plugins as it cannot handle delayed setting of the application ID. Please use getApplicationIdTextResource() instead.");
+                            IssueReporter.Type.GENERIC,
+                            "variant.getApplicationId() is not supported by dynamic-feature plugins as it cannot handle delayed setting of the application ID. Please use getApplicationIdTextResource() instead.");
         }
 
-        return variantData.getApplicationId();
+        return variantData.getVariantDslInfo().getApplicationId();
     }
 
     @Override
@@ -285,12 +299,22 @@ public abstract class BaseVariantImpl implements BaseVariant {
     }
 
     @Override
-    @NonNull
+    @Nullable
     public AidlCompile getAidlCompile() {
         BaseVariantData variantData = getVariantData();
-        variantData
-                .getScope()
-                .getGlobalScope()
+        GlobalScope globalScope = variantData.getScope().getGlobalScope();
+
+        if (!globalScope.getBuildFeatures().getAidl()) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            "aidl support is disabled via buildFeatures.");
+            return null;
+        }
+
+        globalScope
                 .getDslScope()
                 .getDeprecationReporter()
                 .reportDeprecatedApi(
@@ -301,20 +325,42 @@ public abstract class BaseVariantImpl implements BaseVariant {
         return variantData.getTaskContainer().getAidlCompileTask().get();
     }
 
-    @NonNull
+    @Nullable
     @Override
     public TaskProvider<AidlCompile> getAidlCompileProvider() {
+        final GlobalScope globalScope = getVariantData().getScope().getGlobalScope();
+
+        if (!globalScope.getBuildFeatures().getAidl()) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            "aidl support is disabled via buildFeatures.");
+            return null;
+        }
+
         //noinspection unchecked
         return (TaskProvider<AidlCompile>) getVariantData().getTaskContainer().getAidlCompileTask();
     }
 
     @Override
-    @NonNull
+    @Nullable
     public RenderscriptCompile getRenderscriptCompile() {
         BaseVariantData variantData = getVariantData();
-        variantData
-                .getScope()
-                .getGlobalScope()
+        GlobalScope globalScope = variantData.getScope().getGlobalScope();
+
+        if (!globalScope.getBuildFeatures().getRenderScript()) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            "renderscript support is disabled via buildFeatures.");
+            return null;
+        }
+
+        globalScope
                 .getDslScope()
                 .getDeprecationReporter()
                 .reportDeprecatedApi(
@@ -325,9 +371,20 @@ public abstract class BaseVariantImpl implements BaseVariant {
         return variantData.getTaskContainer().getRenderscriptCompileTask().get();
     }
 
-    @NonNull
+    @Nullable
     @Override
     public TaskProvider<RenderscriptCompile> getRenderscriptCompileProvider() {
+        final GlobalScope globalScope = getVariantData().getScope().getGlobalScope();
+        if (!globalScope.getBuildFeatures().getRenderScript()) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            "renderscript support is disabled via buildFeatures.");
+            return null;
+        }
+
         //noinspection unchecked
         return (TaskProvider<RenderscriptCompile>)
                 getVariantData().getTaskContainer().getRenderscriptCompileTask();
@@ -639,7 +696,7 @@ public abstract class BaseVariantImpl implements BaseVariant {
                 .getScope()
                 .getJavaClasspath(
                         AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                        AndroidArtifacts.ArtifactType.CLASSES,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR,
                         generatorKey);
     }
 
@@ -650,19 +707,19 @@ public abstract class BaseVariantImpl implements BaseVariant {
                 .getScope()
                 .getJavaClasspathArtifacts(
                         AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                        AndroidArtifacts.ArtifactType.CLASSES,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR,
                         generatorKey);
     }
 
     @Override
     public void buildConfigField(
             @NonNull String type, @NonNull String name, @NonNull String value) {
-        getVariantData().getVariantConfiguration().addBuildConfigField(type, name, value);
+        getVariantData().getVariantDslInfo().addBuildConfigField(type, name, value);
     }
 
     @Override
     public void resValue(@NonNull String type, @NonNull String name, @NonNull String value) {
-        getVariantData().getVariantConfiguration().addResValue(type, name, value);
+        getVariantData().getVariantDslInfo().addResValue(type, name, value);
     }
 
 
@@ -709,7 +766,7 @@ public abstract class BaseVariantImpl implements BaseVariant {
         AttributesSchema schema =
                 variantScope.getGlobalScope().getProject().getDependencies().getAttributesSchema();
 
-        VariantManager.addFlavorStrategy(
+        DependencyConfigurator.addFlavorStrategy(
                 schema, dimension, ImmutableMap.of(requestedValue, alternatedValues));
     }
 

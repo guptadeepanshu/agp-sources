@@ -27,6 +27,8 @@ import com.android.dx.dex.file.DexFile;
 import com.android.dx.util.ByteArray;
 import com.android.dx.util.ByteArrayAnnotatedOutput;
 import com.android.ide.common.blame.parser.DexParser;
+import com.google.common.base.Preconditions;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
@@ -48,8 +50,12 @@ class DxDexArchiveBuilder extends DexArchiveBuilder {
 
     @Override
     public void convert(
-            @NonNull Stream<ClassFileEntry> input, @NonNull Path output, boolean isIncremental)
+            @NonNull Stream<ClassFileEntry> input,
+            @NonNull Path output,
+            @Nullable DependencyGraphUpdater<File> desugarGraphUpdater)
             throws DexArchiveBuilderException {
+        Preconditions.checkArgument(desugarGraphUpdater == null);
+
         Iterator<ClassFileEntry> iterator = input.iterator();
         if (!iterator.hasNext()) {
             return;

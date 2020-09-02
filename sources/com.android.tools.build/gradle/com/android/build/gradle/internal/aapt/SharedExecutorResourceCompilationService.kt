@@ -16,9 +16,14 @@
 
 package com.android.build.gradle.internal.aapt
 
+import com.android.aaptcompiler.canCompileResourceInJvm
 import com.android.build.gradle.internal.res.Aapt2CompileRunnable
-import com.android.build.gradle.internal.res.namespaced.Aapt2ServiceKey
+import com.android.build.gradle.internal.res.ResourceCompilerRunnable
+import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
+import com.android.build.gradle.internal.services.Aapt2WorkersBuildService
+import com.android.build.gradle.internal.services.aapt2WorkersServiceRegistry
 import com.android.build.gradle.internal.tasks.Workers
+import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
 import com.android.ide.common.resources.CompileResourceRequest
@@ -30,34 +35,49 @@ import java.io.File
  * Resource compilation service built on top of a Aapt2Daemon that uses a static common thread pool.
  */
 class SharedExecutorResourceCompilationService(
-    projectName: String,
-    owner: String,
-    private val aapt2ServiceKey: Aapt2ServiceKey,
-    private val errorFormatMode: SyncOptions.ErrorFormatMode
+  projectName: String,
+  owner: String,
+  aapt2WorkersBuildServiceKey: WorkerActionServiceRegistry.ServiceKey<Aapt2WorkersBuildService>,
+  private val aapt2ServiceKey: Aapt2DaemonServiceKey,
+  private val errorFormatMode: SyncOptions.ErrorFormatMode,
+  private val useJvmResourceCompiler: Boolean
 ) : ResourceCompilationService {
 
-    private val workerExecutor: WorkerExecutorFacade =
-        Workers.getSharedExecutorForAapt2(projectName, owner)
+  private val workerExecutor: WorkerExecutorFacade =
+    aapt2WorkersServiceRegistry
+      .getService(aapt2WorkersBuildServiceKey)
+      .service
+      .getSharedExecutorForAapt2(projectName, owner)
+  private val resourceCompilerExecutor = Workers.withThreads(projectName, owner)
 
-    override fun submitCompile(request: CompileResourceRequest) {
-        workerExecutor.submit(
-            Aapt2CompileRunnable::class.java,
-            Aapt2CompileRunnable.Params(aapt2ServiceKey, listOf(request), errorFormatMode, true)
-        )
+  override fun submitCompile(request: CompileResourceRequest) {
+    if (useJvmResourceCompiler &&
+        canCompileResourceInJvm(request.inputFile, request.isPngCrunching)) {
+      resourceCompilerExecutor.submit(
+        ResourceCompilerRunnable::class.java,
+        ResourceCompilerRunnable.Params(request)
+      )
+    } else {
+      workerExecutor.submit(
+        Aapt2CompileRunnable::class.java,
+        Aapt2CompileRunnable.Params(aapt2ServiceKey, listOf(request), errorFormatMode, true)
+      )
     }
+  }
 
-    fun submitCompile(requestList: List<CompileResourceRequest>) {
-        requestList.forEach(this::submitCompile)
-    }
+  fun submitCompile(requestList: List<CompileResourceRequest>) {
+    requestList.forEach(this::submitCompile)
+  }
 
-    override fun compileOutputFor(request: CompileResourceRequest): File {
-        return File(
-            request.outputDirectory,
-            Aapt2RenamingConventions.compilationRename(request.inputFile)
-        )
-    }
+  override fun compileOutputFor(request: CompileResourceRequest): File {
+    return File(
+      request.outputDirectory,
+      Aapt2RenamingConventions.compilationRename(request.inputFile)
+    )
+  }
 
-    override fun close() {
-        workerExecutor.close()
-    }
+  override fun close() {
+    resourceCompilerExecutor.close()
+    workerExecutor.close()
+  }
 }

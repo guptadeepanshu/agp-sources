@@ -18,18 +18,21 @@ package com.android.build.gradle.internal.transforms
 
 import com.android.build.gradle.internal.pipeline.StreamFilter
 import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ResourceUsageAnalyzer
 import com.android.utils.FileUtils
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.LogLevel
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
@@ -59,9 +62,15 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
     lateinit var dex: FileCollection
         private set
 
+    @get:Optional
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val lightRClasses: RegularFileProperty
+
+    @get:Optional
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val rTxtFile: RegularFileProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -75,6 +84,9 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val mergedManifests: DirectoryProperty
+
+    @get:Input
+    abstract val enableRTxtResourceShrinking: Property<Boolean>
 
     private lateinit var mainSplit: ApkData
 
@@ -95,6 +107,12 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
 
         FileUtils.mkdirs(compressedResourceFile.parentFile)
 
+        val rSource = if (enableRTxtResourceShrinking.get()){
+            rTxtFile.get().asFile
+        } else {
+            lightRClasses.get().asFile
+        }
+
         val manifestFile = ExistingBuildElements.from(InternalArtifactType.BUNDLE_MANIFEST, mergedManifests)
             .element(mainSplit)
             ?.outputFile
@@ -102,7 +120,7 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
 
         // Analyze resources and usages and strip out unused
         val analyzer = ResourceUsageAnalyzer(
-            lightRClasses.get().asFile,
+            rSource,
             classes,
             manifestFile,
             mappingFile,
@@ -152,7 +170,7 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
 
     companion object {
         private fun toKbString(size: Long): String {
-            return Integer.toString(size.toInt() / 1024)
+            return (size.toInt() / 1024).toString()
         }
     }
 
@@ -167,7 +185,6 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.SHRUNK_LINKED_RES_FOR_BUNDLE,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 ShrinkBundleResourcesTask::compressedResources,
                 "shrunk-bundled-res.ap_"
@@ -181,23 +198,35 @@ abstract class ShrinkBundleResourcesTask : NonIncrementalTask() {
                 InternalArtifactType.LINKED_RES_FOR_BUNDLE,
                 task.uncompressedResources
             )
-            task.mainSplit = variantScope.variantData.outputScope.mainSplit
+            task.mainSplit = variantScope.variantData.publicVariantPropertiesApi.outputs.getMainSplit().apkData
 
             task.dex = if (variantScope.artifacts.hasFinalProduct(InternalArtifactType.BASE_DEX)) {
                 variantScope
                     .artifacts
                     .getFinalProductAsFileCollection(InternalArtifactType.BASE_DEX).get()
-            } else if (variantScope.artifacts.hasFinalProduct(InternalArtifactType.DEX)) {
+            } else if (variantScope.artifacts.hasFinalProducts(MultipleArtifactType.DEX)) {
                 variantScope.globalScope.project.files(
-                    variantScope.artifacts
-                        .getFinalProductAsFileCollection(InternalArtifactType.DEX))
+                    variantScope.artifacts.getOperations().getAll(MultipleArtifactType.DEX))
             } else {
                 variantScope.transformManager.getPipelineOutputAsFileCollection(StreamFilter.DEX)
             }
-            variantScope.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
-                task.lightRClasses
-            )
+
+            if (variantScope
+                    .globalScope.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING]) {
+                variantScope.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.RUNTIME_SYMBOL_LIST,
+                    task.rTxtFile
+                )
+            } else {
+                variantScope.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
+                    task.lightRClasses
+                )
+            }
+
+            task.enableRTxtResourceShrinking.set(variantScope.globalScope
+                .projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING])
+
             variantScope.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_NOT_COMPILED_RES,
                 task.resourceDir)

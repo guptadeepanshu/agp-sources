@@ -84,9 +84,6 @@ public interface AndroidProject {
     @SuppressWarnings("unused")
     String PROPERTY_GENERATE_SOURCES_ONLY = "android.injected.generateSourcesOnly";
 
-    String PROPERTY_RESTRICT_VARIANT_PROJECT = "android.injected.restrict.variant.project";
-    String PROPERTY_RESTRICT_VARIANT_NAME = "android.injected.restrict.variant.name";
-
     String PROPERTY_SIGNING_STORE_FILE = "android.injected.signing.store.file";
     String PROPERTY_SIGNING_STORE_PASSWORD = "android.injected.signing.store.password";
     String PROPERTY_SIGNING_KEY_ALIAS = "android.injected.signing.key.alias";
@@ -132,6 +129,12 @@ public interface AndroidProject {
      */
     String PROPERTY_ATTRIBUTION_FILE_LOCATION = "android.injected.attribution.file.location";
 
+    /**
+     * Comma separated list of on-demand dynamic modules or instant app modules names that are
+     * selected by the user for installation on the device during deployment.
+     */
+    String PROPERTY_INJECTED_DYNAMIC_MODULES_LIST = "android.injected.modules.install.list";
+
     String ARTIFACT_MAIN = "_main_";
     String ARTIFACT_ANDROID_TEST = "_android_test_";
     String ARTIFACT_UNIT_TEST = "_unit_test_";
@@ -151,14 +154,6 @@ public interface AndroidProject {
             3; // Model for 3.0 with no variant output in import sync model.
     int MODEL_LEVEL_4_NEW_DEP_MODEL = 4;
     int MODEL_LEVEL_LATEST = MODEL_LEVEL_4_NEW_DEP_MODEL;
-
-    int PROJECT_TYPE_APP = 0;
-    int PROJECT_TYPE_LIBRARY = 1;
-    int PROJECT_TYPE_TEST = 2;
-    @Deprecated int PROJECT_TYPE_ATOM = 3;
-    int PROJECT_TYPE_INSTANTAPP = 4; // Instant App Bundle
-    int PROJECT_TYPE_FEATURE = 5; // com.android.feature module
-    int PROJECT_TYPE_DYNAMIC_FEATURE = 6; //com.android.dynamic-feature module
 
     /**
      * Returns the model version. This is a string in the format X.Y.Z
@@ -426,6 +421,9 @@ public interface AndroidProject {
     /** Returns the options for view binding. */
     @NonNull
     ViewBindingOptions getViewBindingOptions();
+
+    @Nullable
+    DependenciesInfo getDependenciesInfo();
 
     /** Returns the AGP flags for this project. */
     @NonNull

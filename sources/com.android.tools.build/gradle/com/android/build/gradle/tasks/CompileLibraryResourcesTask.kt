@@ -20,14 +20,17 @@ import com.android.SdkConstants.FD_RES_VALUES
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.aapt.SharedExecutorResourceCompilationService
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
-import com.android.build.gradle.internal.res.namespaced.Aapt2ServiceKey
-import com.android.build.gradle.internal.res.namespaced.registerAaptService
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
+import com.android.build.gradle.internal.services.Aapt2WorkersBuildService
+import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getAapt2WorkersBuildService
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
-import com.android.build.gradle.internal.tasks.TaskInputHelper
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
 import com.android.ide.common.resources.CompileResourceRequest
@@ -36,6 +39,7 @@ import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileType
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -50,7 +54,6 @@ import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import java.io.File
 import java.io.Serializable
-import java.util.function.Supplier
 import javax.inject.Inject
 
 @CacheableTask
@@ -60,7 +63,7 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
     @get:InputFiles
     @get:Incremental
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.ABSOLUTE) // TODO(b/141301405): use relative paths
     abstract val mergedLibraryResourcesDir: DirectoryProperty
 
     @get:Input
@@ -81,9 +84,19 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
+    @get:Input
+    var useJvmResourceCompiler: Boolean = false
+        private set
+
+    @get:Internal
+    abstract val aapt2WorkersBuildService: Property<Aapt2WorkersBuildService>
+
+    @get:Internal
+    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+
     override fun doTaskAction(inputChanges: InputChanges) {
-        val aapt2ServiceKey = registerAaptService(
-            aapt2FromMaven, LoggerWrapper(logger)
+        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
+            aapt2FromMaven.singleFile, LoggerWrapper(logger)
         )
 
         getWorkerFacadeWithWorkers().use { workers ->
@@ -115,8 +128,10 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
                     projectName,
                     path,
                     aapt2ServiceKey,
+                    aapt2WorkersBuildService.get().getWorkersServiceKey(),
                     errorFormatMode,
-                    requests.build()
+                    requests.build(),
+                    useJvmResourceCompiler
                 )
             )
         }
@@ -174,9 +189,11 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
     private data class CompileLibraryResourcesParams(
         val projectName: String,
         val owner: String,
-        val aapt2ServiceKey: Aapt2ServiceKey,
+        val aapt2ServiceKey: Aapt2DaemonServiceKey,
+        val aapt2WorkersBuildServiceKey: WorkerActionServiceRegistry.ServiceKey<Aapt2WorkersBuildService>,
         val errorFormatMode: SyncOptions.ErrorFormatMode,
-        val requests: List<CompileResourceRequest>
+        val requests: List<CompileResourceRequest>,
+        val useJvmResourceCompiler: Boolean
     ) : Serializable
 
     private class CompileLibraryResourcesRunnable
@@ -185,8 +202,10 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
             SharedExecutorResourceCompilationService(
                 params.projectName,
                 params.owner,
+                params.aapt2WorkersBuildServiceKey,
                 params.aapt2ServiceKey,
-                params.errorFormatMode
+                params.errorFormatMode,
+                params.useJvmResourceCompiler
             ).use {
                 it.submitCompile(params.requests)
             }
@@ -205,7 +224,6 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
             variantScope.artifacts.producesDir(
                 InternalArtifactType.COMPILED_LOCAL_RESOURCES,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 CompileLibraryResourcesTask::outputDir
             )
@@ -225,14 +243,18 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
             task.pseudoLocalesEnabled = variantScope
                 .variantData
-                .variantConfiguration
-                .buildType
+                .variantDslInfo
                 .isPseudoLocalesEnabled
 
             task.crunchPng = variantScope.isCrunchPngs
 
             task.errorFormatMode =
                 SyncOptions.getErrorFormatMode(variantScope.globalScope.projectOptions)
+
+            task.useJvmResourceCompiler =
+              variantScope.globalScope.projectOptions[BooleanOption.ENABLE_JVM_RESOURCE_COMPILER]
+            task.aapt2WorkersBuildService.set(getAapt2WorkersBuildService(task.project))
+            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
         }
     }
 }

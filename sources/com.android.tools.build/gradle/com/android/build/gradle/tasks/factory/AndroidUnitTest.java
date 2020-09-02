@@ -18,7 +18,7 @@ package com.android.build.gradle.tasks.factory;
 
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
 
 import com.android.annotations.NonNull;
@@ -50,7 +50,7 @@ import org.gradle.api.tasks.testing.TestTaskReports;
 
 /** Patched version of {@link Test} that we need to use for local unit tests support. */
 @CacheableTask
-public class AndroidUnitTest extends Test implements VariantAwareTask {
+public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
 
     private String variantName;
 
@@ -117,7 +117,7 @@ public class AndroidUnitTest extends Test implements VariantAwareTask {
             task.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
             task.setDescription(
                     "Run unit tests for the "
-                            + testedVariantData.getVariantConfiguration().getFullName()
+                            + testedVariantData.getVariantDslInfo().getComponentIdentity().getName()
                             + " build.");
 
             task.setTestClassesDirs(scope.getArtifacts().getAllClasses());
@@ -186,7 +186,7 @@ public class AndroidUnitTest extends Test implements VariantAwareTask {
             collection.from(artifacts.getFinalProduct(InternalArtifactType.JAVA_RES.INSTANCE));
 
             // 3. the runtime dependencies for both CLASSES and JAVA_RES type
-            collection.from(scope.getArtifactFileCollection(RUNTIME_CLASSPATH, ALL, CLASSES));
+            collection.from(scope.getArtifactFileCollection(RUNTIME_CLASSPATH, ALL, CLASSES_JAR));
             collection.from(
                     scope.getArtifactFileCollection(
                             RUNTIME_CLASSPATH,

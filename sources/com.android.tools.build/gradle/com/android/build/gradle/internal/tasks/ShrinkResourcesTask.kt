@@ -21,27 +21,26 @@ import com.android.build.gradle.internal.dsl.AaptOptions
 import com.android.build.gradle.internal.pipeline.ExtendedContentType
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.BuildElements
 import com.android.build.gradle.internal.scope.BuildElementsTransformParams
 import com.android.build.gradle.internal.scope.BuildElementsTransformRunnable
 import com.android.build.gradle.internal.scope.BuildOutput
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.variant.MultiOutputPolicy
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ResourceUsageAnalyzer
-import com.android.builder.core.VariantType
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
@@ -64,19 +63,23 @@ import javax.xml.parsers.ParserConfigurationException
 @CacheableTask
 abstract class ShrinkResourcesTask : NonIncrementalTask() {
 
-    private lateinit var buildTypeName: String
+    private var buildTypeName: String? = null
 
     private lateinit var aaptOptions: AaptOptions
-
-    private lateinit var variantType: VariantType
 
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val uncompressedResources: DirectoryProperty
 
+    @get:Optional
     @get:InputFile
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val lightRClasses: RegularFileProperty
+
+    @get:Optional
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val rTxtFile: RegularFileProperty
 
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -92,17 +95,13 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
     abstract val mergedManifests: DirectoryProperty
 
     @get:Input
-    var isDebuggableBuildType: Boolean = false
-        private set
+    abstract val debuggableBuildType: Property<Boolean>
 
     @get:Input
-    lateinit var multiOutputPolicy: MultiOutputPolicy
-        private set
+    abstract val enableRTxtResourceShrinking: Property<Boolean>
 
-    @Input
-    fun getVariantTypeAsString(): String {
-        return variantType.name
-    }
+    @get:Input
+    abstract val variantTypeName: Property<String>
 
     @Input
     fun getAaptOptionsAsString(): String {
@@ -165,7 +164,6 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
 
             variantScope.artifacts.producesDir(
                 artifactType = InternalArtifactType.SHRUNK_PROCESSED_RES,
-                operationType = BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider = taskProvider,
                 productProvider = ShrinkResourcesTask::compressedResources,
                 fileName = "out"
@@ -180,15 +178,23 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
 
             val artifacts = variantScope.artifacts
 
-            artifacts.setTaskInputToFinalProduct<Directory>(
+            artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.PROCESSED_RES,
                 task.uncompressedResources
             )
 
-            artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
-                task.lightRClasses
-            )
+            if (variantScope
+                    .globalScope.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING]) {
+                artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.RUNTIME_SYMBOL_LIST,
+                    task.rTxtFile
+                )
+            } else {
+                artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
+                    task.lightRClasses
+                )
+            }
 
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_NOT_COMPILED_RES,
@@ -200,25 +206,30 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
                     task.mappingFileSrc)
             }
 
-            artifacts.setTaskInputToFinalProduct<Directory>(
+            artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_MANIFESTS,
                 task.mergedManifests
             )
 
             task.aaptOptions = variantScope.globalScope.extension.aaptOptions
 
-            task.buildTypeName = variantData.variantConfiguration.buildType.name
-            task.variantType = variantData.type
-            task.isDebuggableBuildType = variantData.variantConfiguration.buildType.isDebuggable
-            task.multiOutputPolicy = variantData.multiOutputPolicy
+            task.buildTypeName = variantData.variantDslInfo.componentIdentity.buildType
+
+            task.variantTypeName.setDisallowChanges(variantData.type.name)
+
+            task.debuggableBuildType.setDisallowChanges(variantData.variantDslInfo.isDebuggable)
+
+            task.enableRTxtResourceShrinking.set(variantScope
+                .globalScope.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING])
 
             // When R8 produces dex files, this task analyzes them. If R8 or Proguard produce
             // class files, this task will analyze those. That is why both types are specified.
             when {
                 artifacts.hasFinalProduct(InternalArtifactType.SHRUNK_CLASSES) -> task.classes.from(
                     artifacts.getFinalProductAsFileCollection(InternalArtifactType.SHRUNK_CLASSES))
-                artifacts.hasFinalProduct(InternalArtifactType.DEX) -> task.classes.from(
-                    artifacts.getFinalProductAsFileCollection(InternalArtifactType.DEX))
+                artifacts.hasFinalProducts(MultipleArtifactType.DEX) -> task.classes.from(
+                    variantScope.globalScope.project.files(
+                        artifacts.getOperations().getAll(MultipleArtifactType.DEX)))
                 else -> task.classes.from(classes)
             }
         }
@@ -255,7 +266,7 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
 
             // Analyze resources and usages and strip out unused
             val analyzer = ResourceUsageAnalyzer(
-                params.lightRClasses,
+                params.rSourceVariant,
                 params.classes,
                 params.mergedManifest.outputFile,
                 params.mappingFile,
@@ -341,12 +352,15 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
         )
         val mergedManifest: BuildOutput? = mergedManifests.element(apkInfo)
         val mappingFile: File? = task.mappingFileSrc.orNull?.asFile
-        val buildTypeName: String = task.buildTypeName
-        val lightRClasses: File = task.lightRClasses.get().asFile
+        val buildTypeName: String? = task.buildTypeName
+        val rSourceVariant: File = if (task.enableRTxtResourceShrinking.get()){
+            task.rTxtFile.get().asFile
+        } else {
+            task.lightRClasses.get().asFile
+        }
         val resourceDir: File = task.resourceDir.get().asFile
         val isInfoLoggingEnabled: Boolean = task.logger.isEnabled(LogLevel.INFO)
         val isDebugLoggingEnabled: Boolean = task.logger.isEnabled(LogLevel.DEBUG)
-
     }
 
     companion object {
@@ -356,7 +370,7 @@ abstract class ShrinkResourcesTask : NonIncrementalTask() {
         private var ourWarned = true // Logging disabled until shrinking is on by default.
 
         private fun toKbString(size: Long): String {
-            return Integer.toString(size.toInt() / 1024)
+            return (size.toInt() / 1024).toString()
         }
     }
 }

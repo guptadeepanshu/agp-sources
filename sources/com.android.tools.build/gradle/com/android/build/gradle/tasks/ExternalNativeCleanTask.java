@@ -24,6 +24,7 @@ import static com.android.build.gradle.internal.cxx.process.ProcessOutputJunctio
 import static com.android.build.gradle.internal.cxx.settings.CxxAbiModelCMakeSettingsRewriterKt.rewriteCxxAbiModelWithCMakeSettings;
 
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.core.Abi;
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons;
 import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValueMini;
@@ -36,8 +37,8 @@ import com.android.build.gradle.internal.cxx.model.CxxVariantModel;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction;
-import com.android.builder.errors.EvalIssueReporter;
+import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.builder.errors.DefaultIssueReporter;
 import com.android.ide.common.process.ProcessException;
 import com.android.ide.common.process.ProcessInfoBuilder;
 import com.android.utils.StringHelper;
@@ -48,6 +49,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
+import org.gradle.process.ExecOperations;
 
 /**
  * Task that takes set of JSON files of type NativeBuildConfigValue and does clean steps with them.
@@ -56,14 +59,20 @@ import java.util.Set;
  * is left to the underlying build system.
  */
 public abstract class ExternalNativeCleanTask extends NonIncrementalTask {
-    private EvalIssueReporter evalIssueReporter;
     private CxxVariantModel variant;
     private List<CxxAbiModel> abis;
+    @NonNull private final ExecOperations execOperations;
+
+    @Inject
+    public ExternalNativeCleanTask(@NonNull ExecOperations execOperations) {
+        this.execOperations = execOperations;
+    }
 
     @Override
     protected void doTaskAction() throws ProcessException, IOException {
         try (ThreadLoggingEnvironment ignore =
-                new IssueReporterLoggingEnvironment(evalIssueReporter)) {
+                new IssueReporterLoggingEnvironment(
+                        new DefaultIssueReporter(new LoggerWrapper(getLogger())))) {
             infoln("starting clean");
             infoln("finding existing JSONs");
 
@@ -121,22 +130,21 @@ public abstract class ExternalNativeCleanTask extends NonIncrementalTask {
                             "android_gradle_clean_" + commandIndex,
                             processBuilder,
                             getLogger(),
-                            new GradleProcessExecutor(getProject()),
+                            new GradleProcessExecutor(execOperations::exec),
                             "")
                     .logStderrToInfo()
                     .logStdoutToInfo()
-                    .execute();
+                    .execute(execOperations::exec);
         }
     }
 
-    public static class CreationAction extends TaskCreationAction<ExternalNativeCleanTask> {
-        @NonNull private final VariantScope variantScope;
+    public static class CreationAction extends VariantTaskCreationAction<ExternalNativeCleanTask> {
         @NonNull private final CxxVariantModel variant;
         @NonNull private final List<CxxAbiModel> abis = Lists.newArrayList();
 
         public CreationAction(@NonNull CxxModuleModel module, @NonNull VariantScope scope) {
-            this.variantScope = scope;
-            this.variant = createCxxVariantModel(module, scope.getVariantData());
+            super(scope);
+            this.variant = createCxxVariantModel(module, scope);
             // Attempt to clean every possible ABI even those that aren't currently built.
             // This covers cases where user has changed abiFilters or platform. We don't want
             // to leave stale results hanging around.
@@ -149,12 +157,13 @@ public abstract class ExternalNativeCleanTask extends NonIncrementalTask {
                                         scope.getGlobalScope(),
                                         scope.getVariantData())));
             }
+
         }
 
         @NonNull
         @Override
         public String getName() {
-            return variantScope.getTaskName("externalNativeBuildClean");
+            return getVariantScope().getTaskName("externalNativeBuildClean");
         }
 
         @NonNull
@@ -165,10 +174,9 @@ public abstract class ExternalNativeCleanTask extends NonIncrementalTask {
 
         @Override
         public void configure(@NonNull ExternalNativeCleanTask task) {
-            task.setVariantName(variantScope.getFullVariantName());
+            super.configure(task);
             task.variant = variant;
             task.abis = abis;
-            task.evalIssueReporter = variantScope.getGlobalScope().getErrorHandler();
         }
     }
 }

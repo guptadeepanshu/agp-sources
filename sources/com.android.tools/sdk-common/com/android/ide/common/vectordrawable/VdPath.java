@@ -21,6 +21,7 @@ import static com.android.utils.XmlUtils.formatFloatValue;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
+import com.android.ide.common.vectordrawable.PathParser.ParseMode;
 import com.google.common.collect.ImmutableMap;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -207,9 +208,9 @@ class VdPath extends VdElement {
                 @NonNull Point2D.Float currentPoint,
                 @NonNull Point2D.Float currentSegmentStartPoint,
                 char previousType) {
-            // For horizontal and vertical lines, we have to convert to LineTo with 2 parameters
+            // For horizontal and vertical lines, we have to convert to LineTo with 2 parameters.
             // And for arcTo, we also need to isolate the parameters for transformation.
-            // Therefore a looping will be necessary for such commands.
+            // Therefore looping will be necessary for such commands.
             //
             // Note that if the matrix is translation only, then we can save many computations.
             int paramsLen = mParams.length;
@@ -292,7 +293,7 @@ class VdPath extends VdElement {
                 case 'c':
                 case 's':
                 case 'q':
-                    for (int i = 0; i < paramsLen; i += step) {
+                    for (int i = 0; i < paramsLen - step + 1; i += step) {
                         currentX += mParams[i + step - 2];
                         currentY += mParams[i + step - 1];
                     }
@@ -353,7 +354,7 @@ class VdPath extends VdElement {
                     break;
 
                 case 'A':
-                    for (int i = 0; i < paramsLen; i += step) {
+                    for (int i = 0; i < paramsLen - step + 1; i += step) {
                         // (0:rx 1:ry 2:x-axis-rotation 3:large-arc-flag 4:sweep-flag 5:x 6:y)
                         // [0, 1, 2]
                         if (!isTranslationOnly(totalTransform)) {
@@ -378,7 +379,7 @@ class VdPath extends VdElement {
                     break;
 
                 case 'a':
-                    for (int i = 0; i < paramsLen; i += step) {
+                    for (int i = 0; i < paramsLen - step + 1; i += step) {
                         float oldCurrentX = currentX;
                         float oldCurrentY = currentY;
 
@@ -458,12 +459,17 @@ class VdPath extends VdElement {
     }
 
     private void setNameValue(@NonNull String name, @NonNull String value) {
-        if (value.startsWith("@")) {
+        if (value.startsWith(SdkConstants.PREFIX_RESOURCE_REF) && PATH_FILL.equals(name)) {
+            // Ignore the android resource in "android:fillColor" present in the new material icons.
+            value = "#000000";
+        }
+
+        if (value.startsWith(SdkConstants.PREFIX_RESOURCE_REF)) {
             throw new ResourcesNotSupportedException(name, value);
         }
 
         if (PATH_DESCRIPTION.equals(name)) {
-            mNodeList = PathParser.parsePath(value);
+            mNodeList = PathParser.parsePath(value, ParseMode.ANDROID);
         } else if (PATH_ID.equals(name)) {
             mName = value;
         } else if (PATH_FILL.equals(name)) {
@@ -787,6 +793,7 @@ class VdPath extends VdElement {
                 } else if (mTileMode.equals("repeat")) {
                     tile = MultipleGradientPaint.CycleMethod.REPEAT;
                 }
+
                 if (mGradientType.equals("linear")) {
                     LinearGradientPaint gradient =
                             new LinearGradientPaint(
@@ -808,10 +815,17 @@ class VdPath extends VdElement {
                                     mGradientColors,
                                     tile);
                     g.setPaint(paint);
+                } else if (mGradientType.equals("sweep")) {
+                    // AWT doesn't support sweep gradients but Android does.
+                    getLogger().log(Level.WARNING,
+                                    ">>>>>> Unable to render a sweep gradient."
+                                    + " Using a solid color instead. >>>>>>");
+                    g.setPaint(mGradientColors[0]);
                 } else {
                     getLogger().log(Level.WARNING,
                             ">>>>>> Unsupported gradient type: \"" + mGradientType + "\">>>>>>");
                 }
+
                 if (fill) {
                     g.fill(path2d);
                 } else {

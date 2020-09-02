@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.tasks.databinding
 import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.store.FeatureInfoList
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -79,9 +78,9 @@ abstract class DataBindingExportFeatureApplicationIdsTask : NonIncrementalTask()
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.FEATURE_DATA_BINDING_BASE_FEATURE_INFO,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
-                DataBindingExportFeatureApplicationIdsTask::packageListOutFolder)
+                DataBindingExportFeatureApplicationIdsTask::packageListOutFolder
+            )
         }
 
         override fun configure(task: DataBindingExportFeatureApplicationIdsTask) {

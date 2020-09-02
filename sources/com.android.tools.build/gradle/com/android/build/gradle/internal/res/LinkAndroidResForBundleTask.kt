@@ -22,16 +22,15 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_RESOURCE_PKG
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
-import com.android.build.gradle.internal.res.namespaced.registerAaptService
 import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.TaskInputHelper
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
@@ -49,6 +48,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -64,17 +64,14 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.io.IOException
-import java.util.function.Supplier
 
 /**
  * Task to link app resources into a proto format so that it can be consumed by the bundle tool.
  */
 @CacheableTask
 abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
-
     @get:Input
-    var debuggable: Boolean = false
-        private set
+    abstract val debuggable: Property<Boolean>
 
     private lateinit var aaptOptions: AaptOptions
 
@@ -100,26 +97,22 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     lateinit var featureResourcePackages: FileCollection
         private set
 
-    private var resOffsetSupplier: Supplier<Int>? = null
-
-    @Suppress("MemberVisibilityCanBePrivate")
     @get:Input
     @get:Optional
-    val resOffset: Int?
-        get() = resOffsetSupplier?.get()
+    abstract val resOffset: Property<Int>
 
     @get:Input
     @get:Optional
-    lateinit var versionName: Provider<String?> private set
+    abstract val versionName: Property<String?>
 
     @get:Input
-    lateinit var versionCode: Provider<Int?> private set
+    abstract val versionCode: Property<Int?>
 
     @get:OutputDirectory
     lateinit var incrementalFolder: File
         private set
 
-    @get:Input
+    @get:Nested
     lateinit var mainSplit: ApkData
         private set
 
@@ -131,14 +124,17 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     abstract val aapt2FromMaven: ConfigurableFileCollection
 
     @get:Input
-    var excludeResSources: Boolean = false
-        private set
+    abstract val excludeResSourcesForReleaseBundles: Property<Boolean>
+
+    @get:Internal
+    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
 
     private var compiledDependenciesResources: ArtifactCollection? = null
 
     override fun doTaskAction() {
 
-        val manifestFile = ExistingBuildElements.from(InternalArtifactType.BUNDLE_MANIFEST, manifestFiles)
+        val manifestFile =
+            ExistingBuildElements.from(InternalArtifactType.BUNDLE_MANIFEST, manifestFiles)
                 .element(mainSplit)
                 ?.outputFile
                 ?: throw RuntimeException("Cannot find merged manifest file")
@@ -167,8 +163,8 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             options = aaptOptions,
             resourceOutputApk = outputFile,
             variantType = VariantTypeImpl.BASE_APK,
-            debuggable = debuggable,
-            packageId = resOffset,
+            debuggable = debuggable.get(),
+            packageId = resOffset.orNull,
             allowReservedPackageId = minSdkVersion < AndroidVersion.VersionCodes.O,
             dependentFeatures = featurePackagesBuilder.build(),
             resourceDirs = ImmutableList.Builder<File>().addAll(compiledDependenciesResourcesDirs)
@@ -176,14 +172,16 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
                     checkNotNull(getInputResourcesDir().orNull?.asFile)
                 ).build(),
             resourceConfigs = ImmutableSet.copyOf(resConfig),
-            excludeSources = excludeResSources
+            // We only want to exclude res sources for release builds and when the flag is turned on
+            // This will result in smaller release bundles
+            excludeSources = excludeResSourcesForReleaseBundles.get() && debuggable.get().not()
         )
         if (logger.isInfoEnabled) {
             logger.info("Aapt output file {}", outputFile.absolutePath)
         }
 
-        val aapt2ServiceKey = registerAaptService(
-            aapt2FromMaven = aapt2FromMaven,
+        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
+            aapt2FromMaven = aapt2FromMaven.singleFile,
             logger = LoggerWrapper(logger)
         )
         getWorkerFacadeWithWorkers().use {
@@ -244,32 +242,28 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.LINKED_RES_FOR_BUNDLE,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 LinkAndroidResForBundleTask::bundledResFile,
-                "bundled-res.ap_")
+                "bundled-res.ap_"
+            )
 
         }
 
         override fun configure(task: LinkAndroidResForBundleTask) {
             super.configure(task)
 
+            val variantScope = variantScope
             val variantData = variantScope.variantData
-
             val projectOptions = variantScope.globalScope.projectOptions
-
-            val config = variantData.variantConfiguration
+            val variantDslInfo = variantData.variantDslInfo
 
             task.incrementalFolder = variantScope.getIncrementalDir(name)
 
-            task.versionCode = TaskInputHelper.memoizeToProvider(task.project) {
-                config.versionCode
-            }
-            task.versionName = TaskInputHelper.memoizeToProvider(task.project) {
-                config.versionName
-            }
+            val mainSplit = variantData.publicVariantPropertiesApi.outputs.getMainSplit()
+            task.versionCode.setDisallowChanges(mainSplit.versionCode)
+            task.versionName.setDisallowChanges(mainSplit.versionName)
 
-            task.mainSplit = variantData.outputScope.mainSplit
+            task.mainSplit = mainSplit.apkData
 
             variantScope.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.BUNDLE_MANIFEST,
@@ -283,20 +277,18 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             task.featureResourcePackages = variantScope.getArtifactFileCollection(
                 COMPILE_CLASSPATH, PROJECT, FEATURE_RESOURCE_PKG)
 
-            if (variantScope.type.isFeatureSplit) {
-                // get the res offset supplier
-                task.resOffsetSupplier =
-                        FeatureSetMetadata.getInstance().getResOffsetSupplierForTask(
-                            variantScope, task)
+            if (variantScope.type.isDynamicFeature) {
+                task.resOffset.set(variantScope.resOffset)
+                task.resOffset.disallowChanges()
             }
 
-            task.debuggable = config.buildType.isDebuggable
+            task.debuggable.setDisallowChanges(variantData.variantDslInfo.isDebuggable)
             task.aaptOptions = variantScope.globalScope.extension.aaptOptions.convert()
 
-            // We only want to exclude res sources for release builds and when the flag is turned on
-            // This will result in smaller release bundles
-            task.excludeResSources = !task.debuggable
-                    && projectOptions.get(BooleanOption.EXCLUDE_RES_SOURCES_FOR_RELEASE_BUNDLES)
+            task.excludeResSourcesForReleaseBundles
+                .setDisallowChanges(
+                    projectOptions.get(BooleanOption.EXCLUDE_RES_SOURCES_FOR_RELEASE_BUNDLES)
+                )
 
             task.buildTargetDensity =
                     projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
@@ -307,8 +299,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             task.aapt2Version = aapt2Version
             task.minSdkVersion = variantScope.minSdkVersion.apiLevel
 
-            task.resConfig =
-                    variantScope.variantConfiguration.mergedFlavor.resourceConfigurations
+            task.resConfig = variantScope.variantDslInfo.resourceConfigurations
 
             task.androidJar = variantScope.globalScope.sdkComponents.androidJarProvider
 
@@ -327,6 +318,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
                     AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
                 )
             }
+            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
         }
     }
 }

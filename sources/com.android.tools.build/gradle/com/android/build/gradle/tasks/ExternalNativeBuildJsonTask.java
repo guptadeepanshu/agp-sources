@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 The Android Open Source Project
+ * Copyright (C) 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,50 @@
 package com.android.build.gradle.tasks;
 
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.LoggerWrapper;
+import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment;
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment;
+import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
+import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.tasks.NonIncrementalTask;
+import com.android.build.gradle.internal.tasks.UnsafeOutputsTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
-import com.android.builder.errors.EvalIssueReporter;
+import com.android.builder.errors.DefaultIssueReporter;
 import com.android.ide.common.process.ProcessException;
 import java.io.IOException;
+import javax.inject.Inject;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Provider;
+import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Nested;
+import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.PathSensitive;
+import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.process.ExecOperations;
 
 /** Task wrapper around ExternalNativeJsonGenerator. */
-public abstract class ExternalNativeBuildJsonTask extends NonIncrementalTask {
+public abstract class ExternalNativeBuildJsonTask extends UnsafeOutputsTask {
 
-    private EvalIssueReporter evalIssueReporter;
     private Provider<ExternalNativeJsonGenerator> generator;
+    @NonNull private final ExecOperations execOperations;
+
+    @Inject
+    public ExternalNativeBuildJsonTask(@NonNull ExecOperations execOperations) {
+        this.execOperations = execOperations;
+    }
+
+    @InputFiles
+    @Optional
+    @PathSensitive(PathSensitivity.RELATIVE)
+    public abstract DirectoryProperty getRenderscriptSources();
 
     @Override
     protected void doTaskAction() throws ProcessException, IOException {
         try (ThreadLoggingEnvironment ignore =
-                new IssueReporterLoggingEnvironment(evalIssueReporter)) {
-            generator.get().build();
+                new IssueReporterLoggingEnvironment(
+                        new DefaultIssueReporter(new LoggerWrapper(getLogger())))) {
+            generator.get().build(execOperations::exec, execOperations::javaexec);
         }
     }
 
@@ -80,8 +102,18 @@ public abstract class ExternalNativeBuildJsonTask extends NonIncrementalTask {
         @Override
         public void configure(@NonNull ExternalNativeBuildJsonTask task) {
             super.configure(task);
+
+            BuildArtifactsHolder artifacts = getVariantScope().getArtifacts();
             task.generator = generator;
-            task.evalIssueReporter = getVariantScope().getGlobalScope().getErrorHandler();
+            VariantDslInfo variantDslInfo = getVariantScope().getVariantDslInfo();
+
+            if (artifacts.hasFinalProduct(
+                            InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE)
+                    && variantDslInfo.getRenderscriptNdkModeEnabled()) {
+                artifacts.setTaskInputToFinalProduct(
+                        InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE,
+                        task.getRenderscriptSources());
+            }
         }
     }
 }

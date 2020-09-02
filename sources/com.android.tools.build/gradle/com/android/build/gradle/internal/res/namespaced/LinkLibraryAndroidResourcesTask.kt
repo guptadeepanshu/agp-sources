@@ -18,9 +18,11 @@ package com.android.build.gradle.internal.res.namespaced
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.SyncOptions
@@ -28,7 +30,6 @@ import com.android.builder.core.VariantTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
 import com.android.utils.FileUtils
-import com.google.common.base.Suppliers
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -36,6 +37,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -49,7 +51,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
-import java.util.function.Supplier
 
 /**
  * Task to link the resources in a library project into an AAPT2 static library.
@@ -69,8 +70,8 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) lateinit var sharedLibraryDependencies: FileCollection private set
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) @get:Optional abstract val tested: RegularFileProperty
 
-    @get:Internal lateinit var packageForRSupplier: Supplier<String> private set
-    @Input fun getPackageForR() = packageForRSupplier.get()
+    @get:Input
+    abstract val packageForR: Property<String>
 
     @get:Input
     lateinit var aapt2Version: String
@@ -85,6 +86,9 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NONE)
     lateinit var androidJar: Provider<File>
         private set
+
+    @get:Internal
+    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
 
     private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
 
@@ -108,11 +112,11 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
                 imports = imports.build(),
                 resourceOutputApk = staticLibApk.get().asFile,
                 variantType = VariantTypeImpl.LIBRARY,
-                customPackageForR = getPackageForR(),
+                customPackageForR = packageForR.get(),
                 intermediateDir = aaptIntermediateDir)
 
-        val aapt2ServiceKey = registerAaptService(
-            aapt2FromMaven = aapt2FromMaven,
+        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
+            aapt2FromMaven = aapt2FromMaven.singleFile,
             logger = LoggerWrapper(logger)
         )
         getWorkerFacadeWithWorkers().use {
@@ -136,7 +140,6 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.RES_STATIC_LIBRARY,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 LinkLibraryAndroidResourcesTask::staticLibApk,
                 "res.apk"
@@ -151,9 +154,9 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
                 task.manifestFile
             )
 
-            variantScope.artifacts.setTaskInputToFinalProducts(
-                InternalArtifactType.RES_COMPILED_FLAT_FILES,
-                task.inputResourcesDirectories)
+            task.inputResourcesDirectories.set(
+                variantScope.artifacts.getOperations().getAll(
+                    MultipleArtifactType.RES_COMPILED_FLAT_FILES))
             task.libraryDependencies =
                     variantScope.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
@@ -181,8 +184,13 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
 
             task.aaptIntermediateDir =
                     FileUtils.join(
-                            variantScope.globalScope.intermediatesDir, "res-link-intermediate", variantScope.variantConfiguration.dirName)
-            task.packageForRSupplier = Suppliers.memoize(variantScope.variantConfiguration::getOriginalApplicationId)
+                            variantScope.globalScope.intermediatesDir, "res-link-intermediate", variantScope.variantDslInfo.dirName)
+
+            task.packageForR.set(variantScope.globalScope.project.provider {
+                variantScope.variantDslInfo.originalApplicationId
+            })
+            task.packageForR.disallowChanges()
+
             val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
             task.aapt2Version = aapt2Version
@@ -192,6 +200,7 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
                 variantScope.globalScope.projectOptions
             )
+            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
         }
     }
 

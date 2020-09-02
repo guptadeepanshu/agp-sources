@@ -20,32 +20,29 @@ import com.android.SdkConstants.FD_NDK
 import com.android.SdkConstants.FD_NDK_SIDE_BY_SIDE
 import com.android.SdkConstants.FN_SOURCE_PROP
 import com.android.SdkConstants.NDK_DIR_PROPERTY
-import com.google.common.annotations.VisibleForTesting
 import com.android.build.gradle.internal.SdkLocator
+import com.android.build.gradle.internal.cxx.caching.cache
 import com.android.build.gradle.internal.cxx.configure.LocationType.ANDROID_NDK_HOME_LOCATION
 import com.android.build.gradle.internal.cxx.configure.LocationType.NDK_BUNDLE_FOLDER_LOCATION
 import com.android.build.gradle.internal.cxx.configure.LocationType.NDK_DIR_LOCATION
 import com.android.build.gradle.internal.cxx.configure.LocationType.NDK_VERSIONED_FOLDER_LOCATION
 import com.android.build.gradle.internal.cxx.configure.SdkSourceProperties.Companion.SdkSourceProperty.SDK_PKG_REVISION
-
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment
-import com.android.build.gradle.internal.cxx.logging.LoggingMessage
 import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLoggingEnvironment
-
+import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.warnln
-import com.android.build.gradle.internal.cxx.logging.errorln
-import com.android.builder.errors.EvalIssueReporter
+import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
 import com.android.utils.FileUtils.join
+import com.google.common.annotations.VisibleForTesting
 import java.io.File
 import java.io.FileNotFoundException
-import java.lang.RuntimeException
 
 /**
  * The hard-coded NDK version for this Android Gradle Plugin.
  */
-const val ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION = "20.0.5594570" // r20
+const val ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION = "21.0.6113669"
 
 private enum class LocationType(val tag: String) {
     // These are in order of preferred in the case when versions are identical.
@@ -72,7 +69,7 @@ private fun findNdkPathImpl(
     androidNdkHomeEnvironmentVariable: String?,
     sdkFolder: File?,
     ndkVersionFromDsl: String?,
-    getNdkVersionedFolderNames: (File) -> List<String>,
+    sideBySideNdkFolderNames: List<String>,
     getNdkSourceProperties: (File) -> SdkSourceProperties?
 ): File? {
 
@@ -99,10 +96,13 @@ private fun findNdkPathImpl(
      */
     val ndkVersionOrDefault = if (ndkVersionFromDsl.isNullOrBlank() &&
         ndkDirProperty.isNullOrBlank() &&
-        androidNdkHomeEnvironmentVariable.isNullOrBlank()) {
-        infoln("Because no explicit NDK was requested, the default version " +
-                "'$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION' for this Android Gradle " +
-                "Plugin will be used")
+        androidNdkHomeEnvironmentVariable.isNullOrBlank()
+    ) {
+        infoln(
+            "Because no explicit NDK was requested, the default version " +
+                    "'$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION' for this Android Gradle " +
+                    "Plugin will be used"
+        )
         ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION
     } else {
         ndkVersionFromDsl
@@ -113,7 +113,7 @@ private fun findNdkPathImpl(
         warnln("Support for ANDROID_NDK_HOME is deprecated and will be removed in the future. Use android.ndkVersion in build.gradle instead.")
     }
 
-    // Record that a location was consider and rejected and for what reason
+    // Record that a location was considered and rejected and for what reason
     fun considerAndReject(location: Location, reason: String) {
         infoln("Rejected ${location.ndkRoot} ${location.type.tag} because $reason")
     }
@@ -136,10 +136,13 @@ private fun findNdkPathImpl(
     var ndkVersionFromDslRevision: Revision? = null
     if (ndkVersionOrDefault != null) {
         try {
-            ndkVersionFromDslRevision = Revision.parseRevision(ndkVersionOrDefault)
+            ndkVersionFromDslRevision =
+                stripPreviewFromRevision(Revision.parseRevision(ndkVersionOrDefault))
             if (ndkVersionFromDslRevision.toIntArray(true).size < 3) {
-                errorln("Specified android.ndkVersion '$ndkVersionOrDefault' does not have " +
-                        "enough precision. Use major.minor.micro in version.")
+                errorln(
+                    "Specified android.ndkVersion '$ndkVersionOrDefault' does not have " +
+                            "enough precision. Use major.minor.micro in version."
+                )
                 return null
             }
         } catch (e: NumberFormatException) {
@@ -150,7 +153,7 @@ private fun findNdkPathImpl(
 
     if (sdkFolder != null) {
         val versionRoot = File(sdkFolder, FD_NDK_SIDE_BY_SIDE)
-        foundLocations += getNdkVersionedFolderNames(versionRoot)
+        foundLocations += sideBySideNdkFolderNames
             .map { version ->
                 Location(
                     NDK_VERSIONED_FOLDER_LOCATION,
@@ -187,8 +190,9 @@ private fun findNdkPathImpl(
                 else -> {
                     val revision = versionInfo.getValue(SDK_PKG_REVISION)!!
                     try {
-                        Revision.parseRevision(revision)
-                        Pair(location, versionInfo)
+                        val revision = Revision.parseRevision(revision)
+                        // Trim preview information since we expect to match major.minor.micro only
+                        Pair(location, stripPreviewFromRevision(revision))
                     } catch (e: NumberFormatException) {
                         considerAndReject(
                             location, "that location had " +
@@ -199,7 +203,7 @@ private fun findNdkPathImpl(
                 }
             }
         }
-        .sortedWith(compareBy({ -it.first.type.ordinal }, { it.second.revision }))
+        .sortedWith(compareBy({ -it.first.type.ordinal }, { it.second }))
         .asReversed()
 
     // From the existing NDKs find the highest. We'll use this as a fall-back in case there's an
@@ -210,8 +214,10 @@ private fun findNdkPathImpl(
         // The text of this message shouldn't change without also changing the corresponding
         // hotfix in Android Studio that recognizes this text
         if (ndkVersionFromDsl == null) {
-            warnln("Compatible side by side NDK version was not found. " +
-                    "Default is $ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION.")
+            warnln(
+                "Compatible side by side NDK version was not found. " +
+                        "Default is $ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION."
+            )
         } else {
             warnln(
                 "Compatible side by side NDK version was not found for android.ndkVersion " +
@@ -238,7 +244,7 @@ private fun findNdkPathImpl(
                 return null
             } else {
                 val (location, version) = ndkDirLocation
-                if (isAcceptableNdkVersion(version.revision, ndkVersionFromDslRevision)) {
+                if (isAcceptableNdkVersion(version, ndkVersionFromDslRevision)) {
                     infoln(
                         "Choosing ${location.ndkRoot} from $NDK_DIR_PROPERTY which had the requested " +
                                 "version $ndkVersionOrDefault"
@@ -246,7 +252,7 @@ private fun findNdkPathImpl(
                 } else {
                     errorln(
                         "Requested NDK version $ndkVersionOrDefault did not match the version " +
-                                "${version.revision} requested by $NDK_DIR_PROPERTY at ${location.ndkRoot}"
+                                "$version requested by $NDK_DIR_PROPERTY at ${location.ndkRoot}"
                     )
                     return null
                 }
@@ -257,7 +263,7 @@ private fun findNdkPathImpl(
         // If not ndk.dir then take the version that matches the requested NDK version
         val matchingLocations = versionedLocations
             .filter { (_, sourceProperties) ->
-                isAcceptableNdkVersion(sourceProperties.revision, ndkVersionFromDslRevision)
+                isAcceptableNdkVersion(sourceProperties, ndkVersionFromDslRevision)
             }
             .toList()
 
@@ -266,15 +272,15 @@ private fun findNdkPathImpl(
             versionedLocations.onEach { (location, version) ->
                 considerAndReject(
                     location,
-                    "that NDK had version ${version.revision} which didn't " +
+                    "that NDK had version $version which didn't " +
                             "match the requested version $ndkVersionOrDefault"
                 )
             }
             if (versionedLocations.isNotEmpty()) {
                 val available =
                     versionedLocations
-                        .sortedBy { (_, version) -> version.revision }
-                        .joinToString(", ") { (_, version) -> version.revision.toString() }
+                        .sortedBy { (_, version) -> version }
+                        .joinToString(", ") { (_, version) -> version.toString() }
                 errorln("No version of NDK matched the requested version $ndkVersionOrDefault. Versions available locally: $available")
             } else {
                 errorln("No version of NDK matched the requested version $ndkVersionOrDefault")
@@ -315,47 +321,67 @@ private fun findNdkPathImpl(
 
                 infoln(
                     "Using ${highest.first.ndkRoot} which is " +
-                            "version ${highest.second.revision} as fallback but build will fail"
+                            "version ${highest.second} as fallback but build will fail"
                 )
                 return null
             }
             val (location, version) = ndkDirLocation
-            infoln("Found requested ndk.dir (${location.ndkRoot}) which has version ${version.revision}")
+            infoln("Found requested ndk.dir (${location.ndkRoot}) which has version ${version}")
             return location.ndkRoot
         }
 
         // No NDK version was requested.
         infoln(
             "No user requested version, choosing ${highest.first.ndkRoot} which is " +
-                    "version ${highest.second.revision}"
+                    "version ${highest.second}"
         )
         return highest.first.ndkRoot
     }
 }
 
+data class NdkLocatorKey(
+    val ndkVersionFromDsl: String?,
+    val ndkDirProperty: String?,
+    val androidNdkHomeEnvironmentVariable: String?,
+    val sdkFolder: File?,
+    val sideBySideNdkFolderNames : List<String>
+)
+
 @VisibleForTesting
-fun findNdkPathWithRecord(
+fun findNdkPathImpl(
     ndkVersionFromDsl: String?,
     ndkDirProperty: String?,
     androidNdkHomeEnvironmentVariable: String?,
     sdkFolder: File?,
     getNdkVersionedFolderNames: (File) -> List<String>,
     getNdkSourceProperties: (File) -> SdkSourceProperties?
-): NdkLocatorRecord {
-    PassThroughDeduplicatingLoggingEnvironment().use { loggingEnvironment ->
-        val ndkFolder = findNdkPathImpl(
-            ndkDirProperty,
-            androidNdkHomeEnvironmentVariable,
-            sdkFolder,
-            ndkVersionFromDsl,
-            getNdkVersionedFolderNames,
-            getNdkSourceProperties
-        )
-        return NdkLocatorRecord(
-            ndkFolder = ndkFolder,
-            messages = loggingEnvironment.record
-        )
-    }
+): File? {
+    val sideBySideNdkFolderNames = if(sdkFolder != null) getNdkVersionedFolderNames(join(sdkFolder, FD_NDK_SIDE_BY_SIDE)) else listOf()
+    val key = NdkLocatorKey(
+        ndkVersionFromDsl,
+        ndkDirProperty,
+        androidNdkHomeEnvironmentVariable,
+        sdkFolder,
+        if(sdkFolder != null) getNdkVersionedFolderNames(join(sdkFolder, FD_NDK_SIDE_BY_SIDE)) else listOf())
+    // Result of NDK location could be cached at machine level.
+    // Here, it's cached at module level instead because uncleanable caches can lead to difficult bugs.
+    return cache(key, {
+        with(key) {
+            PassThroughDeduplicatingLoggingEnvironment().use { loggingEnvironment ->
+                val ndkFolder = findNdkPathImpl(
+                    this.ndkDirProperty,
+                    this.androidNdkHomeEnvironmentVariable,
+                    this.sdkFolder,
+                    this.ndkVersionFromDsl,
+                    sideBySideNdkFolderNames,
+                    getNdkSourceProperties
+                )
+                NdkLocatorRecord(
+                    ndkFolder = ndkFolder
+                )
+            }
+        }
+    }).ndkFolder
 }
 
 /**
@@ -389,12 +415,21 @@ fun getNdkVersionedFolders(ndkVersionRoot: File): List<String> {
     if (!ndkVersionRoot.isDirectory) {
         return listOf()
     }
-    return ndkVersionRoot.list().filter { File(ndkVersionRoot, it).isDirectory }
+    return ndkVersionRoot.list()!!.filter { File(ndkVersionRoot, it).isDirectory }
+}
+
+fun stripPreviewFromRevision(revision : Revision) : Revision
+{
+    var parts = revision.toIntArray(false)
+    return when(parts.size) {
+        1 -> Revision(parts[0])
+        2 -> Revision(parts[0], parts[1])
+        else -> Revision(parts[0], parts[1], parts[2])
+    }
 }
 
 data class NdkLocatorRecord(
-    val ndkFolder: File?,
-    val messages: List<LoggingMessage> = listOf()
+    val ndkFolder: File?
 )
 
 /**
@@ -414,32 +449,18 @@ data class NdkLocatorRecord(
  * or it is an error. If no such version is specifies then the highest version available is
  * used.
  *
- * The value android.ndkVersion in build.gradle can be partial. In this case, the existing parts
- * of the version must match the found NDK(s). By example, this works as follows:
- *
- * build.gradle NDK        is acceptable
- * ------------ ---------- -------------
- * 18.1.12346   18.1.12346 yes
- * 18.1.12346   18.1.12345 no
- * 18.1         18.1.12346 yes
- * 18.2         18.1.12346 no
- * 18           18.1.12346 yes
- * 19           18.1.12346 no
- *
- * If multiple NDKs satisfy the version then the highest NDK is taken.
- *
  * Failure behaviour -- even if there is a failure, this function tries to at least return *some*
  * NDK so that the gradle Sync can continue.
  */
 fun findNdkPath(
-    evalIssueReporter : EvalIssueReporter,
+    issueReporter: IssueReporter,
     ndkVersionFromDsl: String?,
     projectDir: File
-): NdkLocatorRecord {
-    IssueReporterLoggingEnvironment(evalIssueReporter).use {
+): File? {
+    IssueReporterLoggingEnvironment(issueReporter).use {
         val properties = gradleLocalProperties(projectDir)
-        val sdkPath = SdkLocator.getSdkLocation(projectDir).directory
-        return findNdkPathWithRecord(
+        val sdkPath = SdkLocator.getSdkDirectory(projectDir, issueReporter)
+        return findNdkPathImpl(
             ndkVersionFromDsl,
             properties.getProperty(NDK_DIR_PROPERTY),
             System.getenv("ANDROID_NDK_HOME"),

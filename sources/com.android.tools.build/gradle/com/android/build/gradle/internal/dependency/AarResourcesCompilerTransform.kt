@@ -21,7 +21,7 @@ import com.android.SdkConstants.FD_RES
 import com.android.SdkConstants.FD_RES_VALUES
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.res.Aapt2CompileRunnable
-import com.android.build.gradle.internal.res.namespaced.registerAaptService
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
 import com.android.build.gradle.options.SyncOptions
 import com.android.ide.common.resources.CompileResourceRequest
 import com.android.ide.common.xml.AndroidManifestParser
@@ -71,8 +71,8 @@ abstract class AarResourcesCompilerTransform :
         }
 
         val aapt2ServiceKey =
-            registerAaptService(
-                parameters.aapt2FromMaven,
+            parameters.aapt2DaemonBuildService.get().registerAaptService(
+                parameters.aapt2FromMaven.singleFile,
                 LoggerWrapper.getLogger(this::class.java)
             )
 
@@ -97,5 +97,7 @@ abstract class AarResourcesCompilerTransform :
         val aapt2FromMaven: ConfigurableFileCollection
         @get:Internal
         val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
+        @get:Internal
+        val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
     }
 }

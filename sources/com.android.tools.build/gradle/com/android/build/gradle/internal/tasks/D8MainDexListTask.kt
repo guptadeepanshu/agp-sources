@@ -24,15 +24,17 @@ import com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS
 import com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE
 import com.android.build.gradle.internal.InternalScope.FEATURES
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.multidex.D8MainDexList
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
@@ -53,8 +55,7 @@ import javax.inject.Inject
 abstract class D8MainDexListTask : NonIncrementalTask() {
 
     @get:Input
-    abstract var errorFormat: SyncOptions.ErrorFormatMode
-        protected set
+    abstract val errorFormat: Property<SyncOptions.ErrorFormatMode>
 
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
@@ -63,33 +64,29 @@ abstract class D8MainDexListTask : NonIncrementalTask() {
     @get:Optional
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
-    abstract var userMultidexProguardRules: File?
-        protected set
+    abstract val userMultidexProguardRules: RegularFileProperty
 
     @get:Optional
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
-    abstract var userMultidexKeepFile: File?
-        protected set
+    abstract val userMultidexKeepFile: RegularFileProperty
 
     @get:Classpath
-    abstract var bootClasspath: FileCollection
-        protected set
+    abstract val bootClasspath: ConfigurableFileCollection
 
     @get:Classpath
-    abstract var inputClasses: FileCollection
-        protected set
+    abstract val inputClasses: ConfigurableFileCollection
 
     @get:Classpath
-    abstract var libraryClasses: FileCollection
-        protected set
+    abstract val libraryClasses: ConfigurableFileCollection
 
     @get:OutputFile
     abstract val output: RegularFileProperty
 
     override fun doTaskAction() {
 
-        val programClasses = inputClasses.files
+        // Javac output may be missing if there are no .java sources, so filter missing b/152759930.
+        val programClasses = inputClasses.files.filter { it.exists() }
         val libraryFilesNotInInputs =
             libraryClasses.files.filter { !programClasses.contains(it) } + bootClasspath.files
 
@@ -97,12 +94,14 @@ abstract class D8MainDexListTask : NonIncrementalTask() {
             it.submit(
                 MainDexListRunnable::class.java,
                 MainDexListRunnable.Params(
-                    listOfNotNull(aaptGeneratedRules.get().asFile, userMultidexProguardRules),
+                    listOfNotNull(
+                        aaptGeneratedRules.get().asFile,
+                        userMultidexProguardRules.orNull?.asFile),
                     programClasses,
                     libraryFilesNotInInputs,
-                    userMultidexKeepFile,
+                    userMultidexKeepFile.orNull?.asFile,
                     output.get().asFile,
-                    errorFormat
+                    errorFormat.get()
                 )
             )
         }
@@ -185,19 +184,14 @@ abstract class D8MainDexListTask : NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<out D8MainDexListTask>) {
             super.handleProvider(taskProvider)
-            val outputType =
-                if (includeDynamicFeatures) {
-                    InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE
-                } else {
-                    InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST
-                }
-            variantScope.artifacts.producesFile(
-                outputType,
-                BuildArtifactsHolder.OperationType.INITIAL,
-                taskProvider,
-                D8MainDexListTask::output,
-                "mainDexList.txt"
-            )
+            val request = variantScope.artifacts.getOperations().setInitialProvider(
+                taskProvider, D8MainDexListTask::output
+            ).withName("mainDexList.txt")
+            if (includeDynamicFeatures) {
+                request.on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
+            } else {
+                request.on(InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST)
+            }
         }
 
         override fun configure(task: D8MainDexListTask) {
@@ -207,15 +201,31 @@ abstract class D8MainDexListTask : NonIncrementalTask() {
                 InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES,
                 task.aaptGeneratedRules
             )
-            task.userMultidexProguardRules = variantScope.variantConfiguration.multiDexKeepProguard
-            task.userMultidexKeepFile = variantScope.variantConfiguration.multiDexKeepFile
 
-            task.inputClasses = inputClasses
-            task.libraryClasses = libraryClasses
+            val variantDslInfo = variantScope.variantDslInfo
+            val project = variantScope.globalScope.project
 
-            task.bootClasspath = variantScope.bootClasspath
-            task.errorFormat =
-                SyncOptions.getErrorFormatMode(variantScope.globalScope.projectOptions)
+            if (variantDslInfo.multiDexKeepProguard != null) {
+                task.userMultidexProguardRules.fileProvider(
+                    project.provider { variantDslInfo.multiDexKeepProguard }
+                )
+            }
+            task.userMultidexProguardRules.disallowChanges()
+
+            if (variantDslInfo.multiDexKeepFile != null) {
+                task.userMultidexKeepFile.fileProvider(
+                    project.provider { variantDslInfo.multiDexKeepFile }
+                )
+            }
+            task.userMultidexKeepFile.disallowChanges()
+
+            task.inputClasses.from(inputClasses).disallowChanges()
+            task.libraryClasses.from(libraryClasses).disallowChanges()
+
+            task.bootClasspath.from(variantScope.bootClasspath).disallowChanges()
+            task.errorFormat
+                .setDisallowChanges(
+                    SyncOptions.getErrorFormatMode(variantScope.globalScope.projectOptions))
         }
     }
 }

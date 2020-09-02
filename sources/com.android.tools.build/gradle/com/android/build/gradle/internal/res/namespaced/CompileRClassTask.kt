@@ -16,7 +16,6 @@
 package com.android.build.gradle.internal.res.namespaced
 
 import com.android.build.gradle.internal.profile.PROPERTY_VARIANT_NAME_KEY
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_CLASSES
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_SOURCES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
@@ -49,7 +48,6 @@ class CompileRClassTaskCreationAction(private val variantScope: VariantScope) :
 
         variantScope.artifacts.producesDir(
             RUNTIME_R_CLASS_CLASSES,
-            BuildArtifactsHolder.OperationType.INITIAL,
             taskProvider,
             { output },
             name
@@ -59,7 +57,7 @@ class CompileRClassTaskCreationAction(private val variantScope: VariantScope) :
     override fun configure(task: JavaCompile) {
         val taskContainer: MutableTaskContainer = variantScope.taskContainer
         task.dependsOn(taskContainer.preBuildTask)
-        task.extensions.add(PROPERTY_VARIANT_NAME_KEY, variantScope.fullVariantName)
+        task.extensions.add(PROPERTY_VARIANT_NAME_KEY, variantScope.name)
 
         task.classpath = task.project.files()
         task.source(variantScope.artifacts.getFinalProductAsFileCollection(RUNTIME_R_CLASS_SOURCES))

@@ -16,22 +16,19 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.dsl.SigningConfig
 import com.google.common.annotations.VisibleForTesting
 import com.android.build.gradle.internal.packaging.createDefaultDebugStore
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.BuilderConstants
-import com.android.builder.model.SigningConfig
 import com.android.builder.signing.DefaultSigningConfig
 import com.android.builder.utils.SynchronizedFile
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions.checkState
 import org.gradle.api.InvalidUserDataException
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
@@ -144,7 +141,6 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.VALIDATE_SIGNING_CONFIG,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 ValidateSigningTask::dummyOutputDirectory
             )
@@ -153,8 +149,9 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
         override fun configure(task: ValidateSigningTask) {
             super.configure(task)
 
-            task.signingConfig = variantScope.variantConfiguration.signingConfig ?: throw IllegalStateException(
-                "No signing config configured for variant " + variantScope.fullVariantName)
+            task.signingConfig = variantScope.variantDslInfo.signingConfig ?: throw IllegalStateException(
+                "No signing config configured for variant " + variantScope.name
+            )
             task.defaultDebugKeystoreLocation = defaultDebugKeystoreLocation
             task.outputs.upToDateWhen { !task.forceRerun() }
         }

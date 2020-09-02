@@ -22,17 +22,18 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.FilterData;
 import com.android.build.OutputFile;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.VariantOutput;
+import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.ide.FilterDataImpl;
 import com.android.utils.Pair;
 import com.android.utils.StringHelper;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /** Factory for {@link ApkData} instances. Cannot be stored in any model related objects. */
@@ -41,23 +42,21 @@ public class OutputFactory {
     static final String UNIVERSAL = "universal";
 
     private final String projectBaseName;
-    private final GradleVariantConfiguration variantConfiguration;
-    private final OutputScope.Builder outputScopeBuilder;
-    private final Supplier<OutputScope> outputSupplier;
+    private final VariantDslInfo variantDslInfo;
+    private final AtomicBoolean mainSplitAdded = new AtomicBoolean(false);
+    private final AtomicBoolean apkDataListFinalized = new AtomicBoolean(false);
+    private final List<ApkData> apkDataList = new ArrayList<>();
 
-    public OutputFactory(String projectBaseName, GradleVariantConfiguration variantConfiguration) {
+    public OutputFactory(String projectBaseName, VariantDslInfo variantDslInfo) {
         this.projectBaseName = projectBaseName;
-        this.variantConfiguration = variantConfiguration;
-        this.outputScopeBuilder = new OutputScope.Builder();
-        this.outputSupplier = Suppliers.memoize(outputScopeBuilder::build);
+        this.variantDslInfo = variantDslInfo;
     }
 
     private String getOutputFileName(String baseName) {
         // we only know if it is signed during configuration, if its the base module.
         // Otherwise, don't differentiate between signed and unsigned.
         String suffix =
-                (variantConfiguration.isSigningReady()
-                                || !variantConfiguration.getType().isBaseModule())
+                (variantDslInfo.isSigningReady() || !variantDslInfo.getVariantType().isBaseModule())
                         ? DOT_ANDROID_PACKAGE
                         : "-unsigned.apk";
         return projectBaseName + "-" + baseName + suffix;
@@ -66,26 +65,26 @@ public class OutputFactory {
     public ApkData addMainOutput(String defaultFilename) {
         ApkData mainOutput =
                 new Main(
-                        variantConfiguration.getBaseName(),
-                        variantConfiguration.getFullName(),
+                        variantDslInfo.getBaseName(),
+                        variantDslInfo.getComponentIdentity().getName(),
                         defaultFilename);
-        outputScopeBuilder.addMainSplit(mainOutput);
+        checkMainSplitExistenceAndAdd(mainOutput);
         return mainOutput;
     }
 
     public ApkData addMainApk() {
-        return addMainOutput(getOutputFileName(variantConfiguration.getBaseName()));
+        return addMainOutput(getOutputFileName(variantDslInfo.getBaseName()));
     }
 
     public ApkData addUniversalApk() {
 
-        String baseName = variantConfiguration.computeBaseNameWithSplits(UNIVERSAL);
+        String baseName = variantDslInfo.computeBaseNameWithSplits(UNIVERSAL);
         ApkData mainApk =
                 new Universal(
                         baseName,
-                        variantConfiguration.computeFullNameWithSplits(UNIVERSAL),
+                        variantDslInfo.computeFullNameWithSplits(UNIVERSAL),
                         getOutputFileName(baseName));
-        outputScopeBuilder.addMainSplit(mainApk);
+        checkMainSplitExistenceAndAdd(mainApk);
         return mainApk;
     }
 
@@ -99,40 +98,45 @@ public class OutputFactory {
                                                         filter.getFirst(), filter.getSecond()))
                                 .collect(Collectors.toList()));
         String filterName = FullSplit._getFilterName(filtersList);
-        String baseName = variantConfiguration.computeBaseNameWithSplits(filterName);
+        String baseName = variantDslInfo.computeBaseNameWithSplits(filterName);
         ApkData apkData =
                 new FullSplit(
                         filterName,
                         baseName,
-                        variantConfiguration.computeFullNameWithSplits(filterName),
+                        variantDslInfo.computeFullNameWithSplits(filterName),
                         getOutputFileName(baseName),
                         filtersList);
-        outputScopeBuilder.addSplit(apkData);
+        addApkDataToList(apkData);
         return apkData;
     }
 
-    public ApkData addConfigurationSplit(OutputFile.FilterType filterType, String filterValue) {
-        String baseName = variantConfiguration.computeBaseNameWithSplits(filterValue);
-        return addConfigurationSplit(filterType, filterValue, getOutputFileName(baseName));
+    private synchronized void addApkDataToList(ApkData apkData) {
+        if (apkDataListFinalized.get()) {
+            throw new RuntimeException("APK list already finalized.");
+        }
+        apkDataList.add(apkData);
     }
 
-    @VisibleForTesting
-    public ApkData addConfigurationSplit(
-            OutputFile.FilterType filterType, String filterValue, String fileName) {
-        ApkData apkData =
-                new ConfigurationSplitApkData(
-                        filterType,
-                        filterValue,
-                        variantConfiguration.computeBaseNameWithSplits(filterValue),
-                        variantConfiguration.getFullName(),
-                        variantConfiguration.getDirName(),
-                        fileName);
-        outputScopeBuilder.addSplit(apkData);
-        return apkData;
+    private synchronized void checkMainSplitExistenceAndAdd(ApkData apkData) {
+        if (mainSplitAdded.get()) {
+            throw new RuntimeException(
+                    "Cannot add "
+                            + apkData
+                            + " in a scope that already"
+                            + " has "
+                            + apkDataList
+                                    .stream()
+                                    .filter(it -> it.getType() == VariantOutput.OutputType.MAIN)
+                                    .map(ApkData::toString)
+                                    .collect(Collectors.joining(",")));
+        }
+        mainSplitAdded.set(true);
+        addApkDataToList(apkData);
     }
 
-    public OutputScope getOutput() {
-        return outputSupplier.get();
+    public synchronized List<ApkData> finalizeApkDataList() {
+        apkDataListFinalized.set(true);
+        return ImmutableList.sortedCopyOf(apkDataList);
     }
 
     private static final class Main extends ApkData {
@@ -147,8 +151,8 @@ public class OutputFactory {
 
         @NonNull
         @Override
-        public OutputType getType() {
-            return OutputType.MAIN;
+        public VariantOutput.OutputType getType() {
+            return VariantOutput.OutputType.MAIN;
         }
 
         @Nullable
@@ -213,8 +217,8 @@ public class OutputFactory {
 
         @NonNull
         @Override
-        public OutputType getType() {
-            return OutputType.FULL_SPLIT;
+        public VariantOutput.OutputType getType() {
+            return VariantOutput.OutputType.FULL_SPLIT;
         }
 
         @Nullable
@@ -233,6 +237,11 @@ public class OutputFactory {
         @Override
         public String getFullName() {
             return fullName;
+        }
+
+        @Override
+        public boolean isUniversal() {
+            return true;
         }
 
         @NonNull
@@ -282,11 +291,11 @@ public class OutputFactory {
 
         private static String _getFilterName(ImmutableList<FilterData> filters) {
             StringBuilder sb = new StringBuilder();
-            String densityFilter = ApkData.getFilter(filters, FilterType.DENSITY);
+            String densityFilter = ApkData.getFilter(filters, VariantOutput.FilterType.DENSITY);
             if (densityFilter != null) {
                 sb.append(densityFilter);
             }
-            String abiFilter = getFilter(filters, FilterType.ABI);
+            String abiFilter = getFilter(filters, VariantOutput.FilterType.ABI);
             if (abiFilter != null) {
                 StringHelper.appendCamelCase(sb, abiFilter);
             }
@@ -295,8 +304,8 @@ public class OutputFactory {
 
         @NonNull
         @Override
-        public OutputType getType() {
-            return OutputType.FULL_SPLIT;
+        public VariantOutput.OutputType getType() {
+            return VariantOutput.OutputType.FULL_SPLIT;
         }
 
         @NonNull
@@ -322,6 +331,11 @@ public class OutputFactory {
         }
 
         @Override
+        public boolean isUniversal() {
+            return false;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) {
                 return true;
@@ -340,92 +354,6 @@ public class OutputFactory {
         @Override
         public int hashCode() {
             return Objects.hash(super.hashCode(), filterName, filters);
-        }
-    }
-
-    public static class ConfigurationSplitApkData extends ApkData {
-
-        @NonNull private final String filterName, baseName, fullName, dirName;
-        private final ImmutableList<FilterData> filters;
-
-        public ConfigurationSplitApkData(
-                @NonNull OutputFile.FilterType filterType,
-                @NonNull String filterName,
-                @NonNull String baseName,
-                @NonNull String fullName,
-                @NonNull String dirName,
-                @NonNull String fileName) {
-            this.filters = ImmutableList.of(new FilterDataImpl(filterType, filterName));
-            this.filterName = filterName;
-            this.baseName = baseName;
-            this.fullName = fullName;
-            this.dirName = dirName;
-            setOutputFileName(fileName);
-        }
-
-        @NonNull
-        @Override
-        public OutputType getType() {
-            return OutputType.SPLIT;
-        }
-
-        @Override
-        public boolean requiresAapt() {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public String getFilterName() {
-            return filterName;
-        }
-
-        @NonNull
-        @Override
-        public ImmutableList<FilterData> getFilters() {
-            return filters;
-        }
-
-        @NonNull
-        @Override
-        public String getBaseName() {
-            return baseName;
-        }
-
-        @NonNull
-        @Override
-        public String getFullName() {
-            return fullName;
-        }
-
-        @NonNull
-        @Override
-        public String getDirName() {
-            return dirName;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            if (!super.equals(o)) {
-                return false;
-            }
-            ConfigurationSplitApkData that = (ConfigurationSplitApkData) o;
-            return Objects.equals(baseName, that.baseName)
-                    && Objects.equals(fullName, that.fullName)
-                    && Objects.equals(dirName, that.dirName)
-                    // faster to compare the filterName than filters.
-                    && Objects.equals(filterName, that.filterName);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(super.hashCode(), baseName, fullName, dirName, filterName);
         }
     }
 }

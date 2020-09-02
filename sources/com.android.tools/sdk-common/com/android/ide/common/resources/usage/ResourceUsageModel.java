@@ -33,8 +33,10 @@ import static com.android.SdkConstants.PREFIX_THEME_REF;
 import static com.android.SdkConstants.PREFIX_TWOWAY_BINDING_EXPR;
 import static com.android.SdkConstants.REFERENCE_STYLE;
 import static com.android.SdkConstants.STYLE_RESOURCE_PREFIX;
+import static com.android.SdkConstants.TAG_ACTION;
 import static com.android.SdkConstants.TAG_ITEM;
 import static com.android.SdkConstants.TAG_LAYOUT;
+import static com.android.SdkConstants.TAG_NAVIGATION;
 import static com.android.SdkConstants.TAG_STYLE;
 import static com.android.SdkConstants.TOOLS_URI;
 import static com.android.SdkConstants.VALUE_SAFE;
@@ -67,6 +69,7 @@ import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -360,7 +363,7 @@ public class ResourceUsageModel {
 
             Resource resource = (Resource) o;
 
-            if (name != null ? !name.equals(resource.name) : resource.name != null) {
+            if (!Objects.equals(name, resource.name)) {
                 return false;
             }
             if (type != resource.type) {
@@ -568,11 +571,8 @@ public class ResourceUsageModel {
         if (realValue != -1) {
             mValueToResource.put(realValue, resource);
         }
-        Map<String, Resource> nameMap = mTypeToName.get(type);
-        if (nameMap == null) {
-            nameMap = Maps.newHashMapWithExpectedSize(30);
-            mTypeToName.put(type, nameMap);
-        }
+        Map<String, Resource> nameMap =
+                mTypeToName.computeIfAbsent(type, k -> Maps.newHashMapWithExpectedSize(30));
         nameMap.put(SdkUtils.getResourceFieldName(name), resource);
 
         // TODO: Assert that we don't set the same resource multiple times to different values.
@@ -902,6 +902,11 @@ public class ResourceUsageModel {
                                 // now; longer term, it would be cool if we could track uses of
                                 // the binding field instead.
                                 markReachable(addResource(url.type, url.name, null));
+                            } else if (isId && TAG_ACTION.equals(element.getTagName()) &&
+                                    TAG_NAVIGATION.equals(element.getOwnerDocument().getDocumentElement().getTagName())) {
+                                // Actions on navigation items are read by the navigation framework
+                                // so treat as read
+                                markReachable(addResource(url.type, url.name, null));
                             } else {
                                 resource = declareResource(url.type, url.name, attr);
                                 if (!isId || !ANDROID_URI.equals(attr.getNamespaceURI())) {
@@ -922,18 +927,22 @@ public class ResourceUsageModel {
                             value.startsWith(PREFIX_TWOWAY_BINDING_EXPR)) {
                         // Data binding expression: there could be multiple references here
                         int length = value.length();
-                        int index = value.startsWith(PREFIX_TWOWAY_BINDING_EXPR)
-                                ? PREFIX_TWOWAY_BINDING_EXPR.length()
-                                : PREFIX_BINDING_EXPR.length();
+                        int dbExpressionStartIndex =
+                                value.startsWith(PREFIX_TWOWAY_BINDING_EXPR)
+                                        ? PREFIX_TWOWAY_BINDING_EXPR.length()
+                                        : PREFIX_BINDING_EXPR.length();
+
+                        // Find resource references that look like "@string/", "@drawable/", etc.
+                        int resourceStartIndex = dbExpressionStartIndex;
                         while (true) {
-                            index = value.indexOf('@', index);
-                            if (index == -1) {
+                            resourceStartIndex = value.indexOf('@', resourceStartIndex);
+                            if (resourceStartIndex == -1) {
                                 break;
                             }
                             // Find end of (potential) resource URL: first non resource URL character
-                            int end = index + 1;
-                            while (end < length) {
-                                char c = value.charAt(end);
+                            int resourceEndIndex = resourceStartIndex + 1;
+                            while (resourceEndIndex < length) {
+                                char c = value.charAt(resourceEndIndex);
                                 if (!(Character.isJavaIdentifierPart(c) ||
                                         c == '_' ||
                                         c == '.' ||
@@ -941,9 +950,11 @@ public class ResourceUsageModel {
                                         c == '+')) {
                                     break;
                                 }
-                                end++;
+                                resourceEndIndex++;
                             }
-                            url = ResourceUrl.parse(value.substring(index, end));
+                            url =
+                                    ResourceUrl.parse(
+                                            value.substring(resourceStartIndex, resourceEndIndex));
                             if (url != null && !url.isFramework()) {
                                 Resource resource;
                                 if (url.isCreate()) {
@@ -954,7 +965,39 @@ public class ResourceUsageModel {
                                 from.addReference(resource);
                             }
 
-                            index = end;
+                            resourceStartIndex = resourceEndIndex;
+                        }
+
+                        // Find resource references that look like "R.string", "R.drawable", etc.
+                        resourceStartIndex = dbExpressionStartIndex;
+                        while (true) {
+                            resourceStartIndex = value.indexOf("R.", resourceStartIndex);
+                            if (resourceStartIndex == -1) {
+                                break;
+                            }
+                            int resourceEndIndex = resourceStartIndex + 2;
+                            // No exact match for "R." found (e.g. don't match against "BR.")
+                            if (Character.isJavaIdentifierPart(
+                                    value.charAt(resourceStartIndex - 1))) {
+                                continue;
+                            }
+                            while (resourceEndIndex < length
+                                    && (Character.isJavaIdentifierPart(
+                                                    value.charAt(resourceEndIndex))
+                                            || value.charAt(resourceEndIndex) == '.')) {
+                                resourceEndIndex++;
+                            }
+                            // Get a substring "type.name" from "R.type.name" and split it into [type, name].
+                            String[] tokens =
+                                    value.substring(resourceStartIndex + 2, resourceEndIndex)
+                                            .split("\\.");
+                            if (tokens.length == 2) {
+                                ResourceType type = ResourceType.fromClassName(tokens[0]);
+                                if (type != null) {
+                                    from.addReference(addResource(type, tokens[1], null));
+                                }
+                            }
+                            resourceStartIndex = resourceEndIndex;
                         }
                     }
                 }
@@ -994,6 +1037,10 @@ public class ResourceUsageModel {
                 ResourceType type = ResourceType.fromXmlTag(element);
                 if (type != null) {
                     String name = getResourceFieldName(element);
+                    if (name.isEmpty()) {
+                        // Not a real resource
+                        return;
+                    }
                     if (type == ResourceType.PUBLIC) {
                         String typeName = element.getAttribute(ATTR_TYPE);
                         if (!typeName.isEmpty()) {
@@ -1009,6 +1056,21 @@ public class ResourceUsageModel {
                 }
                 if (definition != null) {
                     from = definition;
+                }
+
+                if (type == ResourceType.STRING) {
+                    // Don't look for resource definitions inside a <string> element;
+                    // you can find random markup there, like <font>, which should not
+                    // be taken to be a real resource. Only handle text children:
+                    NodeList children = node.getChildNodes();
+                    for (int i = 0, n = children.getLength(); i < n; i++) {
+                        Node child = children.item(i);
+                        if (child.getNodeType() != Node.ELEMENT_NODE) {
+                            recordResourceReferences(folderType, child, from);
+                        }
+                    }
+
+                    return;
                 }
 
                 String tagName = element.getTagName();
@@ -1622,6 +1684,13 @@ public class ResourceUsageModel {
                 }
             }
         }
+    }
+
+    /** Adds the resource identifiers found in the given Kotlin code into the reference map */
+    public void tokenizeKotlinCode(@NonNull String s) {
+        // the Java tokenizer works for Kotlin as well. It doesn't handle nested
+        // block comments but that's not common in Kotlin code.
+        tokenizeJavaCode(s);
     }
 
     /** Adds the resource identifiers found in the given Java source code into the reference map */

@@ -18,14 +18,11 @@ package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
 import com.android.build.gradle.internal.VariantManager;
-import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.api.dsl.DslScope;
 import com.android.builder.model.BaseConfig;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import javax.inject.Inject;
-import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 
 /**
@@ -59,17 +56,12 @@ import org.gradle.api.provider.Property;
  * href="https://developer.android.com/studio/build/build-variants.html#filter-variants">filter
  * variants using <code>android.variantFilter</code></a>.
  */
-public class ProductFlavor extends BaseFlavor {
+public class ProductFlavor extends BaseFlavor implements com.android.build.api.dsl.ProductFlavor {
 
     @Inject
-    public ProductFlavor(
-            @NonNull String name,
-            @NonNull Project project,
-            @NonNull ObjectFactory objectFactory,
-            @NonNull DeprecationReporter deprecationReporter,
-            @NonNull Logger logger) {
-        super(name, project, objectFactory, deprecationReporter, logger);
-        isDefault = objectFactory.property(Boolean.class).convention(false);
+    public ProductFlavor(@NonNull String name, @NonNull DslScope dslScope) {
+        super(name, dslScope);
+        isDefault = dslScope.getObjectFactory().property(Boolean.class).convention(false);
     }
 
     private final Property<Boolean> isDefault;
@@ -159,6 +151,27 @@ public class ProductFlavor extends BaseFlavor {
     /** Whether this product flavor should be selected in Studio by default */
     public Property<Boolean> getIsDefault() {
         return isDefault;
+    }
+
+    // Temp HACK. we need a way to access the Property<Boolean> from Kotlin
+    // DO NOT USE
+    @Deprecated
+    public Property<Boolean> getIsDefaultProp() {
+        return isDefault;
+    }
+
+    @Override
+    public boolean isDefault() {
+        return isDefault.get();
+    }
+
+    @Override
+    public void setDefault(boolean isDefault) {
+        this.isDefault.set(isDefault);
+    }
+
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault.set(isDefault);
     }
 
     @Override

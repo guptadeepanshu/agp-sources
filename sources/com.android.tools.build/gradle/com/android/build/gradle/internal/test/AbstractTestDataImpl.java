@@ -20,12 +20,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.core.VariantConfiguration;
-import com.android.build.gradle.internal.scope.BuildElements;
-import com.android.build.gradle.internal.scope.ExistingBuildElements;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.api.variant.BuiltArtifacts;
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
+import com.android.build.gradle.internal.testing.TestData;
 import com.android.builder.model.SourceProvider;
-import com.android.builder.testing.TestData;
 import com.android.sdklib.AndroidVersion;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
@@ -45,8 +45,8 @@ import org.gradle.api.provider.Provider;
  */
 public abstract class AbstractTestDataImpl implements TestData {
 
-    @NonNull
-    private final VariantConfiguration<?, ?, ?> testVariantConfig;
+    @NonNull private final VariantDslInfo testVariantConfig;
+    @NonNull private final VariantSources testVariantSources;
 
     @NonNull
     private Map<String, String> extraInstrumentationTestRunnerArgs;
@@ -58,10 +58,12 @@ public abstract class AbstractTestDataImpl implements TestData {
     @Nullable protected final FileCollection testedApksDir;
 
     public AbstractTestDataImpl(
-            @NonNull VariantConfiguration<?, ?, ?> testVariantConfig,
+            @NonNull VariantDslInfo testVariantDslInfo,
+            @NonNull VariantSources testVariantSources,
             @NonNull Provider<Directory> testApkDir,
             @Nullable FileCollection testedApksDir) {
-        this.testVariantConfig = checkNotNull(testVariantConfig);
+        this.testVariantConfig = checkNotNull(testVariantDslInfo);
+        this.testVariantSources = testVariantSources;
         this.extraInstrumentationTestRunnerArgs = Maps.newHashMap();
         this.testApkDir = testApkDir;
         this.testedApksDir = testedApksDir;
@@ -111,7 +113,10 @@ public abstract class AbstractTestDataImpl implements TestData {
     @NonNull
     @Override
     public String getFlavorName() {
-        return testVariantConfig.getFlavorName().toUpperCase(Locale.getDefault());
+        return testVariantConfig
+                .getComponentIdentity()
+                .getFlavorName()
+                .toUpperCase(Locale.getDefault());
     }
 
     /**
@@ -148,7 +153,7 @@ public abstract class AbstractTestDataImpl implements TestData {
         // apply JUnit logic to see if there's something to run, but that would not catch the case
         // where user makes a typo in a test name or forgets to inherit from a JUnit class
         ImmutableList.Builder<File> javaDirectories = ImmutableList.builder();
-        for (SourceProvider sourceProvider : testVariantConfig.getSortedSourceProviders()) {
+        for (SourceProvider sourceProvider : testVariantSources.getSortedSourceProviders()) {
             javaDirectories.addAll(sourceProvider.getJavaDirectories());
         }
         return javaDirectories.build();
@@ -157,15 +162,17 @@ public abstract class AbstractTestDataImpl implements TestData {
     @NonNull
     @Override
     public File getTestApk() {
-        BuildElements testApkOutputs =
-                ExistingBuildElements.from(InternalArtifactType.APK.INSTANCE, testApkDir);
-        if (testApkOutputs.size() != 1) {
+        BuiltArtifacts testApkOutputs = new BuiltArtifactsLoaderImpl().load(testApkDir.get());
+        if (testApkOutputs == null) {
+            throw new RuntimeException("No test APK in provided directory, file a bug");
+        }
+        if (testApkOutputs.getElements().size() != 1) {
             throw new RuntimeException(
                     "Unexpected number of main APKs, expected 1, got  "
-                            + testApkOutputs.size()
+                            + testApkOutputs.getElements().size()
                             + ":"
-                            + Joiner.on(",").join(testApkOutputs));
+                            + Joiner.on(",").join(testApkOutputs.getElements()));
         }
-        return testApkOutputs.iterator().next().getOutputFile();
+        return testApkOutputs.getElements().iterator().next().getOutputFile().toFile();
     }
 }

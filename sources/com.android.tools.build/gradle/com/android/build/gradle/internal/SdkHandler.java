@@ -22,8 +22,8 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.ndk.NdkHandler;
 import com.android.builder.core.ToolsRevisionUtils;
-import com.android.builder.errors.EvalIssueReporter;
-import com.android.builder.errors.EvalIssueReporter.Type;
+import com.android.builder.errors.IssueReporter;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.sdk.DefaultSdkLoader;
 import com.android.builder.sdk.InstallFailedException;
 import com.android.builder.sdk.LicenceNotAcceptedException;
@@ -42,7 +42,6 @@ import com.android.utils.ILogger;
 import com.android.utils.Pair;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
-import java.io.File;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -54,7 +53,7 @@ public class SdkHandler {
     @NonNull
     private final ILogger logger;
 
-    @NonNull private final EvalIssueReporter evalIssueReporter;
+    @NonNull private final IssueReporter issueReporter;
 
     @NonNull private SdkLocationSourceSet sdkLocationSourceSet;
     @NonNull private SdkLibData sdkLibData = SdkLibData.dontDownload();
@@ -63,10 +62,10 @@ public class SdkHandler {
     public SdkHandler(
             @NonNull SdkLocationSourceSet sdkLocationSourceSet,
             @NonNull ILogger logger,
-            @NonNull EvalIssueReporter evalIssueReporter) {
+            @NonNull IssueReporter issueReporter) {
         this.sdkLocationSourceSet = sdkLocationSourceSet;
         this.logger = logger;
-        this.evalIssueReporter = evalIssueReporter;
+        this.issueReporter = issueReporter;
     }
 
     /**
@@ -84,12 +83,12 @@ public class SdkHandler {
         SdkLoader sdkLoader = getSdkLoader();
         if (sdkLoader == null) {
             // SdkLoader couldn't be constructed, probably because we're missing the sdk dir configuration.
-            // If so, getSdkLoader() already reported to the evalIssueReporter.
+            // If so, getSdkLoader() already reported to the issueReporter.
             return null;
         }
 
         if (buildToolRevision.compareTo(ToolsRevisionUtils.MIN_BUILD_TOOLS_REV) < 0) {
-            evalIssueReporter.reportWarning(
+            issueReporter.reportWarning(
                     Type.BUILD_TOOLS_TOO_LOW,
                     String.format(
                             "The specified Android SDK Build Tools version (%1$s) is "
@@ -116,8 +115,8 @@ public class SdkHandler {
         try {
             targetInfo = sdkLoader.getTargetInfo(targetHash, buildToolRevision, logger, sdkLibData);
         } catch (LicenceNotAcceptedException e) {
-            evalIssueReporter.reportError(
-                    EvalIssueReporter.Type.MISSING_SDK_PACKAGE,
+            issueReporter.reportError(
+                    IssueReporter.Type.MISSING_SDK_PACKAGE,
                     e.getMessage(),
                     e.getAffectedPackages()
                             .stream()
@@ -125,8 +124,8 @@ public class SdkHandler {
                             .collect(Collectors.joining(" ")));
             return null;
         } catch (InstallFailedException e) {
-            evalIssueReporter.reportError(
-                    EvalIssueReporter.Type.MISSING_SDK_PACKAGE,
+            issueReporter.reportError(
+                    IssueReporter.Type.MISSING_SDK_PACKAGE,
                     e.getMessage(),
                     e.getAffectedPackages()
                             .stream()
@@ -134,7 +133,7 @@ public class SdkHandler {
                             .collect(Collectors.joining(" ")));
             return null;
         } catch (IllegalStateException e) {
-            evalIssueReporter.reportError(EvalIssueReporter.Type.MISSING_SDK_PACKAGE, e);
+            issueReporter.reportError(IssueReporter.Type.MISSING_SDK_PACKAGE, e);
             return null;
         }
 
@@ -156,7 +155,8 @@ public class SdkHandler {
         ProgressIndicator progress = new ConsoleProgressIndicator();
         AndroidSdkHandler sdk =
                 AndroidSdkHandler.getInstance(
-                        SdkLocator.getSdkLocation(sdkLocationSourceSet).getDirectory());
+                        SdkLocator.getSdkLocation(sdkLocationSourceSet, issueReporter)
+                                .getDirectory());
         LocalPackage platformToolsPackage =
                 sdk.getLatestLocalPackageForPrefix(
                         SdkConstants.FD_PLATFORM_TOOLS, null, true, progress);
@@ -166,20 +166,20 @@ public class SdkHandler {
                     sdkLoader.installSdkTool(sdkLibData, SdkConstants.FD_PLATFORM_TOOLS);
                     return true;
                 } catch (LicenceNotAcceptedException e) {
-                    evalIssueReporter.reportWarning(
-                            EvalIssueReporter.Type.MISSING_SDK_PACKAGE,
+                    issueReporter.reportWarning(
+                            IssueReporter.Type.MISSING_SDK_PACKAGE,
                             SdkConstants.FD_PLATFORM_TOOLS
                                     + " package is not installed. Please accept the installation licence to continue",
                             SdkConstants.FD_PLATFORM_TOOLS);
                 } catch (InstallFailedException e) {
-                    evalIssueReporter.reportWarning(
-                            EvalIssueReporter.Type.MISSING_SDK_PACKAGE,
+                    issueReporter.reportWarning(
+                            IssueReporter.Type.MISSING_SDK_PACKAGE,
                             SdkConstants.FD_PLATFORM_TOOLS
                                     + " package is not installed, and automatic installation failed.",
                             SdkConstants.FD_PLATFORM_TOOLS);
                 }
             } else {
-                evalIssueReporter.reportWarning(
+                issueReporter.reportWarning(
                         Type.MISSING_SDK_PACKAGE,
                         SdkConstants.FD_PLATFORM_TOOLS + " package is not installed.",
                         SdkConstants.FD_PLATFORM_TOOLS);
@@ -191,7 +191,8 @@ public class SdkHandler {
     @Nullable
     private synchronized SdkLoader getSdkLoader() {
         if (sdkLoader == null) {
-            SdkLocation sdkLocation = SdkLocator.getSdkLocation(sdkLocationSourceSet);
+            SdkLocation sdkLocation =
+                    SdkLocator.getSdkLocation(sdkLocationSourceSet, issueReporter);
 
             switch (sdkLocation.getType()) {
                 case TEST: // Fallthrough
@@ -202,18 +203,7 @@ public class SdkHandler {
                     sdkLoader = PlatformLoader.getLoader(sdkLocation.getDirectory());
                     break;
                 case MISSING:
-                    String filePath =
-                            new File(
-                                            sdkLocationSourceSet.getProjectRoot(),
-                                            SdkConstants.FN_LOCAL_PROPERTIES)
-                                    .getAbsolutePath();
-                    String message =
-                            "SDK location not found. Define location with an ANDROID_SDK_ROOT environment "
-                                    + "variable or by setting the sdk.dir path in your project's local "
-                                    + "properties file at '"
-                                    + filePath
-                                    + "'.";
-                    evalIssueReporter.reportError(Type.SDK_NOT_SET, message, filePath);
+                    // This error should have been reported earlier when SdkLocation was created
             }
         }
 
@@ -222,7 +212,8 @@ public class SdkHandler {
 
     public synchronized void unload() {
         if (sdkLoader != null) {
-            SdkLocation sdkLocation = SdkLocator.getSdkLocation(sdkLocationSourceSet);
+            SdkLocation sdkLocation =
+                    SdkLocator.getSdkLocation(sdkLocationSourceSet, issueReporter);
 
             switch (sdkLocation.getType()) {
                 case TEST: // Intended falloff

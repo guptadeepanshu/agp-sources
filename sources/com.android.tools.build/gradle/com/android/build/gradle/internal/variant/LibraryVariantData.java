@@ -17,12 +17,16 @@ package com.android.build.gradle.internal.variant;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.variant.impl.VariantImpl;
+import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantDslInfoImpl;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.VariantType;
-import com.android.builder.profile.Recorder;
 import com.android.utils.StringHelper;
 import com.google.common.collect.Maps;
 import java.io.File;
@@ -38,34 +42,50 @@ public class LibraryVariantData extends BaseVariantData implements TestedVariant
     public LibraryVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration config,
-            @NonNull Recorder recorder) {
-        super(globalScope, taskManager, config, recorder);
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfoImpl variantDslInfo,
+            @NonNull VariantImpl publicVariantApi,
+            @NonNull VariantPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources) {
+
+        super(
+                globalScope,
+                taskManager,
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
         testVariants = Maps.newHashMap();
 
         // create default output
-        getOutputFactory()
-                .addMainOutput(
-                        globalScope.getProjectBaseName()
-                                + "-"
-                                + getVariantConfiguration().getBaseName()
-                                + "."
-                                + BuilderConstants.EXT_LIB_ARCHIVE);
+        getPublicVariantPropertiesApi()
+                .addVariantOutput(
+                        getOutputFactory()
+                                .addMainOutput(
+                                        globalScope.getProjectBaseName()
+                                                + "-"
+                                                + getVariantDslInfo().getBaseName()
+                                                + "."
+                                                + BuilderConstants.EXT_LIB_ARCHIVE));
     }
 
     @Override
     @NonNull
     public String getDescription() {
-        final GradleVariantConfiguration config = getVariantConfiguration();
+        final VariantDslInfo variantDslInfo = getVariantDslInfo();
 
-        if (config.hasFlavors()) {
+        if (variantDslInfo.hasFlavors()) {
             StringBuilder sb = new StringBuilder(50);
-            StringHelper.appendCapitalized(sb, config.getBuildType().getName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getBuildType());
             sb.append(" build for flavor ");
-            StringHelper.appendCapitalized(sb, config.getFlavorName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getFlavorName());
             return sb.toString();
         } else {
-            return StringHelper.capitalizeAndAppend(config.getBuildType().getName(), " build");
+            return StringHelper.capitalizeAndAppend(
+                    variantDslInfo.getComponentIdentity().getBuildType(), " build");
         }
     }
 

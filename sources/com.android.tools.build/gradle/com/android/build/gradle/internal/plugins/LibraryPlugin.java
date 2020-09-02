@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal.plugins;
 
 import android.databinding.tool.DataBindingBuilder;
+import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryExtension;
@@ -23,15 +24,17 @@ import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.LibraryTaskManager;
 import com.android.build.gradle.internal.TaskManager;
+import com.android.build.gradle.internal.api.dsl.DslScope;
 import com.android.build.gradle.internal.dependency.SourceSetManager;
 import com.android.build.gradle.internal.dsl.BuildType;
+import com.android.build.gradle.internal.dsl.DefaultConfig;
+import com.android.build.gradle.internal.dsl.LibraryExtensionImpl;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.variant.LibraryVariantFactory;
 import com.android.build.gradle.internal.variant.VariantFactory;
 import com.android.build.gradle.options.ProjectOptions;
-import com.android.builder.model.AndroidProject;
 import com.android.builder.profile.Recorder;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
 import javax.inject.Inject;
@@ -52,10 +55,11 @@ public class LibraryPlugin extends BasePlugin {
     @NonNull
     @Override
     protected BaseExtension createExtension(
-            @NonNull Project project,
+            @NonNull DslScope dslScope,
             @NonNull ProjectOptions projectOptions,
             @NonNull GlobalScope globalScope,
             @NonNull NamedDomainObjectContainer<BuildType> buildTypeContainer,
+            @NonNull DefaultConfig defaultConfig,
             @NonNull NamedDomainObjectContainer<ProductFlavor> productFlavorContainer,
             @NonNull NamedDomainObjectContainer<SigningConfig> signingConfigContainer,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
@@ -65,15 +69,18 @@ public class LibraryPlugin extends BasePlugin {
                 .create(
                         "android",
                         getExtensionClass(),
-                        project,
+                        dslScope,
                         projectOptions,
                         globalScope,
-                        buildTypeContainer,
-                        productFlavorContainer,
-                        signingConfigContainer,
                         buildOutputs,
                         sourceSetManager,
-                        extraModelInfo);
+                        extraModelInfo,
+                        new LibraryExtensionImpl(
+                                globalScope.getDslScope(),
+                                buildTypeContainer,
+                                defaultConfig,
+                                productFlavorContainer,
+                                signingConfigContainer));
     }
 
     @NonNull
@@ -95,7 +102,7 @@ public class LibraryPlugin extends BasePlugin {
 
     @Override
     protected int getProjectType() {
-        return AndroidProject.PROJECT_TYPE_LIBRARY;
+        return AndroidProjectTypes.PROJECT_TYPE_LIBRARY;
     }
 
     @NonNull

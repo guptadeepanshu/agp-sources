@@ -17,6 +17,7 @@
 package com.android.build.gradle.tasks;
 
 import static com.android.build.gradle.external.cmake.CmakeUtils.getObjectToString;
+import static com.android.build.gradle.internal.cxx.cmake.LinkLibrariesParserKt.parseLinkLibraries;
 import static com.android.build.gradle.internal.cxx.cmake.MakeCmakeMessagePathsAbsoluteKt.makeCmakeMessagePathsAbsolute;
 import static com.android.build.gradle.internal.cxx.configure.CmakeCommandLineKt.convertCmakeCommandLineArgumentsToStringList;
 import static com.android.build.gradle.internal.cxx.configure.CmakeCommandLineKt.getBuildRootFolder;
@@ -85,6 +86,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -94,6 +96,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import org.gradle.api.Action;
+import org.gradle.process.ExecResult;
+import org.gradle.process.ExecSpec;
 
 /**
  * This strategy uses the Vanilla-CMake that supports Cmake server version 1.0 to configure the
@@ -138,7 +144,9 @@ class CmakeServerExternalNativeJsonGenerator extends CmakeExternalNativeJsonGene
 
     @NonNull
     @Override
-    public String executeProcessAndGetOutput(@NonNull CxxAbiModel abi)
+    public String executeProcessAndGetOutput(
+            @NonNull CxxAbiModel abi,
+            @NonNull Function<Action<? super ExecSpec>, ExecResult> execOperation)
             throws ProcessException, IOException {
         // Once a Cmake server object is created
         // - connect to the server
@@ -462,6 +470,32 @@ class CmakeServerExternalNativeJsonGenerator extends CmakeExternalNativeJsonGene
 
         nativeLibraryValue.files = new ArrayList<>();
         nativeLibraryValue.headers = new ArrayList<>();
+        nativeLibraryValue.runtimeFiles = new ArrayList<>();
+
+        Path sysroot = Paths.get(target.sysroot);
+        if (target.linkLibraries != null) {
+            for (String library : parseLinkLibraries(target.linkLibraries)) {
+                // Each element here is just an argument to the linker. It might be a full path to a
+                // library to be linked or a trivial -l flag. If it's a full path that exists within
+                // the prefab directory, it's a library that's needed at runtime.
+                if (library.startsWith("-")) {
+                    continue;
+                }
+
+                // Filter out any other arguments that aren't files.
+                Path libraryPath = Paths.get(library);
+                if (!Files.exists(libraryPath)) {
+                    continue;
+                }
+
+                // Anything under the sysroot shouldn't be included in the APK. This isn't strictly
+                // true since the STLs live here, but those are handled separately by
+                // ExternalNativeBuildTask::buildImpl.
+                if (!libraryPath.startsWith(sysroot)) {
+                    nativeLibraryValue.runtimeFiles.add(libraryPath.toFile());
+                }
+            }
+        }
 
         // Maps each source file to the index of the corresponding strings table entry, which
         // contains the build flags for that source file.

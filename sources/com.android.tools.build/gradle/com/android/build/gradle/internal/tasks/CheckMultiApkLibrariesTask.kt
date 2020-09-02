@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.utils.FileUtils
 import com.google.common.io.Files
 import org.apache.commons.io.Charsets
@@ -83,16 +83,19 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
                 """
 
                     Multiple APKs packaging the same library can cause runtime errors.
-                    Adding the above library as a dependency of the base module will resolve this
-                    issue by packaging the library with the base APK instead.
+                    Placing each of the above libraries in its own dynamic feature and adding that
+                    feature as a dependency of modules requiring it will resolve this issue.
+                    Libraries that are always used together can be combined into a single feature
+                    module to be imported by their dependents. If a library is required by all
+                    feature modules it can be added to the base module instead.
                     """.trimIndent()
             )
             throw GradleException(output.toString())
         }
     }
 
-    class CreationAction(private val variantScope: VariantScope) :
-        TaskCreationAction<CheckMultiApkLibrariesTask>() {
+    class CreationAction(variantScope: VariantScope) :
+        VariantTaskCreationAction<CheckMultiApkLibrariesTask>(variantScope, dependsOnPreBuildTask = false) {
 
         override val name: String
             get() = variantScope.getTaskName("check", "Libraries")
@@ -100,7 +103,7 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
             get() = CheckMultiApkLibrariesTask::class.java
 
         override fun configure(task: CheckMultiApkLibrariesTask) {
-            task.variantName = variantScope.fullVariantName
+            super.configure(task)
 
             task.featureTransitiveDeps =
                     variantScope.getArtifactCollection(
@@ -112,7 +115,7 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
                     FileUtils.join(
                         variantScope.globalScope.intermediatesDir,
                         "check-libraries",
-                        variantScope.variantConfiguration.dirName
+                        variantScope.variantDslInfo.dirName
                     )
         }
     }

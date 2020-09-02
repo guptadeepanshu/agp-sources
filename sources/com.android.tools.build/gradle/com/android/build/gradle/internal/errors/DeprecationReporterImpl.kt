@@ -21,12 +21,12 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
-import com.android.builder.errors.EvalIssueReporter
-import com.android.builder.errors.EvalIssueReporter.Type
+import com.android.builder.errors.IssueReporter
+import com.android.builder.errors.IssueReporter.Type
 import java.io.File
 
 class DeprecationReporterImpl(
-        private val issueReporter: EvalIssueReporter,
+        private val issueReporter: IssueReporter,
         private val projectOptions: ProjectOptions,
         private val projectPath: String) : DeprecationReporter {
 
@@ -41,20 +41,7 @@ class DeprecationReporterImpl(
         issueReporter.reportWarning(
                 Type.DEPRECATED_DSL,
                 "DSL element '$oldDslElement' is obsolete and has been replaced with '$newDslElement'.\n" +
-                        "It will be removed ${deprecationTarget.removalTime}.",
-                "$oldDslElement::$newDslElement::${deprecationTarget.name}")
-    }
-
-    override fun reportDeprecatedUsage(
-            newDslElement: String,
-            oldDslElement: String,
-            url: String,
-            deprecationTarget: DeprecationTarget) {
-        issueReporter.reportWarning(
-                Type.DEPRECATED_DSL,
-                "DSL element '$oldDslElement' is obsolete and has been replaced with '$newDslElement'.\n" +
-                        "It will be removed ${deprecationTarget.removalTime}.\n" +
-                        "For more information, see $url.",
+                        deprecationTarget.getDeprecationTargetMessage(),
                 "$oldDslElement::$newDslElement::${deprecationTarget.name}")
     }
 
@@ -68,8 +55,8 @@ class DeprecationReporterImpl(
             val debugApi = projectOptions.get(BooleanOption.DEBUG_OBSOLETE_API)
 
             val messageStart = "API '$oldApiElement' is obsolete and has been replaced with '$newApiElement'.\n" +
-                    "It will be removed ${deprecationTarget.removalTime}.\n" +
-                    "For more information, see $url."
+                    deprecationTarget.getDeprecationTargetMessage() +
+                    "\nFor more information, see $url."
             var messageEnd = ""
 
             if (debugApi) {
@@ -127,33 +114,19 @@ class DeprecationReporterImpl(
             deprecationTarget: DeprecationTarget) {
         issueReporter.reportWarning(
                 Type.DEPRECATED_DSL,
-                "DSL element '$oldDslElement' is obsolete and will be removed ${deprecationTarget.removalTime}.",
-                "$oldDslElement::::${deprecationTarget.name}")
-    }
-
-    override fun reportObsoleteUsage(
-            oldDslElement: String,
-            url: String,
-            deprecationTarget: DeprecationTarget) {
-        issueReporter.reportWarning(
-                Type.DEPRECATED_DSL,
-                "DSL element '$oldDslElement' is obsolete and will be removed ${deprecationTarget.removalTime}.\n" +
-                        "For more information, see $url.",
+                "DSL element '$oldDslElement' is obsolete.\n" +
+                        deprecationTarget.getDeprecationTargetMessage(),
                 "$oldDslElement::::${deprecationTarget.name}")
     }
 
     override fun reportRenamedConfiguration(
             newConfiguration: String,
             oldConfiguration: String,
-            deprecationTarget: DeprecationTarget,
-            url: String?) {
-        val msg =
-            "Configuration '$oldConfiguration' is obsolete and has been replaced with '$newConfiguration'.\n" +
-                    "It will be removed ${deprecationTarget.removalTime}."
-
+            deprecationTarget: DeprecationTarget) {
         issueReporter.reportWarning(
                 Type.USING_DEPRECATED_CONFIGURATION,
-                if (url != null) "$msg For more information see: $url" else msg,
+            "Configuration '$oldConfiguration' is obsolete and has been replaced with '$newConfiguration'.\n" +
+                    deprecationTarget.getDeprecationTargetMessage(),
                 "$oldConfiguration::$newConfiguration::${deprecationTarget.name}")
     }
 
@@ -165,53 +138,80 @@ class DeprecationReporterImpl(
         issueReporter.reportWarning(
             Type.USING_DEPRECATED_CONFIGURATION,
             "Configuration '$oldConfiguration' is obsolete and has been replaced with DSL element '$newDslElement'.\n" +
-                    "It will be removed ${deprecationTarget.removalTime}.",
+                    deprecationTarget.getDeprecationTargetMessage(),
             "$oldConfiguration::$newDslElement::${deprecationTarget.name}")
     }
 
     override fun reportDeprecatedValue(dslElement: String,
             oldValue: String,
             newValue: String?,
-            url: String?,
             deprecationTarget: DeprecationTarget) {
         issueReporter.reportWarning(Type.USING_DEPRECATED_DSL_VALUE,
                 "DSL element '$dslElement' has a value '$oldValue' which is obsolete " +
-                        if (newValue != null)
+                        (if (newValue != null)
                             "and has been replaced with '$newValue'.\n"
                         else
-                            "and has not been replaced.\n" +
-                        "It will be removed ${deprecationTarget.removalTime}.\n",
-                url)
+                            "and has not been replaced.\n") +
+                        deprecationTarget.getDeprecationTargetMessage())
     }
 
-    override fun reportDeprecatedOption(
-        option: String,
-        deprecationTarget: DeprecationTarget
-    ) {
-        if (suppressedOptionWarnings.contains(option)) {
+    override fun reportOptionIssuesIfAny(option: Option<*>, value: Any) {
+        if (checkAndSet(option, value)) {
             return
         }
-        if (!checkAndSet(option, null)) {
-            issueReporter.reportWarning(
-                Type.UNSUPPORTED_PROJECT_OPTION_USE,
-                "The option '$option' is deprecated and should not be used anymore.\n" +
-                        "It will be removed ${deprecationTarget.removalTime}.")
-        }
-    }
-
-
-    override fun reportExperimentalOption(option: Option<*>, value: String) {
         if (suppressedOptionWarnings.contains(option.propertyName)) {
             return
         }
-        if (!checkAndSet(option, value)) {
-            issueReporter.reportWarning(
-                Type.UNSUPPORTED_PROJECT_OPTION_USE,
-                "The option setting '${option.propertyName}=$value' is experimental and unsupported.\n" +
-                        (if (option.defaultValue != null) "The current default is '${option.defaultValue.toString()}'.\n" else "") +
-                        option.additionalInfo,
-                option.propertyName
-            )
+
+        val defaultValueMessage =
+            option.defaultValue?.let { "\nThe current default is '$it'." } ?: ""
+        when (val status = option.status) {
+            is Option.Status.EXPERIMENTAL -> {
+                if (option.defaultValue != value) {
+                    issueReporter.reportWarning(
+                        Type.UNSUPPORTED_PROJECT_OPTION_USE,
+                        "The option setting '${option.propertyName}=$value' is experimental."
+                                + defaultValueMessage,
+                        option.propertyName
+                    )
+                }
+            }
+            Option.Status.STABLE -> { // No issues
+            }
+            is Option.Status.Deprecated -> {
+                if (option.defaultValue != value) {
+                    issueReporter.reportWarning(
+                        Type.UNSUPPORTED_PROJECT_OPTION_USE,
+                        "The option setting '${option.propertyName}=$value' is deprecated."
+                                + defaultValueMessage
+                                + "\n" + status.getDeprecationTargetMessage(),
+                        option.propertyName
+                    )
+                }
+            }
+            is Option.Status.Removed -> {
+                // Many tests still use BooleanOption.ENABLE_DEPRECATED_NDK even though the feature
+                // has been removed, so we always produce a warning for that option to avoid
+                // breaking tests. TODO: Remove those tests and remove the special treatment for
+                // ENABLE_DEPRECATED_NDK.
+                if (option.defaultValue == value || option == BooleanOption.ENABLE_DEPRECATED_NDK) {
+                    issueReporter.reportWarning(
+                        Type.UNSUPPORTED_PROJECT_OPTION_USE,
+                        "The option '${option.propertyName}' is deprecated."
+                                + defaultValueMessage
+                                + "\n" + status.getRemovedVersionMessage(),
+                        option.propertyName
+                    )
+                } else {
+                    issueReporter.reportError(
+                        Type.UNSUPPORTED_PROJECT_OPTION_USE,
+                        "The option '${option.propertyName}' is deprecated."
+                                + defaultValueMessage
+                                + "\n" + status.getRemovedVersionMessage(),
+                        option.propertyName
+                    )
+                }
+            }
         }
     }
 
@@ -220,6 +220,8 @@ class DeprecationReporterImpl(
          * Set of obsolete APIs that have been warned already.
          */
         private val obsoleteApis = mutableSetOf<String>()
+
+        /** Options that have already been checked for issues. */
         private val options = mutableSetOf<OptionInfo>()
 
         /**
@@ -237,11 +239,11 @@ class DeprecationReporterImpl(
         }
 
         /**
-         * Checks if the given Option has already been warned about, and adds it if not.
+         * Checks if the given Option has already been checked for issues, and records it if not.
          *
-         * @return true if the Option is already part of the set.
+         * @return true if the Option has already been checked for issues
          */
-        fun checkAndSet(option: Any, value: String?): Boolean = synchronized(options) {
+        fun checkAndSet(option: Any, value: Any): Boolean = synchronized(options) {
             val info = OptionInfo(option, value)
             return if (options.contains(info)) {
                 true
@@ -250,7 +252,6 @@ class DeprecationReporterImpl(
                 false
             }
         }
-
 
         fun clean() {
             synchronized(obsoleteApis) {
@@ -265,5 +266,5 @@ class DeprecationReporterImpl(
 
 data class OptionInfo(
     val option: Any,
-    val value: String?
+    val value: Any
 )

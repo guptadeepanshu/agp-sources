@@ -17,10 +17,13 @@
 package com.android.build.gradle.internal.variant;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.internal.scope.VariantScope;
 
 /** Base data about a variant that is installable. */
 public abstract class InstallableVariantData extends AndroidArtifactVariantData {
@@ -28,8 +31,18 @@ public abstract class InstallableVariantData extends AndroidArtifactVariantData 
     protected InstallableVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration config,
-            @NonNull Recorder recorder) {
-        super(globalScope, taskManager, config, recorder);
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull ComponentImpl publicVariantApi,
+            @NonNull ComponentPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources) {
+        super(
+                globalScope,
+                taskManager,
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
     }
 }

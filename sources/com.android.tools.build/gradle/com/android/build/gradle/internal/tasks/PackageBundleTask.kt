@@ -16,13 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.FeatureExtension
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.packaging.PackagingUtils
 import com.android.bundle.Config
@@ -33,6 +32,7 @@ import com.google.common.collect.ImmutableList
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
@@ -60,6 +60,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     lateinit var featureZips: FileCollection
         private set
+
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val assetPackZips: DirectoryProperty
 
     @get:InputFile
     @get:Optional
@@ -101,8 +106,15 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         get() = bundleFile.get().asFile.name
 
     @get:Input
-    var isDebugBuild: Boolean = false
+    abstract val debuggable: Property<Boolean>
+
+    @get:Input
+    var bundleNeedsFusedStandaloneConfig: Boolean = false
         private set
+
+    companion object {
+        const val MIN_SDK_FOR_SPLITS = 21
+    }
 
     override fun doTaskAction() {
         getWorkerFacadeWithWorkers().use {
@@ -111,6 +123,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 Params(
                     baseModuleFile = baseModuleZip.get().asFileTree.singleFile,
                     featureFiles = featureZips.files,
+                    assetPackFiles = if (!assetPackZips.isPresent) null else assetPackZips.get().asFileTree.files,
                     mainDexList = mainDexList.orNull?.asFile,
                     obfuscationMappingFile = if (obsfuscationMappingFile.isPresent) obsfuscationMappingFile.get().asFile else null,
                     integrityConfigFile = if (integrityConfigFile.isPresent) integrityConfigFile.get().asFile else null,
@@ -121,7 +134,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                     bundleDeps = if(bundleDeps.isPresent) bundleDeps.get().asFile else null,
                     // do not compress the bundle in debug builds where it will be only used as an
                     // intermediate artifact
-                    uncompressBundle = isDebugBuild
+                    uncompressBundle = debuggable.get(),
+                    bundleNeedsFusedStandaloneConfig = bundleNeedsFusedStandaloneConfig
                 )
             )
         }
@@ -130,6 +144,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     private data class Params(
         val baseModuleFile: File,
         val featureFiles: Set<File>,
+        val assetPackFiles: Set<File>?,
         val mainDexList: File?,
         val obfuscationMappingFile: File?,
         val integrityConfigFile: File?,
@@ -138,7 +153,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         val bundleFlags: BundleFlags,
         val bundleFile: File,
         val bundleDeps: File?,
-        val uncompressBundle: Boolean
+        val uncompressBundle: Boolean,
+        val bundleNeedsFusedStandaloneConfig: Boolean
     ) : Serializable
 
     private class BundleToolRunnable @Inject constructor(private val params: Params) : Runnable {
@@ -151,6 +167,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             val builder = ImmutableList.builder<Path>()
             builder.add(params.baseModuleFile.toPath())
             params.featureFiles.forEach { builder.add(getBundlePath(it)) }
+            // BundleTool needs directories, not zips.
+            params.assetPackFiles?.forEach { builder.add(getBundlePath(it.parentFile)) }
 
             val noCompressGlobsForBundle =
                 PackagingUtils.getNoCompressGlobsForBundle(params.aaptOptionsNoCompress)
@@ -164,15 +182,44 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             val uncompressNativeLibrariesConfig = Config.UncompressNativeLibraries.newBuilder()
                 .setEnabled(params.bundleFlags.enableUncompressedNativeLibs)
 
+            val bundleOptimizations = Config.Optimizations.newBuilder()
+                .setSplitsConfig(splitsConfig)
+                .setUncompressNativeLibraries(uncompressNativeLibrariesConfig)
+
+            if (params.bundleNeedsFusedStandaloneConfig) {
+                bundleOptimizations.setStandaloneConfig(
+                    Config.StandaloneConfig.newBuilder()
+                        .addSplitDimension(
+                            Config.SplitDimension.newBuilder()
+                                .setValue(Config.SplitDimension.Value.ABI)
+                                .setNegate(true)
+                        )
+                        .addSplitDimension(
+                            Config.SplitDimension.newBuilder()
+                                .setValue(Config.SplitDimension.Value.SCREEN_DENSITY)
+                                .setNegate(true)
+                        )
+                        .addSplitDimension(
+                            Config.SplitDimension.newBuilder()
+                                .setValue(Config.SplitDimension.Value.LANGUAGE)
+                                .setNegate(true)
+                        )
+                        .addSplitDimension(
+                            Config.SplitDimension.newBuilder()
+                                .setValue(Config.SplitDimension.Value.TEXTURE_COMPRESSION_FORMAT)
+                                .setNegate(true)
+                        )
+                        .setStrip64BitLibraries(true)
+                )
+            }
+
             val bundleConfig =
                 Config.BundleConfig.newBuilder()
                     .setCompression(
                         Config.Compression.newBuilder()
                             .addAllUncompressedGlob(noCompressGlobsForBundle))
-                    .setOptimizations(
-                        Config.Optimizations.newBuilder()
-                            .setSplitsConfig(splitsConfig)
-                            .setUncompressNativeLibraries(uncompressNativeLibrariesConfig))
+                    .setOptimizations(bundleOptimizations)
+
             val command = BuildBundleCommand.builder()
                 .setUncompressedBundle(params.uncompressBundle)
                 .setBundleConfig(bundleConfig.build())
@@ -253,10 +300,9 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         override fun handleProvider(taskProvider: TaskProvider<out PackageBundleTask>) {
             super.handleProvider(taskProvider)
 
-            val bundleName = "${variantScope.globalScope.projectBaseName}-${variantScope.variantConfiguration.baseName}.aab"
+            val bundleName = "${variantScope.globalScope.projectBaseName}-${variantScope.variantDslInfo.baseName}.aab"
             variantScope.artifacts.producesFile(
                 InternalArtifactType.INTERMEDIARY_BUNDLE,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 PackageBundleTask::bundleFile,
                 bundleName
@@ -275,6 +321,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 AndroidArtifacts.ArtifactType.MODULE_BUNDLE
             )
 
+            if (variantScope.artifacts.hasFinalProduct(InternalArtifactType.ASSET_PACK_BUNDLE)) {
+                variantScope.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.ASSET_PACK_BUNDLE, task.assetPackZips
+                )
+            }
+
             if(variantScope.artifacts.hasFinalProduct(InternalArtifactType.BUNDLE_DEPENDENCY_REPORT)) {
                 variantScope.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.BUNDLE_DEPENDENCY_REPORT,
@@ -292,13 +344,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             task.aaptOptionsNoCompress =
                     variantScope.globalScope.extension.aaptOptions.noCompress ?: listOf()
 
-            if (variantScope.type.isHybrid) {
-                task.bundleOptions =
-                        ((variantScope.globalScope.extension as FeatureExtension).bundle).convert()
-            } else {
-                task.bundleOptions =
-                        ((variantScope.globalScope.extension as BaseAppModuleExtension).bundle).convert()
-            }
+            task.bundleOptions =
+                    ((variantScope.globalScope.extension as BaseAppModuleExtension).bundle).convert()
 
             task.bundleFlags = BundleFlags(
                 enableUncompressedNativeLibs = variantScope.globalScope.projectOptions[BooleanOption.ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE]
@@ -320,7 +367,13 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 )
             }
 
-            task.isDebugBuild = variantScope.variantConfiguration.buildType.isDebuggable
+            task.debuggable
+                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
+
+            if (variantScope.minSdkVersion.featureLevel < MIN_SDK_FOR_SPLITS
+                && task.assetPackZips.isPresent) {
+                task.bundleNeedsFusedStandaloneConfig = true
+            }
         }
     }
 }

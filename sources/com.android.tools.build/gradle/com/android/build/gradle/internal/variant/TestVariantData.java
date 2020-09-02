@@ -16,11 +16,14 @@
 package com.android.build.gradle.internal.variant;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.builder.core.VariantType;
-import com.android.builder.profile.Recorder;
 import com.android.utils.StringHelper;
 
 /**
@@ -34,14 +37,25 @@ public class TestVariantData extends ApkVariantData {
     public TestVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration config,
-            @NonNull TestedVariantData testedVariantData,
-            @NonNull Recorder recorder) {
-        super(globalScope, taskManager, config, recorder);
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull ComponentImpl publicVariantApi,
+            @NonNull ComponentPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources,
+            @NonNull TestedVariantData testedVariantData) {
+        super(
+                globalScope,
+                taskManager,
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
         this.testedVariantData = testedVariantData;
 
         // create default output
-        getOutputFactory().addMainApk();
+
+        getPublicVariantPropertiesApi().addVariantOutput(getOutputFactory().addMainApk());
     }
 
     @NonNull
@@ -60,37 +74,26 @@ public class TestVariantData extends ApkVariantData {
             prefix = "unit tests";
         }
 
-        final GradleVariantConfiguration config = getVariantConfiguration();
+        final VariantDslInfo variantDslInfo = getVariantDslInfo();
 
-        if (config.hasFlavors()) {
+        if (variantDslInfo.hasFlavors()) {
             StringBuilder sb = new StringBuilder(50);
             sb.append(prefix);
             sb.append(" for the ");
-            StringHelper.appendCapitalized(sb, config.getFlavorName());
-            StringHelper.appendCapitalized(sb, config.getBuildType().getName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getFlavorName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getBuildType());
             sb.append(" build");
             return sb.toString();
         } else {
             StringBuilder sb = new StringBuilder(50);
             sb.append(prefix);
             sb.append(" for the ");
-            StringHelper.appendCapitalized(sb, config.getBuildType().getName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getBuildType());
             sb.append(" build");
             return sb.toString();
-        }
-    }
-
-    @NonNull
-    @Override
-    public String getTaskName(@NonNull String prefix, @NonNull String suffix) {
-        if (testedVariantData.getVariantConfiguration().getType().isHybrid()) {
-            return StringHelper.appendCapitalized(
-                    prefix,
-                    getVariantConfiguration().getFullName(),
-                    TaskManager.FEATURE_SUFFIX,
-                    suffix);
-        } else {
-            return super.getTaskName(prefix, suffix);
         }
     }
 }

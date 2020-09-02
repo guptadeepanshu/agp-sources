@@ -21,15 +21,13 @@ import static com.android.SdkConstants.INT_DEF_ANNOTATION;
 import static com.android.SdkConstants.LONG_DEF_ANNOTATION;
 import static com.android.SdkConstants.STRING_DEF_ANNOTATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
@@ -323,7 +321,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                     .getArtifacts()
                     .producesFile(
                             InternalArtifactType.ANNOTATIONS_ZIP.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             ExtractAnnotations::getOutput,
                             SdkConstants.FN_ANNOTATIONS_ZIP);
@@ -332,7 +329,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                     .getArtifacts()
                     .producesFile(
                             InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             ExtractAnnotations::getTypedefFile,
                             "typedefs.txt");
@@ -343,11 +339,9 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
             super.configure(task);
             VariantScope variantScope = getVariantScope();
 
-            final GradleVariantConfiguration variantConfig = variantScope.getVariantConfiguration();
-
             task.setDescription(
                     "Extracts Android annotations for the "
-                            + variantConfig.getFullName()
+                            + variantScope.getName()
                             + " variant into the archive file");
             task.setGroup(BasePlugin.BUILD_GROUP);
 
@@ -356,10 +350,10 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
             task.source(variantScope.getVariantData().getJavaSources());
             task.setEncoding(
                     variantScope.getGlobalScope().getExtension().getCompileOptions().getEncoding());
-            task.classpath = variantScope.getJavaClasspath(COMPILE_CLASSPATH, CLASSES);
+            task.classpath = variantScope.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR);
 
-            task.libraries = variantScope.getArtifactCollection(
-                    COMPILE_CLASSPATH, EXTERNAL, CLASSES);
+            task.libraries =
+                    variantScope.getArtifactCollection(COMPILE_CLASSPATH, EXTERNAL, CLASSES_JAR);
 
             GlobalScope globalScope = variantScope.getGlobalScope();
 

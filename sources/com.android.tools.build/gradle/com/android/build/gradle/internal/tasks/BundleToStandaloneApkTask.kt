@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -179,13 +178,12 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
         override fun handleProvider(taskProvider: TaskProvider<out BundleToStandaloneApkTask>) {
             super.handleProvider(taskProvider)
             // Mirrors logic in OutputFactory.getOutputFileName, but without splits.
-            val suffix = if (variantScope.variantConfiguration.isSigningReady) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
+            val suffix = if (variantScope.variantDslInfo.isSigningReady) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
             variantScope.artifacts.producesFile(
                 InternalArtifactType.UNIVERSAL_APK,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 BundleToStandaloneApkTask::outputFile,
-                "${variantScope.globalScope.projectBaseName}-${variantScope.variantConfiguration.baseName}-universal$suffix"
+                "${variantScope.globalScope.projectBaseName}-${variantScope.variantDslInfo.baseName}-universal$suffix"
             )
         }
 

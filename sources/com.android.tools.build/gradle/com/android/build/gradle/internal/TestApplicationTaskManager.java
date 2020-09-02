@@ -25,13 +25,13 @@ import android.databinding.tool.DataBindingBuilder;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.internal.scope.CodeShrinker;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.test.TestApplicationTestData;
+import com.android.build.gradle.internal.testing.ConnectedDeviceProvider;
 import com.android.build.gradle.internal.variant.ApkVariantData;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.VariantFactory;
@@ -41,8 +41,8 @@ import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.VariantType;
+import com.android.builder.model.CodeShrinker;
 import com.android.builder.profile.Recorder;
-import com.android.builder.testing.ConnectedDeviceProvider;
 import com.google.common.base.Preconditions;
 import java.util.Collection;
 import java.util.List;
@@ -90,8 +90,7 @@ public class TestApplicationTaskManager extends ApplicationTaskManager {
 
         Configuration testedApksConfig =
                 project.getConfigurations()
-                        .getByName(
-                                getTestedApksConfigurationName(variantScope.getFullVariantName()));
+                        .getByName(getTestedApksConfigurationName(variantScope.getName()));
 
         Provider<Directory> testingApk =
                 variantScope.getArtifacts().getFinalProduct(InternalArtifactType.APK.INSTANCE);
@@ -115,8 +114,9 @@ public class TestApplicationTaskManager extends ApplicationTaskManager {
 
         TestApplicationTestData testData =
                 new TestApplicationTestData(
-                        variantScope.getVariantConfiguration(),
-                        variantScope.getVariantData()::getApplicationId,
+                        variantScope.getVariantDslInfo(),
+                        variantScope.getVariantSources(),
+                        variantScope.getVariantDslInfo()::getApplicationId,
                         testingApk,
                         testedApks);
 
@@ -182,13 +182,10 @@ public class TestApplicationTaskManager extends ApplicationTaskManager {
 
     @Nullable
     @Override
-    protected CodeShrinker maybeCreateJavaCodeShrinkerTransform(
-            @NonNull VariantScope variantScope) {
+    protected CodeShrinker maybeCreateJavaCodeShrinkerTask(@NonNull VariantScope variantScope) {
         if (variantScope.getCodeShrinker() != null) {
-            return doCreateJavaCodeShrinkerTransform(
-                    variantScope,
-                    Objects.requireNonNull(variantScope.getCodeShrinker()),
-                    true);
+            return doCreateJavaCodeShrinkerTask(
+                    variantScope, Objects.requireNonNull(variantScope.getCodeShrinker()), true);
         } else {
             TaskProvider<CheckTestedAppObfuscation> checkObfuscation =
                     taskFactory.register(

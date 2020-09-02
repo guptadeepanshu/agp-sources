@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.workeractions
 import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry.ServiceKey
 import java.io.Closeable
 import java.io.Serializable
-import java.util.concurrent.Executor
 
 /**
  * Static singleton manager of services "injected" in to worker actions.
@@ -27,11 +26,6 @@ import java.util.concurrent.Executor
  * See implementations of [ServiceKey] to find services.
  */
 class WorkerActionServiceRegistry {
-    companion object {
-        @JvmField
-        val INSTANCE = WorkerActionServiceRegistry()
-    }
-
     interface ServiceKey<T : Any>: Serializable {
         val type: Class<T>
     }
@@ -41,42 +35,34 @@ class WorkerActionServiceRegistry {
         fun shutdown()
     }
 
-    class Manager<Obj : Any, Key : ServiceKey<Obj>>(
-        private val obj: Obj?,
-        proposedKey: Key) : Closeable {
-
-        val key = if (obj != null) proposedKey else null
-
-        init {
-            key?.let {
-
-                val service = object : RegisteredService<Obj> {
-
-                    override val service: Obj
-                        get() = obj!!
-
-                    override fun shutdown() {}
-                }
-
-                INSTANCE.registerService(it) { service }
-            }
-        }
-
-        override fun close() {
-            key?.let {
-                INSTANCE.removeService(it)
-            }
-        }
-    }
-
     private val services: MutableMap<ServiceKey<*>, RegisteredService<*>> = mutableMapOf()
 
-    /** Registers a service that can be retrieved by use of the service key */
+    /**
+     * Registers a service that can be retrieved by use of the service key. [Closeable] is returned
+     * which should be used to managed the service lifecycle in the registry. Once [Closeable.close]
+     * is invoked, service is removed.
+     *
+     * If service with the same key is already registered, old service is not overwritten. Also,
+     * invoker will receive a no-op [Closeable]. This means that it is responsibility of the invoker
+     * that registers the service to also remove it.
+     *
+     * If service is null, service registration is ignored, and a no-op [Closeable] is returned.
+     *
+     * A note about using this method in tasks with worker actions. If try-with-resources is used,
+     * users of this API should make sure [Closeable.close] is not invoked before all build
+     * operations that require the registered service complete. If task action does not wait for
+     * the worker actions to finish, using gradle build services is a better fit.
+     */
     @Synchronized
-    fun <T : Any> registerService(key: ServiceKey<T>, serviceFactory: () -> RegisteredService<T>) {
-        if (services[key] == null) {
-            services.put(key, serviceFactory.invoke())
+    fun <T : Any> registerServiceAsCloseable(key: ServiceKey<T>, service: T?): Closeable {
+        if (key in services || service == null) return Closeable { }
+
+        services[key] = object : RegisteredService<T> {
+            override val service: T = service
+
+            override fun shutdown() {}
         }
+        return Closeable { synchronized(this@WorkerActionServiceRegistry) { services.remove(key) } }
     }
 
     /** Get a previously registered service */
@@ -95,36 +81,4 @@ class WorkerActionServiceRegistry {
                 "Service $key not registered. Available services: " +
                         "[${services.keys.joinToString(separator = ", ")}].")
     }
-
-    /**
-     * Removes a previously registered service.
-     *
-     * It is the caller's responsibility to shut down the service.
-     */
-    @Synchronized
-    fun <T : Any> removeService(key: ServiceKey<T>): RegisteredService<T>? {
-        @Suppress("UNCHECKED_CAST") // Type matched when stored in service map.
-        return services.remove(key) as RegisteredService<T>?
-    }
-
-    @Synchronized
-    private fun removeAllServices(): Collection<RegisteredService<*>> {
-        val toBeShutdown = ArrayList(services.values)
-        services.clear()
-        return toBeShutdown
-    }
-
-    /**
-     * Removes all registered services and shuts them down using the given executor.
-     *
-     * Will return before the services have been shut down.
-     */
-    fun shutdownAllRegisteredServices(executor: Executor) {
-        val toBeShutdown = removeAllServices()
-        toBeShutdown.forEach {
-            executor.execute { it.shutdown() }
-        }
-    }
 }
-
-

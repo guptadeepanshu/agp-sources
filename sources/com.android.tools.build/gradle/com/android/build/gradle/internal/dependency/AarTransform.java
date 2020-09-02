@@ -20,6 +20,7 @@ import static com.android.SdkConstants.FD_AIDL;
 import static com.android.SdkConstants.FD_ASSETS;
 import static com.android.SdkConstants.FD_JARS;
 import static com.android.SdkConstants.FD_JNI;
+import static com.android.SdkConstants.FD_PREFAB_PACKAGE;
 import static com.android.SdkConstants.FD_RENDERSCRIPT;
 import static com.android.SdkConstants.FD_RES;
 import static com.android.SdkConstants.FN_ANDROID_MANIFEST_XML;
@@ -76,12 +77,6 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
             ArtifactType.JAVA_RES,
             ArtifactType.SHARED_JAVA_RES,
             ArtifactType.PROCESSED_JAR,
-            // This transform outputs JAR as well as PROCESSED_JAR as a few places in AGP query for
-            // JAR as a way of getting all artifacts. TODO(b/138772778): Clean this up.
-            // This does not supersede outputting PROCESSED_JAR, as it saves processing the JAR
-            // twice, as Gradle will pick the shorter of the two transform chains.
-            // The jars inside the AAR are processed already as part of the whole AAR processing.
-            ArtifactType.JAR,
             ArtifactType.MANIFEST,
             ArtifactType.NON_NAMESPACED_MANIFEST,
             ArtifactType.ANDROID_RES,
@@ -101,6 +96,7 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
             ArtifactType.COMPILE_ONLY_NAMESPACED_R_CLASS_JAR,
             ArtifactType.RES_STATIC_LIBRARY,
             ArtifactType.RES_SHARED_STATIC_LIBRARY,
+            ArtifactType.PREFAB_PACKAGE,
         };
     }
 
@@ -110,7 +106,7 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
         boolean autoNamespaceDependencies = getParameters().getAutoNamespaceDependencies().get();
         ArtifactType targetType = getParameters().getTargetType().get();
         switch (targetType) {
-            case CLASSES:
+            case CLASSES_JAR:
                 if (!AarTransformUtil.shouldBeAutoNamespaced(input, autoNamespaceDependencies)
                         && !isShared(input)) {
                     AarTransformUtil.getJars(input).forEach(transformOutputs::file);
@@ -123,7 +119,6 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
                 break;
             case JAVA_RES:
             case PROCESSED_JAR:
-            case JAR:
                 // even though resources are supposed to only be in the main jar of the AAR, this
                 // is not necessarily enforced by all build systems generating AAR so it's safer to
                 // read all jars from the manifest.
@@ -216,6 +211,9 @@ public abstract class AarTransform implements TransformAction<AarTransform.Param
                                 input,
                                 DataBindingBuilder.DATA_BINDING_CLASS_LOG_ROOT_FOLDER_IN_AAR),
                         transformOutputs);
+                break;
+            case PREFAB_PACKAGE:
+                outputIfExists(new File(input, FD_PREFAB_PACKAGE), transformOutputs);
                 break;
             default:
                 throw new RuntimeException("Unsupported type in AarTransform: " + targetType);

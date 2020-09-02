@@ -18,9 +18,10 @@ package com.android.build.gradle.internal.res.namespaced
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.res.Aapt2CompileRunnable
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
-import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
 import com.android.build.gradle.internal.tasks.IncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.SyncOptions
@@ -32,6 +33,7 @@ import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -67,6 +69,9 @@ abstract class CompileSourceSetResources : IncrementalTask() {
     @get:Input
     var isPseudoLocalize: Boolean = false
         private set
+    @get:Internal
+    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+
     @get:OutputDirectory
     abstract val outputDirectory: DirectoryProperty
 
@@ -79,7 +84,6 @@ abstract class CompileSourceSetResources : IncrementalTask() {
         get() = true
 
     override fun doFullTaskAction() {
-        FileUtils.cleanOutputDir(outputDirectory.get().asFile)
         val requests = mutableListOf<CompileResourceRequest>()
         val addedFiles = mutableMapOf<Path, Path>()
         for (inputDirectory in inputDirectories) {
@@ -165,8 +169,8 @@ abstract class CompileSourceSetResources : IncrementalTask() {
         if (requests.isEmpty()) {
             return
         }
-        val aapt2ServiceKey = registerAaptService(
-            aapt2FromMaven = aapt2FromMaven,
+        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
+            aapt2FromMaven = aapt2FromMaven.singleFile,
             logger = LoggerWrapper(logger)
         )
         for (request in requests) {
@@ -196,18 +200,15 @@ abstract class CompileSourceSetResources : IncrementalTask() {
         override fun handleProvider(taskProvider: TaskProvider<out CompileSourceSetResources>) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.PARTIAL_R_FILES,
-                BuildArtifactsHolder.OperationType.APPEND,
+            variantScope.artifacts.getOperations().append(
                 taskProvider,
-                CompileSourceSetResources::partialRDirectory)
+                CompileSourceSetResources::partialRDirectory
+            ).on(MultipleArtifactType.PARTIAL_R_FILES)
 
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.RES_COMPILED_FLAT_FILES,
-                BuildArtifactsHolder.OperationType.APPEND,
+            variantScope.artifacts.getOperations().append(
                 taskProvider,
                 CompileSourceSetResources::outputDirectory
-            )
+            ).on(MultipleArtifactType.RES_COMPILED_FLAT_FILES)
         }
 
         override fun configure(task: CompileSourceSetResources) {
@@ -216,7 +217,7 @@ abstract class CompileSourceSetResources : IncrementalTask() {
             task.inputDirectories = inputDirectories
             task.isPngCrunching = variantScope.isCrunchPngs
             task.isPseudoLocalize =
-                    variantScope.variantData.variantConfiguration.buildType.isPseudoLocalesEnabled
+                    variantScope.variantData.variantDslInfo.isPseudoLocalesEnabled
 
             val (aapt2FromMaven,aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
@@ -227,6 +228,7 @@ abstract class CompileSourceSetResources : IncrementalTask() {
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
                 variantScope.globalScope.projectOptions
             )
+            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
         }
     }
 }

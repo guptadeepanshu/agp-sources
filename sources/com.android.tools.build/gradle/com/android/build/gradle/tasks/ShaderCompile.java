@@ -22,9 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.LoggerWrapper;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
@@ -43,6 +42,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.inject.Inject;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.provider.Provider;
@@ -52,8 +52,10 @@ import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
+import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.util.PatternSet;
+import org.gradle.process.ExecOperations;
 
 /**
  * Task to compile Shaders.
@@ -91,9 +93,16 @@ public abstract class ShaderCompile extends NonIncrementalTask {
     private List<String> defaultArgs = ImmutableList.of();
     private Map<String, List<String>> scopedArgs = ImmutableMap.of();
 
+    @NonNull private final ExecOperations execOperations;
+
+    @Inject
+    public ShaderCompile(@NonNull ExecOperations execOperations) {
+        this.execOperations = execOperations;
+    }
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
+    @SkipWhenEmpty
     public FileTree getSourceFiles() {
         File sourceDirFile = getSourceDir().get().getAsFile();
         FileTree src = null;
@@ -148,7 +157,7 @@ public abstract class ShaderCompile extends NonIncrementalTask {
                                 outputDir,
                                 defaultArgs,
                                 scopedArgs,
-                                new GradleProcessExecutor(getProject()),
+                                new GradleProcessExecutor(execOperations::exec),
                                 processOutputHandler,
                                 workers);
 
@@ -215,7 +224,6 @@ public abstract class ShaderCompile extends NonIncrementalTask {
                     .getArtifacts()
                     .producesDir(
                             InternalArtifactType.SHADER_ASSETS.INSTANCE,
-                            BuildArtifactsHolder.OperationType.INITIAL,
                             taskProvider,
                             ShaderCompile::getOutputDir,
                             "out");
@@ -226,13 +234,13 @@ public abstract class ShaderCompile extends NonIncrementalTask {
             super.configure(task);
             VariantScope scope = getVariantScope();
 
-            final GradleVariantConfiguration variantConfiguration = scope.getVariantConfiguration();
+            final VariantDslInfo variantDslInfo = scope.getVariantDslInfo();
 
             task.ndkLocation = scope.getGlobalScope().getSdkComponents().getNdkFolderProvider();
             scope.getArtifacts()
                     .setTaskInputToFinalProduct(MERGED_SHADERS.INSTANCE, task.getSourceDir());
-            task.setDefaultArgs(variantConfiguration.getDefautGlslcArgs());
-            task.setScopedArgs(variantConfiguration.getScopedGlslcArgs());
+            task.setDefaultArgs(variantDslInfo.getDefaultGlslcArgs());
+            task.setScopedArgs(variantDslInfo.getScopedGlslcArgs());
 
             task.buildToolInfoRevisionProvider =
                     scope.getGlobalScope().getSdkComponents().getBuildToolsRevisionProvider();

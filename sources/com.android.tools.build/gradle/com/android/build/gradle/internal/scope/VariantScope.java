@@ -20,7 +20,8 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.PostprocessingFeatures;
 import com.android.build.gradle.internal.core.Abi;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.packaging.JarCreatorType;
 import com.android.build.gradle.internal.pipeline.TransformManager;
@@ -33,19 +34,18 @@ import com.android.builder.dexing.DexMergerTool;
 import com.android.builder.dexing.DexerTool;
 import com.android.builder.dexing.DexingType;
 import com.android.builder.internal.packaging.ApkCreatorType;
+import com.android.builder.model.CodeShrinker;
 import com.android.sdklib.AndroidVersion;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-import javax.annotation.Nonnull;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.attributes.Attribute;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.provider.Provider;
 
@@ -56,19 +56,16 @@ public interface VariantScope extends TransformVariantScope {
     GlobalScope getGlobalScope();
 
     @NonNull
-    GradleVariantConfiguration getVariantConfiguration();
+    VariantDslInfo getVariantDslInfo();
+
+    @NonNull
+    VariantSources getVariantSources();
 
     @NonNull
     PublishingSpecs.VariantSpec getPublishingSpec();
 
     void publishIntermediateArtifact(
-            @NonNull Provider<FileCollection> artifact,
-            @NonNull ArtifactType artifactType,
-            @NonNull Collection<AndroidArtifacts.PublishedConfigType> configTypes);
-
-    void publishIntermediateArtifact(
-            @NonNull Provider<? extends FileSystemLocation> artifact,
-            @Nonnull Provider<String> lastProducerTaskName,
+            @NonNull Provider<?> artifact,
             @NonNull ArtifactType artifactType,
             @NonNull Collection<AndroidArtifacts.PublishedConfigType> configTypes);
 
@@ -119,6 +116,11 @@ public interface VariantScope extends TransformVariantScope {
 
     boolean isTestOnly();
 
+    boolean isCoreLibraryDesugaringEnabled();
+
+    /** Returns if we need to shrink desugar lib when desugaring Core Library. */
+    boolean getNeedsShrinkDesugarLibrary();
+
     @NonNull
     VariantType getType();
 
@@ -140,9 +142,6 @@ public interface VariantScope extends TransformVariantScope {
 
     @Nullable
     BaseVariantData getTestedVariantData();
-
-    @NonNull
-    File getSplitApkOutputFolder();
 
     @NonNull
     FileCollection getJavaClasspath(
@@ -193,6 +192,12 @@ public interface VariantScope extends TransformVariantScope {
             @NonNull AndroidArtifacts.ArtifactScope scope,
             @NonNull ArtifactType artifactType,
             @Nullable Map<Attribute<String>, String> attributeMap);
+
+    @NonNull
+    ArtifactCollection getArtifactCollectionForToolingModel(
+            @NonNull AndroidArtifacts.ConsumedConfigType configType,
+            @NonNull AndroidArtifacts.ArtifactScope scope,
+            @NonNull ArtifactType artifactType);
 
     @NonNull
     FileCollection getLocalPackagedJars();
@@ -317,4 +322,15 @@ public interface VariantScope extends TransformVariantScope {
 
     @NonNull
     ApkCreatorType getApkCreatorType();
+
+    /**
+     * Returns a {@link Provider} for the name of the feature.
+     *
+     * @return the provider
+     */
+    @NonNull
+    Provider<String> getFeatureName();
+
+    @NonNull
+    Provider<Integer> getResOffset();
 }

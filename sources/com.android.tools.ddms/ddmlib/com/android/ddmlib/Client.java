@@ -131,7 +131,7 @@ public class Client extends JdwpAgent {
 
         mConnState = ST_INIT;
 
-        mClientData = new ClientData(pid);
+        mClientData = new ClientData(this, pid);
 
         mThreadUpdateEnabled = DdmPreferences.getInitialThreadUpdate();
         mHeapInfoUpdateEnabled = DdmPreferences.getInitialHeapUpdate();
@@ -195,6 +195,18 @@ public class Client extends JdwpAgent {
      */
     public boolean isDebuggerAttached() {
         return mDebugger.isDebuggerAttached();
+    }
+
+    /**
+     * Debugger VM mirrors can exit behind DDMLib's back, leading to various race or perma-{@link
+     * Client} loss conditions. We need to notify DDMLib that the debugger currently attached is
+     * exiting and killing its VM mirror connection.
+     */
+    public void notifyVmMirrorExited() {
+        getDeviceImpl()
+                .getClientTracker()
+                .trackClientToDropAndReopen(
+                        this, DebugPortManager.IDebugPortProvider.NO_STATIC_PORT);
     }
 
     /**
@@ -537,7 +549,8 @@ public class Client extends JdwpAgent {
     }
 
     /**
-     * Sends a kill message to the VM.
+     * Sends a kill message to the VM. This doesn't necessarily work if the VM is in a crashed
+     * state.
      */
     public void kill() {
         try {
@@ -701,12 +714,29 @@ public class Client extends JdwpAgent {
     /**
      * Return information for the first full JDWP packet in the buffer.
      *
-     * If we don't yet have a full packet, return null.
+     * <p>If we don't yet have a full packet, return null.
      *
-     * If we haven't yet received the JDWP handshake, we watch for it here
-     * and consume it without admitting to have done so.  Upon receipt
-     * we send out the "HELO" message, which is why this can throw an
-     * IOException.
+     * <p>If we haven't yet received the JDWP handshake, we watch for it here and consume it without
+     * admitting to have done so. Upon receipt we send out the "HELO" message, which is why this can
+     * throw an IOException.
+     *
+     * <p>Note the ordering of operations on establishing a connection is:
+     *
+     * <p>Host side:
+     * 1) adb track-jdwp
+     * 2) Receive updated list of PIDs containing app process.
+     * 3) Open/forward debugger port and connect to device.
+     * 4) Perform handshake.
+     * 5) Send HELO and wait for response.
+     *
+     * <p>Device/process side:
+     * a) Fork zygote and update ADB with the PID.
+     * b) Send APNM if debugger port is connected ("&lt;pre-initialize&gt;").
+     * c) Bind process to actual application and package.
+     * d) Send updated APNM if debugger port is connected.
+     *
+     * <p>The above two sequence of execution run completely in parallel, with the only constraint
+     * being a) happens before 2).
      */
     JdwpPacket getJdwpPacket() throws IOException {
 
@@ -715,16 +745,14 @@ public class Client extends JdwpAgent {
          * "limit" is set to the buffer capacity.
          */
         if (mConnState == ST_AWAIT_SHAKE) {
-            /*
-             * The first thing we get from the client is a response to our
-             * handshake.  It doesn't look like a packet, so we have to
-             * handle it specially.
-             */
-            int result;
+            // Sometimes Zygote forking can race and cause the <pre-initialized>
+            // APNM packet to arrive before the handshake. Just get rid of it.
+            consumeInvalidPackets();
 
-            result = JdwpHandshake.findHandshake(mReadBuffer);
-            //Log.v("ddms", "findHand: " + result);
-            switch (result) {
+            // Normally the first response we get from the client is the response
+            // to our handshake.  It doesn't look like a packet, so we have to
+            // handle it specially.
+            switch (JdwpHandshake.findHandshake(mReadBuffer)) {
                 case JdwpHandshake.HANDSHAKE_GOOD:
                     Log.d("ddms",
                         "Good handshake from client, sending HELO to " + mClientData.getPid());
@@ -773,6 +801,33 @@ public class Client extends JdwpAgent {
         }
 
         return null;
+    }
+
+    /**
+     * It's possible that APNM arrives before the handshake response. It is also invalid for any
+     * packet to arrive before the handshake response. So we just discard all packets before the
+     * handshake response.
+     *
+     * <p>Note that for APNM, we're just throwing them away prior to the handshake, since we'll
+     * get that information in the HELO request/response later.
+     */
+    void consumeInvalidPackets() {
+        while (true) {
+            mReadBuffer.mark();
+            try {
+                JdwpPacket badPacket = JdwpPacket.findPacket(mReadBuffer);
+                if (badPacket != null && !badPacket.isError() && !badPacket.isEmpty()) {
+                    badPacket.consume();
+                } else {
+                    // We didn't find a packet, just reset the position and break out of loop.
+                    mReadBuffer.reset();
+                    break;
+                }
+            } catch (BadPacketException | IndexOutOfBoundsException e) {
+                mReadBuffer.reset();
+                break;
+            }
+        }
     }
 
     /**

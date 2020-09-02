@@ -16,11 +16,26 @@
 
 package com.android.build.gradle.internal.plugins;
 
+import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
 import com.android.build.gradle.AppExtension;
-import com.android.builder.model.AndroidProject;
+import com.android.build.gradle.api.BaseVariantOutput;
+import com.android.build.gradle.internal.ExtraModelInfo;
+import com.android.build.gradle.internal.api.dsl.DslScope;
+import com.android.build.gradle.internal.dependency.SourceSetManager;
+import com.android.build.gradle.internal.dsl.BuildType;
+import com.android.build.gradle.internal.dsl.DefaultConfig;
+import com.android.build.gradle.internal.dsl.DynamicFeatureExtension;
+import com.android.build.gradle.internal.dsl.DynamicFeatureExtensionImpl;
+import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.SigningConfig;
+import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.variant.DynamicFeatureVariantFactory;
+import com.android.build.gradle.internal.variant.VariantFactory;
+import com.android.build.gradle.options.ProjectOptions;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
 import javax.inject.Inject;
+import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
@@ -30,12 +45,12 @@ public class DynamicFeaturePlugin extends AbstractAppPlugin {
     @Inject
     public DynamicFeaturePlugin(
             ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
-        super(registry, componentFactory, false /*isBaseApplication*/);
+        super(registry, componentFactory);
     }
 
     @Override
     protected int getProjectType() {
-        return AndroidProject.PROJECT_TYPE_DYNAMIC_FEATURE;
+        return AndroidProjectTypes.PROJECT_TYPE_DYNAMIC_FEATURE;
     }
 
     @NonNull
@@ -52,6 +67,43 @@ public class DynamicFeaturePlugin extends AbstractAppPlugin {
     @NonNull
     @Override
     protected Class<? extends AppExtension> getExtensionClass() {
-        return AppExtension.class;
+        return DynamicFeatureExtension.class;
+    }
+
+    @NonNull
+    @Override
+    protected AppExtension createExtension(
+            @NonNull DslScope dslScope,
+            @NonNull ProjectOptions projectOptions,
+            @NonNull GlobalScope globalScope,
+            @NonNull NamedDomainObjectContainer<BuildType> buildTypeContainer,
+            @NonNull DefaultConfig defaultConfig,
+            @NonNull NamedDomainObjectContainer<ProductFlavor> productFlavorContainer,
+            @NonNull NamedDomainObjectContainer<SigningConfig> signingConfigContainer,
+            @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
+            @NonNull SourceSetManager sourceSetManager,
+            @NonNull ExtraModelInfo extraModelInfo) {
+        return project.getExtensions()
+                .create(
+                        "android",
+                        getExtensionClass(),
+                        dslScope,
+                        projectOptions,
+                        globalScope,
+                        buildOutputs,
+                        sourceSetManager,
+                        extraModelInfo,
+                        new DynamicFeatureExtensionImpl(
+                                globalScope.getDslScope(),
+                                buildTypeContainer,
+                                defaultConfig,
+                                productFlavorContainer,
+                                signingConfigContainer));
+    }
+
+    @NonNull
+    @Override
+    protected VariantFactory createVariantFactory(@NonNull GlobalScope globalScope) {
+        return new DynamicFeatureVariantFactory(globalScope);
     }
 }

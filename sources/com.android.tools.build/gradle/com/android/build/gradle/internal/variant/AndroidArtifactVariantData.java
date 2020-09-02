@@ -17,10 +17,13 @@
 package com.android.build.gradle.internal.variant;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.internal.scope.VariantScope;
 import java.util.Collections;
 import java.util.Set;
 
@@ -31,9 +34,19 @@ public abstract class AndroidArtifactVariantData extends BaseVariantData {
     protected AndroidArtifactVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration config,
-            @NonNull Recorder recorder) {
-        super(globalScope, taskManager, config, recorder);
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull ComponentImpl publicVariantApi,
+            @NonNull ComponentPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources) {
+        super(
+                globalScope,
+                taskManager,
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
     }
 
     public void setCompatibleScreens(Set<String> compatibleScreens) {
@@ -50,6 +63,6 @@ public abstract class AndroidArtifactVariantData extends BaseVariantData {
     }
 
     public boolean isSigned() {
-        return getVariantConfiguration().isSigningReady();
+        return getVariantDslInfo().isSigningReady();
     }
 }

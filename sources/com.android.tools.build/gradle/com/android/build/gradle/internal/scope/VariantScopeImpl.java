@@ -21,19 +21,17 @@ import static com.android.SdkConstants.FD_COMPILED;
 import static com.android.SdkConstants.FD_MERGED;
 import static com.android.SdkConstants.FD_RES;
 import static com.android.SdkConstants.FN_ANDROID_MANIFEST_XML;
-import static com.android.build.gradle.internal.dsl.BuildType.PostProcessingConfiguration.POSTPROCESSING_BLOCK;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.COMPILE_ONLY_NAMESPACED_R_CLASS_JAR;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SET_METADATA;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.SHARED_CLASSES;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
 import static com.android.build.gradle.internal.scope.ArtifactPublishingUtil.publishArtifactToConfiguration;
 import static com.android.build.gradle.internal.scope.ArtifactPublishingUtil.publishArtifactToDefaultVariant;
-import static com.android.build.gradle.internal.scope.CodeShrinker.PROGUARD;
-import static com.android.build.gradle.internal.scope.CodeShrinker.R8;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_ONLY_NOT_NAMESPACED_R_CLASS_JAR;
 import static com.android.build.gradle.options.BooleanOption.ENABLE_D8;
@@ -46,20 +44,20 @@ import static com.android.builder.core.VariantTypeImpl.ANDROID_TEST;
 import static com.android.builder.core.VariantTypeImpl.UNIT_TEST;
 import static com.android.builder.model.AndroidProject.FD_GENERATED;
 import static com.android.builder.model.AndroidProject.FD_OUTPUTS;
+import static com.android.builder.model.CodeShrinker.PROGUARD;
+import static com.android.builder.model.CodeShrinker.R8;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.FeaturePlugin;
-import com.android.build.gradle.internal.BaseConfigAdapter;
+import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.PostprocessingFeatures;
 import com.android.build.gradle.internal.ProguardFileType;
 import com.android.build.gradle.internal.core.Abi;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
-import com.android.build.gradle.internal.core.OldPostProcessingOptions;
-import com.android.build.gradle.internal.core.PostProcessingBlockOptions;
 import com.android.build.gradle.internal.core.PostProcessingOptions;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dependency.AndroidTestResourceArtifactCollection;
 import com.android.build.gradle.internal.dependency.ArtifactCollectionWithExtraArtifact;
 import com.android.build.gradle.internal.dependency.FilteredArtifactCollection;
@@ -67,9 +65,6 @@ import com.android.build.gradle.internal.dependency.FilteringSpec;
 import com.android.build.gradle.internal.dependency.ProvidedClasspath;
 import com.android.build.gradle.internal.dependency.SubtractingArtifactCollection;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
-import com.android.build.gradle.internal.dsl.BuildType;
-import com.android.build.gradle.internal.dsl.CoreBuildType;
-import com.android.build.gradle.internal.dsl.CoreProductFlavor;
 import com.android.build.gradle.internal.packaging.JarCreatorType;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
@@ -80,6 +75,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedCo
 import com.android.build.gradle.internal.publishing.PublishingSpecs;
 import com.android.build.gradle.internal.publishing.PublishingSpecs.OutputSpec;
 import com.android.build.gradle.internal.publishing.PublishingSpecs.VariantSpec;
+import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata;
 import com.android.build.gradle.internal.variant.ApplicationVariantData;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.TestVariantData;
@@ -94,8 +90,9 @@ import com.android.builder.core.VariantType;
 import com.android.builder.dexing.DexMergerTool;
 import com.android.builder.dexing.DexerTool;
 import com.android.builder.dexing.DexingType;
-import com.android.builder.errors.EvalIssueReporter.Type;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.internal.packaging.ApkCreatorType;
+import com.android.builder.model.CodeShrinker;
 import com.android.builder.model.OptionalCompilationStep;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
@@ -106,10 +103,11 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -118,7 +116,6 @@ import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ArtifactCollection;
@@ -148,8 +145,10 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull private final PublishingSpecs.VariantSpec variantPublishingSpec;
 
     @NonNull private final GlobalScope globalScope;
-    @NonNull private final BaseVariantData variantData;
+    @NonNull private BaseVariantData variantData;
     @NonNull private final TransformManager transformManager;
+    @NonNull private final VariantDslInfo variantDslInfo;
+    @NonNull private final VariantType type;
     @NonNull private final Map<Abi, File> ndkDebuggableLibraryFolders = Maps.newHashMap();
 
     @NonNull private BuildArtifactsHolder artifacts;
@@ -163,21 +162,19 @@ public class VariantScopeImpl implements VariantScope {
     public VariantScopeImpl(
             @NonNull GlobalScope globalScope,
             @NonNull TransformManager transformManager,
-            @NonNull BaseVariantData variantData) {
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantType type) {
         this.globalScope = globalScope;
         this.transformManager = transformManager;
-        this.variantData = variantData;
-        this.variantPublishingSpec = PublishingSpecs.getVariantSpec(getType());
+        this.variantDslInfo = variantDslInfo;
+        this.type = type;
+        this.variantPublishingSpec = PublishingSpecs.getVariantSpec(type);
 
         if (globalScope.isActive(OptionalCompilationStep.INSTANT_DEV)) {
             throw new RuntimeException("InstantRun mode is not supported");
         }
         this.artifacts =
-                new VariantBuildArtifactsHolder(
-                        getProject(),
-                        getFullVariantName(),
-                        globalScope.getBuildDir(),
-                        globalScope.getDslScope());
+                new VariantBuildArtifactsHolder(getProject(), getName(), globalScope.getBuildDir());
         this.desugarTryWithResourcesRuntimeJar =
                 Suppliers.memoize(
                         () ->
@@ -187,23 +184,22 @@ public class VariantScopeImpl implements VariantScope {
                                                         globalScope.getIntermediatesDir(),
                                                         "processing-tools",
                                                         "runtime-deps",
-                                                        getVariantConfiguration().getDirName(),
+                                                        variantDslInfo.getDirName(),
                                                         "desugar_try_with_resources.jar")));
-        this.postProcessingOptions = createPostProcessingOptions();
+        this.postProcessingOptions =
+                variantDslInfo.createPostProcessingOptions(globalScope.getProject());
+
+        configureNdk();
     }
 
-    private PostProcessingOptions createPostProcessingOptions() {
-        // This may not be the case with the experimental plugin.
-        CoreBuildType buildType = variantData.getVariantConfiguration().getBuildType();
-        if (buildType instanceof BuildType) {
-            BuildType dslBuildType = (BuildType) buildType;
-            if (dslBuildType.getPostProcessingConfiguration() == POSTPROCESSING_BLOCK) {
-                return new PostProcessingBlockOptions(
-                        dslBuildType.getPostprocessing(), getType().isTestComponent());
-            }
+    private void configureNdk() {
+        File objFolder =
+                new File(
+                        globalScope.getIntermediatesDir(),
+                        "ndk/" + variantDslInfo.getDirName() + "/obj");
+        for (Abi abi : Abi.values()) {
+            addNdkDebuggableLibraryFolders(abi, new File(objFolder, "local/" + abi.getTag()));
         }
-
-        return new OldPostProcessingOptions(buildType, globalScope.getProject());
     }
 
     protected Project getProject() {
@@ -225,45 +221,13 @@ public class VariantScopeImpl implements VariantScope {
     /**
      * Publish an intermediate artifact.
      *
-     * @param artifact FileCollection to be published.
+     * @param artifact Provider of File or FileSystemLocation to be published.
      * @param artifactType the artifact type.
      * @param configTypes the PublishedConfigType. (e.g. api, runtime, etc)
      */
     @Override
     public void publishIntermediateArtifact(
-            @NonNull Provider<FileCollection> artifact,
-            @NonNull ArtifactType artifactType,
-            @NonNull Collection<PublishedConfigType> configTypes) {
-        // Create Provider so that the BuildableArtifact is not resolved until needed.
-        Provider<File> file = artifact.map(fileCollection -> fileCollection.getSingleFile());
-
-        Preconditions.checkState(!configTypes.isEmpty());
-
-        // FIXME this needs to be parameterized based on the variant's publishing type.
-        final VariantDependencies variantDependency = getVariantDependencies();
-
-        for (PublishedConfigType configType : PublishedConfigType.values()) {
-            if (configTypes.contains(configType)) {
-                Configuration config = variantDependency.getElements(configType);
-                Preconditions.checkNotNull(
-                        config, String.format(PUBLISH_ERROR_MSG, configType, getType()));
-                if (configType.isPublicationConfig()) {
-                    String classifier = null;
-                    if (configType.isClassifierRequired()) {
-                        classifier = getFullVariantName();
-                    }
-                    publishArtifactToDefaultVariant(config, file, artifactType, classifier);
-                } else {
-                    publishArtifactToConfiguration(config, file, artifact, artifactType);
-                }
-            }
-        }
-    }
-
-    @Override
-    public void publishIntermediateArtifact(
-            @NonNull Provider<? extends FileSystemLocation> artifact,
-            @Nonnull Provider<String> lastProducerTaskName,
+            @NonNull Provider<?> artifact,
             @NonNull ArtifactType artifactType,
             @NonNull Collection<PublishedConfigType> configTypes) {
 
@@ -280,12 +244,11 @@ public class VariantScopeImpl implements VariantScope {
                 if (configType.isPublicationConfig()) {
                     String classifier = null;
                     if (configType.isClassifierRequired()) {
-                        classifier = getFullVariantName();
+                        classifier = getName();
                     }
                     publishArtifactToDefaultVariant(config, artifact, artifactType, classifier);
                 } else {
-                    publishArtifactToConfiguration(
-                            config, artifact, lastProducerTaskName, artifactType);
+                    publishArtifactToConfiguration(config, artifact, artifactType);
                 }
             }
         }
@@ -303,16 +266,26 @@ public class VariantScopeImpl implements VariantScope {
         return variantData;
     }
 
+    public void setVariantData(@NonNull BaseVariantData variantData) {
+        this.variantData = variantData;
+    }
+
     @Override
     @NonNull
-    public GradleVariantConfiguration getVariantConfiguration() {
-        return variantData.getVariantConfiguration();
+    public VariantDslInfo getVariantDslInfo() {
+        return variantDslInfo;
     }
 
     @NonNull
     @Override
-    public String getFullVariantName() {
-        return getVariantConfiguration().getFullName();
+    public VariantSources getVariantSources() {
+        return variantData.getVariantSources();
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return variantDslInfo.getComponentIdentity().getName();
     }
 
     @Override
@@ -323,9 +296,10 @@ public class VariantScopeImpl implements VariantScope {
         }
 
         // TODO: support resource shrinking for multi-apk applications http://b/78119690
-        if (getType().isFeatureSplit() || globalScope.hasDynamicFeatures()) {
+        if (getType().isDynamicFeature() || globalScope.hasDynamicFeatures()) {
             globalScope
-                    .getErrorHandler()
+                    .getDslScope()
+                    .getIssueReporter()
                     .reportError(
                             Type.GENERIC,
                             "Resource shrinker cannot be used for multi-apk applications");
@@ -335,7 +309,8 @@ public class VariantScopeImpl implements VariantScope {
         if (getType().isAar()) {
             if (!getProject().getPlugins().hasPlugin("com.android.feature")) {
                 globalScope
-                        .getErrorHandler()
+                        .getDslScope()
+                        .getIssueReporter()
                         .reportError(
                                 Type.GENERIC, "Resource shrinker cannot be used for libraries.");
             }
@@ -344,7 +319,8 @@ public class VariantScopeImpl implements VariantScope {
 
         if (getCodeShrinker() == null) {
             globalScope
-                    .getErrorHandler()
+                    .getDslScope()
+                    .getIssueReporter()
                     .reportError(
                             Type.GENERIC,
                             "Removing unused resources requires unused code shrinking to be turned on. See "
@@ -369,7 +345,7 @@ public class VariantScopeImpl implements VariantScope {
     @Override
     public boolean isCrunchPngs() {
         // If set for this build type, respect that.
-        Boolean buildTypeOverride = getVariantConfiguration().getBuildType().isCrunchPngs();
+        Boolean buildTypeOverride = variantDslInfo.isCrunchPngs();
         if (buildTypeOverride != null) {
             return buildTypeOverride;
         }
@@ -381,13 +357,13 @@ public class VariantScopeImpl implements VariantScope {
         }
         // If not overridden, use the default from the build type.
         //noinspection deprecation TODO: Remove once the global cruncher enabled flag goes away.
-        return getVariantConfiguration().getBuildType().isCrunchPngsDefault();
+        return variantDslInfo.isCrunchPngsDefault();
     }
 
     @Override
     public boolean consumesFeatureJars() {
         return getType().isBaseModule()
-                && getVariantConfiguration().getBuildType().isMinifyEnabled()
+                && variantDslInfo.isMinifyEnabled()
                 && globalScope.hasDynamicFeatures();
     }
 
@@ -411,7 +387,7 @@ public class VariantScopeImpl implements VariantScope {
     public boolean getNeedsMainDexListForBundle() {
         return getType().isBaseModule()
                 && globalScope.hasDynamicFeatures()
-                && getVariantConfiguration().getDexingType().getNeedsMainDexList();
+                && variantDslInfo.getDexingType().getNeedsMainDexList();
     }
 
     @Nullable
@@ -476,11 +452,8 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull
     @Override
     public List<File> getConsumerProguardFilesForFeatures() {
-        final boolean hasFeaturePlugin = getProject().getPlugins().hasPlugin(FeaturePlugin.class);
-        // We include proguardFiles if we're in a dynamic-feature or feature module. For feature
-        // modules, we check for the presence of the FeaturePlugin, because we want to include
-        // proguardFiles even when we're in the library variant.
-        final boolean includeProguardFiles = hasFeaturePlugin || getType().isDynamicFeature();
+        // We include proguardFiles if we're in a dynamic-feature module.
+        final boolean includeProguardFiles = getType().isDynamicFeature();
         final Collection<File> consumerProguardFiles = getConsumerProguardFiles();
         if (includeProguardFiles) {
             consumerProguardFiles.addAll(getExplicitProguardFiles());
@@ -491,18 +464,8 @@ public class VariantScopeImpl implements VariantScope {
 
     @NonNull
     private List<File> gatherProguardFiles(ProguardFileType type) {
-        GradleVariantConfiguration variantConfiguration = getVariantConfiguration();
-
-        List<File> result =
-                new ArrayList<>(
-                        BaseConfigAdapter.getProguardFiles(
-                                variantConfiguration.getDefaultConfig(), type));
-
+        List<File> result = variantDslInfo.gatherProguardFiles(type);
         result.addAll(postProcessingOptions.getProguardFiles(type));
-
-        for (CoreProductFlavor flavor : variantConfiguration.getProductFlavors()) {
-            result.addAll(BaseConfigAdapter.getProguardFiles(flavor, type));
-        }
 
         return result;
     }
@@ -540,7 +503,7 @@ public class VariantScopeImpl implements VariantScope {
                 || projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null
                 || isPreviewTargetPlatform()
                 || getMinSdkVersion().getCodename() != null
-                || getVariantConfiguration().getTargetSdkVersion().getCodename() != null;
+                || variantDslInfo.getTargetSdkVersion().getCodename() != null;
     }
 
     private boolean isPreviewTargetPlatform() {
@@ -550,16 +513,70 @@ public class VariantScopeImpl implements VariantScope {
         return version != null && version.isPreview();
     }
 
+    /**
+     * Returns if core library desugaring is enabled.
+     *
+     * <p>Java language desugaring and multidex are required for enabling core library desugaring.
+     */
+    @Override
+    public boolean isCoreLibraryDesugaringEnabled() {
+        BaseExtension extension = globalScope.getExtension();
+
+        boolean libDesugarEnabled =
+                extension.getCompileOptions().getCoreLibraryDesugaringEnabled() != null
+                        && extension.getCompileOptions().getCoreLibraryDesugaringEnabled();
+
+        boolean multidexEnabled = variantDslInfo.isMultiDexEnabled();
+
+        Java8LangSupport langSupportType = getJava8LangSupportType();
+        boolean langDesugarEnabled =
+                langSupportType == Java8LangSupport.D8 || langSupportType == Java8LangSupport.R8;
+
+        if (libDesugarEnabled && !langDesugarEnabled) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            Type.GENERIC,
+                            "In order to use core library desugaring, "
+                                    + "please enable java 8 language desugaring with D8 or R8.");
+        }
+
+        if (libDesugarEnabled && !multidexEnabled) {
+            globalScope
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            Type.GENERIC,
+                            "In order to use core library desugaring, "
+                                    + "please enable multidex.");
+        }
+        return libDesugarEnabled;
+    }
+
+    @Override
+    public boolean getNeedsShrinkDesugarLibrary() {
+        if (!isCoreLibraryDesugaringEnabled()) {
+            return false;
+        }
+        // Assume Java8LangSupport is either D8 or R8 as we checked that in
+        // isCoreLibraryDesugaringEnabled()
+        if (getJava8LangSupportType() == Java8LangSupport.D8 && variantDslInfo.isDebuggable()) {
+            return false;
+        }
+        return true;
+    }
+
     @NonNull
     @Override
     public VariantType getType() {
-        return variantData.getType();
+        return type;
     }
 
     @NonNull
     @Override
     public DexingType getDexingType() {
-        return variantData.getVariantConfiguration().getDexingType();
+        return variantDslInfo.getDexingType();
     }
 
     @Override
@@ -570,19 +587,19 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull
     @Override
     public AndroidVersion getMinSdkVersion() {
-        return getVariantConfiguration().getMinSdkVersion();
+        return variantDslInfo.getMinSdkVersion();
     }
 
     @NonNull
     @Override
     public String getDirName() {
-        return getVariantConfiguration().getDirName();
+        return variantDslInfo.getDirName();
     }
 
     @NonNull
     @Override
     public Collection<String> getDirectorySegments() {
-        return getVariantConfiguration().getDirectorySegments();
+        return variantDslInfo.getDirectorySegments();
     }
 
     @NonNull
@@ -623,12 +640,6 @@ public class VariantScopeImpl implements VariantScope {
         return variantData instanceof TestVariantData ?
                 (BaseVariantData) ((TestVariantData) variantData).getTestedVariantData() :
                 null;
-    }
-
-    @NonNull
-    @Override
-    public File getSplitApkOutputFolder() {
-        return new File(globalScope.getIntermediatesDir(), "/split-apk/" + getDirName());
     }
 
     // Precomputed file paths.
@@ -804,7 +815,7 @@ public class VariantScopeImpl implements VariantScope {
         FileCollection fileCollection;
 
         if (configType == RUNTIME_CLASSPATH
-                && getType().isFeatureSplit()
+                && getType().isDynamicFeature()
                 && artifactType != ArtifactType.PACKAGED_DEPENDENCIES) {
 
             FileCollection excludedDirectories =
@@ -846,7 +857,7 @@ public class VariantScopeImpl implements VariantScope {
                 computeArtifactCollection(configType, scope, artifactType, attributeMap);
 
         if (configType == RUNTIME_CLASSPATH
-                && getType().isFeatureSplit()
+                && getType().isDynamicFeature()
                 && artifactType != ArtifactType.PACKAGED_DEPENDENCIES) {
 
             FileCollection excludedDirectories =
@@ -890,8 +901,8 @@ public class VariantScopeImpl implements VariantScope {
                 // was published to.
                 if (publishedConfigs.contains(configType.getPublishedTo())) {
                     // if it's the case then we add the tested artifact.
-                    final com.android.build.api.artifact.ArtifactType<? extends FileSystemLocation>
-                            taskOutputType = taskOutputSpec.getOutputType();
+                    final SingleArtifactType<? extends FileSystemLocation> taskOutputType =
+                            taskOutputSpec.getOutputType();
                     BuildArtifactsHolder testedArtifacts = testedScope.getArtifacts();
                     artifacts =
                             ArtifactCollectionWithExtraArtifact.makeExtraCollectionForTest(
@@ -900,7 +911,7 @@ public class VariantScopeImpl implements VariantScope {
                                             .getFinalProductAsFileCollection(taskOutputType)
                                             .get(),
                                     getProject().getPath(),
-                                    testedScope.getFullVariantName());
+                                    testedScope.getName());
                 }
             }
         }
@@ -911,7 +922,8 @@ public class VariantScopeImpl implements VariantScope {
         // scope in order to compile.
         // We only do this for the AndroidTest.
         // We do have to however keep the Android resources.
-        if (tested instanceof ApplicationVariantData
+        if ((tested instanceof ApplicationVariantData
+                || tested.getScope().getType().isDynamicFeature())
                 && configType == RUNTIME_CLASSPATH
                 && getType().isApk()) {
             if (artifactType == ArtifactType.ANDROID_RES
@@ -922,6 +934,22 @@ public class VariantScopeImpl implements VariantScope {
                                 getVariantDependencies().getIncomingRuntimeDependencies(),
                                 getVariantDependencies().getRuntimeClasspath().getIncoming());
             } else {
+                if (tested.getScope().getType().isDynamicFeature()) {
+                    // If we're in an Android Test for a Dynamic Feature we need to first filter out
+                    // artifacts from the base and its dependencies.
+                    FileCollection excludedDirectories =
+                            computeArtifactCollection(
+                                    RUNTIME_CLASSPATH,
+                                    PROJECT,
+                                    ArtifactType.PACKAGED_DEPENDENCIES,
+                                    null)
+                                    .getArtifactFiles();
+
+                    artifacts =
+                            new FilteredArtifactCollection(
+                                    getProject(), new FilteringSpec(artifacts, excludedDirectories));
+                }
+                // Subtract artifacts from the tested variant.
                 ArtifactCollection testedArtifactCollection =
                         testedScope.getArtifactCollection(
                                 configType, scope, artifactType, attributeMap);
@@ -948,6 +976,15 @@ public class VariantScopeImpl implements VariantScope {
             default:
                 throw new RuntimeException("unknown ConfigType value " + configType);
         }
+    }
+
+    @NonNull
+    @Override
+    public ArtifactCollection getArtifactCollectionForToolingModel(
+            @NonNull ConsumedConfigType configType,
+            @NonNull ArtifactScope scope,
+            @NonNull ArtifactType artifactType) {
+        return computeArtifactCollection(configType, scope, artifactType, null);
     }
 
     @NonNull
@@ -1067,8 +1104,8 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull
     @Override
     public FileCollection getProvidedOnlyClasspath() {
-        ArtifactCollection compile = getArtifactCollection(COMPILE_CLASSPATH, ALL, CLASSES);
-        ArtifactCollection runtime = getArtifactCollection(RUNTIME_CLASSPATH, ALL, CLASSES);
+        ArtifactCollection compile = getArtifactCollection(COMPILE_CLASSPATH, ALL, CLASSES_JAR);
+        ArtifactCollection runtime = getArtifactCollection(RUNTIME_CLASSPATH, ALL, CLASSES_JAR);
 
         return ProvidedClasspath.getProvidedClasspath(compile, runtime);
     }
@@ -1279,9 +1316,7 @@ public class VariantScopeImpl implements VariantScope {
     public File getApkLocation() {
         String override = globalScope.getProjectOptions().get(StringOption.IDE_APK_LOCATION);
         File baseDirectory =
-                override != null && !getType().isHybrid()
-                        ? getProject().file(override)
-                        : getDefaultApkLocation();
+                override != null ? getProject().file(override) : getDefaultApkLocation();
 
         return new File(baseDirectory, getDirName());
     }
@@ -1300,12 +1335,6 @@ public class VariantScopeImpl implements VariantScope {
     @Override
     public File getAarLocation() {
         return FileUtils.join(globalScope.getOutputsDir(), BuilderConstants.EXT_LIB_ARCHIVE);
-    }
-
-    @Override
-    @NonNull
-    public OutputScope getOutputScope() {
-        return variantData.getOutputScope();
     }
 
     @NonNull
@@ -1349,7 +1378,8 @@ public class VariantScopeImpl implements VariantScope {
 
         BooleanOption missingFlag = shrinker == R8 ? ENABLE_R8_DESUGARING : ENABLE_D8_DESUGARING;
         globalScope
-                .getErrorHandler()
+                .getDslScope()
+                .getIssueReporter()
                 .reportError(
                         Type.GENERIC,
                         String.format(
@@ -1357,7 +1387,7 @@ public class VariantScopeImpl implements VariantScope {
                                         + "gradle.properties file to enable Java 8 "
                                         + "language support.",
                                 missingFlag.name()),
-                        getVariantConfiguration().getFullName());
+                        variantDslInfo.getComponentIdentity().getName());
         return Java8LangSupport.INVALID;
     }
 
@@ -1381,8 +1411,10 @@ public class VariantScopeImpl implements VariantScope {
                             + "gradle.properties file, is not supported when %s.";
             String msg = String.format(template, flag.getPropertyName(), String.join(",", invalid));
             globalScope
-                    .getErrorHandler()
-                    .reportError(Type.GENERIC, msg, getVariantConfiguration().getFullName());
+                    .getDslScope()
+                    .getIssueReporter()
+                    .reportError(
+                            Type.GENERIC, msg, variantDslInfo.getComponentIdentity().getName());
             return false;
         }
     }
@@ -1395,7 +1427,7 @@ public class VariantScopeImpl implements VariantScope {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).addValue(getFullVariantName()).toString();
+        return MoreObjects.toStringHelper(this).addValue(getName()).toString();
     }
 
     @NonNull
@@ -1436,8 +1468,7 @@ public class VariantScopeImpl implements VariantScope {
     @Override
     public File getSymbolTableFile() {
         return new File(
-                globalScope.getIntermediatesDir(),
-                "symbols/" + variantData.getVariantConfiguration().getDirName());
+                globalScope.getIntermediatesDir(), "symbols/" + variantDslInfo.getDirName());
     }
 
     @NonNull
@@ -1459,4 +1490,90 @@ public class VariantScopeImpl implements VariantScope {
             return ApkCreatorType.APK_Z_FILE_CREATOR;
         }
     }
+
+    private Provider<FeatureSetMetadata> featureSetProvider = null;
+
+    @NonNull
+    private Provider<FeatureSetMetadata> getFeatureSetProvider() {
+        if (featureSetProvider == null) {
+            FileCollection fc =
+                    getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                            PROJECT,
+                            FEATURE_SET_METADATA);
+            featureSetProvider =
+                    fc.getElements()
+                            .map(
+                                    entries -> {
+                                        FileSystemLocation file = Iterables.getOnlyElement(entries);
+                                        try {
+                                            return FeatureSetMetadata.load(file.getAsFile());
+                                        } catch (IOException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    });
+
+        }
+
+        return featureSetProvider;
+    }
+
+    private Provider<String> featureName = null;
+
+    @NonNull
+    @Override
+    public Provider<String> getFeatureName() {
+        if (featureName == null) {
+            final String gradlePath = globalScope.getProject().getPath();
+
+            featureName =
+                    getFeatureSetProvider()
+                            .map(
+                                    featureSetMetadata -> {
+                                        String featureName =
+                                                featureSetMetadata.getFeatureNameFor(gradlePath);
+
+                                        if (featureName == null) {
+                                            throw new RuntimeException(
+                                                    String.format(
+                                                            "Failed to find feature name for %s in %s",
+                                                            gradlePath,
+                                                            featureSetMetadata.getSourceFile()));
+                                        }
+                                        return featureName;
+                                    });
+        }
+
+        return featureName;
+    }
+
+    private Provider<Integer> resOffset = null;
+
+    @NonNull
+    @Override
+    public Provider<Integer> getResOffset() {
+        if (resOffset == null) {
+            final String gradlePath = globalScope.getProject().getPath();
+
+            resOffset =
+                    getFeatureSetProvider()
+                            .map(
+                                    featureSetMetadata -> {
+                                        Integer resOffset =
+                                                featureSetMetadata.getResOffsetFor(gradlePath);
+
+                                        if (resOffset == null) {
+                                            throw new RuntimeException(
+                                                    String.format(
+                                                            "Failed to find resource offset for %s in %s",
+                                                            gradlePath,
+                                                            featureSetMetadata.getSourceFile()));
+                                        }
+                                        return resOffset;
+                                    });
+        }
+
+        return resOffset;
+    }
+
 }

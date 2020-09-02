@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -27,7 +26,12 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
-/** Class that checks the presence of the manifest file, if it is required to exist.  */
+/**
+ * Class that checks the presence of the manifest file, if it is required to exist.
+ *
+ * REMOVE ME (bug 139855995): This task can be removed when the new variant API is ready, we haven't
+ * removed it yet for compatibility reasons.
+ */
 abstract class CheckManifest : NonIncrementalTask() {
 
     /** Whether the manifest file is required to exist. */
@@ -66,7 +70,6 @@ abstract class CheckManifest : NonIncrementalTask() {
 
             variantScope.artifacts.producesDir(
                 InternalArtifactType.CHECK_MANIFEST_RESULT,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 CheckManifest::fakeOutputDir,
                 "out"
@@ -76,11 +79,10 @@ abstract class CheckManifest : NonIncrementalTask() {
         override fun configure(task: CheckManifest) {
             super.configure(task)
 
-            task.manifestRequired = variantScope.variantConfiguration.isManifestFileRequired
-            task.manifestFile =
-                TaskInputHelper.memoizeToProvider(task.project) {
-                    variantScope.variantConfiguration.mainManifestFilePath
-                }
+            task.manifestRequired = variantScope.variantDslInfo.variantType.requiresManifest
+            task.manifestFile = task.project.provider {
+                variantScope.variantSources.mainManifestFilePath
+            }
         }
     }
 }

@@ -32,6 +32,7 @@ import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
+import java.io.File
 
 /**
  * Implementation of the [Operations] Variant API interface.
@@ -60,24 +61,21 @@ class OperationsImpl(
 
     override fun <TASK : Task, FILE_TYPE : FileSystemLocation> append(
         taskProvider: TaskProvider<TASK>,
-        with: (TASK) -> Provider<FILE_TYPE>
-    ): AppendRequest<FILE_TYPE> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        with: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
+    ): AppendRequest<FILE_TYPE> = AppendRequestImpl(this, taskProvider, with)
 
     override fun <TASK : Task, FILE_TYPE : FileSystemLocation> transform(
         taskProvider: TaskProvider<TASK>,
-        from: (TASK) -> Property<FILE_TYPE>,
+        from: (TASK) -> FileSystemLocationProperty<FILE_TYPE>,
         into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
     ): TransformRequest<FILE_TYPE> = TransformRequestImpl(this, taskProvider, from, into)
 
-    override fun <TASK : Task, FILE_TYPE : FileSystemLocation> transformAll(
+    override fun <TASK: Task, FILE_TYPE: FileSystemLocation> transformAll(
         taskProvider: TaskProvider<TASK>,
-        from: (TASK) -> ListProperty<FILE_TYPE>,
-        into: (TASK) -> Provider<FILE_TYPE>
-    ): MultipleTransformRequest<FILE_TYPE> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        from: (TASK)-> ListProperty<FILE_TYPE>,
+        into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
+    ): MultipleTransformRequest<FILE_TYPE> =
+        MultipleTransformRequestImpl(this, objects, taskProvider, from, into)
 
     override fun <TASK : Task, FILE_TYPE : FileSystemLocation> replace(
         taskProvider: TaskProvider<TASK>,
@@ -86,8 +84,8 @@ class OperationsImpl(
 
     // End of public API implementation, start of private AGP services.
 
-    internal fun <T: FileSystemLocation> getOutputDirectory(type: ArtifactType<T>, taskName: String)=
-        type.getOutputDirectory(buildDirectory, identifier, taskName)
+    internal fun <T: FileSystemLocation> getOutputDirectory(type: ArtifactType<T>, vararg paths: String)=
+        type.getOutputDirectory(buildDirectory, identifier, *paths)
 
     /**
      * Returns the [ArtifactContainer] for the passed [type]. The instance may be allocated as part
@@ -119,35 +117,30 @@ class OperationsImpl(
         return storageProvider.getStorage(type.kind).getArtifact(objects, type)
     }
 
+    internal fun <T: FileSystemLocation, ARTIFACT_TYPE> republish(source: ARTIFACT_TYPE, target: ARTIFACT_TYPE)
+        where ARTIFACT_TYPE: ArtifactType<T>, ARTIFACT_TYPE: ArtifactType.Single {
+
+        storageProvider.getStorage(target.kind).copy(target, getArtifactContainer(source))
+    }
+
     /**
      * Sets the Android Gradle Plugin producer. Although conceptually the AGP producers are first
      * to process/consume artifacts, we want to register them last after all custom code has had
      * opportunities to transform or replace it.
      *
      * Therefore, we cannot rely on the usual append/replace pattern but instead use this API to
-     * be artificially put first in the list of producers for the passed [type]
+     * be artificially put first in the list of producers.
      *
-     * @param type the artifact type being produced
      * @param taskProvider the [TaskProvider] for the task producing the artifact
      * @param property: the field reference to retrieve the output from the task
      */
-    fun <ARTIFACT_TYPE, FILE_TYPE, TASK> setInitialProvider(
-        type: ARTIFACT_TYPE,
+    @JvmName("setInitialProvider")
+    internal fun <FILE_TYPE, TASK> setInitialProvider(
         taskProvider: TaskProvider<TASK>,
-        property: (TASK) -> FileSystemLocationProperty<FILE_TYPE>) where
-            ARTIFACT_TYPE : ArtifactType.Single,
-            ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
-            FILE_TYPE : FileSystemLocation,
-            TASK: Task {
-
-        val artifactContainer = getArtifactContainer(type)
-        taskProvider.configure {
-            // since the taskProvider will execute, resolve its output path.
-            property(it).set(type.getOutputDirectory(buildDirectory, identifier,
-                if (artifactContainer.hasCustomProviders()) taskProvider.name else ""))
-        }
-        artifactContainer.setInitialProvider(taskProvider.flatMap { property(it) })
-    }
+        property: (TASK) -> FileSystemLocationProperty<FILE_TYPE>): SingleInitialProviderRequestImpl<TASK, FILE_TYPE>
+            where FILE_TYPE : FileSystemLocation,
+                  TASK: Task
+            = SingleInitialProviderRequestImpl(this, taskProvider, property)
 
     /**
      * Adds an Android Gradle Plugin producer.
@@ -181,27 +174,28 @@ class OperationsImpl(
         }
         artifactContainer.addInitialProvider(taskProvider.flatMap { property(it) })
     }
+
+    internal fun <ARTIFACT_TYPE, FILE_TYPE> copy(
+        artifactType: ARTIFACT_TYPE,
+        from: SingleArtifactContainer<FILE_TYPE>)
+            where ARTIFACT_TYPE: ArtifactType<FILE_TYPE>,
+                  ARTIFACT_TYPE: ArtifactType.Single,
+                  FILE_TYPE: FileSystemLocation {
+
+        storageProvider.getStorage(artifactType.kind).copy(
+            artifactType, from)
+    }
 }
 
 /**
  * Specialization of the [TransformRequest] public API with added services private to AGP.
  */
-class TransformRequestImpl<TASK : Task, FILE_TYPE : FileSystemLocation>(
+internal class TransformRequestImpl<TASK : Task, FILE_TYPE : FileSystemLocation>(
     private val operationsImpl: OperationsImpl,
     private val taskProvider: TaskProvider<TASK>,
     private val from: (TASK) -> Property<FILE_TYPE>,
     private val into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
 ) : TransformRequest<FILE_TYPE> {
-
-    private var outputDirectory: String? = null
-
-    /**
-     * Overrides default location for the output
-     */
-    fun at(location: String): TransformRequestImpl<TASK, FILE_TYPE> {
-        outputDirectory = location
-        return this
-    }
 
     override fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE)
             where ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
@@ -221,14 +215,14 @@ class TransformRequestImpl<TASK : Task, FILE_TYPE : FileSystemLocation>(
 /**
  * Specialization of the [ReplaceRequest] public API with added services private to AGP.
  */
-class ReplaceRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
+internal class ReplaceRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
     private val operationsImpl: OperationsImpl,
     private val taskProvider: TaskProvider<TASK>,
     private val with: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
 ): ReplaceRequest<FILE_TYPE> {
-    override fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE) where
-            ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
-            ARTIFACT_TYPE : ArtifactType.Replaceable {
+    override fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE)
+            where ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
+                  ARTIFACT_TYPE : ArtifactType.Replaceable {
 
         val artifactContainer = operationsImpl.getArtifactContainer(type)
         taskProvider.configure {
@@ -236,5 +230,120 @@ class ReplaceRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
         }
         artifactContainer.replace(taskProvider.flatMap { with(it) })
     }
+}
 
+/**
+ * Implementation of the [AppendRequest] public API.
+ */
+internal class AppendRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
+    private val operationsImpl: OperationsImpl,
+    private val taskProvider: TaskProvider<TASK>,
+    private val with: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
+): AppendRequest<FILE_TYPE> {
+
+    override fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE): AppendRequestImpl<TASK, FILE_TYPE>
+            where ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
+                  ARTIFACT_TYPE : ArtifactType.Appendable {
+
+        val artifactContainer = operationsImpl.getArtifactContainer(type)
+        taskProvider.configure {
+            with(it).set(operationsImpl.getOutputDirectory(type, taskProvider.name))
+        }
+        // all producers of a multiple artifact type are added to the initial list (just like
+        // the AGP producers) since the transforms always operate on the complete list of added
+        // providers.
+        artifactContainer.addInitialProvider(taskProvider.flatMap { with(it) })
+        return this
+    }
+}
+
+internal class MultipleTransformRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
+    private val operationsImpl: OperationsImpl,
+    private val objects: ObjectFactory,
+    private val taskProvider: TaskProvider<TASK>,
+    private val from: (TASK) -> ListProperty<FILE_TYPE>,
+    private val into: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
+):
+        MultipleTransformRequest<FILE_TYPE> {
+
+    var fileName: String? = null
+
+    fun withName(name: String): MultipleTransformRequestImpl<TASK, FILE_TYPE> {
+        fileName = name
+        return this
+    }
+
+    override fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE)
+            where ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
+                  ARTIFACT_TYPE : ArtifactType.Transformable,
+                  ARTIFACT_TYPE : ArtifactType.Multiple {
+        val artifactContainer = operationsImpl.getArtifactContainer(type)
+        val newList = objects.listProperty(type.kind.dataType().java)
+        val currentProviders= artifactContainer.transform(taskProvider.flatMap { newList })
+        taskProvider.configure {
+            newList.add(into(it))
+            into(it).set(operationsImpl.getOutputDirectory(type, taskProvider.name))
+            from(it).set(currentProviders)
+        }
+    }
+}
+
+internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSystemLocation>(
+    private val operationsImpl: OperationsImpl,
+    private val taskProvider: TaskProvider<TASK>,
+    private val from: (TASK) -> FileSystemLocationProperty<FILE_TYPE>
+) {
+    var fileName: String? = null
+    private var buildOutputLocation: String? = null
+    private var buildOutputLocationResolver: ((TASK) -> DirectoryProperty)? = null
+
+    /**
+     * Internal API to set the location of the directory where the produced [FILE_TYPE] should
+     * be located in.
+     *
+     * @param location a directory absolute path
+     */
+    fun atLocation(location: String?): SingleInitialProviderRequestImpl<TASK, FILE_TYPE> {
+        buildOutputLocation = location
+        return this
+    }
+
+    /**
+     * Internal API to set the location of the directory where the produced [FILE_TYPE] should be
+     * located in.
+     *
+     * @param location a method reference on the [TASK] to return a [DirectoryProperty]
+     */
+    fun atLocation(location: (TASK) -> DirectoryProperty)
+            : SingleInitialProviderRequestImpl<TASK, FILE_TYPE> {
+        buildOutputLocationResolver = location
+        return this
+    }
+
+    fun withName(name: String): SingleInitialProviderRequestImpl<TASK, FILE_TYPE> {
+        fileName = name
+        return this
+    }
+
+    fun <ARTIFACT_TYPE> on(type: ARTIFACT_TYPE)
+        where ARTIFACT_TYPE : ArtifactType<FILE_TYPE>,
+              ARTIFACT_TYPE : ArtifactType.Single {
+
+        val artifactContainer = operationsImpl.getArtifactContainer(type)
+        taskProvider.configure {
+            val outputAbsolutePath = if (buildOutputLocation != null) {
+                File(buildOutputLocation, fileName.orEmpty())
+            } else if (buildOutputLocationResolver != null) {
+                val resolver = buildOutputLocationResolver!!
+                File(resolver.invoke(it).get().asFile, fileName.orEmpty())
+            } else {
+                operationsImpl.getOutputDirectory(type,
+                    if (artifactContainer.hasCustomProviders()) taskProvider.name else "",
+                    fileName.orEmpty())
+            }
+            // since the taskProvider will execute, resolve its output path.
+            from(it).set(outputAbsolutePath)
+        }
+        artifactContainer.setInitialProvider(taskProvider.flatMap { from(it) })
+    }
 }

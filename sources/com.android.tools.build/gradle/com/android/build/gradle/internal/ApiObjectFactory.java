@@ -30,7 +30,6 @@ import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.api.TestVariantImpl;
 import com.android.build.gradle.internal.api.TestedVariant;
 import com.android.build.gradle.internal.api.UnitTestVariantImpl;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
 import com.android.build.gradle.internal.crash.ExternalApiUsageException;
 import com.android.build.gradle.internal.dsl.VariantOutputFactory;
 import com.android.build.gradle.internal.variant.BaseVariantData;
@@ -124,7 +123,7 @@ public class ApiObjectFactory {
         try {
             // Only add the variant API object to the domain object set once it's been fully
             // initialized.
-            extension.addVariant(variantApi);
+            extension.addVariant(variantApi, variantData.getScope());
         } catch (Throwable t) {
             // Adding variant to the collection will trigger user-supplied callbacks
             throw new ExternalApiUsageException(t);
@@ -148,15 +147,14 @@ public class ApiObjectFactory {
                                 .getGlobalScope()
                                 .getDslScope()
                                 .getDeprecationReporter());
-        GradleVariantConfiguration config = variantData.getVariantConfiguration();
+
         variantData
-                .getOutputScope()
-                .getApkDatas()
+                .getPublicVariantPropertiesApi()
+                .getOutputs()
                 .forEach(
-                        apkData -> {
-                            apkData.setVersionCode(config.getVersionCodeSerializableSupplier());
-                            apkData.setVersionName(config.getVersionNameSerializableSupplier());
-                            variantData.variantOutputFactory.create(apkData);
-                        });
+                        variantOutput ->
+                                // pass the new api variant output object so the override method can
+                                // delegate to the new location.
+                                variantData.variantOutputFactory.create(variantOutput));
     }
 }

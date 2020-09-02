@@ -18,24 +18,20 @@ package com.android.build.gradle.internal.test;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.OutputFile;
-import com.android.build.VariantOutput;
-import com.android.build.gradle.internal.core.VariantConfiguration;
-import com.android.build.gradle.internal.scope.ExistingBuildElements;
+import com.android.build.api.variant.BuiltArtifacts;
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
+import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.testing.TestData;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import com.android.build.gradle.internal.variant.TestedVariantData;
-import com.android.builder.testing.TestData;
 import com.android.builder.testing.api.DeviceConfigProvider;
-import com.android.ide.common.build.SplitOutputMatcher;
 import com.android.ide.common.process.ProcessException;
-import com.android.ide.common.process.ProcessExecutor;
 import com.android.utils.ILogger;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import javax.xml.parsers.ParserConfigurationException;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
@@ -50,19 +46,24 @@ public class TestDataImpl extends AbstractTestDataImpl {
     @NonNull
     private final TestVariantData testVariantData;
 
-    @NonNull
-    private final VariantConfiguration testVariantConfig;
+    @NonNull private final VariantDslInfo testVariantDslInfo;
 
     public TestDataImpl(
             @NonNull TestVariantData testVariantData,
             @NonNull Provider<Directory> testApkDir,
             @Nullable FileCollection testedApksDir) {
-        super(testVariantData.getVariantConfiguration(), testApkDir, testedApksDir);
+        super(
+                testVariantData.getVariantDslInfo(),
+                testVariantData.getVariantSources(),
+                testApkDir,
+                testedApksDir);
         this.testVariantData = testVariantData;
-        this.testVariantConfig = testVariantData.getVariantConfiguration();
+        this.testVariantDslInfo = testVariantData.getVariantDslInfo();
         if (testVariantData
-                        .getOutputScope()
-                        .getSplitsByType(VariantOutput.OutputType.FULL_SPLIT)
+                        .getPublicVariantPropertiesApi()
+                        .getOutputs()
+                        .getSplitsByType(
+                                com.android.build.api.variant.VariantOutput.OutputType.ONE_OF_MANY)
                         .size()
                 > 1) {
             throw new RuntimeException("Multi-output in test variant not yet supported");
@@ -78,49 +79,47 @@ public class TestDataImpl extends AbstractTestDataImpl {
     @NonNull
     @Override
     public String getApplicationId() {
-        return testVariantData.getApplicationId();
+        return testVariantData.getVariantDslInfo().getApplicationId();
     }
 
     @Nullable
     @Override
     public String getTestedApplicationId() {
-        return testVariantConfig.getTestedApplicationId();
+        return testVariantDslInfo.getTestedApplicationId();
     }
 
     @Override
     public boolean isLibrary() {
         TestedVariantData testedVariantData = testVariantData.getTestedVariantData();
         BaseVariantData testedVariantData2 = (BaseVariantData) testedVariantData;
-        return testedVariantData2.getVariantConfiguration().getType().isAar();
+        return testedVariantData2.getVariantDslInfo().getVariantType().isAar();
     }
 
     @NonNull
     @Override
     public ImmutableList<File> getTestedApks(
-            @NonNull ProcessExecutor processExecutor,
-            @Nullable File splitSelectExe,
             @NonNull DeviceConfigProvider deviceConfigProvider,
             @NonNull ILogger logger) throws ProcessException {
         BaseVariantData testedVariantData =
                 (BaseVariantData) testVariantData.getTestedVariantData();
 
         ImmutableList.Builder<File> apks = ImmutableList.builder();
-        // FIX ME : there has to be a better way...
-        Collection<OutputFile> splitOutputs =
-                ImmutableList.copyOf(
-                        ExistingBuildElements.from(
-                                InternalArtifactType.APK.INSTANCE,
+        BuiltArtifacts builtArtifacts =
+                new BuiltArtifactsLoaderImpl()
+                        .load(
                                 testedVariantData
                                         .getScope()
                                         .getArtifacts()
-                                        .getFinalProduct(InternalArtifactType.APK.INSTANCE)));
+                                        .getFinalProduct(InternalArtifactType.APK.INSTANCE)
+                                        .get());
+        if (builtArtifacts == null) {
+            return ImmutableList.of();
+        }
         apks.addAll(
-                SplitOutputMatcher.computeBestOutput(
-                        processExecutor,
-                        splitSelectExe,
+                SplitOutputMatcher.INSTANCE.computeBestOutput(
                         deviceConfigProvider,
-                        splitOutputs,
-                        testedVariantData.getVariantConfiguration().getSupportedAbis()));
+                        builtArtifacts,
+                        testedVariantData.getVariantDslInfo().getSupportedAbis()));
         return apks.build();
     }
 }

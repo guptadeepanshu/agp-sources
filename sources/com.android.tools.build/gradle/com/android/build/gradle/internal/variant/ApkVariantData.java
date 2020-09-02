@@ -16,10 +16,13 @@
 package com.android.build.gradle.internal.variant;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.GradleVariantConfiguration;
+import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.utils.StringHelper;
 
 /** Base data about a variant that generates an APK file. */
@@ -28,24 +31,36 @@ public abstract class ApkVariantData extends InstallableVariantData {
     protected ApkVariantData(
             @NonNull GlobalScope globalScope,
             @NonNull TaskManager taskManager,
-            @NonNull GradleVariantConfiguration config,
-            @NonNull Recorder recorder) {
-        super(globalScope, taskManager, config, recorder);
+            @NonNull VariantScope variantScope,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull ComponentImpl publicVariantApi,
+            @NonNull ComponentPropertiesImpl publicVariantPropertiesApi,
+            @NonNull VariantSources variantSources) {
+        super(
+                globalScope,
+                taskManager,
+                variantScope,
+                variantDslInfo,
+                publicVariantApi,
+                publicVariantPropertiesApi,
+                variantSources);
     }
 
     @Override
     @NonNull
     public String getDescription() {
-        final GradleVariantConfiguration config = getVariantConfiguration();
+        final VariantDslInfo variantDslInfo = getVariantDslInfo();
 
-        if (config.hasFlavors()) {
+        if (variantDslInfo.hasFlavors()) {
             StringBuilder sb = new StringBuilder(50);
-            StringHelper.appendCapitalized(sb, config.getBuildType().getName());
-            StringHelper.appendCapitalized(sb, config.getFlavorName());
+            StringHelper.appendCapitalized(
+                    sb, variantDslInfo.getComponentIdentity().getBuildType());
+            StringHelper.appendCapitalized(sb, variantDslInfo.getComponentIdentity().getName());
             sb.append(" build");
             return sb.toString();
         } else {
-            return StringHelper.capitalizeAndAppend(config.getBuildType().getName(), " build");
+            return StringHelper.capitalizeAndAppend(
+                    variantDslInfo.getComponentIdentity().getBuildType(), " build");
         }
     }
 }

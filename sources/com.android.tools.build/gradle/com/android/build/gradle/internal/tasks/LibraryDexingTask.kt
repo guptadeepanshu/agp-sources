@@ -18,16 +18,19 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.Workers.preferWorkers
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.dexing.ClassFileInputs
 import com.android.builder.dexing.DexArchiveBuilder
+import com.android.builder.dexing.DexParameters
 import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.sdklib.AndroidVersion
+import com.android.utils.FileUtils
 import com.google.common.util.concurrent.MoreExecutors
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
@@ -39,6 +42,7 @@ import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -78,8 +82,27 @@ abstract class LibraryDexingTask : NonIncrementalTask() {
     lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
         private set
 
+    @get:Optional
+    @get:Input
+    abstract val coreLibDesugarConfig: Property<String>
+
+    @get:Optional
+    @get:OutputDirectory
+    abstract val coreLibDesugarKeepRules: DirectoryProperty
+
     override fun doTaskAction() {
-        preferWorkers(projectName, path, workerExecutor, MoreExecutors.newDirectExecutorService()).use {
+        preferWorkers(
+            projectName,
+            path,
+            workerExecutor,
+            enableGradleWorkers.get(),
+            MoreExecutors.newDirectExecutorService()
+        ).use {
+            val coreLibDesugarKeepRules =
+                coreLibDesugarKeepRules.asFile.orNull?.resolve("keepRules")?.also { file ->
+                    FileUtils.mkdirs(file.parentFile)
+                    file.createNewFile()
+                }
             it.submit(
                 DexingRunnable::class.java,
                 DexParams(
@@ -89,7 +112,9 @@ abstract class LibraryDexingTask : NonIncrementalTask() {
                     output.get().asFile,
                     enableDesugaring = enableDesugaring.get(),
                     bootClasspath = bootClasspath.files,
-                    classpath = classpath.files
+                    classpath = classpath.files,
+                    coreLibDesugarConfig = coreLibDesugarConfig.orNull,
+                    coreLibDesugarKeepRules = coreLibDesugarKeepRules
                 )
             )
         }
@@ -102,26 +127,34 @@ abstract class LibraryDexingTask : NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<out LibraryDexingTask>) {
             super.handleProvider(taskProvider)
-            scope.artifacts.producesDir(
-                InternalArtifactType.DEX,
-                BuildArtifactsHolder.OperationType.APPEND,
+            scope.artifacts.getOperations().append(
                 taskProvider,
                 LibraryDexingTask::output
-            )
+            ).on(MultipleArtifactType.DEX)
+
+            if (variantScope.needsShrinkDesugarLibrary) {
+                variantScope.artifacts.getOperations()
+                    .setInitialProvider(taskProvider, LibraryDexingTask::coreLibDesugarKeepRules)
+                    .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
+            }
         }
 
         override fun configure(task: LibraryDexingTask) {
             super.configure(task)
             scope.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.RUNTIME_LIBRARY_CLASSES,
+                InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR,
                 task.classes
             )
             val minSdkVersion =
-                scope.variantConfiguration.minSdkVersionWithTargetDeviceApi.featureLevel
+                scope.variantDslInfo.minSdkVersionWithTargetDeviceApi.featureLevel
             task.minSdkVersion = minSdkVersion
             task.errorFormatMode =
                 SyncOptions.getErrorFormatMode(variantScope.globalScope.projectOptions)
-            if (scope.java8LangSupportType == VariantScope.Java8LangSupport.D8) {
+            // This is consumed only by library androidTest so desugar whenever java 8 lang
+            // support is enabled.
+            if (scope.java8LangSupportType != VariantScope.Java8LangSupport.INVALID
+                && scope.java8LangSupportType != VariantScope.Java8LangSupport.UNUSED
+            ) {
                 task.enableDesugaring.set(true)
 
                 if (minSdkVersion < AndroidVersion.VersionCodes.N) {
@@ -130,12 +163,15 @@ abstract class LibraryDexingTask : NonIncrementalTask() {
                         scope.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                             AndroidArtifacts.ArtifactScope.ALL,
-                            AndroidArtifacts.ArtifactType.CLASSES
+                            AndroidArtifacts.ArtifactType.CLASSES_JAR
                         )
                     )
                 }
             } else {
                 task.enableDesugaring.set(false)
+            }
+            if (scope.isCoreLibraryDesugaringEnabled) {
+                task.coreLibDesugarConfig.set(getDesugarLibConfig(scope.globalScope.project))
             }
         }
     }
@@ -148,7 +184,9 @@ private class DexParams(
     val output: File,
     val enableDesugaring: Boolean,
     val bootClasspath: Collection<File>,
-    val classpath: Collection<File>
+    val classpath: Collection<File>,
+    val coreLibDesugarConfig: String?,
+    val coreLibDesugarKeepRules: File?
 ) : Serializable
 
 private class DexingRunnable @Inject constructor(val params: DexParams) : Runnable {
@@ -156,24 +194,27 @@ private class DexingRunnable @Inject constructor(val params: DexParams) : Runnab
         ClassFileProviderFactory(params.bootClasspath.map(File::toPath)).use { bootClasspath ->
             ClassFileProviderFactory(params.classpath.map(File::toPath)).use { classpath ->
                 val d8DexBuilder = DexArchiveBuilder.createD8DexBuilder(
-                    params.minSdkVersion,
-                    true,
-                    bootClasspath,
-                    classpath,
-                    params.enableDesugaring,
-                    null,
-                    MessageReceiverImpl(
-                        params.errorFormatMode,
-                        Logging.getLogger(LibraryDexingTask::class.java)
+                    DexParameters(
+                        minSdkVersion = params.minSdkVersion,
+                        debuggable = true,
+                        dexPerClass = false,
+                        withDesugaring = params.enableDesugaring,
+                        desugarBootclasspath = bootClasspath,
+                        desugarClasspath = classpath,
+                        coreLibDesugarConfig = params.coreLibDesugarConfig,
+                        coreLibDesugarOutputKeepRuleFile = params.coreLibDesugarKeepRules,
+                        messageReceiver = MessageReceiverImpl(
+                            params.errorFormatMode,
+                            Logging.getLogger(LibraryDexingTask::class.java)
+                        )
                     )
                 )
 
                 ClassFileInputs.fromPath(params.input.toPath()).use { classFileInput ->
-                    classFileInput.entries { _ -> true }.use { classesInput ->
+                    classFileInput.entries { _, _ -> true }.use { classesInput ->
                         d8DexBuilder.convert(
                             classesInput,
-                            params.output.toPath(),
-                            false
+                            params.output.toPath()
                         )
                     }
                 }

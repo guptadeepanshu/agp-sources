@@ -21,7 +21,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.internal.InstallUtils
-import com.android.builder.testing.ConnectedDeviceProvider
+import com.android.build.gradle.internal.testing.ConnectedDeviceProvider
 import com.android.builder.testing.api.DeviceConfigProviderImpl
 import com.android.builder.testing.api.DeviceConnector
 import com.android.builder.testing.api.DeviceProvider
@@ -196,7 +196,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
             task.description = "Installs the " + variantScope.variantData.description + ""
             task.group = TaskManager.INSTALL_GROUP
 
-            variantScope.variantConfiguration.minSdkVersion.let {
+            variantScope.variantDslInfo.minSdkVersion.let {
                 task.minSdkVersion = it.apiLevel
                 task.minSdkCodename = it.codename
             }

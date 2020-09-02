@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -26,7 +25,6 @@ import com.android.builder.utils.FileCache
 import com.android.ide.common.resources.FileStatus
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFile
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
@@ -78,7 +76,6 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 InternalArtifactType.FIXED_STACK_FRAMES,
-                BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider,
                 RecalculateStackFramesTask::outFolder
             )
@@ -95,14 +92,14 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
                 variantScope.getArtifactFileCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.EXTERNAL,
-                    AndroidArtifacts.ArtifactType.CLASSES))
+                    AndroidArtifacts.ArtifactType.CLASSES_JAR))
 
             if (globalScope.extension.aaptOptions.namespaced
                 && globalScope.projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]) {
                 classesToFix.from(
                     variantScope
                         .artifacts
-                        .getFinalProduct<RegularFile>(InternalArtifactType.NAMESPACED_CLASSES_JAR))
+                        .getFinalProduct(InternalArtifactType.NAMESPACED_CLASSES_JAR))
             }
 
 
@@ -111,7 +108,7 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
             referencedClasses.from(variantScope.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 AndroidArtifacts.ArtifactScope.PROJECT,
-                AndroidArtifacts.ArtifactType.CLASSES))
+                AndroidArtifacts.ArtifactType.CLASSES_JAR))
 
             if (isTestCoverageEnabled) {
                 referencedClasses.from(
@@ -137,7 +134,7 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
                     testedVariantScope.getArtifactCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.CLASSES
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR
                     ).artifactFiles
                 )
             }

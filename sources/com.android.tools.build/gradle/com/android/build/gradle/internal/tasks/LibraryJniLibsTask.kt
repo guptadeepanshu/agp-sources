@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants
 import com.android.SdkConstants.DOT_AAR
 import com.android.SdkConstants.DOT_JAR
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.VariantScope
@@ -72,12 +71,14 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
     abstract val outputDirectory: DirectoryProperty
 
     override fun doTaskAction() {
-        LibraryJniLibsDelegate(
-            projectNativeLibs.get().asFile,
-            localJarsNativeLibs?.files ?: listOf(),
-            outputDirectory.get().asFile,
-            getWorkerFacadeWithThreads(useGradleExecutor = true)
-        ).copyFiles()
+        getWorkerFacadeWithThreads(useGradleExecutor = true).use { workers ->
+            LibraryJniLibsDelegate(
+                projectNativeLibs.get().asFile,
+                localJarsNativeLibs?.files ?: listOf(),
+                outputDirectory.get().asFile,
+                workers
+            ).copyFiles()
+        }
     }
 
     class LibraryJniLibsDelegate(
@@ -90,12 +91,10 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             FileUtils.cleanOutputDir(outputDirectory)
             val inputFiles = listOf(projectNativeLibs) + localJarsNativeLibs.toList()
             for (inputFile in inputFiles) {
-                workers.use {
-                    it.submit(
-                        LibraryJniLibsRunnable::class.java,
-                        LibraryJniLibsRunnable.Params(inputFile, outputDirectory)
-                    )
-                }
+                workers.submit(
+                    LibraryJniLibsRunnable::class.java,
+                    LibraryJniLibsRunnable.Params(inputFile, outputDirectory)
+                )
             }
         }
     }
@@ -127,7 +126,6 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesDir(
                 artifactType = artifactType,
-                operationType = BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider = taskProvider,
                 productProvider = LibraryJniLibsTask::outputDirectory,
                 fileName = SdkConstants.FD_JNI

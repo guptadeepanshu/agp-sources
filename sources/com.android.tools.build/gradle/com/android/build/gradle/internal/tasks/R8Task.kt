@@ -19,10 +19,13 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.transform.Format
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.PostprocessingFeatures
-import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
+import com.android.build.gradle.internal.scope.MultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.utils.getDesugarLibConfig
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
@@ -51,6 +54,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import java.nio.file.Path
 
 /**
  * Task that uses R8 to convert class files to dex. In case of a library variant, this
@@ -109,6 +113,18 @@ abstract class R8Task: ProguardConfigurableTask() {
     lateinit var dexingType: DexingType
         private set
 
+    @get:Optional
+    @get:Classpath
+    abstract val featureJars: ConfigurableFileCollection
+
+    @get:Optional
+    @get:Classpath
+    abstract val baseJar: RegularFileProperty
+
+    @get:Input
+    @get:Optional
+    abstract val coreLibDesugarConfig: Property<String>
+
     // R8 will produce either classes or dex
     @get:Optional
     @get:OutputFile
@@ -117,6 +133,18 @@ abstract class R8Task: ProguardConfigurableTask() {
     @get:Optional
     @get:OutputDirectory
     abstract val outputDex: DirectoryProperty
+
+    @get:Optional
+    @get:OutputDirectory
+    abstract val projectOutputKeepRules: DirectoryProperty
+
+    @get:Optional
+    @get:OutputDirectory
+    abstract val baseDexDir: DirectoryProperty
+
+    @get:Optional
+    @get:OutputDirectory
+    abstract val featureDexDir: DirectoryProperty
 
     @get:OutputFile
     abstract val outputResources: RegularFileProperty
@@ -151,27 +179,46 @@ abstract class R8Task: ProguardConfigurableTask() {
         override fun handleProvider(taskProvider: TaskProvider<out R8Task>) {
             super.handleProvider(taskProvider)
 
-            if (variantType.isAar) {
-                variantScope.artifacts.producesFile(
+            when {
+                variantType.isAar -> variantScope.artifacts.producesFile(
                     artifactType = InternalArtifactType.SHRUNK_CLASSES,
-                    operationType = BuildArtifactsHolder.OperationType.INITIAL,
                     taskProvider = taskProvider,
                     productProvider = R8Task::outputClasses,
                     fileName = "shrunkClasses.jar"
                 )
-            } else {
-                variantScope.artifacts.producesDir(
-                    artifactType = InternalArtifactType.DEX,
-                    operationType = BuildArtifactsHolder.OperationType.APPEND,
-                    taskProvider = taskProvider,
-                    productProvider = R8Task::outputDex,
-                    fileName = "shrunkDex"
-                )
+                variantScope.consumesFeatureJars() -> {
+                    variantScope.artifacts.producesDir(
+                        artifactType = InternalArtifactType.FEATURE_DEX,
+                        taskProvider = taskProvider,
+                        productProvider = R8Task::featureDexDir,
+                        fileName = ""
+                    )
+                    variantScope.artifacts.producesDir(
+                        artifactType = InternalArtifactType.BASE_DEX,
+                        taskProvider = taskProvider,
+                        productProvider = R8Task::baseDexDir,
+                        fileName = ""
+                    )
+                    if (variantScope.needsShrinkDesugarLibrary) {
+                        variantScope.artifacts.getOperations()
+                            .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
+                            .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
+                    }
+                }
+                else -> {
+                    variantScope.artifacts.getOperations().append(
+                        taskProvider, R8Task::outputDex
+                    ).on(MultipleArtifactType.DEX)
+                    if (variantScope.needsShrinkDesugarLibrary) {
+                        variantScope.artifacts.getOperations()
+                            .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
+                            .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
+                    }
+                }
             }
 
             variantScope.artifacts.producesFile(
                 artifactType = InternalArtifactType.SHRUNK_JAVA_RES,
-                operationType = BuildArtifactsHolder.OperationType.INITIAL,
                 taskProvider = taskProvider,
                 productProvider = R8Task::outputResources,
                 fileName = "shrunkJavaRes.jar"
@@ -182,7 +229,6 @@ abstract class R8Task: ProguardConfigurableTask() {
                     .artifacts
                     .producesFile(
                         InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE,
-                        BuildArtifactsHolder.OperationType.INITIAL,
                         taskProvider,
                         R8Task::mainDexListOutput,
                         "mainDexList.txt"
@@ -195,14 +241,15 @@ abstract class R8Task: ProguardConfigurableTask() {
 
             val artifacts = variantScope.artifacts
 
-
             task.enableDesugaring.set(
                 variantScope.java8LangSupportType == VariantScope.Java8LangSupport.R8
                         && !variantType.isAar)
 
             task.bootClasspath.from(variantScope.globalScope.fullBootClasspath)
-            task.minSdkVersion.set(variantScope.minSdkVersion.featureLevel)
-            task.debuggable.set(variantScope.variantConfiguration.buildType.isDebuggable)
+            task.minSdkVersion
+                .set(variantScope.variantDslInfo.minSdkVersionWithTargetDeviceApi.apiLevel)
+            task.debuggable
+                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
             task.disableTreeShaking.set(disableTreeShaking)
             task.disableMinification.set(disableMinification)
             task.messageReceiver = variantScope.globalScope.messageReceiver
@@ -216,7 +263,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                     .getFinalProductAsFileCollection(DUPLICATE_CLASSES_CHECK)
                     .get())
 
-            variantScope.variantConfiguration.multiDexKeepProguard?.let { multiDexKeepProguard ->
+            variantScope.variantDslInfo.multiDexKeepProguard?.let { multiDexKeepProguard ->
                 task.mainDexRulesFiles.from(multiDexKeepProguard)
             }
 
@@ -229,8 +276,27 @@ abstract class R8Task: ProguardConfigurableTask() {
                 )
             }
 
-            variantScope.variantConfiguration.multiDexKeepFile?.let { multiDexKeepFile ->
+            variantScope.variantDslInfo.multiDexKeepFile?.let { multiDexKeepFile ->
                 task.mainDexListFiles.from(multiDexKeepFile)
+            }
+
+            if (variantScope.consumesFeatureJars()) {
+                artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
+                    task.baseJar
+                )
+                task.featureJars.from(
+                    variantScope.getArtifactFileCollection(
+                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
+                        AndroidArtifacts.ArtifactScope.PROJECT,
+                        AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES
+                    )
+                )
+            }
+            task.baseJar.disallowChanges()
+            task.featureJars.disallowChanges()
+            if (variantScope.isCoreLibraryDesugaringEnabled) {
+                task.coreLibDesugarConfig.set(getDesugarLibConfig(variantScope.globalScope.project))
             }
         }
 
@@ -259,10 +325,10 @@ abstract class R8Task: ProguardConfigurableTask() {
     override fun doTaskAction() {
 
         val output: Property<out FileSystemLocation> =
-            if (variantType.orNull?.isAar == true) {
-                outputClasses
-            } else {
-                outputDex
+            when {
+                variantType.orNull?.isAar == true -> outputClasses
+                includeFeaturesInScopes.get() -> baseDexDir
+                else -> outputDex
             }
 
         shrink(
@@ -287,7 +353,12 @@ abstract class R8Task: ProguardConfigurableTask() {
             dexingType = dexingType,
             useFullR8 = useFullR8.get(),
             referencedInputs = (referencedClasses + referencedResources).toList(),
-            classes = classes.toList(),
+            classes =
+                if (includeFeaturesInScopes.get()) {
+                    listOf(baseJar.get().asFile)
+                } else {
+                    classes.toList()
+                },
             resources = resources.toList(),
             proguardOutputFiles =
                 if (mappingFile.isPresent) {
@@ -300,7 +371,11 @@ abstract class R8Task: ProguardConfigurableTask() {
                 },
             output = output.get().asFile,
             outputResources = outputResources.get().asFile,
-            mainDexListOutput = mainDexListOutput.orNull?.asFile
+            mainDexListOutput = mainDexListOutput.orNull?.asFile,
+            featureJars = featureJars.toList(),
+            featureDexDir = featureDexDir.asFile.orNull,
+            libConfiguration = coreLibDesugarConfig.orNull,
+            outputKeepRulesDir = projectOutputKeepRules.asFile.orNull
         )
     }
 
@@ -327,9 +402,14 @@ abstract class R8Task: ProguardConfigurableTask() {
             proguardOutputFiles: ProguardOutputFiles?,
             output: File,
             outputResources: File,
-            mainDexListOutput: File?
+            mainDexListOutput: File?,
+            featureJars: List<File>,
+            featureDexDir: File?,
+            libConfiguration: String?,
+            outputKeepRulesDir: File?
         ) {
-            LoggerWrapper.getLogger(R8Task::class.java)
+            val logger = LoggerWrapper.getLogger(R8Task::class.java)
+            logger
                 .info(
                     """
                 |R8 is a new Android code shrinker. If you experience any issues, please file a bug at
@@ -351,7 +431,11 @@ abstract class R8Task: ProguardConfigurableTask() {
 
             FileUtils.deleteIfExists(outputResources)
             when (outputFormat) {
-                Format.DIRECTORY -> FileUtils.cleanOutputDir(output)
+                Format.DIRECTORY -> {
+                    FileUtils.cleanOutputDir(output)
+                    featureDexDir?.let { FileUtils.cleanOutputDir(it) }
+                    outputKeepRulesDir?.let { FileUtils.cleanOutputDir(it) }
+                }
                 Format.JAR -> FileUtils.deleteIfExists(output)
             }
 
@@ -382,20 +466,36 @@ abstract class R8Task: ProguardConfigurableTask() {
                 MainDexListConfig()
             }
 
-            val bootClasspathInputs = referencedInputs + bootClasspath
-
+            val outputKeepRulesFile = outputKeepRulesDir?.resolve("output")
+            // When invoking R8 we filter out missing files. E.g. javac output may not exist if
+            // there are no Java sources. See b/151605314 for details.
             runR8(
-                classes.map { it.toPath() },
+                filterMissingFiles(classes, logger),
                 output.toPath(),
-                resources.map { it.toPath() },
+                filterMissingFiles(resources, logger),
                 outputResources.toPath(),
-                bootClasspathInputs.map { it.toPath() },
+                bootClasspath.map { it.toPath() },
+                filterMissingFiles(referencedInputs, logger),
                 toolConfig,
                 proguardConfig,
                 mainDexListConfig,
                 messageReceiver,
-                useFullR8
+                useFullR8,
+                featureJars.map { it.toPath() },
+                featureDexDir?.toPath(),
+                libConfiguration,
+                outputKeepRulesFile?.toPath()
             )
+        }
+
+        private fun filterMissingFiles(files: List<File>, logger: LoggerWrapper): List<Path> {
+            return files.mapNotNull { file ->
+                if (file.exists()) file.toPath()
+                else {
+                    logger.verbose("$file is ignored as it does not exist.")
+                    null
+                }
+            }
         }
     }
 }

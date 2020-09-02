@@ -19,21 +19,22 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.crash.PluginCrashReporter
-import com.android.build.gradle.internal.errors.MessageReceiverImpl
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.dexing.DexParameters
+import com.android.build.gradle.internal.dexing.DexWorkAction
+import com.android.build.gradle.internal.dexing.DexWorkActionParams
+import com.android.build.gradle.internal.dexing.DxDexParameters
+import com.android.build.gradle.internal.dexing.IncrementalDexSpec
+import com.android.build.gradle.internal.dexing.launchProcessing
 import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
-import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry.Companion.INSTANCE
-import com.android.build.gradle.options.SyncOptions
 import com.android.builder.core.DefaultDexOptions
+import com.android.builder.dexing.ClassBucket
+import com.android.builder.dexing.ClassBucketGroup
 import com.android.builder.dexing.ClassFileEntry
-import com.android.builder.dexing.ClassFileInputs
-import com.android.builder.dexing.DexArchiveBuilder
-import com.android.builder.dexing.DexArchiveBuilderConfig
-import com.android.builder.dexing.DexArchiveBuilderException
 import com.android.builder.dexing.DexerTool
+import com.android.builder.dexing.DirectoryBucketGroup
+import com.android.builder.dexing.JarBucketGroup
 import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.builder.utils.FileCache
-import com.android.dx.command.dexer.DxContext
 import com.android.ide.common.blame.Message
 import com.android.ide.common.blame.MessageReceiver
 import com.android.ide.common.blame.ParsingProcessOutputHandler
@@ -43,12 +44,10 @@ import com.android.ide.common.internal.WaitableExecutor
 import com.android.ide.common.process.ProcessException
 import com.android.ide.common.process.ProcessOutput
 import com.android.utils.FileUtils
-import com.google.common.base.Preconditions
 import com.google.common.base.Throwables
 import com.google.common.collect.Iterables
 import com.google.common.hash.Hashing
-import org.gradle.api.logging.Logging
-import org.gradle.tooling.BuildException
+import com.google.common.io.Closer
 import org.gradle.work.ChangeType
 import org.gradle.work.FileChange
 import org.gradle.workers.IsolationMode
@@ -57,27 +56,21 @@ import java.io.BufferedInputStream
 import java.io.File
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.io.OutputStream
-import java.io.Serializable
-import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.util.ArrayList
 import java.util.function.Supplier
-import javax.inject.Inject
-import kotlin.math.abs
 
 /**
  * Delegate for the [DexArchiveBuilderTask]. This is where the actual processing happens. Using the
  * inputs in the task, the delegate instance is configured. Main processing happens in [doProcess].
  */
 class DexArchiveBuilderTaskDelegate(
-    private val isIncremental: Boolean,
+    /** Whether incremental information is available. */
+    isIncremental: Boolean,
 
-    private val androidJarClasspath: Set<File>,
-
+    // Input class files
     private val projectClasses: Set<File>,
     private val projectChangedClasses: Set<FileChange> = emptySet(),
 
@@ -90,41 +83,59 @@ class DexArchiveBuilderTaskDelegate(
     private val mixedScopeClasses: Set<File>,
     private val mixedScopeChangedClasses: Set<FileChange> = emptySet(),
 
+    // Output directories for dex files and keep rules
     private val projectOutputDex: File,
+    private val projectOutputKeepRules: File?,
+
     private val subProjectOutputDex: File,
+    private val subProjectOutputKeepRules: File?,
+
     private val externalLibsOutputDex: File,
+    private val externalLibsOutputKeepRules: File?,
+
     private val mixedScopeOutputDex: File,
-    private val inputJarHashesFile: File,
+    private val mixedScopeOutputKeepRules: File?,
 
-    private val desugaringClasspathClasses: Set<File>,
-    private val desugaringClasspathChangedClasses: Set<FileChange> = emptySet(),
+    // Dex parameters
+    private val dexParams: DexParameters,
+    private val dxDexParams: DxDexParameters,
 
-    private val errorFormatMode: SyncOptions.ErrorFormatMode,
-    private val minSdkVersion: Int,
-    private val dexer: DexerTool,
-    private val useGradleWorkers: Boolean,
-    private val inBufferSize: Int,
-    private val outBufferSize: Int,
-    private val isDebuggable: Boolean,
-    private val java8LangSupportType: VariantScope.Java8LangSupport,
+    // Incremental info
+    private val desugarClasspathChangedClasses: Set<FileChange> = emptySet(),
+
+    /** Whether incremental desugaring V2 is enabled. */
+    incrementalDexingV2: Boolean,
+
+    /**
+     * Directory containing dependency graph(s) for desugaring, not `null` iff
+     * incrementalDexingV2 is enabled.
+     */
+    private val desugarGraphDir: File?,
+
+    // Other info
     projectVariant: String,
+    private val inputJarHashesFile: File,
+    private val dexer: DexerTool,
     private val numberOfBuckets: Int,
-    private val isDxNoOptimizeFlagPresent: Boolean,
-    private val libConfiguration: String?,
-    private var messageReceiver: MessageReceiver,
+    private val useGradleWorkers: Boolean,
+    private val workerExecutor: WorkerExecutor,
     private val executor: WaitableExecutor = WaitableExecutor.useGlobalSharedThreadPool(),
     userLevelCache: FileCache? = null,
-
-    private val workerExecutor: WorkerExecutor
+    private var messageReceiver: MessageReceiver
 ) {
+    //(b/141854812) Temporarily disable incremental support when core library desugaring enabled in release build
+    private val isIncremental =
+        isIncremental && projectOutputKeepRules == null && subProjectOutputKeepRules == null
+                && externalLibsOutputKeepRules == null && mixedScopeOutputKeepRules == null
 
     private val cacheHandler: DexArchiveBuilderCacheHandler =
         DexArchiveBuilderCacheHandler(
             userLevelCache,
-            isDxNoOptimizeFlagPresent,
-            minSdkVersion,
-            isDebuggable,
-            dexer
+            dxDexParams.dxNoOptimizeFlagPresent,
+            dexParams.minSdkVersion,
+            dexParams.debuggable,
+            dexer,
+            dexParams.coreLibDesugarConfig
         )
 
     private val changedFiles =
@@ -134,18 +145,25 @@ class DexArchiveBuilderTaskDelegate(
                         subProjectChangedClasses.size +
                         externalLibChangedClasses.size +
                         mixedScopeChangedClasses.size +
-                        desugaringClasspathChangedClasses.size
+                        desugarClasspathChangedClasses.size
             )
         ) {
             addAll(projectChangedClasses.map { it.file })
             addAll(subProjectChangedClasses.map { it.file })
             addAll(externalLibChangedClasses.map { it.file })
             addAll(mixedScopeChangedClasses.map { it.file })
-            addAll(desugaringClasspathChangedClasses.map { it.file })
+            addAll(desugarClasspathChangedClasses.map { it.file })
 
             this
         }
 
+    // Whether impacted files are computed lazily in the workers instead of being computed up front
+    // before the workers are launched.
+    private val isImpactedFilesComputedLazily: Boolean =
+        dexParams.withDesugaring && dexer == DexerTool.D8 && incrementalDexingV2
+
+    // desugarIncrementalHelper is not null iff
+    // !isImpactedFilesComputedLazily && dexParams.withDesugaring
     private val desugarIncrementalHelper: DesugarIncrementalHelper? =
         DesugarIncrementalHelper(
             projectVariant,
@@ -155,13 +173,17 @@ class DexArchiveBuilderTaskDelegate(
                 subProjectClasses,
                 externalLibClasses,
                 mixedScopeClasses,
-                desugaringClasspathClasses
+                dexParams.desugarClasspath
             ),
             Supplier { changedFiles.mapTo(HashSet<Path>(changedFiles.size)) { it.toPath() } },
             executor
-        ).takeIf { java8LangSupportType == VariantScope.Java8LangSupport.D8 }
+        ).takeIf { !isImpactedFilesComputedLazily && dexParams.withDesugaring }
 
     private var inputJarHashesValues: MutableMap<File, String> = getCurrentJarInputHashes()
+
+    init {
+        check(incrementalDexingV2 xor (desugarGraphDir == null))
+    }
 
     /**
      * Classpath resources provider is shared between invocations, and this key uniquely identifies
@@ -173,94 +195,149 @@ class DexArchiveBuilderTaskDelegate(
         override val type = ClassFileProviderFactory::class.java
     }
 
-    /** Wrapper around the [com.android.builder.dexing.r8.ClassFileProviderFactory].  */
-    class ClasspathService(override val service: ClassFileProviderFactory) :
-        WorkerActionServiceRegistry.RegisteredService<ClassFileProviderFactory> {
-
-        override fun shutdown() {
-            // nothing to be done, as providerFactory is a closable
-        }
+    companion object {
+        // Shared state used by worker actions.
+        internal val sharedState = WorkerActionServiceRegistry()
     }
 
     fun doProcess() {
-        if (isDxNoOptimizeFlagPresent) {
+        if (dxDexParams.dxNoOptimizeFlagPresent) {
             loggerWrapper.warning(DefaultDexOptions.OPTIMIZE_WARNING)
         }
 
         loggerWrapper.verbose("Dex builder is incremental : %b ", isIncremental)
-        if (!isIncremental) {
-            FileUtils.cleanOutputDir(projectOutputDex)
-            FileUtils.cleanOutputDir(subProjectOutputDex)
-            FileUtils.cleanOutputDir(externalLibsOutputDex)
-            FileUtils.cleanOutputDir(mixedScopeOutputDex)
-        } else {
-            deletePreviousOutputsFromJars()
-            deletePreviousOutputsFromDirs()
-        }
 
-        val additionalPaths: Set<File> =
-            desugarIncrementalHelper?.additionalPaths?.map { it.toFile() }?.toSet()
-                ?: emptySet()
-
-        val classpath = getClasspath(java8LangSupportType)
-        val bootclasspath = getBootClasspath(androidJarClasspath, java8LangSupportType)
-
-        var bootclasspathServiceKey: ClasspathServiceKey? = null
-        var classpathServiceKey: ClasspathServiceKey? = null
-        try {
-            ClassFileProviderFactory(bootclasspath).use { bootClasspathProvider ->
-                ClassFileProviderFactory(classpath).use { libraryClasspathProvider ->
-                    bootclasspathServiceKey = ClasspathServiceKey(bootClasspathProvider.id)
-                    classpathServiceKey = ClasspathServiceKey(libraryClasspathProvider.id)
-                    INSTANCE.registerService(
-                        bootclasspathServiceKey!!
-                    ) { ClasspathService(bootClasspathProvider) }
-                    INSTANCE.registerService(
-                        classpathServiceKey!!
-                    ) { ClasspathService(libraryClasspathProvider) }
-
-                    val processInputType =
-                        { classes: Set<File>, outputDir: File, useAndroidBuildCache: Boolean ->
-                            processClassFromInput(
-                                classes.filter { it.exists() }.toSet(),
-                                outputDir,
-                                additionalPaths,
-                                bootclasspathServiceKey!!,
-                                bootclasspath,
-                                classpathServiceKey!!,
-                                classpath,
-                                enableCaching = useAndroidBuildCache
-                            )
-                        }
-
-                    processInputType(projectClasses, projectOutputDex, false)
-                    processInputType(subProjectClasses, subProjectOutputDex, false)
-                    processInputType(mixedScopeClasses, mixedScopeOutputDex, false)
-                    val cacheableItems =
-                        processInputType(externalLibClasses, externalLibsOutputDex, true)
-
-                    // all work items have been submitted, now wait for completion.
-                    if (useGradleWorkers) {
-                        workerExecutor.await()
-                    } else {
-                        executor.waitForTasksWithQuickFail<Any>(true)
-                    }
-
-                    // and finally populate the caches.
-                    if (cacheableItems.isNotEmpty()) {
-                        cacheHandler.populateCache(cacheableItems)
-                    }
-
-                    loggerWrapper.verbose("Done with all dex archive conversions")
+        // impactedFiles is not null iff !isImpactedFilesComputedLazily
+        val impactedFiles: Set<File>? =
+            if (isImpactedFilesComputedLazily) {
+                null
+            } else {
+                if (dexParams.withDesugaring) {
+                    desugarIncrementalHelper!!.additionalPaths.map { it.toFile() }.toSet()
+                } else {
+                    emptySet()
                 }
+            }
+
+        try {
+            Closer.create().use { closer ->
+                val classpath = getClasspath(dexParams.withDesugaring)
+                val bootclasspath =
+                    getBootClasspath(dexParams.desugarBootclasspath, dexParams.withDesugaring)
+
+                val bootClasspathProvider = ClassFileProviderFactory(bootclasspath)
+                closer.register(bootClasspathProvider)
+                val libraryClasspathProvider = ClassFileProviderFactory(classpath)
+                closer.register(libraryClasspathProvider)
+
+                val bootclasspathServiceKey = ClasspathServiceKey(bootClasspathProvider.id)
+                val classpathServiceKey = ClasspathServiceKey(libraryClasspathProvider.id)
+                sharedState.registerServiceAsCloseable(
+                    bootclasspathServiceKey, bootClasspathProvider
+                ).also { closer.register(it) }
+
+                sharedState.registerServiceAsCloseable(
+                    classpathServiceKey, libraryClasspathProvider
+                ).also { closer.register(it) }
+
+                val processInputType = { classes: Set<File>,
+                    changedClasses: Set<FileChange>,
+                    outputDir: File,
+                    outputKeepRules: File?,
+                    desugarGraphDir: File?, // Not null iff impactedFiles == null
+                    useAndroidBuildCache: Boolean,
+                    cacheableDexes: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>?,
+                    cacheableKeepRules: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>? ->
+                    processClassFromInput(
+                        inputFiles = classes,
+                        inputFileChanges = changedClasses,
+                        outputDir = outputDir,
+                        outputKeepRules = outputKeepRules,
+                        impactedFiles = impactedFiles,
+                        desugarGraphDir = desugarGraphDir,
+                        bootClasspathKey = bootclasspathServiceKey,
+                        bootClasspath = bootclasspath,
+                        classpathKey = classpathServiceKey,
+                        classpath = classpath,
+                        enableCaching = useAndroidBuildCache,
+                        cacheableDexes = cacheableDexes,
+                        cacheableKeepRules = cacheableKeepRules
+                    )
+                }
+                processInputType(
+                    projectClasses,
+                    projectChangedClasses,
+                    projectOutputDex,
+                    projectOutputKeepRules,
+                    desugarGraphDir?.resolve("currentProject").takeIf { impactedFiles == null },
+                    false, // useAndroidBuildCache
+                    null, // cacheableDexes
+                    null // cacheableKeepRules
+                )
+                processInputType(
+                    subProjectClasses,
+                    subProjectChangedClasses,
+                    subProjectOutputDex,
+                    subProjectOutputKeepRules,
+                    desugarGraphDir?.resolve("otherProjects").takeIf { impactedFiles == null },
+                    false, // useAndroidBuildCache
+                    null, // cacheableDexes
+                    null // cacheableKeepRules
+                )
+                processInputType(
+                    mixedScopeClasses,
+                    mixedScopeChangedClasses,
+                    mixedScopeOutputDex,
+                    mixedScopeOutputKeepRules,
+                    desugarGraphDir?.resolve("mixedScopes").takeIf { impactedFiles == null },
+                    false, // useAndroidBuildCache
+                    null, // cacheableDexes
+                    null // cacheableKeepRules
+                )
+                // Caching is currently not supported when isImpactedFilesComputedLazily == true
+                val enableCachingForExternalLibs = !isImpactedFilesComputedLazily
+                val cacheableDexes: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>? =
+                    mutableListOf<DexArchiveBuilderCacheHandler.CacheableItem>()
+                        .takeIf { enableCachingForExternalLibs }
+                val cacheableKeepRules: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>? =
+                    mutableListOf<DexArchiveBuilderCacheHandler.CacheableItem>()
+                        .takeIf { enableCachingForExternalLibs }
+                val shrinkDesugarLibrary = externalLibsOutputKeepRules != null
+                processInputType(
+                    externalLibClasses,
+                    externalLibChangedClasses,
+                    externalLibsOutputDex,
+                    externalLibsOutputKeepRules,
+                    desugarGraphDir?.resolve("externalLibs").takeIf { impactedFiles == null },
+                    enableCachingForExternalLibs,
+                    cacheableDexes,
+                    cacheableKeepRules
+                )
+
+                // all work items have been submitted, now wait for completion.
+                if (useGradleWorkers) {
+                    workerExecutor.await()
+                } else {
+                    executor.waitForTasksWithQuickFail<Any>(true)
+                }
+
+                // and finally populate the caches.
+                if (cacheableDexes != null && cacheableDexes.isNotEmpty()) {
+                    cacheHandler.populateDexCache(cacheableDexes, shrinkDesugarLibrary)
+                }
+                if (cacheableKeepRules != null && cacheableKeepRules.isNotEmpty()) {
+                    cacheHandler.populateKeepRuleCache(
+                        cacheableKeepRules,
+                        shrinkDesugarLibrary
+                    )
+                }
+
+                loggerWrapper.verbose("Done with all dex archive conversions");
             }
         } catch (e: Exception) {
             PluginCrashReporter.maybeReportException(e)
             loggerWrapper.error(null, Throwables.getStackTraceAsString(e))
             throw e
-        } finally {
-            classpathServiceKey?.let { INSTANCE.removeService(it) }
-            bootclasspathServiceKey?.let { INSTANCE.removeService(it) }
         }
     }
 
@@ -329,65 +406,100 @@ class DexArchiveBuilderTaskDelegate(
 
     private fun processClassFromInput(
         inputFiles: Set<File>,
+        inputFileChanges: Set<FileChange>,
         outputDir: File,
-        additionalPaths: Set<File>,
+        outputKeepRules: File?,
+        impactedFiles: Set<File>?,
+        desugarGraphDir: File?, // Not null iff impactedFiles == null
         bootClasspathKey: ClasspathServiceKey,
         bootClasspath: List<Path>,
         classpathKey: ClasspathServiceKey,
         classpath: List<Path>,
-        enableCaching: Boolean
-    ): List<DexArchiveBuilderCacheHandler.CacheableItem> {
+        enableCaching: Boolean,
+        // cacheableDexes/cacheableKeepRules is not null iff enableCaching == true
+        cacheableDexes: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>?,
+        cacheableKeepRules: MutableList<DexArchiveBuilderCacheHandler.CacheableItem>?
+    ) {
+        if (!isIncremental) {
+            FileUtils.cleanOutputDir(outputDir)
+            outputKeepRules?.let { FileUtils.cleanOutputDir(it) }
+            desugarGraphDir?.let { FileUtils.cleanOutputDir(it) }
+        } else {
+            removeChangedJarOutputs(
+                inputFiles,
+                inputFileChanges,
+                impactedFiles ?: emptySet(),
+                outputDir
+            )
+            deletePreviousOutputsFromDirs(inputFileChanges, outputDir)
+        }
 
-        val itemsToCache = mutableListOf<DexArchiveBuilderCacheHandler.CacheableItem>()
+        val (directoryInputs, jarInputs) =
+            inputFiles
+                .filter { it.exists() }
+                .partition { it.isDirectory }
 
-        for (input in inputFiles) {
+        if (directoryInputs.isNotEmpty()) {
+            directoryInputs.forEach { loggerWrapper.verbose("Processing input %s", it.toString()) }
+            convertToDexArchive(
+                inputs = DirectoryBucketGroup(directoryInputs, numberOfBuckets),
+                outputDir = outputDir,
+                isIncremental = isIncremental,
+                bootClasspath = bootClasspathKey,
+                classpath = classpathKey,
+                changedFiles = changedFiles,
+                impactedFiles = impactedFiles,
+                desugarGraphDir = desugarGraphDir,
+                outputKeepRulesDir = outputKeepRules
+            )
+        }
+
+        for (input in jarInputs) {
             loggerWrapper.verbose("Processing input %s", input.toString())
-            if (input.isDirectory) {
-                convertToDexArchive(
-                    input,
-                    outputDir,
-                    isIncremental,
-                    bootClasspathKey,
-                    classpathKey,
-                    additionalPaths,
-                    changedFiles
+            check(input.extension == SdkConstants.EXT_JAR) { "Expected jar, received $input" }
+
+            val cacheInfo = if (enableCaching) {
+                getD8DesugaringCacheInfo(
+                    desugarIncrementalHelper,
+                    bootClasspath,
+                    classpath,
+                    input
                 )
             } else {
-                check(input.extension == SdkConstants.EXT_JAR) { "Expected jar, received $input" }
+                DesugaringDontCache
+            }
 
-                val cacheInfo = if (enableCaching) {
-                    getD8DesugaringCacheInfo(
-                        desugarIncrementalHelper,
-                        bootClasspath,
-                        classpath,
-                        input
+            val dexOutputs = convertJarToDexArchive(
+                isIncremental = isIncremental,
+                jarInput = input,
+                outputDir = outputDir,
+                bootclasspath = bootClasspathKey,
+                classpath = classpathKey,
+                changedFiles = changedFiles,
+                impactedFiles = impactedFiles,
+                desugarGraphDir = desugarGraphDir,
+                cacheInfo = cacheInfo,
+                outputKeepRulesDir = outputKeepRules
+            )
+            if (cacheInfo != DesugaringDontCache && dexOutputs.dexes.isNotEmpty()) {
+                cacheableDexes!!.add(
+                    DexArchiveBuilderCacheHandler.CacheableItem(
+                        input,
+                        dexOutputs.dexes,
+                        cacheInfo.orderedD8DesugaringDependencies
                     )
-                } else {
-                    DesugaringDontCache
-                }
-
-                val dexArchives = processJarInput(
-                    isIncremental,
-                    input,
-                    outputDir,
-                    bootClasspathKey,
-                    classpathKey,
-                    additionalPaths,
-                    changedFiles,
-                    cacheInfo
                 )
-                if (cacheInfo != DesugaringDontCache && dexArchives.isNotEmpty()) {
-                    itemsToCache.add(
+                if (dexOutputs.keepRules.isNotEmpty()) {
+                    cacheableKeepRules!!.add(
                         DexArchiveBuilderCacheHandler.CacheableItem(
                             input,
-                            dexArchives,
+                            dexOutputs.keepRules,
                             cacheInfo.orderedD8DesugaringDependencies
                         )
                     )
                 }
             }
         }
-        return itemsToCache
     }
 
     private fun getD8DesugaringCacheInfo(
@@ -396,7 +508,7 @@ class DexArchiveBuilderTaskDelegate(
         classpath: List<Path>,
         jarInput: File
     ): D8DesugaringCacheInfo {
-        if (java8LangSupportType != VariantScope.Java8LangSupport.D8) {
+        if (!dexParams.withDesugaring) {
             return DesugaringNoInfoCache
         }
         desugarIncrementalHelper as DesugarIncrementalHelper
@@ -428,53 +540,20 @@ class DexArchiveBuilderTaskDelegate(
         return D8DesugaringCacheInfo(allDependencies)
     }
 
-    private fun deletePreviousOutputsFromJars() {
-        removeChangedJarOutputs(
-            projectClasses,
-            projectChangedClasses,
-            projectOutputDex
-        )
-        removeChangedJarOutputs(
-            subProjectClasses,
-            subProjectChangedClasses,
-            subProjectOutputDex
-        )
-        removeChangedJarOutputs(
-            externalLibClasses,
-            externalLibChangedClasses,
-            externalLibsOutputDex
-        )
-        removeChangedJarOutputs(
-            mixedScopeClasses,
-            mixedScopeChangedClasses,
-            mixedScopeOutputDex
-        )
-    }
-
-    private fun deletePreviousOutputsFromDirs() {
-        val changedToOutput = mapOf(
-            projectChangedClasses to projectOutputDex,
-            subProjectChangedClasses to subProjectOutputDex,
-            externalLibChangedClasses to externalLibsOutputDex,
-            mixedScopeChangedClasses to mixedScopeOutputDex
-        )
-
+    private fun deletePreviousOutputsFromDirs(inputFileChanges: Set<FileChange>, output: File) {
         // Handle dir/file deletions only. We rewrite modified files, so no need to delete those.
-        for ((changed, output) in changedToOutput) {
-            changed.asSequence().filter {
-                it.changeType == ChangeType.REMOVED && it.file.extension != SdkConstants.EXT_JAR
-            }.forEach {
-                val relativePath = it.normalizedPath
+        inputFileChanges.asSequence().filter {
+            it.changeType == ChangeType.REMOVED && it.file.extension != SdkConstants.EXT_JAR
+        }.forEach {
+            val relativePath = it.normalizedPath
 
-                val fileToDelete = if (it.file.extension == SdkConstants.EXT_CLASS) {
-                    ClassFileEntry.withDexExtension(relativePath.toString())
-                } else {
-                    relativePath.toString()
-                }
-
-                FileUtils.deleteRecursivelyIfExists(output.resolve(fileToDelete))
+            val fileToDelete = if (it.file.extension == SdkConstants.EXT_CLASS) {
+                ClassFileEntry.withDexExtension(relativePath.toString())
+            } else {
+                relativePath.toString()
             }
 
+            FileUtils.deleteRecursivelyIfExists(output.resolve(fileToDelete))
         }
     }
 
@@ -485,18 +564,19 @@ class DexArchiveBuilderTaskDelegate(
     private fun removeChangedJarOutputs(
         inputClasses: Set<File>,
         changes: Set<FileChange>,
+        desugaringImpactedFiles: Set<File>,
         output: File
     ) {
-        if (changes.isEmpty()) return
+        if (changes.isEmpty() && desugaringImpactedFiles.isEmpty()) return
 
         val changedFiles = changes.map { it.file }.toSet()
         val unchangedOutputs = mutableSetOf<File>()
         inputClasses.asSequence()
-            .filter { it.extension == SdkConstants.EXT_JAR && it !in changedFiles }
+            .filter { it.extension == SdkConstants.EXT_JAR && it !in changedFiles && it !in desugaringImpactedFiles }
             .forEach { file ->
-                unchangedOutputs.add(getOutputForJar(file, output, null))
+                unchangedOutputs.add(getDexOutputForJar(file, output, null))
                 (0 until numberOfBuckets).forEach {
-                    unchangedOutputs.add(getOutputForJar(file, output, it))
+                    unchangedOutputs.add(getDexOutputForJar(file, output, it))
                 }
             }
         val outputFiles = output.listFiles() as? Array<File> ?: return
@@ -505,143 +585,90 @@ class DexArchiveBuilderTaskDelegate(
             .forEach { FileUtils.deleteIfExists(it) }
     }
 
-    private fun processJarInput(
+    private fun convertJarToDexArchive(
         isIncremental: Boolean,
         jarInput: File,
         outputDir: File,
         bootclasspath: ClasspathServiceKey,
         classpath: ClasspathServiceKey,
-        additionalFiles: Set<File>,
         changedFiles: Set<File>,
-        cacheInfo: D8DesugaringCacheInfo
-    ): List<File> {
-        return if (!isIncremental || jarInput in changedFiles || jarInput in additionalFiles) {
-            convertJarToDexArchive(
-                jarInput,
-                outputDir,
-                bootclasspath,
-                classpath,
-                cacheInfo
+        impactedFiles: Set<File>?,
+        desugarGraphDir: File?, // Not null iff impactedFiles == null
+        cacheInfo: D8DesugaringCacheInfo,
+        outputKeepRulesDir: File?
+    ): DexOutputs {
+        if (isImpactedFilesComputedLazily) {
+            check(impactedFiles == null)
+            return convertToDexArchive(
+                inputs = JarBucketGroup(jarInput, numberOfBuckets),
+                outputDir = outputDir,
+                isIncremental = isIncremental,
+                bootClasspath = bootclasspath,
+                classpath = classpath,
+                changedFiles = changedFiles,
+                impactedFiles = null,
+                desugarGraphDir = desugarGraphDir,
+                outputKeepRulesDir = outputKeepRulesDir
             )
         } else {
-            listOf()
-        }
-    }
-
-    private fun convertJarToDexArchive(
-        jarInput: File,
-        outputDir: File,
-        bootclasspath: ClasspathServiceKey,
-        classpath: ClasspathServiceKey,
-        cacheInfo: D8DesugaringCacheInfo
-    ): List<File> {
-
-        if (cacheInfo !== DesugaringDontCache) {
-            val cachedVersion = cacheHandler.getCachedVersionIfPresent(
-                jarInput, cacheInfo.orderedD8DesugaringDependencies
-            )
-            if (cachedVersion != null) {
-                val outputFile = getOutputForJar(jarInput, outputDir, null)
-                Files.copy(
-                    cachedVersion.toPath(),
-                    outputFile.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING
-                )
-                // no need to try to cache an already cached version.
-                return listOf()
+            // This is the case where the set of impactedFiles was precomputed, so dexing
+            // avoidance and caching is possible.
+            checkNotNull(impactedFiles)
+            if (isIncremental && jarInput !in changedFiles && jarInput !in impactedFiles) {
+                return DexOutputs()
             }
-        }
-        return convertToDexArchive(
-            jarInput,
-            outputDir,
-            false,
-            bootclasspath,
-            classpath,
-            setOf(),
-            setOf()
-        )
-    }
 
-    class DexConversionParameters(
-        internal val input: File,
-        private val bootClasspath: ClasspathServiceKey,
-        private val classpath: ClasspathServiceKey,
-        output: File,
-        private val numberOfBuckets: Int,
-        private val buckedId: Int,
-        private val minSdkVersion: Int,
-        private val isDxNoOptimizeFlagPresent: Boolean,
-        private val inBufferSize: Int,
-        private val outBufferSize: Int,
-        private val dexer: DexerTool,
-        private val isDebuggable: Boolean,
-        internal val isIncremental: Boolean,
-        private val java8LangSupportType: VariantScope.Java8LangSupport,
-        private val libConfiguration: String?,
-        internal val additionalPaths: Set<File>,
-        internal val changedFiles: Set<File>,
-        internal val errorFormatMode: SyncOptions.ErrorFormatMode
-    ) : Serializable {
-        internal val output: String = output.toURI().toString()
+            if (cacheInfo !== DesugaringDontCache) {
+                val shrinkDesugarLibrary = outputKeepRulesDir != null
+                val cachedDex = cacheHandler.getCachedDexIfPresent(
+                    jarInput, cacheInfo.orderedD8DesugaringDependencies, shrinkDesugarLibrary
+                )
+                val cachedKeepRule = cacheHandler.getCachedKeepRuleIfPresent(
+                    jarInput, cacheInfo.orderedD8DesugaringDependencies, shrinkDesugarLibrary
+                )
 
-        fun belongsToThisBucket(path: String): Boolean {
-            return getBucketForFile(input, path, numberOfBuckets) == buckedId
-        }
-
-        fun getDexArchiveBuilder(
-            outStream: OutputStream,
-            errStream: OutputStream,
-            messageReceiver: MessageReceiver
-        ): DexArchiveBuilder {
-            val dexArchiveBuilder: DexArchiveBuilder
-            when (dexer) {
-                DexerTool.DX -> {
-                    val optimizedDex = !isDxNoOptimizeFlagPresent
-                    val dxContext = DxContext(outStream, errStream)
-                    val config = DexArchiveBuilderConfig(
-                        dxContext,
-                        optimizedDex,
-                        inBufferSize,
-                        minSdkVersion,
-                        DexerTool.DX,
-                        outBufferSize,
-                        DexArchiveBuilderCacheHandler.isJumboModeEnabledForDx()
-                    )
-
-                    dexArchiveBuilder = DexArchiveBuilder.createDxDexBuilder(config)
+                if (outputKeepRulesDir == null) {
+                    if (cachedDex != null) {
+                        val outputFile = getDexOutputForJar(jarInput, outputDir, null)
+                        Files.copy(
+                            cachedDex.toPath(),
+                            outputFile.toPath(),
+                            StandardCopyOption.REPLACE_EXISTING
+                        )
+                        // no need to try to cache an already cached version.
+                        return DexOutputs()
+                    }
+                } else {
+                    // cachedDex and cachedKeepRule must be both null or both non-null. Something
+                    // must have gone wrong if one of them is null and the other is not.
+                    if ((cachedDex == null) xor (cachedKeepRule == null)) {
+                        loggerWrapper.warning("One of the cached dex outputs is missing. " +
+                                "Re-dex without using existing cached outputs.")
+                    }
+                    if (cachedDex != null && cachedKeepRule != null) {
+                        val outputFile = getDexOutputForJar(jarInput, outputDir, null)
+                        Files.copy(
+                            cachedDex.toPath(),
+                            outputFile.toPath(),
+                            StandardCopyOption.REPLACE_EXISTING
+                        )
+                        FileUtils.copyDirectory(cachedKeepRule, outputKeepRulesDir)
+                        // no need to try to cache an already cached version.
+                        return DexOutputs()
+                    }
                 }
-                DexerTool.D8 -> dexArchiveBuilder = DexArchiveBuilder.createD8DexBuilder(
-                    minSdkVersion,
-                    isDebuggable,
-                    INSTANCE.getService(bootClasspath).service,
-                    INSTANCE.getService(classpath).service,
-                    java8LangSupportType == VariantScope.Java8LangSupport.D8,
-                    libConfiguration,
-                    messageReceiver
-                )
-                else -> throw AssertionError("Unknown dexer type: " + dexer.name)
             }
-            return dexArchiveBuilder
-        }
-    }
-
-    class DexConversionWorkAction @Inject
-    constructor(private val dexConversionParameters: DexConversionParameters) : Runnable {
-
-        override fun run() {
-            try {
-                launchProcessing(
-                    dexConversionParameters,
-                    System.out,
-                    System.err,
-                    MessageReceiverImpl(
-                        dexConversionParameters.errorFormatMode,
-                        Logging.getLogger(DexArchiveBuilderTaskDelegate::class.java)
-                    )
-                )
-            } catch (e: Exception) {
-                throw BuildException(e.message, e)
-            }
+            return convertToDexArchive(
+                inputs = JarBucketGroup(jarInput, numberOfBuckets),
+                outputDir = outputDir,
+                isIncremental = false,
+                bootClasspath = bootclasspath,
+                classpath = classpath,
+                changedFiles = setOf(),
+                impactedFiles = setOf(),
+                desugarGraphDir = null,
+                outputKeepRulesDir = outputKeepRulesDir
+            )
         }
     }
 
@@ -650,50 +677,81 @@ class DexArchiveBuilderTaskDelegate(
     private object DesugaringDontCache : D8DesugaringCacheInfo(emptyList())
 
     private fun convertToDexArchive(
-        input: File,
+        inputs: ClassBucketGroup,
         outputDir: File,
         isIncremental: Boolean,
         bootClasspath: ClasspathServiceKey,
         classpath: ClasspathServiceKey,
-        additionalPaths: Set<File>,
-        changedFiles: Set<File>
-    ): List<File> {
-        loggerWrapper.verbose("Dexing %s", input.absolutePath)
+        changedFiles: Set<File>,
+        impactedFiles: Set<File>?,
+        desugarGraphDir: File?, // Not null iff impactedFiles == null
+        outputKeepRulesDir: File?
+    ): DexOutputs {
+        inputs.getRoots().forEach { loggerWrapper.verbose("Dexing ${it.absolutePath}") }
 
-        val dexArchives = mutableListOf<File>()
+        val dexOutputs = DexOutputs()
         for (bucketId in 0 until numberOfBuckets) {
+            // For directory inputs, we prefer dexPerClass mode to support incremental dexing per
+            // class, but dexPerClass mode is not supported by D8 when generating keep rules for
+            // core library desugaring
+            val dexPerClass = inputs is DirectoryBucketGroup && outputKeepRulesDir == null
 
-            val preDexOutputFile = if (input.isDirectory) {
-                outputDir.also { FileUtils.mkdirs(it) }
-            } else {
-                getOutputForJar(input, outputDir, bucketId).also { FileUtils.mkdirs(it.parentFile) }
+            val preDexOutputFile = when (inputs) {
+                is DirectoryBucketGroup -> {
+                    if (dexPerClass) {
+                        outputDir.also { FileUtils.mkdirs(it) }
+                    } else {
+                        // running in dexIndexMode, dex output location is determined by bucket and
+                        // outputDir
+                        outputDir.resolve(bucketId.toString()).also { FileUtils.mkdirs(it) }
+                    }
+                }
+                is JarBucketGroup -> {
+                    getDexOutputForJar(inputs.jarFile, outputDir, bucketId)
+                        .also { FileUtils.mkdirs(it.parentFile) }
+                }
             }
 
-            dexArchives.add(preDexOutputFile)
-            val parameters = DexConversionParameters(
-                input,
-                bootClasspath,
-                classpath,
-                preDexOutputFile,
-                numberOfBuckets,
-                bucketId,
-                minSdkVersion,
-                isDxNoOptimizeFlagPresent,
-                inBufferSize,
-                outBufferSize,
-                dexer,
-                isDebuggable,
-                isIncremental,
-                java8LangSupportType,
-                libConfiguration,
-                additionalPaths,
-                changedFiles,
-                errorFormatMode
+            val outputKeepRuleFile = outputKeepRulesDir?.let { outputKeepRuleDir ->
+                when (inputs) {
+                    is DirectoryBucketGroup -> outputKeepRuleDir.resolve(bucketId.toString())
+                    is JarBucketGroup ->
+                        getKeepRulesOutputForJar(inputs.jarFile, outputKeepRuleDir, bucketId)
+                }.also {
+                    FileUtils.mkdirs(it.parentFile)
+                    it.createNewFile()
+                }
+            }
+
+            dexOutputs.addDex(preDexOutputFile)
+            val classBucket = ClassBucket(inputs, bucketId)
+            outputKeepRuleFile?.let { dexOutputs.addKeepRule(it) }
+            val parameters = DexWorkActionParams(
+                dexer = dexer,
+                dexSpec = IncrementalDexSpec(
+                    inputClassFiles = classBucket,
+                    outputPath = preDexOutputFile,
+                    dexParams = dexParams.toDexParametersForWorkers(
+                        dexPerClass,
+                        bootClasspath,
+                        classpath,
+                        outputKeepRuleFile
+                    ),
+                    isIncremental = isIncremental,
+                    changedFiles = changedFiles,
+                    impactedFiles = impactedFiles,
+                    desugarGraphFile = if (impactedFiles == null) {
+                        getDesugarGraphFile(desugarGraphDir!!, classBucket)
+                    } else {
+                        null
+                    }
+                ),
+                dxDexParams = dxDexParams
             )
 
             if (useGradleWorkers) {
                 workerExecutor.submit(
-                    DexConversionWorkAction::class.java
+                    DexWorkAction::class.java
                 ) { configuration ->
                     configuration.isolationMode = IsolationMode.NONE
                     configuration.setParams(parameters)
@@ -731,11 +789,11 @@ class DexArchiveBuilderTaskDelegate(
                 }
             }
         }
-        return dexArchives
+        return dexOutputs
     }
 
-    private fun getClasspath(java8LangSupportType: VariantScope.Java8LangSupport): List<Path> {
-        if (java8LangSupportType != VariantScope.Java8LangSupport.D8) {
+    private fun getClasspath(withDesugaring: Boolean): List<Path> {
+        if (!withDesugaring) {
             return emptyList()
         }
 
@@ -744,21 +802,21 @@ class DexArchiveBuilderTaskDelegate(
                     subProjectClasses.size +
                     externalLibClasses.size +
                     mixedScopeClasses.size +
-                    desugaringClasspathClasses.size
+                    dexParams.desugarClasspath.size
         ).also { list ->
             list.addAll(projectClasses.map { it.toPath() })
             list.addAll(subProjectClasses.map { it.toPath() })
             list.addAll(externalLibClasses.map { it.toPath() })
             list.addAll(mixedScopeClasses.map { it.toPath() })
-            list.addAll(desugaringClasspathClasses.map { it.toPath() })
+            list.addAll(dexParams.desugarClasspath.map { it.toPath() })
         }
     }
 
     private fun getBootClasspath(
-        androidJarClasspath: Set<File>,
-        java8LangSupportType: VariantScope.Java8LangSupport
+        androidJarClasspath: List<File>,
+        withDesugaring: Boolean
     ): List<Path> {
-        if (java8LangSupportType != VariantScope.Java8LangSupport.D8) {
+        if (!withDesugaring) {
             return emptyList()
         }
         return androidJarClasspath.map { it.toPath() }
@@ -769,7 +827,7 @@ class DexArchiveBuilderTaskDelegate(
      * hash of the file content to determine the final output path, and this makes sure the task is
      * relocatable.
      */
-    private fun getOutputForJar(input: File, outputDir: File, bucketId: Int?): File {
+    private fun getDexOutputForJar(input: File, outputDir: File, bucketId: Int?): File {
         val hash = inputJarHashesValues.getValue(input)
 
         return if (bucketId != null) {
@@ -778,69 +836,45 @@ class DexArchiveBuilderTaskDelegate(
             outputDir.resolve("$hash.jar")
         }
     }
-}
 
-/**
- * Returns the bucket for the specified path. For jar inputs, path in the jar file should be
- * specified (both relative and absolute path work). For directories, absolute path should be
- * specified.
- */
-private fun getBucketForFile(
-    rootInput: File, path: String, numberOfBuckets: Int
-): Int {
-    if (!rootInput.isDirectory) {
-        return abs(path.hashCode()) % numberOfBuckets
-    } else {
-        val filePath = Paths.get(path)
-        Preconditions.checkArgument(filePath.isAbsolute, "Path should be absolute: $path")
-        val packagePath = filePath.parent ?: return 0
-        return abs(packagePath.toString().hashCode()) % numberOfBuckets
-    }
-}
-
-private fun launchProcessing(
-    dexConversionParameters: DexArchiveBuilderTaskDelegate.DexConversionParameters,
-    outStream: OutputStream,
-    errStream: OutputStream,
-    receiver: MessageReceiver
-) {
-    val dexArchiveBuilder = dexConversionParameters.getDexArchiveBuilder(
-        outStream,
-        errStream,
-        receiver
-    )
-
-    val inputPath = dexConversionParameters.input.toPath()
-
-    val hasIncrementalInfo =
-        dexConversionParameters.input.isDirectory && dexConversionParameters.isIncremental
-
-    fun toProcess(path: String): Boolean {
-        if (!dexConversionParameters.belongsToThisBucket(path)) return false
-
-        if (!hasIncrementalInfo) {
-            return true
-        }
-
-        val resolved = inputPath.resolve(path).toFile()
-        return resolved in dexConversionParameters.additionalPaths || resolved in dexConversionParameters.changedFiles
+    private fun getKeepRulesOutputForJar(input: File, outputDir: File, bucketId: Int): File {
+        val hash = inputJarHashesValues.getValue(input)
+        return outputDir.resolve("${hash}_$bucketId")
     }
 
-    val bucketFilter = { name: String -> toProcess(name) }
-    loggerWrapper.verbose("Dexing '" + inputPath + "' to '" + dexConversionParameters.output + "'")
-
-    try {
-        ClassFileInputs.fromPath(inputPath).use { input ->
-            input.entries(bucketFilter).use { entries ->
-                dexArchiveBuilder.convert(
-                    entries,
-                    Paths.get(URI(dexConversionParameters.output)),
-                    dexConversionParameters.input.isDirectory
+    /** Returns the file containing the desugaring graph when processing a [ClassBucket]. */
+    private fun getDesugarGraphFile(desugarGraphDir: File, classBucket: ClassBucket): File {
+        return when (classBucket.bucketGroup) {
+            is DirectoryBucketGroup -> File(
+                desugarGraphDir,
+                "dirs_bucket_${classBucket.bucketNumber}/graph.bin"
+            )
+            is JarBucketGroup -> {
+                // Use the hash of the jar's path instead of its contents as we don't need to worry
+                // about cache relocatability (the desugaring graph is not cached). If later on we
+                // want to use the content hash, keep in mind that the jar may have been removed
+                // (note that inputJarHashesValues contains hashes of removed jars too).
+                val jarFilePath = (classBucket.bucketGroup as JarBucketGroup).jarFile.path
+                File(
+                    desugarGraphDir,
+                    "jar_${Hashing.sha256().hashUnencodedChars(jarFilePath)}_" +
+                            "bucket_${classBucket.bucketNumber}/graph.bin"
                 )
             }
         }
-    } catch (ex: DexArchiveBuilderException) {
-        throw DexArchiveBuilderException("Failed to process $inputPath", ex)
+    }
+}
+
+private class DexOutputs {
+    val dexes = mutableListOf<File>()
+    val keepRules = mutableListOf<File>()
+
+    fun addDex(file: File) {
+        dexes.add(file)
+    }
+
+    fun addKeepRule(file: File) {
+        keepRules.add(file)
     }
 }
 

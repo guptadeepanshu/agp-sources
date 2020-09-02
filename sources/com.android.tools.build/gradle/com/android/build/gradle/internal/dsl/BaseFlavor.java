@@ -18,10 +18,10 @@ package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.api.dsl.DslScope;
+import com.android.builder.core.AbstractProductFlavor;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.DefaultApiVersion;
-import com.android.builder.core.DefaultProductFlavor;
 import com.android.builder.internal.ClassFieldImpl;
 import com.android.builder.model.ApiVersion;
 import com.android.builder.model.ClassField;
@@ -31,16 +31,13 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import org.gradle.api.Action;
-import org.gradle.api.Project;
-import org.gradle.api.logging.Logger;
 import org.gradle.api.model.ObjectFactory;
 
 /** Base DSL object used to configure product flavors. */
-public abstract class BaseFlavor extends DefaultProductFlavor implements CoreProductFlavor {
+@SuppressWarnings("deprecation")
+public abstract class BaseFlavor extends AbstractProductFlavor implements CoreProductFlavor {
 
-    @NonNull protected final Project project;
-
-    @NonNull protected final Logger logger;
+    @NonNull private DslScope dslScope;
 
     @NonNull private final NdkOptions ndkConfig;
 
@@ -50,22 +47,16 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
 
     @NonNull private final ShaderOptions shaderOptions;
 
-    @NonNull private final DeprecationReporter deprecationReporter;
-
-    public BaseFlavor(
-            @NonNull String name,
-            @NonNull Project project,
-            @NonNull ObjectFactory objectFactory,
-            @NonNull DeprecationReporter deprecationReporter,
-            @NonNull Logger logger) {
-        super(name, objectFactory.newInstance(VectorDrawablesOptions.class));
-        this.project = project;
-        this.deprecationReporter = deprecationReporter;
-        this.logger = logger;
+    public BaseFlavor(@NonNull String name, @NonNull DslScope dslScope) {
+        super(name, dslScope.getObjectFactory().newInstance(VectorDrawablesOptions.class));
+        this.dslScope = dslScope;
+        ObjectFactory objectFactory = dslScope.getObjectFactory();
         ndkConfig = objectFactory.newInstance(NdkOptions.class);
         externalNativeBuildOptions =
                 objectFactory.newInstance(ExternalNativeBuildOptions.class, objectFactory);
-        javaCompileOptions = objectFactory.newInstance(JavaCompileOptions.class, objectFactory);
+        javaCompileOptions =
+                objectFactory.newInstance(
+                        JavaCompileOptions.class, objectFactory, dslScope.getDeprecationReporter());
         shaderOptions = objectFactory.newInstance(ShaderOptions.class);
     }
 
@@ -88,12 +79,12 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
      * href="http://developer.android.com/studio/projects/add-native-code.html#">Add C and C++ Code
      * to Your Project</a>.
      */
-    @Nullable
+    @NonNull
     public ExternalNativeBuildOptions getExternalNativeBuild() {
         return externalNativeBuildOptions;
     }
 
-    @Nullable
+    @NonNull
     @Override
     public CoreExternalNativeBuildOptions getExternalNativeBuildOptions() {
         return externalNativeBuildOptions;
@@ -252,19 +243,21 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
         if (alreadyPresent != null) {
             String flavorName = getName();
             if (BuilderConstants.MAIN.equals(flavorName)) {
-                logger.info(
-                        "DefaultConfig: buildConfigField '{}' value is being replaced: {} -> {}",
-                        name,
-                        alreadyPresent.getValue(),
-                        value);
+                dslScope.getLogger()
+                        .info(
+                                "DefaultConfig: buildConfigField '{}' value is being replaced: {} -> {}",
+                                name,
+                                alreadyPresent.getValue(),
+                                value);
             } else {
-                logger.info(
-                        "ProductFlavor({}): buildConfigField '{}' "
-                                + "value is being replaced: {} -> {}",
-                        flavorName,
-                        name,
-                        alreadyPresent.getValue(),
-                        value);
+                dslScope.getLogger()
+                        .info(
+                                "ProductFlavor({}): buildConfigField '{}' "
+                                        + "value is being replaced: {} -> {}",
+                                flavorName,
+                                name,
+                                alreadyPresent.getValue(),
+                                value);
             }
         }
         addBuildConfigField(new ClassFieldImpl(type, name, value));
@@ -288,18 +281,20 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
         if (alreadyPresent != null) {
             String flavorName = getName();
             if (BuilderConstants.MAIN.equals(flavorName)) {
-                logger.info(
-                        "DefaultConfig: resValue '{}' value is being replaced: {} -> {}",
-                        name,
-                        alreadyPresent.getValue(),
-                        value);
+                dslScope.getLogger()
+                        .info(
+                                "DefaultConfig: resValue '{}' value is being replaced: {} -> {}",
+                                name,
+                                alreadyPresent.getValue(),
+                                value);
             } else {
-                logger.info(
-                        "ProductFlavor({}): resValue '{}' value is being replaced: {} -> {}",
-                        flavorName,
-                        name,
-                        alreadyPresent.getValue(),
-                        value);
+                dslScope.getLogger()
+                        .info(
+                                "ProductFlavor({}): resValue '{}' value is being replaced: {} -> {}",
+                                flavorName,
+                                name,
+                                alreadyPresent.getValue(),
+                                value);
             }
         }
         addResValue(new ClassFieldImpl(type, name, value));
@@ -321,7 +316,7 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
      * getDefaultProguardFile(String filename)</code> to return the full path of each file.
      */
     public void proguardFile(@NonNull Object proguardFile) {
-        getProguardFiles().add(project.file(proguardFile));
+        getProguardFiles().add(dslScope.file(proguardFile));
     }
 
     /**
@@ -371,7 +366,7 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
      * <p>Test code needs to be processed to apply the same obfuscation as was done to main code.
      */
     public void testProguardFile(@NonNull Object proguardFile) {
-        getTestProguardFiles().add(project.file(proguardFile));
+        getTestProguardFiles().add(dslScope.file(proguardFile));
     }
 
     /**
@@ -406,7 +401,7 @@ public abstract class BaseFlavor extends DefaultProductFlavor implements CorePro
      * <p>This is only valid for Library project. This is ignored in Application project.
      */
     public void consumerProguardFile(@NonNull Object proguardFile) {
-        getConsumerProguardFiles().add(project.file(proguardFile));
+        getConsumerProguardFiles().add(dslScope.file(proguardFile));
     }
 
     /**

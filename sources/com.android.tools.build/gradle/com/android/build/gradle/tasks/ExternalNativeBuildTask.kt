@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.attribution.generateChromeTrace
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons
@@ -32,9 +33,9 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JNI
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.builder.errors.EvalIssueReporter
+import com.android.builder.errors.DefaultIssueReporter
 import com.android.ide.common.process.BuildCommandException
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.utils.FileUtils
@@ -53,9 +54,11 @@ import org.gradle.api.Task
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.process.ExecOperations
 import java.io.File
 import java.io.IOException
 import java.time.Clock
+import javax.inject.Inject
 import kotlin.streams.toList
 
 /**
@@ -66,9 +69,8 @@ import kotlin.streams.toList
  * It declares no inputs or outputs, as it's supposed to always run when invoked. Incrementality
  * is left to the underlying build system.
  */
-abstract class ExternalNativeBuildTask : NonIncrementalTask() {
+abstract class ExternalNativeBuildTask : UnsafeOutputsTask() {
 
-    private lateinit var evalIssueReporter: EvalIssueReporter
     private lateinit var generator: Provider<ExternalNativeJsonGenerator>
 
     /**
@@ -98,6 +100,9 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
     val soFolder: File
         get() = File(generator.get().soFolder)
 
+    @get:Inject
+    abstract val execOperations: ExecOperations
+
     private val stlSharedObjectFiles: Map<Abi, File>
         get() = generator.get().stlSharedObjectFiles
 
@@ -112,7 +117,7 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
     )
 
     override fun doTaskAction() {
-        IssueReporterLoggingEnvironment(evalIssueReporter).use { buildImpl() }
+        IssueReporterLoggingEnvironment(DefaultIssueReporter(LoggerWrapper(logger))).use { buildImpl() }
     }
 
     @Throws(BuildCommandException::class, IOException::class)
@@ -191,21 +196,21 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
 
         infoln("check expected build outputs")
         for (config in miniConfigs) {
-            for (library in config.libraries.keys) {
-                val libraryValue = config.libraries[library]!!
-                checkState(!Strings.isNullOrEmpty(libraryValue.artifactName))
-                if (targets.isNotEmpty() && !targets.contains(libraryValue.artifactName)) {
+            for (library in config.libraries.values) {
+                checkState(!Strings.isNullOrEmpty(library.artifactName))
+                if (targets.isNotEmpty() && !targets.contains(library.artifactName)) {
                     continue
                 }
-                if (buildSteps.stream().noneMatch { step -> step.libraries.contains(libraryValue) }) {
+                if (buildSteps.stream().noneMatch { step -> step.libraries.contains(library) }) {
                     // Only need to check existence of output files we expect to create
                     continue
                 }
-                if (!libraryValue.output!!.exists()) {
+                val output = library.output!!
+                if (!output.exists()) {
                     throw GradleException(
-                            "Expected output file at ${libraryValue.output} for target ${libraryValue.artifactName} but there was none")
+                        "Expected output file at $output for target ${library.artifactName} but there was none")
                 }
-                if (libraryValue.abi == null) {
+                if (library.abi == null) {
                     throw GradleException("Expected NativeLibraryValue to have non-null abi")
                 }
 
@@ -219,23 +224,30 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
                 // (2) ExternalNativeCleanTask calls the individual clean targets for everything
                 //     that was built. This should cover the source of the copy but it is up to the
                 //     CMakeLists.txt or Android.mk author to ensure this.
-                val abi = Abi.getByName(libraryValue.abi!!) ?: throw RuntimeException(
+                val abi = Abi.getByName(library.abi!!) ?: throw RuntimeException(
                     "Unknown ABI seen $(ibraryValue.abi}"
                 )
                 val expectedOutputFile = FileUtils.join(
                     generator.get().variant.objFolder,
                     abi.tag,
-                    libraryValue.output!!.name
+                    output.name
                 )
-                if (!FileUtils.isSameFile(libraryValue.output!!, expectedOutputFile)) {
+                if (!FileUtils.isSameFile(output, expectedOutputFile)) {
                     infoln("external build set its own library output location for " +
-                            "'${libraryValue.output!!.name}', copy to expected location")
+                            "'${output.name}', copy to expected location")
 
                     if (expectedOutputFile.parentFile.mkdirs()) {
                         infoln("created folder ${expectedOutputFile.parentFile}")
                     }
-                    infoln("copy file ${libraryValue.output} to $expectedOutputFile")
-                    Files.copy(libraryValue.output!!, expectedOutputFile)
+                    infoln("copy file ${library.output} to $expectedOutputFile")
+                    Files.copy(output, expectedOutputFile)
+                }
+
+                for (runtimeFile in library.runtimeFiles) {
+                    Files.copy(
+                        runtimeFile,
+                        FileUtils.join(generator.get().variant.objFolder, abi.tag, runtimeFile.name)
+                    )
                 }
             }
         }
@@ -354,7 +366,7 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
     @Throws(BuildCommandException::class, IOException::class)
     private fun executeProcessBatch(buildSteps: List<BuildStep>) {
         val logger = logger
-        val processExecutor = GradleProcessExecutor(project)
+        val processExecutor = GradleProcessExecutor(execOperations::exec)
 
         for (buildStep in buildSteps) {
             val tokens = buildStep.buildCommand.tokenizeCommandLineToEscaped()
@@ -399,7 +411,7 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
                             val lineToSkip =
                                 if (ninjaFile.canRead()) ninjaFile.readLines().size else 0
                             val buildStartTime = Clock.systemUTC().millis()
-                            fun() {
+                            val m = fun() {
                                 generateChromeTrace(
                                     abiModel,
                                     ninjaFile,
@@ -408,6 +420,7 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
                                     traceFolder
                                 )
                             }
+                            m
                         }
                     }
 
@@ -421,7 +434,7 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
             )
                 .logStderrToInfo()
                 .logStdoutToInfo()
-                .execute()
+                .execute(execOperations::exec)
 
             generateChromeTraces?.invoke()
         }
@@ -461,7 +474,6 @@ abstract class ExternalNativeBuildTask : NonIncrementalTask() {
             )
 
             task.generator = generator
-            task.evalIssueReporter = variantScope.globalScope.errorHandler
         }
     }
 

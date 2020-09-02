@@ -21,18 +21,21 @@ import com.android.SdkConstants.FN_INTERMEDIATE_RES_JAR
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.StreamFilter.PROJECT_RESOURCES
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.io.Serializable
@@ -42,6 +45,7 @@ import java.util.zip.Deflater
 import javax.inject.Inject
 
 /** Bundle all library Java resources in a jar.  */
+@CacheableTask
 abstract class BundleLibraryJavaRes : NonIncrementalTask() {
 
     @get:OutputFile
@@ -50,6 +54,7 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
     // We cannot use @Classpath as it ignores empty directories which may be used as Java resources.
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:SkipWhenEmpty
     @get:Optional
     var resources: FileCollection? = null
         private set
@@ -57,6 +62,7 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
     // We cannot use @Classpath as it ignores empty directories which may be used as Java resources.
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:SkipWhenEmpty
     @get:Optional
     var resourcesAsJars: FileCollection? = null
         private set
@@ -66,8 +72,7 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
         private set
 
     @get:Input
-    var isDebugBuild: Boolean = false
-        private set
+    abstract val debuggable: Property<Boolean>
 
     // The runnable implementing the processing is not able to deal with fine-grained file but
     // instead is expecting directories of files. Use the unfiltered collection (since the filtering
@@ -83,7 +88,7 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
                     output = output!!.get().asFile,
                     inputs = unfilteredResources.files,
                     jarCreatorType = jarCreatorType,
-                    compressionLevel = if (isDebugBuild) Deflater.BEST_SPEED else null
+                    compressionLevel = if (debuggable.get()) Deflater.BEST_SPEED else null
                 )
             )
         }
@@ -108,7 +113,6 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
             super.handleProvider(taskProvider)
             variantScope.artifacts.producesFile(
                 InternalArtifactType.LIBRARY_JAVA_RES,
-                BuildArtifactsHolder.OperationType.APPEND,
                 taskProvider,
                 BundleLibraryJavaRes::output,
                 FN_INTERMEDIATE_RES_JAR
@@ -129,7 +133,8 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
             }
 
             task.jarCreatorType = variantScope.jarCreatorType
-            task.isDebugBuild = variantScope.variantConfiguration.buildType.isDebuggable
+            task.debuggable
+                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
         }
     }
 }
@@ -156,7 +161,7 @@ class BundleLibraryJavaResRunnable @Inject constructor(val params: Params) : Run
             params.inputs.forEach { base ->
                 if (base.isDirectory) {
                     jarCreator.addDirectory(base.toPath())
-                } else if (base.toString().endsWith(SdkConstants.DOT_JAR)) {
+                } else if (base.isFile && base.name.endsWith(SdkConstants.DOT_JAR)) {
                     jarCreator.addJar(base.toPath())
                 }
             }

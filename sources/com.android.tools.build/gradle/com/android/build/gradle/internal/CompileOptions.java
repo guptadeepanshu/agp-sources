@@ -26,10 +26,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 import org.gradle.api.JavaVersion;
 
-/**
- * Java compilation options.
- */
-public class CompileOptions {
+/** Java compilation options. */
+public class CompileOptions implements com.android.build.api.dsl.CompileOptions {
     private static final String VERSION_PREFIX = "VERSION_";
 
     @Nullable
@@ -43,7 +41,7 @@ public class CompileOptions {
 
     @Nullable private Boolean incremental = null;
 
-    @Nullable private Boolean javaApiDesugaringEnabled = null;
+    @Nullable private Boolean coreLibraryDesugaringEnabled = null;
 
     /** @see #setDefaultJavaVersion(JavaVersion) */
     @NonNull
@@ -147,15 +145,15 @@ public class CompileOptions {
         this.incremental = incremental;
     }
 
-    /** Whether Java Api desugaring is enabled */
+    /** Whether core library desugaring is enabled */
     @Nullable
-    public Boolean getJavaApiDesugaringEnabled() {
-        return javaApiDesugaringEnabled;
+    public Boolean getCoreLibraryDesugaringEnabled() {
+        return coreLibraryDesugaringEnabled;
     }
 
-    /** @see #getJavaApiDesugaringEnabled() */
-    public void setJavaApiDesugaringEnabled(boolean javaApiDesugaringEnabled) {
-        this.javaApiDesugaringEnabled = javaApiDesugaringEnabled;
+    /** @see #getCoreLibraryDesugaringEnabled() */
+    public void setCoreLibraryDesugaringEnabled(boolean coreLibraryDesugaringEnabled) {
+        this.coreLibraryDesugaringEnabled = coreLibraryDesugaringEnabled;
     }
 
     /**

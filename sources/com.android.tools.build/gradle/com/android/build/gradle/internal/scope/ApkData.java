@@ -21,6 +21,7 @@ import com.android.annotations.Nullable;
 import com.android.build.FilterData;
 import com.android.build.OutputFile;
 import com.android.build.VariantOutput;
+import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
 import java.io.IOException;
@@ -29,9 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -59,27 +57,26 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
                                     Comparator.nullsLast(String::compareTo))
                             .thenComparing(
                                     ApkData::getVersionName,
-                                    Comparator.nullsLast(String::compareTo))
-                            .thenComparing(ApkData::isEnabled));
+                                    Comparator.nullsLast(String::compareTo)));
 
     // TODO : move it to a subclass, we cannot override versions for SPLIT
-    private transient Supplier<String> versionName = () -> null;
-    private transient IntSupplier versionCode = () -> 0;
-    private AtomicBoolean enabled = new AtomicBoolean(true);
+    public transient com.android.build.api.variant.VariantOutput variantOutput;
+    private Integer versionCode = 0;
+    private String versionName = null;
     private String outputFileName;
 
 
     public ApkData() {}
 
     public static ApkData of(
-            @NonNull OutputType outputType,
+            @NonNull VariantOutput.OutputType outputType,
             @NonNull Collection<FilterData> filters,
             int versionCode) {
-        return of(outputType, filters, versionCode, null, null, null, "", "", true, "");
+        return of(outputType, filters, versionCode, null, null, null, "", "", "");
     }
 
     public static ApkData of(
-            @NonNull OutputType outputType,
+            @NonNull VariantOutput.OutputType outputType,
             @NonNull Collection<FilterData> filters,
             int versionCode,
             @Nullable String versionName,
@@ -87,7 +84,6 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
             @Nullable String outputFileName,
             @NonNull String fullName,
             @NonNull String baseName,
-            boolean enabled,
             @NonNull String dirName) {
         return new DefaultApkData(
                 outputType,
@@ -98,7 +94,6 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
                 outputFileName,
                 fullName,
                 baseName,
-                enabled,
                 dirName);
     }
 
@@ -128,7 +123,7 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
     // FIX-ME: we can have more than one value, especially for languages...
     // so far, we will return things like "fr,fr-rCA" for a single value.
     @Nullable
-    public FilterData getFilter(@NonNull FilterType filterType) {
+    public FilterData getFilter(@NonNull VariantOutput.FilterType filterType) {
         for (FilterData filter : getFilters()) {
             if (VariantOutput.FilterType.valueOf(filter.getFilterType()) == filterType) {
                 return filter;
@@ -139,7 +134,7 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
 
     @Nullable
     public String getFilter(String filterType) {
-        return ApkData.getFilter(getFilters(), FilterType.valueOf(filterType));
+        return ApkData.getFilter(getFilters(), VariantOutput.FilterType.valueOf(filterType));
     }
 
     public boolean requiresAapt() {
@@ -156,7 +151,12 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
 
     @NonNull
     @Input
-    public abstract OutputType getType();
+    public abstract VariantOutput.OutputType getType();
+
+    @Input
+    public boolean isUniversal() {
+        return false;
+    }
 
     /**
      * Returns a directory name relative to a variant specific location to save split specific
@@ -168,29 +168,31 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
     @Input
     public abstract String getDirName();
 
-    public void setVersionCode(IntSupplier versionCode) {
-        this.versionCode = versionCode;
-    }
-
-    public void setVersionName(Supplier<String> versionName) {
-        this.versionName = versionName;
-    }
-
     public void setOutputFileName(@NonNull String outputFileName) {
         this.outputFileName = outputFileName;
     }
 
-    @Override
+    // TODO : We need to remove this from this API and always go directly to the
+    // Variant API variantOutput.
     @Input
+    @Override
     public int getVersionCode() {
-        return versionCode.getAsInt();
+        if (variantOutput != null) {
+            return variantOutput.getVersionCode().get();
+        }
+        return versionCode;
     }
 
+    // TODO : We need to remove this from this API and always go directly to the
+    // Variant API variantOutput.
     @Nullable
     @Input
     @Optional
     public String getVersionName() {
-        return versionName.get();
+        if (variantOutput != null) {
+            return variantOutput.getVersionName().getOrNull();
+        }
+        return versionName;
     }
 
     @Nullable
@@ -198,17 +200,6 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
     @Optional
     public String getOutputFileName() {
         return outputFileName;
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("type", getType())
-                .add("fullName", getFullName())
-                .add("filters", getFilters())
-                .add("versionCode", getVersionCode())
-                .add("versionName", getVersionName())
-                .toString();
     }
 
     @NonNull
@@ -227,6 +218,17 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
         throw new UnsupportedOperationException(
                 "getOutputs is no longer supported.  Use getOutputFileName if you need to "
                         + "determine the file name of the output.");
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("type", getType())
+                .add("fullName", getFullName())
+                .add("filters", getFilters())
+                .add("versionCode", getVersionCode())
+                .add("versionName", getVersionName())
+                .toString();
     }
 
     @NonNull
@@ -250,15 +252,6 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
         return null;
     }
 
-    public void disable() {
-        enabled.set(false);
-    }
-
-    @Input
-    public boolean isEnabled() {
-        return enabled.get();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -270,13 +263,12 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
         ApkData that = (ApkData) o;
         return getVersionCode() == that.getVersionCode()
                 && Objects.equals(outputFileName, that.outputFileName)
-                && Objects.equals(getVersionName(), that.getVersionName())
-                && Objects.equals(enabled.get(), that.enabled.get());
+                && Objects.equals(getVersionName(), that.getVersionName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getVersionCode(), enabled.get(), getVersionName(), outputFileName);
+        return Objects.hash(getVersionCode(), getVersionName(), outputFileName);
     }
 
     @Override
@@ -289,26 +281,18 @@ public abstract class ApkData implements VariantOutput, Comparable<ApkData>, Ser
     @Input
     public abstract String getFilterName();
 
-
-    // We use this since we cannot serialize the suppliers for the respective fields, so we serialize
-    // a "snapshot" of those value sand when the object is deserialized we use these fields to create
-    // new suppliers.
-    // Although now the suppliers will be static, it's expected that by the time the class was
-    // serialized those values shouldn't change anymore.
-    private String serializedVersionName = null;
-    private int serializedVersionCode = 0;
-
-    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-        serializedVersionName = versionName.get();
-        serializedVersionCode = versionCode.getAsInt();
-        out.defaultWriteObject();
+    public void setVariantOutput(VariantOutputImpl variantOutput) {
+        this.variantOutput = variantOutput;
     }
 
     private void readObject(java.io.ObjectInputStream in)
             throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        versionName = () -> serializedVersionName;
-        versionCode = () -> serializedVersionCode;
     }
 
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        versionCode = getVersionCode();
+        versionName = getVersionName();
+        out.defaultWriteObject();
+    }
 }

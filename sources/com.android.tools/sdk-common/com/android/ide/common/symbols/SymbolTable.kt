@@ -24,6 +24,7 @@ import com.google.common.base.Preconditions
 import com.google.common.base.Splitter
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableTable
+import com.google.common.collect.Interner
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Table
@@ -202,7 +203,9 @@ abstract class SymbolTable protected constructor() {
     /** [ResourceType]s present in the table. */
     val resourceTypes: Set<ResourceType> get() = symbols.rowKeySet()
 
-    /** Builder that creates a symbol table.  */
+    /**
+     * Builder that creates a symbol table. Use [FastBuilder], if possible, instead of this class.
+     */
     class Builder {
 
         private var tablePackage = ""
@@ -234,6 +237,14 @@ abstract class SymbolTable protected constructor() {
          */
         fun addAll(symbols: Collection<Symbol>): Builder {
             symbols.forEach { this.add(it) }
+            return this
+        }
+
+        /**
+         * Adds all symbols in the given collection to the table - ignores the duplicates.
+         */
+        fun addAllIfNotExist(symbols: Collection<Symbol>): Builder {
+            symbols.filter { !this.contains(it) }.forEach { this.add(it) }
             return this
         }
 
@@ -293,7 +304,7 @@ abstract class SymbolTable protected constructor() {
                         this.symbols.put(
                                 it.resourceType,
                                 it.canonicalName,
-                                Symbol.StyleableSymbol(
+                                Symbol.styleableSymbol(
                                         it.canonicalName,
                                         ImmutableList.of(),
                                         children,
@@ -318,25 +329,7 @@ abstract class SymbolTable protected constructor() {
          * @param tablePackage; must be a valid java package name
          */
         fun tablePackage(tablePackage: String): Builder {
-            if (!tablePackage.isEmpty() && !SourceVersion.isName(tablePackage)) {
-                for (segment in Splitter.on('.').split(tablePackage)) {
-                    if (!SourceVersion.isIdentifier(segment)) {
-                        throw IllegalArgumentException(
-                                "Package '$tablePackage' from AndroidManifest.xml is not a valid " +
-                                        "Java package name as '$segment' is not a valid Java " +
-                                        "identifier.")
-                    }
-                    if (SourceVersion.isKeyword(segment)) {
-                        throw IllegalArgumentException(
-                                "Package '$tablePackage' from AndroidManifest.xml is not a valid " +
-                                        "Java package name as '$segment' is a Java keyword.")
-                    }
-                }
-                // Shouldn't happen.
-                throw IllegalArgumentException(
-                        "Package '$tablePackage' from AndroidManifest.xml is not a valid Java " +
-                                "package name.")
-            }
+            verifyTablePackage(tablePackage)
             this.tablePackage = tablePackage
             return this
         }
@@ -380,6 +373,8 @@ abstract class SymbolTable protected constructor() {
             return symbols.remove(resourceType, canonicalName)
         }
 
+        fun isEmpty(): Boolean = symbols.isEmpty
+
         /**
          * Builds a symbol table with all symbols added.
          *
@@ -388,6 +383,56 @@ abstract class SymbolTable protected constructor() {
         fun build(): SymbolTable {
             return SymbolTableImpl(tablePackage,
                     ImmutableTable.copyOf(symbols))
+        }
+    }
+
+    /**
+     * A builder that creates a symbol table. Use this class instead of [Builder], if possible.
+     */
+    class FastBuilder(private val symbolInterner: Interner<Symbol>) {
+
+        private var tablePackage = ""
+
+        private val symbols: ImmutableTable.Builder<ResourceType, String, Symbol> =
+            ImmutableTable.builder()
+
+        /**
+         * Adds a symbol to the table to be built. The table must not contain a symbol with the same
+         * resource type and name.
+         *
+         * @param symbol the symbol to add
+         */
+        fun add(symbol: Symbol) {
+            symbols.put(symbol.resourceType, symbol.canonicalName, symbolInterner.intern(symbol))
+        }
+
+        /**
+         * Adds all symbols in the given collection to the table. This is semantically equivalent
+         * to calling [.add] for all symbols.
+         *
+         * @param symbols the symbols to add
+         */
+        fun addAll(symbols: Collection<Symbol>) {
+            symbols.forEach { this.add(it) }
+        }
+
+        /**
+         * Sets the table package. See [SymbolTable] description.
+         *
+         * @param tablePackage; must be a valid java package name
+         */
+        fun tablePackage(tablePackage: String) {
+            verifyTablePackage(tablePackage)
+            this.tablePackage = tablePackage
+        }
+
+        /**
+         * Builds a symbol table with all symbols added.
+         *
+         * @return the symbol table
+         */
+        fun build(): SymbolTable {
+            return SymbolTableImpl(tablePackage, symbols.build())
         }
     }
 
@@ -440,6 +485,7 @@ abstract class SymbolTable protected constructor() {
          * @param packageName the package name for the merged symbol table.
          */
         @JvmStatic fun mergePartialTables(tables: List<File>, packageName: String): SymbolTable {
+            val symbolIo = SymbolIo()
             val builder = SymbolTable.builder()
             builder.tablePackage(packageName)
 
@@ -457,13 +503,13 @@ abstract class SymbolTable protected constructor() {
                             // If we haven't encountered a file with this name yet, remember it and
                             // process the partial R file.
                             visitedFiles.add(it.name)
-                            builder.addFromPartial(SymbolIo.readFromPartialRFile(it, null))
+                            builder.addFromPartial(symbolIo.readFromPartialRFile(it, null))
                         }
                     } else {
                         // Partial R files for values XML files and non-XML files need to be parsed
                         // always. The order matters for declare-styleables and for resource
                         // accessibility.
-                        builder.addFromPartial(SymbolIo.readFromPartialRFile(it, null))
+                        builder.addFromPartial(symbolIo.readFromPartialRFile(it, null))
                     }
                 }
             } catch (e: Exception) {
@@ -486,4 +532,29 @@ abstract class SymbolTable protected constructor() {
     }
 
     class IllegalResourceVisibilityException(description: String) : Exception(description)
+}
+
+/**
+ * Verifies that tablePackage is valid. See [SymbolTable] description.
+ */
+private fun verifyTablePackage(tablePackage: String) {
+    if (tablePackage.isNotEmpty() && !SourceVersion.isName(tablePackage)) {
+        for (segment in Splitter.on('.').split(tablePackage)) {
+            if (!SourceVersion.isIdentifier(segment)) {
+                throw IllegalArgumentException(
+                    "Package '$tablePackage' from AndroidManifest.xml is not a valid " +
+                            "Java package name as '$segment' is not a valid Java " +
+                            "identifier.")
+            }
+            if (SourceVersion.isKeyword(segment)) {
+                throw IllegalArgumentException(
+                    "Package '$tablePackage' from AndroidManifest.xml is not a valid " +
+                            "Java package name as '$segment' is a Java keyword.")
+            }
+        }
+        // Shouldn't happen.
+        throw IllegalArgumentException(
+            "Package '$tablePackage' from AndroidManifest.xml is not a valid Java " +
+                    "package name.")
+    }
 }

@@ -16,17 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
-import com.android.builder.errors.EvalIssueException
-import com.android.builder.errors.EvalIssueReporter
 import com.android.ide.common.repository.GradleVersion
 import com.android.utils.FileUtils
 import org.gradle.api.tasks.CacheableTask
+import java.lang.RuntimeException
 
 /**
  * Pre build task that performs comparison of runtime and compile classpath for application. If
@@ -34,8 +29,6 @@ import org.gradle.api.tasks.CacheableTask
  */
 @CacheableTask
 abstract class AppClasspathCheckTask : ClasspathComparisonTask() {
-
-    private lateinit var reporter: EvalIssueReporter
 
     override fun onDifferentVersionsFound(
         group: String,
@@ -69,7 +62,7 @@ dependencies {
 }
 """
 
-        reporter.reportError(EvalIssueReporter.Type.GENERIC, message)
+        throw RuntimeException(message)
     }
 
     class CreationAction(private val variantScope: VariantScope) :
@@ -82,16 +75,15 @@ dependencies {
             get() = AppClasspathCheckTask::class.java
 
         override fun configure(task: AppClasspathCheckTask) {
-            task.variantName = variantScope.fullVariantName
+            task.variantName = variantScope.name
 
             task.runtimeClasspath = variantScope.variantDependencies.runtimeClasspath
             task.compileClasspath = variantScope.variantDependencies.compileClasspath
             task.fakeOutputDirectory = FileUtils.join(
                 variantScope.globalScope.intermediatesDir,
                 name,
-                variantScope.variantConfiguration.dirName
+                variantScope.variantDslInfo.dirName
             )
-            task.reporter = variantScope.globalScope.errorHandler
         }
     }
 }

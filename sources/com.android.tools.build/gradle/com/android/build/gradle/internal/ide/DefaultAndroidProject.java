@@ -16,6 +16,8 @@
 
 package com.android.build.gradle.internal.ide;
 
+import static com.android.AndroidProjectTypes.PROJECT_TYPE_LIBRARY;
+
 import com.android.Version;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -25,6 +27,7 @@ import com.android.builder.model.AndroidGradlePluginProjectFlags;
 import com.android.builder.model.AndroidProject;
 import com.android.builder.model.ArtifactMetaData;
 import com.android.builder.model.BuildTypeContainer;
+import com.android.builder.model.DependenciesInfo;
 import com.android.builder.model.JavaCompileOptions;
 import com.android.builder.model.LintOptions;
 import com.android.builder.model.NativeToolchain;
@@ -95,6 +98,8 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
 
     @NonNull private final ViewBindingOptions viewBindingOptions;
 
+    @Nullable private final DependenciesInfo dependenciesInfo;
+
     @NonNull private final AndroidGradlePluginProjectFlags flags;
 
     DefaultAndroidProject(
@@ -125,6 +130,7 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
             boolean baseSplit,
             @NonNull Collection<String> dynamicFeatures,
             @NonNull ViewBindingOptions viewBindingOptions,
+            @Nullable DependenciesInfo dependenciesInfo,
             @NonNull AndroidGradlePluginProjectFlags flags) {
         this.name = name;
         this.groupId = groupId;
@@ -153,6 +159,7 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
         this.baseSplit = baseSplit;
         this.dynamicFeatures = ImmutableList.copyOf(dynamicFeatures);
         this.viewBindingOptions = viewBindingOptions;
+        this.dependenciesInfo = dependenciesInfo;
         this.flags = flags;
     }
 
@@ -337,6 +344,12 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
         return viewBindingOptions;
     }
 
+    @Nullable
+    @Override
+    public DependenciesInfo getDependenciesInfo() {
+        return dependenciesInfo;
+    }
+
     @NonNull
     @Override
     public AndroidGradlePluginProjectFlags getFlags() {
@@ -379,6 +392,7 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
                 && Objects.equals(baseSplit, that.baseSplit)
                 && Objects.equals(dynamicFeatures, that.dynamicFeatures)
                 && Objects.equals(viewBindingOptions, that.viewBindingOptions)
+                && Objects.equals(dependenciesInfo, that.dependenciesInfo)
                 && Objects.equals(flags, that.flags);
     }
 
@@ -412,6 +426,7 @@ final class DefaultAndroidProject implements AndroidProject, Serializable {
                 baseSplit,
                 dynamicFeatures,
                 viewBindingOptions,
+                dependenciesInfo,
                 flags);
     }
 }

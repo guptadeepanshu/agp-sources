@@ -80,6 +80,7 @@ public final class JavaArtifactImpl extends BaseArtifactImpl implements JavaArti
         super(
                 name,
                 assembleTaskName,
+                null /* assembleTaskOutputListingFile */,
                 compileTaskName,
                 classesFolder,
                 additionalClassesFolders,

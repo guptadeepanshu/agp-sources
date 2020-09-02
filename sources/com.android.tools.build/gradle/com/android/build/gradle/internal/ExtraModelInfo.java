@@ -20,18 +20,11 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.internal.dependency.ConfigurationDependencyGraphs;
-import com.android.build.gradle.internal.dsl.CoreBuildType;
-import com.android.build.gradle.internal.dsl.CoreProductFlavor;
-import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.errors.DeprecationReporterImpl;
-import com.android.build.gradle.internal.errors.MessageReceiverImpl;
-import com.android.build.gradle.internal.errors.SyncIssueHandler;
-import com.android.build.gradle.internal.errors.SyncIssueHandlerImpl;
+import com.android.build.gradle.internal.dsl.BuildType;
+import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.ide.ArtifactMetaDataImpl;
 import com.android.build.gradle.internal.ide.JavaArtifactImpl;
 import com.android.build.gradle.internal.variant.DefaultSourceProviderContainer;
-import com.android.build.gradle.options.ProjectOptions;
-import com.android.build.gradle.options.SyncOptions;
 import com.android.builder.model.AndroidArtifact;
 import com.android.builder.model.ArtifactMetaData;
 import com.android.builder.model.JavaArtifact;
@@ -45,14 +38,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.logging.Logger;
 
 /** For storing additional model information. */
 public class ExtraModelInfo {
-
-    private final DeprecationReporter deprecationReporter;
-    private final SyncIssueHandler syncIssueHandler;
-    private final MessageReceiverImpl messageReceiver;
 
     private final Map<String, ArtifactMetaData> extraArtifactMap = Maps.newHashMap();
     private final ListMultimap<String, AndroidArtifact> extraAndroidArtifacts = ArrayListMultimap.create();
@@ -62,32 +50,7 @@ public class ExtraModelInfo {
     private final ListMultimap<String, SourceProviderContainer> extraProductFlavorSourceProviders = ArrayListMultimap.create();
     private final ListMultimap<String, SourceProviderContainer> extraMultiFlavorSourceProviders = ArrayListMultimap.create();
 
-    public ExtraModelInfo(
-            @NonNull String projectPath,
-            @NonNull ProjectOptions projectOptions,
-            @NonNull Logger logger) {
-        super();
-
-        syncIssueHandler =
-                new SyncIssueHandlerImpl(SyncOptions.getModelQueryMode(projectOptions), logger);
-
-        deprecationReporter =
-                new DeprecationReporterImpl(syncIssueHandler, projectOptions, projectPath);
-        messageReceiver =
-                new MessageReceiverImpl(SyncOptions.getErrorFormatMode(projectOptions), logger);
-    }
-
-    public DeprecationReporter getDeprecationReporter() {
-        return deprecationReporter;
-    }
-
-    public MessageReceiverImpl getMessageReceiver() {
-        return messageReceiver;
-    }
-
-    public SyncIssueHandler getSyncIssueHandler() {
-        return syncIssueHandler;
-    }
+    public ExtraModelInfo() {}
 
     public Collection<ArtifactMetaData> getExtraArtifacts() {
         return extraArtifactMap.values();
@@ -123,8 +86,9 @@ public class ExtraModelInfo {
         extraArtifactMap.put(name, new ArtifactMetaDataImpl(name, isTest, artifactType));
     }
 
-    public void registerBuildTypeSourceProvider(@NonNull String name,
-            @NonNull CoreBuildType buildType,
+    public void registerBuildTypeSourceProvider(
+            @NonNull String name,
+            @NonNull BuildType buildType,
             @NonNull SourceProvider sourceProvider) {
         if (extraArtifactMap.get(name) == null) {
             throw new IllegalArgumentException(String.format(
@@ -137,8 +101,9 @@ public class ExtraModelInfo {
 
     }
 
-    public void registerProductFlavorSourceProvider(@NonNull String name,
-            @NonNull CoreProductFlavor productFlavor,
+    public void registerProductFlavorSourceProvider(
+            @NonNull String name,
+            @NonNull ProductFlavor productFlavor,
             @NonNull SourceProvider sourceProvider) {
         if (extraArtifactMap.get(name) == null) {
             throw new IllegalArgumentException(String.format(

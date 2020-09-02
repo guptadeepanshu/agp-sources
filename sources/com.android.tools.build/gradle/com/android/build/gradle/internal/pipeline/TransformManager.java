@@ -34,8 +34,9 @@ import com.android.build.gradle.internal.tasks.factory.PreConfigAction;
 import com.android.build.gradle.internal.tasks.factory.TaskConfigAction;
 import com.android.build.gradle.internal.tasks.factory.TaskFactory;
 import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback;
-import com.android.builder.errors.EvalIssueReporter;
-import com.android.builder.errors.EvalIssueReporter.Type;
+import com.android.build.gradle.options.BooleanOption;
+import com.android.builder.errors.IssueReporter;
+import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.model.AndroidProject;
 import com.android.builder.profile.Recorder;
 import com.android.utils.FileUtils;
@@ -100,7 +101,7 @@ public class TransformManager extends FilterableStreamCollection {
 
     @NonNull
     private final Project project;
-    @NonNull private final EvalIssueReporter issueReporter;
+    @NonNull private final IssueReporter issueReporter;
     @NonNull private final Logger logger;
     @NonNull
     private final Recorder recorder;
@@ -122,7 +123,7 @@ public class TransformManager extends FilterableStreamCollection {
 
     public TransformManager(
             @NonNull Project project,
-            @NonNull EvalIssueReporter issueReporter,
+            @NonNull IssueReporter issueReporter,
             @NonNull Recorder recorder) {
         this.project = project;
         this.issueReporter = issueReporter;
@@ -218,7 +219,7 @@ public class TransformManager extends FilterableStreamCollection {
                     String.format(
                             "Unable to add Transform '%s' on variant '%s': requested streams not available: %s+%s / %s",
                             transform.getName(),
-                            scope.getFullVariantName(),
+                            scope.getName(),
                             transform.getScopes(),
                             transform.getReferencedScopes(),
                             transform.getInputTypes()));
@@ -227,7 +228,7 @@ public class TransformManager extends FilterableStreamCollection {
 
         //noinspection PointlessBooleanExpression
         if (DEBUG && logger.isEnabled(LogLevel.DEBUG)) {
-            logger.debug("ADDED TRANSFORM(" + scope.getFullVariantName() + "):");
+            logger.debug("ADDED TRANSFORM(" + scope.getName() + "):");
             logger.debug("\tName: " + transform.getName());
             logger.debug("\tTask: " + taskName);
             for (TransformStream sd : inputStreams) {
@@ -242,12 +243,22 @@ public class TransformManager extends FilterableStreamCollection {
         }
 
         transforms.add(transform);
-
+        TaskConfigAction<TransformTask> wrappedConfigAction =
+                t -> {
+                    t.getEnableGradleWorkers()
+                            .set(
+                                    scope.getGlobalScope()
+                                            .getProjectOptions()
+                                            .get(BooleanOption.ENABLE_GRADLE_WORKERS));
+                    if (configAction != null) {
+                        configAction.configure(t);
+                    }
+                };
         // create the task...
         return Optional.of(
                 taskFactory.register(
                         new TransformTask.CreationAction<>(
-                                scope.getFullVariantName(),
+                                scope.getName(),
                                 taskName,
                                 transform,
                                 inputStreams,
@@ -255,7 +266,7 @@ public class TransformManager extends FilterableStreamCollection {
                                 outputStream,
                                 recorder),
                         preConfigAction,
-                        configAction,
+                        wrappedConfigAction,
                         providerCallback));
     }
 
@@ -336,9 +347,7 @@ public class TransformManager extends FilterableStreamCollection {
         // create the output
         IntermediateStream outputStream =
                 IntermediateStream.builder(
-                                project,
-                                transform.getName() + "-" + scope.getFullVariantName(),
-                                taskName)
+                                project, transform.getName() + "-" + scope.getName(), taskName)
                         .addContentTypes(outputTypes)
                         .addScopes(requestedScopes)
                         .setRootLocation(outRootFolder)
