@@ -1,9 +1,8 @@
 /**
- * 1) Change agpVersion
- * 2) Run './gradlew dumpSources'
- * 3) Check changeset into source control
+ * 1) Run './gradlew dumpSources -PagpVersion=4.2.0-alpha01' (set desired version)
+ * 2) Check changeset into source control
  */
-def agpVersion = '4.2.0-alpha07'
+def agpVersion = project.findProperty('agpVersion') ?: '4.2.0-alpha07'
 
 repositories {
   google()
@@ -19,8 +18,13 @@ dependencies {
 }
 
 task dumpSources {
+  def outputDir = file("sources/")
   inputs.files configurations.agp
-  outputs.dir "com.android.tools.build/$agpVersion/"
+  outputs.dir outputDir
+
+  doFirst {
+    outputDir.delete()
+  }
 
   doLast {
     def componentIds = configurations.agp.incoming.resolutionResult.allDependencies
@@ -39,10 +43,10 @@ task dumpSources {
           def group = ar.id.componentIdentifier.group
           def module = ar.id.componentIdentifier.module
           def version = ar.id.componentIdentifier.version
-          println "Extracting to com.android.tools.build/$agpVersion/$group/$module/$version."
+          println "Extracting to $outputDir/$group/$module."
           copy {
             from zipTree(ar.file)
-            into file("com.android.tools.build/$agpVersion/$group/$module/$version")
+            into new File(outputDir, "$group/$module")
           }
           println "Done extracting $module."
         }
