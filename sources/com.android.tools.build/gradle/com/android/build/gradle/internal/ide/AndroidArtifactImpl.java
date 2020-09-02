@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  */
 @Immutable
 final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtifact, Serializable {
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
 
     private final boolean isSigned;
     @NonNull private final String baseName;
@@ -67,6 +67,7 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
     private final BuildOutputSupplier<Collection<EarlySyncBuildOutput>> splitOutputsSupplier;
 
     @NonNull private final BuildOutputSupplier<Collection<EarlySyncBuildOutput>> manifestSupplier;
+    @NonNull private final Collection<AndroidArtifactOutput> buildOutputs;
     @Nullable private final String signingConfigName;
     @Nullable private final Set<String> abiFilters;
     @Nullable private final TestOptions testOptions;
@@ -133,6 +134,7 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
         this.instrumentedTestTaskName = instrumentedTestTaskName;
         this.bundleTaskName = bundleTaskName;
         this.apkFromBundleTaskName = apkFromBundleTaskName;
+        this.buildOutputs = computeBuildOutputs();
     }
 
     private EarlySyncBuildOutput getOutputFor(
@@ -151,6 +153,11 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
     @NonNull
     @Override
     public Collection<AndroidArtifactOutput> getOutputs() {
+        return buildOutputs;
+    }
+
+    @NonNull
+    private Collection<AndroidArtifactOutput> computeBuildOutputs() {
         Collection<EarlySyncBuildOutput> manifests = manifestSupplier.get();
         Collection<EarlySyncBuildOutput> outputs = splitOutputsSupplier.get();
         if (outputs.isEmpty()) {
@@ -352,7 +359,8 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
                 && Objects.equals(testOptions, that.testOptions)
                 && Objects.equals(instrumentedTestTaskName, that.instrumentedTestTaskName)
                 && Objects.equals(bundleTaskName, that.bundleTaskName)
-                && Objects.equals(apkFromBundleTaskName, that.apkFromBundleTaskName);
+                && Objects.equals(apkFromBundleTaskName, that.apkFromBundleTaskName)
+                && Objects.equals(buildOutputs, that.buildOutputs);
     }
 
     @Override
@@ -375,7 +383,8 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
                 testOptions,
                 instrumentedTestTaskName,
                 bundleTaskName,
-                apkFromBundleTaskName);
+                apkFromBundleTaskName,
+                buildOutputs);
     }
 
     @Override
@@ -396,6 +405,7 @@ final class AndroidArtifactImpl extends BaseArtifactImpl implements AndroidArtif
                 .add("instrumentedTestTaskName", instrumentedTestTaskName)
                 .add("bundleTaskName", bundleTaskName)
                 .add("apkFromBundleTaskName", apkFromBundleTaskName)
+                .add("buildOutputs", buildOutputs)
                 .toString();
     }
 
