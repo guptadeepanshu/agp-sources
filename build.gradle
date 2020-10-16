@@ -1,8 +1,8 @@
 /**
- * 1) Run './gradlew dumpSources -PagpVersion=4.2.0-alpha01' (set desired version)
+ * 1) Run './gradlew dumpSources
  * 2) Check changeset into source control
  */
-def agpVersion = project.findProperty('agpVersion') ?: '4.2.0-alpha07'
+def agpVersion = project.file('version.txt').text.trim()
 
 repositories {
   google()
