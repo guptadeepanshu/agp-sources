@@ -20,15 +20,13 @@ import com.android.build.api.artifact.ArtifactType
 import com.android.build.FilterData
 import com.android.build.OutputFile
 import com.android.build.VariantOutput
-import com.android.build.api.variant.BuiltArtifacts
 import com.android.build.api.variant.VariantOutputConfiguration
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.google.common.collect.ImmutableList
-import org.gradle.api.model.ObjectFactory
 import java.io.File
 import java.io.FileNotFoundException
-import java.io.IOException
 
 /**
  * Temporary class to load enough metadata to populate early model. should be deleted once
@@ -59,16 +57,19 @@ data class EarlySyncBuildOutput(
 
     companion object {
         @JvmStatic
-        fun load(metadaFileVersion: Int, folder: File): Collection<EarlySyncBuildOutput> {
-            val metadataFile = ExistingBuildElements.getMetadataFileIfPresent(folder)
+        fun load(metadataFileVersion: Int, folder: File): Collection<EarlySyncBuildOutput> {
+            val metadataFile = if (metadataFileVersion == 1) {
+                ExistingBuildElements.getMetadataFileIfPresent(folder)
+            } else {
+                File(folder, BuiltArtifactsImpl.METADATA_FILE_NAME)
+            }
             if (metadataFile == null || !metadataFile.exists()) {
                 return ImmutableList.of<EarlySyncBuildOutput>()
             }
-
             return try {
-                if (metadaFileVersion == 1) loadVersionOneFile(metadataFile)
+                if (metadataFileVersion == 1) loadVersionOneFile(metadataFile)
                 else loadVersionTwoFile(metadataFile)
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 ImmutableList.of<EarlySyncBuildOutput>()
             }
         }

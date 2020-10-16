@@ -120,7 +120,7 @@ class ExistingBuildElements {
                         elementType,
                         reader)
                 }
-            } catch (e: IOException) {
+            } catch (e: Exception) {
                 return BuildElements(version = BuildElements.METADATA_FILE_VERSION,
                     applicationId = "",
                     variantType = VariantTypeImpl.BASE_APK.toString(),

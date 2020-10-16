@@ -35,14 +35,22 @@ class AttributionBuildListener internal constructor(private val outputDirPath: S
     private val outputFileToTasksMap: MutableMap<String, MutableList<String>> = ConcurrentHashMap()
 
     override fun buildFinished(buildResult: BuildResult) {
-        AndroidGradlePluginAttributionData.save(
-            File(outputDirPath),
-            AndroidGradlePluginAttributionData(
-                taskNameToClassNameMap = taskNameToClassNameMap,
-                tasksSharingOutput = outputFileToTasksMap.filter { it.value.size > 1 }
+        try {
+            if (buildResult.failure != null) {
+                // Build analyzer window is shown only when the build is successful so
+                // there is no need to output the data on failure.
+                return
+            }
+            AndroidGradlePluginAttributionData.save(
+                File(outputDirPath),
+                AndroidGradlePluginAttributionData(
+                    taskNameToClassNameMap = taskNameToClassNameMap,
+                    tasksSharingOutput = outputFileToTasksMap.filter { it.value.size > 1 }
+                )
             )
-        )
-        AttributionListenerInitializer.unregister(buildResult.gradle)
+        } finally {
+            AttributionListenerInitializer.unregister(buildResult.gradle)
+        }
     }
 
     override fun beforeExecute(task: Task) {

@@ -34,7 +34,7 @@ class BuiltArtifactsImpl(
     override val elements: Collection<BuiltArtifactImpl>) : BuiltArtifacts {
 
     companion object {
-        const val METADATA_FILE_NAME = "output.json"
+        const val METADATA_FILE_NAME = "output-metadata.json"
     }
 
     override fun transform(

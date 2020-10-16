@@ -438,7 +438,9 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                                             builtElement.getOutputFile().toPath(),
                                             builtElement.getProperties(),
                                             builtElement.getVersionCode(),
-                                            String.valueOf(builtElement.getVersionCode()),
+                                            builtElement.getApkData().getVersionName() == null
+                                                    ? String.valueOf(builtElement.getVersionCode())
+                                                    : builtElement.getApkData().getVersionName(),
                                             true,
                                             builtElement.getApkData().isUniversal()
                                                     ? VariantOutputConfiguration.OutputType
