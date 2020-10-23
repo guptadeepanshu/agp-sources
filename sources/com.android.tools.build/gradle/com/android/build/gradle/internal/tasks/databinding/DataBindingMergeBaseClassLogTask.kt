@@ -16,12 +16,12 @@
 
 package com.android.build.gradle.internal.tasks.databinding
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.IncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.ide.common.resources.FileStatus
@@ -64,32 +64,37 @@ abstract class DataBindingMergeBaseClassLogTask: IncrementalTask() {
         delegate.doIncrementalRun(getWorkerFacadeWithWorkers(), changedInputs)
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<DataBindingMergeBaseClassLogTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<DataBindingMergeBaseClassLogTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
-        override val name = variantScope.getTaskName("dataBindingMergeGenClasses")
+        override val name = computeTaskName("dataBindingMergeGenClasses")
         override val type = DataBindingMergeBaseClassLogTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out DataBindingMergeBaseClassLogTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<DataBindingMergeBaseClassLogTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.DATA_BINDING_BASE_CLASS_LOGS_DEPENDENCY_ARTIFACTS,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DataBindingMergeBaseClassLogTask::outFolder
-            )
+            ).on(InternalArtifactType.DATA_BINDING_BASE_CLASS_LOGS_DEPENDENCY_ARTIFACTS)
         }
 
-        override fun configure(task: DataBindingMergeBaseClassLogTask) {
+        override fun configure(
+            task: DataBindingMergeBaseClassLogTask
+        ) {
             super.configure(task)
 
             // data binding related artifacts for external libs
-            task.moduleClassLog = variantScope.getArtifactFileCollection(
+            task.moduleClassLog = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH,
                 PROJECT,
                 ArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT
             )
 
-            task.externalClassLog = variantScope.getArtifactFileCollection(
+            task.externalClassLog = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH,
                 EXTERNAL,
                 ArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT

@@ -15,26 +15,27 @@
  */
 package com.android.build.gradle.internal.core
 
+import com.android.SdkConstants
 import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.impl.ResValue
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
-import com.android.build.gradle.internal.dsl.CoreNdkOptions
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
 import com.android.builder.model.ApiVersion
-import com.android.builder.model.ClassField
 import com.android.builder.model.VectorDrawablesOptions
 import com.android.sdklib.AndroidVersion
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
-import org.gradle.api.Project
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import java.io.File
-import java.util.function.IntSupplier
-import java.util.function.Supplier
 
 /**
  * Represents a variant, initialized from the DSL object model (default config, build type, flavors)
@@ -67,6 +68,24 @@ interface VariantDslInfo {
      * @return a unique name made up of the variant and split names.
      */
     fun computeFullNameWithSplits(splitName: String): String
+
+    /**
+     * Returns the expected output file name for the variant.
+     *
+     * @param archivesBaseName the project's archiveBaseName
+     * @param baseName the variant baseName
+     */
+    fun getOutputFileName(archivesBaseName: String, baseName: String): String {
+        // we only know if it is signed during configuration, if its the base module.
+        // Otherwise, don't differentiate between signed and unsigned.
+        // we only know if it is signed during configuration, if its the base module.
+        // Otherwise, don't differentiate between signed and unsigned.
+        val suffix =
+            if (isSigningReady || !variantType.isBaseModule)
+                SdkConstants.DOT_ANDROID_PACKAGE
+            else "-unsigned.apk"
+        return archivesBaseName + "-" + baseName + suffix
+    }
 
     /**
      * Returns the full, unique name of the variant, including BuildType, flavors and test, dash
@@ -127,13 +146,15 @@ interface VariantDslInfo {
     fun hasFlavors(): Boolean
 
     /**
-     * Returns the original application ID before any overrides from flavors. If the variant is a
-     * test variant, then the application ID is the one coming from the configuration of the tested
-     * variant, and this call is similar to [.getApplicationId]
+     * The Package Name of the variant.
      *
-     * @return the original application ID
+     * This is the package name original present in the manifest (for non-test variants).
+     *
+     * This is not impacted by (test)ApplicationId values coming from the manifest.
+     *
+     * For test components, this is the package name of the tested variant + '.test'
      */
-    val originalApplicationId: String
+    val packageName: Provider<String>
 
     /**
      * Returns the application ID for this variant. This could be coming from the manifest or could
@@ -141,19 +162,7 @@ interface VariantDslInfo {
      *
      * @return the application ID
      */
-    val applicationId: String
-
-    val testApplicationId: String
-
-    val testedApplicationId: String?
-
-    /**
-     * Returns the application id override value coming from the Product Flavor and/or the Build
-     * Type. If the package/id is not overridden then this returns null.
-     *
-     * @return the id override or null
-     */
-    val idOverride: String?
+    val applicationId: Property<String>
 
     /**
      * Returns the version name for this variant. This could be specified by the product flavors,
@@ -162,17 +171,7 @@ interface VariantDslInfo {
      *
      * @return the version name or null if none defined
      */
-    val versionName: String?
-
-    /**
-     * Returns the version name for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest. A suffix may be specified by the build
-     * type.
-     *
-     * @param ignoreManifest whether or not the manifest is ignored when getting the version code
-     * @return the version name or null if none defined
-     */
-    fun getVersionName(ignoreManifest: Boolean): String?
+    val versionName: Provider<String?>
 
     /**
      * Returns the version code for this variant. This could be specified by the product flavors,
@@ -180,20 +179,7 @@ interface VariantDslInfo {
      *
      * @return the version code or -1 if there was none defined.
      */
-    val versionCode: Int
-
-    /**
-     * Returns the version code for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest.
-     *
-     * @param ignoreManifest whether or not the manifest is ignored when getting the version code
-     * @return the version code or -1 if there was none defined.
-     */
-    fun getVersionCode(ignoreManifest: Boolean): Int
-
-    val manifestVersionNameSupplier: Supplier<String?>
-
-    val manifestVersionCodeSupplier: IntSupplier
+    val versionCode: Provider<Int?>
 
     /**
      * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
@@ -201,7 +187,7 @@ interface VariantDslInfo {
      *
      * @return the instrumentation test runner name
      */
-    val instrumentationRunner: String
+    val instrumentationRunner: Provider<String>
 
     /**
      * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
@@ -215,7 +201,7 @@ interface VariantDslInfo {
      *
      * @return the handleProfiling value
      */
-    val handleProfiling: Boolean
+    val handleProfiling: Provider<Boolean>
 
     /**
      * Returns functionalTest value to use to test this variant, or if the variant is a test, the
@@ -223,13 +209,10 @@ interface VariantDslInfo {
      *
      * @return the functionalTest value
      */
-    val functionalTest: Boolean
+    val functionalTest: Provider<Boolean>
 
     /** Gets the test label for this variant  */
-    val testLabel: String?
-
-    /** Reads the package name from the manifest. This is unmodified by the build type.  */
-    val packageFromManifest: String
+    val testLabel: Provider<String?>
 
     /**
      * Return the minSdkVersion for this variant.
@@ -259,7 +242,6 @@ interface VariantDslInfo {
 
     val isWearAppUnbundled: Boolean?
 
-    @Suppress("DEPRECATION")
     val missingDimensionStrategies: ImmutableMap<String, AbstractProductFlavor.DimensionRequest>
 
     val resourceConfigurations: ImmutableSet<String>
@@ -295,29 +277,7 @@ interface VariantDslInfo {
      *
      * @return a list of items.
      */
-    val buildConfigItems: List<Any>
-
-    /**
-     * Return the merged build config fields for the variant.
-     *
-     *
-     * This is made of the variant-specific fields overlaid on top of the build type ones, the
-     * flavors ones, and the default config ones.
-     *
-     * @return a map of merged fields
-     */
-    val mergedBuildConfigFields: Map<String, ClassField>
-
-    /**
-     * Return the merged res values for the variant.
-     *
-     *
-     * This is made of the variant-specific fields overlaid on top of the build type ones, the
-     * flavors ones, and the default config ones.
-     *
-     * @return a map of merged fields
-     */
-    val mergedResValues: Map<String, ClassField>
+    fun getBuildConfigFields(): Map<String, BuildConfigField<out java.io.Serializable>>
 
     /**
      * Returns a list of generated resource values.
@@ -328,7 +288,7 @@ interface VariantDslInfo {
      *
      * @return a list of items.
      */
-    val resValues: List<Any>
+    fun getResValues(): Map<ResValue.Key, ResValue>
 
     val signingConfig: SigningConfig?
 
@@ -342,7 +302,7 @@ interface VariantDslInfo {
      *
      * @return the merged manifest placeholders for a build variant.
      */
-    val manifestPlaceholders: Map<String, Any>
+    val manifestPlaceholders: Map<String, String>
 
     // Only require specific multidex opt-in for legacy multidex.
     val isMultiDexEnabled: Boolean
@@ -376,7 +336,7 @@ interface VariantDslInfo {
      */
     val minSdkVersionWithTargetDeviceApi: AndroidVersion
 
-    val ndkConfig: CoreNdkOptions
+    val ndkConfig: MergedNdkConfig
 
     val externalNativeBuildOptions: CoreExternalNativeBuildOptions
 
@@ -386,14 +346,14 @@ interface VariantDslInfo {
      * If the list contains values, then the artifact only contains these ABIs and excludes
      * others.
      */
-    val supportedAbis: Set<String>?
+    val supportedAbis: Set<String>
 
 
     fun gatherProguardFiles(type: ProguardFileType): List<File>
 
     val javaCompileOptions: JavaCompileOptions
 
-    fun createPostProcessingOptions(project: Project) : PostProcessingOptions
+    fun createPostProcessingOptions(buildDirectory: DirectoryProperty) : PostProcessingOptions
 
     val defaultGlslcArgs: List<String>
 
@@ -417,4 +377,6 @@ interface VariantDslInfo {
     val renderscriptOptimLevel: Int
 
     val isJniDebuggable: Boolean
+
+    val aarMetadata: MergedAarMetadata
 }

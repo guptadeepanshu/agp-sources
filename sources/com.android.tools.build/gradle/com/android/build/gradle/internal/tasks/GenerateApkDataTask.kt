@@ -20,13 +20,12 @@ import com.android.SdkConstants.DOT_ANDROID_PACKAGE
 import com.android.SdkConstants.DOT_XML
 import com.android.SdkConstants.FD_RES_RAW
 import com.android.SdkConstants.FD_RES_XML
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.variant.ApkVariantData
 import com.android.builder.core.ApkInfoParser
 import com.android.builder.core.BuilderConstants.ANDROID_WEAR
 import com.android.builder.core.BuilderConstants.ANDROID_WEAR_MICRO_APK
@@ -131,10 +130,10 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
             FileUtils.mkdirs(rawDir)
 
             val to = File(rawDir, ANDROID_WEAR_MICRO_APK + DOT_ANDROID_PACKAGE)
-            Files.copy(apk.toFile(), to)
+            Files.copy(File(apk), to)
 
             generateApkData(
-                apk.toFile(), outDir, mainPkgName.get(), aapt2Executable.singleFile
+                File(apk), outDir, mainPkgName.get(), aapt2Executable.singleFile
             )
         } else {
             generateUnbundledWearApkData(outDir, mainPkgName.get())
@@ -201,8 +200,7 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
             else " android:targetSdkVersion=\"$targetSdkVersion\""
 
         val content = """|<?xml version="1.0" encoding="utf-8"?>
-            |<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-            |    package="${"$"}{packageName}">
+            |<manifest xmlns:android="http://schemas.android.com/apk/res/android">
             |    <uses-sdk android:minSdkVersion="$minSdkVersion"$targetVersionString/>
             |    <application>
             |        <meta-data android:name="$ANDROID_WEAR"
@@ -215,48 +213,51 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
     }
 
     internal class CreationAction(
-        private val componentProperties: ComponentPropertiesImpl,
+        creationConfig: ApkCreationConfig,
         private val apkFileCollection: FileCollection?
-    ) : VariantTaskCreationAction<GenerateApkDataTask>(componentProperties.variantScope) {
+    ) : VariantTaskCreationAction<GenerateApkDataTask, ApkCreationConfig>(
+        creationConfig
+    ) {
 
-        override val name: String = variantScope.getTaskName("handle", "MicroApk")
+        override val name: String = computeTaskName("handle", "MicroApk")
 
         override val type: Class<GenerateApkDataTask> = GenerateApkDataTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out GenerateApkDataTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<GenerateApkDataTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.microApkTask = taskProvider
-            variantScope.taskContainer.generateApkDataTask = taskProvider
+            creationConfig.taskContainer.microApkTask = taskProvider
+            creationConfig.taskContainer.generateApkDataTask = taskProvider
         }
 
-        override fun configure(task: GenerateApkDataTask) {
+        override fun configure(
+            task: GenerateApkDataTask
+        ) {
             super.configure(task)
 
-            val scope = variantScope
+            val paths = creationConfig.paths
 
-            val variantData = scope.variantData as ApkVariantData
-            val variantDslInfo = variantData.variantDslInfo
-
-            task.resOutputDir.set(scope.microApkResDirectory)
+            task.resOutputDir.set(paths.microApkResDirectory)
             task.resOutputDir.disallowChanges()
 
-            if (apkFileCollection != null) {
-                task.apkFileCollection.from(apkFileCollection)
+            apkFileCollection?.let {
+                task.apkFileCollection.from(it)
             }
             task.apkFileCollection.disallowChanges()
 
             task.hasDependency.setDisallowChanges(apkFileCollection != null)
 
-            task.manifestFile.set(scope.microApkManifestFile)
+            task.manifestFile.set(paths.microApkManifestFile)
             task.manifestFile.disallowChanges()
 
-            task.mainPkgName.setDisallowChanges(componentProperties.applicationId)
+            task.mainPkgName.setDisallowChanges(creationConfig.applicationId)
 
-            task.minSdkVersion.setDisallowChanges(variantDslInfo.minSdkVersion.apiLevel)
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.apiLevel)
 
-            task.targetSdkVersion.setDisallowChanges(variantDslInfo.targetSdkVersion.apiLevel)
+            task.targetSdkVersion.setDisallowChanges(creationConfig.targetSdkVersion.apiLevel)
 
-            val aapt2AndVersion = getAapt2FromMavenAndVersion(scope.globalScope)
+            val aapt2AndVersion = getAapt2FromMavenAndVersion(creationConfig.globalScope)
             task.aapt2Executable.from(aapt2AndVersion.first)
             task.aapt2Executable.disallowChanges()
 

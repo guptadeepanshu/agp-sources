@@ -16,41 +16,53 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.annotations.concurrency.Immutable
+import com.android.build.gradle.internal.errors.DeprecationReporter
+import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
-import com.android.builder.utils.FileCache
-import java.io.IOException
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.StringOption
+import com.android.prefs.AndroidLocation
+import com.android.utils.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.BasePlugin
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
-import java.lang.NullPointerException
+import java.io.File
 
-/** Task to clean the build cache.  */
+/** Task to clean the build cache. */
 abstract class CleanBuildCache : DefaultTask() {
 
-    private lateinit var buildCache: FileCache
-
-    fun setBuildCache(buildCache: FileCache) {
-        this.buildCache = buildCache
-    }
+    // This task is never up-to-date
+    @get:Internal
+    abstract val buildCacheDir: Property<String>
 
     @TaskAction
-    @Throws(IOException::class)
     fun clean() {
-        buildCache.delete()
+        FileUtils.deletePath(File(buildCacheDir.get()))
+        logger.warn(
+            "The Android Gradle plugin's build cache has been deprecated.\n" +
+                    DeprecationReporter.DeprecationTarget.AGP_BUILD_CACHE.getDeprecationTargetMessage() + "\n" +
+                    "The $CLEAN_BUILD_CACHE_TASK_NAME task will also be removed in the same version."
+        )
     }
 
-    @Immutable
-    class CreationAction(private val buildCache: FileCache) :
+    class CreationAction(private val globalScope: GlobalScope) :
         TaskCreationAction<CleanBuildCache>() {
 
-        override val name: String = "cleanBuildCache"
+        override val name: String = CLEAN_BUILD_CACHE_TASK_NAME
         override val type: Class<CleanBuildCache> = CleanBuildCache::class.java
 
         override fun configure(task: CleanBuildCache) {
             task.description = "Deletes the build cache directory."
             task.group = BasePlugin.BUILD_GROUP
-            task.setBuildCache(buildCache)
+
+            val buildCacheDir = globalScope.projectOptions[StringOption.BUILD_CACHE_DIR]?.let {
+                globalScope.project.rootProject.file(it)
+            } ?: File(AndroidLocation.getFolder(), "build-cache")
+            task.buildCacheDir.setDisallowChanges(buildCacheDir.path)
         }
     }
 }
+
+private const val CLEAN_BUILD_CACHE_TASK_NAME = "cleanBuildCache"

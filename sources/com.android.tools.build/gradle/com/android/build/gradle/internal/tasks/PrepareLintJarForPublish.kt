@@ -79,14 +79,12 @@ abstract class PrepareLintJarForPublish : DefaultTask() {
         override val name = NAME
         override val type = PrepareLintJarForPublish::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out PrepareLintJarForPublish>) {
+        override fun handleProvider(taskProvider: TaskProvider<PrepareLintJarForPublish>) {
             super.handleProvider(taskProvider)
-            scope.artifacts.producesFile(
-                InternalArtifactType.LINT_PUBLISH_JAR,
+            scope.globalArtifacts.setInitialProvider(
                 taskProvider,
-                PrepareLintJarForPublish::outputLintJar,
-                FN_LINT_JAR
-            )
+                PrepareLintJarForPublish::outputLintJar
+            ).withName(FN_LINT_JAR).on(InternalArtifactType.LINT_PUBLISH_JAR)
         }
 
         override fun configure(task: PrepareLintJarForPublish) {

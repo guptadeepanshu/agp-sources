@@ -17,34 +17,39 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.dexing.isProguardRule
 import org.gradle.api.tasks.TaskProvider
 
-class MergeGeneratedProguardFilesCreationAction(variantScope: VariantScope)
-    : VariantTaskCreationAction<MergeFileTask>(variantScope) {
+class MergeGeneratedProguardFilesCreationAction(
+    componentProperties: ComponentPropertiesImpl
+) : VariantTaskCreationAction<MergeFileTask, ComponentPropertiesImpl>(
+    componentProperties
+) {
 
     override val name: String
-        get() = variantScope.getTaskName("merge", "GeneratedProguardFiles")
+            get() = computeTaskName("merge", "GeneratedProguardFiles")
     override val type: Class<MergeFileTask>
         get() = MergeFileTask::class.java
 
-    override fun handleProvider(taskProvider: TaskProvider<out MergeFileTask>) {
+    override fun handleProvider(
+        taskProvider: TaskProvider<MergeFileTask>
+    ) {
         super.handleProvider(taskProvider)
-        variantScope.artifacts.producesFile(
-            InternalArtifactType.GENERATED_PROGUARD_FILE,
+        creationConfig.artifacts.setInitialProvider(
             taskProvider,
-            MergeFileTask::outputFile,
-            SdkConstants.FN_PROGUARD_TXT
-        )
+            MergeFileTask::outputFile
+        ).withName(SdkConstants.FN_PROGUARD_TXT).on(InternalArtifactType.GENERATED_PROGUARD_FILE)
     }
 
-    override fun configure(task: MergeFileTask) {
+    override fun configure(
+        task: MergeFileTask
+    ) {
         super.configure(task)
 
-        val allClasses = variantScope.artifacts.getAllClasses()
+        val allClasses = creationConfig.artifacts.getAllClasses()
         val proguardFiles = allClasses.asFileTree.filter { f ->
             val baseFolders = allClasses.files
             val baseFolder = baseFolders.first { f.startsWith(it) }

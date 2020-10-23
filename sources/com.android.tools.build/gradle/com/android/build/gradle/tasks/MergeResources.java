@@ -19,30 +19,34 @@ import static com.android.SdkConstants.FD_RES_VALUES;
 import static com.android.build.gradle.internal.TaskManager.MergeType.MERGE;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_MERGE;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE;
+import static com.android.ide.common.resources.AndroidAaptIgnoreKt.ANDROID_AAPT_IGNORE;
 import static com.google.common.base.Preconditions.checkState;
 
 import android.databinding.tool.LayoutXmlProcessor;
 import android.databinding.tool.util.RelativizableFile;
+import android.databinding.tool.writer.JavaFileWriter;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.aapt.WorkerExecutorResourceCompilationService;
+import com.android.build.gradle.internal.databinding.MergingFileLookup;
 import com.android.build.gradle.internal.errors.MessageReceiverImpl;
 import com.android.build.gradle.internal.res.Aapt2MavenUtils;
 import com.android.build.gradle.internal.res.namespaced.NamespaceRemover;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.services.Aapt2Daemon;
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService;
 import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey;
-import com.android.build.gradle.internal.services.Aapt2Workers;
 import com.android.build.gradle.internal.services.Aapt2WorkersBuildService;
+import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.tasks.Blocks;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
-import com.android.build.gradle.internal.variant.BaseVariantData;
+import com.android.build.gradle.internal.variant.VariantPathHelper;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.builder.model.VectorDrawablesOptions;
@@ -116,8 +120,6 @@ public abstract class MergeResources extends ResourceAwareTask {
 
     private boolean crunchPng;
 
-    private File blameLogFolder;
-
     private List<ResourceSet> processedInputs;
 
     private final FileValidity<ResourceSet> fileValidity = new FileValidity<>();
@@ -133,8 +135,6 @@ public abstract class MergeResources extends ResourceAwareTask {
     @Internal
     public abstract ConfigurableFileCollection getAapt2FromMaven();
 
-    @Nullable private SingleFileProcessor dataBindingLayoutProcessor;
-
     @Nullable private File mergedNotCompiledResourcesOutputDirectory;
 
     private boolean pseudoLocalesEnabled;
@@ -148,6 +148,14 @@ public abstract class MergeResources extends ResourceAwareTask {
 
     @Input
     public abstract Property<Boolean> getViewBindingEnabled();
+
+    @Input
+    @Optional
+    public abstract Property<String> getPackageName();
+
+    @Input
+    @Optional
+    public abstract Property<Boolean> getUseAndroidX();
 
     /**
      * Set of absolute paths to resource directories that are located outside of the root project
@@ -231,6 +239,12 @@ public abstract class MergeResources extends ResourceAwareTask {
 
     private SyncOptions.ErrorFormatMode errorFormatMode;
 
+    @Internal
+    public abstract Property<String> getAaptEnv();
+
+    @Internal
+    public abstract RegularFileProperty getProjectRootDir();
+
     @Override
     protected void doFullTaskAction() throws IOException, JAXBException {
         ResourcePreprocessor preprocessor = getPreprocessor();
@@ -243,12 +257,14 @@ public abstract class MergeResources extends ResourceAwareTask {
                     getDataBindingLayoutInfoOutFolder().get().getAsFile());
         }
 
-        List<ResourceSet> resourceSets = getConfiguredResourceSets(preprocessor);
+        List<ResourceSet> resourceSets =
+                getConfiguredResourceSets(preprocessor, getAaptEnv().getOrNull());
 
         // create a new merger and populate it with the sets.
         ResourceMerger merger = new ResourceMerger(getMinSdk().get());
         MergingLog mergingLog = null;
-        if (blameLogFolder != null) {
+        if (getBlameLogOutputFolder().isPresent()) {
+            File blameLogFolder = getBlameLogOutputFolder().get().getAsFile();
             FileUtils.cleanOutputDir(blameLogFolder);
             mergingLog = new MergingLog(blameLogFolder);
         }
@@ -267,8 +283,10 @@ public abstract class MergeResources extends ResourceAwareTask {
                                 getLogger(),
                                 getAapt2DaemonBuildService().get())) {
 
+            SingleFileProcessor dataBindingLayoutProcessor = maybeCreateLayoutProcessor();
+
             Blocks.recordSpan(
-                    getProject().getName(),
+                    getProjectName(),
                     getPath(),
                     GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_PHASE_1,
                     () -> {
@@ -295,13 +313,13 @@ public abstract class MergeResources extends ResourceAwareTask {
                             getCrunchPng());
 
             Blocks.recordSpan(
-                    getProject().getName(),
+                    getProjectName(),
                     getPath(),
                     GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_PHASE_2,
                     () -> merger.mergeData(writer, false /*doCleanUp*/));
 
             Blocks.recordSpan(
-                    getProject().getName(),
+                    getProjectName(),
                     getPath(),
                     GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_PHASE_3,
                     () -> {
@@ -312,7 +330,7 @@ public abstract class MergeResources extends ResourceAwareTask {
 
             // No exception? Write the known state.
             Blocks.recordSpan(
-                    getProject().getName(),
+                    getProjectName(),
                     getPath(),
                     GradleBuildProfileSpan.ExecutionType.TASK_EXECUTION_PHASE_4,
                     () -> merger.writeBlobTo(getIncrementalFolder(), writer, false));
@@ -357,7 +375,8 @@ public abstract class MergeResources extends ResourceAwareTask {
         // create a merger and load the known state.
         ResourceMerger merger = new ResourceMerger(getMinSdk().get());
         try {
-            if (!merger.loadFromBlob(getIncrementalFolder(), true /*incrementalState*/)) {
+            if (!merger.loadFromBlob(
+                    getIncrementalFolder(), true /*incrementalState*/, getAaptEnv().getOrNull())) {
                 doFullTaskAction();
                 return;
             }
@@ -381,7 +400,8 @@ public abstract class MergeResources extends ResourceAwareTask {
                 resourceSet.setPreprocessor(preprocessor);
             }
 
-            List<ResourceSet> resourceSets = getConfiguredResourceSets(preprocessor);
+            List<ResourceSet> resourceSets =
+                    getConfiguredResourceSets(preprocessor, getAaptEnv().getOrNull());
 
             // compare the known state to the current sets to detect incompatibility.
             // This is in case there's a change that's too hard to do incrementally. In this case
@@ -420,7 +440,9 @@ public abstract class MergeResources extends ResourceAwareTask {
             }
 
             MergingLog mergingLog =
-                    getBlameLogFolder() != null ? new MergingLog(getBlameLogFolder()) : null;
+                    getBlameLogOutputFolder().isPresent()
+                            ? new MergingLog(getBlameLogOutputFolder().get().getAsFile())
+                            : null;
 
             try (WorkerExecutorFacade workerExecutorFacade = getAaptWorkerFacade();
                     ResourceCompilationService resourceCompiler =
@@ -435,6 +457,8 @@ public abstract class MergeResources extends ResourceAwareTask {
                                     useJvmResourceCompiler,
                                     getLogger(),
                                     getAapt2DaemonBuildService().get())) {
+
+                SingleFileProcessor dataBindingLayoutProcessor = maybeCreateLayoutProcessor();
 
                 File publicFile =
                         getPublicFile().isPresent() ? getPublicFile().get().getAsFile() : null;
@@ -473,6 +497,132 @@ public abstract class MergeResources extends ResourceAwareTask {
         } finally {
             cleanup();
         }
+    }
+
+    @Nullable
+    private SingleFileProcessor maybeCreateLayoutProcessor() {
+        if (!getDataBindingEnabled().get() && !getViewBindingEnabled().get()) {
+            return null;
+        }
+
+        LayoutXmlProcessor.OriginalFileLookup fileLookup;
+        if (getBlameLogOutputFolder().isPresent()) {
+            fileLookup = new MergingFileLookup(getBlameLogOutputFolder().get().getAsFile());
+        } else {
+            fileLookup = file -> null;
+        }
+
+        final LayoutXmlProcessor processor =
+                new LayoutXmlProcessor(
+                        getPackageName().get(),
+                        new JavaFileWriter() {
+                            // These methods are not supposed to be used, they are here only because
+                            // the superclass requires an implementation of it.
+                            // Whichever is calling this method is probably using it incorrectly
+                            // (see stacktrace).
+                            @Override
+                            public void writeToFile(String canonicalName, String contents) {
+                                throw new UnsupportedOperationException(
+                                        "Not supported in this mode");
+                            }
+
+                            @Override
+                            public void deleteFile(String canonicalName) {
+                                throw new UnsupportedOperationException(
+                                        "Not supported in this mode");
+                            }
+                        },
+                        fileLookup,
+                        getUseAndroidX().get());
+
+        return new SingleFileProcessor() {
+
+            private LayoutXmlProcessor getProcessor() {
+                return processor;
+            }
+
+            @Override
+            public boolean processSingleFile(
+                    @NonNull File inputFile,
+                    @NonNull File outputFile,
+                    @Nullable Boolean inputFileIsFromDependency)
+                    throws Exception {
+                // Data binding doesn't need/want to process layout files that come
+                // from dependencies (see bug 132637061).
+                if (inputFileIsFromDependency == Boolean.TRUE) {
+                    return false;
+                }
+
+                // For cache relocatability, we want to use relative paths, but we
+                // can do that only for resource files that are located within the
+                // root project directory.
+                File rootProjectDir = getProjectRootDir().getAsFile().get();
+                RelativizableFile normalizedInputFile;
+                if (FileUtils.isFileInDirectory(inputFile, rootProjectDir)) {
+                    // Check that the input file's absolute path has NOT been
+                    // annotated as @Input via this task's
+                    // getResourceDirsOutsideRootProjectDir() input file property.
+                    checkState(
+                            !resourceIsInResourceDirs(
+                                    inputFile, getResourceDirsOutsideRootProjectDir().get()),
+                            inputFile.getAbsolutePath() + " should not be annotated as @Input");
+
+                    // The base directory of the relative path has to be the root
+                    // project directory, not the current project directory, because
+                    // the consumer on the IDE side relies on that---see bug
+                    // 128643036.
+                    normalizedInputFile =
+                            RelativizableFile.fromAbsoluteFile(
+                                    inputFile.getCanonicalFile(), rootProjectDir);
+                    checkState(normalizedInputFile.getRelativeFile() != null);
+                } else {
+                    // Check that the input file's absolute path has been annotated
+                    // as @Input via this task's
+                    // getResourceDirsOutsideRootProjectDir() input file property.
+                    checkState(
+                            resourceIsInResourceDirs(
+                                    inputFile, getResourceDirsOutsideRootProjectDir().get()),
+                            inputFile.getAbsolutePath() + " is not annotated as @Input");
+
+                    normalizedInputFile =
+                            RelativizableFile.fromAbsoluteFile(inputFile.getCanonicalFile(), null);
+                    checkState(normalizedInputFile.getRelativeFile() == null);
+                }
+                return getProcessor()
+                        .processSingleFile(
+                                normalizedInputFile,
+                                outputFile,
+                                getViewBindingEnabled().get(),
+                                getDataBindingEnabled().get());
+            }
+
+            /**
+             * Returns `true` if the given resource file is located inside one of the resource
+             * directories.
+             */
+            private boolean resourceIsInResourceDirs(
+                    @NonNull File resFile, @NonNull Set<String> resDirs) {
+                return resDirs.stream()
+                        .anyMatch(resDir -> FileUtils.isFileInDirectory(resFile, new File(resDir)));
+            }
+
+            @Override
+            public void processRemovedFile(File file) {
+                getProcessor().processRemovedFile(file);
+            }
+
+            @Override
+            public void processFileWithNoDataBinding(@NonNull File file) {
+                getProcessor().processFileWithNoDataBinding(file);
+            }
+
+            @Override
+            public void end() throws JAXBException {
+                getProcessor()
+                        .writeLayoutInfoFiles(
+                                getDataBindingLayoutInfoOutFolder().get().getAsFile());
+            }
+        };
     }
 
     private static class MergeResourcesVectorDrawableRenderer extends VectorDrawableRenderer {
@@ -530,17 +680,19 @@ public abstract class MergeResources extends ResourceAwareTask {
     }
 
     @NonNull
-    private List<ResourceSet> getConfiguredResourceSets(ResourcePreprocessor preprocessor) {
+    private List<ResourceSet> getConfiguredResourceSets(
+            ResourcePreprocessor preprocessor, @Nullable String aaptEnv) {
         // It is possible that this get called twice in case the incremental run fails and reverts
         // back to full task run. Because the cached ResourceList is modified we don't want
         // to recompute this twice (plus, why recompute it twice anyway?)
         if (processedInputs == null) {
-            processedInputs = getResourcesComputer().compute(precompileDependenciesResources);
+            processedInputs =
+                    getResourcesComputer().compute(precompileDependenciesResources, aaptEnv);
             List<ResourceSet> generatedSets = new ArrayList<>(processedInputs.size());
 
             for (ResourceSet resourceSet : processedInputs) {
                 resourceSet.setPreprocessor(preprocessor);
-                ResourceSet generatedSet = new GeneratedResourceSet(resourceSet);
+                ResourceSet generatedSet = new GeneratedResourceSet(resourceSet, aaptEnv);
                 resourceSet.setGeneratedSet(generatedSet);
                 generatedSets.add(generatedSet);
             }
@@ -598,15 +750,10 @@ public abstract class MergeResources extends ResourceAwareTask {
         return getResourcesComputer().getValidateEnabled();
     }
 
+    // the optional blame output folder for the case where the task generates it.
     @OutputDirectory
     @Optional
-    public File getBlameLogFolder() {
-        return blameLogFolder;
-    }
-
-    public void setBlameLogFolder(File blameLogFolder) {
-        this.blameLogFolder = blameLogFolder;
-    }
+    public abstract DirectoryProperty getBlameLogOutputFolder();
 
     @Optional
     @OutputDirectory
@@ -652,7 +799,8 @@ public abstract class MergeResources extends ResourceAwareTask {
         return useJvmResourceCompiler;
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<MergeResources> {
+    public static class CreationAction
+            extends VariantTaskCreationAction<MergeResources, ComponentPropertiesImpl> {
         @NonNull private final TaskManager.MergeType mergeType;
         @NonNull
         private final String taskNamePrefix;
@@ -664,7 +812,7 @@ public abstract class MergeResources extends ResourceAwareTask {
         private boolean isLibrary;
 
         public CreationAction(
-                @NonNull VariantScope variantScope,
+                @NonNull ComponentPropertiesImpl componentProperties,
                 @NonNull TaskManager.MergeType mergeType,
                 @NonNull String taskNamePrefix,
                 @Nullable File mergedNotCompiledOutputDirectory,
@@ -672,7 +820,7 @@ public abstract class MergeResources extends ResourceAwareTask {
                 boolean processResources,
                 @NonNull ImmutableSet<Flag> flags,
                 boolean isLibrary) {
-            super(variantScope);
+            super(componentProperties);
             this.mergeType = mergeType;
             this.taskNamePrefix = taskNamePrefix;
             this.mergedNotCompiledOutputDirectory = mergedNotCompiledOutputDirectory;
@@ -686,7 +834,7 @@ public abstract class MergeResources extends ResourceAwareTask {
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName(taskNamePrefix, "Resources");
+            return computeTaskName(taskNamePrefix, "Resources");
         }
 
         @NonNull
@@ -696,7 +844,7 @@ public abstract class MergeResources extends ResourceAwareTask {
         }
 
         @Override
-        public void handleProvider(@NonNull TaskProvider<? extends MergeResources> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<MergeResources> taskProvider) {
             super.handleProvider(taskProvider);
             // In LibraryTaskManager#createMergeResourcesTasks, there are actually two
             // MergeResources tasks sharing the same task type (MergeResources) and CreationAction
@@ -705,54 +853,54 @@ public abstract class MergeResources extends ResourceAwareTask {
             // latter one wins: The mergeResources task with mergeType == MERGE is the one that is
             // finally registered in the current scope.
             // Filed https://issuetracker.google.com//110412851 to clean this up at some point.
-            getVariantScope().getTaskContainer().setMergeResourcesTask(taskProvider);
+            creationConfig.getTaskContainer().setMergeResourcesTask(taskProvider);
 
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesDir(
+                    .setInitialProvider(
+                            taskProvider, MergeResources::getDataBindingLayoutInfoOutFolder)
+                    .withName("out")
+                    .on(
                             mergeType == MERGE
                                     ? DATA_BINDING_LAYOUT_INFO_TYPE_MERGE.INSTANCE
-                                    : DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE.INSTANCE,
-                            taskProvider,
-                            MergeResources::getDataBindingLayoutInfoOutFolder,
-                            "out");
+                                    : DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE.INSTANCE);
+
+            // only the full run with dependencies generates the blame folder
+            if (includeDependencies) {
+                creationConfig
+                        .getArtifacts()
+                        .setInitialProvider(taskProvider, MergeResources::getBlameLogOutputFolder)
+                        .withName("out")
+                        .on(InternalArtifactType.MERGED_RES_BLAME_FOLDER.INSTANCE);
+            }
         }
 
         @Override
         public void configure(@NonNull MergeResources task) {
             super.configure(task);
 
-            VariantScope variantScope = getVariantScope();
-            GlobalScope globalScope = variantScope.getGlobalScope();
-            BaseVariantData variantData = variantScope.getVariantData();
+            VariantScope variantScope = creationConfig.getVariantScope();
+            GlobalScope globalScope = creationConfig.getGlobalScope();
+            VariantPathHelper paths = creationConfig.getPaths();
 
             task.getMinSdk()
                     .set(
                             globalScope
                                     .getProject()
                                     .provider(
-                                            () ->
-                                                    variantData
-                                                            .getVariantDslInfo()
-                                                            .getMinSdkVersion()
-                                                            .getApiLevel()));
+                                            () -> creationConfig.getMinSdkVersion().getApiLevel()));
             task.getMinSdk().disallowChanges();
 
             Pair<FileCollection, String> aapt2AndVersion =
                     Aapt2MavenUtils.getAapt2FromMavenAndVersion(globalScope);
             task.getAapt2FromMaven().from(aapt2AndVersion.getFirst());
             task.aapt2Version = aapt2AndVersion.getSecond();
-            task.setIncrementalFolder(variantScope.getIncrementalDir(getName()));
-            // Libraries use this task twice, once for compilation (with dependencies),
-            // where blame is useful, and once for packaging where it is not.
-            if (includeDependencies) {
-                task.setBlameLogFolder(variantScope.getResourceBlameLogDir());
-            }
+            task.setIncrementalFolder(paths.getIncrementalDir(getName()));
             task.processResources = processResources;
             task.crunchPng = variantScope.isCrunchPngs();
 
             VectorDrawablesOptions vectorDrawablesOptions =
-                    variantData.getVariantDslInfo().getVectorDrawables();
+                    creationConfig.getVariantDslInfo().getVectorDrawables();
             task.generatedDensities = vectorDrawablesOptions.getGeneratedDensities();
             if (task.generatedDensities == null) {
                 task.generatedDensities = Collections.emptySet();
@@ -767,13 +915,13 @@ public abstract class MergeResources extends ResourceAwareTask {
             task.vectorSupportLibraryIsUsed =
                     Boolean.TRUE.equals(vectorDrawablesOptions.getUseSupportLibrary());
 
-            task.getResourcesComputer().initFromVariantScope(variantScope, includeDependencies);
+            task.getResourcesComputer().initFromVariantScope(creationConfig, includeDependencies);
 
             if (!task.disableVectorDrawables) {
-                task.generatedPngsOutputDir = variantScope.getGeneratedPngsOutputDir();
+                task.generatedPngsOutputDir = paths.getGeneratedPngsOutputDir();
             }
 
-            final BuildFeatureValues features = globalScope.getBuildFeatures();
+            final BuildFeatureValues features = creationConfig.getBuildFeatures();
             final boolean isDataBindingEnabled = features.getDataBinding();
             boolean isViewBindingEnabled = features.getViewBinding();
 
@@ -783,120 +931,24 @@ public abstract class MergeResources extends ResourceAwareTask {
                     task.getViewBindingEnabled(), isViewBindingEnabled);
 
             if (isDataBindingEnabled || isViewBindingEnabled) {
-                // Keep as an output.
-                task.dataBindingLayoutProcessor =
-                        new SingleFileProcessor() {
-
-                            // Lazily instantiate the processor to avoid parsing the manifest.
-                            private LayoutXmlProcessor processor;
-
-                            private LayoutXmlProcessor getProcessor() {
-                                if (processor == null) {
-                                    processor = variantData.getLayoutXmlProcessor();
-                                }
-                                return processor;
-                            }
-
-                            @Override
-                            public boolean processSingleFile(
-                                    @NonNull File inputFile,
-                                    @NonNull File outputFile,
-                                    @Nullable Boolean inputFileIsFromDependency)
-                                    throws Exception {
-                                // Data binding doesn't need/want to process layout files that come
-                                // from dependencies (see bug 132637061).
-                                if (inputFileIsFromDependency == Boolean.TRUE) {
-                                    return false;
-                                }
-
-                                // For cache relocatability, we want to use relative paths, but we
-                                // can do that only for resource files that are located within the
-                                // root project directory.
-                                File rootProjectDir = task.getProject().getRootDir();
-                                RelativizableFile normalizedInputFile;
-                                if (FileUtils.isFileInDirectory(inputFile, rootProjectDir)) {
-                                    // Check that the input file's absolute path has NOT been
-                                    // annotated as @Input via this task's
-                                    // getResourceDirsOutsideRootProjectDir() input file property.
-                                    checkState(
-                                            !resourceIsInResourceDirs(
-                                                    inputFile,
-                                                    task.getResourceDirsOutsideRootProjectDir()
-                                                            .get()),
-                                            inputFile.getAbsolutePath()
-                                                    + " should not be annotated as @Input");
-
-                                    // The base directory of the relative path has to be the root
-                                    // project directory, not the current project directory, because
-                                    // the consumer on the IDE side relies on that---see bug
-                                    // 128643036.
-                                    normalizedInputFile =
-                                            RelativizableFile.fromAbsoluteFile(
-                                                    inputFile.getCanonicalFile(), rootProjectDir);
-                                    checkState(normalizedInputFile.getRelativeFile() != null);
-                                } else {
-                                    // Check that the input file's absolute path has been annotated
-                                    // as @Input via this task's
-                                    // getResourceDirsOutsideRootProjectDir() input file property.
-                                    checkState(
-                                            resourceIsInResourceDirs(
-                                                    inputFile,
-                                                    task.getResourceDirsOutsideRootProjectDir()
-                                                            .get()),
-                                            inputFile.getAbsolutePath()
-                                                    + " is not annotated as @Input");
-
-                                    normalizedInputFile =
-                                            RelativizableFile.fromAbsoluteFile(
-                                                    inputFile.getCanonicalFile(), null);
-                                    checkState(normalizedInputFile.getRelativeFile() == null);
-                                }
-                                return getProcessor()
-                                        .processSingleFile(
-                                                normalizedInputFile,
-                                                outputFile,
-                                                isViewBindingEnabled);
-                            }
-
-                            /**
-                             * Returns `true` if the given resource file is located inside one of
-                             * the resource directories.
-                             */
-                            private boolean resourceIsInResourceDirs(
-                                    @NonNull File resFile, @NonNull Set<String> resDirs) {
-                                return resDirs.stream()
-                                        .anyMatch(
-                                                resDir ->
-                                                        FileUtils.isFileInDirectory(
-                                                                resFile, new File(resDir)));
-                            }
-
-                            @Override
-                            public void processRemovedFile(File file) {
-                                getProcessor().processRemovedFile(file);
-                            }
-
-                            @Override
-                            public void end() throws JAXBException {
-                                getProcessor()
-                                        .writeLayoutInfoFiles(
-                                                task.getDataBindingLayoutInfoOutFolder()
-                                                        .get()
-                                                        .getAsFile());
-                            }
-                        };
+                HasConfigurableValuesKt.setDisallowChanges(
+                        task.getPackageName(), creationConfig.getVariantDslInfo().getPackageName());
+                HasConfigurableValuesKt.setDisallowChanges(
+                        task.getUseAndroidX(),
+                        creationConfig
+                                .getServices()
+                                .getProjectOptions()
+                                .get(BooleanOption.USE_ANDROID_X));
             }
 
             task.mergedNotCompiledResourcesOutputDirectory = mergedNotCompiledOutputDirectory;
 
-            task.pseudoLocalesEnabled =
-                    variantScope
-                            .getVariantData()
-                            .getVariantDslInfo()
-                            .isPseudoLocalesEnabled();
+            task.pseudoLocalesEnabled = creationConfig.getVariantDslInfo().isPseudoLocalesEnabled();
             task.flags = flags;
 
-            task.errorFormatMode = SyncOptions.getErrorFormatMode(globalScope.getProjectOptions());
+            task.errorFormatMode =
+                    SyncOptions.getErrorFormatMode(
+                            creationConfig.getServices().getProjectOptions());
 
             task.precompileDependenciesResources =
                     mergeType.equals(MERGE)
@@ -929,7 +981,7 @@ public abstract class MergeResources extends ResourceAwareTask {
                 }));
             task.getResourceDirsOutsideRootProjectDir().disallowChanges();
 
-            task.dependsOn(variantScope.getTaskContainer().getResourceGenTask());
+            task.dependsOn(creationConfig.getTaskContainer().getResourceGenTask());
 
             // TODO(141301405): when we compile resources AAPT2 stores the absolute path of the raw
             // resource in the proto (.flat) file, so we need to mark those inputs with absolute
@@ -942,14 +994,27 @@ public abstract class MergeResources extends ResourceAwareTask {
                     .withPropertyName("rawLocalResources");
 
             task.useJvmResourceCompiler =
-                    variantScope
-                            .getGlobalScope()
+                    creationConfig
+                            .getServices()
                             .getProjectOptions()
                             .get(BooleanOption.ENABLE_JVM_RESOURCE_COMPILER);
-            task.getAapt2WorkersBuildService()
-                    .set(Aapt2Workers.getAapt2WorkersBuildService(task.getProject()));
-            task.getAapt2DaemonBuildService()
-                    .set(Aapt2Daemon.getAapt2DaemonBuildService(task.getProject()));
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getAapt2WorkersBuildService(),
+                    BuildServicesKt.getBuildService(
+                            creationConfig.getServices().getBuildServiceRegistry(),
+                            Aapt2WorkersBuildService.class));
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getAapt2DaemonBuildService(),
+                    BuildServicesKt.getBuildService(
+                            creationConfig.getServices().getBuildServiceRegistry(),
+                            Aapt2DaemonBuildService.class));
+            task.getAaptEnv()
+                    .set(
+                            creationConfig
+                                    .getServices()
+                                    .getGradleEnvironmentProvider()
+                                    .getEnvVariable(ANDROID_AAPT_IGNORE));
+            task.getProjectRootDir().set(task.getProject().getRootDir());
         }
     }
 

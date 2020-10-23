@@ -18,6 +18,8 @@ package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
 import com.google.common.collect.Sets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import org.gradle.api.tasks.Input;
@@ -139,7 +141,9 @@ import org.gradle.api.tasks.Input;
  * }
  * </pre>
  */
-public class PackagingOptions implements com.android.builder.model.PackagingOptions {
+public class PackagingOptions
+        implements com.android.builder.model.PackagingOptions,
+                com.android.build.api.dsl.PackagingOptions {
 
     @Inject
     public PackagingOptions() {
@@ -195,110 +199,81 @@ public class PackagingOptions implements com.android.builder.model.PackagingOpti
         merge("/META-INF/services/**");
     }
 
-    // This is a bit embarrassing, but our DSL generator gets confused for some reason, if the constructor
-    // above is immediately followed by a property. DSL generation needs to be reworked anyway, so for now
-    // I'll just move the fields down here.
+    private final Set<String> excludes = Sets.newHashSet();
+    private final Set<String> pickFirsts = Sets.newHashSet();
+    private final Set<String> merges = Sets.newHashSet();
+    private final Set<String> doNotStrip = Sets.newHashSet();
 
-    private Set<String> excludes = Sets.newHashSet();
-    private Set<String> pickFirsts = Sets.newHashSet();
-    private Set<String> merges = Sets.newHashSet();
-    private Set<String> doNotStrip = Sets.newHashSet();
-
-    /**
-     * Returns the list of excluded paths.
-     */
+    /** Returns the list of excluded paths. */
     @Override
     @NonNull
     @Input
     public Set<String> getExcludes() {
-        return Sets.newHashSet(excludes);
+        return excludes;
     }
 
-    public void setExcludes(Set<String> excludes) {
-        this.excludes = Sets.newHashSet(excludes);
+    public void setExcludes(@NonNull Set<String> excludes) {
+        List<String> newExcludes = new ArrayList<>(excludes);
+        this.excludes.clear();
+        this.excludes.addAll(newExcludes);
     }
 
-    /**
-     * Adds an excluded pattern.
-     *
-     * @param pattern the pattern
-     */
-    public void exclude(String pattern) {
+    @Override
+    public void exclude(@NonNull String pattern) {
         excludes.add(pattern);
     }
 
-    /**
-     * Returns the list of patterns where the first occurrence is packaged in the APK. First pick
-     * patterns do get packaged in the APK, but only the first occurrence found gets packaged.
-     */
     @Override
     @NonNull
     @Input
     public Set<String> getPickFirsts() {
-        return Sets.newHashSet(pickFirsts);
+        return pickFirsts;
     }
 
-    /**
-     * Adds a first-pick pattern.
-     *
-     * @param pattern the path to add.
-     */
-    public void pickFirst(String pattern) {
+    @Override
+    public void pickFirst(@NonNull String pattern) {
         pickFirsts.add(pattern);
     }
 
-    public void setPickFirsts(Set<String> pickFirsts) {
-        this.pickFirsts = Sets.newHashSet(pickFirsts);
+    public void setPickFirsts(@NonNull Set<String> pickFirsts) {
+        List<String> newPickFirsts = new ArrayList<>(pickFirsts);
+        this.pickFirsts.clear();
+        this.pickFirsts.addAll(newPickFirsts);
     }
 
-    /**
-     * Returns the list of patterns where all occurrences are concatenated and packaged in the APK.
-     */
     @Override
     @NonNull
     @Input
     public Set<String> getMerges() {
-        return Sets.newHashSet(merges);
+        return merges;
     }
 
-    public void setMerges(Set<String> merges) {
-        this.merges = Sets.newHashSet(merges);
+    public void setMerges(@NonNull Set<String> merges) {
+        List<String> newMerges = new ArrayList<>(merges);
+        this.merges.clear();
+        this.merges.addAll(newMerges);
     }
 
-    /**
-     * Adds a merge pattern.
-     *
-     * @param pattern the pattern, as packaged in the APK
-     */
-    public void merge(String pattern) {
+    @Override
+    public void merge(@NonNull String pattern) {
         merges.add(pattern);
     }
 
-
-    /**
-     * Returns the list of patterns for native library that should not be stripped of debug symbols.
-     *
-     * <p>Example: <code>packagingOptions.doNotStrip "&#42;/armeabi-v7a/libhello-jni.so"</code>
-     */
     @Override
     @NonNull
     @Input
     public Set<String> getDoNotStrip() {
-        return Sets.newHashSet(doNotStrip);
+        return doNotStrip;
     }
 
-    @SuppressWarnings("unused") // Exposed in DSL.
-    public void setDoNotStrip(Set<String> doNotStrip) {
-        this.doNotStrip = Sets.newHashSet(doNotStrip);
+    public void setDoNotStrip(@NonNull Set<String> doNotStrip) {
+        List<String> newDoNotStrip = new ArrayList<>(doNotStrip);
+        this.doNotStrip.clear();
+        this.doNotStrip.addAll(newDoNotStrip);
     }
 
-    /**
-     * Adds a doNotStrip pattern.
-     *
-     * @param pattern the pattern, as packaged in the APK
-     */
-    @SuppressWarnings("unused") // Exposed in DSL.
-    public void doNotStrip(String pattern) {
+    @Override
+    public void doNotStrip(@NonNull String pattern) {
         doNotStrip.add(pattern);
     }
 }

@@ -20,13 +20,18 @@ import static com.android.build.gradle.internal.api.BaseVariantImpl.TASK_ACCESS_
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.FilterData;
 import com.android.build.VariantOutput;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.variant.FilterConfiguration;
 import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.android.build.gradle.api.ApkVariantOutput;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
 import com.android.build.gradle.internal.scope.TaskContainer;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.tasks.PackageAndroidArtifact;
+import com.android.builder.core.VariantType;
+import com.android.builder.errors.IssueReporter;
 import com.google.common.base.MoreObjects;
 import java.io.File;
 import javax.inject.Inject;
@@ -40,22 +45,27 @@ import org.gradle.api.Task;
  */
 public class ApkVariantOutputImpl extends BaseVariantOutputImpl implements ApkVariantOutput {
 
+    @NonNull private VariantType variantType;
+
     @Inject
     public ApkVariantOutputImpl(
             @NonNull TaskContainer taskContainer,
-            @NonNull DeprecationReporter deprecationReporter,
-            @NonNull VariantOutputImpl variantOutput) {
-        super(taskContainer, deprecationReporter, variantOutput);
+            @NonNull BaseServices services,
+            @NonNull VariantOutputImpl variantOutput,
+            @NonNull VariantType variantType) {
+        super(taskContainer, services, variantOutput);
+        this.variantType = variantType;
     }
 
     @Nullable
     @Override
     public PackageAndroidArtifact getPackageApplication() {
-        deprecationReporter.reportDeprecatedApi(
-                "variant.getPackageApplicationProvider()",
-                "variantOutput.getPackageApplication()",
-                TASK_ACCESS_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "variant.getPackageApplicationProvider()",
+                        "variantOutput.getPackageApplication()",
+                        TASK_ACCESS_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
         return taskContainer.getPackageAndroidTask().getOrNull();
     }
 
@@ -67,7 +77,7 @@ public class ApkVariantOutputImpl extends BaseVariantOutputImpl implements ApkVa
         if (packageAndroidArtifact != null) {
             return new File(
                     packageAndroidArtifact.getOutputDirectory().get().getAsFile(),
-                    apkData.getOutputFileName());
+                    variantOutput.getOutputFileName().get());
         } else {
             return super.getOutputFile();
         }
@@ -81,49 +91,96 @@ public class ApkVariantOutputImpl extends BaseVariantOutputImpl implements ApkVa
 
     @Override
     public void setVersionCodeOverride(int versionCodeOverride) {
-        variantOutput.getVersionCode().set(versionCodeOverride);
+        // only these modules can configure their versionCode
+        if (variantType.isBaseModule()) {
+            variantOutput.getVersionCode().set(versionCodeOverride);
+        }
     }
 
     @Override
     public int getVersionCodeOverride() {
         // consider throwing an exception instead, as this is not reliable.
-        deprecationReporter.reportDeprecatedApi(
-                "VariantOutput.versionCode()",
-                "ApkVariantOutput.getVersionCodeOverride()",
-                BaseVariantImpl.USE_PROPERTIES_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.USE_PROPERTIES);
-        return variantOutput.getVersionCode().get();
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "VariantOutput.versionCode()",
+                        "ApkVariantOutput.getVersionCodeOverride()",
+                        BaseVariantImpl.USE_PROPERTIES_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.USE_PROPERTIES);
+
+        if (!services.getProjectOptions().get(BooleanOption.ENABLE_LEGACY_API)) {
+            services.getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            new RuntimeException(
+                                    "Access to deprecated legacy com.android.build.gradle.api.ApkVariantOutput.getVersionCodeOverride() requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionCode\n"
+                                            + ComponentPropertiesImpl.Companion
+                                                    .getENABLE_LEGACY_API()));
+            // return default value during sync
+            return -1;
+        }
+
+        return variantOutput.getVersionCode().getOrElse(-1);
     }
 
     @Override
     public void setVersionNameOverride(String versionNameOverride) {
-        variantOutput.getVersionName().set(versionNameOverride);
+        // only these modules can configure their versionName
+        if (variantType.isBaseModule()) {
+            variantOutput.getVersionName().set(versionNameOverride);
+        }
     }
 
     @Nullable
     @Override
     public String getVersionNameOverride() {
-        deprecationReporter.reportDeprecatedApi(
-                "VariantOutput.versionName()",
-                "ApkVariantOutput.getVersionNameOverride()",
-                BaseVariantImpl.USE_PROPERTIES_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.USE_PROPERTIES);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "VariantOutput.versionName()",
+                        "ApkVariantOutput.getVersionNameOverride()",
+                        BaseVariantImpl.USE_PROPERTIES_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.USE_PROPERTIES);
+
+        if (!services.getProjectOptions().get(BooleanOption.ENABLE_LEGACY_API)) {
+            services.getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            new RuntimeException(
+                                    "Access to deprecated legacy com.android.build.gradle.api.ApkVariantOutput.getVersionNameOverride() requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionName\n"
+                                            + ComponentPropertiesImpl.Companion
+                                                    .getENABLE_LEGACY_API()));
+            // return default value during sync
+            return null;
+        }
+
         return variantOutput.getVersionName().getOrNull();
     }
 
     @Override
     public int getVersionCode() {
-        return variantOutput.getVersionCode().get();
+        if (!services.getProjectOptions().get(BooleanOption.ENABLE_LEGACY_API)) {
+            services.getIssueReporter()
+                    .reportError(
+                            IssueReporter.Type.GENERIC,
+                            new RuntimeException(
+                                    "Access to deprecated legacy com.android.build.gradle.api.ApkVariantOutput.versionCode requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionCode\n"
+                                            + ComponentPropertiesImpl.Companion
+                                                    .getENABLE_LEGACY_API()));
+            // return default value during sync
+            return -1;
+        }
+
+        return variantOutput.getVersionCode().getOrElse(-1);
     }
 
     @Override
     public String getFilter(VariantOutput.FilterType filterType) {
-        FilterData filterData = apkData.getFilter(filterType);
-        return filterData != null ? filterData.getIdentifier() : null;
+        FilterConfiguration filterConfiguration =
+                variantOutput.getFilter(FilterConfiguration.FilterType.valueOf(filterType.name()));
+        return filterConfiguration != null ? filterConfiguration.getIdentifier() : null;
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("apkData", apkData).toString();
+        return MoreObjects.toStringHelper(this).add("variantOutput", variantOutput).toString();
     }
 }

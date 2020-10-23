@@ -15,17 +15,25 @@
  */
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.gradle.internal.generators.BuildConfigByteCodeGenerator
+import com.android.build.gradle.internal.generators.BuildConfigData
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.builder.compiling.BuildConfigGenerator
-import com.android.builder.model.ClassField
+import com.android.build.gradle.options.BooleanOption
+import com.android.builder.compiling.GeneratedCodeFileCreator
+import com.android.build.gradle.internal.generators.BuildConfigGenerator
 import com.android.utils.FileUtils
-import com.google.common.collect.Lists
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -33,10 +41,11 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
+import java.io.Serializable
 
 @CacheableTask
 abstract class GenerateBuildConfig : NonIncrementalTask() {
@@ -44,13 +53,18 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
     // ----- PUBLIC TASK API -----
 
     @get:OutputDirectory
-    lateinit var sourceOutputDir: File
+    @get:Optional
+    abstract val sourceOutputDir: DirectoryProperty
+
+    @get:OutputFile
+    @get:Optional
+    abstract val bytecodeOutputFile: RegularFileProperty
 
     // ----- PRIVATE TASK API -----
 
     @get:Input
     @get:Optional
-    var buildTypeName: String? = null
+    abstract val buildTypeName: Property<String>
 
     @get:Input
     var isLibrary: Boolean = false
@@ -74,32 +88,22 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
 
     @get:Input
     @get:Optional
-    abstract val versionName: Property<String>
+    abstract val versionName: Property<String?>
 
     @get:Input
-    abstract val versionCode: Property<Int>
+    @get:Optional
+    abstract val versionCode: Property<Int?>
 
-    val itemValues: List<String>
-        @Input
-        get() {
-            val resolvedItems = items.get()
-            val list = Lists.newArrayListWithCapacity<String>(resolvedItems.size * 3)
+    // just to know whether to set versionCode/Name in the build config field.
+    // For apps we want to put it whether the info is there or not because it might be set
+    // in release but not in debug but you need the code to compile in both variants.
+    // And we cannot rely on Provider.isPresent as it does not disambiguate between missing value
+    // and null value.
+    @get:Internal
+    abstract val hasVersionInfo: Property<Boolean>
 
-            for (item in resolvedItems) {
-                if (item is String) {
-                    list.add(item)
-                } else if (item is ClassField) {
-                    list.add(item.type)
-                    list.add(item.name)
-                    list.add(item.value)
-                }
-            }
-
-            return list
-        }
-
-    @get:Internal // handled by getItemValues()
-    abstract val items: ListProperty<Any>
+    @get:Input
+    abstract val items: MapProperty<String, BuildConfigField<out Serializable>>
 
     @get:InputFiles
     @get:Optional
@@ -107,147 +111,158 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
     abstract val mergedManifests: DirectoryProperty
 
     override fun doTaskAction() {
-        // must clear the folder in case the packagename changed, otherwise,
-        // there'll be two classes.
-        val destinationDir = sourceOutputDir
-        FileUtils.cleanOutputDir(destinationDir)
+        val itemsToGenerate = items.get()
 
-        val generator = BuildConfigGenerator(
-            sourceOutputDir,
-            buildConfigPackageName.get()
-        )
+        val buildConfigData = BuildConfigData.Builder()
+                .setBuildConfigPackageName(buildConfigPackageName.get())
+                .apply {
+                    if (sourceOutputDir.isPresent) {
+                        addBooleanField("DEBUG", debuggable.get())
+                    }
 
-        // Hack (see IDEA-100046): We want to avoid reporting "condition is always true"
-        // from the data flow inspection, so use a non-constant value. However, that defeats
-        // the purpose of this flag (when not in debug mode, if (BuildConfig.DEBUG && ...) will
-        // be completely removed by the compiler), so as a hack we do it only for the case
-        // where debug is true, which is the most likely scenario while the user is looking
-        // at source code.
-        // map.put(PH_DEBUG, Boolean.toString(mDebug));
+                    if (isLibrary) {
+                        addStringField("LIBRARY_PACKAGE_NAME", buildConfigPackageName.get())
+                    } else {
+                        addStringField("APPLICATION_ID", appPackageName.get())
+                    }
+                    buildTypeName.orNull?.let {
+                        addStringField("BUILD_TYPE", it)
+                    }
+                    flavorName.get().let {
+                        if (it.isNotEmpty()) {
+                            addStringField("FLAVOR", it)
+                        }
+                    }
+                    val flavors = flavorNamesWithDimensionNames.get()
+                    val count = flavors.size
+                    if (count > 1) {
+                        var i = 0
+                        while (i < count) {
+                            addStringField(
+                                    "FLAVOR_${flavors[i + 1]}",
+                                    "${flavors[i]}"
+                            )
+                            i += 2
+                        }
+                    }
+                    if (hasVersionInfo.get()) {
+                        versionCode.orNull?.let {
+                            addIntField("VERSION_CODE", it)
+                            addStringField("VERSION_NAME", "${versionName.getOrElse("")}")
+                        }
+                    }
+                }
 
-        generator.addField(
-            "boolean", "DEBUG", if (debuggable.get()) "Boolean.parseBoolean(\"true\")" else "false"
-        )
-
-        if (isLibrary) {
-            generator
-                .addField(
-                    "String",
-                    "LIBRARY_PACKAGE_NAME",
-                    """"${buildConfigPackageName.get()}""""
-                )
-        } else {
-            generator.addField(
-                "String",
-                "APPLICATION_ID",
-                """"${appPackageName.get()}""""
-            )
-        }
-
-        buildTypeName?.let {
-            generator
-                .addField("String", "BUILD_TYPE", """"$it"""")
-        }
-
-        flavorName.get().let {
-            if (it.isNotEmpty()) {
-                generator.addField("String", "FLAVOR", """"$it"""")
-            }
-        }
-
-        generator
-            .addField("int", "VERSION_CODE", Integer.toString(versionCode.get()))
-            .addField(
-                "String",
-                "VERSION_NAME",
-                """"${versionName.getOrElse("")}""""
-            )
-            .addItems(items.get())
-
-        val flavors = flavorNamesWithDimensionNames.get()
-        val count = flavors.size
-        if (count > 1) {
-            var i = 0
-            while (i < count) {
-                generator.addField(
-                    "String",
-                    """FLAVOR_${flavors[i + 1]}""",
-                    """"${flavors[i]}""""
-                )
-                i += 2
-            }
-        }
+        val generator: GeneratedCodeFileCreator =
+                if (bytecodeOutputFile.isPresent) {
+                    FileUtils.deleteIfExists(bytecodeOutputFile.get().asFile)
+                    val byteCodeBuildConfigData = buildConfigData
+                            .setOutputPath(bytecodeOutputFile.get().asFile.parentFile.toPath())
+                            .addBooleanField("DEBUG", debuggable.get())
+                            .build()
+                    BuildConfigByteCodeGenerator(byteCodeBuildConfigData)
+                } else {
+                    // must clear the folder in case the packagename changed, otherwise,
+                    // there'll be two classes.
+                    val destinationDir = sourceOutputDir.get().asFile
+                    FileUtils.cleanOutputDir(destinationDir)
+                    val sourceCodeBuildConfigData = buildConfigData
+                            .setOutputPath(sourceOutputDir.get().asFile.toPath())
+                            .apply {
+                                // user generated items, order them by field name so generation
+                                // is stable.
+                                itemsToGenerate.toSortedMap().forEach { (name, buildConfigField)
+                                    ->
+                                    addItem(name, buildConfigField)
+                                }
+                            }
+                            .build()
+                    BuildConfigGenerator(sourceCodeBuildConfigData)
+                }
 
         generator.generate()
     }
 
     // ----- Config Action -----
 
-    internal class CreationAction(private val componentProperties: ComponentPropertiesImpl) :
-        VariantTaskCreationAction<GenerateBuildConfig>(componentProperties.variantScope) {
+    internal class CreationAction(creationConfig: BaseCreationConfig) :
+        VariantTaskCreationAction<GenerateBuildConfig, BaseCreationConfig>(
+            creationConfig
+        ) {
 
-        override val name: String = variantScope.getTaskName("generate", "BuildConfig")
+        override val name: String = computeTaskName("generate", "BuildConfig")
 
         override val type: Class<GenerateBuildConfig> = GenerateBuildConfig::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out GenerateBuildConfig>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<GenerateBuildConfig>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.generateBuildConfigTask = taskProvider
+            val outputBytecode = creationConfig.services.projectOptions
+                    .get(BooleanOption.ENABLE_BUILD_CONFIG_AS_BYTECODE)
+            val generateItems = creationConfig.variantDslInfo.getBuildConfigFields().any()
+            creationConfig.taskContainer.generateBuildConfigTask = taskProvider
+            if (outputBytecode && !generateItems) {
+                creationConfig.artifacts.setInitialProvider(
+                                taskProvider,
+                                GenerateBuildConfig::bytecodeOutputFile
+                        ).withName("BuildConfig.jar")
+                        .on(InternalArtifactType.COMPILE_BUILD_CONFIG_JAR)
+            } else {
+                creationConfig.artifacts.setInitialProvider(
+                                taskProvider,
+                                GenerateBuildConfig::sourceOutputDir
+                        ).atLocation(creationConfig.paths.buildConfigSourceOutputDir.canonicalPath)
+                        .on(InternalArtifactType.GENERATED_BUILD_CONFIG_JAVA)
+            }
         }
 
-        override fun configure(task: GenerateBuildConfig) {
+        override fun configure(
+            task: GenerateBuildConfig
+        ) {
             super.configure(task)
 
-            val variantData = variantScope.variantData
+            val variantDslInfo = creationConfig.variantDslInfo
+            val project = creationConfig.globalScope.project
+            task.buildConfigPackageName.setDisallowChanges(creationConfig.packageName)
 
-            val variantDslInfo = variantData.variantDslInfo
-
-            val project = variantScope.globalScope.project
-            task.buildConfigPackageName.set(project.provider {
-                variantDslInfo.originalApplicationId
-            })
-            task.buildConfigPackageName.disallowChanges()
-
-            if (!variantDslInfo.variantType.isAar) {
-                task.appPackageName.set(componentProperties.applicationId)
+            if (creationConfig is ApkCreationConfig) {
+                task.appPackageName.setDisallowChanges(creationConfig.applicationId)
             }
-            task.appPackageName.disallowChanges()
 
-            val mainSplit = variantData.publicVariantPropertiesApi.outputs.getMainSplit()
-            // check the variant API property first (if there is one) in case the variant
-            // output version has been overridden, otherwise use the variant configuration
-            task.versionCode.setDisallowChanges(
-                mainSplit?.versionCode
-                    ?: task.project.provider { variantDslInfo.versionCode })
-            task.versionName.setDisallowChanges(
-                mainSplit?.versionName
-                    ?: task.project.provider { variantDslInfo.versionName })
+            if (creationConfig is ApplicationCreationConfig) {
+                val mainSplit = creationConfig.outputs.getMainSplit()
+                // check the variant API property first (if there is one) in case the variant
+                // output version has been overridden, otherwise use the variant configuration
+                task.versionCode.setDisallowChanges(mainSplit.versionCode)
+                task.versionName.setDisallowChanges(mainSplit.versionName)
+                task.hasVersionInfo.setDisallowChanges(true)
+            } else {
+                task.hasVersionInfo.setDisallowChanges(false)
+            }
 
-            task.debuggable.setDisallowChanges(variantData.variantDslInfo.isDebuggable)
+            task.debuggable.setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
 
-            task.buildTypeName = variantDslInfo.componentIdentity.buildType
+            task.buildTypeName.setDisallowChanges(variantDslInfo.componentIdentity.buildType)
 
             // no need to memoize, variant configuration does that already.
-            task.flavorName.set(project.provider { variantDslInfo.componentIdentity.flavorName })
-            task.flavorName.disallowChanges()
+            task.flavorName.setDisallowChanges(
+                    project.provider { variantDslInfo.componentIdentity.flavorName })
 
-            task.flavorNamesWithDimensionNames.set(project.provider {
+            task.flavorNamesWithDimensionNames.setDisallowChanges(project.provider {
                 variantDslInfo.flavorNamesWithDimensionNames
             })
-            task.flavorNamesWithDimensionNames.disallowChanges()
 
-            task.items.set(project.provider { variantDslInfo.buildConfigItems })
-            task.items.disallowChanges()
-
-            task.sourceOutputDir = variantScope.buildConfigSourceOutputDir
-
-            if (variantScope.variantDslInfo.variantType.isTestComponent) {
-                variantScope.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.MERGED_MANIFESTS, task.mergedManifests
-                )
+            if (creationConfig is VariantCreationConfig) {
+                task.items.set(creationConfig.buildConfigFields)
             }
 
-            task.isLibrary = variantDslInfo.variantType.isAar
+            if (creationConfig.variantType.isTestComponent) {
+                creationConfig.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.PACKAGED_MANIFESTS, task.mergedManifests
+                )
+            }
+            task.isLibrary = creationConfig.variantType.isAar
         }
     }
 }

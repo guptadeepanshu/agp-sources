@@ -18,4 +18,7 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ApplicationBuildFeatures
 
-abstract class ApplicationBuildFeaturesImpl: BuildFeaturesImpl(), ApplicationBuildFeatures
+abstract class ApplicationBuildFeaturesImpl: BuildFeaturesImpl(), ApplicationBuildFeatures {
+    override var dataBinding: Boolean? = null
+    override var mlModelBinding: Boolean? = false
+}

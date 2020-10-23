@@ -69,6 +69,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * <p>This is meant to be a quick parser to create the building model, and is thread-safe.
  */
+@Deprecated
 public class DefaultManifestParser implements ManifestAttributeSupplier {
 
     private static final SAXParserFactory PARSER_FACTORY = SAXParserFactory.newInstance();
@@ -133,26 +134,6 @@ public class DefaultManifestParser implements ManifestAttributeSupplier {
         init();
 
         return attributeValues.get(SPLIT);
-    }
-
-    /**
-     * Gets the version name for the manifest file processed by this parser.
-     */
-    @Nullable
-    @Override
-    public String getVersionName() {
-        init();
-        return attributeValues.get(VERSION_NAME);
-    }
-
-    /**
-     * Gets the version code for the manifest file processed by this parser.
-     */
-    @Override
-    public int getVersionCode() {
-        init();
-        String versionCode = attributeValues.get(VERSION_CODE);
-        return (int) parseIntValueOrDefault(versionCode, -1, -1);
     }
 
     /**

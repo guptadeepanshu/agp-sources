@@ -17,20 +17,21 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.immutableMapBuilder
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.errors.EvalIssueException
 import com.android.utils.FileUtils
-import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -58,6 +59,9 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val inputFiles: ConfigurableFileCollection
 
+    @get:Internal("only for task execution")
+    abstract val buildDirectory: DirectoryProperty
+
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
@@ -65,7 +69,7 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
         // We check for default files unless it's a base feature, which can include default files.
         if (!isBaseModule) {
             checkProguardFiles(
-                project,
+                buildDirectory,
                 isDynamicFeature,
                 consumerProguardFiles.files,
                 Consumer { exception -> throw EvalIssueException(exception) }
@@ -82,64 +86,67 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<ExportConsumerProguardFilesTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<ExportConsumerProguardFilesTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("export", "ConsumerProguardFiles")
+            get() = computeTaskName("export", "ConsumerProguardFiles")
 
         override val type: Class<ExportConsumerProguardFilesTask>
             get() = ExportConsumerProguardFilesTask::class.java
 
         override fun handleProvider(
-            taskProvider: TaskProvider<out ExportConsumerProguardFilesTask>
+            taskProvider: TaskProvider<ExportConsumerProguardFilesTask>
         ) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.CONSUMER_PROGUARD_DIR,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ExportConsumerProguardFilesTask::outputDir,
-                ""
-            )
+                ExportConsumerProguardFilesTask::outputDir
+            ).on(InternalArtifactType.CONSUMER_PROGUARD_DIR)
         }
 
-        override fun configure(task: ExportConsumerProguardFilesTask) {
+        override fun configure(
+            task: ExportConsumerProguardFilesTask
+        ) {
             super.configure(task)
 
-            task.consumerProguardFiles.from(variantScope.consumerProguardFilesForFeatures)
-            task.isBaseModule = variantScope.type.isBaseModule
-            task.isDynamicFeature = variantScope.type.isDynamicFeature
+            task.consumerProguardFiles.from(creationConfig.variantScope.consumerProguardFilesForFeatures)
+            task.isBaseModule = creationConfig.variantType.isBaseModule
+            task.isDynamicFeature = creationConfig.variantType.isDynamicFeature
 
             task.inputFiles.from(
                 task.consumerProguardFiles,
-                variantScope
+                creationConfig
                     .artifacts
-                    .getFinalProduct(InternalArtifactType.GENERATED_PROGUARD_FILE)
+                    .get(InternalArtifactType.GENERATED_PROGUARD_FILE)
             )
-            if (variantScope.type.isDynamicFeature) {
+            if (creationConfig.variantType.isDynamicFeature) {
                 task.inputFiles.from(
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.ALL,
                         AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES
                     )
                 )
             }
+            task.buildDirectory.setDisallowChanges(task.project.layout.buildDirectory)
         }
     }
 
     companion object {
         @JvmStatic
         fun checkProguardFiles(
-            project: Project,
+            buildDirectory: DirectoryProperty,
             isDynamicFeature: Boolean,
             consumerProguardFiles: Collection<File>,
             exceptionHandler: Consumer<String>
         ) {
             val defaultFiles = immutableMapBuilder<File, String> {
                 for (knownFileName in ProguardFiles.KNOWN_FILE_NAMES) {
-                    this.put(ProguardFiles.getDefaultProguardFile(knownFileName, project.layout),
+                    this.put(ProguardFiles.getDefaultProguardFile(knownFileName, buildDirectory),
                         knownFileName)
                 }
             }

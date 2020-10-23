@@ -17,11 +17,35 @@
 package com.android.build.api.variant
 
 import org.gradle.api.Incubating
+import org.gradle.api.provider.Property
 
 /**
- * Properties for a the main Variant of an application.
+ * Properties for the main Variant of an application.
  */
 @Incubating
 interface ApplicationVariantProperties : VariantProperties {
 
+    /**
+     * Variant's application ID as present in the final manifest file of the APK.
+     */
+    override val applicationId: Property<String>
+
+    /**
+     * Returns the final list of variant outputs.
+     * @return read only list of [VariantOutput] for this variant.
+     */
+    val outputs: List<VariantOutput>
+
+    /** Specify whether to include SDK dependency information in APKs and Bundles. */
+    val dependenciesInfo: DependenciesInfo
+
+    /**
+     * Variant's aaptOptions, initialized by the corresponding global DSL element.
+     */
+    val aaptOptions: AaptOptions
+
+    /**
+     * Variant's aaptOptions, initialized by the corresponding global DSL element.
+     */
+    fun aaptOptions(action: AaptOptions.() -> Unit)
 }

@@ -19,10 +19,12 @@ package com.android.build.gradle.internal.dsl;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.services.DslServices;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +32,9 @@ import javax.inject.Inject;
 import org.gradle.process.CommandLineArgumentProvider;
 
 /** Options for configuring Java annotation processors. */
-@SuppressWarnings("UnnecessaryInheritDoc")
 public class AnnotationProcessorOptions
-        implements com.android.build.gradle.api.AnnotationProcessorOptions {
+        implements com.android.build.gradle.api.AnnotationProcessorOptions,
+                com.android.build.api.dsl.AnnotationProcessorOptions {
 
     @NonNull private final List<String> classNames = Lists.newArrayList();
 
@@ -43,34 +45,26 @@ public class AnnotationProcessorOptions
 
     private final Boolean includeCompileClasspath = false;
 
-    @Nullable private final DeprecationReporter deprecationReporter;
+    @NonNull private final DslServices dslServices;
 
     @Inject
-    public AnnotationProcessorOptions(@Nullable DeprecationReporter deprecationReporter) {
-        this.deprecationReporter = deprecationReporter;
+    public AnnotationProcessorOptions(@NonNull DslServices dslServices) {
+        this.dslServices = dslServices;
     }
 
-    /**
-     * Specifies the annotation processor classes to run.
-     *
-     * <p>By default, this property is empty and the plugin automatically discovers and runs
-     * annotation processors that you add to the annotation processor classpath. To learn more about
-     * adding annotation processor dependencies to your project, read <a
-     * href="https://d.android.com/studio/build/dependencies#annotation_processor">Add annotation
-     * processors</a>.
-     */
     @NonNull
     @Override
     public List<String> getClassNames() {
         return classNames;
     }
 
-    public void setClassNames(List<String> classNames) {
+    public void setClassNames(@NonNull List<String> classNames) {
         this.classNames.clear();
         this.classNames.addAll(classNames);
     }
 
-    public void className(String className) {
+    @Override
+    public void className(@NonNull String className) {
         classNames.add(className);
     }
 
@@ -78,48 +72,32 @@ public class AnnotationProcessorOptions
         classNames.addAll(className);
     }
 
-    /**
-     * Specifies arguments that represent primitive types for annotation processors.
-     *
-     * <p>If one or more arguments represent files or directories, you must instead use {@link
-     * #getCompilerArgumentProviders()}.
-     *
-     * @see #getCompilerArgumentProviders()
-     */
+    @Override
+    public void classNames(@NonNull String... classNames) {
+        this.classNames.addAll(Arrays.asList(classNames));
+    }
+
     @NonNull
     @Override
     public Map<String, String> getArguments() {
         return arguments;
     }
 
-    public void setArguments(Map<String, String> arguments) {
+    public void setArguments(@NonNull Map<String, String> arguments) {
         this.arguments.clear();
         this.arguments.putAll(arguments);
     }
 
+    @Override
     public void argument(@NonNull String key, @NonNull String value) {
         arguments.put(key, value);
     }
 
-    public void arguments(Map<String, String> arguments) {
+    @Override
+    public void arguments(@NonNull Map<String, String> arguments) {
         this.arguments.putAll(arguments);
     }
 
-    /**
-     * Specifies arguments for annotation processors that you want to pass to the Android plugin
-     * using the {@link CommandLineArgumentProvider} class.
-     *
-     * <p>The benefit of using this class is that it allows you or the annotation processor author
-     * to improve the correctness and performance of incremental and cached clean builds by applying
-     * <a
-     * href="https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks">
-     * incremental build property type annotations</a>.
-     *
-     * <p>To learn more about how to use this class to annotate arguments for annotation processors
-     * and pass them to the Android plugin, read <a
-     * href="https://developer.android.com/studio/build/dependencies#processor-arguments">Pass
-     * arguments to annotation processors</a>.
-     */
     @NonNull
     @Override
     public List<CommandLineArgumentProvider> getCompilerArgumentProviders() {
@@ -132,6 +110,7 @@ public class AnnotationProcessorOptions
         this.compilerArgumentProviders.addAll(compilerArgumentProviders);
     }
 
+    @Override
     public void compilerArgumentProvider(
             @NonNull CommandLineArgumentProvider compilerArgumentProvider) {
         this.compilerArgumentProviders.add(compilerArgumentProvider);
@@ -140,6 +119,12 @@ public class AnnotationProcessorOptions
     public void compilerArgumentProviders(
             @NonNull List<CommandLineArgumentProvider> compilerArgumentProviders) {
         this.compilerArgumentProviders.addAll(compilerArgumentProviders);
+    }
+
+    @Override
+    public void compilerArgumentProviders(
+            @NonNull CommandLineArgumentProvider... compilerArgumentProviders) {
+        this.compilerArgumentProviders.addAll(Arrays.asList(compilerArgumentProviders));
     }
 
     /**
@@ -151,18 +136,20 @@ public class AnnotationProcessorOptions
      */
     @Override
     public Boolean getIncludeCompileClasspath() {
-        deprecationReporter.reportObsoleteUsage(
-                "annotationProcessorOptions.includeCompileClasspath",
-                DeprecationReporter.DeprecationTarget.INCLUDE_COMPILE_CLASSPATH);
+        dslServices
+                .getDeprecationReporter()
+                .reportObsoleteUsage(
+                        "annotationProcessorOptions.includeCompileClasspath",
+                        DeprecationReporter.DeprecationTarget.INCLUDE_COMPILE_CLASSPATH);
         return includeCompileClasspath;
     }
 
     public void setIncludeCompileClasspath(@Nullable Boolean includeCompileClasspath) {
-        if (deprecationReporter != null) {
-            deprecationReporter.reportObsoleteUsage(
-                    "annotationProcessorOptions.includeCompileClasspath",
-                    DeprecationReporter.DeprecationTarget.INCLUDE_COMPILE_CLASSPATH);
-        }
+        dslServices
+                .getDeprecationReporter()
+                .reportObsoleteUsage(
+                        "annotationProcessorOptions.includeCompileClasspath",
+                        DeprecationReporter.DeprecationTarget.INCLUDE_COMPILE_CLASSPATH);
     }
 
     public void _initWith(com.android.build.gradle.api.AnnotationProcessorOptions aptOptions) {

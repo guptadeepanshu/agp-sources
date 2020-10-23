@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
-import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.builder.core.DesugarProcessBuilder;
 import com.android.utils.FileUtils;
@@ -53,16 +53,17 @@ public abstract class ExtractTryWithResourcesSupportJar extends NonIncrementalTa
     }
 
     public static class CreationAction
-            extends VariantTaskCreationAction<ExtractTryWithResourcesSupportJar> {
+            extends VariantTaskCreationAction<
+                    ExtractTryWithResourcesSupportJar, ComponentPropertiesImpl> {
 
-        public CreationAction(@NonNull VariantScope variantScope) {
-            super(variantScope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("extractTryWithResourcesSupportJar");
+            return computeTaskName("extractTryWithResourcesSupportJar");
         }
 
         @NonNull
@@ -72,9 +73,11 @@ public abstract class ExtractTryWithResourcesSupportJar extends NonIncrementalTa
         }
 
         @Override
-        public void configure(@NonNull ExtractTryWithResourcesSupportJar task) {
+        public void configure(
+                @NonNull ExtractTryWithResourcesSupportJar task) {
             super.configure(task);
-            task.outputLocation = getVariantScope().getTryWithResourceRuntimeSupportJar();
+            task.outputLocation =
+                    creationConfig.getVariantScope().getTryWithResourceRuntimeSupportJar();
         }
     }
 }

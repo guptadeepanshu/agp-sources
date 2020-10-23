@@ -19,6 +19,8 @@ package com.android.ddmlib;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ddmlib.HeapSegment.HeapSegmentElement;
+import com.android.ddmlib.internal.ClientImpl;
+import com.android.ddmlib.internal.DeviceImpl;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -32,10 +34,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
-/**
- * Contains the data of a {@link Client}.
- */
+/** Contains the data of a {@link ClientImpl}. */
 public class ClientData {
     /* This is a place to stash data associated with a Client, such as thread
      * states or heap data.  ClientData maps 1:1 to Client, but it's a little
@@ -71,32 +70,36 @@ public class ClientData {
     public enum AllocationTrackingStatus {
         /**
          * Allocation tracking status: unknown.
-         * <p>This happens right after a {@link Client} is discovered
-         * by the {@link AndroidDebugBridge}, and before the {@link Client} answered the query
-         * regarding its allocation tracking status.
-         * @see Client#requestAllocationStatus()
+         *
+         * <p>This happens right after a {@link ClientImpl} is discovered by the {@link
+         * AndroidDebugBridge}, and before the {@link ClientImpl} answered the query regarding its
+         * allocation tracking status.
+         *
+         * @see ClientImpl#requestAllocationStatus()
          */
         UNKNOWN,
-        /** Allocation tracking status: the {@link Client} is not tracking allocations. */
+        /** Allocation tracking status: the {@link ClientImpl} is not tracking allocations. */
         OFF,
-        /** Allocation tracking status: the {@link Client} is tracking allocations. */
+        /** Allocation tracking status: the {@link ClientImpl} is tracking allocations. */
         ON
     }
 
     public enum MethodProfilingStatus {
         /**
          * Method profiling status: unknown.
-         * <p>This happens right after a {@link Client} is discovered
-         * by the {@link AndroidDebugBridge}, and before the {@link Client} answered the query
-         * regarding its method profiling status.
-         * @see Client#requestMethodProfilingStatus()
+         *
+         * <p>This happens right after a {@link ClientImpl} is discovered by the {@link
+         * AndroidDebugBridge}, and before the {@link ClientImpl} answered the query regarding its
+         * method profiling status.
+         *
+         * @see ClientImpl#requestMethodProfilingStatus()
          */
         UNKNOWN,
-        /** Method profiling status: the {@link Client} is not profiling method calls. */
+        /** Method profiling status: the {@link ClientImpl} is not profiling method calls. */
         OFF,
-        /** Method profiling status: the {@link Client} is tracing method calls. */
+        /** Method profiling status: the {@link ClientImpl} is tracing method calls. */
         TRACER_ON,
-        /** Method profiling status: the {@link Client} is being profiled via sampling. */
+        /** Method profiling status: the {@link ClientImpl} is being profiled via sampling. */
         SAMPLER_ON
     }
 
@@ -148,13 +151,16 @@ public class ClientData {
     private static IAllocationTrackingHandler sAllocationTrackingHandler;
 
     // owning Client
-    private final Client mClient;
+    private final ClientImpl mClient;
 
     // the client's process ID
     private final int mPid;
 
     // Java VM identification string
     private String mVmIdentifier;
+
+    // client's underlying package name (R+ only)
+    private String mPackageName = DeviceImpl.UNKNOWN_PACKAGE;
 
     // client's self-description
     private Names mClientNames = UNINITIALIZED;
@@ -236,7 +242,7 @@ public class ClientData {
          *
          * @param data The raw data from an HPSG chunk.
          */
-        synchronized void addHeapData(ByteBuffer data) {
+        public synchronized void addHeapData(ByteBuffer data) {
             HeapSegment hs;
 
             if (mHeapDataComplete) {
@@ -253,10 +259,8 @@ public class ClientData {
             mHeapSegments.add(hs);
         }
 
-        /**
-         * Called when all heap data has arrived.
-         */
-        synchronized void sealHeapData() {
+        /** Called when all heap data has arrived. */
+        public synchronized void sealHeapData() {
             mHeapDataComplete = true;
         }
 
@@ -416,13 +420,14 @@ public class ClientData {
      * Handlers able to act on allocation tracking info
      */
     public interface IAllocationTrackingHandler {
-      /**
-       * Called when an allocation tracking was successful.
-       * @param data the data containing the encoded allocations.
-       *             See {@link AllocationsParser#parse(java.nio.ByteBuffer)} for parsing this data.
-       * @param client the client for which allocations were tracked.
-       */
-      void onSuccess(@NonNull byte[] data, @NonNull Client client);
+        /**
+         * Called when an allocation tracking was successful.
+         *
+         * @param data the data containing the encoded allocations. See {@link
+         *     AllocationsParser#parse(ByteBuffer)} for parsing this data.
+         * @param client the client for which allocations were tracked.
+         */
+        void onSuccess(@NonNull byte[] data, @NonNull Client client);
     }
 
     public void setHprofData(byte[] data) {
@@ -451,7 +456,7 @@ public class ClientData {
     }
 
     @Deprecated
-    static IHprofDumpHandler getHprofDumpHandler() {
+    public static IHprofDumpHandler getHprofDumpHandler() {
         return sHprofDumpHandler;
     }
 
@@ -463,13 +468,14 @@ public class ClientData {
         sMethodProfilingHandler = handler;
     }
 
-    static IMethodProfilingHandler getMethodProfilingHandler() {
+    public static IMethodProfilingHandler getMethodProfilingHandler() {
         return sMethodProfilingHandler;
     }
 
     /**
-     * This method is deprecated. Please register an {@link com.android.ddmlib.AndroidDebugBridge.IClientChangeListener} with
-     * {@link AndroidDebugBridge#addClientChangeListener(AndroidDebugBridge.IClientChangeListener)}
+     * This method is deprecated. Please register an {@link
+     * AndroidDebugBridge.IClientChangeListener} with {@link
+     * AndroidDebugBridge#addClientChangeListener(AndroidDebugBridge.IClientChangeListener)}
      */
     @Deprecated
     public static void setAllocationTrackingHandler(@NonNull IAllocationTrackingHandler handler) {
@@ -478,17 +484,17 @@ public class ClientData {
 
     @Deprecated
     @Nullable
-    static IAllocationTrackingHandler getAllocationTrackingHandler() {
+    public static IAllocationTrackingHandler getAllocationTrackingHandler() {
         return sAllocationTrackingHandler;
     }
 
     /** Generic constructor. */
-    ClientData(@NonNull Client client, int pid) {
+    public ClientData(@NonNull ClientImpl client, int pid) {
         mClient = client;
         mPid = pid;
 
         mDebuggerInterest = DebuggerStatus.DEFAULT;
-        mThreadMap = new TreeMap<Integer,ThreadInfo>();
+        mThreadMap = new TreeMap<Integer, ThreadInfo>();
     }
 
     /**
@@ -505,10 +511,8 @@ public class ClientData {
         return mVmIdentifier;
     }
 
-    /**
-     * Sets VM identifier.
-     */
-    void setVmIdentifier(String ident) {
+    /** Sets VM identifier. */
+    public void setVmIdentifier(String ident) {
         mVmIdentifier = ident;
     }
 
@@ -559,7 +563,7 @@ public class ClientData {
      * <p>There may be a race between HELO and APNM. Rather than try to enforce ordering on the
      * device, we just don't allow the pre-initialized name to replace a specified one.
      */
-    void setNames(Names names) {
+    public void setNames(Names names) {
         /*
          * The application VM is first named <pre-initialized> before being assigned
          * its real name.
@@ -572,11 +576,11 @@ public class ClientData {
         }
     }
 
-    void setAbi(String abi) {
+    public void setAbi(String abi) {
         mAbi = abi;
     }
 
-    void setJvmFlags(String jvmFlags) {
+    public void setJvmFlags(String jvmFlags) {
         mJvmFlags = jvmFlags;
     }
 
@@ -595,29 +599,29 @@ public class ClientData {
         return mDebuggerInterest;
     }
 
-    /**
-     * Sets debugger connection status.
-     */
-    void setDebuggerConnectionStatus(DebuggerStatus status) {
+    /** Sets debugger connection status. */
+    public void setDebuggerConnectionStatus(DebuggerStatus status) {
         mDebuggerInterest = status;
     }
 
     /**
      * Sets the current heap info values for the specified heap.
-     *  @param heapId The heap whose info to update
+     *
+     * @param heapId The heap whose info to update
      * @param sizeInBytes The size of the heap, in bytes
      * @param bytesAllocated The number of bytes currently allocated in the heap
      * @param objectsAllocated The number of objects currently allocated in
      * @param timeStamp
      * @param reason
      */
-    synchronized void setHeapInfo(int heapId,
-                                  long maxSizeInBytes,
-                                  long sizeInBytes,
-                                  long bytesAllocated,
-                                  long objectsAllocated,
-                                  long timeStamp,
-                                  byte reason) {
+    public synchronized void setHeapInfo(
+            int heapId,
+            long maxSizeInBytes,
+            long sizeInBytes,
+            long bytesAllocated,
+            long objectsAllocated,
+            long timeStamp,
+            byte reason) {
         mHeapInfoMap.put(heapId, new HeapInfo(maxSizeInBytes, sizeInBytes, bytesAllocated,
                 objectsAllocated, timeStamp, reason));
     }
@@ -629,10 +633,8 @@ public class ClientData {
         return mHeapData;
     }
 
-    /**
-     * Returns the {@link HeapData} object for the native code.
-     */
-    HeapData getNativeHeapData() {
+    /** Returns the {@link HeapData} object for the native code. */
+    public HeapData getNativeHeapData() {
         return mNativeHeapData;
     }
 
@@ -658,78 +660,74 @@ public class ClientData {
         return mHeapInfoMap.get(heapId);
     }
 
-    /**
-     * Adds a new thread to the list.
-     */
-    synchronized void addThread(int threadId, String threadName) {
+    /** Adds a new thread to the list. */
+    public synchronized void addThread(int threadId, String threadName) {
         ThreadInfo attr = new ThreadInfo(threadId, threadName);
         mThreadMap.put(threadId, attr);
     }
 
-    /**
-     * Removes a thread from the list.
-     */
-    synchronized void removeThread(int threadId) {
+    /** Removes a thread from the list. */
+    public synchronized void removeThread(int threadId) {
         mThreadMap.remove(threadId);
     }
 
     /**
      * Returns the list of threads as {@link ThreadInfo} objects.
-     * <p>The list is empty until a thread update was requested with
-     * {@link Client#requestThreadUpdate()}.
+     *
+     * <p>The list is empty until a thread update was requested with {@link
+     * ClientImpl#requestThreadUpdate()}.
      */
     public synchronized ThreadInfo[] getThreads() {
         Collection<ThreadInfo> threads = mThreadMap.values();
         return threads.toArray(new ThreadInfo[0]);
     }
 
-    /**
-     * Returns the {@link ThreadInfo} by thread id.
-     */
-    synchronized ThreadInfo getThread(int threadId) {
+    /** Returns the {@link ThreadInfo} by thread id. */
+    public synchronized ThreadInfo getThread(int threadId) {
         return mThreadMap.get(threadId);
     }
 
-    synchronized void clearThreads() {
+    public synchronized void clearThreads() {
         mThreadMap.clear();
     }
 
     /**
      * Returns the list of {@link NativeAllocationInfo}.
-     * @see Client#requestNativeHeapInformation()
+     *
+     * @see ClientImpl#requestNativeHeapInformation()
      */
     public synchronized List<NativeAllocationInfo> getNativeAllocationList() {
         return Collections.unmodifiableList(mNativeAllocationList);
     }
 
     /**
-     * adds a new {@link NativeAllocationInfo} to the {@link Client}
+     * adds a new {@link NativeAllocationInfo} to the {@link ClientImpl}
+     *
      * @param allocInfo The {@link NativeAllocationInfo} to add.
      */
-    synchronized void addNativeAllocation(NativeAllocationInfo allocInfo) {
+    public synchronized void addNativeAllocation(NativeAllocationInfo allocInfo) {
         mNativeAllocationList.add(allocInfo);
     }
 
-    /**
-     * Clear the current malloc info.
-     */
-    synchronized void clearNativeAllocationInfo() {
+    /** Clear the current malloc info. */
+    public synchronized void clearNativeAllocationInfo() {
         mNativeAllocationList.clear();
     }
 
     /**
      * Returns the total native memory.
-     * @see Client#requestNativeHeapInformation()
+     *
+     * @see ClientImpl#requestNativeHeapInformation()
      */
     public synchronized int getTotalNativeMemory() {
         return mNativeTotalMemory;
     }
 
-    synchronized void setTotalNativeMemory(int totalMemory) {
+    public synchronized void setTotalNativeMemory(int totalMemory) {
         mNativeTotalMemory = totalMemory;
     }
 
-    synchronized void addNativeLibraryMapInfo(long startAddr, long endAddr, String library) {
+    public synchronized void addNativeLibraryMapInfo(long startAddr, long endAddr, String library) {
         mNativeLibMapInfo.add(new NativeLibraryMapInfo(startAddr, endAddr, library));
     }
 
@@ -740,25 +738,27 @@ public class ClientData {
         return Collections.unmodifiableList(mNativeLibMapInfo);
     }
 
-    synchronized void setAllocationStatus(AllocationTrackingStatus status) {
+    public synchronized void setAllocationStatus(AllocationTrackingStatus status) {
         mAllocationStatus = status;
     }
 
     /**
      * Returns the allocation tracking status.
-     * @see Client#requestAllocationStatus()
+     *
+     * @see ClientImpl#requestAllocationStatus()
      */
     public synchronized AllocationTrackingStatus getAllocationStatus() {
         return mAllocationStatus;
     }
 
-    synchronized void setAllocationsData(byte[] data) {
+    public synchronized void setAllocationsData(byte[] data) {
         mAllocationsData = data;
     }
 
     /**
      * Returns the raw data for tracked allocations.
-     * @see Client#requestAllocationDetails()
+     *
+     * @see ClientImpl#requestAllocationDetails()
      */
     public synchronized byte[] getAllocationsData() {
         return mAllocationsData;
@@ -771,7 +771,8 @@ public class ClientData {
 
     /**
      * Returns the list of tracked allocations.
-     * @see Client#requestAllocationDetails()
+     *
+     * @see ClientImpl#requestAllocationDetails()
      */
     @Nullable
     public synchronized AllocationInfo[] getAllocations() {
@@ -781,15 +782,15 @@ public class ClientData {
         return null;
     }
 
-    void addFeature(String feature) {
+    public void addFeature(String feature) {
         mFeatures.add(feature);
     }
 
     /**
-     * Returns true if the {@link Client} supports the given <var>feature</var>
+     * Returns true if the {@link ClientImpl} supports the given <var>feature</var>
+     *
      * @param feature The feature to test.
      * @return true if the feature is supported
-     *
      * @see ClientData#FEATURE_PROFILING
      * @see ClientData#FEATURE_HPROF
      */
@@ -799,18 +800,17 @@ public class ClientData {
 
     /**
      * Sets the device-side path to the hprof file being written
+     *
      * @param pendingHprofDump the file to the hprof file
      */
     @Deprecated
-    void setPendingHprofDump(String pendingHprofDump) {
+    public void setPendingHprofDump(String pendingHprofDump) {
         mPendingHprofDump = pendingHprofDump;
     }
 
-    /**
-     * Returns the path to the device-side hprof file being written.
-     */
+    /** Returns the path to the device-side hprof file being written. */
     @Deprecated
-    String getPendingHprofDump() {
+    public String getPendingHprofDump() {
         return mPendingHprofDump;
     }
 
@@ -819,13 +819,14 @@ public class ClientData {
         return mPendingHprofDump != null;
     }
 
-    synchronized void setMethodProfilingStatus(MethodProfilingStatus status) {
+    public synchronized void setMethodProfilingStatus(MethodProfilingStatus status) {
         mProfilingStatus = status;
     }
 
     /**
      * Returns the method profiling status.
-     * @see Client#requestMethodProfilingStatus()
+     *
+     * @see ClientImpl#requestMethodProfilingStatus()
      */
     public synchronized MethodProfilingStatus getMethodProfilingStatus() {
         return mProfilingStatus;
@@ -833,16 +834,15 @@ public class ClientData {
 
     /**
      * Sets the device-side path to the method profile file being written
+     *
      * @param pendingMethodProfiling the file being written
      */
-    void setPendingMethodProfiling(String pendingMethodProfiling) {
+    public void setPendingMethodProfiling(String pendingMethodProfiling) {
         mPendingMethodProfiling = pendingMethodProfiling;
     }
 
-    /**
-     * Returns the path to the device-side method profiling file being written.
-     */
-    String getPendingMethodProfiling() {
+    /** Returns the path to the device-side method profiling file being written. */
+    public String getPendingMethodProfiling() {
         return mPendingMethodProfiling;
     }
 
@@ -886,7 +886,7 @@ public class ClientData {
         public final Integer mUserId;
         public final String mPackageName;
 
-        Names(String processName, Integer id, String packageName) {
+        public Names(String processName, Integer id, String packageName) {
             this.mProcessName = processName;
             mUserId = id;
             this.mPackageName = packageName;

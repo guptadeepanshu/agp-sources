@@ -127,8 +127,7 @@ data class CxxProjectModelData(
     override val rootBuildGradleFolder: File = File("."),
     override val sdkFolder: File = File("."),
     override val chromeTraceJsonFolder: File? = null,
-    override val isPrefabEnabled: Boolean = false,
-    override val prefabClassPath: File? = null
+    override val isPrefabEnabled: Boolean = false
 ) : CxxProjectModel
 
 private fun CxxProjectModel.toData() = CxxProjectModelData(
@@ -140,8 +139,7 @@ private fun CxxProjectModel.toData() = CxxProjectModelData(
     isNativeCompilerSettingsCacheEnabled = isNativeCompilerSettingsCacheEnabled,
     rootBuildGradleFolder = rootBuildGradleFolder,
     sdkFolder = sdkFolder,
-    isPrefabEnabled = isPrefabEnabled,
-    prefabClassPath = prefabClassPath
+    isPrefabEnabled = isPrefabEnabled
 )
 
 /**
@@ -222,6 +220,7 @@ private fun CxxCmakeModuleModel.toData() =
 internal data class CxxVariantModelData(
     override val buildSystemArgumentList: List<String> = listOf(),
     override val buildTargetSet: Set<String> = setOf(),
+    override val implicitBuildTargetSet: Set<String> = setOf(),
     override val cFlagsList: List<String> = listOf(),
     override val cmakeSettingsConfiguration: String = "",
     override val cppFlagsList: List<String> = listOf(),
@@ -230,6 +229,7 @@ internal data class CxxVariantModelData(
     override val objFolder: File = File("."),
     override val variantName: String = "",
     override val validAbiList: List<Abi> = listOf(),
+    override val prefabClassPath: File? = null,
     override val prefabDirectory: File = File("."),
     override val prefabPackageDirectoryList: List<File> = listOf()
 ) : CxxVariantModel
@@ -238,6 +238,7 @@ private fun CxxVariantModel.toData() =
     CxxVariantModelData(
         buildSystemArgumentList = buildSystemArgumentList,
         buildTargetSet = buildTargetSet,
+        implicitBuildTargetSet = implicitBuildTargetSet,
         cFlagsList = cFlagsList,
         cmakeSettingsConfiguration = cmakeSettingsConfiguration,
         cppFlagsList = cppFlagsList,
@@ -246,6 +247,7 @@ private fun CxxVariantModel.toData() =
         objFolder = objFolder,
         validAbiList = validAbiList,
         variantName = variantName,
+        prefabClassPath = prefabClassPath,
         prefabDirectory = prefabDirectory,
         prefabPackageDirectoryList = prefabPackageDirectoryList
     )

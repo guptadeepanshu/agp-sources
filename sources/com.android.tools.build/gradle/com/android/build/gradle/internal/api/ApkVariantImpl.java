@@ -18,13 +18,13 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.ApkVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.variant.BaseVariantData;
+import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.tasks.PackageAndroidArtifact;
 import org.gradle.api.NamedDomainObjectContainer;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.TaskProvider;
 
 /**
@@ -36,10 +36,11 @@ import org.gradle.api.tasks.TaskProvider;
 public abstract class ApkVariantImpl extends InstallableVariantImpl implements ApkVariant {
 
     protected ApkVariantImpl(
-            @NonNull ObjectFactory objectFactory,
+            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider immutableObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(objectFactory, immutableObjectProvider, outputs);
+        super(componentProperties, services, immutableObjectProvider, outputs);
     }
 
     @Nullable
@@ -53,24 +54,19 @@ public abstract class ApkVariantImpl extends InstallableVariantImpl implements A
     @Nullable
     @Override
     public PackageAndroidArtifact getPackageApplication() {
-        BaseVariantData variantData = getVariantData();
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variant.getPackageApplicationProvider()",
                         "variant.getPackageApplication()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return variantData.getTaskContainer().getPackageAndroidTask().getOrNull();
+        return componentProperties.getTaskContainer().getPackageAndroidTask().getOrNull();
     }
 
     @Nullable
     @Override
     public TaskProvider<PackageAndroidArtifact> getPackageApplicationProvider() {
         return (TaskProvider<PackageAndroidArtifact>)
-                getVariantData().getTaskContainer().getPackageAndroidTask();
+                componentProperties.getTaskContainer().getPackageAndroidTask();
     }
 }

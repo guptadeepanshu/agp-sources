@@ -16,11 +16,11 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.google.common.annotations.VisibleForTesting
 import com.android.build.gradle.internal.packaging.createDefaultDebugStore
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.BuilderConstants
 import com.android.builder.signing.DefaultSigningConfig
@@ -127,30 +127,35 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
     fun forceRerun() = signingConfig.storeFile?.isFile != true
 
     class CreationAction(
-        variantScope: VariantScope,
+        componentProperties: ComponentPropertiesImpl,
         private val defaultDebugKeystoreLocation: File
     ) :
-        VariantTaskCreationAction<ValidateSigningTask>(variantScope) {
+        VariantTaskCreationAction<ValidateSigningTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("validateSigning")
+            get() = computeTaskName("validateSigning")
         override val type: Class<ValidateSigningTask>
             get() = ValidateSigningTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out ValidateSigningTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<ValidateSigningTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.VALIDATE_SIGNING_CONFIG,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 ValidateSigningTask::dummyOutputDirectory
-            )
+            ).on(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
         }
 
-        override fun configure(task: ValidateSigningTask) {
+        override fun configure(
+            task: ValidateSigningTask
+        ) {
             super.configure(task)
 
-            task.signingConfig = variantScope.variantDslInfo.signingConfig ?: throw IllegalStateException(
-                "No signing config configured for variant " + variantScope.name
+            task.signingConfig = creationConfig.variantDslInfo.signingConfig ?: throw IllegalStateException(
+                "No signing config configured for variant " + creationConfig.name
             )
             task.defaultDebugKeystoreLocation = defaultDebugKeystoreLocation
             task.outputs.upToDateWhen { !task.forceRerun() }

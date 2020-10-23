@@ -28,9 +28,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.AndroidXDependency;
@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
@@ -100,6 +101,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     @Nullable FileCollection lintClassPath;
 
     private final List<Object> sources = new ArrayList<>();
+    private FileTree sourcesFileTree;
 
     private FileCollection classpath;
 
@@ -115,7 +117,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     @PathSensitive(PathSensitivity.NAME_ONLY)
     @InputFiles
     public FileTree getSource() {
-        return getProject().files(sources).getAsFileTree();
+        return sourcesFileTree;
     }
 
     @CompileClasspath
@@ -292,17 +294,18 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
         return false;
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<ExtractAnnotations> {
+    public static class CreationAction
+            extends VariantTaskCreationAction<ExtractAnnotations, ComponentPropertiesImpl> {
 
 
-        public CreationAction(@NonNull VariantScope variantScope) {
-            super(variantScope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("extract", "Annotations");
+            return computeTaskName("extract", "Annotations");
         }
 
         @NonNull
@@ -312,60 +315,66 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
         }
 
         @Override
-        public void handleProvider(
-                @NonNull TaskProvider<? extends ExtractAnnotations> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<ExtractAnnotations> taskProvider) {
             super.handleProvider(taskProvider);
-            getVariantScope().getTaskContainer().setGenerateAnnotationsTask(taskProvider);
+            creationConfig.getTaskContainer().setGenerateAnnotationsTask(taskProvider);
 
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesFile(
-                            InternalArtifactType.ANNOTATIONS_ZIP.INSTANCE,
-                            taskProvider,
-                            ExtractAnnotations::getOutput,
-                            SdkConstants.FN_ANNOTATIONS_ZIP);
+                    .setInitialProvider(taskProvider, ExtractAnnotations::getOutput)
+                    .withName(SdkConstants.FN_ANNOTATIONS_ZIP)
+                    .on(InternalArtifactType.ANNOTATIONS_ZIP.INSTANCE);
 
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesFile(
-                            InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE.INSTANCE,
-                            taskProvider,
-                            ExtractAnnotations::getTypedefFile,
-                            "typedefs.txt");
+                    .setInitialProvider(taskProvider, ExtractAnnotations::getTypedefFile)
+                    .withName("typedefs.txt")
+                    .on(InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE.INSTANCE);
         }
 
         @Override
         public void configure(@NonNull ExtractAnnotations task) {
             super.configure(task);
-            VariantScope variantScope = getVariantScope();
-
             task.setDescription(
                     "Extracts Android annotations for the "
-                            + variantScope.getName()
+                            + creationConfig.getName()
                             + " variant into the archive file");
             task.setGroup(BasePlugin.BUILD_GROUP);
 
-            task.setClassDir(variantScope.getArtifacts().getAllClasses());
+            task.setClassDir(creationConfig.getArtifacts().getAllClasses());
 
-            task.source(variantScope.getVariantData().getJavaSources());
+            task.source(creationConfig.getJavaSources());
             task.setEncoding(
-                    variantScope.getGlobalScope().getExtension().getCompileOptions().getEncoding());
-            task.classpath = variantScope.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR);
+                    creationConfig
+                            .getGlobalScope()
+                            .getExtension()
+                            .getCompileOptions()
+                            .getEncoding());
+            task.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR);
 
             task.libraries =
-                    variantScope.getArtifactCollection(COMPILE_CLASSPATH, EXTERNAL, CLASSES_JAR);
+                    creationConfig
+                            .getVariantDependencies()
+                            .getArtifactCollection(COMPILE_CLASSPATH, EXTERNAL, CLASSES_JAR);
 
-            GlobalScope globalScope = variantScope.getGlobalScope();
+            GlobalScope globalScope = creationConfig.getGlobalScope();
 
             // Setup the boot classpath just before the task actually runs since this will
             // force the sdk to be parsed. (Same as in compileTask)
-            task.setBootClasspath(globalScope.getFilteredBootClasspath());
+            task.setBootClasspath(
+                    creationConfig
+                            .getServices()
+                            .fileCollection(globalScope.getFilteredBootClasspath()));
 
             task.lintClassPath =
                     globalScope
                             .getProject()
                             .getConfigurations()
                             .getByName(LintBaseTask.LINT_CLASS_PATH);
+            task.sourcesFileTree =
+                    task.getProject()
+                            .files((Callable<List<Object>>) () -> task.sources)
+                            .getAsFileTree();
         }
     }
 

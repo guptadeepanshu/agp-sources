@@ -16,14 +16,13 @@
 
 package com.android.build.gradle.internal.res.namespaced
 
-import com.android.build.gradle.internal.tasks.factory.TaskFactory
+import com.android.build.api.artifact.Artifact
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.SingleArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.tasks.factory.TaskFactory
 import com.android.utils.appendCapitalized
 import org.gradle.api.file.Directory
 
@@ -33,7 +32,7 @@ import org.gradle.api.file.Directory
 class NamespacedResourcesTaskManager(
         private val globalScope: GlobalScope,
         private val taskFactory: TaskFactory,
-        private val variantScope: VariantScope) {
+        private val componentProperties: ComponentPropertiesImpl) {
 
     /**
      * Creates the tasks for dealing with resources in a namespaced way.
@@ -45,36 +44,28 @@ class NamespacedResourcesTaskManager(
      *  final ids in apps are a vital feature.
      *  2. Links the app and its dependency to produce the final APK. This re-uses the same
      *  [LinkApplicationAndroidResourcesTask] task, as it needs to be split aware.
-     *  3. If rewriting non-namespaced dependencies is enabled, the [AutoNamespaceDependenciesTask]
-     *  will rewrite classes.jar files from these libraries to be fully namespaced.
      *
      * TODO: Test support, Synthesize non-namespaced output.
      */
     fun createNamespacedResourceTasks(
-            packageOutputType: SingleArtifactType<Directory>?,
+            packageOutputType: Artifact.SingleArtifact<Directory>?,
             baseName: String,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
-
-        // Process dependencies making sure everything we consume will be fully namespaced.
-        if (globalScope.projectOptions.get(BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES)) {
-            val task = taskFactory.register(AutoNamespaceDependenciesTask.CreationAction(variantScope))
-            // Needed for the IDE
-            variantScope.taskContainer.sourceGenTask.dependsOn(task)
-        }
 
         // Compile
         createCompileResourcesTask()
         // We need to strip namespaces from the manifest to bundle, so that it's consumable by
         // non-namespaced projects.
-        taskFactory.register(CreateNonNamespacedLibraryManifestTask.CreationAction(variantScope))
+        taskFactory.register(CreateNonNamespacedLibraryManifestTask.CreationAction(componentProperties))
         // TODO: If we want to read the namespaced manifest from the static library, we need to keep
-        // all the data in it, not just a skeleton with the package. See b/117869877
-        taskFactory.register(StaticLibraryManifestTask.CreationAction(variantScope))
-        taskFactory.register(LinkLibraryAndroidResourcesTask.CreationAction(variantScope))
+        //       all the data in it, not just a skeleton with the package. See b/117869877
+        taskFactory.register(StaticLibraryManifestTask.CreationAction(componentProperties))
+        taskFactory.register(LinkLibraryAndroidResourcesTask.CreationAction(componentProperties))
         // TODO: also generate a private R.jar holding private resources.
-        taskFactory.register(GenerateNamespacedLibraryRFilesTask.CreationAction(variantScope))
-        if (variantScope.type.isTestComponent) {
-            if (variantScope.testedVariantData!!.type.isAar) {
+        taskFactory.register(GenerateNamespacedLibraryRFilesTask.CreationAction(componentProperties))
+        if (componentProperties.variantType.isTestComponent) {
+            val testedType = componentProperties.testedConfig?.variantType ?: throw RuntimeException("testedVariant is null")
+            if (testedType.isAar) {
                 createNamespacedLibraryTestProcessResourcesTask(
                     packageOutputType = packageOutputType
                 )
@@ -85,50 +76,50 @@ class NamespacedResourcesTaskManager(
                     useAaptToGenerateLegacyMultidexMainDexProguardRules = false
                 )
             }
-        } else if (variantScope.type.isApk) {
+        } else if (componentProperties.variantType.isApk) {
             createNamespacedAppProcessTask(
                 packageOutputType = packageOutputType,
                 baseName = baseName,
                 useAaptToGenerateLegacyMultidexMainDexProguardRules = useAaptToGenerateLegacyMultidexMainDexProguardRules
             )
         }
-        taskFactory.register(CompileRClassTaskCreationAction(variantScope))
+        taskFactory.register(CompileRClassTaskCreationAction(componentProperties))
     }
 
     private fun createNamespacedAppProcessTask(
-            packageOutputType: SingleArtifactType<Directory>?,
+            packageOutputType: Artifact.SingleArtifact<Directory>?,
             baseName: String,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
+        // TODO fix by using the right type for field componentProperties
        taskFactory.register(
            LinkApplicationAndroidResourcesTask.NamespacedCreationAction(
-               variantScope.variantData.publicVariantPropertiesApi,
-               variantScope,
+               componentProperties as ApkCreationConfig,
                useAaptToGenerateLegacyMultidexMainDexProguardRules,
                baseName
            )
        )
         if (packageOutputType != null) {
-            variantScope.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
+            componentProperties.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
         }
     }
 
     private fun createNamespacedLibraryTestProcessResourcesTask(
-            packageOutputType: SingleArtifactType<Directory>?) {
-        taskFactory.register(ProcessAndroidAppResourcesTask.CreationAction(variantScope))
+            packageOutputType: Artifact.SingleArtifact<Directory>?) {
+        taskFactory.register(ProcessAndroidAppResourcesTask.CreationAction(componentProperties))
         if (packageOutputType != null) {
-            variantScope.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
+            componentProperties.artifacts.republish(InternalArtifactType.PROCESSED_RES, packageOutputType)
         }
     }
 
     private fun createCompileResourcesTask() {
-        for((sourceSetName, artifacts) in variantScope.variantData.androidResources) {
+        for((sourceSetName, artifacts) in componentProperties.variantData.androidResources) {
             val name = "compile".appendCapitalized(sourceSetName) +
-                    "ResourcesFor".appendCapitalized(variantScope.name)
+                    "ResourcesFor".appendCapitalized(componentProperties.name)
             // TODO : figure out when we need explicit task dependency and potentially remove it.
             taskFactory.register(CompileSourceSetResources.CreationAction(
                     name = name,
                     inputDirectories = artifacts,
-                    variantScope = variantScope))
+                    componentProperties = componentProperties))
         }
     }
 }

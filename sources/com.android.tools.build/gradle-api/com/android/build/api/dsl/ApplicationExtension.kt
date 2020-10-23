@@ -28,39 +28,38 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface ApplicationExtension<
-        BuildTypeT : BuildType,
-        CMakeOptionsT : CmakeOptions,
-        CompileOptionsT : CompileOptions,
-        DefaultConfigT : DefaultConfig,
-        ExternalNativeBuildT : ExternalNativeBuild<CMakeOptionsT, NdkBuildOptionsT>,
-        JacocoOptionsT : JacocoOptions,
-        NdkBuildOptionsT : NdkBuildOptions,
-        ProductFlavorT : ProductFlavor,
-        SigningConfigT : SigningConfig,
-        TestOptionsT : TestOptions<UnitTestOptionsT>,
-        UnitTestOptionsT : UnitTestOptions> :
+        AndroidSourceSetT : AndroidSourceSet,
+        BuildTypeT : ApplicationBuildType<SigningConfigT>,
+        DefaultConfigT : ApplicationDefaultConfig<SigningConfigT>,
+        ProductFlavorT : ApplicationProductFlavor<SigningConfigT>,
+        SigningConfigT : SigningConfig> :
     CommonExtension<
+            AndroidSourceSetT,
             ApplicationBuildFeatures,
             BuildTypeT,
-            CMakeOptionsT,
-            CompileOptionsT,
             DefaultConfigT,
-            ExternalNativeBuildT,
-            JacocoOptionsT,
-            NdkBuildOptionsT,
             ProductFlavorT,
             SigningConfigT,
-            TestOptionsT,
-            UnitTestOptionsT,
-            ApplicationVariant,
+            ApplicationVariant<ApplicationVariantProperties>,
             ApplicationVariantProperties>,
     ApkExtension,
     TestedExtension {
     // TODO(b/140406102)
 
-  /** Specify whether to include SDK dependency information in APKs and Bundles. */
-  val dependenciesInfo: DependenciesInfo
+    /** Specify whether to include SDK dependency information in APKs and Bundles. */
+    val dependenciesInfo: DependenciesInfo
 
-  /** Specify whether to include SDK dependency information in APKs and Bundles. */
-  fun dependenciesInfo(action: DependenciesInfo.() -> Unit)
+    /** Specify whether to include SDK dependency information in APKs and Bundles. */
+    fun dependenciesInfo(action: DependenciesInfo.() -> Unit)
+
+    val bundle: Bundle
+
+    fun bundle(action: Bundle.() -> Unit)
+
+    val dynamicFeatures: MutableSet<String>
+
+    /**
+     * Set of asset pack subprojects to be included in the app's bundle.
+     */
+    val assetPacks: MutableSet<String>
 }

@@ -18,16 +18,17 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.LibraryVariant;
 import com.android.build.gradle.api.TestVariant;
 import com.android.build.gradle.api.UnitTestVariant;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.LibraryVariantData;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.bundling.Zip;
 
@@ -50,10 +51,11 @@ public class LibraryVariantImpl extends BaseVariantImpl implements LibraryVarian
     @Inject
     public LibraryVariantImpl(
             @NonNull LibraryVariantData variantData,
-            @NonNull ObjectFactory objectFactory,
+            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(objectFactory, readOnlyObjectProvider, outputs);
+        super(componentProperties, services, readOnlyObjectProvider, outputs);
         this.variantData = variantData;
     }
 
@@ -89,23 +91,19 @@ public class LibraryVariantImpl extends BaseVariantImpl implements LibraryVarian
     @Override
     @Nullable
     public Zip getPackageLibrary() {
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variant.getPackageLibraryProvider()",
                         "variant.getPackageLibrary()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return variantData.getTaskContainer().getBundleLibraryTask().getOrNull();
+        return componentProperties.getTaskContainer().getBundleLibraryTask().getOrNull();
     }
 
     @Nullable
     @Override
     public TaskProvider<Zip> getPackageLibraryProvider() {
         //noinspection unchecked
-        return (TaskProvider<Zip>) variantData.getTaskContainer().getBundleLibraryTask();
+        return (TaskProvider<Zip>) componentProperties.getTaskContainer().getBundleLibraryTask();
     }
 }

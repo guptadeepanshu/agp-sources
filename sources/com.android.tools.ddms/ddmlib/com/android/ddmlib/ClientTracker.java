@@ -17,10 +17,28 @@
 package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
+import com.android.ddmlib.internal.ClientImpl;
+import com.android.ddmlib.internal.DeviceImpl;
 
-/** Tracks device {@link Client clients} */
-interface ClientTracker {
-    void trackDisconnectedClient(@NonNull Client client);
+/** Tracks device {@link ClientImpl clients} */
+public interface ClientTracker {
+    /**
+     * Callback for when a client is disconnected. This callback is meant to notify any threads that hold a registration to
+     * a clients socket to release it.
+     * @param client that was dropped
+     */
+    void trackDisconnectedClient(@NonNull ClientImpl client);
 
-    void trackClientToDropAndReopen(@NonNull Client client, int port);
+    /**
+     * Callback for indicating that a client was dropped but an attempt should be made to reopen the connection with the client.
+     * @param client that was dropped.
+     */
+    void trackClientToDropAndReopen(@NonNull ClientImpl client);
+
+    /**
+     * Callback to indicate that a device was dropped. An attempt should be made to reopen the connection with the device and
+     * reestablish connection with any of the clients running on that device.
+     * @param device that was dropped.
+     */
+    void trackDeviceToDropAndReopen(@NonNull DeviceImpl device);
 }

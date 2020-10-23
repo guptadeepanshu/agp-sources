@@ -16,18 +16,19 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
 import com.android.build.api.variant.BuiltArtifacts;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
+import com.android.build.gradle.internal.AdbExecutableInput;
 import com.android.build.gradle.internal.LoggerWrapper;
+import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.TaskManager;
-import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
-import com.android.build.gradle.internal.test.SplitOutputMatcher;
+import com.android.build.gradle.internal.test.BuiltArtifactsSplitOutputMatcher;
 import com.android.build.gradle.internal.testing.ConnectedDeviceProvider;
-import com.android.build.gradle.internal.variant.BaseVariantData;
+import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.builder.internal.InstallUtils;
 import com.android.builder.testing.api.DeviceConfigProviderImpl;
 import com.android.builder.testing.api.DeviceConnector;
@@ -49,16 +50,13 @@ import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.logging.Logger;
-import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskProvider;
-import org.gradle.process.ExecOperations;
 
 /**
  * Task installing an app variant. It looks at connected device and install the best matching
@@ -66,18 +64,16 @@ import org.gradle.process.ExecOperations;
  */
 public abstract class InstallVariantTask extends NonIncrementalTask {
 
-    private Provider<File> adbExecutableProvider;
-
     private int timeOutInMs = 0;
 
     private Collection<String> installOptions;
 
-    private BaseVariantData variantData;
-    @NonNull private final ExecOperations execOperations;
+    private String variantName;
+    private Set<String> supportedAbis;
+    private AndroidVersion minSdkVersion;
 
     @Inject
-    public InstallVariantTask(@NonNull ExecOperations execOperations) {
-        this.execOperations = execOperations;
+    public InstallVariantTask() {
         this.getOutputs().upToDateWhen(task -> {
             getLogger().debug("Install task is always run.");
             return false;
@@ -88,22 +84,20 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
     protected void doTaskAction() throws DeviceException, ExecutionException {
         final ILogger iLogger = new LoggerWrapper(getLogger());
         DeviceProvider deviceProvider =
-                new ConnectedDeviceProvider(adbExecutableProvider.get(), getTimeOutInMs(), iLogger);
+                new ConnectedDeviceProvider(
+                        getAdbExecutableInput().getAdbExecutable(), getTimeOutInMs(), iLogger);
         deviceProvider.use(
                 () -> {
-                    BaseVariantData variantData = getVariantData();
-                    VariantDslInfo variantDslInfo = variantData.getVariantDslInfo();
-
                     BuiltArtifacts builtArtifacts =
                             new BuiltArtifactsLoaderImpl().load(getApkDirectory().get());
 
                     install(
                             getProjectName(),
-                            variantData.getName(),
+                            variantName,
                             deviceProvider,
-                            variantDslInfo.getMinSdkVersion(),
+                            minSdkVersion,
                             builtArtifacts,
-                            variantDslInfo.getSupportedAbis(),
+                            supportedAbis,
                             getInstallOptions(),
                             getTimeOutInMs(),
                             getLogger());
@@ -118,7 +112,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             @NonNull DeviceProvider deviceProvider,
             @NonNull AndroidVersion minSkdVersion,
             @NonNull BuiltArtifacts builtArtifacts,
-            @Nullable Set<String> supportedAbis,
+            @NonNull Set<String> supportedAbis,
             @NonNull Collection<String> installOptions,
             int timeOutInMs,
             @NonNull Logger logger)
@@ -131,7 +125,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                     device, minSkdVersion, iLogger, projectName, variantName)) {
                 // When InstallUtils.checkDeviceApiLevel returns false, it logs the reason.
                 final List<File> apkFiles =
-                        SplitOutputMatcher.INSTANCE.computeBestOutput(
+                        BuiltArtifactsSplitOutputMatcher.INSTANCE.computeBestOutput(
                                 new DeviceConfigProviderImpl(device),
                                 builtArtifacts,
                                 supportedAbis);
@@ -177,12 +171,6 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         }
     }
 
-    @InputFile
-    @PathSensitive(PathSensitivity.NAME_ONLY)
-    public Provider<File> getAdbExe() {
-        return adbExecutableProvider;
-    }
-
     @Input
     public int getTimeOutInMs() {
         return timeOutInMs;
@@ -206,25 +194,20 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
     @PathSensitive(PathSensitivity.RELATIVE)
     public abstract DirectoryProperty getApkDirectory();
 
-    @Internal("This task is always executed")
-    public BaseVariantData getVariantData() {
-        return variantData;
-    }
+    @Nested
+    public abstract AdbExecutableInput getAdbExecutableInput();
 
-    public void setVariantData(BaseVariantData variantData) {
-        this.variantData = variantData;
-    }
+    public static class CreationAction
+            extends VariantTaskCreationAction<InstallVariantTask, ApkCreationConfig> {
 
-    public static class CreationAction extends VariantTaskCreationAction<InstallVariantTask> {
-
-        public CreationAction(VariantScope scope) {
-            super(scope);
+        public CreationAction(@NonNull ApkCreationConfig creationConfig) {
+            super(creationConfig);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("install");
+            return computeTaskName("install");
         }
 
         @NonNull
@@ -236,27 +219,40 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         @Override
         public void configure(@NonNull InstallVariantTask task) {
             super.configure(task);
-            VariantScope scope = getVariantScope();
-            task.setVariantData(scope.getVariantData());
 
-            task.setDescription("Installs the " + scope.getVariantData().getDescription() + ".");
+            task.variantName = creationConfig.getBaseName();
+            task.supportedAbis = creationConfig.getVariantDslInfo().getSupportedAbis();
+            task.minSdkVersion = creationConfig.getMinSdkVersion();
+
+            task.setDescription("Installs the " + creationConfig.getDescription() + ".");
             task.setGroup(TaskManager.INSTALL_GROUP);
-            scope.getArtifacts()
+            creationConfig
+                    .getArtifacts()
                     .setTaskInputToFinalProduct(
                             InternalArtifactType.APK.INSTANCE, task.getApkDirectory());
             task.setTimeOutInMs(
-                    scope.getGlobalScope().getExtension().getAdbOptions().getTimeOutInMs());
+                    creationConfig
+                            .getGlobalScope()
+                            .getExtension()
+                            .getAdbOptions()
+                            .getTimeOutInMs());
             task.setInstallOptions(
-                    scope.getGlobalScope().getExtension().getAdbOptions().getInstallOptions());
-            task.adbExecutableProvider =
-                    scope.getGlobalScope().getSdkComponents().getAdbExecutableProvider();
+                    creationConfig
+                            .getGlobalScope()
+                            .getExtension()
+                            .getAdbOptions()
+                            .getInstallOptions());
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getAdbExecutableInput().getSdkBuildService(),
+                    BuildServicesKt.getBuildService(
+                            creationConfig.getServices().getBuildServiceRegistry(),
+                            SdkComponentsBuildService.class));
         }
 
         @Override
-        public void handleProvider(
-                @NonNull TaskProvider<? extends InstallVariantTask> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<InstallVariantTask> taskProvider) {
             super.handleProvider(taskProvider);
-            getVariantScope().getTaskContainer().setInstallTask(taskProvider);
+            creationConfig.getTaskContainer().setInstallTask(taskProvider);
         }
     }
 }

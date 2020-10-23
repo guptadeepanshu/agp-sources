@@ -23,8 +23,9 @@ import com.android.annotations.Nullable;
 import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.android.build.gradle.api.LibraryVariantOutput;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.scope.ApkData;
 import com.android.build.gradle.internal.scope.TaskContainer;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.builder.core.VariantType;
 import java.io.File;
 import javax.inject.Inject;
 import org.gradle.api.tasks.bundling.Zip;
@@ -40,25 +41,21 @@ public class LibraryVariantOutputImpl extends BaseVariantOutputImpl implements L
     @Inject
     public LibraryVariantOutputImpl(
             @NonNull TaskContainer taskContainer,
-            @NonNull DeprecationReporter deprecationReporter,
-            @NonNull VariantOutputImpl variantOutput) {
-        super(taskContainer, deprecationReporter, variantOutput);
-    }
-
-    @Override
-    @NonNull
-    protected ApkData getApkData() {
-        return apkData;
+            @NonNull BaseServices services,
+            @NonNull VariantOutputImpl variantOutput,
+            @NonNull VariantType ignored) {
+        super(taskContainer, services, variantOutput);
     }
 
     @Nullable
     @Override
     public Zip getPackageLibrary() {
-        deprecationReporter.reportDeprecatedApi(
-                "variant.getPackageLibraryProvider()",
-                "variantOutput.getPackageLibrary()",
-                TASK_ACCESS_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "variant.getPackageLibraryProvider()",
+                        "variantOutput.getPackageLibrary()",
+                        TASK_ACCESS_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
         return taskContainer.getBundleLibraryTask().getOrNull();
     }
 
@@ -69,7 +66,7 @@ public class LibraryVariantOutputImpl extends BaseVariantOutputImpl implements L
         if (packageTask != null) {
             return new File(
                     packageTask.getDestinationDirectory().get().getAsFile(),
-                    apkData.getOutputFileName());
+                    variantOutput.getOutputFileName().get());
         } else {
             return super.getOutputFile();
         }

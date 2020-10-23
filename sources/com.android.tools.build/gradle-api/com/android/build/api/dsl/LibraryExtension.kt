@@ -18,8 +18,8 @@ package com.android.build.api.dsl
 
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.LibraryVariantProperties
-import org.gradle.api.Action
 import org.gradle.api.Incubating
+import org.gradle.api.NamedDomainObjectContainer
 
 /**
  * Extension for the Android Library Gradle Plugin.
@@ -29,34 +29,27 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface LibraryExtension<
-        BuildTypeT : BuildType,
-        CMakeOptionsT : CmakeOptions,
-        CompileOptionsT : CompileOptions,
-        DefaultConfigT : DefaultConfig,
-        ExternalNativeBuildT : ExternalNativeBuild<CMakeOptionsT, NdkBuildOptionsT>,
-        JacocoOptionsT : JacocoOptions,
-
-        NdkBuildOptionsT : NdkBuildOptions,
-        ProductFlavorT : ProductFlavor,
-        SigningConfigT : SigningConfig,
-        TestOptionsT : TestOptions<UnitTestOptionsT>,
-        UnitTestOptionsT : UnitTestOptions>
-    : CommonExtension<
+        AndroidSourceSetT : AndroidSourceSet,
+        BuildTypeT : LibraryBuildType<SigningConfigT>,
+        DefaultConfigT : LibraryDefaultConfig<SigningConfigT>,
+        ProductFlavorT : LibraryProductFlavor<SigningConfigT>,
+        SigningConfigT : SigningConfig> :
+    CommonExtension<
+        AndroidSourceSetT,
         LibraryBuildFeatures,
         BuildTypeT,
-        CMakeOptionsT,
-        CompileOptionsT,
         DefaultConfigT,
-        ExternalNativeBuildT,
-        JacocoOptionsT,
-        NdkBuildOptionsT,
         ProductFlavorT,
         SigningConfigT,
-        TestOptionsT,
-        UnitTestOptionsT,
-        LibraryVariant,
+        LibraryVariant<LibraryVariantProperties>,
         LibraryVariantProperties>,
     TestedExtension {
     // TODO(b/140406102)
+    /** Aidl files to package in the aar. */
+    val aidlPackageWhiteList: MutableCollection<String>
 
+    /**
+     * container of Prefab options
+     */
+    val prefab: NamedDomainObjectContainer<PrefabPackagingOptions>
 }

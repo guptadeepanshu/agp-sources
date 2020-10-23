@@ -16,16 +16,19 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.RENDERSCRIPT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_LIB
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NdkTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.internal.compiler.DirectoryWalker
 import com.android.builder.internal.compiler.RenderScriptProcessor
@@ -40,10 +43,10 @@ import com.google.common.collect.Sets
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -89,11 +92,12 @@ abstract class RenderscriptCompile : NdkTask() {
     @get:Input
     var isNdkMode: Boolean = false
 
-    @get:Input
-    val buildToolsVersion: String
-        get() = buildToolInfoProvider.get().revision.toString()
+    @Input
+    fun getBuildToolsVersion(): String =
+        sdkBuildService.get().buildToolInfoProvider.get().revision.toString()
 
-    private lateinit var buildToolInfoProvider: Provider<BuildToolInfo>
+    @get:Internal
+    abstract val sdkBuildService: Property<SdkComponentsBuildService>
 
     @get:OutputDirectory
     abstract val sourceOutputDir: DirectoryProperty
@@ -152,6 +156,7 @@ abstract class RenderscriptCompile : NdkTask() {
 
         val sourceDirectories = sourceDirs.files
 
+        val buildToolsInfo = sdkBuildService.get().buildToolInfoProvider.get()
         compileAllRenderscriptFiles(
             sourceDirectories,
             importFolders,
@@ -160,14 +165,14 @@ abstract class RenderscriptCompile : NdkTask() {
             objDestDir,
             libDestDir,
             targetApi.get(),
-            buildToolInfoProvider.get().revision,
+            buildToolsInfo.revision,
             optimLevel,
             isNdkMode,
             isSupportMode,
             useAndroidX,
-            if (ndkConfig == null) null else ndkConfig!!.abiFilters,
+            ndkConfig?.abiFilters ?: setOf(),
             LoggedProcessOutputHandler(LoggerWrapper(logger)),
-            buildToolInfoProvider.get()
+            buildToolsInfo
         )
     }
 
@@ -208,7 +213,7 @@ abstract class RenderscriptCompile : NdkTask() {
         ndkMode: Boolean,
         supportMode: Boolean,
         useAndroidX: Boolean,
-        abiFilters: Set<String>?,
+        abiFilters: Set<String>,
         processOutputHandler: ProcessOutputHandler,
         buildToolInfo: BuildToolInfo
     ) {
@@ -244,47 +249,43 @@ abstract class RenderscriptCompile : NdkTask() {
 
     // ----- CreationAction -----
 
-    class CreationAction(scope: VariantScope) :
-        VariantTaskCreationAction<RenderscriptCompile>(scope) {
+    class CreationAction(
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<RenderscriptCompile, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("compile", "Renderscript")
+            get() = computeTaskName("compile", "Renderscript")
 
         override val type: Class<RenderscriptCompile>
             get() = RenderscriptCompile::class.java
 
         override fun handleProvider(
-            taskProvider: TaskProvider<out RenderscriptCompile>
+            taskProvider: TaskProvider<RenderscriptCompile>
         ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.renderscriptCompileTask = taskProvider
-            variantScope
-                .artifacts
-                .producesDir(
-                    RENDERSCRIPT_SOURCE_OUTPUT_DIR,
-                    taskProvider,
-                    RenderscriptCompile::sourceOutputDir,
-                    "out"
-                )
+            creationConfig.taskContainer.renderscriptCompileTask = taskProvider
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                RenderscriptCompile::sourceOutputDir
+            ).withName("out").on(RENDERSCRIPT_SOURCE_OUTPUT_DIR)
 
-            variantScope
-                .artifacts
-                .producesDir(
-                    RENDERSCRIPT_LIB,
-                    taskProvider,
-                    RenderscriptCompile::libOutputDir,
-                    "lib"
-                )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                RenderscriptCompile::libOutputDir
+            ).withName("lib").on(RENDERSCRIPT_LIB)
         }
 
-        override fun configure(task: RenderscriptCompile) {
+        override fun configure(
+            task: RenderscriptCompile
+        ) {
             super.configure(task)
 
-            val scope = variantScope
-            val globalScope = scope.globalScope
+            val globalScope = creationConfig.globalScope
 
-            val variantDslInfo = scope.variantDslInfo
-            val variantSources = scope.variantSources
+            val variantDslInfo = creationConfig.variantDslInfo
+            val variantSources = creationConfig.variantSources
 
             val ndkMode = variantDslInfo.renderscriptNdkModeEnabled
 
@@ -294,27 +295,27 @@ abstract class RenderscriptCompile : NdkTask() {
             task.targetApi.disallowChanges()
 
             task.isSupportMode = variantDslInfo.renderscriptSupportModeEnabled
-            task.useAndroidX = globalScope.projectOptions.get(BooleanOption.USE_ANDROID_X)
+            task.useAndroidX = creationConfig.services.projectOptions.get(BooleanOption.USE_ANDROID_X)
             task.isNdkMode = ndkMode
             task.optimLevel = variantDslInfo.renderscriptOptimLevel
 
             task.sourceDirs = globalScope
                 .project
                 .files(Callable { variantSources.renderscriptSourceList })
-            task.importDirs = scope.getArtifactFileCollection(
+            task.importDirs = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH, ALL, RENDERSCRIPT
             )
 
-            task.resOutputDir = scope.renderscriptResOutputDir
-            task.objOutputDir = scope.renderscriptObjOutputDir
+            task.resOutputDir = creationConfig.paths.renderscriptResOutputDir
+            task.objOutputDir = creationConfig.paths.renderscriptObjOutputDir
 
             task.ndkConfig = variantDslInfo.ndkConfig
 
-            task.buildToolInfoProvider =
-                globalScope.sdkComponents.buildToolInfoProvider
-
-            if (variantDslInfo.variantType.isTestComponent) {
-                task.dependsOn(scope.taskContainer.processManifestTask!!)
+            task.sdkBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
+            if (creationConfig.variantType.isTestComponent) {
+                task.dependsOn(creationConfig.taskContainer.processManifestTask!!)
             }
         }
     }

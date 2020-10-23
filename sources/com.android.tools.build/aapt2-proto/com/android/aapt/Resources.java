@@ -11782,6 +11782,10 @@ public final class Resources {
        * <code>OEM = 7;</code>
        */
       OEM(7),
+      /**
+       * <code>ACTOR = 8;</code>
+       */
+      ACTOR(8),
       UNRECOGNIZED(-1),
       ;
 
@@ -11817,6 +11821,10 @@ public final class Resources {
        * <code>OEM = 7;</code>
        */
       public static final int OEM_VALUE = 7;
+      /**
+       * <code>ACTOR = 8;</code>
+       */
+      public static final int ACTOR_VALUE = 8;
 
 
       public final int getNumber() {
@@ -11851,6 +11859,7 @@ public final class Resources {
           case 5: return SIGNATURE;
           case 6: return ODM;
           case 7: return OEM;
+          case 8: return ACTOR;
           default: return null;
         }
       }
@@ -48651,108 +48660,108 @@ public final class Resources {
       "\n\010AllowNew\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Sou" +
       "rce\022\017\n\007comment\030\002 \001(\t\"K\n\013Overlayable\022\014\n\004n" +
       "ame\030\001 \001(\t\022\037\n\006source\030\002 \001(\0132\017.aapt.pb.Sour" +
-      "ce\022\r\n\005actor\030\003 \001(\t\"\363\001\n\017OverlayableItem\022\037\n" +
+      "ce\022\r\n\005actor\030\003 \001(\t\"\376\001\n\017OverlayableItem\022\037\n" +
       "\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007commen" +
       "t\030\002 \001(\t\022/\n\006policy\030\003 \003(\0162\037.aapt.pb.Overla" +
       "yableItem.Policy\022\027\n\017overlayable_idx\030\004 \001(" +
-      "\r\"d\n\006Policy\022\010\n\004NONE\020\000\022\n\n\006PUBLIC\020\001\022\n\n\006SYS" +
+      "\r\"o\n\006Policy\022\010\n\004NONE\020\000\022\n\n\006PUBLIC\020\001\022\n\n\006SYS" +
       "TEM\020\002\022\n\n\006VENDOR\020\003\022\013\n\007PRODUCT\020\004\022\r\n\tSIGNAT" +
-      "URE\020\005\022\007\n\003ODM\020\006\022\007\n\003OEM\020\007\"\025\n\007EntryId\022\n\n\002id" +
-      "\030\001 \001(\r\"\350\001\n\005Entry\022\"\n\010entry_id\030\001 \001(\0132\020.aap" +
-      "t.pb.EntryId\022\014\n\004name\030\002 \001(\t\022\'\n\nvisibility" +
-      "\030\003 \001(\0132\023.aapt.pb.Visibility\022$\n\tallow_new" +
-      "\030\004 \001(\0132\021.aapt.pb.AllowNew\0222\n\020overlayable" +
-      "_item\030\005 \001(\0132\030.aapt.pb.OverlayableItem\022*\n" +
-      "\014config_value\030\006 \003(\0132\024.aapt.pb.ConfigValu" +
-      "e\"T\n\013ConfigValue\022&\n\006config\030\001 \001(\0132\026.aapt." +
-      "pb.Configuration\022\035\n\005value\030\002 \001(\0132\016.aapt.p" +
-      "b.Value\"\241\001\n\005Value\022\037\n\006source\030\001 \001(\0132\017.aapt" +
-      ".pb.Source\022\017\n\007comment\030\002 \001(\t\022\014\n\004weak\030\003 \001(" +
-      "\010\022\035\n\004item\030\004 \001(\0132\r.aapt.pb.ItemH\000\0220\n\016comp" +
-      "ound_value\030\005 \001(\0132\026.aapt.pb.CompoundValue" +
-      "H\000B\007\n\005value\"\215\002\n\004Item\022!\n\003ref\030\001 \001(\0132\022.aapt" +
-      ".pb.ReferenceH\000\022\036\n\003str\030\002 \001(\0132\017.aapt.pb.S" +
-      "tringH\000\022%\n\007raw_str\030\003 \001(\0132\022.aapt.pb.RawSt" +
-      "ringH\000\022+\n\nstyled_str\030\004 \001(\0132\025.aapt.pb.Sty" +
-      "ledStringH\000\022&\n\004file\030\005 \001(\0132\026.aapt.pb.File" +
-      "ReferenceH\000\022\031\n\002id\030\006 \001(\0132\013.aapt.pb.IdH\000\022\"" +
-      "\n\004prim\030\007 \001(\0132\022.aapt.pb.PrimitiveH\000B\007\n\005va" +
-      "lue\"\312\001\n\rCompoundValue\022\"\n\004attr\030\001 \001(\0132\022.aa" +
-      "pt.pb.AttributeH\000\022\037\n\005style\030\002 \001(\0132\016.aapt." +
-      "pb.StyleH\000\022\'\n\tstyleable\030\003 \001(\0132\022.aapt.pb." +
-      "StyleableH\000\022\037\n\005array\030\004 \001(\0132\016.aapt.pb.Arr" +
-      "ayH\000\022!\n\006plural\030\005 \001(\0132\017.aapt.pb.PluralH\000B" +
-      "\007\n\005value\"\030\n\007Boolean\022\r\n\005value\030\001 \001(\010\"\251\001\n\tR" +
-      "eference\022%\n\004type\030\001 \001(\0162\027.aapt.pb.Referen" +
-      "ce.Type\022\n\n\002id\030\002 \001(\r\022\014\n\004name\030\003 \001(\t\022\017\n\007pri" +
-      "vate\030\004 \001(\010\022$\n\nis_dynamic\030\005 \001(\0132\020.aapt.pb" +
-      ".Boolean\"$\n\004Type\022\r\n\tREFERENCE\020\000\022\r\n\tATTRI" +
-      "BUTE\020\001\"\004\n\002Id\"\027\n\006String\022\r\n\005value\030\001 \001(\t\"\032\n" +
-      "\tRawString\022\r\n\005value\030\001 \001(\t\"\203\001\n\014StyledStri" +
-      "ng\022\r\n\005value\030\001 \001(\t\022(\n\004span\030\002 \003(\0132\032.aapt.p" +
-      "b.StyledString.Span\032:\n\004Span\022\013\n\003tag\030\001 \001(\t" +
-      "\022\022\n\nfirst_char\030\002 \001(\r\022\021\n\tlast_char\030\003 \001(\r\"" +
-      "\205\001\n\rFileReference\022\014\n\004path\030\001 \001(\t\022)\n\004type\030" +
-      "\002 \001(\0162\033.aapt.pb.FileReference.Type\";\n\004Ty" +
-      "pe\022\013\n\007UNKNOWN\020\000\022\007\n\003PNG\020\001\022\016\n\nBINARY_XML\020\002" +
-      "\022\r\n\tPROTO_XML\020\003\"\203\004\n\tPrimitive\0221\n\nnull_va" +
-      "lue\030\001 \001(\0132\033.aapt.pb.Primitive.NullTypeH\000" +
-      "\0223\n\013empty_value\030\002 \001(\0132\034.aapt.pb.Primitiv" +
-      "e.EmptyTypeH\000\022\025\n\013float_value\030\003 \001(\002H\000\022\031\n\017" +
-      "dimension_value\030\r \001(\rH\000\022\030\n\016fraction_valu" +
-      "e\030\016 \001(\rH\000\022\033\n\021int_decimal_value\030\006 \001(\005H\000\022\037" +
-      "\n\025int_hexadecimal_value\030\007 \001(\rH\000\022\027\n\rboole" +
-      "an_value\030\010 \001(\010H\000\022\033\n\021color_argb8_value\030\t " +
-      "\001(\rH\000\022\032\n\020color_rgb8_value\030\n \001(\rH\000\022\033\n\021col" +
-      "or_argb4_value\030\013 \001(\rH\000\022\032\n\020color_rgb4_val" +
-      "ue\030\014 \001(\rH\000\022(\n\032dimension_value_deprecated" +
-      "\030\004 \001(\002B\002\030\001H\000\022\'\n\031fraction_value_deprecate" +
-      "d\030\005 \001(\002B\002\030\001H\000\032\n\n\010NullType\032\013\n\tEmptyTypeB\r" +
-      "\n\013oneof_value\"\220\003\n\tAttribute\022\024\n\014format_fl" +
-      "ags\030\001 \001(\r\022\017\n\007min_int\030\002 \001(\005\022\017\n\007max_int\030\003 " +
-      "\001(\005\022)\n\006symbol\030\004 \003(\0132\031.aapt.pb.Attribute." +
-      "Symbol\032y\n\006Symbol\022\037\n\006source\030\001 \001(\0132\017.aapt." +
-      "pb.Source\022\017\n\007comment\030\002 \001(\t\022 \n\004name\030\003 \001(\013" +
-      "2\022.aapt.pb.Reference\022\r\n\005value\030\004 \001(\r\022\014\n\004t" +
-      "ype\030\005 \001(\r\"\244\001\n\013FormatFlags\022\010\n\004NONE\020\000\022\t\n\003A" +
-      "NY\020\377\377\003\022\r\n\tREFERENCE\020\001\022\n\n\006STRING\020\002\022\013\n\007INT" +
-      "EGER\020\004\022\013\n\007BOOLEAN\020\010\022\t\n\005COLOR\020\020\022\t\n\005FLOAT\020" +
-      " \022\r\n\tDIMENSION\020@\022\r\n\010FRACTION\020\200\001\022\n\n\004ENUM\020" +
-      "\200\200\004\022\013\n\005FLAGS\020\200\200\010\"\361\001\n\005Style\022\"\n\006parent\030\001 \001" +
-      "(\0132\022.aapt.pb.Reference\022&\n\rparent_source\030" +
-      "\002 \001(\0132\017.aapt.pb.Source\022#\n\005entry\030\003 \003(\0132\024." +
-      "aapt.pb.Style.Entry\032w\n\005Entry\022\037\n\006source\030\001" +
-      " \001(\0132\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\037" +
-      "\n\003key\030\003 \001(\0132\022.aapt.pb.Reference\022\033\n\004item\030" +
-      "\004 \001(\0132\r.aapt.pb.Item\"\221\001\n\tStyleable\022\'\n\005en" +
-      "try\030\001 \003(\0132\030.aapt.pb.Styleable.Entry\032[\n\005E" +
-      "ntry\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n" +
-      "\007comment\030\002 \001(\t\022 \n\004attr\030\003 \001(\0132\022.aapt.pb.R" +
-      "eference\"\212\001\n\005Array\022\'\n\007element\030\001 \003(\0132\026.aa" +
-      "pt.pb.Array.Element\032X\n\007Element\022\037\n\006source" +
-      "\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t" +
-      "\022\033\n\004item\030\003 \001(\0132\r.aapt.pb.Item\"\357\001\n\006Plural" +
-      "\022$\n\005entry\030\001 \003(\0132\025.aapt.pb.Plural.Entry\032|" +
-      "\n\005Entry\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source" +
-      "\022\017\n\007comment\030\002 \001(\t\022$\n\005arity\030\003 \001(\0162\025.aapt." +
-      "pb.Plural.Arity\022\033\n\004item\030\004 \001(\0132\r.aapt.pb." +
-      "Item\"A\n\005Arity\022\010\n\004ZERO\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020" +
-      "\002\022\007\n\003FEW\020\003\022\010\n\004MANY\020\004\022\t\n\005OTHER\020\005\"r\n\007XmlNo" +
-      "de\022&\n\007element\030\001 \001(\0132\023.aapt.pb.XmlElement" +
-      "H\000\022\016\n\004text\030\002 \001(\tH\000\022\'\n\006source\030\003 \001(\0132\027.aap" +
-      "t.pb.SourcePositionB\006\n\004node\"\262\001\n\nXmlEleme" +
-      "nt\0224\n\025namespace_declaration\030\001 \003(\0132\025.aapt" +
-      ".pb.XmlNamespace\022\025\n\rnamespace_uri\030\002 \001(\t\022" +
-      "\014\n\004name\030\003 \001(\t\022(\n\tattribute\030\004 \003(\0132\025.aapt." +
-      "pb.XmlAttribute\022\037\n\005child\030\005 \003(\0132\020.aapt.pb" +
-      ".XmlNode\"T\n\014XmlNamespace\022\016\n\006prefix\030\001 \001(\t" +
-      "\022\013\n\003uri\030\002 \001(\t\022\'\n\006source\030\003 \001(\0132\027.aapt.pb." +
-      "SourcePosition\"\246\001\n\014XmlAttribute\022\025\n\rnames" +
-      "pace_uri\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\r\n\005value\030\003 " +
-      "\001(\t\022\'\n\006source\030\004 \001(\0132\027.aapt.pb.SourcePosi" +
-      "tion\022\023\n\013resource_id\030\005 \001(\r\022$\n\rcompiled_it" +
-      "em\030\006 \001(\0132\r.aapt.pb.ItemB\022\n\020com.android.a" +
-      "aptb\006proto3"
+      "URE\020\005\022\007\n\003ODM\020\006\022\007\n\003OEM\020\007\022\t\n\005ACTOR\020\010\"\025\n\007En" +
+      "tryId\022\n\n\002id\030\001 \001(\r\"\350\001\n\005Entry\022\"\n\010entry_id\030" +
+      "\001 \001(\0132\020.aapt.pb.EntryId\022\014\n\004name\030\002 \001(\t\022\'\n" +
+      "\nvisibility\030\003 \001(\0132\023.aapt.pb.Visibility\022$" +
+      "\n\tallow_new\030\004 \001(\0132\021.aapt.pb.AllowNew\0222\n\020" +
+      "overlayable_item\030\005 \001(\0132\030.aapt.pb.Overlay" +
+      "ableItem\022*\n\014config_value\030\006 \003(\0132\024.aapt.pb" +
+      ".ConfigValue\"T\n\013ConfigValue\022&\n\006config\030\001 " +
+      "\001(\0132\026.aapt.pb.Configuration\022\035\n\005value\030\002 \001" +
+      "(\0132\016.aapt.pb.Value\"\241\001\n\005Value\022\037\n\006source\030\001" +
+      " \001(\0132\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\014" +
+      "\n\004weak\030\003 \001(\010\022\035\n\004item\030\004 \001(\0132\r.aapt.pb.Ite" +
+      "mH\000\0220\n\016compound_value\030\005 \001(\0132\026.aapt.pb.Co" +
+      "mpoundValueH\000B\007\n\005value\"\215\002\n\004Item\022!\n\003ref\030\001" +
+      " \001(\0132\022.aapt.pb.ReferenceH\000\022\036\n\003str\030\002 \001(\0132" +
+      "\017.aapt.pb.StringH\000\022%\n\007raw_str\030\003 \001(\0132\022.aa" +
+      "pt.pb.RawStringH\000\022+\n\nstyled_str\030\004 \001(\0132\025." +
+      "aapt.pb.StyledStringH\000\022&\n\004file\030\005 \001(\0132\026.a" +
+      "apt.pb.FileReferenceH\000\022\031\n\002id\030\006 \001(\0132\013.aap" +
+      "t.pb.IdH\000\022\"\n\004prim\030\007 \001(\0132\022.aapt.pb.Primit" +
+      "iveH\000B\007\n\005value\"\312\001\n\rCompoundValue\022\"\n\004attr" +
+      "\030\001 \001(\0132\022.aapt.pb.AttributeH\000\022\037\n\005style\030\002 " +
+      "\001(\0132\016.aapt.pb.StyleH\000\022\'\n\tstyleable\030\003 \001(\013" +
+      "2\022.aapt.pb.StyleableH\000\022\037\n\005array\030\004 \001(\0132\016." +
+      "aapt.pb.ArrayH\000\022!\n\006plural\030\005 \001(\0132\017.aapt.p" +
+      "b.PluralH\000B\007\n\005value\"\030\n\007Boolean\022\r\n\005value\030" +
+      "\001 \001(\010\"\251\001\n\tReference\022%\n\004type\030\001 \001(\0162\027.aapt" +
+      ".pb.Reference.Type\022\n\n\002id\030\002 \001(\r\022\014\n\004name\030\003" +
+      " \001(\t\022\017\n\007private\030\004 \001(\010\022$\n\nis_dynamic\030\005 \001(" +
+      "\0132\020.aapt.pb.Boolean\"$\n\004Type\022\r\n\tREFERENCE" +
+      "\020\000\022\r\n\tATTRIBUTE\020\001\"\004\n\002Id\"\027\n\006String\022\r\n\005val" +
+      "ue\030\001 \001(\t\"\032\n\tRawString\022\r\n\005value\030\001 \001(\t\"\203\001\n" +
+      "\014StyledString\022\r\n\005value\030\001 \001(\t\022(\n\004span\030\002 \003" +
+      "(\0132\032.aapt.pb.StyledString.Span\032:\n\004Span\022\013" +
+      "\n\003tag\030\001 \001(\t\022\022\n\nfirst_char\030\002 \001(\r\022\021\n\tlast_" +
+      "char\030\003 \001(\r\"\205\001\n\rFileReference\022\014\n\004path\030\001 \001" +
+      "(\t\022)\n\004type\030\002 \001(\0162\033.aapt.pb.FileReference" +
+      ".Type\";\n\004Type\022\013\n\007UNKNOWN\020\000\022\007\n\003PNG\020\001\022\016\n\nB" +
+      "INARY_XML\020\002\022\r\n\tPROTO_XML\020\003\"\203\004\n\tPrimitive" +
+      "\0221\n\nnull_value\030\001 \001(\0132\033.aapt.pb.Primitive" +
+      ".NullTypeH\000\0223\n\013empty_value\030\002 \001(\0132\034.aapt." +
+      "pb.Primitive.EmptyTypeH\000\022\025\n\013float_value\030" +
+      "\003 \001(\002H\000\022\031\n\017dimension_value\030\r \001(\rH\000\022\030\n\016fr" +
+      "action_value\030\016 \001(\rH\000\022\033\n\021int_decimal_valu" +
+      "e\030\006 \001(\005H\000\022\037\n\025int_hexadecimal_value\030\007 \001(\r" +
+      "H\000\022\027\n\rboolean_value\030\010 \001(\010H\000\022\033\n\021color_arg" +
+      "b8_value\030\t \001(\rH\000\022\032\n\020color_rgb8_value\030\n \001" +
+      "(\rH\000\022\033\n\021color_argb4_value\030\013 \001(\rH\000\022\032\n\020col" +
+      "or_rgb4_value\030\014 \001(\rH\000\022(\n\032dimension_value" +
+      "_deprecated\030\004 \001(\002B\002\030\001H\000\022\'\n\031fraction_valu" +
+      "e_deprecated\030\005 \001(\002B\002\030\001H\000\032\n\n\010NullType\032\013\n\t" +
+      "EmptyTypeB\r\n\013oneof_value\"\220\003\n\tAttribute\022\024" +
+      "\n\014format_flags\030\001 \001(\r\022\017\n\007min_int\030\002 \001(\005\022\017\n" +
+      "\007max_int\030\003 \001(\005\022)\n\006symbol\030\004 \003(\0132\031.aapt.pb" +
+      ".Attribute.Symbol\032y\n\006Symbol\022\037\n\006source\030\001 " +
+      "\001(\0132\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022 \n" +
+      "\004name\030\003 \001(\0132\022.aapt.pb.Reference\022\r\n\005value" +
+      "\030\004 \001(\r\022\014\n\004type\030\005 \001(\r\"\244\001\n\013FormatFlags\022\010\n\004" +
+      "NONE\020\000\022\t\n\003ANY\020\377\377\003\022\r\n\tREFERENCE\020\001\022\n\n\006STRI" +
+      "NG\020\002\022\013\n\007INTEGER\020\004\022\013\n\007BOOLEAN\020\010\022\t\n\005COLOR\020" +
+      "\020\022\t\n\005FLOAT\020 \022\r\n\tDIMENSION\020@\022\r\n\010FRACTION\020" +
+      "\200\001\022\n\n\004ENUM\020\200\200\004\022\013\n\005FLAGS\020\200\200\010\"\361\001\n\005Style\022\"\n" +
+      "\006parent\030\001 \001(\0132\022.aapt.pb.Reference\022&\n\rpar" +
+      "ent_source\030\002 \001(\0132\017.aapt.pb.Source\022#\n\005ent" +
+      "ry\030\003 \003(\0132\024.aapt.pb.Style.Entry\032w\n\005Entry\022" +
+      "\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comm" +
+      "ent\030\002 \001(\t\022\037\n\003key\030\003 \001(\0132\022.aapt.pb.Referen" +
+      "ce\022\033\n\004item\030\004 \001(\0132\r.aapt.pb.Item\"\221\001\n\tStyl" +
+      "eable\022\'\n\005entry\030\001 \003(\0132\030.aapt.pb.Styleable" +
+      ".Entry\032[\n\005Entry\022\037\n\006source\030\001 \001(\0132\017.aapt.p" +
+      "b.Source\022\017\n\007comment\030\002 \001(\t\022 \n\004attr\030\003 \001(\0132" +
+      "\022.aapt.pb.Reference\"\212\001\n\005Array\022\'\n\007element" +
+      "\030\001 \003(\0132\026.aapt.pb.Array.Element\032X\n\007Elemen" +
+      "t\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007co" +
+      "mment\030\002 \001(\t\022\033\n\004item\030\003 \001(\0132\r.aapt.pb.Item" +
+      "\"\357\001\n\006Plural\022$\n\005entry\030\001 \003(\0132\025.aapt.pb.Plu" +
+      "ral.Entry\032|\n\005Entry\022\037\n\006source\030\001 \001(\0132\017.aap" +
+      "t.pb.Source\022\017\n\007comment\030\002 \001(\t\022$\n\005arity\030\003 " +
+      "\001(\0162\025.aapt.pb.Plural.Arity\022\033\n\004item\030\004 \001(\013" +
+      "2\r.aapt.pb.Item\"A\n\005Arity\022\010\n\004ZERO\020\000\022\007\n\003ON" +
+      "E\020\001\022\007\n\003TWO\020\002\022\007\n\003FEW\020\003\022\010\n\004MANY\020\004\022\t\n\005OTHER" +
+      "\020\005\"r\n\007XmlNode\022&\n\007element\030\001 \001(\0132\023.aapt.pb" +
+      ".XmlElementH\000\022\016\n\004text\030\002 \001(\tH\000\022\'\n\006source\030" +
+      "\003 \001(\0132\027.aapt.pb.SourcePositionB\006\n\004node\"\262" +
+      "\001\n\nXmlElement\0224\n\025namespace_declaration\030\001" +
+      " \003(\0132\025.aapt.pb.XmlNamespace\022\025\n\rnamespace" +
+      "_uri\030\002 \001(\t\022\014\n\004name\030\003 \001(\t\022(\n\tattribute\030\004 " +
+      "\003(\0132\025.aapt.pb.XmlAttribute\022\037\n\005child\030\005 \003(" +
+      "\0132\020.aapt.pb.XmlNode\"T\n\014XmlNamespace\022\016\n\006p" +
+      "refix\030\001 \001(\t\022\013\n\003uri\030\002 \001(\t\022\'\n\006source\030\003 \001(\013" +
+      "2\027.aapt.pb.SourcePosition\"\246\001\n\014XmlAttribu" +
+      "te\022\025\n\rnamespace_uri\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022" +
+      "\r\n\005value\030\003 \001(\t\022\'\n\006source\030\004 \001(\0132\027.aapt.pb" +
+      ".SourcePosition\022\023\n\013resource_id\030\005 \001(\r\022$\n\r" +
+      "compiled_item\030\006 \001(\0132\r.aapt.pb.ItemB\022\n\020co" +
+      "m.android.aaptb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

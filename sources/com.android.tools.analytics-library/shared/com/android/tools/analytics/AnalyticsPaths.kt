@@ -40,10 +40,10 @@ object AnalyticsPaths {
     // currently can't be shared with AndroidLocation see b/37123089
     var home = Environment.instance.getVariable("ANDROID_SDK_HOME")
     if (Strings.isNullOrEmpty(home)) {
-      home = System.getProperty("ANDROID_SDK_HOME")
+      home = Environment.instance.getSystemProperty("ANDROID_SDK_HOME")
     }
     if (Strings.isNullOrEmpty(home)) {
-      home = Paths.get(System.getProperty("user.home"), ".android").toString()
+      home = Paths.get(Environment.instance.getSystemProperty("user.home")!!, ".android").toString()
     }
     File(home).mkdirs()
     return home!!

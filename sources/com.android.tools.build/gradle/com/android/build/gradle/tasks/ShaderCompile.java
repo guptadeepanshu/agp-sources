@@ -17,15 +17,17 @@
 package com.android.build.gradle.tasks;
 
 import static com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_SHADERS;
+import static com.android.build.gradle.internal.utils.HasConfigurableValuesKt.setDisallowChanges;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.LoggerWrapper;
+import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.builder.internal.compiler.DirectoryWalker;
@@ -41,14 +43,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import javax.inject.Inject;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileTree;
+import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
@@ -76,14 +81,20 @@ public abstract class ShaderCompile extends NonIncrementalTask {
             .include("**/*." + ShaderProcessor.EXT_FRAG)
             .include("**/*." + ShaderProcessor.EXT_COMP);
 
-    private Provider<Revision> buildToolInfoRevisionProvider;
-
-    @Input
-    public String getBuildToolsVersion() {
-        return buildToolInfoRevisionProvider.get().toString();
+    @Internal
+    public Provider<Revision> getBuildToolInfoRevisionProvider() {
+        return getSdkBuildService()
+                .flatMap(SdkComponentsBuildService::getBuildToolsRevisionProvider);
     }
 
-    private Provider<File> ndkLocation;
+    @Input
+    public Provider<String> getBuildToolsVersion() {
+        return getBuildToolInfoRevisionProvider()
+                .map(rev -> Objects.requireNonNull(rev.toString()));
+    }
+
+    @Internal
+    public abstract Property<SdkComponentsBuildService> getSdkBuildService();
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -124,7 +135,7 @@ public abstract class ShaderCompile extends NonIncrementalTask {
                     destinationDir,
                     defaultArgs,
                     scopedArgs,
-                    () -> ndkLocation.get(),
+                    getSdkBuildService().get().getNdkDirectoryProvider().get().getAsFile(),
                     new LoggedProcessOutputHandler(new LoggerWrapper(getLogger())),
                     workers);
         }
@@ -142,7 +153,7 @@ public abstract class ShaderCompile extends NonIncrementalTask {
             @NonNull File outputDir,
             @NonNull List<String> defaultArgs,
             @NonNull Map<String, List<String>> scopedArgs,
-            @Nullable Supplier<File> ndkLocation,
+            @NonNull File ndkLocation,
             @NonNull ProcessOutputHandler processOutputHandler,
             @NonNull WorkerExecutorFacade workers)
             throws IOException {
@@ -199,16 +210,17 @@ public abstract class ShaderCompile extends NonIncrementalTask {
         this.scopedArgs = ImmutableMap.copyOf(scopedArgs);
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<ShaderCompile> {
+    public static class CreationAction
+            extends VariantTaskCreationAction<ShaderCompile, ComponentPropertiesImpl> {
 
-        public CreationAction(@NonNull VariantScope scope) {
-            super(scope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @Override
         @NonNull
         public String getName() {
-            return getVariantScope().getTaskName("compile", "Shaders");
+            return computeTaskName("compile", "Shaders");
         }
 
         @Override
@@ -218,32 +230,30 @@ public abstract class ShaderCompile extends NonIncrementalTask {
         }
 
         @Override
-        public void handleProvider(@NonNull TaskProvider<? extends ShaderCompile> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<ShaderCompile> taskProvider) {
             super.handleProvider(taskProvider);
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesDir(
-                            InternalArtifactType.SHADER_ASSETS.INSTANCE,
-                            taskProvider,
-                            ShaderCompile::getOutputDir,
-                            "out");
+                    .setInitialProvider(taskProvider, ShaderCompile::getOutputDir)
+                    .withName("out")
+                    .on(InternalArtifactType.SHADER_ASSETS.INSTANCE);
         }
 
         @Override
         public void configure(@NonNull ShaderCompile task) {
             super.configure(task);
-            VariantScope scope = getVariantScope();
+            final VariantDslInfo variantDslInfo = creationConfig.getVariantDslInfo();
 
-            final VariantDslInfo variantDslInfo = scope.getVariantDslInfo();
-
-            task.ndkLocation = scope.getGlobalScope().getSdkComponents().getNdkFolderProvider();
-            scope.getArtifacts()
+            setDisallowChanges(
+                    task.getSdkBuildService(),
+                    BuildServicesKt.getBuildService(
+                            creationConfig.getServices().getBuildServiceRegistry(),
+                            SdkComponentsBuildService.class));
+            creationConfig
+                    .getArtifacts()
                     .setTaskInputToFinalProduct(MERGED_SHADERS.INSTANCE, task.getSourceDir());
             task.setDefaultArgs(variantDslInfo.getDefaultGlslcArgs());
             task.setScopedArgs(variantDslInfo.getScopedGlslcArgs());
-
-            task.buildToolInfoRevisionProvider =
-                    scope.getGlobalScope().getSdkComponents().getBuildToolsRevisionProvider();
         }
     }
 }

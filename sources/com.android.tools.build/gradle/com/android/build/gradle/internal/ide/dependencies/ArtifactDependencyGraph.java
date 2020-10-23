@@ -20,6 +20,7 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Cons
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.ide.DependenciesImpl;
 import com.android.build.gradle.internal.ide.DependencyFailureHandler;
 import com.android.build.gradle.internal.ide.dependencies.ResolvedArtifact.DependencyType;
@@ -27,7 +28,7 @@ import com.android.build.gradle.internal.ide.level2.FullDependencyGraphsImpl;
 import com.android.build.gradle.internal.ide.level2.GraphItemImpl;
 import com.android.build.gradle.internal.ide.level2.SimpleDependencyGraphsImpl;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
-import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.model.AndroidLibrary;
 import com.android.builder.model.AndroidProject;
@@ -63,7 +64,7 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
      */
     @Override
     public DependencyGraphs createLevel4DependencyGraph(
-            @NonNull VariantScope variantScope,
+            @NonNull ComponentPropertiesImpl componentProperties,
             boolean withFullDependency,
             @NonNull ImmutableMap<String, String> buildMapping,
             @NonNull IssueReporter issueReporter) {
@@ -73,10 +74,16 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             // get the compile artifact first.
             Set<ResolvedArtifact> compileArtifacts =
                     ArtifactUtils.getAllArtifacts(
-                            variantScope,
+                            componentProperties,
                             COMPILE_CLASSPATH,
                             dependencyFailureHandler,
                             buildMapping);
+
+            LibraryDependencyCacheBuildService libraryDependencyCache =
+                    BuildServicesKt.getBuildService(
+                                    componentProperties.getServices().getBuildServiceRegistry(),
+                                    LibraryDependencyCacheBuildService.class)
+                            .get();
 
             // In this simpler model, faster computation of the runtime dependencies to get the
             // provided bit.
@@ -87,10 +94,12 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                 // Instead just get all the jars to get all the dependencies.
                 // Note: Query for JAR instead of PROCESSED_JAR due to b/110054209
                 ArtifactCollection runtimeArtifactCollection =
-                        variantScope.getArtifactCollectionForToolingModel(
-                                RUNTIME_CLASSPATH,
-                                AndroidArtifacts.ArtifactScope.ALL,
-                                AndroidArtifacts.ArtifactType.JAR);
+                        componentProperties
+                                .getVariantDependencies()
+                                .getArtifactCollectionForToolingModel(
+                                        RUNTIME_CLASSPATH,
+                                        AndroidArtifacts.ArtifactScope.ALL,
+                                        AndroidArtifacts.ArtifactType.JAR);
 
                 // build a list of the runtime ComponentIdentifiers
                 final Set<ResolvedArtifactResult> runtimeArtifacts =
@@ -109,7 +118,7 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                     final GraphItemImpl graphItem =
                             new GraphItemImpl(artifact.computeModelAddress(), ImmutableList.of());
                     compileItems.add(graphItem);
-                    LibraryUtils.getLibraryCache().get(artifact);
+                    libraryDependencyCache.getLibraryCache().get(artifact);
                     if (!runtimeIdentifiers.contains(artifact.getComponentIdentifier())) {
                         providedAddresses.add(graphItem.getArtifactAddress());
                     }
@@ -123,14 +132,14 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             for (ResolvedArtifact artifact : compileArtifacts) {
                 compileItems.add(
                         new GraphItemImpl(artifact.computeModelAddress(), ImmutableList.of()));
-                LibraryUtils.getLibraryCache().get(artifact);
+                libraryDependencyCache.getLibraryCache().get(artifact);
             }
 
             // in this mode, compute GraphItem for the runtime configuration
             // get the runtime artifacts.
             Set<ResolvedArtifact> runtimeArtifacts =
                     ArtifactUtils.getAllArtifacts(
-                            variantScope,
+                            componentProperties,
                             RUNTIME_CLASSPATH,
                             dependencyFailureHandler,
                             buildMapping);
@@ -139,7 +148,7 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             for (ResolvedArtifact artifact : runtimeArtifacts) {
                 runtimeItems.add(
                         new GraphItemImpl(artifact.computeModelAddress(), ImmutableList.of()));
-                LibraryUtils.getLibraryCache().get(artifact);
+                libraryDependencyCache.getLibraryCache().get(artifact);
             }
 
             // compute the provided dependency list, by comparing the compile and runtime items
@@ -168,7 +177,7 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
     @NonNull
     @Override
     public DependenciesImpl createDependencies(
-            @NonNull VariantScope variantScope,
+            @NonNull ComponentPropertiesImpl componentProperties,
             @NonNull ImmutableMap<String, String> buildMapping,
             @NonNull IssueReporter issueReporter) {
         // FIXME change the way we compare dependencies b/64387392
@@ -180,15 +189,34 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             ImmutableList.Builder<JavaLibrary> javaLibrary = ImmutableList.builder();
 
             ImmutableSet<ComponentIdentifier> runtimeIdentifiers =
-                    getRuntimeComponentIdentifiers(variantScope);
-
+                    getRuntimeComponentIdentifiers(componentProperties);
 
             Set<ResolvedArtifact> artifacts =
                     ArtifactUtils.getAllArtifacts(
-                            variantScope,
+                            componentProperties,
                             COMPILE_CLASSPATH,
                             dependencyFailureHandler,
                             buildMapping);
+
+            Set<ResolvedArtifactResult> dependenciesLintJars =
+                    componentProperties
+                            .getVariantDependencies()
+                            .getArtifactCollectionForToolingModel(
+                                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                                    AndroidArtifacts.ArtifactScope.ALL,
+                                    AndroidArtifacts.ArtifactType.LINT)
+                            .getArtifacts();
+
+            MavenCoordinatesCacheBuildService mavenCoordinatesCache =
+                    BuildServicesKt.getBuildService(
+                                    componentProperties.getServices().getBuildServiceRegistry(),
+                                    MavenCoordinatesCacheBuildService.class)
+                            .get();
+            LibraryDependencyCacheBuildService libraryDependencyCache =
+                    BuildServicesKt.getBuildService(
+                                    componentProperties.getServices().getBuildServiceRegistry(),
+                                    LibraryDependencyCacheBuildService.class)
+                            .get();
             for (ResolvedArtifact artifact : artifacts) {
                 ComponentIdentifier id = artifact.getComponentIdentifier();
 
@@ -218,7 +246,7 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                                     null, /* projectPath */
                                     ImmutableList.of(), /* dependencies */
                                     null, /* requestedCoordinates */
-                                    MavenCoordinatesUtils.getMavenCoordinates(artifact),
+                                    mavenCoordinatesCache.getMavenCoordinates(artifact),
                                     false, /* isSkipped */
                                     isProvided));
                 } else {
@@ -235,20 +263,31 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                         extractedFolder = artifact.getArtifactFile();
                     }
 
+                    File lintJar = null;
+
+                    if (isSubproject) {
+                        lintJar =
+                                dependenciesLintJars.stream()
+                                        .filter(it -> it.getId().getComponentIdentifier() == id)
+                                        .map(ResolvedArtifactResult::getFile)
+                                        .findAny()
+                                        .orElse(null);
+                    }
+
                     androidLibraries.add(
                             new com.android.build.gradle.internal.ide.AndroidLibraryImpl(
-                                    MavenCoordinatesUtils.getMavenCoordinates(artifact),
+                                    mavenCoordinatesCache.getMavenCoordinates(artifact),
                                     buildId,
                                     projectPath,
                                     artifact.getArtifactFile(),
                                     extractedFolder,
-                                    LibraryUtils.findResStaticLibrary(variantScope, artifact),
                                     artifact.getVariantName(),
                                     isProvided,
                                     false, /* dependencyItem.isSkipped() */
                                     ImmutableList.of(), /* androidLibraries */
                                     ImmutableList.of(), /* javaLibraries */
-                                    LibraryUtils.getLocalJarCache().get(extractedFolder)));
+                                    libraryDependencyCache.getLocalJarCache().get(extractedFolder),
+                                    lintJar));
                 }
             }
 
@@ -263,17 +302,21 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             // might not exist yet.
             ImmutableMultimap<ComponentIdentifier, ResolvedArtifactResult> projectRuntime =
                     ArtifactUtils.asMultiMap(
-                            variantScope.getArtifactCollectionForToolingModel(
-                                    RUNTIME_CLASSPATH,
-                                    AndroidArtifacts.ArtifactScope.PROJECT,
-                                    AndroidArtifacts.ArtifactType.JAR));
+                            componentProperties
+                                    .getVariantDependencies()
+                                    .getArtifactCollectionForToolingModel(
+                                            RUNTIME_CLASSPATH,
+                                            AndroidArtifacts.ArtifactScope.PROJECT,
+                                            AndroidArtifacts.ArtifactType.JAR));
 
             ImmutableMultimap<ComponentIdentifier, ResolvedArtifactResult> externalRuntime =
                     ArtifactUtils.asMultiMap(
-                            variantScope.getArtifactCollectionForToolingModel(
-                                    RUNTIME_CLASSPATH,
-                                    AndroidArtifacts.ArtifactScope.EXTERNAL,
-                                    AndroidArtifacts.ArtifactType.PROCESSED_JAR));
+                            componentProperties
+                                    .getVariantDependencies()
+                                    .getArtifactCollectionForToolingModel(
+                                            RUNTIME_CLASSPATH,
+                                            AndroidArtifacts.ArtifactScope.EXTERNAL,
+                                            AndroidArtifacts.ArtifactType.PROCESSED_JAR));
 
             ImmutableList.Builder<File> runtimeOnlyClasspathBuilder = ImmutableList.builder();
             for (ComponentIdentifier runtimeIdentifier : runtimeIdentifiers) {
@@ -302,15 +345,17 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
     }
 
     private static ImmutableSet<ComponentIdentifier> getRuntimeComponentIdentifiers(
-            VariantScope variantScope) {
+            @NonNull ComponentPropertiesImpl componentProperties) {
         // get the runtime artifact. We only care about the ComponentIdentifier so we don't
         // need to call getAllArtifacts() which computes a lot more many things.
         // Instead just get all the jars to get all the dependencies.
         ArtifactCollection runtimeArtifactCollection =
-                variantScope.getArtifactCollectionForToolingModel(
-                        RUNTIME_CLASSPATH,
-                        AndroidArtifacts.ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.AAR_OR_JAR);
+                componentProperties
+                        .getVariantDependencies()
+                        .getArtifactCollectionForToolingModel(
+                                RUNTIME_CLASSPATH,
+                                AndroidArtifacts.ArtifactScope.ALL,
+                                AndroidArtifacts.ArtifactType.AAR_OR_JAR);
         // ImmutableSet also preserves order.
         ImmutableSet.Builder<ComponentIdentifier> runtimeIdentifiersBuilder =
                 ImmutableSet.builder();

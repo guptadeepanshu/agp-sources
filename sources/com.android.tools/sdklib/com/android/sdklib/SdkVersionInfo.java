@@ -39,10 +39,10 @@ public class SdkVersionInfo {
     public static final int HIGHEST_KNOWN_STABLE_API = 29;
 
     /**
-     * The lowest active API level in the ecosystem. This number will change over time
-     * as the distribution of older platforms decreases.
+     * The lowest active API level in the ecosystem. This number will change over time as the
+     * distribution of older platforms decreases.
      */
-    public static final int LOWEST_ACTIVE_API = 14;
+    public static final int LOWEST_ACTIVE_API = 16;
 
     /**
      * The highest known API level for Wearables. Note the tools at the
@@ -137,7 +137,7 @@ public class SdkVersionInfo {
             case 27: return "8.1";
             case 28: return "9.0";
             case 29: return "10.0";
-            case 30: return "10.0+";
+            case 30: return "11.0";
             // If you add more versions here, also update #getBuildCodes and
             // #HIGHEST_KNOWN_API
 

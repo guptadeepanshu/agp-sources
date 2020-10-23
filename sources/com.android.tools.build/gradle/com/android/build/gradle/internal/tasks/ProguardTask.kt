@@ -17,10 +17,11 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.PostprocessingFeatures
+import com.android.build.gradle.internal.component.BaseCreationConfig
 import com.android.build.gradle.internal.pipeline.OriginalStream
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.google.common.base.Charsets
 import com.google.common.io.Files
 import org.gradle.api.file.ConfigurableFileCollection
@@ -124,10 +125,10 @@ abstract class ProguardTask : ProguardConfigurableTask() {
 
     }
 
-    class CreationAction(variantScope: VariantScope, isTestApplication: Boolean) :
-        ProguardConfigurableTask.CreationAction<ProguardTask>(variantScope, isTestApplication) {
+    class CreationAction(creationConfig: BaseCreationConfig, isTestApplication: Boolean) :
+        ProguardConfigurableTask.CreationAction<ProguardTask, BaseCreationConfig>(creationConfig, isTestApplication) {
 
-        override val name = variantScope.getTaskName("minify", "WithProguard")
+        override val name = computeTaskName("minify", "WithProguard")
         override val type = ProguardTask::class.java
 
         private val keepRules = mutableListOf<String>()
@@ -140,10 +141,10 @@ abstract class ProguardTask : ProguardConfigurableTask() {
 
         init {
             // Publish the Proguarded classes and resources back to a Stream
-            val shrunkClassesAndResourcesProvider = variantScope.artifacts
-                .getFinalProduct(InternalArtifactType.SHRUNK_JAR)
-            val project = variantScope.globalScope.project
-            variantScope.transformManager.addStream(
+            val shrunkClassesAndResourcesProvider = creationConfig.artifacts
+                .get(InternalArtifactType.SHRUNK_JAR)
+            val project = creationConfig.globalScope.project
+            creationConfig.transformManager.addStream(
                 OriginalStream.builder(project, "shrunk_classes_and_resources")
                     .addContentTypes(TransformManager.CONTENT_JARS)
                     .addScopes(inputScopes)
@@ -170,28 +171,29 @@ abstract class ProguardTask : ProguardConfigurableTask() {
             shrinkingEnabled = actions.isRemoveUnusedCode
         }
 
-        override fun configure(task: ProguardTask) {
+        override fun configure(
+            task: ProguardTask
+        ) {
             super.configure(task)
 
-            task.bootClasspath.from(variantScope.bootClasspath)
-            task.fullBootClasspath.from(variantScope.globalScope.fullBootClasspath)
+            task.bootClasspath.from(creationConfig.variantScope.bootClasspath)
+            task.fullBootClasspath.from(creationConfig.globalScope.fullBootClasspath)
 
-            task.keepRules.set(this.keepRules)
-            task.dontWarnRules.set(this.dontWarnRules)
-            task.obfuscationEnabled.set(this.obfuscationEnabled)
-            task.optimizationEnabled.set(this.optimizationEnabled)
-            task.shrinkingEnabled.set(this.shrinkingEnabled)
+            task.keepRules.setDisallowChanges(this.keepRules)
+            task.dontWarnRules.setDisallowChanges(this.dontWarnRules)
+            task.obfuscationEnabled.setDisallowChanges(this.obfuscationEnabled)
+            task.optimizationEnabled.setDisallowChanges(this.optimizationEnabled)
+            task.shrinkingEnabled.setDisallowChanges(this.shrinkingEnabled)
         }
 
-        override fun handleProvider(taskProvider: TaskProvider<out ProguardTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<ProguardTask>
+        ) {
             super.handleProvider(taskProvider)
-
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.SHRUNK_JAR,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ProguardTask::shrunkJar,
-                "minified.jar"
-            )
+                ProguardTask::shrunkJar
+            ).withName("minified.jar").on(InternalArtifactType.SHRUNK_JAR)
         }
     }
 }

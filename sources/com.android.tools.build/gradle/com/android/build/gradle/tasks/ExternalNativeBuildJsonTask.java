@@ -17,13 +17,13 @@
 package com.android.build.gradle.tasks;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.cxx.gradle.generator.ExternalNativeJsonGenerator;
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment;
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.builder.errors.DefaultIssueReporter;
@@ -47,6 +47,7 @@ public abstract class ExternalNativeBuildJsonTask extends UnsafeOutputsTask {
 
     @Inject
     public ExternalNativeBuildJsonTask(@NonNull ExecOperations execOperations) {
+        super("Generate json model is always run.");
         this.execOperations = execOperations;
     }
 
@@ -60,7 +61,7 @@ public abstract class ExternalNativeBuildJsonTask extends UnsafeOutputsTask {
         try (ThreadLoggingEnvironment ignore =
                 new IssueReporterLoggingEnvironment(
                         new DefaultIssueReporter(new LoggerWrapper(getLogger())))) {
-            generator.get().build(execOperations::exec, execOperations::javaexec);
+            generator.get().build(false, execOperations::exec, execOperations::javaexec);
         }
     }
 
@@ -70,27 +71,30 @@ public abstract class ExternalNativeBuildJsonTask extends UnsafeOutputsTask {
     }
 
     @NonNull
-    public static VariantTaskCreationAction<ExternalNativeBuildJsonTask> createTaskConfigAction(
-            @NonNull final Provider<ExternalNativeJsonGenerator> generator,
-            @NonNull final VariantScope scope) {
-        return new CreationAction(scope, generator);
+    public static VariantTaskCreationAction<ExternalNativeBuildJsonTask, ComponentPropertiesImpl>
+            createTaskConfigAction(
+                    @NonNull Provider<ExternalNativeJsonGenerator> generator,
+                    @NonNull ComponentPropertiesImpl componentProperties) {
+        return new CreationAction(componentProperties, generator);
     }
 
     private static class CreationAction
-            extends VariantTaskCreationAction<ExternalNativeBuildJsonTask> {
+            extends VariantTaskCreationAction<
+                    ExternalNativeBuildJsonTask, ComponentPropertiesImpl> {
 
         private final Provider<ExternalNativeJsonGenerator> generator;
 
         private CreationAction(
-                VariantScope scope, Provider<ExternalNativeJsonGenerator> generator) {
-            super(scope);
+                @NonNull ComponentPropertiesImpl componentProperties,
+                Provider<ExternalNativeJsonGenerator> generator) {
+            super(componentProperties);
             this.generator = generator;
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("generateJsonModel");
+            return computeTaskName("generateJsonModel");
         }
 
         @NonNull
@@ -100,19 +104,19 @@ public abstract class ExternalNativeBuildJsonTask extends UnsafeOutputsTask {
         }
 
         @Override
-        public void configure(@NonNull ExternalNativeBuildJsonTask task) {
+        public void configure(
+                @NonNull ExternalNativeBuildJsonTask task) {
             super.configure(task);
 
-            BuildArtifactsHolder artifacts = getVariantScope().getArtifacts();
             task.generator = generator;
-            VariantDslInfo variantDslInfo = getVariantScope().getVariantDslInfo();
+            VariantDslInfo variantDslInfo = creationConfig.getVariantDslInfo();
 
-            if (artifacts.hasFinalProduct(
-                            InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE)
-                    && variantDslInfo.getRenderscriptNdkModeEnabled()) {
-                artifacts.setTaskInputToFinalProduct(
-                        InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE,
-                        task.getRenderscriptSources());
+            if (variantDslInfo.getRenderscriptNdkModeEnabled()) {
+                creationConfig
+                        .getArtifacts()
+                        .setTaskInputToFinalProduct(
+                                InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE,
+                                task.getRenderscriptSources());
             }
         }
     }

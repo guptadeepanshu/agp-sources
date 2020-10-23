@@ -305,40 +305,29 @@ public class SdkUtils {
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_HYPHEN, constantName);
     }
 
-
     /**
-     * Get the R field name from a resource name, since
-     * AAPT will flatten the namespace, turning dots, dashes and colons into _
+     * Returns the resource name that a file with the given {@code fileName} declares.
      *
-     * @param resourceName the name to convert
-     * @return the corresponding R field name
+     * <p>The returned string is not guaranteed to be a valid resource name, it should be checked by
+     * {@link com.android.ide.common.resources.FileResourceNameValidator} before being used. If the
+     * resource type is known, it's preferable to validate the full filename (including extension)
+     * first.
      */
-    @NonNull
-    public static String getResourceFieldName(@NonNull String resourceName) {
-        // AAPT will flatten the namespace, turning dots, dashes and colons into _
-        for (int i = 0, n = resourceName.length(); i < n; i++) {
-            char c = resourceName.charAt(i);
-            if (c == '.' || c == ':' || c == '-') {
-                return resourceName.replace('.', '_').replace('-', '_').replace(':', '_');
+    public static String fileNameToResourceName(@NonNull String fileName) {
+        int lastExtension = fileName.lastIndexOf('.');
+        if (lastExtension <= 0) {
+            return fileName;
+        }
+
+        if (fileName.endsWith(DOT_9PNG)) {
+            if (fileName.length() > DOT_9PNG.length()) {
+                return fileName.substring(0, fileName.length() - DOT_9PNG.length());
+            } else {
+                return fileName;
             }
         }
 
-        return resourceName;
-    }
-
-    /**
-     * Returns the basename of the given filename, unless it's a dot-file such as ".svn".
-     *
-     * @param fileName the file name to extract the basename from
-     * @return the basename (the filename without the file extension)
-     */
-    public static String fileNameToResourceName(@NonNull String fileName) {
-        int extension = fileName.indexOf('.');
-        if (extension > 0) {
-            return fileName.substring(0, extension);
-        } else {
-            return fileName;
-        }
+        return fileName.substring(0, lastExtension);
     }
 
     public static final List<String> IMAGE_EXTENSIONS = ImmutableList.of(

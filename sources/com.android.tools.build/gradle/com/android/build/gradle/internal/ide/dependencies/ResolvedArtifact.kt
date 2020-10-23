@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.ide.dependencies
 import com.android.SdkConstants.EXT_AAR
 import com.android.SdkConstants.EXT_JAR
 import com.android.builder.dependency.MavenCoordinatesImpl
+import com.android.builder.internal.StringCachingService
 import com.android.builder.model.MavenCoordinates
 import com.google.common.collect.ImmutableMap
 import org.gradle.api.artifacts.component.ComponentIdentifier
@@ -46,7 +47,8 @@ data class ResolvedArtifact(
     val extractedFolder: File?,
     val dependencyType: DependencyType,
     val isWrappedModule: Boolean,
-    val buildMapping: ImmutableMap<String, String>
+    val buildMapping: ImmutableMap<String, String>,
+    val mavenCoordinatesCache: MavenCoordinatesCacheBuildService
 )  {
 
     constructor(
@@ -54,7 +56,8 @@ data class ResolvedArtifact(
         secondaryArtifactResult: ResolvedArtifactResult?,
         dependencyType: DependencyType,
         isWrappedModule: Boolean,
-        buildMapping: ImmutableMap<String, String>
+        buildMapping: ImmutableMap<String, String>,
+        mavenCoordinatesCache: MavenCoordinatesCacheBuildService
     ) :
             this(
                 mainArtifactResult.id.componentIdentifier,
@@ -63,7 +66,8 @@ data class ResolvedArtifact(
                 secondaryArtifactResult?.file,
                 dependencyType,
                 isWrappedModule,
-                buildMapping
+                buildMapping,
+                mavenCoordinatesCache
             )
 
     enum class DependencyType constructor(val extension: String) {
@@ -74,7 +78,9 @@ data class ResolvedArtifact(
     /**
      * Computes Maven Coordinate for a given artifact result.
      */
-    fun computeMavenCoordinates(): MavenCoordinates {
+    fun computeMavenCoordinates(
+        stringCachingService: StringCachingService
+    ): MavenCoordinates {
         return when (componentIdentifier) {
             is ModuleComponentIdentifier -> {
                 val module = componentIdentifier.module
@@ -93,23 +99,35 @@ data class ResolvedArtifact(
                     }
                 }
 
-                MavenCoordinatesImpl(componentIdentifier.group, module, version, extension, classifier)
+                MavenCoordinatesImpl.create(
+                    stringCachingService = stringCachingService,
+                    groupId = componentIdentifier.group,
+                    artifactId = module,
+                    version = version,
+                    packaging = extension,
+                    classifier = classifier
+                )
             }
 
             is ProjectComponentIdentifier -> {
-                MavenCoordinatesImpl("artifacts", componentIdentifier.projectPath, "unspecified")
+                MavenCoordinatesImpl.create(
+                    stringCachingService = stringCachingService,
+                    groupId = "artifacts",
+                    artifactId = componentIdentifier.projectPath,
+                    version = "unspecified"
+                )
             }
 
             is OpaqueComponentArtifactIdentifier -> {
                 // We have a file based dependency
                 if (dependencyType == DependencyType.JAVA) {
-                    getMavenCoordForLocalFile(
+                    mavenCoordinatesCache.getMavenCoordForLocalFile(
                         artifactFile
                     )
                 } else {
                     // local aar?
                     assert(artifactFile.isDirectory)
-                    getMavenCoordForLocalFile(
+                    mavenCoordinatesCache.getMavenCoordForLocalFile(
                         artifactFile
                     )
                 }
@@ -143,7 +161,7 @@ data class ResolvedArtifact(
                 .toString().intern()
         }
         is ModuleComponentIdentifier, is OpaqueComponentArtifactIdentifier -> {
-            this.getMavenCoordinates().toString().intern()
+            mavenCoordinatesCache.getMavenCoordinates(this).toString().intern()
         }
         else -> {
             throw RuntimeException(

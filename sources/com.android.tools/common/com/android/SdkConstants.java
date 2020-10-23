@@ -83,6 +83,11 @@ public final class SdkConstants {
      */
     public static final String GRADLE_DISTRIBUTION_URL_PROPERTY = "distributionUrl"; //$NON-NLS-1$
 
+    /** Properties in aar-metadata.properties file */
+    public static final String AAR_FORMAT_VERSION_PROPERTY = "aarFormatVersion";
+    public static final String AAR_METADATA_VERSION_PROPERTY = "aarMetadataVersion";
+    public static final String MIN_COMPILE_SDK_PROPERTY = "minCompileSdk";
+
     /**
      * The encoding we strive to use for all files we write.
      *
@@ -403,6 +408,8 @@ public final class SdkConstants {
     public static final String FD_SYMBOLS = "symbols"; //$NON-NLS-1$
     /** resource blame output folder */
     public static final String FD_BLAME = "blame"; //$NON-NLS-1$
+    /** Machine learning models folder. */
+    public static final String FD_ML_MODELS = "ml"; // $NON-NLS-1$
 
     /** rs Libs output folder for support mode */
     public static final String FD_RS_LIBS = "rsLibs"; //$NON-NLS-1$
@@ -852,6 +859,30 @@ public final class SdkConstants {
             AndroidxName.of("android.support.constraint.", "TableConstraintLayout");
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_GUIDELINE =
             AndroidxName.of("android.support.constraint.", "Guideline");
+    public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_MOCK_VIEW =
+            AndroidxName.of("android.support.constraint.utils.", "MockView");
+    public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_IMAGE_FILTER_VIEW =
+            AndroidxName.of("android.support.constraint.utils.", "ImageFilterView");
+    public static final AndroidxName CLASS_CONSTRAINT_LAYOUT_IMAGE_FILTER_BUTTON =
+            AndroidxName.of("android.support.constraint.utils.", "ImageFilterButton");
+
+    // Flow Alignment values.
+    public static class FlowAlignment {
+        public static final String NONE = "none"; //$NON-NLS-1$
+        public static final String START = "start"; //$NON-NLS-1$
+        public static final String END = "end"; //$NON-NLS-1$
+        public static final String TOP = "top"; //$NON-NLS-1$
+        public static final String BOTTOM = "bottom"; //$NON-NLS-1$
+        public static final String CENTER = "center"; //$NON-NLS-1$
+        public static final String BASELINE = "baseline"; //$NON-NLS-1$
+    }
+
+    // Flow Style values.
+    public static class FlowStyle {
+        public static final String SPREAD = "spread"; //$NON-NLS-1$
+        public static final String SPREAD_INSIDE = "spread_inside"; //$NON-NLS-1$
+        public static final String PACKED = "packed"; //$NON-NLS-1$
+    }
 
     public static final String CONSTRAINT_LAYOUT_LIB_GROUP_ID = "com.android.support.constraint";
     public static final String CONSTRAINT_LAYOUT_LIB_ARTIFACT_ID = "constraint-layout";
@@ -884,6 +915,7 @@ public final class SdkConstants {
     public static final String CLASS_COMPOSE = "androidx.compose.Compose";
     public static final String CLASS_COMPOSE_VIEW_ADAPTER =
             "androidx.ui.tooling.preview.ComposeViewAdapter";
+    public static final String CLASS_COMPOSE_INSPECTABLE = "androidx.ui.tooling.InspectableKt";
 
     /**
      * Returns the appropriate name for the 'mksdcard' command, which is 'mksdcard.exe' for Windows
@@ -963,6 +995,8 @@ public final class SdkConstants {
     public static final String FD_RES_NAVIGATION = "navigation"; //$NON-NLS-1$
     /** Default values resource folder name, i.e. "values" */
     public static final String FD_RES_VALUES = "values"; //$NON-NLS-1$
+    /** Default values resource folder name for the dark theme, i.e. "values-night" */
+    public static final String FD_RES_VALUES_NIGHT = "values-night"; // $NON-NLS-1$
     /** Default xml resource folder name, i.e. "xml" */
     public static final String FD_RES_XML = "xml"; //$NON-NLS-1$
     /** Default raw resource folder name, i.e. "raw" */
@@ -1131,6 +1165,7 @@ public final class SdkConstants {
     public static final String TAG_INCLUDE = "include";
     public static final String TAG_DEEP_LINK = "deepLink";
     public static final String TAG_NAVIGATION = "navigation";
+    public static final String TAG_FRAGMENT = "fragment";
     public static final String ATTR_MODULE_NAME = "moduleName";
 
     public static final String VIEW = "View"; //$NON-NLS-1$
@@ -1468,6 +1503,8 @@ public final class SdkConstants {
     public static final String ATTR_START_DESTINATION = "startDestination";
     public static final String ATTR_NULLABLE = "nullable";
     public static final String ATTR_ARG_TYPE = "argType";
+    public static final String ATTR_DEEPLINK_ACTION = "action";
+    public static final String ATTR_DEEPLINK_MIMETYPE = "mimeType";
 
     // android.view.View
     public static final String ATTR_NEXT_CLUSTER_FORWARD = "nextClusterForward";
@@ -1978,6 +2015,7 @@ public final class SdkConstants {
 
     // Material TextInputLayout Attributes
     public static final String ATTR_END_ICON_TINT = "endIconTint";
+    public static final String ATTR_ERROR_ICON_TINT = "errorIconTint";
     public static final String ATTR_ERROR_TEXT_COLOR = "errorTextColor";
     public static final String ATTR_HELPER_TEXT_TEXT_COLOR = "helperTextTextColor";
     public static final String ATTR_HINT_ENABLED = "hintEnabled";
@@ -2138,6 +2176,11 @@ public final class SdkConstants {
 
     public static final String EXT_CSV = "csv";
 
+    /** Extension of native debug metadata files, i.e. "dbg" */
+    public static final String EXT_DBG = "dbg";
+    /** Extension of native debug symbol table files, i.e. "sym" */
+    public static final String EXT_SYM = "sym";
+
     private static final String DOT = "."; //$NON-NLS-1$
 
     /** Dot-Extension of the Application package Files, i.e. ".apk". */
@@ -2174,6 +2217,12 @@ public final class SdkConstants {
     public static final String DOT_TXT = ".txt"; //$NON-NLS-1$
     /** Dot-Extension for Java heap dumps. */
     public static final String DOT_HPROF = DOT + EXT_HPROF; //$NON-NLS-1$
+    /** Dot-Extension of native debug metadata files, i.e. ".dbg" */
+    public static final String DOT_DBG = ".dbg";
+    /** Dot-Extension of native debug symbol table files, i.e. ".sym" */
+    public static final String DOT_SYM = ".sym";
+    /** Dot-Extension of TensorFlow Lite FlatBuffer files, i.e., ".tflite" */
+    public static final String DOT_TFLITE = ".tflite";
 
     /** Resource base name for java files and classes */
     public static final String FN_RESOURCE_BASE = "R"; //$NON-NLS-1$
@@ -2347,6 +2396,14 @@ public final class SdkConstants {
     public static final String ATTR_DRAWABLE_BOTTOM = "drawableBottom"; //$NON-NLS-1$
     public static final String ATTR_DRAWABLE_TOP = "drawableTop"; //$NON-NLS-1$
     public static final String ATTR_DRAWABLE_PADDING = "drawablePadding"; //$NON-NLS-1$
+
+    // AppCompatTextView
+    public static final String ATTR_DRAWABLE_RIGHT_COMPAT = "drawableRightCompat"; // $NON-NLS-1$
+    public static final String ATTR_DRAWABLE_LEFT_COMPAT = "drawableLeftCompat"; // $NON-NLS-1$
+    public static final String ATTR_DRAWABLE_START_COMPAT = "drawableStartCompat"; // $NON-NLS-1$
+    public static final String ATTR_DRAWABLE_END_COMPAT = "drawableEndCompat"; // $NON-NLS-1$
+    public static final String ATTR_DRAWABLE_BOTTOM_COMPAT = "drawableBottomCompat"; // $NON-NLS-1$
+    public static final String ATTR_DRAWABLE_TOP_COMPAT = "drawableTopCompat"; // $NON-NLS-1$
 
     public static final String ATTR_USE_DEFAULT_MARGINS = "useDefaultMargins"; //$NON-NLS-1$
     public static final String ATTR_MARGINS_INCLUDED_IN_ALIGNMENT =
@@ -2550,6 +2607,9 @@ public final class SdkConstants {
     /** The androidx.leanback. package prefix */
     public static final String ANDROIDX_LEANBACK_PKG = "androidx.leanback.";
 
+    /** The androidx.coordinatorlayout. package prefix */
+    public static final String ANDROIDX_COORDINATOR_LAYOUT_PKG = "androidx.coordinatorlayout.";
+
     /** The androidx.core. package prefix */
     public static final String ANDROIDX_CORE_PKG = "androidx.core.";
 
@@ -2696,7 +2756,7 @@ public final class SdkConstants {
     public static final String VALUE_HORIZONTAL = "horizontal"; //$NON-NLS-1$
 
     public static final String GRADLE_PLUGIN_NAME = "com.android.tools.build:gradle:";
-    public static final String GRADLE_MINIMUM_VERSION = "6.1.1";
+    public static final String GRADLE_MINIMUM_VERSION = "6.5";
     public static final String GRADLE_LATEST_VERSION = GRADLE_MINIMUM_VERSION;
     public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "1.0.0";
     public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "3.3.2";
@@ -2749,6 +2809,8 @@ public final class SdkConstants {
     public static final String ANDROIDX_APPCOMPAT_LIB_ARTIFACT = "androidx.appcompat:appcompat";
     public static final String ANDROIDX_CONSTRAINT_LAYOUT_LIB_ARTIFACT =
             "androidx.constraintlayout:constraintlayout";
+    public static final String ANDROIDX_COORDINATOR_LAYOUT_LIB_ARTIFACT =
+            "androidx.coordinatorlayout:coordinatorlayout";
 
     // Annotations
     public static final AndroidxName SUPPORT_ANNOTATIONS_PREFIX =

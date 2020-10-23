@@ -212,9 +212,6 @@ public enum SdkMavenRepository {
             @NonNull AndroidSdkHandler sdkHandler,
             @Nullable Predicate<GradleVersion> filter,
             @NonNull ProgressIndicator progress) {
-        if (coordinate.getGroupId() == null || coordinate.getArtifactId() == null) {
-            return null;
-        }
         String prefix = DetailsTypes.MavenType.getRepositoryPath(
                 coordinate.getGroupId(), coordinate.getArtifactId(), null);
         Predicate<Revision> revisionFilter = filter == null ? null
@@ -237,14 +234,13 @@ public enum SdkMavenRepository {
             @NonNull AndroidSdkHandler sdkHandler,
             @Nullable Predicate<GradleVersion> filter,
             @NonNull ProgressIndicator progress) {
-        if (coordinate.getGroupId() == null || coordinate.getArtifactId() == null) {
-            return null;
-        }
         String prefix = DetailsTypes.MavenType.getRepositoryPath(
                 coordinate.getGroupId(), coordinate.getArtifactId(), null);
+        Predicate<Revision> revisionFilter = filter == null ? null
+                : (revision) -> filter.test(revisionToGradleVersion(revision));
         return sdkHandler.getLatestRemotePackageForPrefix(
-                prefix, coordinate.isPreview(), GradleCoordinate::parseVersionOnly,
-                GradleCoordinate.COMPARE_PLUS_LOWER, progress);
+                prefix, revisionFilter, coordinate.isPreview(),
+          GradleCoordinate::parseVersionOnly, GradleCoordinate.COMPARE_PLUS_LOWER, progress);
     }
 
     /**

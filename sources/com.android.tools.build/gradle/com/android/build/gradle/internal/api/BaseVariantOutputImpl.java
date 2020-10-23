@@ -22,16 +22,21 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.FilterData;
 import com.android.build.OutputFile;
+import com.android.build.api.variant.FilterConfiguration;
+import com.android.build.api.variant.VariantOutputConfiguration;
+import com.android.build.api.variant.impl.VariantOutputConfigurationImplKt;
 import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.scope.ApkData;
+import com.android.build.gradle.internal.ide.FilterDataImpl;
 import com.android.build.gradle.internal.scope.TaskContainer;
+import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessAndroidResources;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import org.gradle.api.GradleException;
 import org.gradle.api.Task;
 import org.gradle.api.tasks.TaskProvider;
@@ -46,17 +51,15 @@ import org.gradle.api.tasks.TaskProvider;
 public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
 
     @NonNull protected final TaskContainer taskContainer;
-    @NonNull protected final DeprecationReporter deprecationReporter;
-    @NonNull protected final ApkData apkData;
+    @NonNull protected final BaseServices services;
     @NonNull protected final VariantOutputImpl variantOutput;
 
     protected BaseVariantOutputImpl(
             @NonNull TaskContainer taskContainer,
-            @NonNull DeprecationReporter deprecationReporter,
+            @NonNull BaseServices services,
             @NonNull VariantOutputImpl variantOutput) {
-        this.apkData = variantOutput.getApkData();
         this.taskContainer = taskContainer;
-        this.deprecationReporter = deprecationReporter;
+        this.services = services;
         this.variantOutput = variantOutput;
     }
 
@@ -66,11 +69,6 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
         throw new UnsupportedOperationException(
                 "getMainOutputFile is no longer supported.  Use getOutputFileName if you need to "
                         + "determine the file name of the output.");
-    }
-
-    @NonNull
-    protected ApkData getApkData() {
-        return apkData;
     }
 
     @NonNull
@@ -90,11 +88,12 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
     @NonNull
     @Override
     public ProcessAndroidResources getProcessResources() {
-        deprecationReporter.reportDeprecatedApi(
-                "variantOutput.getProcessResourcesProvider()",
-                "variantOutput.getProcessResources()",
-                TASK_ACCESS_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "variantOutput.getProcessResourcesProvider()",
+                        "variantOutput.getProcessResources()",
+                        TASK_ACCESS_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
         return taskContainer.getProcessAndroidResTask().getOrNull();
     }
 
@@ -108,11 +107,12 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
     @Override
     @NonNull
     public ManifestProcessorTask getProcessManifest() {
-        deprecationReporter.reportDeprecatedApi(
-                "variantOutput.getProcessManifestProvider()",
-                "variantOutput.getProcessManifest()",
-                TASK_ACCESS_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "variantOutput.getProcessManifestProvider()",
+                        "variantOutput.getProcessManifest()",
+                        TASK_ACCESS_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
         return taskContainer.getProcessManifestTask().get();
     }
 
@@ -126,57 +126,73 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
     @Nullable
     @Override
     public Task getAssemble() {
-        deprecationReporter.reportDeprecatedApi(
-                "variant.getAssembleProvider()",
-                "variantOutput.getAssemble()",
-                TASK_ACCESS_DEPRECATION_URL,
-                DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "variant.getAssembleProvider()",
+                        "variantOutput.getAssemble()",
+                        TASK_ACCESS_DEPRECATION_URL,
+                        DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
         return taskContainer.getAssembleTask().get();
     }
 
     @NonNull
     @Override
     public String getName() {
-        return getApkData().getBaseName();
+        return variantOutput.getBaseName();
     }
 
     @NonNull
     @Override
     public String getBaseName() {
-        return getApkData().getBaseName();
+        return variantOutput.getBaseName();
     }
 
     @NonNull
     @Override
     public String getDirName() {
-        return getApkData().getDirName();
+        return VariantOutputConfigurationImplKt.dirName(
+                variantOutput.getVariantOutputConfiguration());
     }
 
     @NonNull
     @Override
     public String getOutputType() {
-        return getApkData().getOutputType();
+        if (variantOutput.getOutputType() == VariantOutputConfiguration.OutputType.SINGLE) {
+            return OutputType.MAIN.name();
+        } else {
+            return OutputType.FULL_SPLIT.name();
+        }
     }
 
     @NonNull
     @Override
     public Collection<String> getFilterTypes() {
-        return getApkData().getFilterTypes();
+        return variantOutput.getVariantOutputConfiguration().getFilters().stream()
+                .map(FilterConfiguration::getFilterType)
+                .map(FilterConfiguration.FilterType::name)
+                .collect(Collectors.toList());
     }
 
     @NonNull
     @Override
     public Collection<FilterData> getFilters() {
-        return getApkData().getFilters();
+        return variantOutput.getVariantOutputConfiguration().getFilters().stream()
+                .map(
+                        filter ->
+                                new FilterDataImpl(
+                                        filter.getFilterType().name(), filter.getIdentifier()))
+                .collect(Collectors.toList());
     }
 
     @Nullable
     public String getFilter(String filterType) {
-        return getApkData().getFilter(filterType);
+        FilterConfiguration filter =
+                variantOutput.getFilter(FilterConfiguration.FilterType.valueOf(filterType));
+        return filter != null ? filter.getIdentifier() : null;
     }
 
     public String getOutputFileName() {
-        return apkData.getOutputFileName();
+        return variantOutput.getOutputFileName().get();
     }
 
     public void setOutputFileName(String outputFileName) {
@@ -184,6 +200,6 @@ public abstract class BaseVariantOutputImpl implements BaseVariantOutput {
             throw new GradleException("Absolute path are not supported when setting " +
                     "an output file name");
         }
-        apkData.setOutputFileName(outputFileName);
+        variantOutput.getOutputFileName().set(outputFileName);
     }
 }

@@ -18,16 +18,16 @@
 
 package com.android.build.gradle.internal.utils
 
-import com.google.common.annotations.VisibleForTesting
 import com.android.builder.errors.IssueReporter
 import com.android.ide.common.repository.GradleVersion
+import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.Project
 import org.gradle.api.artifacts.result.DependencyResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
-
-private const val INTERNAL__CHECKED_MINIMUM_PLUGIN_VERSIONS =
-    "INTERNAL__CHECKED_MINIMUM_PLUGIN_VERSIONS"
+import java.net.JarURLConnection
+import java.util.Properties
+import java.util.regex.Pattern
 
 private val pluginList = listOf(
     /**
@@ -78,26 +78,11 @@ internal data class DependencyInfo(
  * Enforces minimum versions of certain plugins.
  */
 fun enforceMinimumVersionsOfPlugins(project: Project, issueReporter: IssueReporter) {
-    // We're going to check all projects at the end of the configuration phase, so make sure to do
-    // this check only once by marking a custom property of the root project. The access doesn't
-    // need to be thread-safe as configuration is single-threaded.
-    val alreadyChecked =
-        project.rootProject.extensions.extraProperties.has(
-            INTERNAL__CHECKED_MINIMUM_PLUGIN_VERSIONS
-        )
-    if (alreadyChecked) {
-        return
-    }
-    project.rootProject.extensions.extraProperties.set(
-        INTERNAL__CHECKED_MINIMUM_PLUGIN_VERSIONS,
-        true
-    )
-
-    project.gradle.projectsEvaluated { gradle ->
-        gradle.allprojects {
-            for (plugin in pluginList) {
-                enforceMinimumVersionOfPlugin(it, plugin, issueReporter)
-            }
+    // Apply this check only to current subproject, other subprojects that do not apply the Android
+    // Gradle plugin should not be impacted by this check (see bug 148776286).
+    project.afterEvaluate {
+        for (plugin in pluginList) {
+            enforceMinimumVersionOfPlugin(it, plugin, issueReporter)
         }
     }
 }
@@ -154,7 +139,7 @@ internal fun visitDependency(
 
     // The selected dependency may be different from the requested dependency, but we are interested
     // in only the selected dependency
-    val dependency = (dependencyResult as ResolvedDependencyResult).selected
+    val dependency = dependencyResult.selected
     val moduleVersion = dependency.moduleVersion!!
     val group = moduleVersion.group
     val name = moduleVersion.name
@@ -191,4 +176,38 @@ internal fun visitDependency(
             visitedDependencies
         )
     }
+}
+
+/**
+ * Enumerates through the gradle plugin jars existing in the given [classLoader], finds the
+ * buildSrc jar and loads the id of each plugin from the `META-INF/gradle-plugins/${id}.properties`
+ * file name.
+ *
+ * @return a list of plugin ids that are defined in the buildSrc
+ */
+fun getBuildSrcPlugins(classLoader: ClassLoader): Set<String> {
+    val pattern = Pattern.compile("META-INF/gradle-plugins/(.+)\\.properties")
+    val urls = classLoader.getResources("META-INF/gradle-plugins")
+
+    val buildSrcPlugins = HashSet<String>()
+    while (urls.hasMoreElements()) {
+        val url = urls.nextElement()
+        if (!url.toString().endsWith("buildSrc.jar!/META-INF/gradle-plugins")) {
+            continue
+        }
+        val urlConnection = url.openConnection()
+        if (urlConnection is JarURLConnection) {
+            urlConnection.jarFile.use { jar ->
+                val jarEntries = jar.entries()
+                while (jarEntries.hasMoreElements()) {
+                    val entry = jarEntries.nextElement()
+                    val matcher = pattern.matcher(entry.name)
+                    if (matcher.matches()) {
+                        buildSrcPlugins.add(matcher.group(1))
+                    }
+                }
+            }
+        }
+    }
+    return buildSrcPlugins
 }

@@ -18,11 +18,11 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.SdkConstants.FN_INTERMEDIATE_RES_JAR
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.StreamFilter.PROJECT_RESOURCES
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.file.FileCollection
@@ -94,32 +94,37 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(scope: VariantScope) :
-        VariantTaskCreationAction<BundleLibraryJavaRes>(scope) {
+    class CreationAction(
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<BundleLibraryJavaRes, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
-        private val projectJavaResFromStreams = if (variantScope.needsJavaResStreams) {
+        private val projectJavaResFromStreams = if (componentProperties.variantScope.needsJavaResStreams) {
             // Because ordering matters for TransformAPI, we need to fetch java res from the
             // transform pipeline as soon as this creation action is instantiated, in needed.
-            variantScope.transformManager.getPipelineOutputAsFileCollection(PROJECT_RESOURCES)
+            componentProperties.transformManager.getPipelineOutputAsFileCollection(PROJECT_RESOURCES)
         } else {
             null
         }
 
-        override val name: String = scope.getTaskName("bundleLibRes")
+        override val name: String = computeTaskName("bundleLibRes")
 
         override val type: Class<BundleLibraryJavaRes> = BundleLibraryJavaRes::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out BundleLibraryJavaRes>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<BundleLibraryJavaRes>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.LIBRARY_JAVA_RES,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                BundleLibraryJavaRes::output,
-                FN_INTERMEDIATE_RES_JAR
-            )
+                BundleLibraryJavaRes::output
+            ).withName(FN_INTERMEDIATE_RES_JAR).on(InternalArtifactType.LIBRARY_JAVA_RES)
         }
 
-        override fun configure(task: BundleLibraryJavaRes) {
+        override fun configure(
+            task: BundleLibraryJavaRes
+        ) {
             super.configure(task)
 
             // we should have two tasks with each input and ensure that only one runs for any build.
@@ -127,14 +132,15 @@ abstract class BundleLibraryJavaRes : NonIncrementalTask() {
                 task.resourcesAsJars = projectJavaResFromStreams
                 task.unfilteredResources = projectJavaResFromStreams
             } else {
-                val projectJavaRes = getProjectJavaRes(variantScope)
+                val projectJavaRes = getProjectJavaRes(creationConfig)
                 task.unfilteredResources = projectJavaRes
-                task.resources = projectJavaRes.asFileTree.filter(MergeJavaResourceTask.spec)
+                task.resources =
+                    projectJavaRes.asFileTree.matching(MergeJavaResourceTask.patternSet)
             }
 
-            task.jarCreatorType = variantScope.jarCreatorType
+            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
             task.debuggable
-                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
+                .setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
         }
     }
 }

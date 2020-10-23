@@ -21,6 +21,7 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS;
 
 import com.android.annotations.NonNull;
+import com.android.build.gradle.internal.scope.InternalArtifactType;
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
 import org.gradle.api.attributes.Attribute;
 
@@ -47,12 +48,17 @@ public class AndroidArtifacts {
     // they can be used)
     private static final String TYPE_PROCESSED_JAR = "processed-jar";
 
+    private static final String TYPE_MAYBE_NOT_NAMESPACED_AAR = "non-namespaced-aar";
+    private static final String TYPE_PREPROCESSED_AAR_FOR_AUTO_NAMESPACE =
+            "preprocessed-aar-for-auto-namespace";
     private static final String TYPE_CLASSES = "android-classes";
+
+    // type for enumerated classes
+    private static final String TYPE_ENUMERATED_RUNTIME_CLASSES = "enumerated-runtime-classes";
 
     // types published by an Android library
     private static final String TYPE_CLASSES_JAR = "android-classes-jar"; // In AAR
     private static final String TYPE_CLASSES_DIR = "android-classes-directory"; // Not in AAR
-    private static final String TYPE_NON_NAMESPACED_CLASSES = "non-namespaced-android-classes";
     private static final String TYPE_SHARED_CLASSES = "android-shared-classes";
     private static final String TYPE_DEX = "android-dex";
     private static final String TYPE_DEX_AND_KEEP_RULES = "android-dex-and-keep-rules";
@@ -60,11 +66,8 @@ public class AndroidArtifacts {
     private static final String TYPE_JAVA_RES = "android-java-res";
     private static final String TYPE_SHARED_JAVA_RES = "android-shared-java-res";
     private static final String TYPE_MANIFEST = "android-manifest";
-    private static final String TYPE_NON_NAMESPACED_MANIFEST = "non-namespaced-android-manifest";
     private static final String TYPE_MANIFEST_METADATA = "android-manifest-metadata";
     private static final String TYPE_ANDROID_RES = "android-res";
-    private static final String TYPE_ANDROID_NAMESPACED_R_CLASS_JAR =
-            "android-res-namespaced-r-class-jar";
     private static final String TYPE_ANDROID_RES_STATIC_LIBRARY = "android-res-static-library";
     private static final String TYPE_ANDROID_RES_SHARED_STATIC_LIBRARY =
             "android-res-shared-static-library";
@@ -80,7 +83,6 @@ public class AndroidArtifacts {
     private static final String TYPE_PUBLIC_RES = "android-public-res";
     private static final String TYPE_SYMBOL = "android-symbol";
     private static final String TYPE_SYMBOL_WITH_PACKAGE_NAME = "android-symbol-with-package-name";
-    private static final String TYPE_DEFINED_ONLY_SYMBOL = "defined-only-android-symbol";
     private static final String TYPE_UNFILTERED_PROGUARD_RULES = "android-consumer-proguard-rules";
     private static final String TYPE_FILTERED_PROGUARD_RULES = "android-filtered-proguard-rules";
     private static final String TYPE_AAPT_PROGUARD_RULES = "android-aapt-proguard-rules";
@@ -89,10 +91,13 @@ public class AndroidArtifacts {
             "android-databinding-class-log";
     private static final String TYPE_EXPLODED_AAR = "android-exploded-aar";
     private static final String TYPE_AAR_OR_JAR = "android-aar-or-jar";
+    private static final String TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS =
+            "aar-class-list-and-res-symbols";
     private static final String TYPE_COMPILED_DEPENDENCIES_RESOURCES =
             "android-compiled-dependencies-resources";
     private static final String TYPE_MODULE_BUNDLE = "android-module-bundle";
     private static final String TYPE_LIB_DEPENDENCIES = "android-lib-dependencies";
+    private static final String TYPE_AAR_METADATA = "android-aar-metadata";
 
     // types for additional artifacts to go with APK
     private static final String TYPE_MAPPING = "android-mapping";
@@ -109,8 +114,7 @@ public class AndroidArtifacts {
     private static final String TYPE_FEATURE_SIGNING_CONFIG = "android-feature-signing-config";
     private static final String TYPE_FEATURE_NAME = "android-feature-name";
 
-
-    // types for metadata content.
+    // types for reverse metadata content.
     private static final String TYPE_REVERSE_METADATA_FEATURE_DECLARATION =
             "android-reverse-metadata-feature-decl";
     private static final String TYPE_REVERSE_METADATA_FEATURE_MANIFEST =
@@ -118,6 +122,10 @@ public class AndroidArtifacts {
     private static final String TYPE_REVERSE_METADATA_CLASSES = "android-reverse-metadata-classes";
     private static final String TYPE_REVERSE_METADATA_JAVA_RES =
             "android-reverse-metadata-java-res";
+    private static final String TYPE_REVERSE_METADATA_NATIVE_DEBUG_METADATA =
+            "android-reverse-metadata-native-debug-metadata";
+    private static final String TYPE_REVERSE_METADATA_NATIVE_SYMBOL_TABLES =
+            "android-reverse-metadata-native-symbol-tables";
 
     public static final String TYPE_MOCKABLE_JAR = "android-mockable-jar";
     public static final Attribute<Boolean> MOCKABLE_JAR_RETURN_DEFAULT_VALUES =
@@ -139,10 +147,20 @@ public class AndroidArtifacts {
             "android-desugar-lib-mixed-scope-keep-rules";
     private static final String TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES =
             "android-desugar-lib-external-file-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES =
+            "android-desugar-lib-external-artifact-transform-file-keep-rules";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
         RUNTIME_CLASSPATH("runtimeClasspath", RUNTIME_ELEMENTS, true),
+        /**
+         * A 'true' runtime classpath for consuming the PACKAGED_DEPENDENCIES artifact in separate
+         * test projects and dynamic feature projects.
+         *
+         * <p>In the separate test project the tested project is added as compileOnly, so this is
+         * the only way to access this runtime classpath.
+         */
+        PROVIDED_CLASSPATH("packagedDependenciesClasspath", RUNTIME_ELEMENTS, false),
         ANNOTATION_PROCESSOR("annotationProcessorClasspath", RUNTIME_ELEMENTS, false),
         REVERSE_METADATA_VALUES("reverseMetadata", REVERSE_METADATA_ELEMENTS, false);
 
@@ -260,10 +278,6 @@ public class AndroidArtifacts {
          * #CLASSES_DIR} to {@link #CLASSES} to normalize the format.)
          */
         CLASSES_DIR(TYPE_CLASSES_DIR),
-
-        // classes.jar files from libraries that are not namespaced yet, and need to be rewritten to
-        // be namespace aware.
-        NON_NAMESPACED_CLASSES(TYPE_NON_NAMESPACED_CLASSES),
         SHARED_CLASSES(TYPE_SHARED_CLASSES),
         // Jar or processed jar, used for purposes such as computing the annotation processor
         // classpath or building the model.
@@ -280,10 +294,13 @@ public class AndroidArtifacts {
         // a file named keep_rules for shrinking desugar lib
         KEEP_RULES(TYPE_KEEP_RULES),
 
+        // A list of enumerated runtime classes by module,
+        // used to reduce IO in checking for duplicates
+        ENUMERATED_RUNTIME_CLASSES(TYPE_ENUMERATED_RUNTIME_CLASSES),
+
         // manifest is published to both to compare and detect provided-only library dependencies.
         MANIFEST(TYPE_MANIFEST),
-        // manifests that need to be auto-namespaced.
-        NON_NAMESPACED_MANIFEST(TYPE_NON_NAMESPACED_MANIFEST),
+
         MANIFEST_METADATA(TYPE_MANIFEST_METADATA),
 
         // Resources static library are API (where only explicit dependencies are included) and
@@ -297,7 +314,8 @@ public class AndroidArtifacts {
         RENDERSCRIPT(TYPE_RENDERSCRIPT),
         DATA_BINDING_ARTIFACT(TYPE_DATA_BINDING_ARTIFACT),
         DATA_BINDING_BASE_CLASS_LOG_ARTIFACT(TYPE_DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),
-        COMPILE_ONLY_NAMESPACED_R_CLASS_JAR(TYPE_ANDROID_NAMESPACED_R_CLASS_JAR),
+        // The AAR metadata file, specifying consumer constraints
+        AAR_METADATA(TYPE_AAR_METADATA),
 
         // runtime and/or bundle elements
         JAVA_RES(TYPE_JAVA_RES),
@@ -313,7 +331,9 @@ public class AndroidArtifacts {
          * AndroidManifest.xml to the existing r.txt file.
          */
         SYMBOL_LIST_WITH_PACKAGE_NAME(TYPE_SYMBOL_WITH_PACKAGE_NAME),
-        DEFINED_ONLY_SYMBOL_LIST(TYPE_DEFINED_ONLY_SYMBOL),
+        /** Intermediate format of the preprocessed AAR for auto-namespacing */
+        MAYBE_NON_NAMESPACED_PROCESSED_AAR(TYPE_MAYBE_NOT_NAMESPACED_AAR),
+        PREPROCESSED_AAR_FOR_AUTO_NAMESPACE(TYPE_PREPROCESSED_AAR_FOR_AUTO_NAMESPACE),
         JNI(TYPE_JNI),
         SHARED_JNI(TYPE_SHARED_JNI),
 
@@ -381,6 +401,10 @@ public class AndroidArtifacts {
         REVERSE_METADATA_FEATURE_MANIFEST(TYPE_REVERSE_METADATA_FEATURE_MANIFEST),
         REVERSE_METADATA_CLASSES(TYPE_REVERSE_METADATA_CLASSES),
         REVERSE_METADATA_JAVA_RES(TYPE_REVERSE_METADATA_JAVA_RES),
+        // The .so.dbg files containing the debug metadata from the corresponding .so files
+        REVERSE_METADATA_NATIVE_DEBUG_METADATA(TYPE_REVERSE_METADATA_NATIVE_DEBUG_METADATA),
+        // The .so.sym files containing the symbol tables from the corresponding .so files
+        REVERSE_METADATA_NATIVE_SYMBOL_TABLES(TYPE_REVERSE_METADATA_NATIVE_SYMBOL_TABLES),
 
         // types for querying only. Not publishable.
         AAR(TYPE_AAR),
@@ -389,6 +413,9 @@ public class AndroidArtifacts {
         PROCESSED_AAR(TYPE_PROCESSED_AAR),
         EXPLODED_AAR(TYPE_EXPLODED_AAR),
         AAR_OR_JAR(TYPE_AAR_OR_JAR), // See ArtifactUtils for how this is used.
+        // A directory containing a two files; a txt file containing all AAR .class filepaths
+        // containing unique AAR resource symbols.
+        AAR_CLASS_LIST_AND_RES_SYMBOLS(TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS),
 
         NAVIGATION_JSON(TYPE_NAVIGATION_JSON),
 
@@ -396,7 +423,9 @@ public class AndroidArtifacts {
         DESUGAR_LIB_SUBPROJECT_KEEP_RULES(TYPE_DESUGAR_LIB_SUBPROJECT_KEEP_RULES),
         DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES),
         DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES(TYPE_DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES),
-        DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES);
+        DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES),
+        DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES(
+                TYPE_DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES);
 
         @NonNull private final String type;
 

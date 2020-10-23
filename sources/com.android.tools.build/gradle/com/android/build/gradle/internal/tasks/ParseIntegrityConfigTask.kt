@@ -16,9 +16,9 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.google.common.annotations.VisibleForTesting
 import com.android.bundle.AppIntegrityConfigOuterClass.AppIntegrityConfig
@@ -105,32 +105,36 @@ abstract class ParseIntegrityConfigTask : NonIncrementalTask() {
     }
 
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<ParseIntegrityConfigTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<ParseIntegrityConfigTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("parse", "IntegrityConfig")
+            get() = computeTaskName("parse", "IntegrityConfig")
 
         override val type: Class<ParseIntegrityConfigTask>
             get() = ParseIntegrityConfigTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out ParseIntegrityConfigTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<ParseIntegrityConfigTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.APP_INTEGRITY_CONFIG,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ParseIntegrityConfigTask::appIntegrityConfigProto,
-                "AppIntegrityConfig.pb"
-            )
+                ParseIntegrityConfigTask::appIntegrityConfigProto
+            ).withName("AppIntegrityConfig.pb").on(InternalArtifactType.APP_INTEGRITY_CONFIG)
         }
 
-        override fun configure(task: ParseIntegrityConfigTask) {
+        override fun configure(
+            task: ParseIntegrityConfigTask
+        ) {
             super.configure(task)
-            task.integrityConfigDir.set(getIntegrityConfigFolder())
+            task.integrityConfigDir.set(getIntegrityConfigFolder(creationConfig))
         }
 
-        private fun getIntegrityConfigFolder(): Provider<out Directory> =
-            (variantScope.globalScope.extension as BaseAppModuleExtension).bundle.integrityConfigDir
+        private fun getIntegrityConfigFolder(component: ComponentPropertiesImpl): Provider<out Directory> =
+            (component.globalScope.extension as BaseAppModuleExtension).bundle.integrityConfigDir
     }
 }
 

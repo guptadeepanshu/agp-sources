@@ -18,14 +18,15 @@ package com.android.builder.internal.packaging;
 
 import static com.android.ide.common.resources.FileStatus.CHANGED;
 import static com.android.ide.common.resources.FileStatus.REMOVED;
-import static java.util.zip.Deflater.BEST_COMPRESSION;
 import static java.util.zip.Deflater.BEST_SPEED;
+import static java.util.zip.Deflater.DEFAULT_COMPRESSION;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.builder.files.NativeLibraryAbiPredicate;
 import com.android.builder.files.RelativeFile;
+import com.android.builder.files.SerializableChange;
 import com.android.ide.common.resources.FileStatus;
 import com.android.tools.build.apkzlib.zfile.ApkCreator;
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory;
@@ -46,6 +47,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import kotlin.text.StringsKt;
 
 /**
  * Makes the final app package. The packager allows build an APK from:
@@ -116,8 +118,9 @@ public class IncrementalPackager implements Closeable {
                     mApkCreator = mApkCreatorFactory.make(mCreationData);
                     break;
                 case APK_FLINGER:
-                    int compressionLevel = mIsDebuggableBuild ? BEST_SPEED : BEST_COMPRESSION;
-                    mApkCreator = new ApkFlinger(mCreationData, compressionLevel);
+                    int compressionLevel = mIsDebuggableBuild ? BEST_SPEED : DEFAULT_COMPRESSION;
+                    mApkCreator =
+                            new ApkFlinger(mCreationData, compressionLevel, !mIsDebuggableBuild);
                     break;
                 default:
                     throw new RuntimeException("unexpected apkCreatorType");
@@ -152,7 +155,7 @@ public class IncrementalPackager implements Closeable {
 
     @NonNull private final Map<RelativeFile, FileStatus> mChangedJavaResources;
 
-    @NonNull private final Map<RelativeFile, FileStatus> mChangedAssets;
+    @NonNull private final List<SerializableChange> mChangedAssets;
 
     @NonNull private final Map<RelativeFile, FileStatus> mChangedAndroidResources;
 
@@ -189,7 +192,7 @@ public class IncrementalPackager implements Closeable {
             @NonNull ApkCreatorType apkCreatorType,
             @NonNull Map<RelativeFile, FileStatus> changedDexFiles,
             @NonNull Map<RelativeFile, FileStatus> changedJavaResources,
-            @NonNull Map<RelativeFile, FileStatus> changedAssets,
+            @NonNull List<SerializableChange> changedAssets,
             @NonNull Map<RelativeFile, FileStatus> changedAndroidResources,
             @NonNull Map<RelativeFile, FileStatus> changedNativeLibs)
             throws IOException {
@@ -203,7 +206,7 @@ public class IncrementalPackager implements Closeable {
         mApkCreatorFactory = factory;
         mIsDebuggableBuild = debuggableBuild;
         mClosed = false;
-        if (!apkFormatIsFile || !debuggableBuild) {
+        if (!apkFormatIsFile) {
             mApkCreatorType = ApkCreatorType.APK_Z_FILE_CREATOR;
         } else {
             mApkCreatorType = apkCreatorType;
@@ -234,16 +237,6 @@ public class IncrementalPackager implements Closeable {
                                 mChangedJavaResources,
                                 rf -> !rf.getRelativePath().endsWith(SdkConstants.DOT_CLASS))));
         packagedFileUpdates.addAll(
-                PackagedFileUpdates.fromIncrementalRelativeFileSet(mChangedAssets)
-                        .stream()
-                        .map(
-                                pfu ->
-                                        new PackagedFileUpdate(
-                                                pfu.getSource(),
-                                                "assets/" + pfu.getName(),
-                                                pfu.getStatus()))
-                        .collect(Collectors.toList()));
-        packagedFileUpdates.addAll(
                 PackagedFileUpdates.fromIncrementalRelativeFileSet(mChangedAndroidResources));
         packagedFileUpdates.addAll(
                 PackagedFileUpdates.fromIncrementalRelativeFileSet(
@@ -253,7 +246,53 @@ public class IncrementalPackager implements Closeable {
 
         // First delete all REMOVED (and maybe CHANGED) files, then add all NEW or CHANGED files.
         deleteFiles(packagedFileUpdates);
+        updateSingleEntryJars(mChangedAssets);
         addFiles(packagedFileUpdates);
+    }
+
+    /**
+     * Updates files in the archive
+     *
+     * @param changes the collection of changes to be applied to the archive. These changes are
+     *                assumed to correspond to only single-entry jar files, where each jar file's
+     *                normalized path is equal to its entry's name + ".jar" (and each entry name
+     *                will be the same as the entry name in the output).
+     * @throws IOException failed to update the archive
+     */
+    private void updateSingleEntryJars(
+            @NonNull Collection<SerializableChange> changes) throws IOException {
+        Preconditions.checkState(!mClosed, "IncrementalPackager has already been closed.");
+
+        // We first delete all REMOVED (and maybe CHANGED) jars
+        Predicate<SerializableChange> deletePredicate =
+                mApkCreatorType == ApkCreatorType.APK_FLINGER
+                        ? it -> it.getFileStatus() == REMOVED || it.getFileStatus() == CHANGED
+                        : it -> it.getFileStatus() == REMOVED;
+
+        Iterable<String> deletedJars =
+                changes.stream()
+                        .filter(deletePredicate)
+                        .map(SerializableChange::getNormalizedPath)
+                        .collect(Collectors.toList());
+
+        for (String deletedJar : deletedJars) {
+            Preconditions.checkState(deletedJar.endsWith(SdkConstants.DOT_JAR));
+            getApkCreator().deleteFile(StringsKt.removeSuffix(deletedJar, SdkConstants.DOT_JAR));
+        }
+
+        // We then add all NEW or CHANGED jars
+        Predicate<SerializableChange> isNewOrChanged =
+                it -> it.getFileStatus() == FileStatus.NEW || it.getFileStatus() == CHANGED;
+
+        Iterable<File> addedJars =
+                changes.stream()
+                        .filter(isNewOrChanged)
+                        .map(SerializableChange::getFile)
+                        .collect(Collectors.toList());
+
+        for (File addedJar : addedJars) {
+            getApkCreator().writeZip(addedJar, null, null);
+        }
     }
 
     /**

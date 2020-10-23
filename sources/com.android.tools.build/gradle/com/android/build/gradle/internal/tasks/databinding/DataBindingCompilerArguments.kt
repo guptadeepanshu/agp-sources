@@ -17,16 +17,19 @@
 package com.android.build.gradle.internal.tasks.databinding
 
 import android.databinding.tool.CompilerArguments
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_DEPENDENCY_ARTIFACTS
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_MERGE
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DATA_BINDING_BASE_FEATURE_INFO
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DATA_BINDING_FEATURE_INFO
-import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_EXPORT_CLASS_LIST
+import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
 import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -52,10 +55,8 @@ class DataBindingCompilerArguments constructor(
     @get:Input
     val artifactType: CompilerArguments.Type,
 
-    // Use module package provider so that we can delay resolving the module package until execution
-    // time (for performance). The resolved module package is set as @Input (see getModulePackage()
-    // below), but the provider itself should be set as @Internal.
-    private val modulePackageProvider: () -> String,
+    @get:Input
+    val packageName: Provider<String>,
 
     @get:Input
     val minApi: Int,
@@ -95,7 +96,7 @@ class DataBindingCompilerArguments constructor(
 
     @get:Optional
     @get:OutputFile
-    val exportClassListOutFile: File?,
+    val exportClassListOutFile: Provider<RegularFile>,
 
     @get:Input
     val enableDebugLogs: Boolean,
@@ -117,14 +118,11 @@ class DataBindingCompilerArguments constructor(
     val isEnableV2: Boolean
 ) : CommandLineArgumentProvider {
 
-    @Input
-    fun getModulePackage() = modulePackageProvider()
-
     override fun asArguments(): Iterable<String> {
         val arguments = CompilerArguments(
             incremental = incremental,
             artifactType = artifactType,
-            modulePackage = getModulePackage(),
+            modulePackage = packageName.get(),
             minApi = minApi,
             sdkDir = sdkDir,
             dependencyArtifactsDir = dependencyArtifactsDir.get().asFile,
@@ -133,7 +131,7 @@ class DataBindingCompilerArguments constructor(
             baseFeatureInfoDir = baseFeatureInfoDir.orNull?.asFile,
             featureInfoDir = featureInfoDir.orNull?.asFile,
             aarOutDir = aarOutDir.orNull?.asFile,
-            exportClassListOutFile = exportClassListOutFile,
+            exportClassListOutFile = exportClassListOutFile.orNull?.asFile,
             enableDebugLogs = enableDebugLogs,
             printEncodedErrorLogs = printEncodedErrorLogs,
             isTestVariant = isTestVariant,
@@ -151,36 +149,40 @@ class DataBindingCompilerArguments constructor(
 
         @JvmStatic
         fun createArguments(
-            variantScope: VariantScope,
+            componentProperties: ComponentPropertiesImpl,
             enableDebugLogs: Boolean,
             printEncodedErrorLogs: Boolean
         ): DataBindingCompilerArguments {
-            val globalScope = variantScope.globalScope
-            val variantData = variantScope.variantData
-            val variantDslInfo = variantScope.variantDslInfo
-            val artifacts = variantScope.artifacts
+            val globalScope = componentProperties.globalScope
+            val artifacts = componentProperties.artifacts
 
             return DataBindingCompilerArguments(
-                incremental = globalScope.projectOptions
+                incremental = componentProperties.services.projectOptions
                     .get(BooleanOption.ENABLE_INCREMENTAL_DATA_BINDING),
-                artifactType = getModuleType(variantScope),
-                modulePackageProvider = { variantDslInfo.originalApplicationId },
-                minApi = variantDslInfo.minSdkVersion.apiLevel,
-                sdkDir = globalScope.sdkComponents.getSdkDirectory(),
-                dependencyArtifactsDir =
-                        artifacts.getFinalProduct(DATA_BINDING_DEPENDENCY_ARTIFACTS),
-                layoutInfoDir = artifacts.getFinalProduct(getLayoutInfoArtifactType(variantScope)),
-                classLogDir = artifacts.getFinalProduct(DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),
-                baseFeatureInfoDir = artifacts.getFinalProduct(
+                artifactType = getModuleType(componentProperties),
+                packageName = componentProperties.packageName,
+                minApi = componentProperties.minSdkVersion.apiLevel,
+                sdkDir = globalScope.sdkComponents.flatMap { it.sdkDirectoryProvider }.get().asFile,
+                dependencyArtifactsDir = artifacts.get(DATA_BINDING_DEPENDENCY_ARTIFACTS),
+                layoutInfoDir = artifacts.get(getLayoutInfoArtifactType(componentProperties)),
+                classLogDir = artifacts.get(DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),
+                baseFeatureInfoDir = artifacts.get(
                     FEATURE_DATA_BINDING_BASE_FEATURE_INFO
                 ),
-                featureInfoDir = artifacts.getFinalProduct(FEATURE_DATA_BINDING_FEATURE_INFO),
-                aarOutDir = artifacts.getFinalProduct(InternalArtifactType.DATA_BINDING_ARTIFACT),
-                exportClassListOutFile = variantScope.generatedClassListOutputFileForDataBinding
-                    .takeIf { variantData.type.isExportDataBindingClassList },
+                featureInfoDir = artifacts.get(FEATURE_DATA_BINDING_FEATURE_INFO),
+                // Note that aarOurDir and exportClassListOutFile below are outputs. In the usual
+                // pattern, they need to be a DirectoryProperty or RegularFileProperty and should
+                // be created by calling project.objects.directoryProperty() or fileProperty().
+                // However, we currently create these properties in JavaCompile.kt to register them
+                // as artifacts in AGP, so it is not possible here. Instead, we have to call
+                // getFinalProduct() to get the artifacts' locations.
+                // This is a non-standard pattern, but we've used it only for data binding so far,
+                // so it's probably acceptable for now.
+                aarOutDir = artifacts.get(DATA_BINDING_ARTIFACT),
+                exportClassListOutFile = artifacts.get(DATA_BINDING_EXPORT_CLASS_LIST),
                 enableDebugLogs = enableDebugLogs,
                 printEncodedErrorLogs = printEncodedErrorLogs,
-                isTestVariant = variantData.type.isTestComponent,
+                isTestVariant = componentProperties.variantType.isTestComponent,
                 isEnabledForTests = globalScope.extension.dataBinding.isEnabledForTests,
                 isEnableV2 = true
             )
@@ -191,16 +193,15 @@ class DataBindingCompilerArguments constructor(
          * of the tested variant.
          */
         @JvmStatic
-        fun getModuleType(variantScope: VariantScope): CompilerArguments.Type {
-            val variantData = if (variantScope.variantData.type.isTestComponent) {
-                variantScope.testedVariantData!!
-            } else {
-                variantScope.variantData
-            }
-            return if (variantData.type.isAar) {
+        fun getModuleType(componentProperties: ComponentPropertiesImpl): CompilerArguments.Type {
+            val component = componentProperties.onTestedConfig {
+                it
+            } ?: componentProperties
+
+            return if (component.variantType.isAar) {
                 CompilerArguments.Type.LIBRARY
             } else {
-                if (variantData.type.isBaseModule) {
+                if (component.variantType.isBaseModule) {
                     CompilerArguments.Type.APPLICATION
                 } else {
                     CompilerArguments.Type.FEATURE
@@ -213,8 +214,8 @@ class DataBindingCompilerArguments constructor(
          * trigger unnecessary computations (see bug 133092984 and 110412851).
          */
         @JvmStatic
-        fun getLayoutInfoArtifactType(variantScope: VariantScope): InternalArtifactType<Directory> {
-            return if (variantScope.variantData.type.isAar) {
+        fun getLayoutInfoArtifactType(componentProperties: ComponentPropertiesImpl): InternalArtifactType<Directory> {
+            return if (componentProperties.variantType.isAar) {
                 DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE
             } else {
                 DATA_BINDING_LAYOUT_INFO_TYPE_MERGE

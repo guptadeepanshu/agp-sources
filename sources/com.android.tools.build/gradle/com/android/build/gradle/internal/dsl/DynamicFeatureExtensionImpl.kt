@@ -16,70 +16,50 @@
 
 package com.android.build.gradle.internal.dsl
 
-import com.android.build.api.component.FilteredComponentActionRegistrar
 import com.android.build.api.component.GenericFilteredComponentActionRegistrar
-import com.android.build.api.component.impl.FilteredComponentActionRegistrarImpl
 import com.android.build.api.component.impl.GenericFilteredComponentActionRegistrarImpl
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
 import com.android.build.api.dsl.DynamicFeatureExtension
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.DynamicFeatureVariantProperties
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.CompileOptions
-import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.coverage.JacocoOptions
-import org.gradle.api.NamedDomainObjectContainer
+import com.android.build.gradle.internal.plugins.DslContainerProvider
 
 class DynamicFeatureExtensionImpl(
-    dslScope: DslScope,
-    buildTypes: NamedDomainObjectContainer<BuildType>,
-    defaultConfig: DefaultConfig,
-    productFlavors: NamedDomainObjectContainer<ProductFlavor>,
-    signingConfigs: NamedDomainObjectContainer<SigningConfig>
+    dslServices: DslServices,
+    dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
 )  :
-    CommonExtensionImpl<
+    TestedExtensionImpl<
             DynamicFeatureBuildFeatures,
             BuildType,
             DefaultConfig,
             ProductFlavor,
-            SigningConfig,
-            DynamicFeatureVariant,
+            DynamicFeatureVariant<DynamicFeatureVariantProperties>,
             DynamicFeatureVariantProperties>(
-        dslScope,
-        buildTypes,
-        defaultConfig,
-        productFlavors,
-        signingConfigs
+        dslServices,
+        dslContainers
     ),
-
-    DynamicFeatureExtension<
-            BuildType,
-            CmakeOptions,
-            CompileOptions,
-            DefaultConfig,
-            ExternalNativeBuild,
-            JacocoOptions,
-            NdkBuildOptions,
-            ProductFlavor,
-            SigningConfig,
-            TestOptions,
-            TestOptions.UnitTestOptions> {
+    InternalDynamicFeatureExtension {
 
     override val buildFeatures: DynamicFeatureBuildFeatures =
-        dslScope.objectFactory.newInstance(DynamicFeatureBuildFeaturesImpl::class.java)
+        dslServices.newInstance(DynamicFeatureBuildFeaturesImpl::class.java)
 
     @Suppress("UNCHECKED_CAST")
-    override val onVariants: GenericFilteredComponentActionRegistrar<DynamicFeatureVariant>
-        get() = dslScope.objectFactory.newInstance(
+    override val onVariants: GenericFilteredComponentActionRegistrar<DynamicFeatureVariant<DynamicFeatureVariantProperties>>
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantOperations,
             DynamicFeatureVariant::class.java
-        ) as GenericFilteredComponentActionRegistrar<DynamicFeatureVariant>
+        ) as GenericFilteredComponentActionRegistrar<DynamicFeatureVariant<DynamicFeatureVariantProperties>>
     @Suppress("UNCHECKED_CAST")
     override val onVariantProperties: GenericFilteredComponentActionRegistrar<DynamicFeatureVariantProperties>
-        get() = dslScope.objectFactory.newInstance(
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantPropertiesOperations,
             DynamicFeatureVariantProperties::class.java
         ) as GenericFilteredComponentActionRegistrar<DynamicFeatureVariantProperties>

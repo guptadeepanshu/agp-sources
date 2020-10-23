@@ -25,12 +25,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-/**
- * DSL object for configuring per-density splits options.
- *
- * <p>See <a href="https://developer.android.com/studio/build/configure-apk-splits.html">APK Splits</a>.
- */
-public class DensitySplitOptions extends SplitOptions {
+public class DensitySplitOptions extends SplitOptions
+        implements com.android.build.api.dsl.DensitySplit {
 
     private boolean strict = true;
     private Set<String> compatibleScreens;
@@ -59,13 +55,12 @@ public class DensitySplitOptions extends SplitOptions {
         return builder.build();
     }
 
-    /**
-     * TODO: Document.
-     */
+    @Override
     public boolean isStrict() {
         return strict;
     }
 
+    @Override
     public void setStrict(boolean strict) {
         this.strict = strict;
     }
@@ -74,11 +69,7 @@ public class DensitySplitOptions extends SplitOptions {
         compatibleScreens = Sets.newHashSet(sizes);
     }
 
-    /**
-     * Adds a new compatible screen.
-     *
-     * <p>See {@link #getCompatibleScreens()}.
-     */
+    @Override
     public void compatibleScreens(@NonNull String... sizes) {
         if (compatibleScreens == null) {
             compatibleScreens = Sets.newHashSet(sizes);
@@ -88,12 +79,7 @@ public class DensitySplitOptions extends SplitOptions {
         compatibleScreens.addAll(Arrays.asList(sizes));
     }
 
-    /**
-     * A list of compatible screens.
-     *
-     * <p>This will inject a matching <code>&lt;compatible-screens&gt;&lt;screen ...&gt;</code>
-     * node in the manifest. This is optional.
-     */
+    @Override
     @NonNull
     public Set<String> getCompatibleScreens() {
         if (compatibleScreens == null) {

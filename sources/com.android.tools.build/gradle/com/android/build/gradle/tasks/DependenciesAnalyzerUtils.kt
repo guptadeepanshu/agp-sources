@@ -19,6 +19,7 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants
 import com.android.utils.FileUtils
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.ComponentIdentifier
@@ -27,7 +28,6 @@ import org.gradle.api.tasks.diagnostics.internal.graph.nodes.RenderableDependenc
 import org.gradle.api.tasks.diagnostics.internal.graph.nodes.RenderableModuleResult
 import java.io.File
 import java.util.LinkedList
-import java.util.zip.ZipFile
 
 /** Finds used/unused dependencies in our variant. */
 class DependencyUsageFinder(
@@ -46,7 +46,6 @@ class DependencyUsageFinder(
     /** Dependencies we direct declare and are not being used. */
     val unusedDirectDependencies: Set<String> =
         variantDependencies.all.minus(requiredDependencies)
-
 }
 
 /** Find required dependencies that are being included indirectly and would be unreachable if
@@ -119,21 +118,26 @@ class DependencyGraphAnalyzer(
     }
 }
 
-/** Finds where a class is coming from. */
-class ClassFinder(private val externalArtifactCollection: ArtifactCollection) {
-
-    private val classToDependency: Map<String, String> by lazy {
+private class ArtifactFinder(private val externalArtifactCollection: ArtifactCollection) {
+    fun getMapByFileName(fileName: String): Map<String, String> {
         val map = mutableMapOf<String, String>()
         externalArtifactCollection
-            .asSequence()
-            .filter { it.file.name.endsWith(SdkConstants.DOT_JAR) }
-            .forEach { artifact ->
-                val classNamesInJar = getClassFilesInJar(artifact.file)
-                classNamesInJar.forEach { artifactClass ->
-                    map[artifactClass] = artifact.id.componentIdentifier.displayName
+                .forEach { artifact ->
+                    FileUtils.join(artifact.file, fileName)
+                            .forEachLine { artifactFileLine ->
+                                map[artifactFileLine] = artifact.id.componentIdentifier.displayName
+                            }
                 }
-            }
-        map
+        return map
+    }
+}
+
+/** Finds where a class is coming from. */
+class ClassFinder(private val externalArtifactCollection : ArtifactCollection) {
+
+    private val classToDependency: Map<String, String> by lazy {
+        val artifactFinder = ArtifactFinder(externalArtifactCollection)
+        artifactFinder.getMapByFileName("classes${SdkConstants.DOT_TXT}")
     }
 
     /** Returns the dependency that contains {@code className} or null if we can't find it. */
@@ -141,59 +145,77 @@ class ClassFinder(private val externalArtifactCollection: ArtifactCollection) {
 
     fun findClassesInDependency(dependencyId: String) =
         classToDependency.filterValues { it == dependencyId }.keys
-
-    private fun getClassFilesInJar(jarFile: File): List<String> {
-        val classes = mutableListOf<String>()
-
-        val zipFile = ZipFile(jarFile)
-
-        val entries = zipFile.entries()
-        while (entries.hasMoreElements()) {
-            val entry = entries.nextElement()
-            if (entry.name.endsWith(SdkConstants.DOT_CLASS)) {
-                classes.add(entry.name)
-            }
-        }
-
-        return classes
-    }
 }
+
+class ResourcesFinder(private val externalArtifactCollection: ArtifactCollection) {
+
+    private val resourceToDependency: Map<String, List<String>> by lazy {
+        getMapByFileName("resources_symbols${SdkConstants.DOT_TXT}")
+    }
+
+    private fun getMapByFileName(fileName: String): Map<String, List<String>> {
+        val map = mutableMapOf<String, List<String>>()
+
+        externalArtifactCollection
+                .forEach { artifact ->
+                    val resourceSymbols = FileUtils.join(artifact.file, fileName).readLines()
+                    resourceSymbols.forEach { artifactFileLine ->
+                        val resDeps = map.getOrDefault(artifactFileLine, emptyList())
+                        map[artifactFileLine] =
+                                resDeps + artifact.id.componentIdentifier.displayName
+                    }
+                }
+        return map
+    }
+
+    /**
+     * Returns a list of dependencies which contain the resource, otherwise returns an empty list.
+     */
+    fun find(resourceId: String): List<String> =
+            resourceToDependency[resourceId] ?: emptyList()
+
+    /**
+     * Returns a list of resources which are declared or referenced by the dependency.
+     */
+    fun findResourcesInDependency(dependencyId: String) =
+            resourceToDependency.filterValues { it.contains(dependencyId) }.keys
+
+    /**
+     * Returns a list of dependencies which contains an identical resource in another dependency.
+     */
+    fun findUsedDependencies(): List<String> =
+            resourceToDependency.filter { it.value.size > 1 }.flatMap { it.value }
+
+    /**
+     * Returns a list of dependencies which do not contain an identical resource in another
+     * dependency.
+     */
+    fun findUnUsedDependencies(): List<String> =
+            resourceToDependency.flatMap { it.value }.minus(findUsedDependencies())
+}
+
+data class DependenciesUsageReport (
+        @SerializedName("add") val add : List<String>,
+        @SerializedName("remove") val remove : List<String>
+)
 
 class DependencyUsageReporter(
     private val variantClasses: AnalyzeDependenciesTask.VariantClassesHolder,
     private val variantDependencies: AnalyzeDependenciesTask.VariantDependenciesHolder,
     private val classFinder: ClassFinder,
+    private val resourceFinder: ResourcesFinder,
     private val depsUsageFinder: DependencyUsageFinder,
     private val graphAnalyzer: DependencyGraphAnalyzer) {
-
-    // TODO: update the analyzer to detect dependencies in resources
-
-    // Temporary workaround: A list of common prefixes from libraries that are not yet detected
-    // by the analyzer. such as the Kotlin libraries, or popular libraries that are often
-    // used in resources but not referenced in classes.
-    private val dontReportPrefixSet = setOf(
-        // Kotlin libraries are added by default and should not be removed
-        "org.jetbrains.kotlin:",
-        // Some libraries that are often used exclusively in resource files
-        "androidx.gridlayout:gridlayout:",
-        "androidx.appcompat:appcompat:",
-        "de.hdodenhof:circleimageview:")
 
     fun writeUnusedDependencies(destinationFile: File) {
         val toRemove = depsUsageFinder.unusedDirectDependencies
             .filter { graphAnalyzer.renderableDependencies.containsKey(it) }
         val toAdd = graphAnalyzer.findIndirectRequiredDependencies()
 
-        val dontReportTemp = mutableListOf<String>()
-        toRemove.forEach { dependency ->
-            dontReportPrefixSet.forEach {
-                if (dependency.startsWith(it)) {
-                    dontReportTemp.add(dependency)
-                }
-            }
-        }
-
-        val report = mapOf("remove" to toRemove.minus(dontReportTemp), "add" to toAdd)
+        val report = DependenciesUsageReport(
+                add = toAdd.toList(),
+                remove = toRemove.minus(resourceFinder.findUsedDependencies())
+        )
 
         writeToFile(report, destinationFile)
     }

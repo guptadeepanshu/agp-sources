@@ -15,7 +15,6 @@
  */
 package com.android.ide.common.gradle.model;
 
-
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.builder.model.AaptOptions;
@@ -24,7 +23,6 @@ import com.android.builder.model.BuildTypeContainer;
 import com.android.builder.model.JavaCompileOptions;
 import com.android.builder.model.NativeToolchain;
 import com.android.builder.model.ProductFlavorContainer;
-import com.android.builder.model.ProjectSyncIssues;
 import com.android.builder.model.SigningConfig;
 import com.android.builder.model.SyncIssue;
 import com.android.builder.model.Variant;
@@ -40,16 +38,21 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import org.jetbrains.annotations.NotNull;
 
 /** Creates a deep copy of an {@link AndroidProject}. */
 public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializable {
     // Increase the value when adding/removing fields or when changing the
     // serialization/deserialization mechanism.
-    private static final long serialVersionUID = 8L;
+    private static final long serialVersionUID = 10L;
 
     @NonNull private final String myModelVersion;
     @NonNull private final String myName;
@@ -57,7 +60,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
     @NonNull private final Collection<BuildTypeContainer> myBuildTypes;
     @NonNull private final Collection<ProductFlavorContainer> myProductFlavors;
     @NonNull private final Collection<SyncIssue> mySyncIssues;
-    @NonNull private final Collection<Variant> myVariants;
+    @NonNull private final Collection<IdeVariant> myVariants;
     @NonNull private final Collection<String> myVariantNames;
     @Nullable private final String myDefaultVariant;
     @NonNull private final Collection<String> myFlavorDimensions;
@@ -66,15 +69,18 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
     @NonNull private final Collection<NativeToolchain> myNativeToolchains;
     @NonNull private final Collection<SigningConfig> mySigningConfigs;
     @NonNull private final IdeLintOptions myLintOptions;
+    @Nullable private final List<File> myLintRuleJars;
     @NonNull private final Set<String> myUnresolvedDependencies;
     @NonNull private final JavaCompileOptions myJavaCompileOptions;
     @NonNull private final AaptOptions myAaptOptions;
     @NonNull private final File myBuildFolder;
     @NonNull private final Collection<String> myDynamicFeatures;
+    @NonNull private final Collection<IdeVariantBuildInformation> myVariantBuildInformation;
     @Nullable private final ViewBindingOptions myViewBindingOptions;
     @Nullable private final IdeDependenciesInfo myDependenciesInfo;
     @Nullable private final GradleVersion myParsedModelVersion;
     @Nullable private final String myBuildToolsVersion;
+    @Nullable private final String myNdkVersion;
     @Nullable private final String myResourcePrefix;
     @Nullable private final String myGroupId;
     private final boolean mySupportsPluginGeneration;
@@ -88,7 +94,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
             @NonNull AndroidProject project,
             @NonNull IdeDependenciesFactory dependenciesFactory,
             @Nullable Collection<Variant> variants,
-            @Nullable ProjectSyncIssues syncIssues) {
+            @NotNull Collection<SyncIssue> syncIssues) {
         return create(project, new ModelCache(), dependenciesFactory, variants, syncIssues);
     }
 
@@ -98,7 +104,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
             @NonNull ModelCache modelCache,
             @NonNull IdeDependenciesFactory dependenciesFactory,
             @Nullable Collection<Variant> variants,
-            @Nullable ProjectSyncIssues syncIssues) {
+            @NotNull Collection<SyncIssue> syncIssues) {
         // Old plugin versions do not return model version.
         GradleVersion parsedModelVersion = GradleVersion.tryParse(project.getModelVersion());
 
@@ -119,21 +125,11 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                         modelCache,
                         container -> new IdeProductFlavorContainer(container, modelCache));
 
-        // If we have a ProjectSyncIssues model then use the sync issues contained in that, otherwise fallback to the
-        // SyncIssues that are stored within the AndroidProject. This is needed to support plugins < 3.6 which do not produce a
-        // ProjectSyncIssues model.
-        //noinspection deprecation
         Collection<SyncIssue> syncIssuesCopy =
-                new ArrayList<>(
-                        IdeModel.copy(
-                                (syncIssues == null)
-                                        ? project.getSyncIssues()
-                                        : syncIssues.getSyncIssues(),
-                                modelCache,
-                                issue -> new IdeSyncIssue(issue)));
+                new ArrayList<>(IdeModel.copy(syncIssues, modelCache, IdeSyncIssue::new));
 
-        Collection<Variant> variantsCopy =
-                new ArrayList<>(
+        Collection<IdeVariant> variantsCopy =
+                new ArrayList<IdeVariant>(
                         IdeModel.copy(
                                 (variants == null) ? project.getVariants() : variants,
                                 modelCache,
@@ -178,7 +174,8 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                         project.getLintOptions(),
                         options -> new IdeLintOptions(options, parsedModelVersion));
 
-        // We need to use the unresolved dependencies to support older versions of the Android Gradle Plugin.
+        // We need to use the unresolved dependencies to support older versions of the Android
+        // Gradle Plugin.
         //noinspection deprecation
         Set<String> unresolvedDependenciesCopy =
                 ImmutableSet.copyOf(project.getUnresolvedDependencies());
@@ -197,6 +194,9 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                         IdeModel.copyNewPropertyNonNull(
                                 project::getDynamicFeatures, ImmutableList.of()));
 
+        Collection<IdeVariantBuildInformation> variantBuildInformation =
+                createVariantBuildInformation(project, parsedModelVersion);
+
         IdeViewBindingOptions viewBindingOptionsCopy =
                 IdeModel.copyNewProperty(
                         () -> new IdeViewBindingOptions(project.getViewBindingOptions()), null);
@@ -209,11 +209,17 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
         String buildToolsVersionCopy =
                 IdeModel.copyNewProperty(project::getBuildToolsVersion, null);
 
+        String ndkVersionCopy = IdeModel.copyNewProperty(project::getNdkVersion, null);
+
         String groupId = null;
         if (parsedModelVersion != null
                 && parsedModelVersion.isAtLeast(3, 6, 0, "alpha", 5, false)) {
             groupId = project.getGroupId();
         }
+
+        List<File> lintRuleJarsCopy =
+                IdeModel.copyNewProperty(
+                        () -> ImmutableList.copyOf(project.getLintRuleJars()), null);
 
         // AndroidProject#isBaseSplit is always non null.
         //noinspection ConstantConditions
@@ -244,14 +250,17 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 nativeToolchainsCopy,
                 signingConfigsCopy,
                 lintOptionsCopy,
+                lintRuleJarsCopy,
                 unresolvedDependenciesCopy,
                 javaCompileOptionsCopy,
                 aaptOptionsCopy,
                 project.getBuildFolder(),
                 dynamicFeaturesCopy,
+                variantBuildInformation,
                 viewBindingOptionsCopy,
                 dependenciesInfoCopy,
                 buildToolsVersionCopy,
+                ndkVersionCopy,
                 project.getResourcePrefix(),
                 groupId,
                 IdeModel.copyNewProperty(project::getPluginGeneration, null) != null,
@@ -280,15 +289,18 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
         myNativeToolchains = Collections.emptyList();
         mySigningConfigs = Collections.emptyList();
         myLintOptions = new IdeLintOptions();
+        myLintRuleJars = Collections.emptyList();
         myUnresolvedDependencies = Collections.emptySet();
         myJavaCompileOptions = new IdeJavaCompileOptions();
         myAaptOptions = new IdeAaptOptions();
         //noinspection ConstantConditions
         myBuildFolder = null;
         myDynamicFeatures = Collections.emptyList();
+        myVariantBuildInformation = Collections.emptyList();
         myViewBindingOptions = new IdeViewBindingOptions();
         myDependenciesInfo = new IdeDependenciesInfo();
         myBuildToolsVersion = null;
+        myNdkVersion = null;
         myResourcePrefix = null;
         myGroupId = null;
         mySupportsPluginGeneration = false;
@@ -307,7 +319,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
             @NonNull Collection<BuildTypeContainer> buildTypes,
             @NonNull Collection<ProductFlavorContainer> productFlavors,
             @NonNull Collection<SyncIssue> syncIssues,
-            @NonNull Collection<Variant> variants,
+            @NonNull Collection<IdeVariant> variants,
             @NonNull Collection<String> variantNames,
             @Nullable String defaultVariant,
             @NonNull Collection<String> flavorDimensions,
@@ -316,14 +328,17 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
             @NonNull Collection<NativeToolchain> nativeToolchains,
             @NonNull Collection<SigningConfig> signingConfigs,
             @NonNull IdeLintOptions lintOptions,
+            @Nullable List<File> lintRuleJars,
             @NonNull Set<String> unresolvedDependencies,
             @NonNull JavaCompileOptions javaCompileOptions,
             @NonNull AaptOptions aaptOptions,
             @NonNull File buildFolder,
             @NonNull Collection<String> dynamicFeatures,
+            @NonNull Collection<IdeVariantBuildInformation> variantBuildInformation,
             @Nullable ViewBindingOptions viewBindingOptions,
             @Nullable IdeDependenciesInfo dependenciesInfo,
             @Nullable String buildToolsVersion,
+            @Nullable String ndkVersion,
             @Nullable String resourcePrefix,
             @Nullable String groupId,
             boolean supportsPluginGeneration,
@@ -347,14 +362,17 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
         myNativeToolchains = nativeToolchains;
         mySigningConfigs = signingConfigs;
         myLintOptions = lintOptions;
+        myLintRuleJars = lintRuleJars;
         myUnresolvedDependencies = unresolvedDependencies;
         myJavaCompileOptions = javaCompileOptions;
         myAaptOptions = aaptOptions;
         myBuildFolder = buildFolder;
         myDynamicFeatures = dynamicFeatures;
+        myVariantBuildInformation = variantBuildInformation;
         myViewBindingOptions = viewBindingOptions;
         myDependenciesInfo = dependenciesInfo;
         myBuildToolsVersion = buildToolsVersion;
+        myNdkVersion = ndkVersion;
         myResourcePrefix = resourcePrefix;
         myGroupId = groupId;
         mySupportsPluginGeneration = supportsPluginGeneration;
@@ -366,7 +384,20 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
     }
 
     @NonNull
-    private static ImmutableList<String> computeVariantNames(Collection<Variant> variants) {
+    private static Collection<IdeVariantBuildInformation> createVariantBuildInformation(
+            @NonNull AndroidProject project, @Nullable GradleVersion agpVersion) {
+        if (agpVersion != null && agpVersion.compareIgnoringQualifiers("4.1.0") >= 0) {
+            // make deep copy of VariantBuildInformation.
+            return project.getVariantsBuildInformation().stream()
+                    .map(it -> new IdeVariantBuildInformation(it))
+                    .collect(ImmutableList.toImmutableList());
+        }
+        // VariantBuildInformation is not available.
+        return Collections.emptyList();
+    }
+
+    @NonNull
+    private static ImmutableList<String> computeVariantNames(Collection<IdeVariant> variants) {
         return variants.stream().map(Variant::getName).collect(ImmutableList.toImmutableList());
     }
 
@@ -452,13 +483,19 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
 
     @Override
     @NonNull
+    public String getNdkVersion() {
+        return myNdkVersion;
+    }
+
+    @Override
+    @NonNull
     public Collection<SyncIssue> getSyncIssues() {
         return ImmutableList.copyOf(mySyncIssues);
     }
 
     @Override
     @NonNull
-    public Collection<Variant> getVariants() {
+    public Collection<IdeVariant> getVariants() {
         return ImmutableList.copyOf(myVariants);
     }
 
@@ -587,11 +624,14 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
     }
 
     @Override
-    public void addVariants(
-            @NonNull Collection<Variant> variants, @NonNull IdeDependenciesFactory factory) {
-        ModelCache modelCache = new ModelCache();
-        for (Variant variant : variants) {
-            myVariants.add(new IdeVariantImpl(variant, modelCache, factory, myParsedModelVersion));
+    public void addVariants(@NonNull Collection<IdeVariant> variants) {
+        Set<String> variantNames =
+                myVariants.stream().map(variant -> variant.getName()).collect(Collectors.toSet());
+        for (IdeVariant variant : variants) {
+            // Add cached IdeVariant only if it is not contained in the current model.
+            if (!variantNames.contains(variant.getName())) {
+                myVariants.add(variant);
+            }
         }
     }
 
@@ -604,6 +644,47 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
             if (!currentSyncIssues.contains(newSyncIssue)) {
                 mySyncIssues.add(newSyncIssue);
             }
+        }
+    }
+
+    @NonNull
+    @Override
+    public Collection<IdeVariantBuildInformation> getVariantsBuildInformation() {
+        return myVariantBuildInformation;
+    }
+
+    @Nullable
+    @Override
+    public List<File> getLintRuleJars() {
+        return myLintRuleJars;
+    }
+
+    @Nullable private transient Map<String, Object> clientProperties;
+
+    @Nullable
+    @Override
+    public Object putClientProperty(@NonNull String key, @Nullable Object value) {
+        if (value == null) {
+            if (clientProperties != null) {
+                clientProperties.remove(key);
+            }
+        } else {
+            if (clientProperties == null) {
+                clientProperties = new HashMap<>();
+            }
+            clientProperties.put(key, value);
+        }
+
+        return value;
+    }
+
+    @Nullable
+    @Override
+    public Object getClientProperty(@NonNull String key) {
+        if (clientProperties == null) {
+            return null;
+        } else {
+            return clientProperties.get(key);
         }
     }
 
@@ -627,6 +708,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 && Objects.equals(myBuildTypes, project.myBuildTypes)
                 && Objects.equals(myProductFlavors, project.myProductFlavors)
                 && Objects.equals(myBuildToolsVersion, project.myBuildToolsVersion)
+                && Objects.equals(myNdkVersion, project.myNdkVersion)
                 && Objects.equals(mySyncIssues, project.mySyncIssues)
                 && Objects.equals(myVariants, project.myVariants)
                 && Objects.equals(myVariantNames, project.myVariantNames)
@@ -637,6 +719,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 && Objects.equals(myNativeToolchains, project.myNativeToolchains)
                 && Objects.equals(mySigningConfigs, project.mySigningConfigs)
                 && Objects.equals(myLintOptions, project.myLintOptions)
+                && Objects.equals(myLintRuleJars, project.myLintRuleJars)
                 && Objects.equals(myUnresolvedDependencies, project.myUnresolvedDependencies)
                 && Objects.equals(myJavaCompileOptions, project.myJavaCompileOptions)
                 && Objects.equals(myAaptOptions, project.myAaptOptions)
@@ -646,7 +729,8 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 && Objects.equals(myViewBindingOptions, project.myViewBindingOptions)
                 && Objects.equals(myDependenciesInfo, project.myDependenciesInfo)
                 && Objects.equals(myGroupId, project.myGroupId)
-                && Objects.equals(myAgpFlags, project.myAgpFlags);
+                && Objects.equals(myAgpFlags, project.myAgpFlags)
+                && Objects.equals(myVariantBuildInformation, project.myVariantBuildInformation);
     }
 
     @Override
@@ -663,6 +747,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 myBuildTypes,
                 myProductFlavors,
                 myBuildToolsVersion,
+                myNdkVersion,
                 mySyncIssues,
                 myVariants,
                 myVariantNames,
@@ -673,6 +758,7 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 myNativeToolchains,
                 mySigningConfigs,
                 myLintOptions,
+                myLintRuleJars,
                 myUnresolvedDependencies,
                 myJavaCompileOptions,
                 myBuildFolder,
@@ -686,7 +772,8 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 myViewBindingOptions,
                 myDependenciesInfo,
                 myGroupId,
-                myAgpFlags);
+                myAgpFlags,
+                myVariantBuildInformation);
     }
 
     @Override
@@ -706,6 +793,8 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 + myProductFlavors
                 + ", myBuildToolsVersion='"
                 + myBuildToolsVersion
+                + ", myNdkVersion='"
+                + myNdkVersion
                 + '\''
                 + ", mySyncIssues="
                 + mySyncIssues
@@ -757,6 +846,8 @@ public final class IdeAndroidProjectImpl implements IdeAndroidProject, Serializa
                 + myGroupId
                 + ", myAgpFlags="
                 + myAgpFlags
+                + ", myVariantBuildInformation="
+                + myVariantBuildInformation
                 + "}";
     }
 }

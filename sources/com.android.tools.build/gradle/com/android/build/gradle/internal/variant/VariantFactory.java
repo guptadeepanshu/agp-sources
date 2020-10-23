@@ -16,31 +16,41 @@
 
 package com.android.build.gradle.internal.variant;
 
-
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.VariantOutput;
+import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.ComponentIdentity;
 import com.android.build.api.component.impl.AndroidTestImpl;
 import com.android.build.api.component.impl.AndroidTestPropertiesImpl;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.component.impl.UnitTestPropertiesImpl;
+import com.android.build.api.dsl.BuildFeatures;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.api.variant.impl.VariantPropertiesImpl;
-import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.core.VariantDslInfo;
-import com.android.build.gradle.internal.core.VariantDslInfoImpl;
 import com.android.build.gradle.internal.core.VariantSources;
+import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
+import com.android.build.gradle.internal.dsl.DataBindingOptions;
+import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
+import com.android.build.gradle.internal.pipeline.TransformManager;
+import com.android.build.gradle.internal.plugins.DslContainerProvider;
+import com.android.build.gradle.internal.scope.BuildFeatureValues;
+import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.build.gradle.internal.services.TaskCreationServices;
+import com.android.build.gradle.internal.services.VariantApiServices;
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices;
+import com.android.build.gradle.options.ProjectOptions;
 import com.android.builder.core.VariantType;
-import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
-import org.gradle.api.model.ObjectFactory;
 
 /**
  * Interface for Variant Factory.
@@ -48,69 +58,114 @@ import org.gradle.api.model.ObjectFactory;
  * <p>While VariantManager is the general variant management, implementation of this interface
  * provides variant type (app, lib) specific implementation.
  */
-public interface VariantFactory {
+public interface VariantFactory<
+        VariantT extends VariantImpl<VariantPropertiesT>,
+        VariantPropertiesT extends VariantPropertiesImpl> {
 
     @NonNull
-    VariantImpl createVariantObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo);
+    VariantT createVariantObject(
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices);
 
     @NonNull
     UnitTestImpl createUnitTestObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo);
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices);
 
     @NonNull
     AndroidTestImpl createAndroidTestObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo);
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices);
 
     @NonNull
-    VariantPropertiesImpl createVariantPropertiesObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope);
+    VariantPropertiesT createVariantPropertiesObject(
+            @NonNull VariantT variant,
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull BaseVariantData variantData,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices);
 
     @NonNull
     UnitTestPropertiesImpl createUnitTestProperties(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope);
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull TestVariantData variantData,
+            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices);
 
     @NonNull
     AndroidTestPropertiesImpl createAndroidTestProperties(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope);
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull TestVariantData variantData,
+            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices);
 
     @NonNull
     BaseVariantData createVariantData(
-            @NonNull VariantScope variantScope,
-            @NonNull VariantDslInfoImpl variantDslInfo,
-            @NonNull VariantImpl publicVariantApi,
-            @NonNull VariantPropertiesImpl publicVariantPropertiesApi,
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
-            @NonNull TaskManager taskManager);
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantPropertiesApiServices services,
+            @NonNull GlobalScope globalScope,
+            @NonNull MutableTaskContainer taskContainer);
+
+    @NonNull
+    BuildFeatureValues createBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures, @NonNull ProjectOptions projectOptions);
+
+    @NonNull
+    BuildFeatureValues createTestBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures,
+            @NonNull DataBindingOptions dataBindingOptions,
+            @NonNull ProjectOptions projectOptions);
 
     @NonNull
     Class<? extends BaseVariantImpl> getVariantImplementationClass(
             @NonNull BaseVariantData variantData);
 
     @Nullable
-    default BaseVariantImpl createVariantApi(
-            @NonNull ObjectFactory objectFactory,
+    BaseVariantImpl createVariantApi(
+            @NonNull GlobalScope globalScope,
+            @NonNull ComponentPropertiesImpl componentProperties,
             @NonNull BaseVariantData variantData,
-            @NonNull ReadOnlyObjectProvider readOnlyObjectProvider) {
-        Class<? extends BaseVariantImpl> implementationClass =
-                getVariantImplementationClass(variantData);
+            @NonNull ReadOnlyObjectProvider readOnlyObjectProvider);
 
-        return objectFactory.newInstance(
-                implementationClass,
-                variantData,
-                objectFactory,
-                readOnlyObjectProvider,
-                variantData
-                        .getScope()
-                        .getGlobalScope()
-                        .getProject()
-                        .container(VariantOutput.class));
-    }
+    @NonNull
+    BaseServices getServicesForOldVariantObjectsOnly();
 
     @NonNull
     VariantType getVariantType();
-
-    boolean hasTestScope();
 
     /**
      * Fail if the model is configured incorrectly.
@@ -118,12 +173,15 @@ public interface VariantFactory {
      * @param model the non-null model to validate, as implemented by the VariantManager.
      * @throws org.gradle.api.GradleException when the model does not validate.
      */
-    void validateModel(@NonNull VariantInputModel model);
+    void validateModel(
+            @NonNull
+                    VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                            model);
 
     void preVariantWork(Project project);
 
     void createDefaultComponents(
-            @NonNull NamedDomainObjectContainer<BuildType> buildTypes,
-            @NonNull NamedDomainObjectContainer<ProductFlavor> productFlavors,
-            @NonNull NamedDomainObjectContainer<SigningConfig> signingConfigs);
+            @NonNull
+                    DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                            dslContainers);
 }

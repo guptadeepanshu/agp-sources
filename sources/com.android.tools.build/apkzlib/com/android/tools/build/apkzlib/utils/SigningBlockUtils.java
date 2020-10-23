@@ -18,14 +18,22 @@ package com.android.tools.build.apkzlib.utils;
 
 import static java.nio.ByteOrder.LITTLE_ENDIAN;
 
+import com.android.apksig.apk.ApkSigningBlockNotFoundException;
+import com.android.apksig.apk.ApkUtils;
+import com.android.apksig.apk.ApkUtils.ApkSigningBlock;
 import com.android.apksig.internal.apk.ApkSigningBlockUtils;
 import com.android.apksig.internal.util.Pair;
 import com.android.apksig.util.DataSource;
 import com.android.apksig.util.DataSources;
+import com.android.apksig.zip.ZipFormatException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
+import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import javax.annotation.Nullable;
 
 /** Generates and appends a new block to APK v2 Signature block. */
 public final class SigningBlockUtils {
@@ -128,6 +136,49 @@ public final class SigningBlockUtils {
       index += blockLength + BLOCK_LENGTH_NUM_BYTES;
     }
     return idValuePairs.build();
+  }
+
+  /**
+   * Extract a block with the given id from the APK. If there is more than one block with the same
+   * ID, the first block will be returned. If there are no block with the give id, {@code null} will
+   * be returned.
+   *
+   * @param apk APK file
+   * @param blockId id of the block to be extracted.
+   */
+  @Nullable
+  public static ByteBuffer extractBlock(File apk, int blockId)
+      throws IOException, ZipFormatException, ApkSigningBlockNotFoundException {
+    try (RandomAccessFile file = new RandomAccessFile(apk, "r")) {
+      DataSource apkDataSource = DataSources.asDataSource(file);
+      ApkSigningBlock signingBlockInfo =
+          ApkUtils.findApkSigningBlock(apkDataSource, ApkUtils.findZipSections(apkDataSource));
+
+      DataSource wholeV2Block = signingBlockInfo.getContents();
+      final int lengthAndIdByteCount = BLOCK_LENGTH_NUM_BYTES + BLOCK_ID_NUM_BYTES;
+      DataSource signingBlock =
+          wholeV2Block.slice(
+              SIZE_OF_BLOCK_NUM_BYTES,
+              wholeV2Block.size() - SIZE_OF_BLOCK_NUM_BYTES - MAGIC_NUM_BYTES);
+      ByteBuffer lengthAndId =
+          ByteBuffer.allocate(lengthAndIdByteCount).order(ByteOrder.LITTLE_ENDIAN);
+      for (int index = 0; index <= signingBlock.size() - lengthAndIdByteCount; ) {
+        signingBlock.copyTo(index, lengthAndIdByteCount, lengthAndId);
+        lengthAndId.flip();
+        int blockLength = (int) lengthAndId.getLong();
+        int id = lengthAndId.getInt();
+        lengthAndId.flip();
+        if (id == blockId) {
+          ByteBuffer block = ByteBuffer.allocate(blockLength - BLOCK_ID_NUM_BYTES);
+          signingBlock.copyTo(
+              index + lengthAndIdByteCount, blockLength - BLOCK_ID_NUM_BYTES, block);
+          block.flip();
+          return block;
+        }
+        index += blockLength + BLOCK_LENGTH_NUM_BYTES;
+      }
+      return null;
+    }
   }
 
   private SigningBlockUtils() {}

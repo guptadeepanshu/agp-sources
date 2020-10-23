@@ -16,15 +16,16 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE
 import com.android.build.gradle.tasks.LintBaseTask.LINT_CLASS_PATH
-import com.android.builder.model.LintOptions
-import com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
 import com.android.repository.Revision
 import com.android.tools.lint.gradle.api.LintExecutionRequest
 import com.android.tools.lint.gradle.api.ReflectiveLintRunner
 import com.android.tools.lint.gradle.api.VariantInputs
+import com.android.tools.lint.model.LintModelFactory
+import com.android.tools.lint.model.LintModelLintOptions
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -54,7 +55,7 @@ open class LintStandaloneTask : DefaultTask() {
     var fatalOnly: Boolean = false
 
     @get:Internal("Temporary to suppress warnings (bug 135900510), may need more investigation")
-    var lintOptions: LintOptions? = null
+    var lintOptions: com.android.builder.model.LintOptions? = null
 
     @get:Optional
     @get:Classpath
@@ -82,40 +83,42 @@ open class LintStandaloneTask : DefaultTask() {
     @Throws(IOException::class, InterruptedException::class)
     fun run() {
         val lintClassPath = project.configurations.getByName(LINT_CLASS_PATH)
-        if (lintClassPath != null) {
-            val request = object : LintExecutionRequest() {
-                override fun getKotlinSourceFolders(
-                    variantName: String,
-                    project: Project?
-                ): List<File> = emptyList()
-                override val project: Project = this@LintStandaloneTask.project
-                override val reportsDir: File? = this@LintStandaloneTask.reportDir
-                override val lintOptions: LintOptions? = this@LintStandaloneTask.lintOptions
-                override val gradlePluginVersion: String = ANDROID_GRADLE_PLUGIN_VERSION
-                override val isFatalOnly: Boolean = this@LintStandaloneTask.fatalOnly
+        val request = object : LintExecutionRequest() {
+            override var android: Boolean = false
 
-                override fun warn(message: String, vararg args: Any) {
-                    Logging.getLogger(LintStandaloneTask::class.java).warn(message, args)
-                }
-
-                override fun getVariantInputs(variantName: String): VariantInputs? {
-                    return object : VariantInputs {
-                        override val name: String = ""
-                        override val ruleJars: FileCollection = computeLocalChecks()
-                        override val mergedManifest: File? = null
-                        override val manifestMergeReport: File? = null
-                    }
-                }
-
-                // Android specific : doesn't apply here
-
-                override val buildToolsRevision: Revision? = null
-                override val variantName: String? = null
-                override val sdkHome: File? = null
-                override val toolingRegistry: ToolingModelBuilderRegistry? = null
-
+            override fun getKotlinSourceFolders(
+                variantName: String,
+                project: Project?
+            ): List<File> = emptyList()
+            override val project: Project = this@LintStandaloneTask.project
+            override val reportsDir: File? = this@LintStandaloneTask.reportDir
+            override val lintOptions: LintModelLintOptions? = this@LintStandaloneTask.lintOptions?.let {
+                LintModelFactory.getLintOptions(it)
             }
-            ReflectiveLintRunner().runLint(project.gradle, request, lintClassPath.files)
+            override val gradlePluginVersion: String = ANDROID_GRADLE_PLUGIN_VERSION
+            override val isFatalOnly: Boolean = this@LintStandaloneTask.fatalOnly
+
+            override fun warn(message: String, vararg args: Any) {
+                Logging.getLogger(LintStandaloneTask::class.java).warn(message, args)
+            }
+
+            // Android specific : doesn't apply here
+
+            override fun getVariantInputs(variantName: String): VariantInputs? {
+                return object : VariantInputs {
+                    override val name: String = ""
+                    override val ruleJars: FileCollection = computeLocalChecks()
+                    override val mergedManifest: File? = null
+                    override val manifestMergeReport: File? = null
+                }
+            }
+            override val buildToolsRevision: Revision? = null
+            override val variantName: String? = null
+            override fun getVariantNames(): Set<String> = emptySet()
+            override val sdkHome: File? = null
+            override val toolingRegistry: ToolingModelBuilderRegistry? = null
+
         }
+        ReflectiveLintRunner().runLint(project.gradle, request, lintClassPath.files)
     }
 }

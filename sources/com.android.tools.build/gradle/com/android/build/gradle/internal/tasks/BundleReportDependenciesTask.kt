@@ -16,9 +16,9 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.tools.build.libraries.metadata.AppDependencies
 import com.android.tools.build.libraries.metadata.Library
@@ -126,26 +126,30 @@ abstract class BundleReportDependenciesTask : NonIncrementalTask() {
 
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<BundleReportDependenciesTask>(variantScope) {
-        override val name: String = variantScope.getTaskName("configure", "Dependencies")
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<BundleReportDependenciesTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
+        override val name: String = computeTaskName("configure", "Dependencies")
         override val type: Class<BundleReportDependenciesTask> = BundleReportDependenciesTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out BundleReportDependenciesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<BundleReportDependenciesTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.BUNDLE_DEPENDENCY_REPORT,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                BundleReportDependenciesTask::dependenciesList,
-                "dependencies.pb"
-            )
+                BundleReportDependenciesTask::dependenciesList
+            ).withName("dependencies.pb").on(InternalArtifactType.BUNDLE_DEPENDENCY_REPORT)
         }
 
-        override fun configure(task: BundleReportDependenciesTask) {
+        override fun configure(
+            task: BundleReportDependenciesTask
+        ) {
             super.configure(task)
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.METADATA_LIBRARY_DEPENDENCIES_REPORT, task.baseDeps)
-            task.featureDeps = variantScope.getArtifactFileCollection(
+            task.featureDeps = creationConfig.variantDependencies.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                 AndroidArtifacts.ArtifactScope.ALL,
                 AndroidArtifacts.ArtifactType.LIB_DEPENDENCIES

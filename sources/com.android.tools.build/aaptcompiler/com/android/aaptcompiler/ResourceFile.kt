@@ -16,28 +16,28 @@
 
 package com.android.aaptcompiler
 
-class ResourceFile {
-    lateinit var name :ResourceName
-    lateinit var configuration: ConfigDescription
-    lateinit var source: Source
-    var type: Type = Type.Unknown
-    var exportedSymbols = ArrayList<SourcedResourceName>()
+data class ResourceFile(
+  val name: ResourceName,
+  val configuration: ConfigDescription,
+  val source: Source,
+  val type: Type,
+  val exportedSymbols: MutableList<SourcedResourceName> = mutableListOf()) {
 
-    enum class Type {
-        Unknown,
-        Png,
-        BinaryXml,
-        ProtoXml
-    }
+  override fun equals(other: Any?): Boolean {
+    if (other !is ResourceFile) return false
+    return name == other.name
+  }
 
-    fun copy(): ResourceFile {
-        val copy = ResourceFile()
-        copy.name = name
-        copy.configuration = configuration
-        copy.source = source
-        copy.type = type
-        return copy
-    }
+  override fun hashCode(): Int {
+    return name.hashCode()
+  }
+
+  enum class Type {
+      Unknown,
+      Png,
+      BinaryXml,
+      ProtoXml
+  }
 }
 
 data class ResourceName(
@@ -79,7 +79,7 @@ data class ResourceName(
   }
 }
 
-class SourcedResourceName(val name: ResourceName, val line: Int)
+data class SourcedResourceName(val name: ResourceName, val line: Int)
 
 fun Int.isValidId(): Boolean = (this and 0xff000000.toInt()) != 0 && this.isValidDynamicId()
 

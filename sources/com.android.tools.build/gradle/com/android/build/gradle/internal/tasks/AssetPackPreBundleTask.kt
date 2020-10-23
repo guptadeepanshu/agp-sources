@@ -18,10 +18,9 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.SdkConstants.FD_ASSETS
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
-import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.packaging.JarCreator
 import com.android.utils.FileUtils
@@ -84,26 +83,29 @@ abstract class AssetPackPreBundleTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope,
+        componentProperties: ComponentPropertiesImpl,
         private val assetFileCollection: FileCollection
-    ) : VariantTaskCreationAction<AssetPackPreBundleTask>(variantScope) {
+    ) : VariantTaskCreationAction<AssetPackPreBundleTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
         override val type = AssetPackPreBundleTask::class.java
-        override val name = variantScope.getTaskName("assetPack", "PreBundleTask")
+        override val name = computeTaskName("assetPack", "PreBundleTask")
 
-        override fun handleProvider(taskProvider: TaskProvider<out AssetPackPreBundleTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<AssetPackPreBundleTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.ASSET_PACK_BUNDLE,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 AssetPackPreBundleTask::outputDir
-            )
+            ).on(InternalArtifactType.ASSET_PACK_BUNDLE)
         }
 
-        override fun configure(task: AssetPackPreBundleTask) {
+        override fun configure(
+            task: AssetPackPreBundleTask
+        ) {
             super.configure(task)
-            val artifacts = variantScope.artifacts
-
-            artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.LINKED_RES_FOR_ASSET_PACK, task.manifestFiles)
 
             task.assetsFiles.from(assetFileCollection)
@@ -126,8 +128,7 @@ class AssetPackPreBundleTaskRunnable @Inject constructor(private val params: Par
     override fun run() {
         params.packDir.mkdirs()
         FileUtils.cleanOutputDir(params.packDir)
-        val jarCreator =
-            JarCreatorFactory.make(params.packFile.toPath(), JarCreatorType.JAR_FLINGER)
+        val jarCreator = JarCreatorFactory.make(jarFile = params.packFile.toPath())
 
         // Disable compression for module zips, since this will only be used in bundletool and it
         // will need to uncompress them anyway.

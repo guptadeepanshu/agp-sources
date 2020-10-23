@@ -17,11 +17,11 @@
 @file:JvmName("ArtifactTypeUtil")
 package com.android.build.gradle.internal.scope
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.Artifact
 import com.android.utils.FileUtils
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import java.io.File
+import java.util.Locale
 
 /**
  * Returns a suitable output directory for this receiving artifact type.
@@ -30,7 +30,7 @@ import java.io.File
  *
  * @param parentFile the parent directory.
  */
-fun ArtifactType<*>.getOutputDir(parentFile: File)=
+fun Artifact<*>.getOutputDir(parentFile: File)=
     File(
         if (this is InternalArtifactType) {
             category.getOutputDir(parentFile)
@@ -41,19 +41,7 @@ fun ArtifactType<*>.getOutputDir(parentFile: File)=
     )
 
 /**
- * Returns a relative path to the build directory for this artifact type.
- *
- * @return a relative path
- */
-fun ArtifactType<*>.getOutputPath() =
-    if (this is InternalArtifactType) {
-        category.outputPath
-    } else {
-        InternalArtifactType.Category.INTERMEDIATES.outputPath
-    }
-
-/**
- * Returns a [File] representing the parent directory for an artifact type location.
+ * Returns a [File] representing the artifact type location (could be a directory or regular file).
  *
  * @param buildDirectory the parent build folder
  * @param identifier the unique scoping identifier
@@ -61,11 +49,14 @@ fun ArtifactType<*>.getOutputPath() =
  *
  * @return a [File] that can be safely use as task output.
  */
-fun ArtifactType<*>.getOutputDirectory(
+fun Artifact<*>.getOutputPath(
     buildDirectory: DirectoryProperty,
+    variantIdentifier: String,
     vararg paths: String) = FileUtils.join(
         getOutputDir(buildDirectory.get().asFile),
-        *paths
+        variantIdentifier,
+        *paths,
+        getFileSystemLocationName()
     )
 
 

@@ -21,58 +21,40 @@ import com.android.build.api.dsl.DynamicFeatureExtension
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.api.variant.DynamicFeatureVariantProperties
 import com.android.build.gradle.AppExtension
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.ViewBindingOptions
 import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.ExtraModelInfo
-import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.options.ProjectOptions
+import com.android.builder.core.LibraryRequest
+import com.android.repository.Revision
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
 
 internal open class DynamicFeatureExtension(
-    dslScope: DslScope,
-    projectOptions: ProjectOptions,
+    dslServices: DslServices,
     globalScope: GlobalScope,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: DynamicFeatureExtensionImpl
 ) : AppExtension(
-    dslScope, projectOptions, globalScope,
+    dslServices,
+     globalScope,
     buildOutputs, sourceSetManager, extraModelInfo, false
-), DynamicFeatureExtension<
-        BuildType,
-        CmakeOptions,
-        CompileOptions,
-        DefaultConfig,
-        ExternalNativeBuild,
-        JacocoOptions,
-        NdkBuildOptions,
-        ProductFlavor,
-        SigningConfig,
-        TestOptions,
-        TestOptions.UnitTestOptions> by publicExtensionImpl,
-    ActionableVariantObjectOperationsExecutor<DynamicFeatureVariant, DynamicFeatureVariantProperties> by publicExtensionImpl {
-
-    override val dataBinding: DataBindingOptions =
-        dslScope.objectFactory.newInstance(
-            DataBindingOptions::class.java,
-            publicExtensionImpl.buildFeatures,
-            projectOptions,
-            dslScope
-        )
+), InternalDynamicFeatureExtension by publicExtensionImpl,
+    ActionableVariantObjectOperationsExecutor<DynamicFeatureVariant<DynamicFeatureVariantProperties>, DynamicFeatureVariantProperties> by publicExtensionImpl {
 
     override val viewBinding: ViewBindingOptions =
-        dslScope.objectFactory.newInstance(
+        dslServices.newInstance(
             ViewBindingOptionsImpl::class.java,
             publicExtensionImpl.buildFeatures,
-            projectOptions,
-            dslScope
+            dslServices
         )
 
     // this is needed because the impl class needs this but the interface does not,
@@ -81,4 +63,19 @@ internal open class DynamicFeatureExtension(
     fun buildFeatures(action: Action<DynamicFeatureBuildFeatures>) {
         publicExtensionImpl.buildFeatures(action)
     }
+
+    override val flavorDimensionList: MutableList<String>
+        get() = flavorDimensions
+
+    override val buildToolsRevision: Revision
+        get() = Revision.parseRevision(buildToolsVersion, Revision.Precision.MICRO)
+
+    override val libraryRequests: MutableCollection<LibraryRequest>
+        get() = publicExtensionImpl.libraryRequests
+
+    override var compileSdkVersion: String?
+        get() = publicExtensionImpl.compileSdkPreview
+        set(value) {
+            publicExtensionImpl.compileSdkPreview = value
+        }
 }

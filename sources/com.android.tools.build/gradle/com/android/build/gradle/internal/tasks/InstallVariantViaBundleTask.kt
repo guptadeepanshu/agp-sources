@@ -15,13 +15,17 @@
  */
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.AdbExecutableInput
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.internal.InstallUtils
 import com.android.build.gradle.internal.testing.ConnectedDeviceProvider
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.testing.api.DeviceConfigProviderImpl
 import com.android.builder.testing.api.DeviceConnector
 import com.android.builder.testing.api.DeviceProvider
@@ -30,11 +34,15 @@ import com.android.utils.FileUtils
 import com.android.utils.ILogger
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.GradleException
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -56,10 +64,8 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
 
     private var installOptions = mutableListOf<String>()
 
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NONE) // We care about the binary itself, not where it is.
-    lateinit var adbExecutableProvider: Provider<File>
-        private set
+    @get:Nested
+    abstract val adbExecutableInput: AdbExecutableInput
 
     @get:InputFile
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
@@ -74,7 +80,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
             it.submit(
                 InstallRunnable::class.java,
                 Params(
-                    adbExecutableProvider.get(),
+                    adbExecutableInput.getAdbExecutable().get().asFile,
                     apkBundle.get().asFile,
                     timeOutInMs,
                     installOptions,
@@ -182,41 +188,48 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
         }
      }
 
-    internal class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<InstallVariantViaBundleTask>(variantScope) {
+    internal class CreationAction(creationConfig: ApkCreationConfig) :
+        VariantTaskCreationAction<InstallVariantViaBundleTask, ApkCreationConfig>(
+            creationConfig
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("install")
+            get() = computeTaskName("install")
         override val type: Class<InstallVariantViaBundleTask>
             get() = InstallVariantViaBundleTask::class.java
 
-        override fun configure(task: InstallVariantViaBundleTask) {
+        override fun configure(
+            task: InstallVariantViaBundleTask
+        ) {
             super.configure(task)
 
-            task.description = "Installs the " + variantScope.variantData.description + ""
+            task.description = "Installs the " + creationConfig.description + ""
             task.group = TaskManager.INSTALL_GROUP
 
-            variantScope.variantDslInfo.minSdkVersion.let {
+            creationConfig.minSdkVersion.let {
                 task.minSdkVersion = it.apiLevel
                 task.minSdkCodename = it.codename
             }
-            variantScope.globalScope.extension.adbOptions.installOptions?.let {
+            creationConfig.globalScope.extension.adbOptions.installOptions?.let {
                 task.installOptions.addAll(it)
             }
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.APKS_FROM_BUNDLE,
                 task.apkBundle
             )
 
-            task.timeOutInMs = variantScope.globalScope.extension.adbOptions.timeOutInMs
-
-            task.adbExecutableProvider = variantScope.globalScope.sdkComponents.adbExecutableProvider
+            task.timeOutInMs = creationConfig.globalScope.extension.adbOptions.timeOutInMs
+            task.adbExecutableInput.sdkBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
         }
 
-        override fun handleProvider(taskProvider: TaskProvider<out InstallVariantViaBundleTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<InstallVariantViaBundleTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.installTask = taskProvider
+            creationConfig.taskContainer.installTask = taskProvider
         }
     }
 }

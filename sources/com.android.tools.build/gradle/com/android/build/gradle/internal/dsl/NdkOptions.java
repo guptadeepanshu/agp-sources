@@ -18,11 +18,14 @@ package com.android.build.gradle.internal.dsl;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.dsl.Ndk;
+import com.android.utils.HelpfulEnumConverter;
+import com.google.common.base.Verify;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.gradle.api.tasks.Input;
@@ -30,16 +33,21 @@ import org.gradle.api.tasks.Optional;
 
 /**
  * DSL object for per-variant NDK settings, such as the ABI filter.
+ *
+ * @see Ndk for the public interface.
  */
-public class NdkOptions implements CoreNdkOptions, Serializable {
+public class NdkOptions implements CoreNdkOptions, Serializable, Ndk {
     private static final long serialVersionUID = 1L;
+    public static final HelpfulEnumConverter<DebugSymbolLevel> DEBUG_SYMBOL_LEVEL_CONVERTER =
+            new HelpfulEnumConverter<>(DebugSymbolLevel.class);
 
     private String moduleName;
     private String cFlags;
     private List<String> ldLibs;
-    private Set<String> abiFilters;
+    private final Set<String> abiFilters = new HashSet<>(0);
     private String stl;
     private Integer jobs;
+    private DebugSymbolLevel debugSymbolLevel;
 
     public NdkOptions() {
     }
@@ -57,6 +65,7 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
         return moduleName;
     }
 
+    @Override
     public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
     }
@@ -69,6 +78,17 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
 
     public void setcFlags(String cFlags) {
         this.cFlags = cFlags;
+    }
+
+    @Override
+    public void setCFlags(@Nullable String cFlags) {
+        this.cFlags = cFlags;
+    }
+
+    @Nullable
+    @Override
+    public String getCFlags() {
+        return cFlags;
     }
 
     @Override
@@ -110,10 +130,9 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
         return this;
     }
 
-    /** {@inheritDoc} */
+    @NonNull
     @Override
     @Input
-    @Optional
     public Set<String> getAbiFilters() {
         return abiFilters;
     }
@@ -121,33 +140,21 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
 
     @NonNull
     public NdkOptions abiFilter(String filter) {
-        if (abiFilters == null) {
-            abiFilters = Sets.newHashSetWithExpectedSize(2);
-        }
         abiFilters.add(filter);
         return this;
     }
 
     @NonNull
     public NdkOptions abiFilters(String... filters) {
-        if (abiFilters == null) {
-            abiFilters = Sets.newHashSetWithExpectedSize(2);
-        }
         Collections.addAll(abiFilters, filters);
         return this;
     }
 
     @NonNull
     public NdkOptions setAbiFilters(Collection<String> filters) {
+        abiFilters.clear();
         if (filters != null) {
-            if (abiFilters == null) {
-                abiFilters = Sets.newHashSetWithExpectedSize(filters.size());
-            } else {
-                abiFilters.clear();
-            }
             abiFilters.addAll(filters);
-        } else {
-            abiFilters = null;
         }
         return this;
     }
@@ -158,6 +165,7 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
         return stl;
     }
 
+    @Override
     public void setStl(String stl) {
         this.stl = stl;
     }
@@ -168,7 +176,33 @@ public class NdkOptions implements CoreNdkOptions, Serializable {
         return jobs;
     }
 
+    @Override
     public void setJobs(Integer jobs) {
         this.jobs = jobs;
+    }
+
+    @Override
+    @Nullable
+    public String getDebugSymbolLevel() {
+        if (debugSymbolLevel == null) {
+            return null;
+        }
+        return Verify.verifyNotNull(
+                DEBUG_SYMBOL_LEVEL_CONVERTER.reverse().convert(debugSymbolLevel),
+                "No string representation for enum.");
+    }
+
+    @Override
+    public void setDebugSymbolLevel(@Nullable String debugSymbolLevel) {
+        this.debugSymbolLevel = DEBUG_SYMBOL_LEVEL_CONVERTER.convert(debugSymbolLevel);
+    }
+
+    public enum DebugSymbolLevel {
+        /** Package native debug info *and* native symbol table */
+        FULL,
+        /** Package native symbol table but not native debug info */
+        SYMBOL_TABLE,
+        /** Don't package native debug info or native symbol table */
+        NONE
     }
 }

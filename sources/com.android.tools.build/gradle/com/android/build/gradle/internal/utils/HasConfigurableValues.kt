@@ -26,7 +26,7 @@ fun ConfigurableFileCollection.fromDisallowChanges(vararg arg: Any) {
     disallowChanges()
 }
 
-fun <T> Property<T>.setDisallowChanges(value: T) {
+fun <T> Property<T>.setDisallowChanges(value: T?) {
     set(value)
     disallowChanges()
 }
@@ -36,7 +36,12 @@ fun <T> Property<T>.setDisallowChanges(value: Provider<T>) {
     disallowChanges()
 }
 
-fun <T> ListProperty<T>.setDisallowChanges(value: Provider<List<T>>) {
+fun <T> ListProperty<T>.setDisallowChanges(value: Provider<out Iterable<T>>) {
+    set(value)
+    disallowChanges()
+}
+
+fun <T> ListProperty<T>.setDisallowChanges(value: Iterable<T>?) {
     set(value)
     disallowChanges()
 }

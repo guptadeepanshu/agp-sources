@@ -16,9 +16,11 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.BundleTexture
 import javax.inject.Inject
 
-open class BundleOptionsTexture @Inject constructor() {
+open class BundleOptionsTexture @Inject constructor() : BundleTexture {
 
-    var enableSplit: Boolean? = null
+    override var enableSplit: Boolean? = null
+    override var defaultFormat: String? = null
 }

@@ -16,36 +16,26 @@
 package com.android.build.gradle
 
 import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.dsl.PrefabPackagingOptions
 import com.android.build.api.variant.LibraryVariantProperties
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.LibraryVariant
 import com.android.build.gradle.api.ViewBindingOptions
-import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.ExtraModelInfo
-import com.android.build.gradle.internal.api.dsl.DslScope
-import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.ActionableVariantObjectOperationsExecutor
-import com.android.build.gradle.internal.dsl.BuildType
-import com.android.build.gradle.internal.dsl.CmakeOptions
-import com.android.build.gradle.internal.dsl.DataBindingOptions
-import com.android.build.gradle.internal.dsl.DefaultConfig
-import com.android.build.gradle.internal.dsl.ExternalNativeBuild
+import com.android.build.gradle.internal.dsl.InternalLibraryExtension
 import com.android.build.gradle.internal.dsl.LibraryExtensionImpl
-import com.android.build.gradle.internal.dsl.NdkBuildOptions
-import com.android.build.gradle.internal.dsl.ProductFlavor
-import com.android.build.gradle.internal.dsl.SigningConfig
-import com.android.build.gradle.internal.dsl.TestOptions
+import com.android.build.gradle.internal.dsl.PrefabModuleFactory
 import com.android.build.gradle.internal.dsl.ViewBindingOptionsImpl
 import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.options.ProjectOptions
-import com.google.common.collect.Lists
+import com.android.build.gradle.internal.services.DslServices
+import com.android.builder.core.LibraryRequest
+import com.android.repository.Revision
 import org.gradle.api.Action
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.NamedDomainObjectContainer
-import org.gradle.api.Project
 import org.gradle.api.internal.DefaultDomainObjectSet
 import java.util.Collections
 
@@ -57,57 +47,31 @@ import java.util.Collections
  * library</a>.
  */
 open class LibraryExtension(
-    dslScope: DslScope,
-    projectOptions: ProjectOptions,
+    dslServices: DslServices,
     globalScope: GlobalScope,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
     sourceSetManager: SourceSetManager,
     extraModelInfo: ExtraModelInfo,
     private val publicExtensionImpl: LibraryExtensionImpl
 ) : TestedExtension(
-    dslScope,
-    projectOptions,
+    dslServices,
     globalScope,
     buildOutputs,
     sourceSetManager,
     extraModelInfo,
     false
 ),
-    com.android.build.api.dsl.LibraryExtension<
-            BuildType,
-            CmakeOptions,
-            CompileOptions,
-            DefaultConfig,
-            ExternalNativeBuild,
-            JacocoOptions,
-            NdkBuildOptions,
-            ProductFlavor,
-            SigningConfig,
-            TestOptions,
-            TestOptions.UnitTestOptions> by publicExtensionImpl,
-    ActionableVariantObjectOperationsExecutor<com.android.build.api.variant.LibraryVariant, LibraryVariantProperties> by publicExtensionImpl {
+   InternalLibraryExtension by publicExtensionImpl,
+    ActionableVariantObjectOperationsExecutor<com.android.build.api.variant.LibraryVariant<LibraryVariantProperties>, LibraryVariantProperties> by publicExtensionImpl {
 
     private val libraryVariantList: DomainObjectSet<LibraryVariant> =
-        dslScope.objectFactory.domainObjectSet(LibraryVariant::class.java)
-
-    private var _packageBuildConfig = true
-
-    private var _aidlPackageWhiteList: MutableCollection<String>? = null
-
-    override val dataBinding: DataBindingOptions =
-        dslScope.objectFactory.newInstance(
-            DataBindingOptions::class.java,
-            publicExtensionImpl.buildFeatures,
-            projectOptions,
-            globalScope.dslScope
-        )
+        dslServices.domainObjectSet(LibraryVariant::class.java)
 
     override val viewBinding: ViewBindingOptions =
-        dslScope.objectFactory.newInstance(
+        dslServices.newInstance(
             ViewBindingOptionsImpl::class.java,
             publicExtensionImpl.buildFeatures,
-            projectOptions,
-            globalScope.dslScope
+            dslServices
         )
 
     // this is needed because the impl class needs this but the interface does not,
@@ -142,19 +106,25 @@ open class LibraryExtension(
     val libraryVariants: DefaultDomainObjectSet<LibraryVariant>
         get() = libraryVariantList as DefaultDomainObjectSet<LibraryVariant>
 
-    override fun addVariant(variant: BaseVariant, variantScope: VariantScope) {
+    override fun addVariant(variant: BaseVariant) {
         libraryVariantList.add(variant as LibraryVariant)
     }
 
-    override var aidlPackageWhiteList: MutableCollection<String>?
-        get() = _aidlPackageWhiteList
-        set(value) = value?.let { aidlPackageWhiteList(*it.toTypedArray()) } ?: Unit
-
     fun aidlPackageWhiteList(vararg aidlFqcns: String) {
-        if (_aidlPackageWhiteList == null) {
-            _aidlPackageWhiteList = Lists.newArrayList()
-        }
-        Collections.addAll(_aidlPackageWhiteList!!, *aidlFqcns)
+        Collections.addAll(publicExtensionImpl.aidlPackageWhiteList, *aidlFqcns)
     }
 
+    override var compileSdkVersion: String?
+        get() = publicExtensionImpl.compileSdkPreview
+        set(value) {
+            publicExtensionImpl.compileSdkPreview = value
+        }
+    override val flavorDimensionList: MutableList<String>
+        get() = flavorDimensions
+
+    override val buildToolsRevision: Revision
+        get() = Revision.parseRevision(buildToolsVersion, Revision.Precision.MICRO)
+
+    override val libraryRequests: MutableCollection<LibraryRequest>
+        get() = publicExtensionImpl.libraryRequests
 }

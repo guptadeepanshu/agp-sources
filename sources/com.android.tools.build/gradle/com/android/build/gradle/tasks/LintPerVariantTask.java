@@ -18,11 +18,14 @@ package com.android.build.gradle.tasks;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.internal.tasks.VariantAwareTask;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.utils.StringHelper;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.InputFiles;
@@ -78,6 +81,12 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
             return variantInputs;
         }
 
+        @NonNull
+        @Override
+        public Set<String> getVariantNames() {
+            return Collections.singleton(variantName);
+        }
+
         @Override
         public boolean isFatalOnly() {
             return fatalOnly;
@@ -86,19 +95,21 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
 
     public static class CreationAction extends BaseCreationAction<LintPerVariantTask> {
 
-        private final VariantScope scope;
-        private final List<VariantScope> variantScopes;
+        private final VariantPropertiesImpl variantProperties;
+        private final List<? extends VariantPropertiesImpl> allVariants;
 
-        public CreationAction(@NonNull VariantScope scope, List<VariantScope> variantScopes) {
-            super(scope.getGlobalScope());
-            this.scope = scope;
-            this.variantScopes = variantScopes;
+        public CreationAction(
+                @NonNull VariantPropertiesImpl variantProperties,
+                @NonNull List<? extends VariantPropertiesImpl> allVariants) {
+            super(variantProperties.getGlobalScope());
+            this.variantProperties = variantProperties;
+            this.allVariants = allVariants;
         }
 
         @Override
         @NonNull
         public String getName() {
-            return scope.getTaskName("lint");
+            return variantProperties.computeTaskName("lint");
         }
 
         @Override
@@ -111,14 +122,14 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
         public void configure(@NonNull LintPerVariantTask lint) {
             super.configure(lint);
 
-            lint.setVariantName(scope.getName());
-            lint.allInputs = scope.getGlobalScope().getProject().files();
+            lint.setVariantName(variantProperties.getName());
+            lint.allInputs = globalScope.getProject().files();
 
-            lint.variantInputs = new VariantInputs(scope);
+            lint.variantInputs = new VariantInputs(variantProperties);
             lint.allInputs.from(lint.variantInputs.getAllInputs());
 
-            for (VariantScope variantScope : variantScopes) {
-                addModelArtifactsToInputs(lint.allInputs, variantScope);
+            for (VariantPropertiesImpl variant : allVariants) {
+                addModelArtifactsToInputs(lint.allInputs, variant);
             }
 
             lint.setDescription(
@@ -126,7 +137,8 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
                             "Runs lint on the ", lint.getVariantName(), " build."));
             lint.getEnableGradleWorkers()
                     .set(
-                            getGlobalScope()
+                            variantProperties
+                                    .getServices()
                                     .getProjectOptions()
                                     .get(BooleanOption.ENABLE_GRADLE_WORKERS));
         }
@@ -134,20 +146,21 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
 
     public static class VitalCreationAction extends BaseCreationAction<LintPerVariantTask> {
 
-        private final VariantScope scope;
-        private final List<VariantScope> variantScopes;
+        private final ComponentPropertiesImpl componentProperties;
+        private final List<? extends VariantPropertiesImpl> allComponentsWithLint;
 
         public VitalCreationAction(
-                @NonNull VariantScope scope, @NonNull List<VariantScope> variantScopes) {
-            super(scope.getGlobalScope());
-            this.scope = scope;
-            this.variantScopes = variantScopes;
+                @NonNull ComponentPropertiesImpl componentProperties,
+                @NonNull List<? extends VariantPropertiesImpl> allComponentsWithLint) {
+            super(componentProperties.getGlobalScope());
+            this.componentProperties = componentProperties;
+            this.allComponentsWithLint = allComponentsWithLint;
         }
 
         @NonNull
         @Override
         public String getName() {
-            return scope.getTaskName("lintVital");
+            return componentProperties.computeTaskName("lintVital");
         }
 
         @NonNull
@@ -160,14 +173,14 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
         public void configure(@NonNull LintPerVariantTask task) {
             super.configure(task);
 
-            task.setVariantName(scope.getName());
-            task.allInputs = scope.getGlobalScope().getProject().files();
+            task.setVariantName(componentProperties.getName());
+            task.allInputs = globalScope.getProject().files();
 
-            task.variantInputs = new VariantInputs(scope);
+            task.variantInputs = new VariantInputs(componentProperties);
             task.allInputs.from(task.variantInputs.getAllInputs());
 
-            for (VariantScope variantScope : variantScopes) {
-                addModelArtifactsToInputs(task.allInputs, variantScope);
+            for (ComponentPropertiesImpl component : allComponentsWithLint) {
+                addModelArtifactsToInputs(task.allInputs, component);
             }
 
             task.fatalOnly = true;
@@ -177,7 +190,8 @@ public abstract class LintPerVariantTask extends LintBaseTask implements Variant
                             + " build.");
             task.getEnableGradleWorkers()
                     .set(
-                            getGlobalScope()
+                            componentProperties
+                                    .getServices()
                                     .getProjectOptions()
                                     .get(BooleanOption.ENABLE_GRADLE_WORKERS));
         }

@@ -18,6 +18,7 @@ package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -63,7 +64,7 @@ public final class Log {
 
             return null;
         }
-        
+
         /**
          * Returns the {@link LogLevel} enum matching the specified letter.
          * @param letter the letter matching a <code>LogLevel</code> enum
@@ -83,7 +84,7 @@ public final class Log {
          * Returns the {@link LogLevel} enum matching the specified letter.
          * <p>
          * The letter is passed as a {@link String} argument, but only the first character
-         * is used. 
+         * is used.
          * @param letter the letter matching a <code>LogLevel</code> enum
          * @return a <code>LogLevel</code> object or <code>null</code> if no match were found.
          */
@@ -116,7 +117,7 @@ public final class Log {
             return mStringValue;
         }
     }
-    
+
     /**
      * Classes which implement this interface provides methods that deal with outputting log
      * messages.
@@ -149,26 +150,31 @@ public final class Log {
     private static final Set<ILogOutput> sOutputLoggers = Sets.newCopyOnWriteArraySet();
 
     private static final char[] mSpaceLine = new char[72];
-    private static final char[] mHexDigit = new char[]
-        { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
+    private static final char[] mHexDigit =
+            new char[] {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+            };
+
     static {
         /* prep for hex dump */
-        int i = mSpaceLine.length-1;
-        while (i >= 0)
+        int i = mSpaceLine.length - 1;
+        while (i >= 0) {
             mSpaceLine[i--] = ' ';
+        }
         mSpaceLine[0] = mSpaceLine[1] = mSpaceLine[2] = mSpaceLine[3] = '0';
         mSpaceLine[4] = '-';
     }
 
-    static final class Config {
-        static final boolean LOGV = true;
-        static final boolean LOGD = true;
+    public static final class Config {
+        public static final boolean LOGV = true;
+        public static final boolean LOGD = true;
     }
 
     private Log() {}
 
     /**
      * Outputs a {@link LogLevel#VERBOSE} level message.
+     *
      * @param tag The tag associated with the message.
      * @param message The message to output.
      */
@@ -246,11 +252,12 @@ public final class Log {
         }
     }
 
-    static void setLevel(LogLevel logLevel) {
+    @VisibleForTesting
+    public static void setLevel(LogLevel logLevel) {
         sLevel = logLevel;
     }
 
-    static boolean isAtLeast(@NonNull LogLevel logLevel) {
+    public static boolean isAtLeast(@NonNull LogLevel logLevel) {
         return logLevel.getPriority() >= sLevel.getPriority();
     }
 
@@ -275,13 +282,14 @@ public final class Log {
 
     /**
      * Show hex dump.
-     * <p>
-     * Local addition.  Output looks like:
-     * 1230- 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff  0123456789abcdef
-     * <p>
-     * Uses no string concatenation; creates one String object per line.
+     *
+     * <p>Local addition. Output looks like:
+     *
+     * <pre>1230- 00 11 22 33 44 55 66 77 88 99 aa bb cc dd ee ff  0123456789abcdef</pre>
+     *
+     * <p>Uses no string concatenation; creates one String object per line.
      */
-    static void hexDump(String tag, LogLevel level, byte[] data, int offset, int length) {
+    public static void hexDump(String tag, LogLevel level, byte[] data, int offset, int length) {
 
         int kHexOffset = 6;
         int kAscOffset = 55;
@@ -350,7 +358,7 @@ public final class Log {
         hexDump("ddms", LogLevel.DEBUG, data, 0, data.length);
     }
 
-    private static void println(LogLevel logLevel, String tag, String message) {
+    public static void println(LogLevel logLevel, String tag, String message) {
         if (!isAtLeast(logLevel)) {
             return;
         }

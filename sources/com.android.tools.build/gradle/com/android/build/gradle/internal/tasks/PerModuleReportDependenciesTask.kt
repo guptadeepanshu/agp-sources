@@ -16,18 +16,18 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.tools.build.libraries.metadata.AppDependencies
 import com.android.tools.build.libraries.metadata.Library
 import com.android.tools.build.libraries.metadata.LibraryDependencies
 import com.android.tools.build.libraries.metadata.MavenLibrary
 import com.android.tools.build.libraries.metadata.ModuleDependencies
 import com.google.protobuf.ByteString
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ModuleVersionIdentifier
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
@@ -39,9 +39,9 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -52,7 +52,6 @@ import java.security.MessageDigest
 import java.util.Dictionary
 import java.util.Hashtable
 import java.util.LinkedList
-import java.util.function.Supplier
 import javax.inject.Inject
 
 /**
@@ -61,7 +60,8 @@ import javax.inject.Inject
 abstract class PerModuleReportDependenciesTask @Inject constructor(objectFactory: ObjectFactory) :
     NonIncrementalTask() {
 
-    private lateinit var runtimeClasspath: Configuration
+    @get:Internal
+    abstract val runtimeClasspathName: Property<String>
 
     // Don't use @Classpath here as @Classpath ignores some of the contents whereas the output of
     // this task contains the hashes of the entire contents.
@@ -117,6 +117,7 @@ abstract class PerModuleReportDependenciesTask @Inject constructor(objectFactory
         val libraries = LinkedList<Library>()
         val libraryDependencies = LinkedList<LibraryDependencies>()
         val directDependenciesIndices: MutableSet<Int> = HashSet()
+        val runtimeClasspath = project.configurations.getByName(runtimeClasspathName.get())
         val artifacts = runtimeClasspath.incoming.artifactView { config ->
             config.componentFilter { id -> id !is ProjectComponentIdentifier }
         }.artifacts
@@ -162,7 +163,9 @@ abstract class PerModuleReportDependenciesTask @Inject constructor(objectFactory
                         }
                     }
 
-                    libraryDependencies.add(libraryDependency.build())
+                    if (libraryDependency.getLibraryDepIndexCount() > 0) {
+                      libraryDependencies.add(libraryDependency.build())
+                    }
                 }
 
                 if (dependency.from.selectionReason.descriptions.filter
@@ -209,28 +212,30 @@ abstract class PerModuleReportDependenciesTask @Inject constructor(objectFactory
 
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<PerModuleReportDependenciesTask>(variantScope) {
-        override val name: String = variantScope.getTaskName("collect", "Dependencies")
+        creationConfig: ApkCreationConfig
+    ) : VariantTaskCreationAction<PerModuleReportDependenciesTask, ApkCreationConfig>(
+        creationConfig
+    ) {
+        override val name: String = computeTaskName("collect", "Dependencies")
         override val type: Class<PerModuleReportDependenciesTask> = PerModuleReportDependenciesTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out PerModuleReportDependenciesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<PerModuleReportDependenciesTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            variantScope
-                .artifacts
-                .producesFile(
-                    InternalArtifactType.METADATA_LIBRARY_DEPENDENCIES_REPORT,
-                    taskProvider,
-                    PerModuleReportDependenciesTask::dependenciesList,
-                    fileName = "dependencies.pb"
-                )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                PerModuleReportDependenciesTask::dependenciesList
+            ).withName("dependencies.pb").on(InternalArtifactType.METADATA_LIBRARY_DEPENDENCIES_REPORT)
         }
 
-        override fun configure(task: PerModuleReportDependenciesTask) {
+        override fun configure(
+            task: PerModuleReportDependenciesTask
+        ) {
             super.configure(task)
-            task.runtimeClasspath = variantScope.variantDependencies.runtimeClasspath
-            task.runtimeClasspathArtifacts = variantScope.getArtifactCollection(
+            task.runtimeClasspathName.set(creationConfig.variantDependencies.runtimeClasspath.name)
+            task.runtimeClasspathArtifacts = creationConfig.variantDependencies.getArtifactCollection(
                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 AndroidArtifacts.ArtifactScope.EXTERNAL,
                 // Normally we would query for PROCESSED_JAR, but JAR is probably sufficient here
@@ -239,12 +244,11 @@ abstract class PerModuleReportDependenciesTask @Inject constructor(objectFactory
             ).artifactFiles
 
 
-            if (variantScope.type.isBaseModule) {
-                task.moduleName.set("base")
+            if (creationConfig is DynamicFeatureCreationConfig) {
+                task.moduleName.setDisallowChanges(creationConfig.featureName)
             } else {
-                task.moduleName.set(variantScope.featureName)
+                task.moduleName.setDisallowChanges("base")
             }
-            task.moduleName.disallowChanges()
         }
     }
 }

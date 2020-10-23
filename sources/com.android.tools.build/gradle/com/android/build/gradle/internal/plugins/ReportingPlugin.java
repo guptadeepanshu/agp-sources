@@ -20,16 +20,16 @@ import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
 import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
 import static com.android.builder.core.BuilderConstants.FD_REPORTS;
 
-import com.android.build.gradle.internal.api.dsl.DslScope;
 import com.android.build.gradle.internal.dsl.DslVariableFactory;
 import com.android.build.gradle.internal.dsl.TestOptions;
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl;
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl;
-import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl;
+import com.android.build.gradle.internal.services.DslServices;
+import com.android.build.gradle.internal.services.DslServicesImpl;
+import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.tasks.AndroidReportTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.test.report.ReportType;
-import com.android.build.gradle.internal.variant2.DslScopeImpl;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.utils.FileUtils;
@@ -64,19 +64,25 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
         DeprecationReporterImpl deprecationReporter =
                 new DeprecationReporterImpl(syncIssueHandler, projectOptions, project.getPath());
 
-        DslScope dslScope =
-                new DslScopeImpl(
+        ProjectServices projectServices =
+                new ProjectServices(
                         syncIssueHandler,
                         deprecationReporter,
                         project.getObjects(),
                         project.getLogger(),
-                        new BuildFeatureValuesImpl(projectOptions),
                         project.getProviders(),
-                        new DslVariableFactory(syncIssueHandler),
                         project.getLayout(),
+                        projectOptions,
+                        project.getGradle().getSharedServices(),
                         project::file);
 
-        extension = project.getExtensions().create("android", TestOptions.class, dslScope);
+        DslServices dslServices =
+                new DslServicesImpl(
+                        projectServices,
+                        new DslVariableFactory(syncIssueHandler),
+                        project.getProviders().provider(() -> null));
+
+        extension = project.getExtensions().create("android", TestOptions.class, dslServices);
 
         final AndroidReportTask mergeReportsTask = project.getTasks().create("mergeAndroidReports",
                 AndroidReportTask.class);

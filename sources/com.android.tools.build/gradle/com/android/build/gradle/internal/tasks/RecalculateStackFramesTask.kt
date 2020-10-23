@@ -16,12 +16,10 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.options.BooleanOption
-import com.android.builder.utils.FileCache
 import com.android.ide.common.resources.FileStatus
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
@@ -47,10 +45,8 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
     lateinit var referencedClasses: FileCollection
         private set
 
-    private var userCache: FileCache? = null
-
     private fun createDelegate() = FixStackFramesDelegate(
-        bootClasspath.files, classesToFix.files, referencedClasses.files, outFolder!!.get().asFile, userCache
+        bootClasspath.files, classesToFix.files, referencedClasses.files, outFolder!!.get().asFile
     )
 
     override val incremental: Boolean = true
@@ -64,86 +60,74 @@ abstract class RecalculateStackFramesTask  : IncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope,
-        private val userCache: FileCache?,
+        componentProperties: ComponentPropertiesImpl,
         private val isTestCoverageEnabled: Boolean) :
-        VariantTaskCreationAction<RecalculateStackFramesTask>(variantScope) {
+        VariantTaskCreationAction<RecalculateStackFramesTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
-        override val name = variantScope.getTaskName("fixStackFrames")
+        override val name = computeTaskName("fixStackFrames")
         override val type = RecalculateStackFramesTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out RecalculateStackFramesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<RecalculateStackFramesTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.FIXED_STACK_FRAMES,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 RecalculateStackFramesTask::outFolder
-            )
+            ).on(InternalArtifactType.FIXED_STACK_FRAMES)
         }
 
-        override fun configure(task: RecalculateStackFramesTask) {
+        override fun configure(
+            task: RecalculateStackFramesTask
+        ) {
             super.configure(task)
 
-            task.bootClasspath = variantScope.bootClasspath
+            task.bootClasspath = creationConfig.variantScope.bootClasspath
 
-            val globalScope = variantScope.globalScope
+            val globalScope = creationConfig.globalScope
 
             val classesToFix = globalScope.project.files(
-                variantScope.getArtifactFileCollection(
+                creationConfig.variantDependencies.getArtifactFileCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.EXTERNAL,
                     AndroidArtifacts.ArtifactType.CLASSES_JAR))
 
-            if (globalScope.extension.aaptOptions.namespaced
-                && globalScope.projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]) {
-                classesToFix.from(
-                    variantScope
-                        .artifacts
-                        .getFinalProduct(InternalArtifactType.NAMESPACED_CLASSES_JAR))
-            }
+            val referencedClasses =
+                globalScope.project.files(creationConfig.variantScope.providedOnlyClasspath)
 
-
-            val referencedClasses = globalScope.project.files(variantScope.providedOnlyClasspath)
-
-            referencedClasses.from(variantScope.getArtifactFileCollection(
+            referencedClasses.from(
+                creationConfig.variantDependencies.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 AndroidArtifacts.ArtifactScope.PROJECT,
                 AndroidArtifacts.ArtifactType.CLASSES_JAR))
 
             if (isTestCoverageEnabled) {
                 referencedClasses.from(
-                    variantScope.artifacts.getFinalProduct(
+                    creationConfig.artifacts.get(
                         InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES),
-                    variantScope.globalScope.project.files(
-                        variantScope.artifacts.getFinalProduct(
+                    creationConfig.globalScope.project.files(
+                        creationConfig.artifacts.get(
                             InternalArtifactType.JACOCO_INSTRUMENTED_JARS)).asFileTree)
             } else {
-                referencedClasses.from(variantScope.artifacts.getAllClasses())
+                referencedClasses.from(creationConfig.artifacts.getAllClasses())
             }
 
-            variantScope.testedVariantData?.let {
-                val testedVariantScope = it.scope
-
+            creationConfig.onTestedConfig {
                 referencedClasses.from(
-                    variantScope.artifacts.getFinalProduct(
-                        InternalArtifactType.TESTED_CODE_CLASSES
-                    )
-                )
-
-                referencedClasses.from(
-                    testedVariantScope.getArtifactCollection(
+                    it.variantDependencies.getArtifactCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.ALL,
                         AndroidArtifacts.ArtifactType.CLASSES_JAR
                     ).artifactFiles
                 )
+
             }
 
             task.classesToFix = classesToFix
 
             task.referencedClasses = referencedClasses
-
-            task.userCache = userCache
         }
     }
 }

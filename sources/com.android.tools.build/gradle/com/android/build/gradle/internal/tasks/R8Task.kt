@@ -19,10 +19,11 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.transform.Format
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.PostprocessingFeatures
+import com.android.build.gradle.internal.component.BaseCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
-import com.android.build.gradle.internal.scope.MultipleArtifactType
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -159,16 +160,21 @@ abstract class R8Task: ProguardConfigurableTask() {
     fun getProguardUsageOutput(): File? =
         mappingFile.orNull?.asFile?.resolveSibling("usage.txt")
 
+    @Optional
+    @OutputFile
+    fun getProguardConfigurationOutput(): File? =
+        mappingFile.orNull?.asFile?.resolveSibling("configuration.txt")
+
     @get:Optional
     @get:OutputFile
     abstract val mainDexListOutput: RegularFileProperty
 
     class CreationAction(
-        variantScope: VariantScope,
+        creationConfig: BaseCreationConfig,
         isTestApplication: Boolean = false
-    ) : ProguardConfigurableTask.CreationAction<R8Task>(variantScope, isTestApplication) {
+    ) : ProguardConfigurableTask.CreationAction<R8Task, BaseCreationConfig>(creationConfig, isTestApplication) {
         override val type = R8Task::class.java
-        override val name =  variantScope.getTaskName("minify", "WithR8")
+        override val name =  computeTaskName("minify", "WithR8")
 
         private var disableTreeShaking: Boolean = false
         private var disableMinification: Boolean = false
@@ -176,117 +182,112 @@ abstract class R8Task: ProguardConfigurableTask() {
         // This is a huge sledgehammer, but it is necessary until http://b/72683872 is fixed.
         private val proguardConfigurations: MutableList<String> = mutableListOf("-ignorewarnings")
 
-        override fun handleProvider(taskProvider: TaskProvider<out R8Task>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<R8Task>
+        ) {
             super.handleProvider(taskProvider)
 
             when {
-                variantType.isAar -> variantScope.artifacts.producesFile(
-                    artifactType = InternalArtifactType.SHRUNK_CLASSES,
-                    taskProvider = taskProvider,
-                    productProvider = R8Task::outputClasses,
-                    fileName = "shrunkClasses.jar"
-                )
-                variantScope.consumesFeatureJars() -> {
-                    variantScope.artifacts.producesDir(
-                        artifactType = InternalArtifactType.FEATURE_DEX,
-                        taskProvider = taskProvider,
-                        productProvider = R8Task::featureDexDir,
-                        fileName = ""
-                    )
-                    variantScope.artifacts.producesDir(
-                        artifactType = InternalArtifactType.BASE_DEX,
-                        taskProvider = taskProvider,
-                        productProvider = R8Task::baseDexDir,
-                        fileName = ""
-                    )
-                    if (variantScope.needsShrinkDesugarLibrary) {
-                        variantScope.artifacts.getOperations()
+                variantType.isAar -> creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    R8Task::outputClasses)
+                    .withName("shrunkClasses.jar")
+                    .on(InternalArtifactType.SHRUNK_CLASSES)
+
+                creationConfig.variantScope.consumesFeatureJars() -> {
+                    creationConfig.artifacts.setInitialProvider(
+                        taskProvider,
+                        R8Task::featureDexDir
+                    ).on(InternalArtifactType.FEATURE_DEX)
+
+                    creationConfig.artifacts.setInitialProvider(
+                        taskProvider,
+                        R8Task::baseDexDir
+                    ).on(InternalArtifactType.BASE_DEX)
+
+                    if (creationConfig.variantScope.needsShrinkDesugarLibrary) {
+                        creationConfig.artifacts
                             .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
                             .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
                     }
                 }
                 else -> {
-                    variantScope.artifacts.getOperations().append(
-                        taskProvider, R8Task::outputDex
-                    ).on(MultipleArtifactType.DEX)
-                    if (variantScope.needsShrinkDesugarLibrary) {
-                        variantScope.artifacts.getOperations()
+                    creationConfig.artifacts.use(taskProvider)
+                        .wiredWith(R8Task::outputDex)
+                        .toAppendTo(InternalMultipleArtifactType.DEX)
+                    if (creationConfig.variantScope.needsShrinkDesugarLibrary) {
+                        creationConfig.artifacts
                             .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
                             .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
                     }
                 }
             }
 
-            variantScope.artifacts.producesFile(
-                artifactType = InternalArtifactType.SHRUNK_JAVA_RES,
-                taskProvider = taskProvider,
-                productProvider = R8Task::outputResources,
-                fileName = "shrunkJavaRes.jar"
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                R8Task::outputResources
+            ).withName("shrunkJavaRes.jar").on(InternalArtifactType.SHRUNK_JAVA_RES)
 
-            if (variantScope.needsMainDexListForBundle) {
-                variantScope
-                    .artifacts
-                    .producesFile(
-                        InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE,
-                        taskProvider,
-                        R8Task::mainDexListOutput,
-                        "mainDexList.txt"
-                    )
+            if (creationConfig.variantScope.needsMainDexListForBundle) {
+                creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    R8Task::mainDexListOutput
+                ).withName("mainDexList.txt").on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
             }
         }
 
-        override fun configure(task: R8Task) {
+        override fun configure(
+            task: R8Task
+        ) {
             super.configure(task)
 
-            val artifacts = variantScope.artifacts
+            val artifacts = creationConfig.artifacts
 
             task.enableDesugaring.set(
-                variantScope.java8LangSupportType == VariantScope.Java8LangSupport.R8
+                creationConfig.variantScope.java8LangSupportType == VariantScope.Java8LangSupport.R8
                         && !variantType.isAar)
 
-            task.bootClasspath.from(variantScope.globalScope.fullBootClasspath)
+            task.bootClasspath.from(creationConfig.globalScope.fullBootClasspath)
             task.minSdkVersion
-                .set(variantScope.variantDslInfo.minSdkVersionWithTargetDeviceApi.apiLevel)
+                .set(creationConfig.variantDslInfo.minSdkVersionWithTargetDeviceApi.apiLevel)
             task.debuggable
-                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
+                .setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
             task.disableTreeShaking.set(disableTreeShaking)
             task.disableMinification.set(disableMinification)
-            task.messageReceiver = variantScope.globalScope.messageReceiver
-            task.dexingType = variantScope.dexingType
-            task.useFullR8.set(variantScope.globalScope.projectOptions[BooleanOption.FULL_R8])
+            task.messageReceiver = creationConfig.globalScope.messageReceiver
+            task.dexingType = creationConfig.dexingType
+            task.useFullR8.set(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
 
             task.proguardConfigurations = proguardConfigurations
 
-            task.duplicateClassesCheck.from(
-                artifacts
-                    .getFinalProductAsFileCollection(DUPLICATE_CLASSES_CHECK)
-                    .get())
+            if (!variantType.isAar) {
+                task.duplicateClassesCheck.from(artifacts.get(DUPLICATE_CLASSES_CHECK))
+            }
 
-            variantScope.variantDslInfo.multiDexKeepProguard?.let { multiDexKeepProguard ->
+            creationConfig.variantDslInfo.multiDexKeepProguard?.let { multiDexKeepProguard ->
                 task.mainDexRulesFiles.from(multiDexKeepProguard)
             }
 
-            if (artifacts.hasFinalProduct(
-                    InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES)) {
+            if (creationConfig.needsMainDexList
+                && !creationConfig.globalScope.extension.aaptOptions.namespaced) {
                 task.mainDexRulesFiles.from(
-                    artifacts.getFinalProduct(
+                    artifacts.get(
                         InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES
                     )
                 )
             }
 
-            variantScope.variantDslInfo.multiDexKeepFile?.let { multiDexKeepFile ->
+            creationConfig.variantDslInfo.multiDexKeepFile?.let { multiDexKeepFile ->
                 task.mainDexListFiles.from(multiDexKeepFile)
             }
 
-            if (variantScope.consumesFeatureJars()) {
-                artifacts.setTaskInputToFinalProduct(
+            if (creationConfig.variantScope.consumesFeatureJars()) {
+                creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
                     task.baseJar
                 )
                 task.featureJars.from(
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES
@@ -295,8 +296,8 @@ abstract class R8Task: ProguardConfigurableTask() {
             }
             task.baseJar.disallowChanges()
             task.featureJars.disallowChanges()
-            if (variantScope.isCoreLibraryDesugaringEnabled) {
-                task.coreLibDesugarConfig.set(getDesugarLibConfig(variantScope.globalScope.project))
+            if (creationConfig.variantScope.isCoreLibraryDesugaringEnabled) {
+                task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.globalScope.project))
             }
         }
 
@@ -365,7 +366,8 @@ abstract class R8Task: ProguardConfigurableTask() {
                     ProguardOutputFiles(
                         mappingFile.get().asFile.toPath(),
                         getProguardSeedsOutput()!!.toPath(),
-                        getProguardUsageOutput()!!.toPath())
+                        getProguardUsageOutput()!!.toPath(),
+                        getProguardConfigurationOutput()!!.toPath())
                 } else {
                     null
                 },

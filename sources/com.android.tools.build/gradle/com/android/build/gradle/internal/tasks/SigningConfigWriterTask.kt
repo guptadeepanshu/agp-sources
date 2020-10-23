@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import org.gradle.api.file.DirectoryProperty
@@ -62,33 +62,38 @@ abstract class SigningConfigWriterTask : NonIncrementalTask() {
         SigningConfigUtils.save(outputDirectory.get().asFile, signingConfigData)
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<SigningConfigWriterTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<SigningConfigWriterTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("signingConfigWriter")
+            get() = computeTaskName("signingConfigWriter")
 
         override val type: Class<SigningConfigWriterTask>
             get() = SigningConfigWriterTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out SigningConfigWriterTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<SigningConfigWriterTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.SIGNING_CONFIG,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 SigningConfigWriterTask::outputDirectory
-            )
+            ).on(InternalArtifactType.SIGNING_CONFIG)
         }
 
-        override fun configure(task: SigningConfigWriterTask) {
+        override fun configure(
+            task: SigningConfigWriterTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.VALIDATE_SIGNING_CONFIG,
                 task.validatedSigningOutput
             )
 
-            task.signingConfigData = variantScope.variantDslInfo.signingConfig?.let {
+            task.signingConfigData = creationConfig.variantDslInfo.signingConfig?.let {
                 task.storeFilePath = it.storeFile?.path
                 SigningConfigData.fromSigningConfig(it)
             }

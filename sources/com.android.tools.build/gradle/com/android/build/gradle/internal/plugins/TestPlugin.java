@@ -16,28 +16,30 @@
 
 package com.android.build.gradle.internal.plugins;
 
-import android.databinding.tool.DataBindingBuilder;
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.TestComponentImpl;
+import com.android.build.api.component.impl.TestComponentPropertiesImpl;
+import com.android.build.api.variant.impl.TestVariantImpl;
+import com.android.build.api.variant.impl.TestVariantPropertiesImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
-import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.TestApplicationTaskManager;
-import com.android.build.gradle.internal.api.dsl.DslScope;
-import com.android.build.gradle.internal.dependency.SourceSetManager;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.dsl.TestExtensionImpl;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.services.DslServices;
+import com.android.build.gradle.internal.services.ProjectServices;
+import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.TestVariantFactory;
-import com.android.build.gradle.internal.variant.VariantFactory;
-import com.android.build.gradle.options.ProjectOptions;
 import com.android.builder.profile.Recorder;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
+import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -45,7 +47,7 @@ import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** Gradle plugin class for 'test' projects. */
-public class TestPlugin extends BasePlugin {
+public class TestPlugin extends BasePlugin<TestVariantImpl, TestVariantPropertiesImpl> {
     @Inject
     public TestPlugin(
             ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
@@ -60,32 +62,23 @@ public class TestPlugin extends BasePlugin {
     @NonNull
     @Override
     protected BaseExtension createExtension(
-            @NonNull DslScope dslScope,
-            @NonNull ProjectOptions projectOptions,
+            @NonNull DslServices dslServices,
             @NonNull GlobalScope globalScope,
-            @NonNull NamedDomainObjectContainer<BuildType> buildTypeContainer,
-            @NonNull DefaultConfig defaultConfig,
-            @NonNull NamedDomainObjectContainer<ProductFlavor> productFlavorContainer,
-            @NonNull NamedDomainObjectContainer<SigningConfig> signingConfigContainer,
+            @NonNull
+                    DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+                            dslContainers,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
-            @NonNull SourceSetManager sourceSetManager,
             @NonNull ExtraModelInfo extraModelInfo) {
         return project.getExtensions()
                 .create(
                         "android",
                         TestExtension.class,
-                        dslScope,
-                        projectOptions,
+                        dslServices,
                         globalScope,
                         buildOutputs,
-                        sourceSetManager,
+                        dslContainers.getSourceSetManager(),
                         extraModelInfo,
-                        new TestExtensionImpl(
-                                globalScope.getDslScope(),
-                                buildTypeContainer,
-                                defaultConfig,
-                                productFlavorContainer,
-                                signingConfigContainer));
+                        new TestExtensionImpl(dslServices, dslContainers));
     }
 
     @NonNull
@@ -96,24 +89,21 @@ public class TestPlugin extends BasePlugin {
 
     @NonNull
     @Override
-    protected TaskManager createTaskManager(
+    protected TestApplicationTaskManager createTaskManager(
+            @NonNull List<ComponentInfo<TestVariantImpl, TestVariantPropertiesImpl>> variants,
+            @NonNull
+                    List<
+                                    ComponentInfo<
+                                            TestComponentImpl<
+                                                    ? extends TestComponentPropertiesImpl>,
+                                            TestComponentPropertiesImpl>>
+                            testComponents,
+            boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull Project project,
-            @NonNull ProjectOptions projectOptions,
-            @NonNull DataBindingBuilder dataBindingBuilder,
             @NonNull BaseExtension extension,
-            @NonNull VariantFactory variantFactory,
-            @NonNull ToolingModelBuilderRegistry toolingRegistry,
             @NonNull Recorder recorder) {
         return new TestApplicationTaskManager(
-                globalScope,
-                project,
-                projectOptions,
-                dataBindingBuilder,
-                extension,
-                variantFactory,
-                toolingRegistry,
-                recorder);
+                variants, testComponents, hasFlavors, globalScope, extension, recorder);
     }
 
     @Override
@@ -123,7 +113,8 @@ public class TestPlugin extends BasePlugin {
 
     @NonNull
     @Override
-    protected VariantFactory createVariantFactory(@NonNull GlobalScope globalScope) {
-        return new TestVariantFactory(globalScope);
+    protected TestVariantFactory createVariantFactory(
+            @NonNull ProjectServices projectServices, @NonNull GlobalScope globalScope) {
+        return new TestVariantFactory(projectServices, globalScope);
     }
 }

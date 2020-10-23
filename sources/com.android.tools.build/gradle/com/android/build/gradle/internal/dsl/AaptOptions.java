@@ -20,14 +20,14 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.google.common.collect.Iterables;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
 /** DSL object for configuring aapt options. */
-public class AaptOptions {
+public class AaptOptions implements com.android.build.api.dsl.AaptOptions {
 
     @Inject
     public AaptOptions(boolean namespaced) {
@@ -39,21 +39,15 @@ public class AaptOptions {
     @Nullable
     private String ignoreAssetsPattern;
 
-    @Nullable
-    private List<String> noCompressList;
+    private final List<String> noCompressList = new ArrayList<>();
 
     @Nullable private Boolean cruncherEnabled;
 
     private boolean failOnMissingConfigEntry = false;
 
-    @Nullable
-    private List<String> additionalParameters;
+    private final List<String> additionalParameters = new ArrayList<>();
 
     private int cruncherProcesses = 0;
-
-    public void setIgnoreAssetsPattern(@Nullable String ignoreAssetsPattern) {
-        this.ignoreAssetsPattern = ignoreAssetsPattern;
-    }
 
     public void setIgnoreAssets(@Nullable String ignoreAssetsPattern) {
         setIgnoreAssetsPattern(ignoreAssetsPattern);
@@ -68,11 +62,12 @@ public class AaptOptions {
         return ignoreAssetsPattern;
     }
 
-    /**
-     * Pattern describing assets to be ignore.
-     *
-     * <p>See <code>aapt --help</code>
-     */
+    @Override
+    public void setIgnoreAssetsPattern(@Nullable String ignoreAssetsPattern) {
+        this.ignoreAssetsPattern = ignoreAssetsPattern;
+    }
+
+    @Override
     @Nullable
     public String getIgnoreAssetsPattern() {
         return ignoreAssetsPattern;
@@ -94,17 +89,12 @@ public class AaptOptions {
                         + "characters. Please use '' instead.");
             }
         }
-
-        noCompressList = Arrays.asList(noCompress);
+        noCompressList.clear();
+        Collections.addAll(noCompressList, noCompress);
     }
 
-    /**
-     * Extensions of files that will not be stored compressed in the APK. Adding an empty
-     * extension, <i>i.e.</i>, setting {@code noCompress ''} will trivially disable compression
-     * for all files.
-     *
-     * <p>Equivalent of the -0 flag. See <code>aapt --help</code>
-     */
+    @NonNull
+    @Override
     public Collection<String> getNoCompress() {
         return noCompressList;
     }
@@ -161,59 +151,45 @@ public class AaptOptions {
         failOnMissingConfigEntry = value;
     }
 
+    @Override
     public void setFailOnMissingConfigEntry(boolean value) {
         failOnMissingConfigEntry = value;
     }
 
-    /**
-     * Forces aapt to return an error if it fails to find an entry for a configuration.
-     *
-     * <p>See <code>aapt --help</code>
-     */
+    @Override
     public boolean getFailOnMissingConfigEntry() {
         return failOnMissingConfigEntry;
     }
 
     // -- DSL Methods. TODO remove once the instantiator does what I expect it to do.
 
-    /**
-     * Sets extensions of files that will not be stored compressed in the APK.
-     *
-     * <p>Equivalent of the -0 flag. See <code>aapt --help</code>
-     */
-    public void noCompress(String noCompress) {
-        noCompressList = Collections.singletonList(noCompress);
+    @Override
+    public void noCompress(@NonNull String noCompress) {
+        noCompressList.add(noCompress);
     }
 
-    /**
-     * Sets extensions of files that will not be stored compressed in the APK.
-     *
-     * <p>Equivalent of the -0 flag. See <code>aapt --help</code>
-     */
-    public void noCompress(String... noCompress) {
-        noCompressList = Arrays.asList(noCompress);
+    @Override
+    public void noCompress(@NonNull String... noCompress) {
+        Collections.addAll(noCompressList, noCompress);
     }
 
-    /**
-     * Adds additional parameters to be passed to {@code aapt}.
-     */
+    @Override
     public void additionalParameters(@NonNull String param) {
-        additionalParameters = Collections.singletonList(param);
+        additionalParameters.add(param);
     }
 
-    /**
-     * Adds additional parameters to be passed to {@code aapt}.
-     */
-    public void additionalParameters(String... params) {
-        additionalParameters = Arrays.asList(params);
+    @Override
+    public void additionalParameters(@NonNull String... params) {
+        Collections.addAll(additionalParameters, params);
     }
 
-    public void setAdditionalParameters(@Nullable List<String> parameters) {
-        additionalParameters = parameters;
+    public void setAdditionalParameters(@NonNull List<String> parameters) {
+        additionalParameters.clear();
+        additionalParameters.addAll(parameters);
     }
 
-    /** Returns the list of additional parameters to pass to {@code aapt}. */
-    @Nullable
+    @Override
+    @NonNull
     public List<String> getAdditionalParameters() {
         return additionalParameters;
     }
@@ -232,15 +208,12 @@ public class AaptOptions {
         return cruncherProcesses;
     }
 
-    /**
-     * Returns true if the resources in this sub-project are fully namespaced.
-     *
-     * <p>This property is incubating and may change in a future release.
-     */
+    @Override
     public boolean getNamespaced() {
         return namespaced;
     }
 
+    @Override
     public void setNamespaced(boolean namespaced) {
         this.namespaced = namespaced;
     }

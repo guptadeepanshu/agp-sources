@@ -17,13 +17,14 @@
 package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.UnitTestVariant;
+import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
-import org.gradle.api.model.ObjectFactory;
 
 /**
  * External API wrapper around the {@link TestVariantData}, for unit testing variants.
@@ -38,11 +39,12 @@ public class UnitTestVariantImpl extends BaseVariantImpl implements UnitTestVari
     @Inject
     public UnitTestVariantImpl(
             @NonNull TestVariantData variantData,
+            @NonNull ComponentPropertiesImpl componentProperties,
             @NonNull TestedVariant testedVariant,
-            @NonNull ObjectFactory objectFactory,
+            @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(objectFactory, readOnlyObjectProvider, outputs);
+        super(componentProperties, services, readOnlyObjectProvider, outputs);
 
         this.variantData = variantData;
         this.testedVariant = testedVariant;

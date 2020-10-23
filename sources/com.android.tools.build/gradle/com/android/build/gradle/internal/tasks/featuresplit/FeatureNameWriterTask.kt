@@ -16,14 +16,14 @@
 
 package com.android.build.gradle.internal.tasks.featuresplit
 
+import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.apache.commons.io.FileUtils
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
@@ -50,34 +50,33 @@ abstract class FeatureNameWriterTask : NonIncrementalTask() {
         FileUtils.write(outputFile.asFile.get(), featureName.get())
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<FeatureNameWriterTask>(variantScope) {
+    class CreationAction(creationConfig: DynamicFeatureCreationConfig) :
+        VariantTaskCreationAction<FeatureNameWriterTask, DynamicFeatureCreationConfig>(
+            creationConfig
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("write", "FeatureName")
+            get() = computeTaskName("write", "FeatureName")
 
         override val type: Class<FeatureNameWriterTask>
             get() = FeatureNameWriterTask::class.java
 
         override fun handleProvider(
-            taskProvider: TaskProvider<out FeatureNameWriterTask>
+            taskProvider: TaskProvider<FeatureNameWriterTask>
         ) {
             super.handleProvider(taskProvider)
 
-            variantScope
-                .artifacts
-                .producesFile(
-                    InternalArtifactType.FEATURE_NAME,
-                    taskProvider,
-                    FeatureNameWriterTask::outputFile,
-                    "feature-name.txt"
-                )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                FeatureNameWriterTask::outputFile
+            ).withName("feature-name.txt").on(InternalArtifactType.FEATURE_NAME)
         }
 
-        override fun configure(task: FeatureNameWriterTask) {
+        override fun configure(
+            task: FeatureNameWriterTask
+        ) {
             super.configure(task)
-            task.featureName.set(variantScope.featureName)
-            task.featureName.disallowChanges()
+            task.featureName.setDisallowChanges(creationConfig.featureName)
         }
     }
 }

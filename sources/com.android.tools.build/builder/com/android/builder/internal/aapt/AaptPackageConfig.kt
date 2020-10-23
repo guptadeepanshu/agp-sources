@@ -34,13 +34,13 @@ data class AaptPackageConfig(
     val sourceOutputDir: File? = null,
     val resourceOutputApk: File? = null,
     val librarySymbolTableFiles: ImmutableCollection<File> = ImmutableList.of(),
+    val localSymbolTableFile: File? = null,
     val symbolOutputDir: File? = null,
     val verbose: Boolean = false,
     val resourceDirs: ImmutableList<File> = ImmutableList.of(),
     val proguardOutputFile: File? = null,
     val mainDexListProguardOutputFile: File? = null,
     val splits: ImmutableCollection<String>? = null,
-    val debuggable: Boolean = false,
     val customPackageForR: String? = null,
     val preferredDensity: String? = null,
     val resourceConfigs: ImmutableSet<String> = ImmutableSet.of(),
@@ -57,7 +57,9 @@ data class AaptPackageConfig(
     val useConditionalKeepRules: Boolean = false,
     val useMinimalKeepRules: Boolean = false,
     val useFinalIds: Boolean = true,
-    val excludeSources: Boolean = false
+    val excludeSources: Boolean = false,
+    val emitStableIdsFile: File? = null,
+    val consumeStableIdsFile: File? = null
 ) : Serializable {
 
     init {
@@ -80,13 +82,13 @@ data class AaptPackageConfig(
         private var sourceOutputDir: File? = null
         private var resourceOutputApk: File? = null
         private var librarySymbolTableFiles: ImmutableCollection<File> = ImmutableSet.of()
+        private var localSymbolTableFile: File? = null
         private var symbolOutputDir: File? = null
         private var isVerbose: Boolean = false
         private var resourceDirsBuilder: ImmutableList.Builder<File> = ImmutableList.builder()
         private var proguardOutputFile: File? = null
         private var mainDexListProguardOutputFile: File? = null
         private var splits: ImmutableCollection<String>? = null
-        private var debuggable: Boolean = false
         private var customPackageForR: String? = null
         private var preferredDensity: String? = null
         private var androidJarPath: String? = null
@@ -105,6 +107,8 @@ data class AaptPackageConfig(
         private var useMinimalKeepRules: Boolean = false
         private var useFinalIds: Boolean = true
         private var excludeSources: Boolean = false
+        private var emitStableIdsFile: File? = null
+        private var consumeStableIdsFile: File? = null
 
         /**
          * Creates a new [AaptPackageConfig] from the data already placed in the builder.
@@ -119,13 +123,13 @@ data class AaptPackageConfig(
                 sourceOutputDir = sourceOutputDir,
                 resourceOutputApk = resourceOutputApk,
                 librarySymbolTableFiles = librarySymbolTableFiles,
+                localSymbolTableFile = localSymbolTableFile,
                 symbolOutputDir = symbolOutputDir,
                 verbose = isVerbose,
                 resourceDirs = resourceDirsBuilder.build(),
                 proguardOutputFile = proguardOutputFile,
                 mainDexListProguardOutputFile = mainDexListProguardOutputFile,
                 splits = splits,
-                debuggable = debuggable,
                 customPackageForR = customPackageForR,
                 preferredDensity = preferredDensity,
                 resourceConfigs = resourceConfigs,
@@ -142,7 +146,9 @@ data class AaptPackageConfig(
                 useConditionalKeepRules = useConditionalKeepRules,
                 useMinimalKeepRules = useMinimalKeepRules,
                 useFinalIds = useFinalIds,
-                excludeSources = excludeSources
+                excludeSources = excludeSources,
+                emitStableIdsFile = emitStableIdsFile,
+                consumeStableIdsFile = consumeStableIdsFile
             )
         }
 
@@ -179,6 +185,11 @@ data class AaptPackageConfig(
                 this.librarySymbolTableFiles = ImmutableSet.copyOf(libraries)
             }
 
+            return this
+        }
+
+        fun setLocalSymbolTableFile(localSymbolTableFile: File?): Builder {
+            this.localSymbolTableFile = localSymbolTableFile
             return this
         }
 
@@ -219,11 +230,6 @@ data class AaptPackageConfig(
                 this.splits = ImmutableList.copyOf(splits)
             }
 
-            return this
-        }
-
-        fun setDebuggable(debuggable: Boolean): Builder {
-            this.debuggable = debuggable
             return this
         }
 
@@ -308,6 +314,16 @@ data class AaptPackageConfig(
 
         fun setExcludeSources(value: Boolean): Builder {
             this.excludeSources = value
+            return this
+        }
+
+        fun setEmitStableIdsFile(value: File?): Builder {
+            this.emitStableIdsFile = value
+            return this
+        }
+
+        fun setConsumeStableIdsFile(value: File?): Builder {
+            this.consumeStableIdsFile = value
             return this
         }
     }

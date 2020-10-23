@@ -17,10 +17,9 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.AnchorOutputType
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.VariantTypeImpl
@@ -28,9 +27,9 @@ import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
@@ -43,8 +42,7 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    lateinit var variantArtifact: Provider<FileCollection>
-        private set
+    abstract val variantArtifact: ConfigurableFileCollection
 
     private lateinit var externalArtifactCollection: ArtifactCollection
 
@@ -65,8 +63,9 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
         val variantDepsHolder = VariantDependenciesHolder(
             allDirectDependencies,
             apiDirectDependenciesConfiguration?.allDependencies)
-        val variantClassHolder = VariantClassesHolder(variantArtifact.get())
+        val variantClassHolder = VariantClassesHolder(variantArtifact)
         val classFinder = ClassFinder(externalArtifactCollection)
+        val resourcesFinder = ResourcesFinder(externalArtifactCollection)
 
         val depsUsageFinder =
             DependencyUsageFinder(classFinder, variantClassHolder, variantDepsHolder)
@@ -81,6 +80,7 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                 variantClassHolder,
                 variantDepsHolder,
                 classFinder,
+                resourcesFinder,
                 depsUsageFinder,
                 graphAnalyzer)
 
@@ -157,46 +157,52 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
         fun getPublicClasses() = classesByType[CLASS_TYPE.PUBLIC] ?: emptySet()
     }
 
-    class CreationAction(val scope: VariantScope) :
-        VariantTaskCreationAction<AnalyzeDependenciesTask>(scope) {
+    class CreationAction(
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<AnalyzeDependenciesTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = scope.getTaskName("analyze", "Dependencies")
+            get() = computeTaskName("analyze", "Dependencies")
         override val type: Class<AnalyzeDependenciesTask>
             get() = AnalyzeDependenciesTask::class.java
 
-        override fun configure(task: AnalyzeDependenciesTask) {
+        override fun configure(
+            task: AnalyzeDependenciesTask
+        ) {
             super.configure(task)
 
-            task.variantArtifact = scope.artifacts
-                .getFinalProductAsFileCollection(AnchorOutputType.ALL_CLASSES)
+            task.variantArtifact.from(creationConfig.artifacts.getAllClasses())
 
-            task.externalArtifactCollection = scope
-                .getArtifactCollection(
+            task.externalArtifactCollection = creationConfig
+                .variantDependencies.getArtifactCollection(
                     AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.CLASSES_JAR)
+                    AndroidArtifacts.ArtifactType.AAR_CLASS_LIST_AND_RES_SYMBOLS)
 
-            task.apiDirectDependenciesConfiguration = scope
+            task.apiDirectDependenciesConfiguration = creationConfig
                 .variantDependencies
                 .getElements(AndroidArtifacts.PublishedConfigType.API_ELEMENTS)
 
-            task.allDirectDependencies = scope
+            task.allDirectDependencies = creationConfig
                 .variantDependencies
                 .incomingRuntimeDependencies
 
-            task.isVariantLibrary = (scope.type == VariantTypeImpl.LIBRARY)
+            task.isVariantLibrary = (creationConfig.variantType == VariantTypeImpl.LIBRARY)
         }
 
-        override fun handleProvider(taskProvider: TaskProvider<out AnalyzeDependenciesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<AnalyzeDependenciesTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesDir(
-                artifactType = InternalArtifactType.ANALYZE_DEPENDENCIES_REPORT,
-                taskProvider = taskProvider,
-                productProvider = AnalyzeDependenciesTask::outputDirectory,
-                fileName = "analyzeDependencies"
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                AnalyzeDependenciesTask::outputDirectory
+            ).withName("analyzeDependencies")
+                .on(InternalArtifactType.ANALYZE_DEPENDENCIES_REPORT)
+
         }
     }
 

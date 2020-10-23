@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public interface AndroidArtifact extends BaseArtifact {
 
-    /** @deprecated Use post-build model instead. See {@link ProjectBuildOutput} */
+    /** @deprecated Use post-build model instead. See {@link VariantBuildInformation} */
     @Deprecated
     @NonNull
     Collection<AndroidArtifactOutput> getOutputs();
@@ -109,19 +109,13 @@ public interface AndroidArtifact extends BaseArtifact {
     Collection<NativeLibrary> getNativeLibraries();
 
     /**
-     * Map of Build Config Fields where the key is the field name.
+     * Map of generated res values where the key is the res name. This method is deprecated and will
+     * always return an empty map
      *
-     * @return a non-null map of class fields (possibly empty).
+     * @return empty map
      */
     @NonNull
-    Map<String, ClassField> getBuildConfigFields();
-
-    /**
-     * Map of generated res values where the key is the res name.
-     *
-     * @return a non-null map of class fields (possibly empty).
-     */
-    @NonNull
+    @Deprecated
     Map<String, ClassField> getResValues();
 
     /**

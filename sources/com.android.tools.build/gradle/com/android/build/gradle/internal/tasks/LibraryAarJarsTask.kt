@@ -17,15 +17,18 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.QualifiedContent.Scope
+import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
+import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.builder.model.CodeShrinker
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarMerger
 import com.android.builder.packaging.TypedefRemover
@@ -33,13 +36,13 @@ import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -48,7 +51,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.util.function.Predicate
-import java.util.function.Supplier
 import java.util.regex.Pattern
 import java.util.zip.Deflater
 
@@ -66,8 +68,9 @@ import java.util.zip.Deflater
 // TODO(b/132975663): add workers
 @CacheableTask
 abstract class LibraryAarJarsTask : NonIncrementalTask() {
-    @get:Input
-    abstract val excludeList: ListProperty<String>
+    @get:Nested
+    @get:Optional
+    abstract val dataBindingExcludeDelegate: Property<DataBindingExcludeDelegate>
 
     @get:Input
     abstract val packageName: Property<String>
@@ -135,10 +138,13 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     }
 
     private fun computeExcludeList(): List<Pattern> {
-        val excludes = getDefaultExcludes(
-            packageName.get().replace(".", "/"))
+        val packageNameValue = packageName.get()
 
-        excludes.addAll(excludeList.get())
+        val excludes = getDefaultExcludes(packageNameValue.replace(".", "/"))
+
+        dataBindingExcludeDelegate.orNull?.let {
+            excludes.addAll(it.getExcludedClassList(packageNameValue))
+        }
 
         // create Pattern Objects.
         return excludes.map { Pattern.compile(it) }
@@ -228,7 +234,10 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
         ) {
             val filterAndOnlyClasses = JarMerger.CLASSES_ONLY.and(filter)
 
-            JarCreatorFactory.make(toFile.toPath(), jarCreatorType).use { jarCreator ->
+            JarCreatorFactory.make(
+                jarFile = toFile.toPath(),
+                type = jarCreatorType
+            ).use { jarCreator ->
                 compressionLevel?.let { jarCreator.setCompressionLevel(it) }
                 // Merge only class files on CLASS type inputs
                 for (input in classFiles) {
@@ -278,60 +287,47 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope,
-        private val excludeListProvider: Supplier<List<String>> =  Supplier { listOf<String>() }
-    ) : VariantTaskCreationAction<LibraryAarJarsTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<LibraryAarJarsTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
         override val type = LibraryAarJarsTask::class.java
-        override val name =  variantScope.getTaskName("sync", "LibJars")
+        override val name =  computeTaskName("sync", "LibJars")
 
-        override fun handleProvider(taskProvider: TaskProvider<out LibraryAarJarsTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<LibraryAarJarsTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesFile(
-                artifactType = InternalArtifactType.AAR_MAIN_JAR,
-                taskProvider = taskProvider,
-                productProvider = LibraryAarJarsTask::mainClassLocation,
-                fileName = SdkConstants.FN_CLASSES_JAR
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                LibraryAarJarsTask::mainClassLocation
+            ).withName(SdkConstants.FN_CLASSES_JAR).on(InternalArtifactType.AAR_MAIN_JAR)
 
-            variantScope.artifacts.producesDir(
-                artifactType = InternalArtifactType.AAR_LIBS_DIRECTORY,
-                taskProvider = taskProvider,
-                productProvider = LibraryAarJarsTask::localJarsLocation,
-                fileName = SdkConstants.LIBS_FOLDER
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                LibraryAarJarsTask::localJarsLocation
+            ).withName(SdkConstants.LIBS_FOLDER)
+                .on(InternalArtifactType.AAR_LIBS_DIRECTORY)
         }
 
-        override fun configure(task: LibraryAarJarsTask) {
+        override fun configure(
+            task: LibraryAarJarsTask
+        ) {
             super.configure(task)
 
-            task.excludeList.set(
-                variantScope.globalScope.project.provider {
-                    excludeListProvider.get()
-                }
+            task.dataBindingExcludeDelegate.configureFrom(creationConfig)
+
+            val artifacts = creationConfig.artifacts
+
+            artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE,
+                task.typedefRecipe
             )
-            task.excludeList.disallowChanges()
 
-            val artifacts = variantScope.artifacts
-
-            if (artifacts.hasFinalProduct(InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE)) {
-                artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.ANNOTATIONS_TYPEDEF_FILE,
-                    task.typedefRecipe
-                )
-            }
-
-            task.packageName.set(
-                variantScope.globalScope.project.provider {
-                    variantScope.variantDslInfo.packageFromManifest
-                }
-            )
-            task.packageName.disallowChanges()
-
-            task.jarCreatorType.setDisallowChanges(variantScope.jarCreatorType)
-
-            task.debugBuild
-                .setDisallowChanges(variantScope.variantDslInfo.isDebuggable)
+            task.packageName.setDisallowChanges(creationConfig.packageName)
+            task.jarCreatorType.setDisallowChanges(creationConfig.variantScope.jarCreatorType)
+            task.debugBuild.setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
 
             /*
              * Only get files that are CLASS, and exclude files that are both CLASS and RESOURCES
@@ -343,12 +339,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
              * which means gradle will have to deal with possibly non-existent files in the cache
              */
             task.mainScopeClassFiles.from(
-                if (artifacts.hasFinalProduct(InternalArtifactType.SHRUNK_CLASSES)) {
-                    artifacts
-                        .getFinalProductAsFileCollection(InternalArtifactType.SHRUNK_CLASSES)
-                        .get()
+                if (creationConfig.variantScope.codeShrinker == CodeShrinker.R8) {
+                    creationConfig.artifacts
+                        .get(InternalArtifactType.SHRUNK_CLASSES)
                 } else {
-                    variantScope.transformManager
+                    creationConfig.transformManager
                         .getPipelineOutputAsFileCollection(
                             { contentTypes, scopes ->
                                 contentTypes.contains(QualifiedContent.DefaultContentType.CLASSES)
@@ -365,12 +360,11 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             task.mainScopeClassFiles.disallowChanges()
 
             task.mainScopeResourceFiles.from(
-                if (artifacts.hasFinalProduct(InternalArtifactType.SHRUNK_JAVA_RES)) {
-                    artifacts
-                        .getFinalProductAsFileCollection(InternalArtifactType.SHRUNK_JAVA_RES)
-                        .get()
+                if (creationConfig.variantScope.codeShrinker == CodeShrinker.R8) {
+                    creationConfig.artifacts
+                        .get(InternalArtifactType.SHRUNK_JAVA_RES)
                 } else {
-                    variantScope.transformManager
+                    creationConfig.transformManager
                         .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                             contentTypes.contains(QualifiedContent.DefaultContentType.RESOURCES)
                                     && scopes.contains(Scope.PROJECT)
@@ -380,7 +374,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             task.mainScopeResourceFiles.disallowChanges()
 
             task.localScopeInputFiles.from(
-                variantScope.transformManager
+                creationConfig.transformManager
                     .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                         (contentTypes.contains(QualifiedContent.DefaultContentType.CLASSES)
                                 || contentTypes.contains(QualifiedContent.DefaultContentType.RESOURCES))

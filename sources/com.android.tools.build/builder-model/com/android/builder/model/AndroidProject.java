@@ -20,6 +20,7 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Entry point for the model of the Android Projects. This models a single module, whether the
@@ -48,12 +49,12 @@ public interface AndroidProject {
     String PROPERTY_BUILD_MODEL_DISABLE_SRC_DOWNLOAD =
             "android.injected.build.model.disable.src.download";
 
-    // Sent by Studio 2.2+
-    // This property will enable compatibility checks between Android Studio and the Android
+    // Sent by Studio 2.2+ and Android Support plugin running with IDEA from 4.1+
+    // This property will enable compatibility checks between Android Support plugin and the Android
     // Gradle plugin.
-    // A use case for this property is that by restricting which versions of Studio are compatible
+    // A use case for this property is that by restricting which versions are compatible
     // with the plugin, we could safely remove deprecated methods in the builder-model interfaces.
-    String PROPERTY_STUDIO_VERSION = "android.injected.studio.version";
+    String PROPERTY_ANDROID_SUPPORT_VERSION = "android.injected.studio.version";
 
     // Sent in when external native projects models requires a refresh.
     String PROPERTY_REFRESH_EXTERNAL_NATIVE_MODEL = "android.injected.refresh.external.native.model";
@@ -392,6 +393,14 @@ public interface AndroidProject {
     String getBuildToolsVersion();
 
     /**
+     * Returns the NDK version used by this module.
+     *
+     * @return the NDK version.
+     */
+    @NonNull
+    String getNdkVersion();
+
+    /**
      * Returns the generation of the plugin.
      *
      * <p>1 is original plugin, 2 is component based plugin (AKA experimental, not used anymore)
@@ -428,4 +437,17 @@ public interface AndroidProject {
     /** Returns the AGP flags for this project. */
     @NonNull
     AndroidGradlePluginProjectFlags getFlags();
+
+    /**
+     * Returns the minimal information of variants for this project, excluding test related
+     * variants.
+     *
+     * @since 4.1
+     */
+    @NonNull
+    Collection<VariantBuildInformation> getVariantsBuildInformation();
+
+    /** Returns the lint jars that this module uses to run extra lint checks */
+    @NonNull
+    List<File> getLintRuleJars();
 }

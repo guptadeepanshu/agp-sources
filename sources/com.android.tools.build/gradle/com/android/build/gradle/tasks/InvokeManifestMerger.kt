@@ -24,7 +24,6 @@ import com.android.manifmerger.MergingReport
 import com.google.common.base.Supplier
 import java.io.File
 import java.io.FileWriter
-import java.io.IOException
 import org.apache.tools.ant.BuildException
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFile

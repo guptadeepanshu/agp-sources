@@ -23,10 +23,10 @@ import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
-import com.android.build.gradle.internal.errors.DeprecationReporter;
 import com.android.build.gradle.internal.scope.TaskContainer;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.builder.core.VariantType;
 import com.google.common.collect.ImmutableList;
-import org.gradle.api.model.ObjectFactory;
 
 /**
  * Factory for the {@link BaseVariantOutput} for each variant output that will be added to the
@@ -35,34 +35,30 @@ import org.gradle.api.model.ObjectFactory;
 public class VariantOutputFactory {
 
     @NonNull private final Class<? extends BaseVariantOutput> targetClass;
-    @NonNull private final ObjectFactory objectFactory;
+    @NonNull private final BaseServices services;
     @Nullable private final BaseVariantImpl deprecatedVariantPublicApi;
+    @NonNull private VariantType variantType;
     @NonNull private final TaskContainer taskContainer;
     @NonNull private final BaseExtension extension;
-    @NonNull private final DeprecationReporter deprecationReporter;
 
     public VariantOutputFactory(
             @NonNull Class<? extends BaseVariantOutput> targetClass,
-            @NonNull ObjectFactory objectFactory,
+            @NonNull BaseServices services,
             @NonNull BaseExtension extension,
             @Nullable BaseVariantImpl deprecatedVariantPublicApi,
-            @NonNull TaskContainer taskContainer,
-            @NonNull DeprecationReporter deprecationReporter) {
+            @NonNull VariantType variantType,
+            @NonNull TaskContainer taskContainer) {
         this.targetClass = targetClass;
-        this.objectFactory = objectFactory;
+        this.services = services;
         this.deprecatedVariantPublicApi = deprecatedVariantPublicApi;
+        this.variantType = variantType;
         this.taskContainer = taskContainer;
         this.extension = extension;
-        this.deprecationReporter = deprecationReporter;
     }
 
     public VariantOutput create(VariantOutputImpl variantApi) {
         BaseVariantOutput variantOutput =
-                objectFactory.newInstance(
-                        targetClass,
-                        taskContainer,
-                        deprecationReporter,
-                        variantApi);
+                services.newInstance(targetClass, taskContainer, services, variantApi, variantType);
         extension.getBuildOutputs().add(variantOutput);
         if (deprecatedVariantPublicApi != null) {
             deprecatedVariantPublicApi.addOutputs(ImmutableList.of(variantOutput));

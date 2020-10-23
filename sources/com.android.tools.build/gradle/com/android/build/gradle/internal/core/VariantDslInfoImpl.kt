@@ -16,6 +16,8 @@
 package com.android.build.gradle.internal.core
 
 import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.impl.ResValue
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.PostprocessingFeatures
@@ -25,19 +27,17 @@ import com.android.build.gradle.internal.dsl.BaseFlavor
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.BuildType.PostProcessingConfiguration
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
-import com.android.build.gradle.internal.dsl.CoreNdkOptions
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.internal.manifest.ManifestDataProvider
+import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.variant.DimensionCombination
 import com.android.build.gradle.options.IntegerOption
-import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.DefaultApiVersion
-import com.android.builder.core.DefaultManifestParser
-import com.android.builder.core.ManifestAttributeSupplier
-import com.android.builder.core.VariantAttributesProvider
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
 import com.android.builder.errors.IssueReporter
@@ -56,12 +56,14 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import org.gradle.api.Project
+import jdk.internal.org.objectweb.asm.Type
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import java.io.File
+import java.lang.IllegalArgumentException
 import java.util.ArrayList
-import java.util.function.BooleanSupplier
-import java.util.function.IntSupplier
-import java.util.function.Supplier
+import java.util.concurrent.Callable
 
 /**
  * Represents a variant, initialized from the DSL object model (default config, build type, flavors)
@@ -75,7 +77,6 @@ open class VariantDslInfoImpl internal constructor(
     override val componentIdentity: ComponentIdentity,
     override val variantType: VariantType,
     private val defaultConfig: DefaultConfig,
-    manifestFile: File,
     /**
      * Public because this is needed by the old Variant API. Nothing else should touch this.
      */
@@ -83,24 +84,27 @@ open class VariantDslInfoImpl internal constructor(
     /** The list of product flavors. Items earlier in the list override later items.  */
     override val productFlavorList: List<ProductFlavor>,
     private val signingConfigOverride: SigningConfig? = null,
-    manifestAttributeSupplier: ManifestAttributeSupplier? = null,
     private val testedVariantImpl: VariantDslInfoImpl? = null,
-    private val projectOptions: ProjectOptions,
-    private val issueReporter: IssueReporter,
-    isInExecutionPhase: BooleanSupplier
+    private val dataProvider: ManifestDataProvider,
+    @Deprecated("Only used for merged flavor")
+    private val dslServices: DslServices,
+    private val services: VariantPropertiesApiServices
 ): VariantDslInfo, DimensionCombination {
 
     override val buildType: String?
         get() = componentIdentity.buildType
     override val productFlavors: List<Pair<String, String>>
         get() = componentIdentity.productFlavors
+
     /**
      * This should be mostly private and not used outside of this class.
      * Unfortunately there are a few cases where this cannot happen.
      *
      * Still, DO NOT USE. You should mostly use [VariantDslInfo] which does not give access to this.
      */
-    val mergedFlavor: MergedFlavor = mergeFlavors(defaultConfig, productFlavorList, issueReporter)
+    val mergedFlavor: MergedFlavor by lazy {
+        mergeFlavors(defaultConfig, productFlavorList, applicationId, dslServices)
+    }
 
     /** Variant-specific build Config fields.  */
     private val mBuildConfigFields: MutableMap<String, ClassField> = Maps.newTreeMap()
@@ -116,37 +120,15 @@ open class VariantDslInfoImpl internal constructor(
     override val testedVariant: VariantDslInfo?
         get() = testedVariantImpl
 
-    /**
-     * For reading the attributes from the main manifest file in the default source set, combining
-     * the results with the current flavor.
-     */
-    private val mVariantAttributesProvider: VariantAttributesProvider
-
     private val mergedNdkConfig = MergedNdkConfig()
     private val mergedExternalNativeBuildOptions =
         MergedExternalNativeBuildOptions()
-    private val mergedJavaCompileOptions = MergedJavaCompileOptions()
+    private val mergedJavaCompileOptions = MergedJavaCompileOptions(dslServices)
+    private val mergedAarMetadata = MergedAarMetadata()
 
     init {
-        val manifestParser =
-            manifestAttributeSupplier
-                ?: DefaultManifestParser(
-                    manifestFile,
-                    isInExecutionPhase,
-                    variantType.requiresManifest,
-                    issueReporter
-                )
-        mVariantAttributesProvider = VariantAttributesProvider(
-            mergedFlavor,
-            buildTypeObj,
-            variantType.isTestComponent,
-            manifestParser,
-            manifestFile,
-            componentIdentity.name
-        )
         mergeOptions()
     }
-
 
     /**
      * Returns a full name that includes the given splits name.
@@ -168,7 +150,7 @@ open class VariantDslInfoImpl internal constructor(
      *
      * @return the name of the variant
      */
-    override val baseName : String by lazy {
+    override val baseName: String by lazy {
         VariantBuilder.computeBaseName(this, variantType)
     }
 
@@ -284,23 +266,50 @@ open class VariantDslInfoImpl internal constructor(
             return names
         }
 
-
     override fun hasFlavors(): Boolean {
         return productFlavorList.isNotEmpty()
     }
 
-    private val testedPackage: String
-        get() = testedVariant?.applicationId ?: ""
+    // use lazy mechanism as this is referenced by other properties, like applicationId or itself
+    override val packageName: Provider<String> by lazy {
+        when {
+            // -------------
+            // Special case for test components
+            // The package name is the tested component package name + .test
+            testedVariantImpl != null -> {
+                testedVariantImpl.packageName.map {
+                    "$it.test"
+                }
+            }
 
-    /**
-     * Returns the original application ID before any overrides from flavors. If the variant is a
-     * test variant, then the application ID is the one coming from the configuration of the tested
-     * variant, and this call is similar to [.getApplicationId]
-     *
-     * @return the original application ID
-     */
-    override val originalApplicationId: String
-        get() = mVariantAttributesProvider.getOriginalApplicationId(testedPackage)
+            // -------------
+            // Special case for separate test sub-projects
+            // if there is no manifest with no packageName but there is a testApplicationId
+            // then we use that. This allows the test project to not have a manifest if all
+            // is declared in the DSL.
+            variantType.isSeparateTestProject -> {
+                val testAppIdFromFlavors =
+                    productFlavorList.asSequence().map { it.testApplicationId }
+                        .firstOrNull { it != null }
+                        ?: defaultConfig.testApplicationId
+
+                dataProvider.manifestData.map {
+                    it.packageName
+                        ?: testAppIdFromFlavors
+                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
+                }
+            }
+
+            // -------------
+            // All other types of projects, just read from the manifest.
+            else -> {
+                dataProvider.manifestData.map {
+                    it.packageName
+                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
+                }
+            }
+        }
+    }
 
     /**
      * Returns the application ID for this variant. This could be coming from the manifest or could
@@ -308,111 +317,210 @@ open class VariantDslInfoImpl internal constructor(
      *
      * @return the application ID
      */
-    override val applicationId: String
-        get() = mVariantAttributesProvider.getApplicationId(testedPackage)
+    override val applicationId: Property<String> =
+        services.newPropertyBackingDeprecatedApi(
+            String::class.java,
+            initApplicationId(),
+            "applicationId"
+        )
 
-    override val testApplicationId: String
-        get() = mVariantAttributesProvider.getTestApplicationId(testedPackage)
 
-    override val testedApplicationId: String?
-        get() {
-            if (variantType.isTestComponent) {
-                val tested = testedVariant!!
-                return if (tested.variantType.isAar) {
-                    applicationId
+    private fun initApplicationId(): Provider<String> {
+            // -------------
+            // Special case for test components and separate test sub-projects
+            if (variantType.isForTesting) {
+                // get first non null testAppId from flavors/default config
+                val testAppIdFromFlavors =
+                    productFlavorList.asSequence().map { it.testApplicationId }
+                        .firstOrNull { it != null }
+                        ?: defaultConfig.testApplicationId
+
+                return if (testAppIdFromFlavors == null) {
+                    testedVariantImpl?.applicationId?.map {
+                        "$it.test"
+                    } ?: packageName
                 } else {
-                    tested.applicationId
+                    // needed to make nullability work in kotlinc
+                    val finalTestAppIdFromFlavors: String = testAppIdFromFlavors
+                    services.provider(Callable { finalTestAppIdFromFlavors })
                 }
             }
-            return null
-        }
 
-    /**
-     * Returns the application id override value coming from the Product Flavor and/or the Build
-     * Type. If the package/id is not overridden then this returns null.
-     *
-     * @return the id override or null
-     */
-    override val idOverride: String?
-        get() = mVariantAttributesProvider.idOverride
+            // -------------
+            // All other project types
 
-    /**
-     * Returns the version name for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest. A suffix may be specified by the build
-     * type.
-     *
-     * @return the version name or null if none defined
-     */
-    override val versionName: String?
-        get() {
-            val override =
-                projectOptions[StringOption.IDE_VERSION_NAME_OVERRIDE]
-            return override ?: getVersionName(false)
-        }
+            // get first non null appId from flavors/default config
+            val appIdFromFlavors =
+                productFlavorList.asSequence().map { it.applicationId }.firstOrNull { it != null }
+                    ?: defaultConfig.applicationId
 
-    /**
-     * Returns the version name for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest. A suffix may be specified by the build
-     * type.
-     *
-     * @param ignoreManifest whether or not the manifest is ignored when getting the version code
-     * @return the version name or null if none defined
-     */
-    override fun getVersionName(ignoreManifest: Boolean): String? {
-        return mVariantAttributesProvider.getVersionName(ignoreManifest)
+            return if (appIdFromFlavors == null) {
+                // No appId value set from DSL,  rely on package name value from manifest.
+                // using map will allow us to keep task dependency should the manifest be generated
+                // or transformed via a task.
+                dataProvider.manifestData.map {
+                    it.packageName?.let { pName ->
+                        "$pName${computeApplicationIdSuffix()}"
+                    }
+                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
+                }
+            } else {
+                // use value from flavors/defaultConfig
+                // needed to make nullability work in kotlinc
+                val finalAppIdFromFlavors: String = appIdFromFlavors
+                services.provider(
+                    Callable { "$finalAppIdFromFlavors${computeApplicationIdSuffix()}" })
+            }
     }
 
     /**
-     * Returns the version code for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest.
+     * Combines all the appId suffixes into a single one.
      *
-     * @return the version code or -1 if there was none defined.
+     * The suffixes are separated by '.' whether their first char is a '.' or not.
      */
-    override val versionCode: Int
-        get() {
-            val override =
-                projectOptions[IntegerOption.IDE_VERSION_CODE_OVERRIDE]
-            return override ?: getVersionCode(false)
+    private fun computeApplicationIdSuffix(): String {
+        // for the suffix we combine the suffix from all the flavors. However, we're going to
+        // want the higher priority one to be last.
+        val suffixes = mutableListOf<String>()
+        defaultConfig.applicationIdSuffix?.let {
+            suffixes.add(it)
         }
 
-    /**
-     * Returns the version code for this variant. This could be specified by the product flavors,
-     * or, if not, it could be coming from the manifest.
-     *
-     * @param ignoreManifest whether or not the manifest is ignored when getting the version code
-     * @return the version code or -1 if there was none defined.
-     */
-    override fun getVersionCode(ignoreManifest: Boolean): Int {
-        return mVariantAttributesProvider.getVersionCode(ignoreManifest)
+        suffixes.addAll(productFlavorList.mapNotNull { it.applicationIdSuffix })
+
+        // then we add the build type after.
+        buildTypeObj.applicationIdSuffix?.let {
+            suffixes.add(it)
+        }
+        val nonEmptySuffixes = suffixes.filter { it.isNotEmpty() }
+        return if (nonEmptySuffixes.isNotEmpty()) {
+            ".${nonEmptySuffixes.joinToString(separator = ".", transform = { it.removePrefix(".") })}"
+        } else {
+            ""
+        }
     }
 
-    override val manifestVersionNameSupplier: Supplier<String?>
-        get() = mVariantAttributesProvider.manifestVersionNameSupplier
-
-    override val manifestVersionCodeSupplier: IntSupplier
-        get() = mVariantAttributesProvider.manifestVersionCodeSupplier
-
-    /**
-     * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
-     * the one to use to test the tested variant.
-     *
-     * @return the instrumentation test runner name
-     */
-    override val instrumentationRunner: String
+    override val versionName: Provider<String?>
         get() {
-            val variantDslInfo: VariantDslInfoImpl =
-                if (variantType.isTestComponent) {
-                    testedVariantImpl!!
-                } else {
-                    this
-                }
-            val runner = variantDslInfo.mVariantAttributesProvider.instrumentationRunner
-            if (runner != null) {
-                return runner
+            // This value is meaningless for tests
+            if (variantType.isForTesting) {
+                val callable: Callable<String?> = Callable { null }
+                return services.provider(callable)
             }
-            return if (isLegacyMultiDexMode) {
-                MULTIDEX_TEST_RUNNER
-            } else DEFAULT_TEST_RUNNER
+
+            // TODO: figure out whether it's worth it to put all this inside a Provider to make it lazy.
+            val injectedVersionName =
+                services.projectOptions[StringOption.IDE_VERSION_NAME_OVERRIDE]
+            if (injectedVersionName != null) {
+                return services.provider(Callable { injectedVersionName })
+            }
+
+            // If the version name from the flavors is null, then we read from the manifest and combine
+            // with suffixes, unless it's a test at which point we just return.
+            // If the name is not-null, we just combine it with suffixes
+            val versionNameFromFlavors =
+                productFlavorList.asSequence().map { it.versionName }.firstOrNull { it != null }
+                    ?: defaultConfig.versionName
+
+            return if (versionNameFromFlavors == null) {
+                // rely on manifest value
+                // using map will allow us to keep task dependency should the manifest be generated or
+                // transformed via a task.
+                dataProvider.manifestData.map {
+                    if (it.versionName == null) {
+                        it.versionName
+                    } else {
+                        "${it.versionName}${computeVersionNameSuffix()}"
+                    }
+                }
+            } else {
+                // use value from flavors
+                services.provider(
+                    Callable { "$versionNameFromFlavors${computeVersionNameSuffix()}" })
+            }
+        }
+
+    private fun computeVersionNameSuffix(): String {
+        // for the suffix we combine the suffix from all the flavors. However, we're going to
+        // want the higher priority one to be last.
+        val suffixes = mutableListOf<String>()
+        defaultConfig.versionNameSuffix?.let {
+            suffixes.add(it)
+        }
+
+        suffixes.addAll(productFlavorList.mapNotNull { it.versionNameSuffix })
+
+        // then we add the build type after.
+        buildTypeObj.versionNameSuffix?.let {
+            suffixes.add(it)
+        }
+
+        return if (suffixes.isNotEmpty()) {
+            suffixes.joinToString(separator = "")
+        } else {
+            ""
+        }
+    }
+
+    override val versionCode: Provider<Int?>
+        get() {
+            // This value is meaningless for tests
+            if (variantType.isForTesting) {
+                val callable: Callable<Int?> = Callable { null }
+                return services.provider(callable)
+            }
+
+            // TODO: figure out whether it's worth it to put all this inside a Provider to make it lazy.
+            val injectedVersionCode =
+                services.projectOptions[IntegerOption.IDE_VERSION_CODE_OVERRIDE]
+            if (injectedVersionCode != null) {
+                return services.provider(Callable { injectedVersionCode })
+            }
+
+            // If the version code from the flavors is null, then we read from the manifest and combine
+            // with suffixes, unless it's a test at which point we just return.
+            // If the name is not-null, we just combine it with suffixes
+            val versionCodeFromFlavors =
+                productFlavorList.asSequence().map { it.versionCode }.firstOrNull { it != null }
+                    ?: defaultConfig.versionCode
+
+            return if (versionCodeFromFlavors == null) {
+                // rely on manifest value
+                // using map will allow us to keep task dependency should the manifest be generated or
+                // transformed via a task.
+                dataProvider.manifestData.map { it.versionCode }
+            } else {
+                // use value from flavors
+                services.provider(Callable { versionCodeFromFlavors })
+            }
+        }
+
+    override val instrumentationRunner: Provider<String>
+        get() {
+            if (!variantType.isForTesting) {
+                throw RuntimeException("instrumentationRunner is not available to non-test variant")
+            }
+
+            // first check whether the DSL has the info
+            val fromFlavor =
+                productFlavorList.asSequence().map { it.testInstrumentationRunner }
+                    .firstOrNull { it != null }
+                    ?: defaultConfig.testInstrumentationRunner
+
+            if (fromFlavor != null) {
+                val finalFromFlavor: String = fromFlavor
+                return services.provider(Callable { finalFromFlavor })
+            }
+
+            // else return the value from the Manifest
+            return dataProvider.manifestData.map {
+                it.instrumentationRunner
+                    ?: if (isLegacyMultiDexMode) {
+                        MULTIDEX_TEST_RUNNER
+                    } else {
+                        DEFAULT_TEST_RUNNER
+                    }
+            }
         }
 
     /**
@@ -430,47 +538,71 @@ open class VariantDslInfoImpl internal constructor(
             return variantDslInfo.mergedFlavor.testInstrumentationRunnerArguments
         }
 
-    /**
-     * Returns handleProfiling value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the handleProfiling value
-     */
-    override val handleProfiling: Boolean
+    override val handleProfiling: Provider<Boolean>
         get() {
-            val variantDslInfo: VariantDslInfoImpl =
-                if (variantType.isTestComponent) {
-                    testedVariantImpl!!
-                } else {
-                    this
-                }
-            return variantDslInfo.mVariantAttributesProvider.handleProfiling ?: DEFAULT_HANDLE_PROFILING
+            if (!variantType.isForTesting) {
+                throw RuntimeException("handleProfiling is not available to non-test variant")
+            }
+
+            // first check whether the DSL has the info
+            val fromFlavor =
+                productFlavorList.asSequence().map { it.testHandleProfiling }
+                    .firstOrNull { it != null }
+                    ?: defaultConfig.testHandleProfiling
+
+            if (fromFlavor != null) {
+                val finalFromFlavor: Boolean = fromFlavor
+                return services.provider(Callable { finalFromFlavor })
+            }
+
+            // else return the value from the Manifest
+            return dataProvider.manifestData.map { it.handleProfiling ?: DEFAULT_HANDLE_PROFILING }
         }
 
-    /**
-     * Returns functionalTest value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the functionalTest value
-     */
-    override val functionalTest: Boolean
+    override val functionalTest: Provider<Boolean>
         get() {
-            val variantDslInfo: VariantDslInfoImpl =
-                if (variantType.isTestComponent) {
-                    testedVariantImpl!!
-                } else {
-                    this
-                }
-            return variantDslInfo.mVariantAttributesProvider.functionalTest ?: DEFAULT_FUNCTIONAL_TEST
+            if (!variantType.isForTesting) {
+                throw RuntimeException("functionalTest is not available to non-test variant")
+            }
+
+            // first check whether the DSL has the info
+            val fromFlavor =
+                productFlavorList.asSequence().map { it.testFunctionalTest }
+                    .firstOrNull { it != null }
+                    ?: defaultConfig.testFunctionalTest
+
+            if (fromFlavor != null) {
+                val finalFromFlavor: Boolean = fromFlavor
+                return services.provider(Callable { finalFromFlavor })
+            }
+
+            // else return the value from the Manifest
+            return dataProvider.manifestData.map { it.functionalTest ?: DEFAULT_FUNCTIONAL_TEST }
         }
 
-    /** Gets the test label for this variant  */
-    override val testLabel: String?
-        get() = mVariantAttributesProvider.testLabel
+    override val testLabel: Provider<String?>
+        get() {
+            if (!variantType.isForTesting) {
+                throw RuntimeException("handleProfiling is not available to non-test variant")
+            }
 
-    /** Reads the package name from the manifest. This is unmodified by the build type.  */
-    override val packageFromManifest: String
-        get() = mVariantAttributesProvider.packageName// default to 1 for minSdkVersion.
+            // there is actually no DSL value for this.
+            return dataProvider.manifestData.map { it.testLabel }
+        }
+
+    val extractNativeLibs: Provider<Boolean?>
+        get() {
+            // there is actually no DSL value for this, also we should add one
+            // FIXME b/149770867
+            return dataProvider.manifestData.map { it.extractNativeLibs }
+        }
+
+    val useEmbeddedDex: Provider<Boolean?>
+        get() {
+            // there is actually no DSL value for this, also we should add one
+            // FIXME b/149770867
+            return dataProvider.manifestData.map { it.useEmbeddedDex }
+        }
 
     /**
      * Return the minSdkVersion for this variant.
@@ -486,11 +618,10 @@ open class VariantDslInfoImpl internal constructor(
             if (testedVariantImpl != null) {
                 return testedVariantImpl.minSdkVersion
             }
-            var minSdkVersion = mergedFlavor.minSdkVersion
-            if (minSdkVersion == null) { // default to 1 for minSdkVersion.
-                minSdkVersion =
-                    DefaultApiVersion.create(Integer.valueOf(1))
-            }
+            // default to 1 for minSdkVersion.
+            val minSdkVersion =
+                mergedFlavor.minSdkVersion ?: DefaultApiVersion.create(Integer.valueOf(1))
+
             return AndroidVersion(
                 minSdkVersion.apiLevel,
                 minSdkVersion.codename
@@ -499,6 +630,7 @@ open class VariantDslInfoImpl internal constructor(
 
     override val maxSdkVersion: Int?
         get() = mergedFlavor.maxSdkVersion
+
     /**
      * Return the targetSdkVersion for this variant.
      *
@@ -513,13 +645,9 @@ open class VariantDslInfoImpl internal constructor(
             if (testedVariantImpl != null) {
                 return testedVariantImpl.targetSdkVersion
             }
-            var targetSdkVersion =
-                mergedFlavor.targetSdkVersion
-            if (targetSdkVersion == null) { // default to -1 if not in build.gradle file.
-                targetSdkVersion =
-                    DefaultApiVersion.create(Integer.valueOf(-1))
-            }
-            return targetSdkVersion
+            return mergedFlavor.targetSdkVersion
+                // default to -1 if not in build.gradle file.
+                ?: DefaultApiVersion.create(Integer.valueOf(-1))
         }
 
     override val renderscriptTarget: Int
@@ -553,7 +681,9 @@ open class VariantDslInfoImpl internal constructor(
      * @param value the value of the field
      */
     override fun addBuildConfigField(
-        type: String, name: String, value: String
+        type: String,
+        name: String,
+        value: String
     ) {
         val classField: ClassField = ClassFieldImpl(type, name, value)
         mBuildConfigFields[name] = classField
@@ -569,100 +699,42 @@ open class VariantDslInfoImpl internal constructor(
     override fun addResValue(type: String, name: String, value: String) {
         val classField: ClassField = ClassFieldImpl(type, name, value)
         mResValues[name] = classField
-    }// keep track of the names already added. This is because we show where the items
+    } // keep track of the names already added. This is because we show where the items
 // come from so we cannot just put everything a map and let the new ones override the
 // old ones.
 
-    /**
-     * Returns a list of items for the BuildConfig class.
-     *
-     *
-     * Items can be either fields (instance of [com.android.builder.model.ClassField]) or
-     * comments (instance of String).
-     *
-     * @return a list of items.
-     */
-    override val buildConfigItems: List<Any>
-        get() {
-            val fullList: MutableList<Any> =
-                Lists.newArrayList()
-            // keep track of the names already added. This is because we show where the items
-            // come from so we cannot just put everything a map and let the new ones override the
-            // old ones.
-            val usedFieldNames = mutableSetOf<String>()
+    override fun getBuildConfigFields(): Map<String, BuildConfigField<out java.io.Serializable>> {
+        val buildConfigFieldsMap =
+            mutableMapOf<String, BuildConfigField<out java.io.Serializable>>()
 
-            var list: Collection<ClassField> = mBuildConfigFields.values
-            if (!list.isEmpty()) {
-                fullList.add("Fields from the variant")
-                fillFieldList(fullList, usedFieldNames, list)
+        fun addToListIfNotAlreadyPresent(classField: ClassField, comment: String) {
+            if (!buildConfigFieldsMap.containsKey(classField.name)) {
+                buildConfigFieldsMap[classField.name] =
+                        BuildConfigField(classField.type , classField.value, comment)
             }
-            list = buildTypeObj.buildConfigFields.values
-            if (!list.isEmpty()) {
-                fullList.add("Fields from build type: " + buildTypeObj.name)
-                fillFieldList(fullList, usedFieldNames, list)
-            }
-            for (flavor in productFlavorList) {
-                list = flavor.buildConfigFields.values
-                if (!list.isEmpty()) {
-                    fullList.add("Fields from product flavor: " + flavor.name)
-                    fillFieldList(fullList, usedFieldNames, list)
-                }
-            }
-            list = defaultConfig.buildConfigFields.values
-            if (!list.isEmpty()) {
-                fullList.add("Fields from default config.")
-                fillFieldList(fullList, usedFieldNames, list)
-            }
-            return fullList
-        }// start from the lowest priority and just add it all. Higher priority fields
-// will replace lower priority ones.
-
-    /**
-     * Return the merged build config fields for the variant.
-     *
-     *
-     * This is made of the variant-specific fields overlaid on top of the build type ones, the
-     * flavors ones, and the default config ones.
-     *
-     * @return a map of merged fields
-     */
-    override val mergedBuildConfigFields: Map<String, ClassField>
-        get() {
-            val mergedMap: MutableMap<String, ClassField> = Maps.newHashMap()
-
-            // start from the lowest priority and just add it all. Higher priority fields
-            // will replace lower priority ones.
-            mergedMap.putAll(defaultConfig.buildConfigFields)
-            for (i in productFlavorList.indices.reversed()) {
-                mergedMap.putAll(productFlavorList[i].buildConfigFields)
-            }
-            mergedMap.putAll(buildTypeObj.buildConfigFields)
-            mergedMap.putAll(mBuildConfigFields)
-            return mergedMap
         }
 
-    /**
-     * Return the merged res values for the variant.
-     *
-     *
-     * This is made of the variant-specific fields overlaid on top of the build type ones, the
-     * flavors ones, and the default config ones.
-     *
-     * @return a map of merged fields
-     */
-    override val mergedResValues: Map<String, ClassField>
-        get() {
-            // start from the lowest priority and just add it all. Higher priority fields
-            // will replace lower priority ones.
-            val mergedMap: MutableMap<String, ClassField> = Maps.newHashMap()
-            mergedMap.putAll(defaultConfig.resValues)
-            for (i in productFlavorList.indices.reversed()) {
-                mergedMap.putAll(productFlavorList[i].resValues)
-            }
-            mergedMap.putAll(buildTypeObj.resValues)
-            mergedMap.putAll(mResValues)
-            return mergedMap
+        mBuildConfigFields.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Field from the variant API")
         }
+
+        buildTypeObj.buildConfigFields.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Field from build type: ${buildTypeObj.name}")
+        }
+
+        for (flavor in productFlavorList) {
+            flavor.buildConfigFields.values.forEach { classField ->
+                addToListIfNotAlreadyPresent(
+                    classField,
+                    "Field from product flavor: ${flavor.name}"
+                )
+            }
+        }
+        defaultConfig.buildConfigFields.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Field from default config.")
+        }
+        return buildConfigFieldsMap
+    }
 
     /**
      * Returns a list of generated resource values.
@@ -673,38 +745,42 @@ open class VariantDslInfoImpl internal constructor(
      *
      * @return a list of items.
      */
-    override val resValues: List<Any>
-        get() {
-            val fullList: MutableList<Any> =
-                Lists.newArrayList()
-            // keep track of the names already added. This is because we show where the items
-            // come from so we cannot just put everything a map and let the new ones override the
-            // old ones.
-            val usedFieldNames: MutableSet<String> = Sets.newHashSet()
-            var list: Collection<ClassField> = mResValues.values
-            if (!list.isEmpty()) {
-                fullList.add("Values from the variant")
-                fillFieldList(fullList, usedFieldNames, list)
+    override fun getResValues(): Map<ResValue.Key, ResValue> {
+        val resValueFields = mutableMapOf<ResValue.Key, ResValue>()
+
+        fun addToListIfNotAlreadyPresent(classField: ClassField, comment: String) {
+            val key = ResValue.Key(classField.type, classField.name)
+            if (!resValueFields.containsKey(key)) {
+                resValueFields[key] = ResValue(
+                    value = classField.value,
+                    comment = comment
+                )
             }
-            list = buildTypeObj.resValues.values
-            if (!list.isEmpty()) {
-                fullList.add("Values from build type: " + buildTypeObj.name)
-                fillFieldList(fullList, usedFieldNames, list)
-            }
-            for (flavor in productFlavorList) {
-                list = flavor.resValues.values
-                if (!list.isEmpty()) {
-                    fullList.add("Values from product flavor: " + flavor.name)
-                    fillFieldList(fullList, usedFieldNames, list)
-                }
-            }
-            list = defaultConfig.resValues.values
-            if (!list.isEmpty()) {
-                fullList.add("Values from default config.")
-                fillFieldList(fullList, usedFieldNames, list)
-            }
-            return fullList
         }
+
+        mResValues.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Value from the variant")
+        }
+
+        buildTypeObj.resValues.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Value from build type: ${buildTypeObj.name}")
+        }
+
+        productFlavorList.forEach { flavor ->
+            flavor.resValues.values.forEach { classField ->
+                addToListIfNotAlreadyPresent(
+                    classField,
+                    "Value from product flavor: ${flavor.name}"
+                )
+            }
+        }
+
+        defaultConfig.resValues.values.forEach { classField ->
+            addToListIfNotAlreadyPresent(classField, "Value from default config.")
+        }
+
+        return resValueFields
+    }
 
     override val signingConfig: SigningConfig?
         get() {
@@ -727,7 +803,7 @@ open class VariantDslInfoImpl internal constructor(
         }
 
     override val isTestCoverageEnabled: Boolean
-        get() = buildTypeObj.isTestCoverageEnabled// so far, blindly override the build type placeholders
+        get() = buildTypeObj.isTestCoverageEnabled // so far, blindly override the build type placeholders
 
     /**
      * Returns the merged manifest placeholders. All product flavors are merged first, then build
@@ -735,14 +811,17 @@ open class VariantDslInfoImpl internal constructor(
      *
      * @return the merged manifest placeholders for a build variant.
      */
-    override val manifestPlaceholders: Map<String, Any>
-        get() {
-            val mergedFlavorsPlaceholders =
-                mergedFlavor.manifestPlaceholders
-            // so far, blindly override the build type placeholders
-            mergedFlavorsPlaceholders.putAll(buildTypeObj.manifestPlaceholders)
-            return mergedFlavorsPlaceholders
+    override val manifestPlaceholders: Map<String, String> by lazy {
+        val mergedFlavorsPlaceholders: MutableMap<String, String> = mutableMapOf()
+        mergedFlavor.manifestPlaceholders.forEach { (key, value) ->
+            mergedFlavorsPlaceholders[key] = value.toString()
         }
+        // so far, blindly override the build type placeholders
+        buildTypeObj.manifestPlaceholders.forEach { (key, value) ->
+            mergedFlavorsPlaceholders[key] = value.toString()
+        }
+        mergedFlavorsPlaceholders
+    }
 
     // Only require specific multidex opt-in for legacy multidex.
     override val isMultiDexEnabled: Boolean
@@ -779,15 +858,15 @@ open class VariantDslInfoImpl internal constructor(
     // dynamic features can always be build in native multidex mode
     override val dexingType: DexingType
         get() = if (variantType.isDynamicFeature) {
-            if (buildTypeObj.multiDexEnabled != null
-                || mergedFlavor.multiDexEnabled != null
+            if (buildTypeObj.multiDexEnabled != null ||
+                mergedFlavor.multiDexEnabled != null
             ) {
-                issueReporter
+                dslServices.issueReporter
                     .reportWarning(
                         IssueReporter.Type.GENERIC,
-                        "Native multidex is always used for dynamic features. Please "
-                                + "remove 'multiDexEnabled true|false' from your "
-                                + "build.gradle file."
+                        "Native multidex is always used for dynamic features. Please " +
+                                "remove 'multiDexEnabled true|false' from your " +
+                                "build.gradle file."
                     )
             }
             // dynamic features can always be build in native multidex mode
@@ -815,7 +894,7 @@ open class VariantDslInfoImpl internal constructor(
 
     /** Returns true if the variant output is a bundle.  */
     override val isBundled: Boolean
-        get() = variantType.isAar// Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
+        get() = variantType.isAar // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
 
     /**
      * Returns the minimum SDK version for this variant, potentially overridden by a property passed
@@ -825,10 +904,10 @@ open class VariantDslInfoImpl internal constructor(
      */
     override val minSdkVersionWithTargetDeviceApi: AndroidVersion
         get() {
-            val targetApiLevel =
-                projectOptions[IntegerOption.IDE_TARGET_DEVICE_API]
-            return if (targetApiLevel != null && isMultiDexEnabled && buildTypeObj.isDebuggable) { // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is
-// debuggable.
+            val targetApiLevel = dslServices.projectOptions[IntegerOption.IDE_TARGET_DEVICE_API]
+            return if (targetApiLevel != null && isMultiDexEnabled && buildTypeObj.isDebuggable) {
+                // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is
+                // debuggable.
                 val minVersion: Int =
                     if (targetSdkVersion.apiLevel > 1) Integer.min(
                         targetSdkVersion.apiLevel,
@@ -859,24 +938,30 @@ open class VariantDslInfoImpl internal constructor(
             { externalNativeBuildOptions },
             { externalNativeBuildOptions }
         )
+        computeMergedOptions(
+            mergedAarMetadata,
+            { aarMetadata },
+            { aarMetadata }
+        )
     }
 
-    override val ndkConfig: CoreNdkOptions
+    override val ndkConfig: MergedNdkConfig
         get() = mergedNdkConfig
 
     override val externalNativeBuildOptions: CoreExternalNativeBuildOptions
         get() = mergedExternalNativeBuildOptions
 
+    override val aarMetadata: MergedAarMetadata
+        get() = mergedAarMetadata
 
     /**
-     * Returns the ABI filters associated with the artifact, or null if there are no filters.
+     * Returns the ABI filters associated with the artifact, or empty set if there are no filters.
      *
      * If the list contains values, then the artifact only contains these ABIs and excludes
      * others.
      */
-    override val supportedAbis: Set<String>?
-        get() = mergedNdkConfig.abiFilters
-
+    override val supportedAbis: Set<String>
+        get() = if (variantType.isDynamicFeature) setOf() else mergedNdkConfig.abiFilters
 
     override fun gatherProguardFiles(type: ProguardFileType): List<File> {
         val result: MutableList<File> = ArrayList(defaultConfig.getProguardFiles(type))
@@ -904,7 +989,7 @@ open class VariantDslInfoImpl internal constructor(
      * @param <CoreOptionsT> The core type of the option being merge.
      * @param <MergedOptionsT> The merge option type.
     </MergedOptionsT></CoreOptionsT> */
-    private fun <CoreOptionsT, MergedOptionsT: MergedOptions<CoreOptionsT>> computeMergedOptions(
+    private fun <CoreOptionsT, MergedOptionsT : MergedOptions<CoreOptionsT>> computeMergedOptions(
         mergedOption: MergedOptionsT,
         getFlavorOption: BaseFlavor.() -> CoreOptionsT?,
         getBuildTypeOption: BuildType.() -> CoreOptionsT?
@@ -931,7 +1016,7 @@ open class VariantDslInfoImpl internal constructor(
     override val javaCompileOptions: JavaCompileOptions
         get() = mergedJavaCompileOptions
 
-    override fun createPostProcessingOptions(project: Project) : PostProcessingOptions {
+    override fun createPostProcessingOptions(buildDirectory: DirectoryProperty) : PostProcessingOptions {
         return if (buildTypeObj.postProcessingConfiguration == PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
             PostProcessingBlockOptions(
                 buildTypeObj.postprocessing, variantType.isTestComponent
@@ -944,7 +1029,7 @@ open class VariantDslInfoImpl internal constructor(
                 listOf(
                     ProguardFiles.getDefaultProguardFile(
                         ProguardFiles.ProguardFile.DONT_OPTIMIZE.fileName,
-                        project.layout
+                        buildDirectory
                     )
                 )
 
@@ -1110,7 +1195,7 @@ open class VariantDslInfoImpl internal constructor(
     }
 }
 
-private fun BaseConfig.getProguardFiles(type: ProguardFileType): Collection<File> = when(type) {
+private fun BaseConfig.getProguardFiles(type: ProguardFileType): Collection<File> = when (type) {
     ProguardFileType.EXPLICIT -> this.proguardFiles
     ProguardFileType.TEST -> this.testProguardFiles
     ProguardFileType.CONSUMER -> this.consumerProguardFiles

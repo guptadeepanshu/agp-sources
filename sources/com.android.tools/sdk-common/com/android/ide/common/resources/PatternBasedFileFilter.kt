@@ -30,8 +30,8 @@ class PatternBasedFileFilter {
      * Creates default resource file filter. The default ignored patterns are the same as used by
      * aapt but can be customized via the `ANDROID_AAPT_IGNORE` environment variable.
      */
-    constructor() {
-        var patterns: String? = System.getenv("ANDROID_AAPT_IGNORE")
+    constructor(androidAaptIgnore: AndroidAaptIgnore) {
+        var patterns: String? = androidAaptIgnore.aaptIgnoreValue
         if (patterns == null || patterns.isEmpty()) {
             // Matches aapt: frameworks/base/tools/aapt/AaptAssets.cpp:gDefaultIgnoreAssets
             patterns = "!.svn:!.git:!.ds_store:!*.scc:.*:<dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"
@@ -41,7 +41,7 @@ class PatternBasedFileFilter {
     }
 
     /**
-     * Creates a resource file filter using the given pattens of for ignored files.
+     * Creates a resource file filter using the given aapt-style ignored pattern string.
      *
      * Patterns syntax:
      * * Individual patterns are separated by colon (:)
@@ -54,10 +54,22 @@ class PatternBasedFileFilter {
      * * Otherwise the full string is matched.
      * * Match is not case-sensitive.
      *
+     * @param aaptStyleIgnoredPattern the file name patterns to be ignored
+     */
+    constructor(aaptStyleIgnoredPattern: String) {
+        this.ignoredPatterns = Splitter.on(':').splitToList(aaptStyleIgnoredPattern)
+    }
+
+    /**
+     * Creates a resource file filter using the given ignored patterns.
+     *
+     * Similar to constructor(aaptStypeignoredPattern: String) above, but this constructor accepts a
+     * list of strings instead of a single colon-delimited string.
+     *
      * @param ignoredPatterns the file name patterns to be ignored
      */
-    constructor(ignoredPatterns: String) {
-        this.ignoredPatterns = Splitter.on(':').splitToList(ignoredPatterns)
+    constructor(ignoredPatterns: List<String>) {
+        this.ignoredPatterns = ignoredPatterns.toList()
     }
 
     /**

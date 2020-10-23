@@ -18,9 +18,10 @@ package com.android.build.gradle.internal.tasks.databinding
 
 import android.databinding.tool.DataBindingBuilder
 import android.databinding.tool.FeaturePackageInfo
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.utils.FileUtils
@@ -79,31 +80,39 @@ abstract class DataBindingExportFeatureInfoTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<DataBindingExportFeatureInfoTask>(variantScope) {
+        componentProperties: ApkCreationConfig
+    ) : VariantTaskCreationAction<DataBindingExportFeatureInfoTask, ApkCreationConfig>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("dataBindingExportFeatureInfo")
+            get() = computeTaskName("dataBindingExportFeatureInfo")
         override val type: Class<DataBindingExportFeatureInfoTask>
             get() = DataBindingExportFeatureInfoTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out DataBindingExportFeatureInfoTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<DataBindingExportFeatureInfoTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.FEATURE_DATA_BINDING_FEATURE_INFO,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DataBindingExportFeatureInfoTask::outFolder
-            )
+            ).on(InternalArtifactType.FEATURE_DATA_BINDING_FEATURE_INFO)
         }
 
-        override fun configure(task: DataBindingExportFeatureInfoTask) {
+        override fun configure(
+            task: DataBindingExportFeatureInfoTask
+        ) {
             super.configure(task)
 
-            task.directDependencies = variantScope.getArtifactFileCollection(
+            task.directDependencies = creationConfig.variantDependencies.getArtifactFileCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
                     AndroidArtifacts.ArtifactType.DATA_BINDING_ARTIFACT)
-            task.resOffset.set(variantScope.resOffset)
+            check(creationConfig is DynamicFeatureCreationConfig) {
+                "Unexpected type: ${creationConfig.javaClass.name}"
+            }
+            task.resOffset.set(creationConfig.resOffset)
             task.resOffset.disallowChanges()
         }
     }

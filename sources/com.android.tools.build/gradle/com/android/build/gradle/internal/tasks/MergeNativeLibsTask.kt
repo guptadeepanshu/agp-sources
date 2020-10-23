@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES
 import com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS
 import com.android.build.api.transform.QualifiedContent.ScopeType
@@ -25,7 +26,6 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_LIB
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.ide.common.resources.FileStatus
 import org.gradle.api.GradleException
@@ -41,7 +41,9 @@ import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.util.PatternSet
 import java.io.File
 import java.util.function.Predicate
 import javax.inject.Inject
@@ -53,18 +55,17 @@ import javax.inject.Inject
 abstract class MergeNativeLibsTask
 @Inject constructor(objects: ObjectFactory) : IncrementalTask() {
 
-    // PathSensitivity.ABSOLUTE necessary here because of incorrect incremental info from Gradle
-    // when using RELATIVE or NAME_ONLY: https://github.com/gradle/gradle/issues/9320, and we can't
-    // use @Classpath because we need support for changing .so file names. A better solution will be
-    // custom snapshots from gradle: https://github.com/gradle/gradle/issues/8503
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:SkipWhenEmpty
     abstract val projectNativeLibs: ConfigurableFileCollection
 
     @get:Classpath
+    @get:SkipWhenEmpty
     abstract val subProjectNativeLibs: ConfigurableFileCollection
 
     @get:Classpath
+    @get:SkipWhenEmpty
     abstract val externalLibNativeLibs: ConfigurableFileCollection
 
     @get:Nested
@@ -87,7 +88,8 @@ abstract class MergeNativeLibsTask
     // The runnable implementing the processing is not able to deal with fine-grained file but
     // instead is expecting directories of files. Use the unfiltered collection (since the filtering
     // changes the FileCollection of directories into a FileTree of files) to process, but don't
-    // use it as an input, it's covered by the [projectNativeLibs] above.
+    // use it as a task input, it's covered by the [projectNativeLibs] above. This is a workaround
+    // for the lack of gradle custom snapshotting: https://github.com/gradle/gradle/issues/8503.
     @get:Internal
     abstract val unfilteredProjectNativeLibs: ConfigurableFileCollection
 
@@ -141,80 +143,100 @@ abstract class MergeNativeLibsTask
 
     class CreationAction(
         private val mergeScopes: Collection<ScopeType>,
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<MergeNativeLibsTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<MergeNativeLibsTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("merge", "NativeLibs")
+            get() = computeTaskName("merge", "NativeLibs")
 
         override val type: Class<MergeNativeLibsTask>
             get() = MergeNativeLibsTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out MergeNativeLibsTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<MergeNativeLibsTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesDir(
-                MERGED_NATIVE_LIBS,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                MergeNativeLibsTask::outputDir,
-                fileName = "out"
-            )
+                MergeNativeLibsTask::outputDir
+            ).withName("out").on(MERGED_NATIVE_LIBS)
         }
 
-        override fun configure(task: MergeNativeLibsTask) {
+        override fun configure(
+            task: MergeNativeLibsTask
+        ) {
             super.configure(task)
 
             task.packagingOptions =
                     SerializablePackagingOptions(
-                        variantScope.globalScope.extension.packagingOptions)
+                        creationConfig.globalScope.extension.packagingOptions)
             task.intermediateDir =
-                    variantScope.getIncrementalDir(
-                        "${variantScope.name}-mergeNativeLibs")
+                    creationConfig.paths.getIncrementalDir(
+                        "${creationConfig.name}-mergeNativeLibs")
 
-            val project = variantScope.globalScope.project
+            val project = creationConfig.globalScope.project
 
             task.cacheDir
                 .fileProvider(project.provider { File(task.intermediateDir, "zip-cache") })
                 .disallowChanges()
             task.incrementalStateFile = File(task.intermediateDir, "merge-state")
 
-            task.projectNativeLibs.from(getProjectNativeLibs(variantScope).asFileTree.filter(spec))
+            task.projectNativeLibs
+                .from(getProjectNativeLibs(creationConfig).asFileTree.matching(patternSet))
                 .disallowChanges()
 
             if (mergeScopes.contains(SUB_PROJECTS)) {
-                task.subProjectNativeLibs.from(getSubProjectNativeLibs(variantScope))
+                task.subProjectNativeLibs.from(getSubProjectNativeLibs(creationConfig))
             }
             task.subProjectNativeLibs.disallowChanges()
 
             if (mergeScopes.contains(EXTERNAL_LIBRARIES)) {
-                task.externalLibNativeLibs.from(getExternalNativeLibs(variantScope))
+                task.externalLibNativeLibs.from(getExternalNativeLibs(creationConfig))
             }
             task.externalLibNativeLibs.disallowChanges()
 
             task.unfilteredProjectNativeLibs
-                .from(getProjectNativeLibs(variantScope)).disallowChanges()
+                .from(getProjectNativeLibs(creationConfig)).disallowChanges()
         }
     }
 
     companion object {
-        val predicate = Predicate<String> { filename ->
-            filename.endsWith(SdkConstants.DOT_NATIVE_LIBS)
-                    || SdkConstants.FN_GDBSERVER == filename
-                    || SdkConstants.FN_GDB_SETUP == filename
+
+        private const val includedFileSuffix = SdkConstants.DOT_NATIVE_LIBS
+        private val includedFileNames = listOf(SdkConstants.FN_GDBSERVER, SdkConstants.FN_GDB_SETUP)
+
+        // predicate logic must match patternSet logic below
+        val predicate = Predicate<String> { fileName ->
+            fileName.endsWith(includedFileSuffix) || includedFileNames.any { it == fileName }
         }
-        val spec: (file: File) -> Boolean = { predicate.test(it.name) }
+
+        // patternSet logic must match predicate logic above
+        val patternSet: PatternSet
+            get() {
+                val patternSet = PatternSet().include("**/*$includedFileSuffix")
+                includedFileNames.forEach { patternSet.include("**/$it") }
+                return patternSet
+            }
     }
 }
 
-fun getProjectNativeLibs(scope: VariantScope): FileCollection {
-    val nativeLibs = scope.globalScope.project.files()
+fun getProjectNativeLibs(componentProperties: ComponentPropertiesImpl): FileCollection {
+    val globalScope = componentProperties.globalScope
+    val artifacts = componentProperties.artifacts
+    val taskContainer = componentProperties.taskContainer
+    val project = globalScope.project
+
+    val nativeLibs = globalScope.project.files()
+
+
     // add merged project native libs
     nativeLibs.from(
-        scope.artifacts.getFinalProduct(InternalArtifactType.MERGED_JNI_LIBS)
+        artifacts.get(InternalArtifactType.MERGED_JNI_LIBS)
     )
     // add content of the local external native build
-    val project = scope.globalScope.project
-    val taskContainer = scope.taskContainer
     if (taskContainer.externalNativeJsonGenerator != null) {
         nativeLibs.from(
             project
@@ -223,15 +245,15 @@ fun getProjectNativeLibs(scope: VariantScope): FileCollection {
         )
     }
     // add renderscript compilation output if support mode is enabled.
-    if (scope.variantDslInfo.renderscriptSupportModeEnabled) {
+    if (componentProperties.variantDslInfo.renderscriptSupportModeEnabled) {
         val rsFileCollection: ConfigurableFileCollection =
-                project.files(scope.artifacts.getFinalProduct(RENDERSCRIPT_LIB))
-        val rsLibs = scope.globalScope.sdkComponents.supportNativeLibFolderProvider.orNull
+                project.files(artifacts.get(RENDERSCRIPT_LIB))
+        val rsLibs = globalScope.sdkComponents.get().supportNativeLibFolderProvider.orNull
         if (rsLibs?.isDirectory != null) {
             rsFileCollection.from(rsLibs)
         }
-        if (scope.variantDslInfo.renderscriptSupportModeBlasEnabled) {
-            val rsBlasLib = scope.globalScope.sdkComponents.supportBlasLibFolderProvider.orNull
+        if (componentProperties.variantDslInfo.renderscriptSupportModeBlasEnabled) {
+            val rsBlasLib = globalScope.sdkComponents.get().supportBlasLibFolderProvider.orNull
             if (rsBlasLib == null || !rsBlasLib.isDirectory) {
                 throw GradleException(
                     "Renderscript BLAS support mode is not supported in BuildTools $rsBlasLib"
@@ -245,17 +267,18 @@ fun getProjectNativeLibs(scope: VariantScope): FileCollection {
     return nativeLibs
 }
 
-fun getSubProjectNativeLibs(scope: VariantScope): FileCollection {
-    val nativeLibs = scope.globalScope.project.files()
+fun getSubProjectNativeLibs(componentProperties: ComponentPropertiesImpl): FileCollection {
+    val nativeLibs = componentProperties.globalScope.project.files()
+    // TODO (bug 154984238) extract native libs from java res jar before this task
     nativeLibs.from(
-        scope.getArtifactFileCollection(
+        componentProperties.variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
             AndroidArtifacts.ArtifactScope.PROJECT,
             AndroidArtifacts.ArtifactType.JAVA_RES
         )
     )
     nativeLibs.from(
-        scope.getArtifactFileCollection(
+        componentProperties.variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
             AndroidArtifacts.ArtifactScope.PROJECT,
             AndroidArtifacts.ArtifactType.JNI
@@ -264,17 +287,18 @@ fun getSubProjectNativeLibs(scope: VariantScope): FileCollection {
     return nativeLibs
 }
 
-fun getExternalNativeLibs(scope: VariantScope): FileCollection {
-    val nativeLibs = scope.globalScope.project.files()
+fun getExternalNativeLibs(componentProperties: ComponentPropertiesImpl): FileCollection {
+    val nativeLibs = componentProperties.globalScope.project.files()
+    // TODO (bug 154984238) extract native libs from java res jar before this task
     nativeLibs.from(
-        scope.getArtifactFileCollection(
+        componentProperties.variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
             AndroidArtifacts.ArtifactScope.EXTERNAL,
             AndroidArtifacts.ArtifactType.JAVA_RES
         )
     )
     nativeLibs.from(
-        scope.getArtifactFileCollection(
+        componentProperties.variantDependencies.getArtifactFileCollection(
             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
             AndroidArtifacts.ArtifactScope.EXTERNAL,
             AndroidArtifacts.ArtifactType.JNI

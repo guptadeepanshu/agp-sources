@@ -16,9 +16,9 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.coverage.JacocoConfigurations;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.dexing.DexerTool;
@@ -65,11 +65,11 @@ public abstract class JacocoTask extends AndroidVariantTask {
 
     /** Returns which Jacoco version to use. */
     @NonNull
-    public static String getJacocoVersion(@NonNull VariantScope scope) {
-        if (scope.getDexer() == DexerTool.DX) {
+    public static String getJacocoVersion(@NonNull ComponentPropertiesImpl componentProperties) {
+        if (componentProperties.getVariantScope().getDexer() == DexerTool.DX) {
             return JacocoConfigurations.VERSION_FOR_DX;
         } else {
-            return scope.getGlobalScope().getExtension().getJacoco().getVersion();
+            return componentProperties.getGlobalScope().getExtension().getJacoco().getVersion();
         }
     }
 
@@ -88,16 +88,17 @@ public abstract class JacocoTask extends AndroidVariantTask {
                 });
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<JacocoTask> {
+    public static class CreationAction
+            extends VariantTaskCreationAction<JacocoTask, ComponentPropertiesImpl> {
 
-        public CreationAction(@NonNull VariantScope scope) {
-            super(scope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("jacoco");
+            return computeTaskName("jacoco");
         }
 
         @NonNull
@@ -107,36 +108,33 @@ public abstract class JacocoTask extends AndroidVariantTask {
         }
 
         @Override
-        public void handleProvider(@NonNull TaskProvider<? extends JacocoTask> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<JacocoTask> taskProvider) {
             super.handleProvider(taskProvider);
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesDir(
-                            InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES.INSTANCE,
-                            taskProvider,
-                            JacocoTask::getOutput,
-                            "out");
+                    .setInitialProvider(taskProvider, JacocoTask::getOutput)
+                    .withName("out")
+                    .on(InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES.INSTANCE);
 
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesDir(
-                            InternalArtifactType.JACOCO_INSTRUMENTED_JARS.INSTANCE,
-                            taskProvider,
-                            JacocoTask::getOutputJars,
-                            "out");
+                    .setInitialProvider(taskProvider, JacocoTask::getOutputJars)
+                    .withName("out")
+                    .on(InternalArtifactType.JACOCO_INSTRUMENTED_JARS.INSTANCE);
         }
 
         @Override
         public void configure(@NonNull JacocoTask task) {
             super.configure(task);
-            VariantScope scope = getVariantScope();
 
-            task.inputClasses = scope.getArtifacts().getAllClasses();
+            task.inputClasses = creationConfig.getArtifacts().getAllClasses();
             task.jacocoAntTaskConfiguration =
                     JacocoConfigurations.getJacocoAntTaskConfiguration(
-                            scope.getGlobalScope().getProject(), getJacocoVersion(scope));
+                            creationConfig.getGlobalScope().getProject(),
+                            getJacocoVersion(creationConfig));
             task.isolationMode =
-                    scope.getGlobalScope()
+                    creationConfig
+                                    .getServices()
                                     .getProjectOptions()
                                     .get(BooleanOption.FORCE_JACOCO_OUT_OF_PROCESS)
                             ? WorkerExecutorFacade.IsolationMode.PROCESS

@@ -36,6 +36,8 @@ interface BuildFeatureValues {
     val compose: Boolean
     val buildConfig: Boolean
     val dataBinding: Boolean
+    val mlModelBinding: Boolean
+    val prefab: Boolean
     val renderScript: Boolean
     val resValues: Boolean
     val shaders: Boolean
@@ -51,6 +53,8 @@ interface BuildFeatureValues {
     // Library flags
 
     val buildType: Boolean
+    val androidResources: Boolean
+    val prefabPublishing: Boolean
 
     // ------------------
     // Test flags

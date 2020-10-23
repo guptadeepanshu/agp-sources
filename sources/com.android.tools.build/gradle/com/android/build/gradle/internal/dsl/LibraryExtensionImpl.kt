@@ -20,65 +20,62 @@ import com.android.build.api.component.GenericFilteredComponentActionRegistrar
 import com.android.build.api.component.impl.GenericFilteredComponentActionRegistrarImpl
 import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.PrefabPackagingOptions
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.LibraryVariantProperties
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.CompileOptions
-import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.coverage.JacocoOptions
+import com.android.build.gradle.internal.plugins.DslContainerProvider
+import com.google.common.collect.Lists
 import org.gradle.api.NamedDomainObjectContainer
 
 /** Internal implementation of the 'new' DSL interface */
 class LibraryExtensionImpl(
-    dslScope: DslScope,
-    buildTypes: NamedDomainObjectContainer<BuildType>,
-    defaultConfig: DefaultConfig,
-    productFlavors: NamedDomainObjectContainer<ProductFlavor>,
-    signingConfigs: NamedDomainObjectContainer<SigningConfig>
+    dslServices: DslServices,
+    dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
 ) :
-    CommonExtensionImpl<
+    TestedExtensionImpl<
             LibraryBuildFeatures,
             BuildType,
             DefaultConfig,
             ProductFlavor,
-            SigningConfig,
-            LibraryVariant,
+            LibraryVariant<LibraryVariantProperties>,
             LibraryVariantProperties>(
-        dslScope,
-        buildTypes,
-        defaultConfig,
-        productFlavors,
-        signingConfigs
+        dslServices,
+        dslContainers
     ),
-    LibraryExtension<
-            BuildType,
-            CmakeOptions,
-            CompileOptions,
-            DefaultConfig,
-            ExternalNativeBuild,
-            JacocoOptions,
-            NdkBuildOptions,
-            ProductFlavor,
-            SigningConfig,
-            TestOptions,
-            TestOptions.UnitTestOptions> {
+    InternalLibraryExtension {
 
     override val buildFeatures: LibraryBuildFeatures =
-        dslScope.objectFactory.newInstance(LibraryBuildFeaturesImpl::class.java)
+        dslServices.newInstance(LibraryBuildFeaturesImpl::class.java)
 
     @Suppress("UNCHECKED_CAST")
-    override val onVariants: GenericFilteredComponentActionRegistrar<LibraryVariant>
-        get() = dslScope.objectFactory.newInstance(
+    override val onVariants: GenericFilteredComponentActionRegistrar<LibraryVariant<LibraryVariantProperties>>
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantOperations,
             LibraryVariant::class.java
-        ) as GenericFilteredComponentActionRegistrar<LibraryVariant>
+        ) as GenericFilteredComponentActionRegistrar<LibraryVariant<LibraryVariantProperties>>
     @Suppress("UNCHECKED_CAST")
     override val onVariantProperties: GenericFilteredComponentActionRegistrar<LibraryVariantProperties>
-        get() = dslScope.objectFactory.newInstance(
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantPropertiesOperations,
             LibraryVariantProperties::class.java
         ) as GenericFilteredComponentActionRegistrar<LibraryVariantProperties>
+
+    override var aidlPackageWhiteList: MutableCollection<String> = ArrayList<String>()
+        set(value) {
+            field.addAll(value)
+        }
+
+    override val prefab: NamedDomainObjectContainer<PrefabPackagingOptions> =
+        dslServices.domainObjectContainer(
+            PrefabPackagingOptions::class.java,
+            PrefabModuleFactory(dslServices)
+        )
 }

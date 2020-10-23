@@ -17,16 +17,19 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.ProguardFiles;
 import com.android.build.gradle.ProguardFiles.ProguardFile;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 
@@ -42,12 +45,12 @@ public abstract class CheckProguardFiles extends NonIncrementalTask {
         Map<File, ProguardFile> oldFiles = new HashMap<>();
         oldFiles.put(
                 ProguardFiles.getDefaultProguardFile(
-                                ProguardFile.OPTIMIZE.fileName, getProject().getLayout())
+                                ProguardFile.OPTIMIZE.fileName, getBuildDirectory())
                         .getAbsoluteFile(),
                 ProguardFile.OPTIMIZE);
         oldFiles.put(
                 ProguardFiles.getDefaultProguardFile(
-                                ProguardFile.DONT_OPTIMIZE.fileName, getProject().getLayout())
+                                ProguardFile.DONT_OPTIMIZE.fileName, getBuildDirectory())
                         .getAbsoluteFile(),
                 ProguardFile.DONT_OPTIMIZE);
 
@@ -69,16 +72,20 @@ public abstract class CheckProguardFiles extends NonIncrementalTask {
         return proguardFiles;
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<CheckProguardFiles> {
+    @Internal("only for task execution")
+    public abstract DirectoryProperty getBuildDirectory();
 
-        public CreationAction(VariantScope scope) {
-            super(scope);
+    public static class CreationAction
+            extends VariantTaskCreationAction<CheckProguardFiles, ComponentPropertiesImpl> {
+
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("check", "ProguardFiles");
+            return computeTaskName("check", "ProguardFiles");
         }
 
         @NonNull
@@ -91,7 +98,9 @@ public abstract class CheckProguardFiles extends NonIncrementalTask {
         public void configure(@NonNull CheckProguardFiles task) {
             super.configure(task);
 
-            task.proguardFiles = getVariantScope().getProguardFiles();
+            task.proguardFiles = creationConfig.getVariantScope().getProguardFiles();
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getBuildDirectory(), task.getProject().getLayout().getBuildDirectory());
         }
     }
 }

@@ -16,12 +16,15 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.common.repository.GradleVersion
 import com.android.utils.FileUtils
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
-import java.lang.RuntimeException
+import org.gradle.api.tasks.Internal
 
 /**
  * Pre build task that performs comparison of runtime and compile classpath for application. If
@@ -29,6 +32,12 @@ import java.lang.RuntimeException
  */
 @CacheableTask
 abstract class AppClasspathCheckTask : ClasspathComparisonTask() {
+
+    @get:Internal("only for task execution")
+    abstract val projectPath: Property<String>
+
+    @get:Internal("only for task execution")
+    abstract val projectBuildFile: RegularFileProperty
 
     override fun onDifferentVersionsFound(
         group: String,
@@ -51,11 +60,11 @@ abstract class AppClasspathCheckTask : ClasspathComparisonTask() {
         }
 
         val message =
-            """Conflict with dependency '$group:$module' in project '${project.path}'.
+            """Conflict with dependency '$group:$module' in project '${projectPath.get()}'.
 Resolved versions for runtime classpath ($runtimeVersion) and compile classpath ($compileVersion) differ.
 This can lead to runtime crashes.
 To resolve this issue follow advice at https://developer.android.com/studio/build/gradle-tips#configure-project-wide-properties.
-Alternatively, you can try to fix the problem by adding this snippet to ${project.buildFile}:
+Alternatively, you can try to fix the problem by adding this snippet to ${projectBuildFile.get().asFile}:
 
 dependencies {
     implementation("$group:$module:$suggestedVersion")
@@ -65,25 +74,38 @@ dependencies {
         throw RuntimeException(message)
     }
 
-    class CreationAction(private val variantScope: VariantScope) :
+    class CreationAction(private val componentProperties: ComponentPropertiesImpl) :
         TaskCreationAction<AppClasspathCheckTask>() {
 
         override val name: String
-            get() = variantScope.getTaskName("check", "Classpath")
+        get() = componentProperties.computeTaskName("check", "Classpath")
 
         override val type: Class<AppClasspathCheckTask>
             get() = AppClasspathCheckTask::class.java
 
         override fun configure(task: AppClasspathCheckTask) {
-            task.variantName = variantScope.name
+            task.variantName = componentProperties.name
 
-            task.runtimeClasspath = variantScope.variantDependencies.runtimeClasspath
-            task.compileClasspath = variantScope.variantDependencies.compileClasspath
-            task.fakeOutputDirectory = FileUtils.join(
-                variantScope.globalScope.intermediatesDir,
-                name,
-                variantScope.variantDslInfo.dirName
+            val runtimeClasspath = componentProperties.variantDependencies.runtimeClasspath
+            val compileClasspath = componentProperties.variantDependencies.compileClasspath
+            task.runtimeVersionMap.set(
+                task.project.providers.provider {
+                    runtimeClasspath.toVersionMap()
+                }
             )
+            task.compileVersionMap.set(
+                task.project.providers.provider {
+                    compileClasspath.toVersionMap()
+                }
+            )
+            task.fakeOutputDirectory = FileUtils.join(
+                componentProperties.globalScope.intermediatesDir,
+                name,
+                componentProperties.dirName
+            )
+            task.projectPath.setDisallowChanges(task.project.path)
+            task.projectBuildFile.set(task.project.buildFile)
+            task.projectBuildFile.disallowChanges()
         }
     }
 }

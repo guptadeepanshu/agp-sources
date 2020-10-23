@@ -17,12 +17,12 @@
 package com.android.build.gradle.internal.tasks
 
 
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.MultipleArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.dexing.DexSplitterTool
 import com.android.utils.FileUtils
@@ -91,36 +91,37 @@ abstract class DexSplitterTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<DexSplitterTask>(variantScope)  {
+        creationConfig: ApkCreationConfig
+    ) : VariantTaskCreationAction<DexSplitterTask, ApkCreationConfig>(
+        creationConfig
+    )  {
         override val type = DexSplitterTask::class.java
-        override val name =  variantScope.getTaskName("split", "Dex")
+        override val name =  computeTaskName("split", "Dex")
 
-        override fun handleProvider(taskProvider: TaskProvider<out DexSplitterTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<DexSplitterTask>
+        ) {
             super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                DexSplitterTask::featureDexDir
+            ).on(InternalArtifactType.FEATURE_DEX)
 
-            variantScope.artifacts.producesDir(
-                artifactType = InternalArtifactType.FEATURE_DEX,
-                taskProvider = taskProvider,
-                productProvider = DexSplitterTask::featureDexDir,
-                fileName = ""
-            )
-
-            variantScope.artifacts.producesDir(
-                artifactType = InternalArtifactType.BASE_DEX,
-                taskProvider = taskProvider,
-                productProvider = DexSplitterTask::baseDexDir,
-                fileName = ""
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                DexSplitterTask::baseDexDir
+            ).on(InternalArtifactType.BASE_DEX)
         }
 
-        override fun configure(task: DexSplitterTask) {
+        override fun configure(
+            task: DexSplitterTask
+        ) {
             super.configure(task)
 
-            val artifacts = variantScope.artifacts
+            val artifacts = creationConfig.artifacts
 
             task.featureJars =
-                variantScope.getArtifactFileCollection(REVERSE_METADATA_VALUES, PROJECT, REVERSE_METADATA_CLASSES)
+                creationConfig.variantDependencies.getArtifactFileCollection(REVERSE_METADATA_VALUES, PROJECT, REVERSE_METADATA_CLASSES)
 
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
@@ -134,9 +135,7 @@ abstract class DexSplitterTask : NonIncrementalTask() {
                     InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE,
                     task.mainDexList)
 
-            task.inputDirs.from(
-                artifacts.getOperations().getAll(MultipleArtifactType.DEX)
-            )
+            task.inputDirs.from(artifacts.getAll(InternalMultipleArtifactType.DEX))
         }
     }
 

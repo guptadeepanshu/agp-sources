@@ -30,6 +30,7 @@ import com.android.ide.common.resources.configuration.VersionQualifier;
 import com.android.ide.common.vectordrawable.VdPreview;
 import com.android.resources.Density;
 import com.android.resources.ResourceFolderType;
+import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.google.common.io.Files;
 import java.awt.image.BufferedImage;
@@ -87,6 +88,7 @@ public class VectorDrawableRenderer implements ResourcePreprocessor {
 
         DensityQualifier densityQualifier = originalConfiguration.getDensityQualifier();
         boolean validDensityQualifier = ResourceQualifier.isValid(densityQualifier);
+
         if (validDensityQualifier && densityQualifier.getValue() == Density.NODPI) {
             // If the files uses nodpi, just leave it alone.
             filesToBeGenerated.add(new File(
@@ -94,9 +96,10 @@ public class VectorDrawableRenderer implements ResourcePreprocessor {
                     inputXmlFile.getName()));
         } else if (validDensityQualifier && densityQualifier.getValue() != Density.ANYDPI) {
             // If the density is specified, generate one png and one xml.
-            filesToBeGenerated.add(new File(
-                    getDirectory(originalConfiguration),
-                    inputXmlFile.getName().replace(".xml", ".png")));
+            filesToBeGenerated.add(
+                    new File(
+                            getDirectory(originalConfiguration),
+                            inputXmlFile.getName().replace(".xml", ".png")));
 
             originalConfiguration.setVersionQualifier(
                     new VersionQualifier(reason.getSdkThreshold()));
@@ -104,23 +107,77 @@ public class VectorDrawableRenderer implements ResourcePreprocessor {
                     getDirectory(originalConfiguration),
                     inputXmlFile.getName()));
         } else {
-            // Otherwise, generate one xml and N pngs, one per density.
-            for (Density density : mDensities) {
-                FolderConfiguration newConfiguration =
-                        FolderConfiguration.copyOf(originalConfiguration);
-                newConfiguration.setDensityQualifier(new DensityQualifier(density));
+            if (originalConfiguration.getVersionQualifier() != null) {
+                // Generate N density .png format images if the version qualifier is less than the
+                // processing reason and set the vector version qualifier to the PreprocessingReason
+                // SDK threshold. An ANYDPI density qualifier will be added to the vector if it
+                // exceeds the PreprocessingReason SDK threshold.
+                if (validDensityQualifier
+                        || originalConfiguration.getVersionQualifier().getVersion()
+                                < reason.getSdkThreshold()) {
+                    for (Density density : mDensities) {
+                        FolderConfiguration newConfiguration =
+                                FolderConfiguration.copyOf(originalConfiguration);
+                        newConfiguration.setDensityQualifier(new DensityQualifier(density));
+                        if (originalConfiguration.getVersionQualifier().getVersion()
+                                >= reason.getSdkThreshold()) {
+                            newConfiguration.removeQualifier(
+                                    newConfiguration.getVersionQualifier());
+                        }
+                        filesToBeGenerated.add(
+                                new File(
+                                        getDirectory(newConfiguration),
+                                        inputXmlFile.getName().replace(".xml", ".png")));
+                    }
+                    originalConfiguration.setVersionQualifier(
+                            new VersionQualifier(reason.getSdkThreshold()));
+                }
 
-                filesToBeGenerated.add(new File(
-                        getDirectory(newConfiguration),
-                        inputXmlFile.getName().replace(".xml", ".png")));
+                if (originalConfiguration.getVersionQualifier().getVersion()
+                        >= reason.getSdkThreshold()) {
+                    originalConfiguration.setDensityQualifier(new DensityQualifier(Density.ANYDPI));
+                }
+
+            } else {
+                // As there is no version qualifier, N density .png format images are generated from
+                // the vectors if they are required e.g when the minimum SDK is below the
+                // PreprocessingReason SDK threshold. A vector with the version qualifier set to the
+                // PR SDK threshold and ANYDPI density qualifier is created.
+                if (mMinSdk < reason.getSdkThreshold() && mDensities.size() > 0) {
+                    for (Density density : mDensities) {
+                        FolderConfiguration newConfiguration =
+                                FolderConfiguration.copyOf(originalConfiguration);
+                        newConfiguration.setDensityQualifier(new DensityQualifier(density));
+
+                        filesToBeGenerated.add(
+                                new File(
+                                        getDirectory(newConfiguration),
+                                        inputXmlFile.getName().replace(".xml", ".png")));
+                    }
+                }
+                originalConfiguration.setDensityQualifier(new DensityQualifier(Density.ANYDPI));
+                originalConfiguration.setVersionQualifier(
+                        new VersionQualifier(reason.getSdkThreshold()));
             }
 
-            originalConfiguration.setDensityQualifier(new DensityQualifier(Density.ANYDPI));
-            originalConfiguration.setVersionQualifier(
-                    new VersionQualifier(reason.getSdkThreshold()));
-
-            filesToBeGenerated.add(
-                    new File(getDirectory(originalConfiguration), inputXmlFile.getName()));
+            // Avoid regenerating a vector with reason.mSdkThreshold which will be directly
+            // generated from a source directory with the SdkThreshold version.
+            FolderConfiguration minSdkSourceConfig =
+                    FolderConfiguration.copyOf(originalConfiguration);
+            if (originalConfiguration.getDensityQualifier()
+                    .isMatchFor(new DensityQualifier(Density.ANYDPI))) {
+                minSdkSourceConfig.removeQualifier(originalConfiguration.getDensityQualifier());
+            }
+            minSdkSourceConfig.setVersionQualifier(new VersionQualifier(reason.mSdkThreshold));
+            File possibleMinReasonSdkResource =
+                    FileUtils.join(
+                            inputXmlFile.getParentFile().getParentFile(),
+                            "drawable-" + minSdkSourceConfig.getQualifierString(),
+                            inputXmlFile.getName());
+            if (filesToBeGenerated.isEmpty() || !possibleMinReasonSdkResource.exists()) {
+                filesToBeGenerated.add(
+                        new File(getDirectory(originalConfiguration), inputXmlFile.getName()));
+            }
         }
 
         return filesToBeGenerated;
@@ -143,10 +200,6 @@ public class VectorDrawableRenderer implements ResourcePreprocessor {
         if (mSupportLibraryIsUsed) return null;
         if (mMinSdk >= PreprocessingReason.GRADIENT_SUPPORT.getSdkThreshold()) return null;
         if (!isXml(resourceFile) || !isInDrawable(resourceFile)) return null;
-        VersionQualifier versionQualifier = folderConfig.getVersionQualifier();
-        int fileVersion = versionQualifier == null ? 0 : versionQualifier.getVersion();
-        if (fileVersion >= PreprocessingReason.GRADIENT_SUPPORT.getSdkThreshold()) return null;
-
         try (InputStream stream = new BufferedInputStream(new FileInputStream(resourceFile))) {
             XMLInputFactory factory = XMLInputFactory.newFactory();
             XMLStreamReader xmlReader = factory.createXMLStreamReader(stream);
@@ -174,12 +227,7 @@ public class VectorDrawableRenderer implements ResourcePreprocessor {
                     }
                 }
             }
-
-            // The drawable contains no gradients. Preprocessing is needed if the API level
-            // is below 21.
-            if (!beforeFirstTag
-                    && mMinSdk < PreprocessingReason.VECTOR_SUPPORT.getSdkThreshold()
-                    && fileVersion < PreprocessingReason.VECTOR_SUPPORT.getSdkThreshold()) {
+            if (!beforeFirstTag && mMinSdk < PreprocessingReason.VECTOR_SUPPORT.getSdkThreshold()) {
                 return PreprocessingReason.VECTOR_SUPPORT;
             }
         } catch (XMLStreamException e) {

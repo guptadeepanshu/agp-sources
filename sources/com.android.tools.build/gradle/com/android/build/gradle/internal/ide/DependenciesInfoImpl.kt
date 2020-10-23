@@ -20,13 +20,10 @@ import com.android.builder.model.DependenciesInfo
 import java.io.Serializable
 
 data class DependenciesInfoImpl(
-    private val includeInApk: Boolean,
-    private val includeInBundle: Boolean
+    override val includeInApk: Boolean,
+    override val includeInBundle: Boolean
 ): DependenciesInfo, Serializable {
     companion object {
-        private const val serialVersionUID = 1L
+        private const val serialVersionUID = 1L;
     }
-
-    override fun isIncludeInApk(): Boolean = includeInApk
-    override fun isIncludeInBundle(): Boolean = includeInBundle
 }

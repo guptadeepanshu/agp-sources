@@ -17,12 +17,13 @@
 package com.android.build.gradle.internal.tasks.featuresplit
 
 import com.android.build.api.attributes.VariantAttr
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import org.gradle.api.Action
@@ -35,6 +36,7 @@ import org.gradle.api.artifacts.result.ResolvedComponentResult
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
@@ -68,7 +70,8 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
     val transitivePackagedDepsFC : FileCollection
         get() = transitivePackagedDeps.artifactFiles
 
-    private lateinit var projectPath: String
+    @get:Input
+    abstract val projectPath: Property<String>
 
     override fun doTaskAction() {
         val apkFilters = mutableSetOf<String>()
@@ -85,10 +88,12 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
             contentFilters.addAll(lines)
         }
 
+        val contentWithProject = content + "${projectPath.get()}::$variantName"
+
         // compute the overall content
         val filteredContent =
-            content.filter {
-                !apkFilters.contains(it) && !contentFilters.contains(it) && it != projectPath
+            contentWithProject.filter {
+                !apkFilters.contains(it) && !contentFilters.contains(it)
             }.sorted()
 
         val asFile = outputFile.get().asFile
@@ -102,30 +107,35 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
      *
      * This cannot depend on preBuild as it would introduce a dependency cycle.
      */
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<PackagedDependenciesWriterTask>(variantScope, dependsOnPreBuildTask = false) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<PackagedDependenciesWriterTask, ComponentPropertiesImpl>(
+            componentProperties,
+            dependsOnPreBuildTask = false
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("generate", "FeatureTransitiveDeps")
+            get() = computeTaskName("generate", "FeatureTransitiveDeps")
         override val type: Class<PackagedDependenciesWriterTask>
             get() = PackagedDependenciesWriterTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out PackagedDependenciesWriterTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<PackagedDependenciesWriterTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.PACKAGED_DEPENDENCIES,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                PackagedDependenciesWriterTask::outputFile,
-                "deps.txt"
-            )
+                PackagedDependenciesWriterTask::outputFile
+            ).withName("deps.txt").on(InternalArtifactType.PACKAGED_DEPENDENCIES)
         }
 
-        override fun configure(task: PackagedDependenciesWriterTask) {
+        override fun configure(
+            task: PackagedDependenciesWriterTask
+        ) {
             super.configure(task)
-            task.projectPath = variantScope.globalScope.project.path
+            task.projectPath.setDisallowChanges(task.project.path)
 
             task.runtimeAarOrJarDeps =
-                variantScope.variantDependencies
+                creationConfig.variantDependencies
                     .runtimeClasspath
                     .incoming
                     .artifactView { it.attributes(aarOrJarType) }
@@ -133,8 +143,8 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
             task.dependsOn(task.runtimeAarOrJarDeps.artifactFiles)
 
             task.transitivePackagedDeps =
-                variantScope.getArtifactCollection(
-                    AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                creationConfig.variantDependencies.getArtifactCollection(
+                    AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.PROJECT,
                     AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES)
         }

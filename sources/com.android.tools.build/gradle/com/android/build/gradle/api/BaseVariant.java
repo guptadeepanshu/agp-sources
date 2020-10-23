@@ -19,6 +19,7 @@ package com.android.build.gradle.api;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.dsl.BuildFeatures;
+import com.android.build.api.variant.ApplicationVariantProperties;
 import com.android.build.gradle.tasks.AidlCompile;
 import com.android.build.gradle.tasks.ExternalNativeBuildTask;
 import com.android.build.gradle.tasks.GenerateBuildConfig;
@@ -160,8 +161,11 @@ public interface BaseVariant {
      * Returns the true application Id of the variant. For feature variants, this returns the
      * resolved application id from the application. For application variants, this is the same as
      * getApplicationId.
+     *
+     * @deprecated use {@link ApplicationVariantProperties#getApplicationId()}.
      */
     @NonNull
+    @Deprecated
     TextResource getApplicationIdTextResource();
 
     /**
@@ -462,10 +466,13 @@ public interface BaseVariant {
     /**
      * Adds to the variant a task that generates Java source code.
      *
-     * This will make the generate[Variant]Sources task depend on this task and add the
-     * new source folders as compilation inputs.
+     * <p>This will make the generate[Variant]Sources task depend on this task and add the new
+     * source folders as compilation inputs.
      *
-     * The new source folders are also added to the model.
+     * <p>The new source folders are also added to the model.
+     *
+     * <p>N.B. This method also supports adding generated Kotlin sources, but this behavior may
+     * change in the future. Future versions of AGP or Kotlin Gradle plugin may not support this.
      *
      * @param task the task
      * @param sourceFolders the source folders where the generated source code is.
@@ -475,10 +482,13 @@ public interface BaseVariant {
     /**
      * Adds to the variant a task that generates Java source code.
      *
-     * This will make the generate[Variant]Sources task depend on this task and add the
-     * new source folders as compilation inputs.
+     * <p>This will make the generate[Variant]Sources task depend on this task and add the new
+     * source folders as compilation inputs.
      *
-     * The new source folders are also added to the model.
+     * <p>The new source folders are also added to the model.
+     *
+     * <p>N.B. This method also supports adding generated Kotlin sources, but this behavior may
+     * change in the future. Future versions of AGP or Kotlin Gradle plugin may not support this.
      *
      * @param task the task
      * @param sourceFolders the source folders where the generated source code is.

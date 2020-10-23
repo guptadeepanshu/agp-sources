@@ -16,15 +16,16 @@
 package com.android.build.gradle.internal.res
 
 import com.android.SdkConstants
-import com.android.build.VariantOutput
 import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.FilterConfiguration
+import com.android.build.api.variant.impl.BuiltArtifactImpl
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
-import com.android.build.gradle.internal.scope.BuildElements
-import com.android.build.gradle.internal.scope.BuildOutput
-import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
@@ -35,10 +36,11 @@ import com.android.builder.symbols.processLibraryMainSymbolTable
 import com.android.ide.common.symbols.IdProvider
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
-import com.google.common.base.Strings
+import java.io.File
+import java.io.IOException
+import javax.inject.Inject
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -46,23 +48,17 @@ import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
-import java.io.IOException
-import java.io.Serializable
-import javax.inject.Inject
+
 
 @CacheableTask
-abstract class GenerateLibraryRFileTask @Inject constructor(objects: ObjectFactory) : ProcessAndroidResources() {
+abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
 
-    @get:OutputDirectory @get:Optional var sourceOutputDirectory= objects.directoryProperty(); private set
-
-    @get:OutputFile @get:Optional var rClassOutputJar = objects.fileProperty()
-        private set
+    @get:OutputFile
+    abstract val rClassOutputJar: RegularFileProperty
 
     @Internal // rClassOutputJar is already marked as @OutputFile
     override fun getSourceOutputDir(): File? = rClassOutputJar.get().asFile
@@ -97,7 +93,7 @@ abstract class GenerateLibraryRFileTask @Inject constructor(objects: ObjectFacto
     abstract val localResourcesFile: RegularFileProperty
 
     @get:Input
-    abstract val namespacedRClass: Property<Boolean>
+    abstract val nonTransitiveRClass: Property<Boolean>
 
     @get:Input
     abstract val compileClasspathLibraryRClasses: Property<Boolean>
@@ -107,150 +103,134 @@ abstract class GenerateLibraryRFileTask @Inject constructor(objects: ObjectFacto
 
     @Throws(IOException::class)
     override fun doFullTaskAction() {
-        val manifest = chooseOutput(
-            ExistingBuildElements.from(InternalArtifactType.MERGED_MANIFESTS, manifestFiles))
-            .outputFile
+        val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(manifestFiles)
+            ?: throw RuntimeException("Cannot load generated manifests, file a bug")
+        val manifest = File(chooseOutput(manifestBuiltArtifacts).outputFile)
 
-        getWorkerFacadeWithWorkers().use {
-            it.submit(
-                GenerateLibRFileRunnable::class.java,
-                GenerateLibRFileParams(
-                    localResourcesFile.get().asFile,
-                    manifest,
-                    platformAttrRTxt.singleFile,
-                    dependencies.files,
-                    packageForR.get(),
-                    null,
-                    rClassOutputJar.get().asFile,
-                    textSymbolOutputFileProperty.orNull?.asFile,
-                    namespacedRClass.get(),
-                    compileClasspathLibraryRClasses.get(),
-                    symbolsWithPackageNameOutputFile.orNull?.asFile,
-                    useConstantIds.get()
-                )
-            )
+        workerExecutor.noIsolation().submit(GenerateLibRFileRunnable::class.java) {
+            it.initializeFromAndroidVariantTask(this)
+            it.localResourcesFile.set(localResourcesFile)
+            it.manifest.set(manifest)
+            it.androidJar.from(platformAttrRTxt)
+            it.dependencies.from(dependencies)
+            it.packageForR.set(packageForR.get())
+            it.rClassOutputJar.set(rClassOutputJar)
+            it.textSymbolOutputFile.set(textSymbolOutputFileProperty)
+            it.nonTransitiveRClass.set(nonTransitiveRClass.get())
+            it.compileClasspathLibraryRClasses.set(compileClasspathLibraryRClasses.get())
+            it.symbolsWithPackageNameOutputFile.set(symbolsWithPackageNameOutputFile)
+            it.useConstantIds.set(useConstantIds.get())
         }
     }
 
-    private fun chooseOutput(manifestBuildElements: BuildElements): BuildOutput {
-        val nonDensity = manifestBuildElements
-            .stream()
-            .filter { output -> output.apkData.getFilter(VariantOutput.FilterType.DENSITY) == null }
-            .findFirst()
-        if (!nonDensity.isPresent) {
-            throw RuntimeException("No non-density apk found")
-        }
-        return nonDensity.get()
+    private fun chooseOutput(manifestBuiltArtifacts: BuiltArtifactsImpl): BuiltArtifactImpl =
+        manifestBuiltArtifacts.elements
+            .firstOrNull() { output -> output.getFilter(FilterConfiguration.FilterType.DENSITY) == null }
+            ?: throw RuntimeException("No non-density apk found")
+
+    abstract class GenerateLibRFileParams : ProfileAwareWorkAction.Parameters() {
+        abstract val localResourcesFile: RegularFileProperty
+        abstract val manifest: RegularFileProperty
+        abstract val androidJar: ConfigurableFileCollection
+        abstract val dependencies: ConfigurableFileCollection
+        abstract val packageForR: Property<String>
+        abstract val rClassOutputJar: RegularFileProperty
+        abstract val textSymbolOutputFile: RegularFileProperty
+        abstract val nonTransitiveRClass: Property<Boolean>
+        abstract val compileClasspathLibraryRClasses: Property<Boolean>
+        abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
+        abstract val useConstantIds: Property<Boolean>
     }
 
-    data class GenerateLibRFileParams(
-        val localResourcesFile: File,
-        val manifest: File,
-        val androidJar: File,
-        val dependencies: Set<File>,
-        val packageForR: String,
-        val sourceOutputDirectory: File?,
-        val rClassOutputJar: File?,
-        val textSymbolOutputFile: File?,
-        val namespacedRClass: Boolean,
-        val compileClasspathLibraryRClasses: Boolean,
-        val symbolsWithPackageNameOutputFile: File?,
-        val useConstantIds: Boolean
-    ) : Serializable
-
-    class GenerateLibRFileRunnable @Inject constructor(private val params: GenerateLibRFileParams) : Runnable {
+    abstract class GenerateLibRFileRunnable @Inject constructor() :
+        ProfileAwareWorkAction<GenerateLibRFileParams>() {
         override fun run() {
             val androidAttrSymbol = getAndroidAttrSymbols()
 
-            val symbolTable = SymbolIo.readRDef(params.localResourcesFile.toPath())
+            val symbolTable = SymbolIo.readRDef(parameters.localResourcesFile.asFile.get().toPath())
 
             val idProvider =
-                if (params.useConstantIds) {
+                if (parameters.useConstantIds.get()) {
                     IdProvider.constant()
                 } else {
                     IdProvider.sequential()
                 }
             processLibraryMainSymbolTable(
                 librarySymbols = symbolTable,
-                libraries = params.dependencies,
-                mainPackageName = params.packageForR,
-                manifestFile = params.manifest,
-                sourceOut = params.sourceOutputDirectory,
-                rClassOutputJar = params.rClassOutputJar,
-                symbolFileOut = params.textSymbolOutputFile,
+                libraries = parameters.dependencies.files,
+                mainPackageName = parameters.packageForR.get(),
+                manifestFile = parameters.manifest.asFile.get(),
+                rClassOutputJar = parameters.rClassOutputJar.asFile.orNull,
+                symbolFileOut = parameters.textSymbolOutputFile.asFile.orNull,
                 platformSymbols = androidAttrSymbol,
-                namespacedRClass = params.namespacedRClass,
-                generateDependencyRClasses = !params.compileClasspathLibraryRClasses,
+                nonTransitiveRClass = parameters.nonTransitiveRClass.get(),
+                generateDependencyRClasses = !parameters.compileClasspathLibraryRClasses.get(),
                 idProvider = idProvider
             )
 
-            params.symbolsWithPackageNameOutputFile?.let {
+            parameters.symbolsWithPackageNameOutputFile.asFile.orNull?.let {
                 SymbolIo.writeSymbolListWithPackageName(
-                    params.textSymbolOutputFile!!.toPath(),
-                    params.manifest.toPath(),
+                    parameters.textSymbolOutputFile.get().asFile.toPath(),
+                    parameters.manifest.get().asFile.toPath(),
                     it.toPath()
                 )
             }
         }
 
         private fun getAndroidAttrSymbols() =
-            if (params.androidJar.exists())
-                SymbolIo.readFromAapt(params.androidJar, "android")
+            if (parameters.androidJar.singleFile.exists())
+                SymbolIo.readFromAapt(parameters.androidJar.singleFile, "android")
             else
                 SymbolTable.builder().tablePackage("android").build()
     }
 
-
     internal class CreationAction(
         componentProperties: ComponentPropertiesImpl,
         val isLibrary: Boolean)
-        : VariantTaskCreationAction<GenerateLibraryRFileTask>(componentProperties.variantScope) {
+        : VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentPropertiesImpl>(componentProperties) {
 
         override val name: String
-            get() = variantScope.getTaskName("generate", "RFile")
+            get() = computeTaskName("generate", "RFile")
         override val type: Class<GenerateLibraryRFileTask>
             get() = GenerateLibraryRFileTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out GenerateLibraryRFileTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<GenerateLibraryRFileTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.processAndroidResTask = taskProvider
+            creationConfig.taskContainer.processAndroidResTask = taskProvider
 
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.COMPILE_ONLY_NOT_NAMESPACED_R_CLASS_JAR,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                GenerateLibraryRFileTask::rClassOutputJar,
-                fileName = "R.jar"
-            )
+                GenerateLibraryRFileTask::rClassOutputJar
+            ).withName("R.jar").on(InternalArtifactType.COMPILE_R_CLASS_JAR)
 
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.COMPILE_SYMBOL_LIST,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                GenerateLibraryRFileTask::textSymbolOutputFileProperty,
-                SdkConstants.FN_RESOURCE_TEXT
-            )
+                GenerateLibraryRFileTask::textSymbolOutputFileProperty
+            ).withName(SdkConstants.FN_RESOURCE_TEXT).on(InternalArtifactType.COMPILE_SYMBOL_LIST)
 
             // Synthetic output for AARs (see SymbolTableWithPackageNameTransform), and created in
             // process resources for local subprojects.
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                GenerateLibraryRFileTask::symbolsWithPackageNameOutputFile,
-                "package-aware-r.txt"
-            )
+                GenerateLibraryRFileTask::symbolsWithPackageNameOutputFile
+            ).withName("package-aware-r.txt").on(InternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
         }
 
-
-        override fun configure(task: GenerateLibraryRFileTask) {
+        override fun configure(
+            task: GenerateLibraryRFileTask
+        ) {
             super.configure(task)
 
-            val projectOptions = variantScope.globalScope.projectOptions
+            val projectOptions = creationConfig.services.projectOptions
 
-            task.platformAttrRTxt.fromDisallowChanges(variantScope.globalScope.platformAttrs)
+            task.platformAttrRTxt.fromDisallowChanges(creationConfig.globalScope.platformAttrs)
 
-            val namespacedRClass = projectOptions[BooleanOption.NAMESPACED_R_CLASS]
+            val nonTransitiveRClass = projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
             val compileClasspathLibraryRClasses = projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES]
 
-            if (!namespacedRClass || !compileClasspathLibraryRClasses) {
+            if (!nonTransitiveRClass || !compileClasspathLibraryRClasses) {
                 // We need the dependencies for generating our own R class or for generating R
                 // classes of the dependencies:
                 //   * If we're creating a transitive (non-namespaced) R class, then we need the
@@ -268,25 +248,25 @@ abstract class GenerateLibraryRFileTask @Inject constructor(objects: ObjectFacto
                     } else {
                         RUNTIME_CLASSPATH
                     }
-                task.dependencies.from(variantScope.getArtifactFileCollection(
+                task.dependencies.from(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                     consumedConfigType,
                     ALL,
                     AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
                 ))
             }
 
-            task.namespacedRClass.set(namespacedRClass)
-            task.compileClasspathLibraryRClasses.set(compileClasspathLibraryRClasses)
+            task.nonTransitiveRClass.set(nonTransitiveRClass)
+            task.compileClasspathLibraryRClasses.setDisallowChanges(compileClasspathLibraryRClasses)
+            task.packageForR.setDisallowChanges(creationConfig.packageName)
 
-            task.packageForR.set(task.project.provider {
-                Strings.nullToEmpty(variantScope.variantDslInfo.originalApplicationId)
-            })
-            task.packageForR.disallowChanges()
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.PACKAGED_MANIFESTS, task.manifestFiles)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.MERGED_MANIFESTS, task.manifestFiles)
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.MERGED_MANIFESTS, task.mergedManifestFiles)
 
-            task.mainSplit = variantScope.variantData.publicVariantPropertiesApi.outputs.getMainSplit().apkData
+            task.mainSplit = creationConfig.outputs.getMainSplit()
 
             // This task can produce R classes with either constant IDs ("0") or sequential IDs
             // mimicking the way AAPT2 numbers IDs. If we're generating a compile time only R class
@@ -297,61 +277,65 @@ abstract class GenerateLibraryRFileTask @Inject constructor(objects: ObjectFacto
                 (projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS] && !isLibrary)
                         || projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES])
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
                 task.localResourcesFile)
         }
     }
 
     internal class TestRuntimeStubRClassCreationAction(componentProperties: ComponentPropertiesImpl) :
-        VariantTaskCreationAction<GenerateLibraryRFileTask>(componentProperties.variantScope) {
+        VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
-        override val name: String = variantScope.getTaskName("generate", "StubRFile")
+        override val name: String = computeTaskName("generate", "StubRFile")
         override val type: Class<GenerateLibraryRFileTask> = GenerateLibraryRFileTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out GenerateLibraryRFileTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<GenerateLibraryRFileTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                GenerateLibraryRFileTask::rClassOutputJar,
-                fileName = "R.jar"
-            )
+                GenerateLibraryRFileTask::rClassOutputJar
+            ).withName("R.jar").on(InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR)
         }
 
-        override fun configure(task: GenerateLibraryRFileTask) {
+        override fun configure(
+            task: GenerateLibraryRFileTask
+        ) {
             super.configure(task)
-            val testedScope = variantScope.testedVariantData!!.scope
-            val projectOptions = variantScope.globalScope.projectOptions
+            val projectOptions = creationConfig.services.projectOptions
 
-            task.platformAttrRTxt.fromDisallowChanges(variantScope.globalScope.platformAttrs)
+            task.platformAttrRTxt.fromDisallowChanges(creationConfig.globalScope.platformAttrs)
 
             // We need the runtime dependencies for generating a set of consistent runtime R classes
             // for android test, and in the case of transitive R classes, we also need them
             // to include them in the local R class.
             task.dependencies.fromDisallowChanges(
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         RUNTIME_CLASSPATH,
                         ALL,
                         AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
                     )
                 )
 
-            task.namespacedRClass.setDisallowChanges(projectOptions[BooleanOption.NAMESPACED_R_CLASS])
+            task.nonTransitiveRClass.setDisallowChanges(projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS])
             task.compileClasspathLibraryRClasses.setDisallowChanges(false)
-            task.packageForR.setDisallowChanges(task.project.provider {
-                Strings.nullToEmpty(variantScope.variantDslInfo.originalApplicationId)
-            })
-            testedScope.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.MERGED_MANIFESTS, task.manifestFiles
-            )
-            task.mainSplit = variantScope.variantData.publicVariantPropertiesApi.outputs.getMainSplit().apkData
+            task.packageForR.setDisallowChanges(creationConfig.packageName)
+            task.mainSplit = creationConfig.outputs.getMainSplit()
             task.useConstantIds.setDisallowChanges(false)
 
-            testedScope.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
-                task.localResourcesFile
-            )
+            creationConfig.onTestedConfig {
+                it.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.PACKAGED_MANIFESTS, task.manifestFiles
+                )
+
+                it.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
+                    task.localResourcesFile
+                )
+            }
         }
     }
 }

@@ -16,7 +16,7 @@
 
 package com.android.build.api.artifact.impl
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -39,7 +39,7 @@ class StorageProviderImpl {
         objectFactory -> objectFactory.directoryProperty()
     }
 
-    fun <T: FileSystemLocation> getStorage(artifactKind: ArtifactKind<T>): TypedStorageProvider<T> {
+    fun <T: FileSystemLocation> getStorage(artifactKind: ArtifactKind<out T>): TypedStorageProvider<T> {
         @Suppress("Unchecked_cast")
         return when(artifactKind) {
             ArtifactKind.FILE -> fileStorage
@@ -50,25 +50,26 @@ class StorageProviderImpl {
 }
 
 class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator: (ObjectFactory) -> Property<T>) {
-    private val singleStorage= mutableMapOf<ArtifactType.Single,  SingleArtifactContainer<T>>()
-    private val multipleStorage=  mutableMapOf<ArtifactType.Multiple,  MultipleArtifactContainer<T>>()
+    private val singleStorage= mutableMapOf<Artifact.SingleArtifact<*>,  SingleArtifactContainer<T>>()
+    private val multipleStorage=  mutableMapOf<Artifact.MultipleArtifact<*>,  MultipleArtifactContainer<T>>()
 
     @Synchronized
-    internal fun <ARTIFACT_TYPE> getArtifact(objects: ObjectFactory, artifactType: ARTIFACT_TYPE): SingleArtifactContainer<T> where
-        ARTIFACT_TYPE: ArtifactType.Single,
-        ARTIFACT_TYPE: ArtifactType<T> {
+    internal fun getArtifact(
+        objects: ObjectFactory,
+        artifactType: Artifact.SingleArtifact<T>
+    ): SingleArtifactContainer<T> {
 
         return singleStorage.getOrPut(artifactType) {
-            SingleArtifactContainer<T> {
+            SingleArtifactContainer {
                 SinglePropertyAdapter(propertyAllocator(objects))
             }
         }
     }
 
-    internal fun <ARTIFACT_TYPE> getArtifact(objects: ObjectFactory, artifactType: ARTIFACT_TYPE): MultipleArtifactContainer<T> where
-            ARTIFACT_TYPE: ArtifactType.Multiple,
-            ARTIFACT_TYPE: ArtifactType<T> {
-
+    internal fun getArtifact(
+        objects: ObjectFactory,
+        artifactType: Artifact.MultipleArtifact<T>
+    ): MultipleArtifactContainer<T> {
         return multipleStorage.getOrPut(artifactType) {
             MultipleArtifactContainer<T> {
                 MultiplePropertyAdapter(
@@ -77,12 +78,14 @@ class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator:
         }
     }
 
-    internal fun <ARTIFACT_TYPE> copy(type: ARTIFACT_TYPE,
-        container: SingleArtifactContainer<T>)
-        where ARTIFACT_TYPE: ArtifactType<T>,
-              ARTIFACT_TYPE: ArtifactType.Single {
-
-       singleStorage[type] = container
+    internal fun copy(type: Artifact.SingleArtifact<T>,
+        container: SingleArtifactContainer<T>) {
+        // if the target container is null, we can just override with the source container
+        // however, if it is not null, which mean that is has been queried, we cannot just
+        // override. In that case, we need to just link the source to the target.
+        if (singleStorage[type] == null)
+            singleStorage[type] = container
+        else singleStorage[type]?.setInitialProvider(container.get())
     }
 
     fun lock() {

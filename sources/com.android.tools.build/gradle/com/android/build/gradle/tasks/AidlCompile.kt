@@ -16,21 +16,23 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.AIDL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.compiling.DependencyFileProcessor
 import com.android.builder.internal.compiler.AidlProcessor
 import com.android.builder.internal.compiler.DirectoryWalker
 import com.android.builder.internal.incremental.DependencyData
 import com.android.ide.common.process.LoggedProcessOutputHandler
-import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
 import java.io.File
@@ -42,6 +44,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -80,12 +83,6 @@ abstract class AidlCompile : NonIncrementalTask() {
     lateinit var importDirs: FileCollection
         private set
 
-    @get:Internal
-    abstract val aidlExecutableProvider: Property<File>
-
-    @get:Internal
-    abstract val buildToolsRevisionProvider: Property<Revision>
-
     @get:Inject
     abstract val execOperations: ExecOperations
 
@@ -96,10 +93,10 @@ abstract class AidlCompile : NonIncrementalTask() {
     @get:Input
     val aidlVersion: String
         get() {
-            val buildToolsRevision = buildToolsRevisionProvider.orNull
+            val buildToolsRevision = sdkBuildService.get().buildToolsRevisionProvider.orNull
             Preconditions.checkState(buildToolsRevision != null, "Build Tools not present")
 
-            val aidlExecutable = aidlExecutableProvider.orNull
+            val aidlExecutable = sdkBuildService.get().aidlExecutableProvider.orNull
             Preconditions.checkState(
                 aidlExecutable != null,
                 "AIDL executable not present in Build Tools $buildToolsRevision"
@@ -112,9 +109,9 @@ abstract class AidlCompile : NonIncrementalTask() {
             return buildToolsRevision.toString()
         }
 
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NONE)
-    abstract val aidlFrameworkProvider: Property<File>
+    @InputFile
+    @PathSensitive(PathSensitivity.NONE)
+    fun getAidlFrameworkProvider(): Provider<File> = sdkBuildService.flatMap { it.aidlFrameworkProvider }
 
     @get:InputFiles
     @get:SkipWhenEmpty
@@ -127,6 +124,9 @@ abstract class AidlCompile : NonIncrementalTask() {
     @get:OutputDirectory
     @get:Optional
     abstract val packagedDir: DirectoryProperty
+
+    @get:Internal
+    abstract val sdkBuildService: Property<SdkComponentsBuildService>
 
     private class DepFileProcessor : DependencyFileProcessor {
         override fun processFile(dependencyFile: File): DependencyData? {
@@ -150,8 +150,8 @@ abstract class AidlCompile : NonIncrementalTask() {
             val fullImportList = sourceFolders + importFolders
 
             val processor = AidlProcessor(
-                aidlExecutableProvider.get().absolutePath,
-                aidlFrameworkProvider.get().absolutePath,
+                sdkBuildService.get().aidlExecutableProvider.get().absolutePath,
+                getAidlFrameworkProvider().get().absolutePath,
                 fullImportList,
                 destinationDir,
                 parcelableDir?.asFile,
@@ -167,51 +167,44 @@ abstract class AidlCompile : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(scope: VariantScope) : VariantTaskCreationAction<AidlCompile>(scope) {
+    class CreationAction(
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<AidlCompile, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
-        override val name: String = variantScope.getTaskName("compile", "Aidl")
+        override val name: String = computeTaskName("compile", "Aidl")
 
         override val type: Class<AidlCompile> = AidlCompile::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out AidlCompile>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<AidlCompile>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.aidlCompileTask = taskProvider
-            variantScope
-                .artifacts
-                .producesDir(
-                    InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR,
-                    taskProvider,
-                    AidlCompile::sourceOutputDir,
-                    "out"
-                )
+            creationConfig.taskContainer.aidlCompileTask = taskProvider
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                AidlCompile::sourceOutputDir
+            ).withName("out").on(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR)
 
-            if (variantScope.variantDslInfo.variantType.isAar) {
-                variantScope
-                    .artifacts
-                    .producesDir(
-                        InternalArtifactType.AIDL_PARCELABLE,
-                        taskProvider,
-                        AidlCompile::packagedDir,
-                        "out"
-                    )
+            if (creationConfig.variantType.isAar) {
+                creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    AidlCompile::packagedDir
+                ).withName("out").on(InternalArtifactType.AIDL_PARCELABLE)
             }
         }
 
-        override fun configure(task: AidlCompile) {
+        override fun configure(
+            task: AidlCompile
+        ) {
             super.configure(task)
-            val scope = variantScope
-            val globalScope = scope.globalScope
+            val globalScope = creationConfig.globalScope
             val project = globalScope.project
 
-            val variantDslInfo = scope.variantDslInfo
-            val variantSources = scope.variantSources
+            val variantSources = creationConfig.variantSources
 
             val sdkComponents = globalScope.sdkComponents
-            task.aidlExecutableProvider.set(sdkComponents.aidlExecutableProvider)
-            task
-                .buildToolsRevisionProvider
-                .set(sdkComponents.buildToolsRevisionProvider)
-            task.aidlFrameworkProvider.set(sdkComponents.aidlFrameworkProvider)
 
             task
                 .sourceDirs
@@ -228,11 +221,14 @@ abstract class AidlCompile : NonIncrementalTask() {
                     })
             task.sourceFiles.disallowChanges()
 
-            task.importDirs = scope.getArtifactFileCollection(COMPILE_CLASSPATH, ALL, AIDL)
+            task.importDirs = creationConfig.variantDependencies.getArtifactFileCollection(COMPILE_CLASSPATH, ALL, AIDL)
 
-            if (variantDslInfo.variantType.isAar) {
+            if (creationConfig.variantType.isAar) {
                 task.packageWhitelist = globalScope.extension.aidlPackageWhiteList
             }
+            task.sdkBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
         }
     }
 

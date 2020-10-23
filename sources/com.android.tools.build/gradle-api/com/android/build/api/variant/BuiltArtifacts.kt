@@ -16,18 +16,19 @@
 
 package com.android.build.api.variant
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.Artifact
 import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
-import org.gradle.api.file.RegularFile
+import org.gradle.workers.WorkParameters
 import java.io.File
+import java.io.Serializable
 import java.util.ServiceLoader
 
 /**
  * Represents a [Collection] of [BuiltArtifact] produced by a [org.gradle.api.Task].
  *
  * Tasks in Android Gradle Plugin can produce more than one file in the output folder so any
- * [ArtifactType] with a [ArtifactType.kind] of type
+ * [Artifact] with a [Artifact.kind] of type
  * [com.android.build.api.artifact.ArtifactKind.DIRECTORY] can actually contain several produced
  * [File]. For instance, when dealing with multi-apk, there will be several manifest files or APKs
  * produced by the Android Gradle Plugin.
@@ -41,19 +42,19 @@ import java.util.ServiceLoader
  *
  * <pre><code>
  * abstract class MyTask @inject constructor(val objectFactory: ObjectFactory): DefaultTask() {
- *     @InputDirectory
+ *     @get:InputDirectory
  *     abstract val input: DirectoryProperty
- *     @OutputDirectory
+ *     @get:OutputDirectory
  *     abstract val output: DirectoryProperty
+ *     @get:Internal
+ *     abstract val artifactsLoader: Property<BuiltArtifactsLoader>
  *
  *     @TaskAction
  *     fun taskAction() {
- *          val builtArtifacts= BuiltArtifacts.Loader.loadFromFolder(
+ *          val builtArtifacts= artifactsLoader.get().load(
  *               objectFactory, input.get())
  *
- *          val newBuiltArtifacts = builtArtifacts.transform(PublicArtifactType.APK) {
- *              ... transform input into a new file...
- *          }
+ *          TODO : TBD what will be surfaced here
  *
  *          newBuiltArtifacts.save(output.get()))
  *     }
@@ -72,30 +73,15 @@ interface BuiltArtifacts {
          * Current version of the metadata file.
          */
         const val METADATA_FILE_VERSION = 2
-
-        /**
-         * Provides an implementation of [BuiltArtifactsLoader]
-         */
-        @JvmStatic
-        val Loader: BuiltArtifactsLoader by lazy {
-            var loadedServices = ServiceLoader.load(
-                BuiltArtifactsLoader::class.java,
-                BuiltArtifactsLoader::class.java.classLoader
-            )
-            if (!loadedServices.iterator().hasNext()) {
-                loadedServices = ServiceLoader.load(BuiltArtifactsLoader::class.java)
-            }
-            loadedServices.first()
-        }
     }
 
     /**
-     * Identifies the [ArtifactType] for this [Collection] of [BuiltArtifact], all [BuiltArtifact]
+     * Identifies the [Artifact] for this [Collection] of [BuiltArtifact], all [BuiltArtifact]
      * are the same type of artifact.
      *
-     * @return the [ArtifactType] for all the [BuiltArtifact] instances.
+     * @return the [Artifact] for all the [BuiltArtifact] instances.
      */
-    val artifactType: ArtifactType<*>
+    val artifactType: Artifact<*>
 
     /**
      * Returns the application ID for these [BuiltArtifact] instances.
@@ -115,28 +101,21 @@ interface BuiltArtifacts {
     val elements: Collection<BuiltArtifact>
 
     /**
-     * Transforms this [Collection] of [BuiltArtifact] into a new instance of newly produced
-     * [BuiltArtifact] with a new [ArtifactType].
-     *
-     * This convenience method can be used by [org.gradle.api.Task] implementation to easily
-     * transforms input [BuiltArtifacts] into a new [Collection] of [BuiltArtifact]. The new
-     * [BuiltArtifacts] instance can be used to save the metadata associated with the new produced
-     * files.
-     *
-     * @param newArtifactType the new [ArtifactType] that identifies the new produced files.
-     * @param transformer the lambda that transforms each element of [BuiltArtifacts.elements] into
-     * a new file. All the metadata associated with the input like filters, versions will be
-     * automatically transferred to create a new instance of [BuiltArtifact] that will be added
-     * to the returned [BuiltArtifacts] instance.
-     * @return a new instance of [BuiltArtifacts] with updated artifact type and elements as
-     * provided by the [transformer] lambda.
-     */
-    fun transform(newArtifactType: ArtifactType<*>, transformer: (input: File) -> File): BuiltArtifacts
-
-    /**
      * Saves the metadata associated with this instance into a folder.
      * @param out the [Directory] that can be used to save the metadata using a standard file
      * name.
      */
     fun save(out: Directory)
+
+    /**
+     * Specialized version  of Gradle's [WorkParameters] so we can retrieve the output file
+     * generated when transforming an instance of [BuiltArtifacts] into a new one.
+     */
+    @Incubating
+    interface TransformParams: WorkParameters, Serializable {
+        /**
+         * Result of the work item submission must be made available through this field.
+         */
+        val output: File
+    }
 }

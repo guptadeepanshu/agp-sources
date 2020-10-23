@@ -20,96 +20,189 @@ import static com.android.build.gradle.internal.dependency.VariantDependencies.C
 import static com.android.build.gradle.internal.dependency.VariantDependencies.CONFIG_NAME_TESTED_APKS;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.ComponentIdentity;
 import com.android.build.api.component.impl.AndroidTestImpl;
 import com.android.build.api.component.impl.AndroidTestPropertiesImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.component.impl.UnitTestPropertiesImpl;
+import com.android.build.api.dsl.BuildFeatures;
+import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.api.variant.impl.TestVariantPropertiesImpl;
-import com.android.build.api.variant.impl.VariantImpl;
+import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
 import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.TestAndroidConfig;
 import com.android.build.gradle.internal.core.VariantDslInfo;
-import com.android.build.gradle.internal.dsl.BuildType;
-import com.android.build.gradle.internal.dsl.ProductFlavor;
-import com.android.build.gradle.internal.dsl.SigningConfig;
+import com.android.build.gradle.internal.core.VariantSources;
+import com.android.build.gradle.internal.dependency.VariantDependencies;
+import com.android.build.gradle.internal.dsl.DataBindingOptions;
+import com.android.build.gradle.internal.pipeline.TransformManager;
+import com.android.build.gradle.internal.plugins.DslContainerProvider;
+import com.android.build.gradle.internal.scope.BuildFeatureValues;
+import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.ProjectServices;
+import com.android.build.gradle.internal.services.TaskCreationServices;
+import com.android.build.gradle.internal.services.VariantApiServices;
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices;
+import com.android.build.gradle.options.ProjectOptions;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.VariantType;
 import com.android.builder.core.VariantTypeImpl;
-import com.android.utils.StringHelper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import org.gradle.api.GradleException;
-import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
 
-/** Customization of {@link ApplicationVariantFactory} for test-only projects. */
-public class TestVariantFactory extends ApplicationVariantFactory {
+/** Customization of {@link AbstractAppVariantFactory} for test-only projects. */
+public class TestVariantFactory
+        extends AbstractAppVariantFactory<TestVariantImpl, TestVariantPropertiesImpl> {
 
-    public TestVariantFactory(@NonNull GlobalScope globalScope) {
-        super(globalScope);
-    }
-
-    @Override
-    public boolean hasTestScope() {
-        return false;
+    public TestVariantFactory(
+            @NonNull ProjectServices projectServices, @NonNull GlobalScope globalScope) {
+        super(projectServices, globalScope);
     }
 
     @NonNull
     @Override
-    public VariantImpl createVariantObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo) {
-        return globalScope
-                .getDslScope()
+    public TestVariantImpl createVariantObject(
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices) {
+        return projectServices
                 .getObjectFactory()
-                .newInstance(TestVariantImpl.class, variantDslInfo, componentIdentity);
+                .newInstance(
+                        TestVariantImpl.class,
+                        variantDslInfo,
+                        componentIdentity,
+                        variantApiServices);
     }
 
     @NonNull
     @Override
     public UnitTestImpl createUnitTestObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo) {
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices) {
         throw new RuntimeException("cannot instantiate unit-test in test plugin");
     }
 
     @NonNull
     @Override
     public AndroidTestImpl createAndroidTestObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantDslInfo variantDslInfo) {
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices) {
         throw new RuntimeException("cannot instantiate android-test in test plugin");
     }
 
     @NonNull
     @Override
-    public VariantPropertiesImpl createVariantPropertiesObject(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope) {
-        return globalScope
-                .getDslScope()
-                .getObjectFactory()
-                .newInstance(
-                        TestVariantPropertiesImpl.class,
-                        globalScope.getDslScope(),
-                        variantScope,
-                        variantScope.getArtifacts().getOperations(),
-                        componentIdentity);
+    public TestVariantPropertiesImpl createVariantPropertiesObject(
+            @NonNull TestVariantImpl variant,
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull BaseVariantData variantData,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices) {
+        TestVariantPropertiesImpl variantProperties =
+                projectServices
+                        .getObjectFactory()
+                        .newInstance(
+                                TestVariantPropertiesImpl.class,
+                                componentIdentity,
+                                buildFeatures,
+                                variantDslInfo,
+                                variantDependencies,
+                                variantSources,
+                                paths,
+                                artifacts,
+                                variantScope,
+                                variantData,
+                                transformManager,
+                                variantPropertiesApiServices,
+                                taskCreationServices,
+                                globalScope);
+
+        // create default output
+        variantProperties.addVariantOutput(
+                new VariantOutputConfigurationImpl(false, ImmutableList.of()), null);
+
+        return variantProperties;
+    }
+
+    @NonNull
+    @Override
+    public BuildFeatureValues createBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures, @NonNull ProjectOptions projectOptions) {
+        if (buildFeatures instanceof TestBuildFeatures) {
+            return new BuildFeatureValuesImpl(
+                    buildFeatures,
+                    true /* androidResources */,
+                    false /* dataBinding */,
+                    false /* mlModelBinding */,
+                    projectOptions);
+        } else {
+            throw new RuntimeException("buildFeatures not of type TestBuildFeatures");
+        }
+    }
+
+    @NonNull
+    @Override
+    public BuildFeatureValues createTestBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures,
+            @NonNull DataBindingOptions dataBindingOptions,
+            @NonNull ProjectOptions projectOptions) {
+        throw new RuntimeException("cannot instantiate test build features in test plugin");
     }
 
     @NonNull
     @Override
     public UnitTestPropertiesImpl createUnitTestProperties(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope) {
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull TestVariantData variantData,
+            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices) {
         throw new RuntimeException("cannot instantiate unit-test properties in test plugin");
     }
 
     @NonNull
     @Override
     public AndroidTestPropertiesImpl createAndroidTestProperties(
-            @NonNull ComponentIdentity componentIdentity, @NonNull VariantScope variantScope) {
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
+            @NonNull VariantScope variantScope,
+            @NonNull TestVariantData variantData,
+            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
+            @NonNull TaskCreationServices taskCreationServices) {
         throw new RuntimeException("cannot instantiate android-test properties in test plugin");
     }
 
@@ -144,20 +237,12 @@ public class TestVariantFactory extends ApplicationVariantFactory {
     }
 
     @Override
-    public void createDefaultComponents(
-            @NonNull NamedDomainObjectContainer<BuildType> buildTypes,
-            @NonNull NamedDomainObjectContainer<ProductFlavor> productFlavors,
-            @NonNull NamedDomainObjectContainer<SigningConfig> signingConfigs) {
+    public void createDefaultComponents(@NonNull DslContainerProvider dslContainers) {
         // don't call super as we don't want the default app version.
         // must create signing config first so that build type 'debug' can be initialized
         // with the debug signing config.
-        signingConfigs.create(BuilderConstants.DEBUG);
-        buildTypes.create(BuilderConstants.DEBUG);
-    }
-
-    @NonNull
-    public static String getTestedApksConfigurationName(@NonNull String variantName) {
-        return StringHelper.appendCapitalized(variantName, CONFIG_NAME_TESTED_APKS);
+        dslContainers.getSigningConfigContainer().create(BuilderConstants.DEBUG);
+        dslContainers.getBuildTypeContainer().create(BuilderConstants.DEBUG);
     }
 
     @NonNull

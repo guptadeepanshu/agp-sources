@@ -16,6 +16,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES
 import com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES
 import com.android.build.api.transform.QualifiedContent.Scope.PROJECT
@@ -23,19 +24,21 @@ import com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS
 import com.android.build.api.transform.QualifiedContent.ScopeType
 import com.android.build.gradle.internal.InternalScope.FEATURES
 import com.android.build.gradle.internal.InternalScope.LOCAL_DEPS
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.packaging.SerializablePackagingOptions
 import com.android.build.gradle.internal.pipeline.StreamFilter.PROJECT_RESOURCES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
-import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_CLASSES
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.ide.common.resources.FileStatus
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
@@ -47,6 +50,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.api.tasks.util.PatternSet
 import java.io.File
 import java.util.concurrent.Callable
 import java.util.function.Predicate
@@ -59,14 +63,10 @@ import javax.inject.Inject
 abstract class MergeJavaResourceTask
 @Inject constructor(objects: ObjectFactory) : IncrementalTask() {
 
-    // PathSensitivity.ABSOLUTE necessary here to support changing java resource file relative
-    // paths. A better solution will be custom snapshots from gradle:
-    // https://github.com/gradle/gradle/issues/8503
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
-    var projectJavaRes: FileCollection? = null
-        private set
+    abstract val projectJavaRes: ConfigurableFileCollection
 
     @get:Classpath
     @get:Optional
@@ -97,8 +97,8 @@ abstract class MergeJavaResourceTask
         private set
 
     @get:Input
-    lateinit var noCompress: List<String>
-        private set
+    @get:Optional
+    abstract val noCompress: ListProperty<String>
 
     private lateinit var intermediateDir: File
 
@@ -117,7 +117,9 @@ abstract class MergeJavaResourceTask
     // The runnable implementing the processing is not able to deal with fine-grained file but
     // instead is expecting directories of files. Use the unfiltered collection (since the filtering
     // changes the FileCollection of directories into a FileTree of files) to process, but don't
-    // use it as a jar input, it's covered by the [projectJavaRes] and [projectJavaResAsJars] above.
+    // use it as a task input, it's covered by [projectJavaRes] and [projectJavaResAsJars] above.
+    // This is a workaround for the lack of gradle custom snapshotting:
+    // https://github.com/gradle/gradle/issues/8503.
     private lateinit var unfilteredProjectJavaRes: FileCollection
 
     override fun doFullTaskAction() {
@@ -136,7 +138,7 @@ abstract class MergeJavaResourceTask
                     cacheDir,
                     null,
                     RESOURCES,
-                    noCompress
+                    noCompress.orNull ?: listOf()
                 )
             )
         }
@@ -162,7 +164,7 @@ abstract class MergeJavaResourceTask
                     cacheDir,
                     changedInputs,
                     RESOURCES,
-                    noCompress
+                    noCompress.orNull ?: listOf()
                 )
             )
         }
@@ -170,59 +172,63 @@ abstract class MergeJavaResourceTask
 
     class CreationAction(
         private val mergeScopes: Collection<ScopeType>,
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<MergeJavaResourceTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<MergeJavaResourceTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         private val projectJavaResFromStreams: FileCollection?
 
         override val name: String
-            get() = variantScope.getTaskName("merge", "JavaResource")
+            get() = computeTaskName("merge", "JavaResource")
 
         override val type: Class<MergeJavaResourceTask>
             get() = MergeJavaResourceTask::class.java
 
         init {
-            if (variantScope.needsJavaResStreams) {
+            if (componentProperties.variantScope.needsJavaResStreams) {
                 // Because ordering matters for Transform pipeline, we need to fetch the java res
                 // as soon as this creation action is instantiated, if needed.
                 projectJavaResFromStreams =
-                    variantScope.transformManager
+                    componentProperties.transformManager
                         .getPipelineOutputAsFileCollection(PROJECT_RESOURCES)
                 // We must also consume corresponding streams to avoid duplicates; any downstream
                 // transforms will use the merged-java-res stream instead.
-                variantScope.transformManager
+                componentProperties.transformManager
                     .consumeStreams(mutableSetOf(PROJECT), setOf(RESOURCES))
             } else {
                 projectJavaResFromStreams = null
             }
         }
 
-        override fun handleProvider(taskProvider: TaskProvider<out MergeJavaResourceTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<MergeJavaResourceTask>
+        ) {
             super.handleProvider(taskProvider)
-
-            variantScope.artifacts.producesFile(
-                MERGED_JAVA_RES,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                MergeJavaResourceTask::outputFile,
-                fileName = "out.jar"
-            )
+                MergeJavaResourceTask::outputFile
+            ).withName("out.jar").on(InternalArtifactType.MERGED_JAVA_RES)
         }
 
-        override fun configure(task: MergeJavaResourceTask) {
+        override fun configure(
+            task: MergeJavaResourceTask
+        ) {
             super.configure(task)
 
             if (projectJavaResFromStreams != null) {
                 task.projectJavaResAsJars = projectJavaResFromStreams
                 task.unfilteredProjectJavaRes = projectJavaResFromStreams
             } else {
-                val projectJavaRes = getProjectJavaRes(variantScope)
+                val projectJavaRes = getProjectJavaRes(creationConfig)
                 task.unfilteredProjectJavaRes = projectJavaRes
-                task.projectJavaRes = projectJavaRes.asFileTree.filter(spec)
+                task.projectJavaRes.from(projectJavaRes.asFileTree.matching(patternSet))
             }
+            task.projectJavaRes.disallowChanges()
 
             if (mergeScopes.contains(SUB_PROJECTS)) {
                 task.subProjectJavaRes =
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.JAVA_RES
@@ -231,12 +237,12 @@ abstract class MergeJavaResourceTask
 
             if (mergeScopes.contains(EXTERNAL_LIBRARIES) || mergeScopes.contains(LOCAL_DEPS)) {
                 // Local jars are treated the same as external libraries
-                task.externalLibJavaRes = getExternalLibJavaRes(variantScope, mergeScopes)
+                task.externalLibJavaRes = getExternalLibJavaRes(creationConfig, mergeScopes)
             }
 
             if (mergeScopes.contains(FEATURES)) {
                 task.featureJavaRes =
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.REVERSE_METADATA_JAVA_RES
@@ -246,57 +252,71 @@ abstract class MergeJavaResourceTask
             task.mergeScopes = mergeScopes
             task.packagingOptions =
                 SerializablePackagingOptions(
-                    variantScope.globalScope.extension.packagingOptions
+                    creationConfig.globalScope.extension.packagingOptions
                 )
             task.intermediateDir =
-                variantScope.getIncrementalDir("${variantScope.name}-mergeJavaRes")
+                creationConfig.paths.getIncrementalDir("${creationConfig.name}-mergeJavaRes")
             task.cacheDir = File(task.intermediateDir, "zip-cache")
             task.incrementalStateFile = File(task.intermediateDir, "merge-state")
-            task.noCompress =
-                variantScope.globalScope.extension.aaptOptions.noCompress?.toList()?.sorted() ?:
-                        listOf()
+            if (creationConfig is ApkCreationConfig) {
+                task.noCompress.set(creationConfig.globalScope.extension.aaptOptions.noCompress)
+            }
+            task.noCompress.disallowChanges()
         }
     }
 
     companion object {
-        val predicate= Predicate<String> { t ->
-            !t.endsWith(SdkConstants.DOT_CLASS) &&
-                    !t.endsWith(SdkConstants.DOT_NATIVE_LIBS)
+
+        private val excludedFileSuffixes =
+            listOf(SdkConstants.DOT_CLASS, SdkConstants.DOT_NATIVE_LIBS)
+
+        // predicate logic must match patternSet logic below
+        val predicate = Predicate<String> { path ->
+            excludedFileSuffixes.none { path.endsWith(it) }
         }
 
-        val spec: (file: File) -> Boolean = {
-            predicate.test(it.absolutePath)
-        }
+        // patternSet logic must match predicate logic above
+        val patternSet: PatternSet
+            get() {
+                val patternSet = PatternSet()
+                excludedFileSuffixes.forEach { patternSet.exclude("**/*$it") }
+                return patternSet
+            }
     }
 }
 
 fun getProjectJavaRes(
-    scope: VariantScope
+    componentProperties: ComponentPropertiesImpl
 ): FileCollection {
-    val javaRes = scope.globalScope.project.files()
-    javaRes.from(scope.artifacts.getFinalProduct(JAVA_RES))
+    val javaRes = componentProperties.globalScope.project.files()
+    javaRes.from(componentProperties.artifacts.get(JAVA_RES))
     // use lazy file collection here in case an annotationProcessor dependency is add via
     // Configuration.defaultDependencies(), for example.
     javaRes.from(
         Callable {
-            if (projectHasAnnotationProcessors(scope)) {
-                scope.artifacts.getFinalProduct(JAVAC)
+            if (projectHasAnnotationProcessors(componentProperties)) {
+                componentProperties.artifacts.get(JAVAC)
             } else {
                 listOf<File>()
             }
         }
     )
-    javaRes.from(scope.variantData.allPreJavacGeneratedBytecode)
-    javaRes.from(scope.variantData.allPostJavacGeneratedBytecode)
-    javaRes.from(scope.artifacts.getFinalProductAsFileCollection(RUNTIME_R_CLASS_CLASSES))
+    javaRes.from(componentProperties.variantData.allPreJavacGeneratedBytecode)
+    javaRes.from(componentProperties.variantData.allPostJavacGeneratedBytecode)
+    if (componentProperties.globalScope.extension.aaptOptions.namespaced) {
+        javaRes.from(componentProperties.artifacts.get(RUNTIME_R_CLASS_CLASSES))
+    }
     return javaRes
 }
 
-private fun getExternalLibJavaRes(scope: VariantScope, mergeScopes: Collection<ScopeType>): FileCollection {
-    val externalLibJavaRes = scope.globalScope.project.files()
+private fun getExternalLibJavaRes(
+    componentProperties: ComponentPropertiesImpl,
+    mergeScopes: Collection<ScopeType>
+): FileCollection {
+    val externalLibJavaRes = componentProperties.globalScope.project.files()
     if (mergeScopes.contains(EXTERNAL_LIBRARIES)) {
         externalLibJavaRes.from(
-            scope.getArtifactFileCollection(
+            componentProperties.variantDependencies.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 AndroidArtifacts.ArtifactScope.EXTERNAL,
                 AndroidArtifacts.ArtifactType.JAVA_RES
@@ -304,13 +324,13 @@ private fun getExternalLibJavaRes(scope: VariantScope, mergeScopes: Collection<S
         )
     }
     if (mergeScopes.contains(LOCAL_DEPS)) {
-        externalLibJavaRes.from(scope.localPackagedJars)
+        externalLibJavaRes.from(componentProperties.variantScope.localPackagedJars)
     }
     return externalLibJavaRes
 }
 
 /** Returns true if anything's been added to the annotation processor configuration. */
-fun projectHasAnnotationProcessors(scope: VariantScope): Boolean {
-    val config = scope.variantDependencies.annotationProcessorConfiguration
+fun projectHasAnnotationProcessors(componentProperties: ComponentPropertiesImpl): Boolean {
+    val config = componentProperties.variantDependencies.annotationProcessorConfiguration
     return config.incoming.dependencies.isNotEmpty()
 }

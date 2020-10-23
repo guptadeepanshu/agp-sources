@@ -26,7 +26,9 @@ import com.android.builder.model.NativeLibrary;
 import com.android.builder.model.TestOptions;
 import com.android.ide.common.gradle.model.level2.IdeDependenciesFactory;
 import com.android.ide.common.repository.GradleVersion;
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
@@ -46,11 +48,9 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
     @NonNull private final String mySourceGenTaskName;
     @NonNull private final Collection<File> myGeneratedResourceFolders;
     @NonNull private final Collection<File> myAdditionalRuntimeApks;
-    @NonNull private final Map<String, ClassField> myBuildConfigFields;
-    @NonNull private final Map<String, ClassField> myResValues;
     @Nullable private final IdeInstantRun myInstantRun;
     @Nullable private final String mySigningConfigName;
-    @Nullable private final Set<String> myAbiFilters;
+    @NonNull private final Set<String> myAbiFilters;
     @Nullable private final Collection<NativeLibrary> myNativeLibraries;
     @Nullable private final IdeTestOptions myTestOptions;
     @Nullable private final String myInstrumentedTestTaskName;
@@ -71,11 +71,9 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
         mySourceGenTaskName = "";
         myGeneratedResourceFolders = Collections.emptyList();
         myAdditionalRuntimeApks = Collections.emptyList();
-        myBuildConfigFields = Collections.emptyMap();
-        myResValues = Collections.emptyMap();
         myInstantRun = null;
         mySigningConfigName = null;
-        myAbiFilters = null;
+        myAbiFilters = Collections.emptySet();
         myNativeLibraries = null;
         myTestOptions = null;
         myInstrumentedTestTaskName = null;
@@ -93,20 +91,20 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
             @NonNull AndroidArtifact artifact,
             @NonNull ModelCache modelCache,
             @NonNull IdeDependenciesFactory dependenciesFactory,
-            @Nullable GradleVersion gradleVersion) {
-        super(artifact, modelCache, dependenciesFactory, gradleVersion);
-        myOutputs = copyOutputs(artifact, modelCache);
+            @Nullable GradleVersion agpVersion) {
+        super(artifact, modelCache, dependenciesFactory, agpVersion);
+        myOutputs = copyOutputs(artifact, modelCache, agpVersion);
         myApplicationId = artifact.getApplicationId();
         mySourceGenTaskName = artifact.getSourceGenTaskName();
         myGeneratedResourceFolders = ImmutableList.copyOf(artifact.getGeneratedResourceFolders());
-        myBuildConfigFields =
-                IdeModel.copy(artifact.getBuildConfigFields(), modelCache, IdeClassField::new);
-        myResValues = IdeModel.copy(artifact.getResValues(), modelCache, IdeClassField::new);
         myInstantRun =
                 IdeModel.copyNewProperty(
                         modelCache, artifact::getInstantRun, IdeInstantRun::new, null);
         mySigningConfigName = artifact.getSigningConfigName();
-        myAbiFilters = IdeModel.copy(artifact.getAbiFilters());
+        // In AGP 4.0 and below abiFilters was nullable, normalize null to empty set.
+        myAbiFilters =
+                ImmutableSet.copyOf(
+                        MoreObjects.firstNonNull(artifact.getAbiFilters(), ImmutableSet.of()));
         myNativeLibraries = copy(modelCache, artifact.getNativeLibraries());
         mySigned = artifact.isSigned();
         myAdditionalRuntimeApks =
@@ -147,7 +145,13 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
 
     @NonNull
     private static Collection<AndroidArtifactOutput> copyOutputs(
-            @NonNull AndroidArtifact artifact, @NonNull ModelCache modelCache) {
+            @NonNull AndroidArtifact artifact,
+            @NonNull ModelCache modelCache,
+            @Nullable GradleVersion agpVersion) {
+        // getOutputs is deprecated in AGP 4.0.0.
+        if (agpVersion != null && agpVersion.compareIgnoringQualifiers("4.0.0") >= 0) {
+            return Collections.emptyList();
+        }
         Collection<AndroidArtifactOutput> outputs;
         try {
             outputs = artifact.getOutputs();
@@ -192,16 +196,10 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
         return myGeneratedResourceFolders;
     }
 
-    @Override
     @NonNull
-    public Map<String, ClassField> getBuildConfigFields() {
-        return myBuildConfigFields;
-    }
-
     @Override
-    @NonNull
     public Map<String, ClassField> getResValues() {
-        return myResValues;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -269,7 +267,7 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
     }
 
     @Override
-    @Nullable
+    @NonNull
     public Set<String> getAbiFilters() {
         return myAbiFilters;
     }
@@ -303,8 +301,6 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
                 && Objects.equals(myApplicationId, artifact.myApplicationId)
                 && Objects.equals(mySourceGenTaskName, artifact.mySourceGenTaskName)
                 && Objects.equals(myGeneratedResourceFolders, artifact.myGeneratedResourceFolders)
-                && Objects.equals(myBuildConfigFields, artifact.myBuildConfigFields)
-                && Objects.equals(myResValues, artifact.myResValues)
                 && Objects.equals(myInstantRun, artifact.myInstantRun)
                 && Objects.equals(mySigningConfigName, artifact.mySigningConfigName)
                 && Objects.equals(myAbiFilters, artifact.myAbiFilters)
@@ -339,8 +335,6 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
                 myApplicationId,
                 mySourceGenTaskName,
                 myGeneratedResourceFolders,
-                myBuildConfigFields,
-                myResValues,
                 myInstantRun,
                 mySigningConfigName,
                 myAbiFilters,
@@ -370,10 +364,6 @@ public final class IdeAndroidArtifactImpl extends IdeBaseArtifactImpl
                 + '\''
                 + ", myGeneratedResourceFolders="
                 + myGeneratedResourceFolders
-                + ", myBuildConfigFields="
-                + myBuildConfigFields
-                + ", myResValues="
-                + myResValues
                 + ", myInstantRun="
                 + myInstantRun
                 + ", mySigningConfigName='"

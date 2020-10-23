@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
@@ -56,32 +56,37 @@ abstract class CheckManifest : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(scope: VariantScope) : VariantTaskCreationAction<CheckManifest>(scope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<CheckManifest, ComponentPropertiesImpl>(
+            componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("check", "Manifest")
+            get() = computeTaskName("check", "Manifest")
 
         override val type: Class<CheckManifest>
             get() = CheckManifest::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out CheckManifest>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<CheckManifest>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.checkManifestTask = taskProvider
+            creationConfig.taskContainer.checkManifestTask = taskProvider
 
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.CHECK_MANIFEST_RESULT,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                CheckManifest::fakeOutputDir,
-                "out"
-            )
+                CheckManifest::fakeOutputDir
+            ).withName("out").on(InternalArtifactType.CHECK_MANIFEST_RESULT)
         }
 
-        override fun configure(task: CheckManifest) {
+        override fun configure(
+            task: CheckManifest
+        ) {
             super.configure(task)
 
-            task.manifestRequired = variantScope.variantDslInfo.variantType.requiresManifest
+            task.manifestRequired = creationConfig.variantType.requiresManifest
             task.manifestFile = task.project.provider {
-                variantScope.variantSources.mainManifestFilePath
+                creationConfig.variantSources.mainManifestFilePath
             }
         }
     }

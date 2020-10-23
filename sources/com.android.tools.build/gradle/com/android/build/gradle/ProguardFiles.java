@@ -20,6 +20,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.android.Version;
 import com.android.annotations.NonNull;
+import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.AndroidProject;
 import com.android.utils.FileUtils;
 import com.google.common.annotations.VisibleForTesting;
@@ -31,7 +32,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.gradle.api.file.ProjectLayout;
+import org.gradle.api.file.DirectoryProperty;
 
 /**
  * Deals with the default ProGuard files for Gradle.
@@ -79,24 +80,25 @@ public class ProguardFiles {
      * </ul>
      *
      * @param name the name of the default ProGuard file.
-     * @param projectLayout used to determine the output location.
+     * @param buildDirectory the build directory
      */
     public static File getDefaultProguardFile(
-            @NonNull String name, @NonNull ProjectLayout projectLayout) {
+            @NonNull String name, @NonNull DirectoryProperty buildDirectory) {
         if (!KNOWN_FILE_NAMES.contains(name)) {
             throw new IllegalArgumentException(UNKNOWN_FILENAME_MESSAGE);
         }
 
         return FileUtils.join(
-                projectLayout.getBuildDirectory().get().getAsFile(),
+                buildDirectory.get().getAsFile(),
                 AndroidProject.FD_INTERMEDIATES,
                 "proguard-files",
                 name + "-" + Version.ANDROID_GRADLE_PLUGIN_VERSION);
     }
 
     @VisibleForTesting
-    public static void createProguardFile(@NonNull String name, @NonNull File destination)
-            throws IOException {
+    public static void createProguardFile(
+            @NonNull String name, @NonNull File destination, @NonNull Boolean keepRClass)
+             throws IOException {
         ProguardFile proguardFile = null;
         for (ProguardFile knownFile : ProguardFile.values()) {
             if (knownFile.fileName.equals(name)) {
@@ -141,6 +143,13 @@ public class ProguardFiles {
 
         sb.append("\n");
         append(sb, "proguard-common.txt");
+
+        if (keepRClass) {
+            String rFieldRule = "-keepclassmembers class **.R$* {\n" +
+                    "    public static <fields>;\n" +
+                    "}\n";
+            sb.append(rFieldRule);
+        }
 
         Files.asCharSink(destination, UTF_8).write(sb.toString());
     }

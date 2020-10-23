@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.attribution
 
+import com.android.build.gradle.internal.utils.getBuildSrcPlugins
 import com.android.ide.common.attribution.AndroidGradlePluginAttributionData
 import org.gradle.BuildAdapter
 import org.gradle.BuildResult
@@ -23,6 +24,7 @@ import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.tasks.TaskState
 import java.io.File
+import java.lang.management.ManagementFactory
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -30,9 +32,13 @@ import java.util.concurrent.ConcurrentHashMap
  * in showing the build attribution on the IDE side.
  */
 class AttributionBuildListener internal constructor(private val outputDirPath: String) :
-    TaskExecutionListener, BuildAdapter() {
+    TaskExecutionListener,
+    BuildAdapter() {
     private val taskNameToClassNameMap: MutableMap<String, String> = ConcurrentHashMap()
     private val outputFileToTasksMap: MutableMap<String, MutableList<String>> = ConcurrentHashMap()
+    private val initialGarbageCollectionData: Map<String, Long> =
+        ManagementFactory.getGarbageCollectorMXBeans().map { it.name to it.collectionTime }
+            .toMap()
 
     override fun buildFinished(buildResult: BuildResult) {
         try {
@@ -41,11 +47,21 @@ class AttributionBuildListener internal constructor(private val outputDirPath: S
                 // there is no need to output the data on failure.
                 return
             }
+            val gcData =
+                ManagementFactory.getGarbageCollectorMXBeans().map {
+                    it.name to it.collectionTime - initialGarbageCollectionData.getOrDefault(
+                        it.name,
+                        0
+                    )
+                }.filter { it.second > 0L }.toMap()
+
             AndroidGradlePluginAttributionData.save(
                 File(outputDirPath),
                 AndroidGradlePluginAttributionData(
                     taskNameToClassNameMap = taskNameToClassNameMap,
-                    tasksSharingOutput = outputFileToTasksMap.filter { it.value.size > 1 }
+                    tasksSharingOutput = outputFileToTasksMap.filter { it.value.size > 1 },
+                    garbageCollectionData = gcData,
+                    buildSrcPlugins = getBuildSrcPlugins(this.javaClass.classLoader)
                 )
             )
         } finally {

@@ -21,10 +21,13 @@ import com.android.build.api.dsl.LibraryBuildFeatures
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 
-class BuildFeatureValuesImpl(
-    private val projectOptions: ProjectOptions
+class BuildFeatureValuesImpl constructor(
+    buildFeatures: BuildFeatures,
+    override val androidResources: Boolean = true,
+    override val dataBinding: Boolean = false,
+    override val mlModelBinding: Boolean = false,
+    projectOptions: ProjectOptions
 ) : BuildFeatureValues {
-    lateinit var dslBuildFeatures: BuildFeatures
 
     // add new flags here with computation:
     // dslFeatures.flagX ?: projectOptions[BooleanOption.FlagX]
@@ -32,29 +35,21 @@ class BuildFeatureValuesImpl(
     // ------------------
     // Common flags
 
-    override val aidl: Boolean
-        get() = dslBuildFeatures.aidl ?: projectOptions[BooleanOption.BUILD_FEATURE_AIDL]
+    override val aidl: Boolean = buildFeatures.aidl ?: projectOptions[BooleanOption.BUILD_FEATURE_AIDL]
 
-    override val compose: Boolean
-        get() = dslBuildFeatures.compose ?: false
+    override val compose: Boolean = buildFeatures.compose ?: false
 
-    override val buildConfig: Boolean
-        get() = dslBuildFeatures.buildConfig ?: projectOptions[BooleanOption.BUILD_FEATURE_BUILDCONFIG]
+    override val buildConfig: Boolean = buildFeatures.buildConfig ?: projectOptions[BooleanOption.BUILD_FEATURE_BUILDCONFIG]
 
-    override val dataBinding: Boolean
-        get() = dslBuildFeatures.dataBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_DATABINDING]
+    override val prefab: Boolean = buildFeatures.prefab ?: false
 
-    override val renderScript: Boolean
-        get() = dslBuildFeatures.renderScript ?: projectOptions[BooleanOption.BUILD_FEATURE_RENDERSCRIPT]
+    override val renderScript: Boolean = buildFeatures.renderScript ?: projectOptions[BooleanOption.BUILD_FEATURE_RENDERSCRIPT]
 
-    override val resValues: Boolean
-        get() = dslBuildFeatures.resValues ?: projectOptions[BooleanOption.BUILD_FEATURE_RESVALUES]
+    override val resValues: Boolean = buildFeatures.resValues ?: projectOptions[BooleanOption.BUILD_FEATURE_RESVALUES]
 
-    override val shaders: Boolean
-        get() = dslBuildFeatures.shaders ?: projectOptions[BooleanOption.BUILD_FEATURE_SHADERS]
+    override val shaders: Boolean = buildFeatures.shaders ?: projectOptions[BooleanOption.BUILD_FEATURE_SHADERS]
 
-    override val viewBinding: Boolean
-        get() = dslBuildFeatures.viewBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_VIEWBINDING]
+    override val viewBinding: Boolean = buildFeatures.viewBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_VIEWBINDING]
 
     // ------------------
     // Application flags
@@ -65,9 +60,16 @@ class BuildFeatureValuesImpl(
     // ------------------
     // Library flags
 
-    override val buildType: Boolean
-        get() = true
+    override val buildType: Boolean = true
+
+    override val prefabPublishing: Boolean = when (buildFeatures) {
+        is LibraryBuildFeatures -> buildFeatures.prefabPublishing ?: false
+        else -> false
+    }
 
     // ------------------
     // Test flags
+
+    // ------------------
+    // Application / dynamic-feature / library flags
 }

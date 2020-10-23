@@ -16,18 +16,129 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.artifact.Operations
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.variant.AaptOptions
 import com.android.build.api.variant.TestVariantProperties
-import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.gradle.internal.component.TestVariantCreationConfig
+import com.android.build.gradle.internal.core.VariantDslInfo
+import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.BuildFeatureValues
+import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.variant.BaseVariantData
+import com.android.build.gradle.internal.variant.VariantPathHelper
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
-internal open class TestVariantPropertiesImpl @Inject constructor(
-    dslScope: DslScope,
+open class TestVariantPropertiesImpl @Inject constructor(
+    componentIdentity: ComponentIdentity,
+    buildFeatureValues: BuildFeatureValues,
+    variantDslInfo: VariantDslInfo,
+    variantDependencies: VariantDependencies,
+    variantSources: VariantSources,
+    paths: VariantPathHelper,
+    artifacts: ArtifactsImpl,
     variantScope: VariantScope,
-    override val operations: Operations,
-    publicVariantConfiguration: ComponentIdentity
-):
-    VariantPropertiesImpl(dslScope, variantScope, operations, publicVariantConfiguration), TestVariantProperties{
+    variantData: BaseVariantData,
+    transformManager: TransformManager,
+    internalServices: VariantPropertiesApiServices,
+    taskCreationServices: TaskCreationServices,
+    globalScope: GlobalScope
+) : VariantPropertiesImpl(
+    componentIdentity,
+    buildFeatureValues,
+    variantDslInfo,
+    variantDependencies,
+    variantSources,
+    paths,
+    artifacts,
+    variantScope,
+    variantData,
+    transformManager,
+    internalServices,
+    taskCreationServices,
+    globalScope
+), TestVariantProperties, TestVariantCreationConfig {
+
+    // ---------------------------------------------------------------------------------------------
+    // PUBLIC API
+    // ---------------------------------------------------------------------------------------------
+
+    override val debuggable: Boolean
+        get() = variantDslInfo.isDebuggable
+
+    override val applicationId: Property<String> =
+        internalServices.propertyOf(String::class.java, variantDslInfo.applicationId)
+
+    override val aaptOptions: AaptOptions by lazy {
+        initializeAaptOptionsFromDsl(
+            globalScope.extension.aaptOptions,
+            internalServices
+        )
+    }
+
+    override fun aaptOptions(action: AaptOptions.() -> Unit) {
+        action.invoke(aaptOptions)
+    }
+
+    override val testedApplicationId: Provider<String> = calculateTestedApplicationId(variantDependencies)
+
+    override val instrumentationRunner: Property<String> =
+        internalServices.propertyOf(String::class.java, variantDslInfo.instrumentationRunner)
+
+    override val handleProfiling: Property<Boolean> =
+        internalServices.propertyOf(Boolean::class.java, variantDslInfo.handleProfiling)
+
+    override val functionalTest: Property<Boolean> =
+        internalServices.propertyOf(Boolean::class.java, variantDslInfo.functionalTest)
+
+    override val testLabel: Property<String?> =
+        internalServices.nullablePropertyOf(String::class.java, variantDslInfo.testLabel)
+
+    // ---------------------------------------------------------------------------------------------
+    // INTERNAL API
+    // ---------------------------------------------------------------------------------------------
+
+    // always false for this type
+    override val embedsMicroApp: Boolean
+        get() = false
+
+    // always true for this kind
+    override val testOnlyApk: Boolean
+        get() = true
+
+    override val instrumentationRunnerArguments: Map<String, String>
+        get() = variantDslInfo.instrumentationRunnerArguments
+
+    override val isTestCoverageEnabled: Boolean
+        get() = variantDslInfo.isTestCoverageEnabled
+
+    override val shouldPackageDesugarLibDex: Boolean = variantScope.isCoreLibraryDesugaringEnabled
+
+    // ---------------------------------------------------------------------------------------------
+    // Private stuff
+    // ---------------------------------------------------------------------------------------------
+
+    private fun calculateTestedApplicationId(
+        variantDependencies: VariantDependencies
+    ): Provider<String> {
+        return variantDependencies
+            .getArtifactFileCollection(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.MANIFEST_METADATA
+            ).elements.map {
+                val manifestDirectory = it.single().asFile
+                BuiltArtifactsLoaderImpl.loadFromDirectory(manifestDirectory)?.applicationId
+                    ?: throw RuntimeException("Cannot find merged manifest at '$manifestDirectory', please file a bug.\"")
+            }
+
+    }
 }

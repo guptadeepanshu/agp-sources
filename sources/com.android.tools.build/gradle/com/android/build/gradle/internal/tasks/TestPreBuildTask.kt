@@ -16,13 +16,14 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.TestComponentPropertiesImpl
 import com.android.build.gradle.internal.TaskManager
-import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.variant.BaseVariantData
-import java.io.File
-import java.util.Objects
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.GradleException
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Internal
+import java.io.File
 
 /**
  * Pre build task that checks that there are not differences between artifact versions between the
@@ -31,6 +32,9 @@ import org.gradle.api.tasks.CacheableTask
 @CacheableTask
 abstract class TestPreBuildTask : ClasspathComparisonTask() {
 
+    @get:Internal("only for task execution")
+    abstract val projectPath: Property<String>
+
     override fun onDifferentVersionsFound(
         group: String,
         module: String,
@@ -38,29 +42,40 @@ abstract class TestPreBuildTask : ClasspathComparisonTask() {
         compileVersion: String
     ) {
         throw GradleException(
-            """Conflict with dependency '$group:$module' in project '${project.path}'.
+            """Conflict with dependency '$group:$module' in project '${projectPath.get()}'.
 Resolved versions for app ($compileVersion) and test app ($runtimeVersion) differ.
 See https://d.android.com/r/tools/test-apk-dependency-conflicts.html for details."""
         )
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        TaskManager.AbstractPreBuildCreationAction<TestPreBuildTask>(variantScope) {
+    class CreationAction(private val testComponentProperties: TestComponentPropertiesImpl) :
+        TaskManager.AbstractPreBuildCreationAction<TestPreBuildTask>(testComponentProperties) {
 
         override val type: Class<TestPreBuildTask>
             get() = TestPreBuildTask::class.java
 
-        override fun configure(task: TestPreBuildTask) {
+        override fun configure(
+            task: TestPreBuildTask
+        ) {
             super.configure(task)
-            task.runtimeClasspath = variantScope.variantDependencies.runtimeClasspath
-            task.compileClasspath =
-                Objects.requireNonNull<BaseVariantData>(variantScope.testedVariantData)
-                    .scope.variantDependencies.runtimeClasspath
-
-            task.fakeOutputDirectory = File(
-                variantScope.globalScope.intermediatesDir,
-                "prebuild/${variantScope.variantDslInfo.dirName}"
+            val runtimeClasspath = creationConfig.variantDependencies.runtimeClasspath
+            val compileClasspath =
+                testComponentProperties.testedVariant.variantDependencies.runtimeClasspath
+            task.runtimeVersionMap.set(
+                task.project.providers.provider {
+                    runtimeClasspath.toVersionMap()
+                }
             )
+            task.compileVersionMap.set(
+                task.project.providers.provider {
+                    compileClasspath.toVersionMap()
+                }
+            )
+            task.fakeOutputDirectory = File(
+                creationConfig.globalScope.intermediatesDir,
+                "prebuild/${creationConfig.dirName}"
+            )
+            task.projectPath.setDisallowChanges(task.project.path)
         }
     }
 }

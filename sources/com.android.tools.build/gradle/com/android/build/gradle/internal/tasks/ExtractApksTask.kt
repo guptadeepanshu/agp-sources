@@ -16,13 +16,11 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.VariantOutput
-import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildElements
-import com.android.build.gradle.internal.scope.BuildOutput
-import com.android.build.gradle.internal.scope.ExistingBuildElements
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.impl.BuiltArtifactImpl
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableSet
@@ -56,7 +54,10 @@ import javax.inject.Inject
 abstract class ExtractApksTask : NonIncrementalTask() {
 
     companion object {
-        fun getTaskName(scope: VariantScope) = scope.getTaskName("extractApksFor")
+        const val namePrefix = "extractApksFor"
+        fun getTaskName(componentProperties: ComponentPropertiesImpl): String {
+            return componentProperties.computeTaskName(namePrefix)
+        }
     }
 
     @get:InputFile
@@ -79,9 +80,6 @@ abstract class ExtractApksTask : NonIncrementalTask() {
     abstract val applicationId: Property<String>
 
     @get:Input
-    abstract val variantType: Property<String>
-
-    @get:Input
     @get:Optional
     abstract val dynamicModulesToInstall: ListProperty<String>
 
@@ -102,7 +100,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
                     extractInstant,
                     apksFromBundleIdeModel.get().asFile,
                     applicationId.get(),
-                    variantType.get(),
+                    variantName,
                     dynamicModulesToInstall.getOrElse(listOf())
                 )
             )
@@ -116,7 +114,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
         val extractInstant: Boolean,
         val apksFromBundleIdeModel: File,
         val applicationId: String,
-        val variantType: String,
+        val variantName: String,
         val optionalListOfDynamicModulesToInstall: List<String>
     ) : Serializable
 
@@ -144,60 +142,59 @@ abstract class ExtractApksTask : NonIncrementalTask() {
 
             command.build().execute()
 
-            BuildElements(
+            BuiltArtifactsImpl(
+                artifactType = InternalArtifactType.EXTRACTED_APKS,
                 applicationId = params.applicationId,
-                variantType = params.variantType,
+                variantName = params.variantName,
                 elements = listOf(
-                    BuildOutput(
-                        InternalArtifactType.EXTRACTED_APKS,
-                        ApkData.of(VariantOutput.OutputType.MAIN, listOf(), -1),
-                        params.outputDir
-                    )
+                    BuiltArtifactImpl.make(outputFile = params.outputDir.absolutePath)
                 )
             ).saveToFile(params.apksFromBundleIdeModel)
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<ExtractApksTask>(variantScope) {
+    class CreationAction(creationConfig: ApkCreationConfig) :
+        VariantTaskCreationAction<ExtractApksTask, ApkCreationConfig>(
+            creationConfig
+        ) {
 
         override val name: String
-            get() = getTaskName(variantScope)
+            get() = computeTaskName(namePrefix)
         override val type: Class<ExtractApksTask>
             get() = ExtractApksTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out ExtractApksTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<ExtractApksTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.EXTRACTED_APKS,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ExtractApksTask::outputDir
-            )
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL,
-                taskProvider,
-                ExtractApksTask::apksFromBundleIdeModel,
-                ExistingBuildElements.METADATA_FILE_NAME
-            )
+                ExtractApksTask::outputDir)
+                .on(InternalArtifactType.EXTRACTED_APKS)
+            creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    ExtractApksTask::apksFromBundleIdeModel)
+                .withName(BuiltArtifactsImpl.METADATA_FILE_NAME)
+                .on(InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL)
         }
 
-        override fun configure(task: ExtractApksTask) {
+        override fun configure(
+            task: ExtractApksTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.APKS_FROM_BUNDLE,
                 task.apkSetArchive)
 
-            val devicePath = variantScope.globalScope.projectOptions.get(StringOption.IDE_APK_SELECT_CONFIG)
+            val devicePath = creationConfig.services.projectOptions.get(StringOption.IDE_APK_SELECT_CONFIG)
             if (devicePath != null) {
                 task.deviceConfig = File(devicePath)
             }
 
-            task.extractInstant = variantScope.globalScope.projectOptions.get(BooleanOption.IDE_EXTRACT_INSTANT)
-
-            task.applicationId.setDisallowChanges(variantScope.variantData.publicVariantPropertiesApi.applicationId)
-            task.variantType.setDisallowChanges(variantScope.variantData.type.toString())
-            val optionalListOfDynamicModulesToInstall = variantScope.globalScope.projectOptions.get(
+            task.extractInstant = creationConfig.services.projectOptions.get(BooleanOption.IDE_EXTRACT_INSTANT)
+            task.applicationId.setDisallowChanges(creationConfig.applicationId)
+            val optionalListOfDynamicModulesToInstall = creationConfig.services.projectOptions.get(
                 StringOption.IDE_INSTALL_DYNAMIC_MODULES_LIST
             )
             if (!optionalListOfDynamicModulesToInstall.isNullOrEmpty()) {

@@ -17,13 +17,19 @@
 package com.android.tools.analytics
 
 /**
- * Helper class to create indirection reading environment variables
- * as Java doesn't allow overwriting environment variables for the current process.
- * This is needed to allow overriding the environment variables in tests.
+ * Helper class to create indirection reading environment variables and system properties. This
+ * allows providing custom logic for reading these values. E.g. because Java doesn't allow
+ * overwriting environment variables for the current process, in tests this is used to provide the
+ * environment variables. Also, build system may implement this in a way that is using build system
+ * specific APIs to access system properties and environment variables.
  */
 abstract class Environment {
 
   abstract fun getVariable(name: String): String?
+
+  open fun getSystemProperty(name: String): String? {
+    return System.getProperty(name)
+  }
 
   companion object {
     @JvmStatic

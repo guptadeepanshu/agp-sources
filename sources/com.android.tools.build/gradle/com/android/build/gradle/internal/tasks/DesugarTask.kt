@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
@@ -24,7 +25,6 @@ import com.android.build.gradle.internal.pipeline.OriginalStream
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.DesugarProcessArgs
 import com.android.builder.core.DesugarProcessBuilder
@@ -33,6 +33,7 @@ import com.android.ide.common.workers.WorkerExecutorFacade
 import com.android.utils.FileUtils
 import com.android.utils.PathUtils
 import com.google.common.collect.ArrayListMultimap
+import org.apache.log4j.Logger
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
@@ -86,38 +87,42 @@ abstract class DesugarTask @Inject constructor(objectFactory: ObjectFactory) :
     val enableBugFixForJacoco: Property<Boolean> = objectFactory.property(Boolean::class.java)
 
     override fun doTaskAction() {
-        val libs = externaLibsClasses.asFile.get().listFiles()!!.toList().sortedBy { it.name }
-        DesugarTaskDelegate(
-            projectClasses = projectClasses.files,
-            subProjectClasses = subProjectClasses.files,
-            externaLibsClasses = libs,
-            desugaringClasspath = desugaringClasspath.files,
-            projectOutput = projectOutput.asFile.get(),
-            subProjectOutput = subProjectOutput.asFile.get(),
-            externalLibsOutput = externalLibsOutput.asFile.get(),
-            tmpDir = tmpDir.asFile.get(),
-            bootClasspath = bootClasspath.files,
-            minSdk = minSdk.get(),
-            enableBugFixForJacoco = enableBugFixForJacoco.get(),
-            verbose = project.logger.isDebugEnabled,
-            executorFacade = getWorkerFacadeWithWorkers()
-        ).doProcess()
+        getWorkerFacadeWithWorkers().use { executorFacade ->
+            val libs = externaLibsClasses.asFile.get().listFiles()!!.toList().sortedBy { it.name }
+            DesugarTaskDelegate(
+                projectClasses = projectClasses.files,
+                subProjectClasses = subProjectClasses.files,
+                externaLibsClasses = libs,
+                desugaringClasspath = desugaringClasspath.files,
+                projectOutput = projectOutput.asFile.get(),
+                subProjectOutput = subProjectOutput.asFile.get(),
+                externalLibsOutput = externalLibsOutput.asFile.get(),
+                tmpDir = tmpDir.asFile.get(),
+                bootClasspath = bootClasspath.files,
+                minSdk = minSdk.get(),
+                enableBugFixForJacoco = enableBugFixForJacoco.get(),
+                verbose = Logger.getLogger(DesugarTask::class.java).isDebugEnabled,
+                executorFacade = executorFacade
+            ).doProcess()
+        }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<DesugarTask>(variantScope) {
-        override val name: String = variantScope.getTaskName("desugar")
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<DesugarTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
+        override val name: String = computeTaskName("desugar")
         override val type: Class<DesugarTask> = DesugarTask::class.java
 
         private val projectClasses: FileCollection
 
         init {
             projectClasses =
-                variantScope.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
+                componentProperties.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
                     QualifiedContent.DefaultContentType.CLASSES in types &&
                             scopes == setOf(QualifiedContent.Scope.PROJECT)
                 }
-            variantScope.transformManager.consumeStreams(
+            componentProperties.transformManager.consumeStreams(
                 mutableSetOf(
                     QualifiedContent.Scope.PROJECT,
                     QualifiedContent.Scope.SUB_PROJECTS,
@@ -132,15 +137,15 @@ abstract class DesugarTask @Inject constructor(objectFactory: ObjectFactory) :
                 InternalArtifactType.DESUGAR_SUB_PROJECT_CLASSES to QualifiedContent.Scope.SUB_PROJECTS,
                 InternalArtifactType.DESUGAR_EXTERNAL_LIBS_CLASSES to QualifiedContent.Scope.EXTERNAL_LIBRARIES
             ).forEach { (output, scope) ->
-                val processedClasses = variantScope.globalScope.project.files(
-                    variantScope.artifacts.getOperations().get(output)
+                val processedClasses = componentProperties.globalScope.project.files(
+                    componentProperties.artifacts.get(output)
                 )
                     .asFileTree
-                variantScope
+                componentProperties
                     .transformManager
                     .addStream(
                         OriginalStream.builder(
-                            variantScope.globalScope.project,
+                            componentProperties.globalScope.project,
                             "desugared-classes-${scope.name}"
                         )
                             .addContentTypes(TransformManager.CONTENT_CLASS)
@@ -151,41 +156,42 @@ abstract class DesugarTask @Inject constructor(objectFactory: ObjectFactory) :
             }
         }
 
-        override fun handleProvider(taskProvider: TaskProvider<out DesugarTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<DesugarTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.DESUGAR_PROJECT_CLASSES,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DesugarTask::projectOutput
-            )
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.DESUGAR_SUB_PROJECT_CLASSES,
+            ).on(InternalArtifactType.DESUGAR_PROJECT_CLASSES)
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DesugarTask::subProjectOutput
-            )
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.DESUGAR_EXTERNAL_LIBS_CLASSES,
+            ).on(InternalArtifactType.DESUGAR_SUB_PROJECT_CLASSES)
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DesugarTask::externalLibsOutput
-            )
-            variantScope.artifacts.producesDir(
-                InternalArtifactType.DESUGAR_LOCAL_STATE_OUTPUT,
+            ).on(InternalArtifactType.DESUGAR_EXTERNAL_LIBS_CLASSES)
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DesugarTask::tmpDir
-            )
+            ).on(InternalArtifactType.DESUGAR_LOCAL_STATE_OUTPUT)
         }
 
-        override fun configure(task: DesugarTask) {
+        override fun configure(
+            task: DesugarTask
+        ) {
             super.configure(task)
-            task.minSdk.set(variantScope.minSdkVersion.featureLevel)
+            val variantScope = creationConfig.variantScope
+            task.minSdk.set(creationConfig.minSdkVersion.featureLevel)
 
             /**
              * If a fix in Desugar should be enabled to handle broken bytecode produced by older
              * Jacoco, see http://b/62623509.
              */
             val enableDesugarBugFixForJacoco = try {
-                val current = GradleVersion.parse(JacocoTask.getJacocoVersion(variantScope))
+                val current = GradleVersion.parse(JacocoTask.getJacocoVersion(creationConfig))
                 JacocoConfigurations.MIN_WITHOUT_BROKEN_BYTECODE > current
             } catch (ignored: Throwable) {
                 // Cannot determine using version comparison, avoid passing the flag.
@@ -195,30 +201,23 @@ abstract class DesugarTask @Inject constructor(objectFactory: ObjectFactory) :
 
             task.projectClasses.from(projectClasses)
             task.subProjectClasses.from(
-                variantScope.getArtifactFileCollection(
+                creationConfig.variantDependencies.getArtifactFileCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.PROJECT,
                     AndroidArtifacts.ArtifactType.CLASSES_JAR
                 )
             )
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.FIXED_STACK_FRAMES,
                 task.externaLibsClasses
             )
 
             task.desugaringClasspath.from(variantScope.providedOnlyClasspath)
             task.bootClasspath.from(variantScope.bootClasspath)
-            variantScope.testedVariantData?.let {
-                val testedVariantScope = it.scope
 
+            creationConfig.onTestedConfig {
                 task.desugaringClasspath.from(
-                    variantScope.artifacts.getFinalProduct(
-                        InternalArtifactType.TESTED_CODE_CLASSES
-                    )
-                )
-
-                task.desugaringClasspath.from(
-                    testedVariantScope.getArtifactCollection(
+                    it.variantDependencies.getArtifactCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.ALL,
                         AndroidArtifacts.ArtifactType.CLASSES_JAR

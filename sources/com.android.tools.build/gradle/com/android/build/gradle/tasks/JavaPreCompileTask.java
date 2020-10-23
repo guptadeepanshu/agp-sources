@@ -21,9 +21,8 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Arti
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR;
 
 import com.android.annotations.NonNull;
-import com.android.build.gradle.api.AnnotationProcessorOptions;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.ide.common.workers.WorkerExecutorFacade;
@@ -52,7 +51,7 @@ public abstract class JavaPreCompileTask extends NonIncrementalTask {
 
     private ArtifactCollection annotationProcessorConfiguration;
 
-    private AnnotationProcessorOptions annotationProcessorOptions;
+    @NonNull private List<String> apOptionClassNames;
 
     @Inject
     public JavaPreCompileTask(ObjectFactory objectFactory) {
@@ -62,9 +61,9 @@ public abstract class JavaPreCompileTask extends NonIncrementalTask {
     @VisibleForTesting
     void init(
             @NonNull ArtifactCollection annotationProcessorConfiguration,
-            @NonNull AnnotationProcessorOptions annotationProcessorOptions) {
+            @NonNull List<String> apOptionClassNames) {
         this.annotationProcessorConfiguration = annotationProcessorConfiguration;
-        this.annotationProcessorOptions = annotationProcessorOptions;
+        this.apOptionClassNames = ImmutableList.copyOf(apOptionClassNames);
     }
 
     @NonNull
@@ -86,7 +85,7 @@ public abstract class JavaPreCompileTask extends NonIncrementalTask {
                     new PreCompileParams(
                             processorListFile.get().getAsFile(),
                             toSerializable(annotationProcessorConfiguration),
-                            annotationProcessorOptions.getClassNames()));
+                            apOptionClassNames));
         }
     }
 
@@ -133,16 +132,17 @@ public abstract class JavaPreCompileTask extends NonIncrementalTask {
         }
     }
 
-    public static class CreationAction extends VariantTaskCreationAction<JavaPreCompileTask> {
+    public static class CreationAction
+            extends VariantTaskCreationAction<JavaPreCompileTask, ComponentPropertiesImpl> {
 
-        public CreationAction(VariantScope scope) {
-            super(scope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("javaPreCompile");
+            return computeTaskName("javaPreCompile");
         }
 
         @NonNull
@@ -152,28 +152,28 @@ public abstract class JavaPreCompileTask extends NonIncrementalTask {
         }
 
         @Override
-        public void handleProvider(
-                @NonNull TaskProvider<? extends JavaPreCompileTask> taskProvider) {
+        public void handleProvider(@NonNull TaskProvider<JavaPreCompileTask> taskProvider) {
             super.handleProvider(taskProvider);
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesFile(
-                            InternalArtifactType.ANNOTATION_PROCESSOR_LIST.INSTANCE,
-                            taskProvider,
-                            JavaPreCompileTask::getProcessorListFile,
-                            "annotationProcessors.json");
+                    .setInitialProvider(taskProvider, JavaPreCompileTask::getProcessorListFile)
+                    .withName("annotationProcessors.json")
+                    .on(InternalArtifactType.ANNOTATION_PROCESSOR_LIST.INSTANCE);
         }
 
         @Override
         public void configure(@NonNull JavaPreCompileTask task) {
             super.configure(task);
-            VariantScope scope = getVariantScope();
 
             task.init(
-                    scope.getArtifactCollection(ANNOTATION_PROCESSOR, ALL, PROCESSED_JAR),
-                    scope.getVariantDslInfo()
+                    creationConfig
+                            .getVariantDependencies()
+                            .getArtifactCollection(ANNOTATION_PROCESSOR, ALL, PROCESSED_JAR),
+                    creationConfig
+                            .getVariantDslInfo()
                             .getJavaCompileOptions()
-                            .getAnnotationProcessorOptions());
+                            .getAnnotationProcessorOptions()
+                            .getClassNames());
         }
     }
 }

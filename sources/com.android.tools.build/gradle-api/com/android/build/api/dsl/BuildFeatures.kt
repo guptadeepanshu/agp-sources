@@ -65,18 +65,22 @@ interface BuildFeatures : ExtensionAware {
     var buildConfig: Boolean?
 
     /**
-     * Flag to enable Data Binding.
+     * Flag to enable/disable import of Prefab dependencies from AARs.
      *
      * Setting the value to `null` resets to the default value.
      * Default value is `false`.
      *
-     * You can override the default for this for all projects in your build by adding the line
-     *     `android.defaults.buildfeatures.databinding=true`
-     * in the `gradle.properties` file at the root project of your build.
+     * You can override the default for this in your module by setting
+     *     android {
+     *         buildFeatures {
+     *             prefab true
+     *         }
+     *     }
+     * in the module's build.gradle file.
      *
      * More information about this feature at: TBD
      */
-    var dataBinding: Boolean?
+    var prefab: Boolean?
 
     /**
      * Flag to enable RenderScript compilation.

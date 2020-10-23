@@ -22,63 +22,48 @@ import com.android.build.api.dsl.TestBuildFeatures
 import com.android.build.api.dsl.TestExtension
 import com.android.build.api.variant.TestVariant
 import com.android.build.api.variant.TestVariantProperties
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.CompileOptions
-import com.android.build.gradle.internal.api.dsl.DslScope
 import com.android.build.gradle.internal.coverage.JacocoOptions
-import org.gradle.api.NamedDomainObjectContainer
+import com.android.build.gradle.internal.plugins.DslContainerProvider
+import com.android.build.gradle.internal.services.DslServices
 
 /** Internal implementation of the 'new' DSL interface */
 class TestExtensionImpl(
-    dslScope: DslScope,
-    buildTypes: NamedDomainObjectContainer<BuildType>,
-    defaultConfig: DefaultConfig,
-    productFlavors: NamedDomainObjectContainer<ProductFlavor>,
-    signingConfigs: NamedDomainObjectContainer<SigningConfig>
+    dslServices: DslServices,
+    dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
 ) :
     CommonExtensionImpl<
             TestBuildFeatures,
             BuildType,
             DefaultConfig,
             ProductFlavor,
-            SigningConfig,
-            TestVariant,
+            TestVariant<TestVariantProperties>,
             TestVariantProperties>(
-        dslScope,
-        buildTypes,
-        defaultConfig,
-        productFlavors,
-        signingConfigs
+        dslServices,
+        dslContainers
     ),
-    TestExtension<
-            BuildType,
-            CmakeOptions,
-            CompileOptions,
-            DefaultConfig,
-            ExternalNativeBuild,
-            JacocoOptions,
-            NdkBuildOptions,
-            ProductFlavor,
-            SigningConfig,
-            TestOptions,
-            TestOptions.UnitTestOptions> {
+    InternalTestExtension {
 
     override val buildFeatures: TestBuildFeatures =
-        dslScope.objectFactory.newInstance(TestBuildFeaturesImpl::class.java)
+        dslServices.newInstance(TestBuildFeaturesImpl::class.java)
 
     @Suppress("UNCHECKED_CAST")
-    override val onVariants: GenericFilteredComponentActionRegistrar<TestVariant>
-        get() = dslScope.objectFactory.newInstance(
+    override val onVariants: GenericFilteredComponentActionRegistrar<TestVariant<TestVariantProperties>>
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantOperations,
             TestVariant::class.java
-        ) as GenericFilteredComponentActionRegistrar<TestVariant>
+        ) as GenericFilteredComponentActionRegistrar<TestVariant<TestVariantProperties>>
     @Suppress("UNCHECKED_CAST")
     override val onVariantProperties: GenericFilteredComponentActionRegistrar<TestVariantProperties>
-        get() = dslScope.objectFactory.newInstance(
+        get() = dslServices.newInstance(
             GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslScope,
+            dslServices,
             variantPropertiesOperations,
             TestVariantProperties::class.java
         ) as GenericFilteredComponentActionRegistrar<TestVariantProperties>
+
+    override var targetProjectPath: String? = null
 }

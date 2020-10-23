@@ -31,16 +31,18 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /*
@@ -52,42 +54,43 @@ abstract class PrepareKotlinCompileTask() : NonIncrementalTask() {
     // No outputs -- this task must always run in order to properly prepare the KotlinCompile Task
 
     @get:Internal
-    lateinit var tasksToConfigure: Iterable<Task>
-        private set
+    abstract val taskNameToConfigure: Property<String>
 
     // Input: Configuration to the kotlin compiler extension.
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.ABSOLUTE)
-    abstract val kotlinCompilerExtension: Property<Configuration>
+    abstract val kotlinCompilerExtension: ConfigurableFileCollection
 
     override fun doTaskAction() {
-        tasksToConfigure.forEach { task ->
-            val taskToConfigure = task as KotlinCompile
-            taskToConfigure.kotlinOptions.useIR = true
-            taskToConfigure.kotlinOptions.freeCompilerArgs +=
-                listOf(
-                    "-Xplugin=${kotlinCompilerExtension.get().files.first().absolutePath}",
-                    "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
-                    "-P",
-                    "plugin:androidx.compose.plugins.idea:enabled=true"
-                )
-        }
+        val task = project.tasks.getByName(taskNameToConfigure.get()) as KotlinCompile
+        task.kotlinOptions.useIR = true
+        task.kotlinOptions.freeCompilerArgs +=
+            listOf(
+                "-Xplugin=${kotlinCompilerExtension.files.first().absolutePath}",
+                "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
+                "-P",
+                "plugin:androidx.compose.plugins.idea:enabled=true"
+            )
     }
 
     class CreationAction(
-        variantScope: VariantScope,
-        private val tasksToConfigure: Iterable<Task>,
+        componentProperties: ComponentPropertiesImpl,
+        private val taskToConfigure: TaskProvider<Task>,
         private val kotlinExtension: Configuration
-    ) : VariantTaskCreationAction<PrepareKotlinCompileTask>(variantScope) {
+    ) : VariantTaskCreationAction<PrepareKotlinCompileTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
-        override val name: String = variantScope.getTaskName("prepare", "KotlinCompileTask")
+        override val name: String = computeTaskName("prepare", "KotlinCompileTask")
         override val type: Class<PrepareKotlinCompileTask> = PrepareKotlinCompileTask::class.java
 
-        override fun configure(task: PrepareKotlinCompileTask) {
+        override fun configure(
+            task: PrepareKotlinCompileTask
+        ) {
             super.configure(task)
 
-            task.tasksToConfigure = tasksToConfigure
-            task.kotlinCompilerExtension.set(kotlinExtension)
+            task.taskNameToConfigure.set(taskToConfigure.name)
+            task.kotlinCompilerExtension.from(kotlinExtension)
         }
     }
 

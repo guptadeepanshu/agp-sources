@@ -17,18 +17,18 @@
 package com.android.build.gradle.internal.packaging
 
 import com.android.builder.packaging.JarCreator
-import com.android.builder.packaging.JarMerger
 import com.android.builder.packaging.JarFlinger
+import com.android.builder.packaging.JarMerger
 import java.nio.file.Path
 import java.util.function.Predicate
 
 object JarCreatorFactory {
 
-    fun make(jarFile: Path, type: JarCreatorType): JarCreator {
-        return make(jarFile, null, type)
-    }
-
-    fun make(jarFile: Path, filter: Predicate<String>?, type: JarCreatorType): JarCreator {
+    fun make(
+        jarFile: Path,
+        filter: Predicate<String>? = null,
+        type: JarCreatorType = JarCreatorType.JAR_FLINGER
+    ): JarCreator {
         return when (type) {
             JarCreatorType.JAR_MERGER -> JarMerger(jarFile, filter)
             JarCreatorType.JAR_FLINGER -> JarFlinger(jarFile, filter)

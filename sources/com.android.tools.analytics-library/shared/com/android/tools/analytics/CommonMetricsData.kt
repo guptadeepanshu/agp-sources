@@ -54,7 +54,7 @@ object CommonMetricsData {
       val jvmArchitecture = jvmArchitecture
       if (jvmArchitecture == ProductDetails.CpuArchitecture.X86) {
 
-        val os = System.getProperty("os.name").toLowerCase()
+        val os = Environment.instance.getSystemProperty("os.name")!!.toLowerCase()
         if (os.startsWith("win")) {
           val w6432 = Environment.instance.getVariable("PROCESSOR_ARCHITEW6432")
           // This is the misleading case: the JVM is 32-bit but the OS
@@ -84,7 +84,7 @@ object CommonMetricsData {
   @JvmStatic
   val jvmArchitecture: ProductDetails.CpuArchitecture
     get() {
-      val arch = System.getProperty("os.arch")
+      val arch = Environment.instance.getSystemProperty("os.arch")
       return cpuArchitectureFromString(arch)
     }
 
@@ -94,7 +94,7 @@ object CommonMetricsData {
   @JvmStatic
   val osName: String
     get() {
-      var os: String? = System.getProperty("os.name")
+      var os: String? = Environment.instance.getSystemProperty("os.name")
 
       if (os == null || os.isEmpty()) {
         return "unknown"
@@ -128,7 +128,7 @@ object CommonMetricsData {
       }
 
       val p = Pattern.compile("(\\d+)\\.(\\d+).*")
-      val osVers = System.getProperty("os.version")
+      val osVers = Environment.instance.getSystemProperty("os.version")
       if (osVers != null && osVers.isNotEmpty()) {
         val m = p.matcher(osVers)
         if (m.matches()) {

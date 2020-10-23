@@ -42,16 +42,6 @@ public class MergingReport {
 
     public enum MergedManifestKind {
         /**
-         * Merged manifest file
-         */
-        MERGED,
-
-        /**
-         * Merged manifest file with Instant Run related decorations.
-         */
-        INSTANT_RUN,
-
-        /**
          * Merged manifest file with unresolved placeholders encoded to be AAPT friendly.
          */
         AAPT_SAFE,
@@ -59,14 +49,8 @@ public class MergingReport {
         /** Blame file for merged manifest file. */
         BLAME,
 
-        /** Merged manifest file for bundletool. */
-        BUNDLE,
-
-        /** Feature manifest to be merged back into the base. */
-        METADATA_FEATURE,
-
-        /** Merged manifest file for deploying app as an instant app. */
-        INSTANT_APP,
+        /** Merged manifest file as packaged in the APK or AAR */
+        MERGED,
     }
 
     @NonNull
@@ -271,15 +255,16 @@ public class MergingReport {
     public static class Builder {
 
         private Map<MergedManifestKind, String> mergedDocuments =
-                new EnumMap<MergedManifestKind, String>(MergedManifestKind.class);
+                new EnumMap<>(MergedManifestKind.class);
         private Map<MergedManifestKind, XmlDocument> mergedXmlDocuments =
-          new EnumMap<MergedManifestKind, XmlDocument>(MergedManifestKind.class);
-
+                new EnumMap<>(MergedManifestKind.class);
 
         @NonNull
-        private ImmutableList.Builder<Record> mRecordBuilder = new ImmutableList.Builder<Record>();
+        private ImmutableList.Builder<Record> mRecordBuilder = new ImmutableList.Builder<>();
+
         @NonNull
-        private ImmutableList.Builder<String> mIntermediaryStages = new ImmutableList.Builder<String>();
+        private ImmutableList.Builder<String> mIntermediaryStages = new ImmutableList.Builder<>();
+
         private boolean mHasWarnings = false;
         private boolean mHasErrors = false;
         @NonNull
@@ -296,8 +281,8 @@ public class MergingReport {
             return this;
         }
 
-        Builder setMergedXmlDocument(@NonNull MergedManifestKind mergedManifestKind, @NonNull XmlDocument mergedDocument) {
-            this.mergedXmlDocuments.put(mergedManifestKind, mergedDocument);
+        Builder setMergedXmlDocument(@NonNull XmlDocument mergedDocument) {
+            this.mergedXmlDocuments.put(MergedManifestKind.MERGED, mergedDocument);
             return this;
         }
 

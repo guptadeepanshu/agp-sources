@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 @Immutable
 final class VariantImpl implements Variant, Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3L;
 
     @NonNull
     private final String name;
@@ -57,6 +57,8 @@ final class VariantImpl implements Variant, Serializable {
 
     private final boolean instantAppCompatible;
 
+    @NonNull private final List<String> desugaredMethods;
+
     VariantImpl(
             @NonNull String name,
             @NonNull String displayName,
@@ -67,7 +69,8 @@ final class VariantImpl implements Variant, Serializable {
             @NonNull Collection<AndroidArtifact> extraAndroidArtifacts,
             @NonNull Collection<JavaArtifact> extraJavaArtifacts,
             @NonNull Collection<TestedTargetVariant> testedTargetVariants,
-            boolean instantAppCompatible) {
+            boolean instantAppCompatible,
+            @NonNull List<String> desugaredMethods) {
         this.name = name;
         this.displayName = displayName;
         this.buildTypeName = buildTypeName;
@@ -78,6 +81,7 @@ final class VariantImpl implements Variant, Serializable {
         this.extraJavaArtifacts = extraJavaArtifacts;
         this.testedTargetVariants = testedTargetVariants;
         this.instantAppCompatible = instantAppCompatible;
+        this.desugaredMethods = desugaredMethods;
     }
 
     @Override
@@ -139,6 +143,12 @@ final class VariantImpl implements Variant, Serializable {
         return instantAppCompatible;
     }
 
+    @NonNull
+    @Override
+    public List<String> getDesugaredMethods() {
+        return desugaredMethods;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -157,7 +167,8 @@ final class VariantImpl implements Variant, Serializable {
                 && Objects.equals(extraAndroidArtifacts, variant.extraAndroidArtifacts)
                 && Objects.equals(extraJavaArtifacts, variant.extraJavaArtifacts)
                 && Objects.equals(testedTargetVariants, variant.testedTargetVariants)
-                && Objects.equals(instantAppCompatible, variant.instantAppCompatible);
+                && Objects.equals(instantAppCompatible, variant.instantAppCompatible)
+                && Objects.equals(desugaredMethods, variant.desugaredMethods);
     }
 
     @Override
@@ -172,7 +183,8 @@ final class VariantImpl implements Variant, Serializable {
                 extraAndroidArtifacts,
                 extraJavaArtifacts,
                 testedTargetVariants,
-                instantAppCompatible);
+                instantAppCompatible,
+                desugaredMethods);
     }
 
     @Override
@@ -188,6 +200,7 @@ final class VariantImpl implements Variant, Serializable {
                 .add("extraJavaArtifacts", extraJavaArtifacts)
                 .add("testedTargetVariants", testedTargetVariants)
                 .add("instantAppCompatible", instantAppCompatible)
+                .add("desugaredMethods", desugaredMethods)
                 .toString();
     }
 }

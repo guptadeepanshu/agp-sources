@@ -15,8 +15,10 @@
  */
 package com.android.ide.common.vectordrawable;
 
+import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_FILL;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_FILL_OPACITY;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_OPACITY;
+import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_STROKE;
 import static com.android.ide.common.vectordrawable.Svg2Vector.SVG_STROKE_OPACITY;
 import static com.android.ide.common.vectordrawable.Svg2Vector.presentationMap;
 
@@ -65,22 +67,21 @@ class SvgLeafNode extends SvgNode {
         parsePathOpacity();
 
         for (Map.Entry<String, String> entry : mVdAttributesMap.entrySet()) {
-            String key = entry.getKey();
-            String attribute = presentationMap.get(key);
+            String name = entry.getKey();
+            String attribute = presentationMap.get(name);
             if (attribute.isEmpty()) {
                 continue;
             }
             String svgValue = entry.getValue().trim();
-            String vdValue;
-            vdValue = colorSvg2Vd(svgValue, "#000000");
+            String vdValue = colorSvg2Vd(svgValue, "#000000");
 
             if (vdValue == null) {
                 if (svgValue.endsWith("px")) {
                     vdValue = svgValue.substring(0, svgValue.length() - 2).trim();
                 } else if (svgValue.startsWith("url(#") && svgValue.endsWith(")")) {
-                    // Copies gradient from tree
+                    // Copies gradient from tree.
                     vdValue = svgValue.substring(5, svgValue.length() - 1);
-                    if (key.equals("fill")) {
+                    if (name.equals(SVG_FILL)) {
                         SvgNode node = getTree().getSvgNodeFromId(vdValue);
                         if (node == null) {
                             continue;
@@ -88,7 +89,7 @@ class SvgLeafNode extends SvgNode {
                         mFillGradientNode = (SvgGradientNode)node.deepCopy();
                         mFillGradientNode.setSvgLeafNode(this);
                         mFillGradientNode.setGradientUsage(SvgGradientNode.GradientUsage.FILL);
-                    } else if (key.equals("stroke")) {
+                    } else if (name.equals(SVG_STROKE)) {
                         SvgNode node = getTree().getSvgNodeFromId(vdValue);
                         if (node == null) {
                             continue;
@@ -216,8 +217,8 @@ class SvgLeafNode extends SvgNode {
             return; // No path to draw.
         }
 
-        String fillColor = mVdAttributesMap.get(Svg2Vector.SVG_FILL);
-        String strokeColor = mVdAttributesMap.get(Svg2Vector.SVG_STROKE_COLOR);
+        String fillColor = mVdAttributesMap.get(SVG_FILL);
+        String strokeColor = mVdAttributesMap.get(SVG_STROKE);
         logger.log(Level.FINE, "fill color " + fillColor);
         boolean emptyFill = "none".equals(fillColor) || "#00000000".equals(fillColor);
         boolean emptyStroke = strokeColor == null || "none".equals(strokeColor);

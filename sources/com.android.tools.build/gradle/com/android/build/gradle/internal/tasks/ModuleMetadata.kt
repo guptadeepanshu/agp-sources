@@ -26,9 +26,10 @@ import java.io.IOException
 /** Module information like its application ID, version code and version name  */
 class ModuleMetadata(
     val applicationId: String,
-    val versionCode: String,
+    val versionCode: String?,
     val versionName: String?,
-    val debuggable: Boolean
+    val debuggable: Boolean,
+    val abiFilters: List<String>
 ) {
 
     @Throws(IOException::class)

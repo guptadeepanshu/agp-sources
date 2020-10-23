@@ -21,7 +21,6 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.builder.model.BaseConfig;
 import com.android.builder.model.ClassField;
-import com.android.utils.Pair;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.Serializable;
@@ -75,14 +74,7 @@ public abstract class IdeBaseConfig implements BaseConfig, Serializable {
                 config.getManifestPlaceholders()
                         .entrySet()
                         .stream()
-                        .map(
-                                it ->
-                                        Pair.of(
-                                                it.getKey(),
-                                                it.getValue() instanceof CharSequence
-                                                        ? it.getValue().toString()
-                                                        : it.getValue()))
-                        .collect(toImmutableMap(it -> it.getFirst(), it -> it.getSecond()));
+                        .collect(toImmutableMap(it -> it.getKey(), it -> it.getValue().toString()));
         myApplicationIdSuffix = config.getApplicationIdSuffix();
         myVersionNameSuffix = IdeModel.copyNewProperty(config::getVersionNameSuffix, null);
         myMultiDexEnabled = IdeModel.copyNewProperty(config::getMultiDexEnabled, null);

@@ -22,23 +22,15 @@ import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.StringOption;
-import com.android.builder.profile.ChromeTracingProfileConverter;
 import com.android.builder.profile.ProcessProfileWriter;
 import com.android.builder.profile.ProcessProfileWriterFactory;
-import com.android.utils.PathUtils;
-import com.google.wireless.android.sdk.stats.GradleBuildProject;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
-import org.gradle.BuildAdapter;
 import org.gradle.api.Project;
 import org.gradle.api.invocation.Gradle;
-import org.gradle.api.logging.Logger;
-import org.gradle.api.logging.Logging;
-import org.gradle.initialization.BuildCompletionListener;
 
 /**
  * Initialize the {@link ProcessProfileWriterFactory} using a given project.
@@ -51,11 +43,13 @@ public final class ProfilerInitializer {
     public static final String PROFILE_DIRECTORY = "android-profile";
 
     private static final DateTimeFormatter PROFILE_FILE_NAME =
-            DateTimeFormatter.ofPattern("'profile-'YYYY-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US);
+            DateTimeFormatter.ofPattern("'profile-'yyyy-MM-dd-HH-mm-ss-SSS'.rawproto'", Locale.US);
 
     private static final Object lock = new Object();
 
     @Nullable private static volatile RecordingBuildListener recordingBuildListener;
+    @Nullable private static volatile Gradle gradle;
+    @Nullable private static volatile GradleAnalyticsEnvironment gradleAnalyticsEnvironment;
 
     private ProfilerInitializer() {
         //Static singleton class.
@@ -79,97 +73,52 @@ public final class ProfilerInitializer {
             if (recordingBuildListener != null) {
                 return recordingBuildListener;
             }
+            gradleAnalyticsEnvironment = new GradleAnalyticsEnvironment(project.getProviders());
             ProcessProfileWriterFactory.initialize(
                     project.getRootProject().getProjectDir(),
                     project.getGradle().getGradleVersion(),
                     new LoggerWrapper(project.getLogger()),
-                    projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON));
+                    projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON),
+                    gradleAnalyticsEnvironment);
             recordingBuildListener =
                     new RecordingBuildListener(project.getName(), ProcessProfileWriter.get());
-            project.getGradle().addListener(recordingBuildListener);
+            gradle = project.getGradle();
+            project.getGradle().getTaskGraph().addTaskExecutionListener(recordingBuildListener);
         }
 
-        project.getGradle()
-                .addListener(
-                        new ProfileShutdownListener(
-                                project.getGradle(),
+        ProfileCleanupBuildService profileCleanupBuildService =
+                new ProfileCleanupBuildService.RegistrationAction(
+                                project,
                                 projectOptions.get(StringOption.PROFILE_OUTPUT_DIR),
-                                projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON)));
+                                projectOptions.get(BooleanOption.ENABLE_PROFILE_JSON))
+                        .execute()
+                        .get();
+        project.getGradle().projectsEvaluated(profileCleanupBuildService::projectEvaluated);
 
         return recordingBuildListener;
     }
 
-    private static final class ProfileShutdownListener extends BuildAdapter
-            implements BuildCompletionListener {
+    static void unregister(@Nullable Path profileDir) {
+        synchronized (lock) {
+            ProfileAgent.INSTANCE.unregister();
+            if (recordingBuildListener != null) {
+                Objects.requireNonNull(gradle)
+                        .getTaskGraph()
+                        .removeTaskExecutionListener(
+                                Objects.requireNonNull(recordingBuildListener));
+                recordingBuildListener = null;
+                gradle = null;
+                Objects.requireNonNull(gradleAnalyticsEnvironment).releaseProviderFactory();
+                gradleAnalyticsEnvironment = null;
+                @Nullable
+                Path profileFile =
+                        profileDir == null
+                                ? null
+                                : profileDir.resolve(PROFILE_FILE_NAME.format(LocalDateTime.now()));
 
-        private static final Logger logger = Logging.getLogger(ProfileShutdownListener.class);
-        private final Gradle gradle;
-        @Nullable private String profileDirProperty;
-        @Nullable private Path profileDir = null;
-        private boolean enableProfileJson;
-
-        ProfileShutdownListener(
-                @NonNull Gradle gradle,
-                @Nullable String profileDirProperty,
-                boolean enableProfileJson) {
-            this.gradle = gradle;
-            this.profileDirProperty = profileDirProperty;
-            this.enableProfileJson = enableProfileJson;
-        }
-
-        @Override
-        public void projectsEvaluated(Gradle gradle) {
-            gradle.allprojects(this::collectProjectInfo);
-            if (profileDirProperty != null) {
-                this.profileDir = gradle.getRootProject().file(profileDirProperty).toPath();
-            } else if (enableProfileJson) {
-                // If profile json is enabled but no directory is given for the profile outputs, default to build/android-profile
-                this.profileDir =
-                        gradle.getRootProject().getBuildDir().toPath().resolve(PROFILE_DIRECTORY);
-            }
-            if (this.profileDir != null) {
-                // Proactively delete the folder containing extra chrome traces to be merged.
-                Path extraChromeTracePath =
-                        this.profileDir.resolve(
-                                ChromeTracingProfileConverter.EXTRA_CHROME_TRACE_DIRECTORY);
-                try {
-                    PathUtils.deleteRecursivelyIfExists(extraChromeTracePath);
-                } catch (IOException e) {
-                    logger.warn(
-                            String.format(
-                                    "Cannot extra Chrome trace directory %s. The generated Chrome trace "
-                                            + "file may contain stale data.",
-                                    extraChromeTracePath),
-                            e);
-                }
-            }
-        }
-
-        private void collectProjectInfo(Project project) {
-            GradleBuildProject.Builder analyticsProject =
-                    ProcessProfileWriter.getProject(project.getPath());
-            project.getPlugins()
-                    .all((plugin) -> analyticsProject.addPlugin(AnalyticsUtil.toProto(plugin)));
-        }
-
-        @Override
-        public void completed() {
-            synchronized (lock) {
-                ProfileAgent.INSTANCE.unregister();
-                if (recordingBuildListener != null) {
-                    gradle.removeListener(Objects.requireNonNull(recordingBuildListener));
-                    recordingBuildListener = null;
-                    @Nullable
-                    Path profileFile =
-                            profileDir == null
-                                    ? null
-                                    : profileDir.resolve(
-                                            PROFILE_FILE_NAME.format(LocalDateTime.now()));
-
-                    // This is deliberately asynchronous, so the build can complete before the
-                    // analytics are submitted.
-                    ProcessProfileWriterFactory.shutdownAndMaybeWrite(profileFile);
-                }
+                // This is deliberately asynchronous, so the build can complete before the
+                // analytics are submitted.
+                ProcessProfileWriterFactory.shutdownAndMaybeWrite(profileFile);
             }
         }
     }

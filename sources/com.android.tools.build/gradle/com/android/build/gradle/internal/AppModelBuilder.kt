@@ -16,12 +16,12 @@
 
 package com.android.build.gradle.internal
 
-import com.android.build.gradle.internal.plugins.AppPlugin
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.errors.SyncIssueReporter
 import com.android.build.gradle.internal.ide.DefaultAppBundleProjectBuildOutput
 import com.android.build.gradle.internal.ide.DefaultAppBundleVariantBuildOutput
 import com.android.build.gradle.internal.ide.ModelBuilder
+import com.android.build.gradle.internal.plugins.AppPlugin
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.variant.VariantModel
@@ -37,7 +37,6 @@ import org.gradle.api.Project
 class AppModelBuilder(
     globalScope: GlobalScope,
     private val variantModel: VariantModel,
-    taskManager: TaskManager,
     config: BaseAppModuleExtension,
     extraModelInfo: ExtraModelInfo,
     syncIssueReporter: SyncIssueReporter,
@@ -45,7 +44,6 @@ class AppModelBuilder(
 ) : ModelBuilder<BaseAppModuleExtension>(
     globalScope,
     variantModel,
-    taskManager,
     config,
     extraModelInfo,
     syncIssueReporter,
@@ -72,15 +70,16 @@ class AppModelBuilder(
     private fun buildMinimalisticModel(): Any {
         val variantsOutput = ImmutableList.builder<AppBundleVariantBuildOutput>()
 
-        for (variantScope in variantModel.variants) {
-            val artifacts = variantScope.artifacts
+        for (component in variantModel.variants) {
+            val artifacts = component.artifacts
 
-            if (artifacts.hasFinalProduct(InternalArtifactType.BUNDLE)) {
-                val bundleFile = artifacts.getFinalProduct(InternalArtifactType.BUNDLE)
-                val apkFolder = artifacts.getFinalProduct(InternalArtifactType.EXTRACTED_APKS)
+            // TODO(b/111168382): Remove the namespaced check check once bundle pipeline works with namespaces.
+            if (component.variantType.isBaseModule && !component.globalScope.extension.aaptOptions.namespaced) {
+                val bundleFile = artifacts.get(InternalArtifactType.BUNDLE)
+                val apkFolder = artifacts.get(InternalArtifactType.EXTRACTED_APKS)
                 variantsOutput.add(
                         DefaultAppBundleVariantBuildOutput(
-                            variantScope.name, bundleFile.get().asFile, apkFolder.get().asFile))
+                            component.name, bundleFile.get().asFile, apkFolder.get().asFile))
             }
         }
 

@@ -20,9 +20,9 @@ import com.android.SdkConstants.CMAKE_DIR_PROPERTY
 import com.android.SdkConstants.CURRENT_PLATFORM
 import com.android.SdkConstants.NDK_SYMLINK_DIR
 import com.android.SdkConstants.PLATFORM_WINDOWS
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.caching.CachingEnvironment
-import com.android.build.gradle.internal.cxx.configure.ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION
 import com.android.build.gradle.internal.cxx.configure.CXX_DEFAULT_CONFIGURATION_SUBFOLDER
 import com.android.build.gradle.internal.cxx.configure.CmakeLocator
 import com.android.build.gradle.internal.cxx.configure.NdkAbiFile
@@ -37,13 +37,11 @@ import com.android.build.gradle.internal.cxx.services.createDefaultServiceRegist
 import com.android.build.gradle.internal.model.CoreExternalNativeBuild
 import com.android.build.gradle.internal.ndk.NdkHandler
 import com.android.build.gradle.internal.ndk.Stl
-import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
 import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
 import com.android.utils.FileUtils
 import com.android.utils.FileUtils.join
-import org.gradle.api.InvalidUserDataException
 import java.io.File
 import java.io.FileReader
 import java.util.function.Consumer
@@ -85,9 +83,10 @@ import java.util.function.Consumer
  * to always use it.
  */
 fun tryCreateCxxModuleModel(
-    global: GlobalScope,
+    componentProperties: ComponentPropertiesImpl,
     cmakeLocator: CmakeLocator
 ) : CxxModuleModel? {
+    val global = componentProperties.globalScope
 
     val (buildSystem, makeFile, buildStagingFolder) =
         getProjectPath(global.extension.externalNativeBuild) ?: return null
@@ -102,51 +101,11 @@ fun tryCreateCxxModuleModel(
      * allow valid [errorln]s to pass or throw exception that will trigger download hyperlinks
      * in Android Studio
      */
-    fun ndkHandler(): NdkHandler {
-        CachingEnvironment(cxxFolder).use {
-            val ndkHandler = global.sdkComponents.ndkHandlerSupplier.get()
-                if (!ndkHandler.ndkPlatform.isConfigured) {
-                    if (ndkHandler.userExplicitlyRequestedNdkVersion) {
-                        try {
-                            global.sdkComponents.installNdk(ndkHandler)
-                        } catch (e: NumberFormatException) {
-                            // This is likely a mis-formatted NDK version in build.gradle. Just issue
-                            // an infoln because an appropriate errorln will have been emitted by
-                            // NdkLocator.
-                            infoln(
-                                "NDK auto-download failed, possibly due to a malformed NDK version in " +
-                                        "build.gradle. If manual download is necessary from SDK manager " +
-                                        "then the preferred NDK version is " +
-                                        "'$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION'."
-                            )
-                            return ndkHandler
-                        }
-                    } else {
-                        // Don't auto-download if the user has not explicitly specified an NDK
-                        // version in build.gradle. The default version may not be the one that
-                        // the user prefers but he hasn't had a chance yet to set
-                        // android.ndkVersion. We don't want to auto-download a massive NDK without
-                        // confirmation that it's the right one.
-                        infoln(
-                            "NDK auto-download is disabled. To enable auto-download, " +
-                                    "set an explicit version in build.gradle by setting " +
-                                    "android.ndkVersion. The preferred NDK version is " +
-                                    "'$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION'."
-                        )
-                    }
-                    if (!ndkHandler.ndkPlatform.isConfigured) {
-                        throw InvalidUserDataException(
-                            "NDK not configured. Download " +
-                                    "it with SDK manager. Preferred NDK version is " +
-                                    "'$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION'. "
-                        )
-                    }
-                }
-            return ndkHandler
-        }
+    val ndkHandler = global.sdkComponents.get().ndkHandler
+    val ndkInstall = CachingEnvironment(cxxFolder).use {
+        ndkHandler.getNdkPlatform(downloadOkay = true)
     }
-    val ndkHandler = ndkHandler()
-    if (!ndkHandler.ndkPlatform.isConfigured) {
+    if (!ndkInstall.isConfigured) {
         infoln("Not creating C/C++ model because NDK could not be configured.")
         return null
     }
@@ -159,7 +118,7 @@ fun tryCreateCxxModuleModel(
     return object : CxxModuleModel {
         override val moduleBuildFile by lazy { global.project.buildFile }
         override val cxxFolder get() = cxxFolder
-        override val project by lazy { createCxxProjectModel(global) }
+        override val project by lazy { createCxxProjectModel(componentProperties) }
         override val services by lazy { createDefaultServiceRegistry(global) }
         override val ndkMetaPlatforms by lazy {
             val ndkMetaPlatformsFile = NdkMetaPlatforms.jsonFile(ndkFolder)
@@ -185,8 +144,8 @@ fun tryCreateCxxModuleModel(
                             cmakeLocator.findCmakePath(
                                 global.extension.externalNativeBuild.cmake.version,
                                 localPropertyFile(CMAKE_DIR_PROPERTY),
-                                global.sdkComponents.getSdkDirectory(),
-                                Consumer { global.sdkComponents.installCmake(it) })!!
+                                global.sdkComponents.flatMap { it.sdkDirectoryProvider }.get().asFile,
+                                Consumer { global.sdkComponents.get().installCmake(it) })!!
                         }
                         override val cmakeExe by lazy {
                             join(cmakeFolder, "bin", "cmake$exe")
@@ -243,8 +202,8 @@ fun tryCreateCxxModuleModel(
     }
 }
 
-fun tryCreateCxxModuleModel(global : GlobalScope) = tryCreateCxxModuleModel(
-    global,
+fun tryCreateCxxModuleModel(componentProperties: ComponentPropertiesImpl) = tryCreateCxxModuleModel(
+    componentProperties,
     CmakeLocator()
 )
 

@@ -18,10 +18,12 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.TestVariant;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
+import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +31,6 @@ import javax.inject.Inject;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Task;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
 
@@ -49,11 +50,12 @@ public class TestVariantImpl extends ApkVariantImpl implements TestVariant {
     @Inject
     public TestVariantImpl(
             @NonNull TestVariantData variantData,
+            @NonNull ComponentPropertiesImpl componentProperties,
             @NonNull BaseVariant testedVariantData,
-            @NonNull ObjectFactory objectFactory,
+            @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(objectFactory, readOnlyObjectProvider, outputs);
+        super(componentProperties, services, readOnlyObjectProvider, outputs);
         this.variantData = variantData;
         this.testedVariantData = testedVariantData;
     }
@@ -73,17 +75,13 @@ public class TestVariantImpl extends ApkVariantImpl implements TestVariant {
     @Override
     @Nullable
     public DefaultTask getConnectedInstrumentTest() {
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variant.getConnectedInstrumentTestProvider()",
                         "variant.getConnectedInstrumentTest()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return variantData.getTaskContainer().getConnectedTestTask().getOrNull();
+        return componentProperties.getTaskContainer().getConnectedTestTask().getOrNull();
     }
 
     @Nullable
@@ -92,26 +90,19 @@ public class TestVariantImpl extends ApkVariantImpl implements TestVariant {
         // Double cast needed to satisfy the compiler
         //noinspection unchecked
         return (TaskProvider<Task>)
-                (TaskProvider<?>) variantData.getTaskContainer().getConnectedTestTask();
+                (TaskProvider<?>) componentProperties.getTaskContainer().getConnectedTestTask();
     }
 
     @NonNull
     @Override
     public List<? extends DefaultTask> getProviderInstrumentTests() {
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variant.getProviderInstrumentTestProviders()",
                         "variant.getProviderInstrumentTests()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return variantData
-                .getTaskContainer()
-                .getProviderTestTaskList()
-                .stream()
+        return componentProperties.getTaskContainer().getProviderTestTaskList().stream()
                 .filter(TaskProvider::isPresent)
                 .map(Provider::get)
                 .collect(Collectors.toList());
@@ -120,10 +111,7 @@ public class TestVariantImpl extends ApkVariantImpl implements TestVariant {
     @NonNull
     @Override
     public List<TaskProvider<Task>> getProviderInstrumentTestProviders() {
-        return variantData
-                .getTaskContainer()
-                .getProviderTestTaskList()
-                .stream()
+        return componentProperties.getTaskContainer().getProviderTestTaskList().stream()
                 .filter(TaskProvider::isPresent)
                 .map(
                         taskProvider -> {

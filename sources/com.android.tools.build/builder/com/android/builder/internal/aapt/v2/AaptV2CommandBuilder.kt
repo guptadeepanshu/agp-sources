@@ -218,7 +218,7 @@ fun makeLinkCommand(config: AaptPackageConfig): ImmutableList<String> {
      * Add custom no-compress extensions.
      */
     val noCompressList = Objects.requireNonNull(config.options).noCompress
-    if (noCompressList != null) {
+    if (noCompressList != null && noCompressList.isNotEmpty()) {
         if (noCompressList.any { Strings.isNullOrEmpty(it)}) {
             // Do not compress anything.
             builder.add("--no-compress")
@@ -341,6 +341,14 @@ fun makeLinkCommand(config: AaptPackageConfig): ImmutableList<String> {
     }
 
     builder.add("--no-proguard-location-reference")
+
+    if (config.emitStableIdsFile != null) {
+        builder.add("--emit-ids", config.emitStableIdsFile.absolutePath)
+    }
+
+    if (config.consumeStableIdsFile != null) {
+        builder.add("--stable-ids", config.consumeStableIdsFile.absolutePath)
+    }
 
     return builder.build()
 }

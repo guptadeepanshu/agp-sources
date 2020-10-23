@@ -16,24 +16,18 @@
 
 package com.android.build.gradle.internal;
 
-import static com.android.build.gradle.internal.dependency.DexingOutputSplitTransformKt.registerDexingOutputSplitTransform;
-import static com.android.build.gradle.internal.dependency.DexingTransformKt.getDexingArtifactConfigurations;
-import static com.android.build.gradle.internal.dependency.L8DexDesugarLibTransformKt.getDesugarLibConfigurations;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES;
-import static com.android.build.gradle.internal.utils.DesugarLibUtils.getDesugarLibConfig;
 import static com.android.builder.core.VariantTypeImpl.ANDROID_TEST;
 import static com.android.builder.core.VariantTypeImpl.UNIT_TEST;
-import static org.gradle.api.internal.artifacts.ArtifactAttributes.ARTIFACT_FORMAT;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.attributes.ProductFlavorAttr;
 import com.android.build.api.component.ComponentIdentity;
 import com.android.build.api.component.impl.AndroidTestImpl;
 import com.android.build.api.component.impl.AndroidTestPropertiesImpl;
-import com.android.build.api.component.impl.ComponentImpl;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.TestComponentImpl;
+import com.android.build.api.component.impl.TestComponentPropertiesImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.component.impl.UnitTestPropertiesImpl;
 import com.android.build.api.variant.impl.VariantImpl;
@@ -43,103 +37,101 @@ import com.android.build.gradle.TestedAndroidConfig;
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet;
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.api.VariantFilter;
-import com.android.build.gradle.internal.api.artifact.BuildArtifactSpec;
 import com.android.build.gradle.internal.core.VariantBuilder;
 import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.core.VariantDslInfoImpl;
 import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.crash.ExternalApiUsageException;
-import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution;
-import com.android.build.gradle.internal.dependency.DesugarLibConfiguration;
-import com.android.build.gradle.internal.dependency.DexingArtifactConfiguration;
-import com.android.build.gradle.internal.dependency.FilterShrinkerRulesTransform;
-import com.android.build.gradle.internal.dependency.SourceSetManager;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
-import com.android.build.gradle.internal.dependency.VersionedCodeShrinker;
+import com.android.build.gradle.internal.dependency.VariantDependenciesBuilder;
 import com.android.build.gradle.internal.dsl.ActionableVariantObjectOperationsExecutor;
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
+import com.android.build.gradle.internal.manifest.LazyManifestParser;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.profile.AnalyticsUtil;
-import com.android.build.gradle.internal.publishing.PublishingSpecs;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
+import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.SingleArtifactType;
+import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.scope.VariantScopeImpl;
+import com.android.build.gradle.internal.services.DslServices;
+import com.android.build.gradle.internal.services.ProjectServices;
+import com.android.build.gradle.internal.services.TaskCreationServices;
+import com.android.build.gradle.internal.services.TaskCreationServicesImpl;
+import com.android.build.gradle.internal.services.VariantApiServices;
+import com.android.build.gradle.internal.services.VariantApiServicesImpl;
+import com.android.build.gradle.internal.services.VariantPropertiesApiServicesImpl;
 import com.android.build.gradle.internal.variant.BaseVariantData;
+import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.DimensionCombination;
 import com.android.build.gradle.internal.variant.DimensionCombinator;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import com.android.build.gradle.internal.variant.TestedVariantData;
 import com.android.build.gradle.internal.variant.VariantFactory;
 import com.android.build.gradle.internal.variant.VariantInputModel;
+import com.android.build.gradle.internal.variant.VariantPathHelper;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SigningOptions;
-import com.android.build.gradle.options.SyncOptions;
-import com.android.builder.core.DefaultManifestParser;
-import com.android.builder.core.ManifestAttributeSupplier;
 import com.android.builder.core.VariantType;
 import com.android.builder.errors.IssueReporter;
-import com.android.builder.model.CodeShrinker;
 import com.android.builder.profile.ProcessProfileWriter;
 import com.android.builder.profile.Recorder;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.wireless.android.sdk.stats.ApiVersion;
 import com.google.wireless.android.sdk.stats.GradleBuildVariant;
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.attributes.Attribute;
-import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.provider.Provider;
 
 /** Class to create, manage variants. */
-public class VariantManager {
-
-    private static final String MULTIDEX_VERSION = "1.0.2";
-
-    protected static final String COM_ANDROID_SUPPORT_MULTIDEX =
-            "com.android.support:multidex:" + MULTIDEX_VERSION;
-    protected static final String COM_ANDROID_SUPPORT_MULTIDEX_INSTRUMENTATION =
-            "com.android.support:multidex-instrumentation:" + MULTIDEX_VERSION;
-
-    protected static final String ANDROIDX_MULTIDEX_MULTIDEX =
-            AndroidXDependencySubstitution.getAndroidXMappings()
-                    .get("com.android.support:multidex");
-    protected static final String ANDROIDX_MULTIDEX_MULTIDEX_INSTRUMENTATION =
-            AndroidXDependencySubstitution.getAndroidXMappings()
-                    .get("com.android.support:multidex-instrumentation");
+public class VariantManager<
+        VariantT extends VariantImpl<VariantPropertiesT>,
+        VariantPropertiesT extends VariantPropertiesImpl> {
 
     @NonNull private final Project project;
     @NonNull private final ProjectOptions projectOptions;
     @NonNull private final BaseExtension extension;
-    @NonNull private final VariantFactory variantFactory;
-    @NonNull private final VariantInputModel variantInputModel;
-    @NonNull private final TaskManager taskManager;
-    @NonNull private final SourceSetManager sourceSetManager;
+    @NonNull private final VariantFactory<VariantT, VariantPropertiesT> variantFactory;
+
+    @NonNull
+    private final VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+            variantInputModel;
+
+    @NonNull private final VariantApiServices variantApiServices;
+    @NonNull private final VariantPropertiesApiServicesImpl variantPropertiesApiServices;
+    @NonNull private final TaskCreationServices taskCreationServices;
+    @NonNull private final ProjectServices projectServices;
+
     @NonNull private final Recorder recorder;
     @NonNull private final VariantFilter variantFilter;
-    @NonNull private final List<VariantScope> variantScopes;
-    @NonNull private final Map<File, ManifestAttributeSupplier> manifestParserMap;
+
+    @NonNull
+    private final List<ComponentInfo<VariantT, VariantPropertiesT>> variants = Lists.newArrayList();
+
+    @NonNull
+    private final List<
+                    ComponentInfo<
+                            TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                            TestComponentPropertiesImpl>>
+            testComponents = Lists.newArrayList();
+
+    @NonNull
+    private final Map<File, LazyManifestParser> lazyManifestParserMap =
+            Maps.newHashMapWithExpectedSize(3);
+
     @NonNull protected final GlobalScope globalScope;
     @Nullable private final SigningConfig signingOverride;
     // We cannot use gradle's state of executed as that returns true while inside afterEvalute.
@@ -153,10 +145,9 @@ public class VariantManager {
             @NonNull Project project,
             @NonNull ProjectOptions projectOptions,
             @NonNull BaseExtension extension,
-            @NonNull VariantFactory variantFactory,
+            @NonNull VariantFactory<VariantT, VariantPropertiesT> variantFactory,
             @NonNull VariantInputModel variantInputModel,
-            @NonNull TaskManager taskManager,
-            @NonNull SourceSetManager sourceSetManager,
+            @NonNull ProjectServices projectServices,
             @NonNull Recorder recorder) {
         this.globalScope = globalScope;
         this.extension = extension;
@@ -164,220 +155,46 @@ public class VariantManager {
         this.projectOptions = projectOptions;
         this.variantFactory = variantFactory;
         this.variantInputModel = variantInputModel;
-        this.taskManager = taskManager;
-        this.sourceSetManager = sourceSetManager;
+        this.projectServices = projectServices;
         this.recorder = recorder;
         this.signingOverride = createSigningOverride();
         this.variantFilter = new VariantFilter(new ReadOnlyObjectProvider());
-        this.variantScopes = Lists.newArrayList();
-        this.manifestParserMap = Maps.newHashMap();
+
+        variantApiServices = new VariantApiServicesImpl(projectServices);
+        variantPropertiesApiServices = new VariantPropertiesApiServicesImpl(projectServices);
+        taskCreationServices = new TaskCreationServicesImpl(projectServices);
     }
 
     /**
-     * Registers a new variant.
+     * Returns a list of all main components.
      *
-     * <p>Unfortunately VariantData and VariantScope are tangled together and are really parts of
-     * the same, but we'll try to gradually shift all the immutable state to VariantScope and
-     * pretend that there's only an edge from scope to data.
+     * @see #createVariants()
      */
-    private void addVariant(@NonNull BaseVariantData variantData) {
-        variantScopes.add(variantData.getScope());
-    }
-
-    /** Returns a list of all created {@link VariantScope}s. */
     @NonNull
-    public List<VariantScope> getVariantScopes() {
-        return variantScopes;
+    public List<ComponentInfo<VariantT, VariantPropertiesT>> getMainComponents() {
+        return variants;
     }
 
-    /** Creates the variants and their tasks. */
-    public List<VariantScope> createVariantsAndTasks() {
+    /**
+     * Returns a list of all test components.
+     *
+     * @see #createVariants()
+     */
+    @NonNull
+    public List<
+                    ComponentInfo<
+                            TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                            TestComponentPropertiesImpl>>
+            getTestComponents() {
+        return testComponents;
+    }
+
+    /** Creates the variants. */
+    public void createVariants() {
         variantFactory.validateModel(variantInputModel);
         variantFactory.preVariantWork(project);
 
-        if (variantScopes.isEmpty()) {
-            computeVariants();
-        }
-
-        // Create top level test tasks.
-        taskManager.createTopLevelTestTasks(!variantInputModel.getProductFlavors().isEmpty());
-
-        // Create tasks for all variants (main and tests)
-        for (final VariantScope variantScope : variantScopes) {
-            createTasksForVariant(variantScope);
-        }
-
-        taskManager.createReportTasks(variantScopes);
-
-        return variantScopes;
-    }
-
-    /** Create tasks for the specified variant. */
-    private void createTasksForVariant(final VariantScope variantScope) {
-        final BaseVariantData variantData = variantScope.getVariantData();
-        final VariantType variantType = variantData.getType();
-        final VariantDslInfo variantDslInfo = variantScope.getVariantDslInfo();
-        final VariantSources variantSources = variantScope.getVariantSources();
-
-        taskManager.createAssembleTask(variantData);
-        if (variantType.isBaseModule()) {
-            taskManager.createBundleTask(variantData);
-        }
-
-        if (variantType.isTestComponent()) {
-            final BaseVariantData testedVariantData =
-                    (BaseVariantData) ((TestVariantData) variantData).getTestedVariantData();
-
-            // Add the container of dependencies, the order of the libraries is important.
-            // In descending order: build type (only for unit test), flavors, defaultConfig.
-
-            // Add the container of dependencies.
-            // The order of the libraries is important, in descending order:
-            // variant-specific, build type (, multi-flavor, flavor1, flavor2, ..., defaultConfig.
-            // variant-specific if the full combo of flavors+build type. Does not exist if no flavors.
-            // multi-flavor is the combination of all flavor dimensions. Does not exist if <2 dimension.
-            List<ProductFlavor> testProductFlavors = variantDslInfo.getProductFlavorList();
-            List<DefaultAndroidSourceSet> testVariantSourceSets =
-                    Lists.newArrayListWithExpectedSize(4 + testProductFlavors.size());
-
-            // 1. add the variant-specific if applicable.
-            if (!testProductFlavors.isEmpty()) {
-                testVariantSourceSets.add(
-                        (DefaultAndroidSourceSet) variantSources.getVariantSourceProvider());
-            }
-
-            // 2. the build type.
-            final BuildTypeData buildTypeData =
-                    variantInputModel
-                            .getBuildTypes()
-                            .get(variantDslInfo.getComponentIdentity().getBuildType());
-            DefaultAndroidSourceSet buildTypeConfigurationProvider =
-                    buildTypeData.getTestSourceSet(variantType);
-            if (buildTypeConfigurationProvider != null) {
-                testVariantSourceSets.add(buildTypeConfigurationProvider);
-            }
-
-            // 3. the multi-flavor combination
-            if (testProductFlavors.size() > 1) {
-                testVariantSourceSets.add(
-                        (DefaultAndroidSourceSet) variantSources.getMultiFlavorSourceProvider());
-            }
-
-            // 4. the flavors.
-            for (ProductFlavor productFlavor : testProductFlavors) {
-                testVariantSourceSets.add(
-                        variantInputModel
-                                .getProductFlavors()
-                                .get(productFlavor.getName())
-                                .getTestSourceSet(variantType));
-            }
-
-            // now add the default config
-            testVariantSourceSets.add(
-                    variantInputModel.getDefaultConfig().getTestSourceSet(variantType));
-
-            // If the variant being tested is a library variant, VariantDependencies must be
-            // computed after the tasks for the tested variant is created.  Therefore, the
-            // VariantDependencies is computed here instead of when the VariantData was created.
-            VariantDependencies.Builder builder =
-                    VariantDependencies.builder(
-                                    project,
-                                    variantScope.getGlobalScope().getDslScope().getIssueReporter(),
-                                    variantDslInfo)
-                            .addSourceSets(testVariantSourceSets)
-                            .setFlavorSelection(getFlavorSelection(variantDslInfo))
-                            .setTestedVariantScope(testedVariantData.getScope());
-
-            final VariantDependencies variantDep = builder.build(variantScope);
-            variantData.setVariantDependency(variantDep);
-
-            if (testedVariantData.getVariantDslInfo().getRenderscriptSupportModeEnabled()) {
-                project.getDependencies()
-                        .add(
-                                variantDep.getCompileClasspath().getName(),
-                                project.files(
-                                        globalScope
-                                                .getSdkComponents()
-                                                .getRenderScriptSupportJarProvider()));
-            }
-
-            if (variantType.isApk()) { // ANDROID_TEST
-                if (variantDslInfo.isLegacyMultiDexMode()) {
-                    String multiDexInstrumentationDep =
-                            globalScope.getProjectOptions().get(BooleanOption.USE_ANDROID_X)
-                                    ? ANDROIDX_MULTIDEX_MULTIDEX_INSTRUMENTATION
-                                    : COM_ANDROID_SUPPORT_MULTIDEX_INSTRUMENTATION;
-                    project.getDependencies()
-                            .add(
-                                    variantDep.getCompileClasspath().getName(),
-                                    multiDexInstrumentationDep);
-                    project.getDependencies()
-                            .add(
-                                    variantDep.getRuntimeClasspath().getName(),
-                                    multiDexInstrumentationDep);
-                }
-
-                taskManager.createAndroidTestVariantTasks(
-                        (TestVariantData) variantData,
-                        variantScopes
-                                .stream()
-                                .filter(TaskManager::isLintVariant)
-                                .collect(Collectors.toList()));
-            } else { // UNIT_TEST
-                taskManager.createUnitTestVariantTasks((TestVariantData) variantData);
-            }
-
-        } else {
-            taskManager.createTasksForVariantScope(
-                    variantScope,
-                    variantScopes
-                            .stream()
-                            .filter(TaskManager::isLintVariant)
-                            .collect(Collectors.toList()));
-        }
-    }
-
-    /** Publish intermediate artifacts in the BuildArtifactsHolder based on PublishingSpecs. */
-    public void publishBuildArtifacts(VariantScope variantScope) {
-        BuildArtifactsHolder buildArtifactsHolder = variantScope.getArtifacts();
-        for (PublishingSpecs.OutputSpec outputSpec :
-                variantScope.getPublishingSpec().getOutputs()) {
-            SingleArtifactType<? extends FileSystemLocation> buildArtifactType =
-                    outputSpec.getOutputType();
-
-            // Gradle only support publishing single file.  Therefore, unless Gradle starts
-            // supporting publishing multiple files, PublishingSpecs should not contain any
-            // OutputSpec with an appendable ArtifactType.
-            if (BuildArtifactSpec.Companion.has(buildArtifactType)
-                    && BuildArtifactSpec.Companion.get(buildArtifactType).getAppendable()) {
-                throw new RuntimeException(
-                        String.format(
-                                "Appendable ArtifactType '%1s' cannot be published.",
-                                buildArtifactType.name()));
-            }
-
-            if (buildArtifactsHolder.hasFinalProduct(buildArtifactType)) {
-                Provider<? extends FileSystemLocation> artifact =
-                        buildArtifactsHolder.getFinalProduct(buildArtifactType);
-
-                variantScope.publishIntermediateArtifact(
-                        artifact,
-                        outputSpec.getArtifactType(),
-                        outputSpec.getPublishedConfigTypes());
-            } else {
-                if (buildArtifactType == InternalArtifactType.ALL_CLASSES.INSTANCE) {
-                    Provider<FileCollection> allClasses =
-                            buildArtifactsHolder.getFinalProductAsFileCollection(
-                                    InternalArtifactType.ALL_CLASSES.INSTANCE);
-                    Provider<File> file = allClasses.map(FileCollection::getSingleFile);
-
-                    variantScope.publishIntermediateArtifact(
-                            file,
-                            outputSpec.getArtifactType(),
-                            outputSpec.getPublishedConfigTypes());
-                }
-            }
-        }
+        computeVariants();
     }
 
     @NonNull
@@ -385,10 +202,7 @@ public class VariantManager {
             @NonNull VariantDslInfo variantDslInfo) {
         ObjectFactory factory = project.getObjects();
 
-        return variantDslInfo
-                .getMissingDimensionStrategies()
-                .entrySet()
-                .stream()
+        return variantDslInfo.getMissingDimensionStrategies().entrySet().stream()
                 .collect(
                         Collectors.toMap(
                                 entry -> Attribute.of(entry.getKey(), ProductFlavorAttr.class),
@@ -396,63 +210,9 @@ public class VariantManager {
                                         factory.named(
                                                 ProductFlavorAttr.class,
                                                 entry.getValue().getRequested())));
-
     }
 
-    /** Configure artifact transforms that require variant-specific attribute information. */
-    private void configureVariantArtifactTransforms(
-            @NonNull Collection<VariantScope> variantScopes) {
-        DependencyHandler dependencies = project.getDependencies();
 
-        if (globalScope.getProjectOptions().get(BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM)) {
-            for (DexingArtifactConfiguration artifactConfiguration :
-                    getDexingArtifactConfigurations(variantScopes)) {
-                artifactConfiguration.registerTransform(
-                        globalScope.getProject().getName(),
-                        dependencies,
-                        globalScope.getBootClasspath(),
-                        getDesugarLibConfig(globalScope.getProject()),
-                        SyncOptions.getErrorFormatMode(globalScope.getProjectOptions()),
-                        projectOptions.get(BooleanOption.ENABLE_INCREMENTAL_DEXING_V2));
-            }
-        }
-
-        if (globalScope.getProjectOptions().get(BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION)) {
-            Set<CodeShrinker> shrinkers =
-                    variantScopes
-                            .stream()
-                            .map(VariantScope::getCodeShrinker)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toSet());
-            for (CodeShrinker shrinker : shrinkers) {
-                dependencies.registerTransform(
-                        FilterShrinkerRulesTransform.class,
-                        reg -> {
-                            reg.getFrom()
-                                    .attribute(
-                                            ARTIFACT_FORMAT, UNFILTERED_PROGUARD_RULES.getType());
-                            reg.getTo()
-                                    .attribute(ARTIFACT_FORMAT, FILTERED_PROGUARD_RULES.getType());
-
-                            reg.getFrom().attribute(SHRINKER_ATTR, shrinker.toString());
-                            reg.getTo().attribute(SHRINKER_ATTR, shrinker.toString());
-
-                            reg.parameters(
-                                    params -> {
-                                        params.getShrinker()
-                                                .set(VersionedCodeShrinker.of(shrinker));
-                                        params.getProjectName().set(project.getName());
-                                    });
-                        });
-            }
-        }
-
-        for (DesugarLibConfiguration configuration : getDesugarLibConfigurations(variantScopes)) {
-            configuration.registerTransform(dependencies);
-        }
-
-        registerDexingOutputSplitTransform(dependencies);
-    }
 
     /**
      * Returns a modified name.
@@ -469,33 +229,34 @@ public class VariantManager {
     }
 
     /** Create all variants. */
-    @VisibleForTesting
-    public void computeVariants() {
+    private void computeVariants() {
         List<String> flavorDimensionList = extension.getFlavorDimensionList();
 
         DimensionCombinator computer =
                 new DimensionCombinator(
                         variantInputModel,
-                        globalScope.getDslScope().getIssueReporter(),
-                        variantFactory.getVariantType(),
+                        projectServices.getIssueReporter(),
                         flavorDimensionList);
 
         List<DimensionCombination> variants = computer.computeVariants();
 
         // get some info related to testing
-        BuildTypeData testBuildTypeData = getTestBuildTypeData();
+        BuildTypeData<BuildType> testBuildTypeData = getTestBuildTypeData();
 
         // loop on all the new variant objects to create the legacy ones.
         for (DimensionCombination variant : variants) {
-            createVariantsFromConfiguration(variant, testBuildTypeData);
+            createVariantsFromCombination(variant, testBuildTypeData);
         }
 
-        configureVariantArtifactTransforms(variantScopes);
+        // FIXME we should lock the variant API properties after all the onVariants, and
+        // before any onVariantProperties to avoid cross access between the two.
+        // This means changing the way to run onVariants vs onVariantProperties.
+        variantApiServices.lockValues();
     }
 
     @Nullable
-    private BuildTypeData getTestBuildTypeData() {
-        BuildTypeData testBuildTypeData = null;
+    private BuildTypeData<BuildType> getTestBuildTypeData() {
+        BuildTypeData<BuildType> testBuildTypeData = null;
         if (extension instanceof TestedAndroidConfig) {
             TestedAndroidConfig testedExtension = (TestedAndroidConfig) extension;
 
@@ -512,33 +273,35 @@ public class VariantManager {
     }
 
     @Nullable
-    private BaseVariantData createVariant(
+    private ComponentInfo<VariantT, VariantPropertiesT> createVariant(
             @NonNull DimensionCombination dimensionCombination,
-            @NonNull BuildTypeData buildTypeData,
+            @NonNull BuildTypeData<BuildType> buildTypeData,
             @NonNull List<ProductFlavorData<ProductFlavor>> productFlavorDataList,
             @NonNull VariantType variantType) {
         // entry point for a given buildType/Flavors/VariantType combo.
         // Need to run the new variant API to selectively ignore variants.
         // in order to do this, we need access to the VariantDslInfo, to create a
+        DslServices dslServices = globalScope.getDslServices();
 
-        final ProductFlavorData<DefaultConfig> defaultConfig = variantInputModel.getDefaultConfig();
+        final DefaultConfigData<DefaultConfig> defaultConfig =
+                variantInputModel.getDefaultConfigData();
         DefaultAndroidSourceSet defaultConfigSourceProvider = defaultConfig.getSourceSet();
 
         VariantBuilder variantBuilder =
                 VariantBuilder.getBuilder(
                         dimensionCombination,
                         variantType,
-                        defaultConfig.getProductFlavor(),
+                        defaultConfig.getDefaultConfig(),
                         defaultConfigSourceProvider,
                         buildTypeData.getBuildType(),
                         buildTypeData.getSourceSet(),
                         signingOverride,
-                        getParser(
+                        getLazyManifestParser(
                                 defaultConfigSourceProvider.getManifestFile(),
-                                variantType.getRequiresManifest()),
-                        globalScope.getProjectOptions(),
-                        globalScope.getDslScope().getIssueReporter(),
-                        this::canParseManifest);
+                                variantType.getRequiresManifest(),
+                                this::canParseManifest),
+                        dslServices,
+                        variantPropertiesApiServices);
 
         // We must first add the flavors to the variant config, in order to get the proper
         // variant-specific and multi-flavor name as we add/create the variant providers later.
@@ -548,18 +311,20 @@ public class VariantManager {
         }
 
         VariantDslInfoImpl variantDslInfo = variantBuilder.createVariantDslInfo();
+        ComponentIdentity componentIdentity = variantDslInfo.getComponentIdentity();
 
         // create the Variant object so that we can run the action which may interrupt the creation
         // (in case of enabled = false)
-        VariantImpl variant =
+        VariantT variant =
                 variantFactory.createVariantObject(
-                        variantDslInfo.getComponentIdentity(), variantDslInfo);
+                        componentIdentity, variantDslInfo, variantApiServices);
 
         // HACK, we need access to the new type rather than the old. This will go away in the
         // future
-        ActionableVariantObjectOperationsExecutor commonExtension =
-                (ActionableVariantObjectOperationsExecutor) extension;
         //noinspection unchecked
+        ActionableVariantObjectOperationsExecutor<VariantT, VariantPropertiesT> commonExtension =
+                (ActionableVariantObjectOperationsExecutor<VariantT, VariantPropertiesT>) extension;
+
         commonExtension.executeVariantOperations(variant);
 
         if (!variant.getEnabled()) {
@@ -568,7 +333,7 @@ public class VariantManager {
 
         // now that we have the result of the filter, we can continue configuring the variant
 
-        createCompoundSourceSets(productFlavorDataList, variantBuilder, sourceSetManager);
+        createCompoundSourceSets(productFlavorDataList, variantBuilder);
 
         VariantSources variantSources = variantBuilder.createVariantSources();
 
@@ -576,7 +341,8 @@ public class VariantManager {
         if (!buildTypeData.getBuildType().isDebuggable()
                 && variantType.isApk()
                 && !variantDslInfo.getVariantType().isForTesting()) {
-            ProcessProfileWriter.get().recordApplicationId(variantDslInfo::getApplicationId);
+            ProcessProfileWriter.get()
+                    .recordApplicationId(() -> variantDslInfo.getApplicationId().get());
         }
 
         // Add the container of dependencies.
@@ -608,40 +374,14 @@ public class VariantManager {
         }
 
         // 5. The defaultConfig
-        variantSourceSets.add(variantInputModel.getDefaultConfig().getSourceSet());
+        variantSourceSets.add(variantInputModel.getDefaultConfigData().getSourceSet());
 
-        // Done. Create the (too) many variant objects
-
-        final Project project = globalScope.getProject();
-        VariantScopeImpl variantScope =
-                new VariantScopeImpl(
-                        globalScope,
-                        new TransformManager(
-                                globalScope.getProject(),
-                                globalScope.getDslScope().getIssueReporter(),
-                                recorder),
-                        variantDslInfo,
-                        variantType);
-
-        VariantPropertiesImpl variantProperties =
-                variantFactory.createVariantPropertiesObject(
-                        variantDslInfo.getComponentIdentity(), variantScope);
-
-        BaseVariantData variantData =
-                variantFactory.createVariantData(
-                        variantScope,
-                        variantDslInfo,
-                        variant,
-                        variantProperties,
-                        variantSources,
-                        taskManager);
-
-        variantScope.setVariantData(variantData);
-
-        VariantDependencies.Builder builder =
-                VariantDependencies.builder(
+        // Create VariantDependencies
+        VariantDependenciesBuilder builder =
+                VariantDependenciesBuilder.builder(
                                 project,
-                                variantScope.getGlobalScope().getDslScope().getIssueReporter(),
+                                projectOptions,
+                                projectServices.getIssueReporter(),
                                 variantDslInfo)
                         .setFlavorSelection(getFlavorSelection(variantDslInfo))
                         .addSourceSets(variantSourceSets);
@@ -650,78 +390,111 @@ public class VariantManager {
             builder.setFeatureList(((BaseAppModuleExtension) extension).getDynamicFeatures());
         }
 
-        final VariantDependencies variantDep = builder.build(variantScope);
-        variantData.setVariantDependency(variantDep);
+        final VariantDependencies variantDependencies = builder.build();
 
-        if (variantDslInfo.isLegacyMultiDexMode() && variantDslInfo.getVariantType().isApk()) {
-            String multiDexDependency =
-                    globalScope.getProjectOptions().get(BooleanOption.USE_ANDROID_X)
-                            ? ANDROIDX_MULTIDEX_MULTIDEX
-                            : COM_ANDROID_SUPPORT_MULTIDEX;
-            project.getDependencies()
-                    .add(variantDep.getCompileClasspath().getName(), multiDexDependency);
-            project.getDependencies()
-                    .add(variantDep.getRuntimeClasspath().getName(), multiDexDependency);
-        }
+        // Done. Create the (too) many variant objects
 
-        if (variantDslInfo.getRenderscriptSupportModeEnabled()) {
-            final ConfigurableFileCollection fileCollection =
-                    project.files(
-                            globalScope.getSdkComponents().getRenderScriptSupportJarProvider());
-            project.getDependencies()
-                    .add(variantDep.getCompileClasspath().getName(), fileCollection);
-            if (variantType.isApk() && !variantType.isForTesting()) {
-                project.getDependencies()
-                        .add(variantDep.getRuntimeClasspath().getName(), fileCollection);
-            }
-        }
+        VariantPathHelper pathHelper = new VariantPathHelper(project, variantDslInfo, dslServices);
+
+        ArtifactsImpl artifacts = new ArtifactsImpl(project, componentIdentity.getName());
+
+        MutableTaskContainer taskContainer = new MutableTaskContainer();
+        TransformManager transformManager =
+                new TransformManager(project, dslServices.getIssueReporter(), recorder);
+
+        // create the obsolete VariantScope
+        VariantScopeImpl variantScope =
+                new VariantScopeImpl(
+                        componentIdentity,
+                        variantDslInfo,
+                        variantDependencies,
+                        pathHelper,
+                        artifacts,
+                        globalScope,
+                        null /* testedVariantProperties*/);
+
+        // and the obsolete variant data
+        BaseVariantData variantData =
+                variantFactory.createVariantData(
+                        componentIdentity,
+                        variantDslInfo,
+                        variantDependencies,
+                        variantSources,
+                        pathHelper,
+                        artifacts,
+                        variantPropertiesApiServices,
+                        globalScope,
+                        taskContainer);
+
+        // then the new VariantProperties which will contain the 2 old objects.
+        VariantPropertiesT variantProperties =
+                variantFactory.createVariantPropertiesObject(
+                        variant,
+                        componentIdentity,
+                        variantFactory.createBuildFeatureValues(
+                                extension.getBuildFeatures(), projectOptions),
+                        variantDslInfo,
+                        variantDependencies,
+                        variantSources,
+                        pathHelper,
+                        artifacts,
+                        variantScope,
+                        variantData,
+                        transformManager,
+                        variantPropertiesApiServices,
+                        taskCreationServices);
 
         // Run the VariantProperties actions
-        //noinspection unchecked
         commonExtension.executeVariantPropertiesOperations(variantProperties);
 
         // also execute the delayed actions registered on the Variant object itself
-        //noinspection unchecked
         variant.executePropertiesActions(variantProperties);
 
-        return variantData;
+        return new ComponentInfo<>(variant, variantProperties);
     }
 
-    private static void createCompoundSourceSets(
+    private void createCompoundSourceSets(
             @NonNull List<ProductFlavorData<ProductFlavor>> productFlavorList,
-            @NonNull VariantBuilder variantBuilder,
-            @NonNull SourceSetManager sourceSetManager) {
+            @NonNull VariantBuilder variantBuilder) {
         final VariantType variantType = variantBuilder.getVariantType();
 
         if (!productFlavorList.isEmpty() /* && !variantConfig.getType().isSingleBuildType()*/) {
             DefaultAndroidSourceSet variantSourceSet =
                     (DefaultAndroidSourceSet)
-                            sourceSetManager.setUpSourceSet(
-                                    VariantBuilder.computeSourceSetName(
-                                            variantBuilder.getName(), variantType),
-                                    variantType.isTestComponent());
+                            variantInputModel
+                                    .getSourceSetManager()
+                                    .setUpSourceSet(
+                                            VariantBuilder.computeSourceSetName(
+                                                    variantBuilder.getName(), variantType),
+                                            variantType.isTestComponent());
             variantBuilder.setVariantSourceProvider(variantSourceSet);
         }
 
         if (productFlavorList.size() > 1) {
             DefaultAndroidSourceSet multiFlavorSourceSet =
                     (DefaultAndroidSourceSet)
-                            sourceSetManager.setUpSourceSet(
-                                    VariantBuilder.computeSourceSetName(
-                                            variantBuilder.getFlavorName(), variantType),
-                                    variantType.isTestComponent());
+                            variantInputModel
+                                    .getSourceSetManager()
+                                    .setUpSourceSet(
+                                            VariantBuilder.computeSourceSetName(
+                                                    variantBuilder.getFlavorName(), variantType),
+                                            variantType.isTestComponent());
             variantBuilder.setMultiFlavorSourceProvider(multiFlavorSourceSet);
         }
     }
 
     /** Create a TestVariantData for the specified testedVariantData. */
     @Nullable
-    public TestVariantData createTestComponents(
-            @NonNull DimensionCombination dimensionCombination,
-            @NonNull BuildTypeData buildTypeData,
-            @NonNull List<ProductFlavorData<ProductFlavor>> productFlavorDataList,
-            @NonNull BaseVariantData testedVariantData,
-            @NonNull VariantType type) {
+    public ComponentInfo<
+                    TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                    TestComponentPropertiesImpl>
+            createTestComponents(
+                    @NonNull DimensionCombination dimensionCombination,
+                    @NonNull BuildTypeData<BuildType> buildTypeData,
+                    @NonNull List<ProductFlavorData<ProductFlavor>> productFlavorDataList,
+                    @NonNull VariantT testedVariant,
+                    @NonNull VariantPropertiesT testedVariantProperties,
+                    @NonNull VariantType variantType) {
 
         // handle test variant
         // need a suppress warning because ProductFlavor.getTestSourceSet(type) is annotated
@@ -729,31 +502,31 @@ public class VariantManager {
         // but it's never the case on defaultConfigData
         // The constructor does a runtime check on the instances so we should be safe.
         final DefaultAndroidSourceSet testSourceSet =
-                variantInputModel.getDefaultConfig().getTestSourceSet(type);
+                variantInputModel.getDefaultConfigData().getTestSourceSet(variantType);
+        DslServices dslServices = globalScope.getDslServices();
+
         @SuppressWarnings("ConstantConditions")
         VariantBuilder variantBuilder =
                 VariantBuilder.getBuilder(
                         dimensionCombination,
-                        type,
-                        variantInputModel.getDefaultConfig().getProductFlavor(),
+                        variantType,
+                        variantInputModel.getDefaultConfigData().getDefaultConfig(),
                         testSourceSet,
                         buildTypeData.getBuildType(),
-                        buildTypeData.getTestSourceSet(type),
+                        buildTypeData.getTestSourceSet(variantType),
                         signingOverride,
-                        testSourceSet != null
-                                ? getParser(
-                                        testSourceSet.getManifestFile(), type.getRequiresManifest())
-                                : null,
-                        globalScope.getProjectOptions(),
-                        globalScope.getDslScope().getIssueReporter(),
-                        this::canParseManifest);
+                        getLazyManifestParser(
+                                testSourceSet.getManifestFile(),
+                                variantType.getRequiresManifest(),
+                                this::canParseManifest),
+                        dslServices,
+                        variantPropertiesApiServices);
 
-        VariantDslInfoImpl testedVariantDslInfo =
-                (VariantDslInfoImpl) testedVariantData.getVariantDslInfo();
+        variantBuilder.setTestedVariant(
+                (VariantDslInfoImpl) testedVariantProperties.getVariantDslInfo());
 
-        variantBuilder.setTestedVariant(testedVariantDslInfo);
-
-        List<ProductFlavor> productFlavorList = testedVariantDslInfo.getProductFlavorList();
+        List<ProductFlavor> productFlavorList =
+                testedVariantProperties.getVariantDslInfo().getProductFlavorList();
 
         // We must first add the flavors to the variant builder, in order to get the proper
         // variant-specific and multi-flavor name as we add/create the variant providers later.
@@ -763,22 +536,23 @@ public class VariantManager {
             ProductFlavorData<ProductFlavor> data = productFlavors.get(productFlavor.getName());
 
             //noinspection ConstantConditions
-            variantBuilder.addProductFlavor(data.getProductFlavor(), data.getTestSourceSet(type));
+            variantBuilder.addProductFlavor(
+                    data.getProductFlavor(), data.getTestSourceSet(variantType));
         }
 
         VariantDslInfoImpl variantDslInfo = variantBuilder.createVariantDslInfo();
 
-        // create the Variant object so that we can run the action which may interrupt the creation
-        // (in case of enabled = false)
-        VariantImpl testedVariant = (VariantImpl) testedVariantData.getPublicVariantApi();
+        TestComponentImpl<? extends TestComponentPropertiesImpl> component;
 
         // this is ANDROID_TEST
-        ComponentImpl component;
-        if (type.isApk()) {
+        if (variantType.isApk()) {
             AndroidTestImpl androidTestVariant =
                     variantFactory.createAndroidTestObject(
-                            variantDslInfo.getComponentIdentity(), variantDslInfo);
+                            variantDslInfo.getComponentIdentity(),
+                            variantDslInfo,
+                            variantApiServices);
 
+            // run the action registered on the tested variant via androidTest {}
             testedVariant.executeAndroidTestActions(androidTestVariant);
 
             component = androidTestVariant;
@@ -786,8 +560,11 @@ public class VariantManager {
             // this is UNIT_TEST
             UnitTestImpl unitTestVariant =
                     variantFactory.createUnitTestObject(
-                            variantDslInfo.getComponentIdentity(), variantDslInfo);
+                            variantDslInfo.getComponentIdentity(),
+                            variantDslInfo,
+                            variantApiServices);
 
+            // run the action registered on the tested variant via unitTest {}
             testedVariant.executeUnitTestActions(unitTestVariant);
 
             component = unitTestVariant;
@@ -798,59 +575,171 @@ public class VariantManager {
         }
 
         // now that we have the result of the filter, we can continue configuring the variant
-        createCompoundSourceSets(productFlavorDataList, variantBuilder, sourceSetManager);
+        createCompoundSourceSets(productFlavorDataList, variantBuilder);
+
+        VariantSources variantSources = variantBuilder.createVariantSources();
+
+        // Add the container of dependencies, the order of the libraries is important.
+        // In descending order: build type (only for unit test), flavors, defaultConfig.
+
+        // Add the container of dependencies.
+        // The order of the libraries is important, in descending order:
+        // variant-specific, build type (, multi-flavor, flavor1, flavor2, ..., defaultConfig.
+        // variant-specific if the full combo of flavors+build type. Does not exist if no flavors.
+        // multi-flavor is the combination of all flavor dimensions. Does not exist if <2 dimension.
+        List<ProductFlavor> testProductFlavors = variantDslInfo.getProductFlavorList();
+        List<DefaultAndroidSourceSet> testVariantSourceSets =
+                Lists.newArrayListWithExpectedSize(4 + testProductFlavors.size());
+
+        // 1. add the variant-specific if applicable.
+        if (!testProductFlavors.isEmpty()) {
+            testVariantSourceSets.add(
+                    (DefaultAndroidSourceSet) variantSources.getVariantSourceProvider());
+        }
+
+        // 2. the build type.
+        DefaultAndroidSourceSet buildTypeConfigurationProvider =
+                buildTypeData.getTestSourceSet(variantType);
+        if (buildTypeConfigurationProvider != null) {
+            testVariantSourceSets.add(buildTypeConfigurationProvider);
+        }
+
+        // 3. the multi-flavor combination
+        if (testProductFlavors.size() > 1) {
+            testVariantSourceSets.add(
+                    (DefaultAndroidSourceSet) variantSources.getMultiFlavorSourceProvider());
+        }
+
+        // 4. the flavors.
+        for (ProductFlavor productFlavor : testProductFlavors) {
+            testVariantSourceSets.add(
+                    variantInputModel
+                            .getProductFlavors()
+                            .get(productFlavor.getName())
+                            .getTestSourceSet(variantType));
+        }
+
+        // now add the default config
+        testVariantSourceSets.add(
+                variantInputModel.getDefaultConfigData().getTestSourceSet(variantType));
+
+        // If the variant being tested is a library variant, VariantDependencies must be
+        // computed after the tasks for the tested variant is created.  Therefore, the
+        // VariantDependencies is computed here instead of when the VariantData was created.
+        VariantDependenciesBuilder builder =
+                VariantDependenciesBuilder.builder(
+                                project,
+                                projectOptions,
+                                projectServices.getIssueReporter(),
+                                variantDslInfo)
+                        .addSourceSets(testVariantSourceSets)
+                        .setFlavorSelection(getFlavorSelection(variantDslInfo))
+                        .setTestedVariant(testedVariantProperties);
+
+        final VariantDependencies variantDependencies = builder.build();
+
+        VariantPathHelper pathHelper = new VariantPathHelper(project, variantDslInfo, dslServices);
+        ComponentIdentity componentIdentity = variantDslInfo.getComponentIdentity();
+
+        ArtifactsImpl artifacts = new ArtifactsImpl(project, componentIdentity.getName());
+
+        MutableTaskContainer taskContainer = new MutableTaskContainer();
+        TransformManager transformManager =
+                new TransformManager(project, dslServices.getIssueReporter(), recorder);
 
         VariantScopeImpl variantScope =
                 new VariantScopeImpl(
-                        globalScope,
-                        new TransformManager(
-                                globalScope.getProject(),
-                                globalScope.getDslScope().getIssueReporter(),
-                                recorder),
+                        componentIdentity,
                         variantDslInfo,
-                        type);
+                        variantDependencies,
+                        pathHelper,
+                        artifacts,
+                        globalScope,
+                        testedVariantProperties);
 
+        // create the internal storage for this variant.
+        TestVariantData testVariantData =
+                new TestVariantData(
+                        componentIdentity,
+                        variantDslInfo,
+                        variantDependencies,
+                        variantSources,
+                        pathHelper,
+                        artifacts,
+                        (TestedVariantData) testedVariantProperties.getVariantData(),
+                        variantPropertiesApiServices,
+                        globalScope,
+                        taskContainer);
+
+        // in order to call executePropertiesActions, we need a slightly different type....
+        //noinspection unchecked
+        TestComponentImpl<TestComponentPropertiesImpl> testComponent =
+                (TestComponentImpl<TestComponentPropertiesImpl>) component;
+
+        TestComponentPropertiesImpl componentProperties;
+
+        BuildFeatureValues buildFeatureValues =
+                variantFactory.createTestBuildFeatureValues(
+                        extension.getBuildFeatures(), extension.getDataBinding(), projectOptions);
 
         // this is ANDROID_TEST
-        ComponentPropertiesImpl componentProperties;
-        if (type.isApk()) {
+        if (variantType.isApk()) {
             AndroidTestPropertiesImpl androidTestProperties =
                     variantFactory.createAndroidTestProperties(
-                            variantDslInfo.getComponentIdentity(), variantScope);
+                            componentIdentity,
+                            buildFeatureValues,
+                            variantDslInfo,
+                            variantDependencies,
+                            variantSources,
+                            pathHelper,
+                            artifacts,
+                            variantScope,
+                            testVariantData,
+                            testedVariantProperties,
+                            transformManager,
+                            variantPropertiesApiServices,
+                            taskCreationServices);
 
-            component.executePropertiesActions(androidTestProperties);
+            // also execute the delayed actions registered on the Component via
+            // androidTest { onProperties {} }
+            testComponent.executePropertiesActions(androidTestProperties);
+            // or on the tested variant via unitTestProperties {}
+            testedVariant.executeAndroidTestPropertiesActions(androidTestProperties);
 
             componentProperties = androidTestProperties;
         } else {
             // this is UNIT_TEST
             UnitTestPropertiesImpl unitTestProperties =
                     variantFactory.createUnitTestProperties(
-                            variantDslInfo.getComponentIdentity(), variantScope);
+                            componentIdentity,
+                            buildFeatureValues,
+                            variantDslInfo,
+                            variantDependencies,
+                            variantSources,
+                            pathHelper,
+                            artifacts,
+                            variantScope,
+                            testVariantData,
+                            testedVariantProperties,
+                            transformManager,
+                            variantPropertiesApiServices,
+                            taskCreationServices);
 
-            // also execute the delayed actions registered on the Variant object itself
-            component.executePropertiesActions(unitTestProperties);
+            // execute the delayed actions registered on the Component via
+            // unitTest { onProperties {} }
+            testComponent.executePropertiesActions(unitTestProperties);
+            // or on the tested variant via unitTestProperties {}
+            testedVariant.executeUnitTestPropertiesActions(unitTestProperties);
 
             componentProperties = unitTestProperties;
         }
 
-        // create the internal storage for this variant.
-        TestVariantData testVariantData =
-                new TestVariantData(
-                        globalScope,
-                        taskManager,
-                        variantScope,
-                        variantDslInfo,
-                        component,
-                        componentProperties,
-                        variantBuilder.createVariantSources(),
-                        (TestedVariantData) testedVariantData);
-        variantScope.setVariantData(testVariantData);
+        // register
+        testedVariantProperties
+                .getTestComponents()
+                .put(variantDslInfo.getVariantType(), componentProperties);
 
-        // link the testVariant to the tested variant in the other direction
-        ((TestedVariantData) testedVariantData).setTestVariantData(testVariantData, type);
-
-
-        return testVariantData;
+        return new ComponentInfo<>(component, componentProperties);
     }
 
     /**
@@ -858,9 +747,9 @@ public class VariantManager {
      *
      * <p>This will create both the prod and the androidTest/unitTest variants.
      */
-    private void createVariantsFromConfiguration(
+    private void createVariantsFromCombination(
             @NonNull DimensionCombination dimensionCombination,
-            @Nullable BuildTypeData testBuildTypeData) {
+            @Nullable BuildTypeData<BuildType> testBuildTypeData) {
         VariantType variantType = variantFactory.getVariantType();
 
         // first run the old variantFilter API
@@ -868,9 +757,9 @@ public class VariantManager {
         Action<com.android.build.api.variant.VariantFilter> variantFilterAction =
                 extension.getVariantFilter();
 
-        DefaultConfig defaultConfig = variantInputModel.getDefaultConfig().getProductFlavor();
+        DefaultConfig defaultConfig = variantInputModel.getDefaultConfigData().getDefaultConfig();
 
-        BuildTypeData buildTypeData =
+        BuildTypeData<BuildType> buildTypeData =
                 variantInputModel.getBuildTypes().get(dimensionCombination.getBuildType());
         BuildType buildType = buildTypeData.getBuildType();
 
@@ -905,23 +794,24 @@ public class VariantManager {
 
         if (!ignore) {
             // create the prod variant
-            BaseVariantData variantData =
+            ComponentInfo<VariantT, VariantPropertiesT> variantInfo =
                     createVariant(
                             dimensionCombination,
                             buildTypeData,
                             productFlavorDataList,
                             variantType);
-            if (variantData != null) {
-                addVariant(variantData);
+            if (variantInfo != null) {
+                addVariant(variantInfo);
 
-                VariantDslInfo variantDslInfo = variantData.getVariantDslInfo();
-                VariantScope variantScope = variantData.getScope();
+                VariantPropertiesT variantProperties = variantInfo.getProperties();
+
+                VariantDslInfo variantDslInfo = variantProperties.getVariantDslInfo();
+                VariantScope variantScope = variantProperties.getVariantScope();
 
                 int minSdkVersion = variantDslInfo.getMinSdkVersion().getApiLevel();
                 int targetSdkVersion = variantDslInfo.getTargetSdkVersion().getApiLevel();
                 if (minSdkVersion > 0 && targetSdkVersion > 0 && minSdkVersion > targetSdkVersion) {
-                    globalScope
-                            .getDslScope()
+                    projectServices
                             .getIssueReporter()
                             .reportWarning(
                                     IssueReporter.Type.GENERIC,
@@ -933,19 +823,22 @@ public class VariantManager {
                                                     + " equal to targetSdkVersion.",
                                             minSdkVersion,
                                             targetSdkVersion,
-                                            variantData.getName()));
+                                            variantProperties.getName()));
                 }
 
                 GradleBuildVariant.Builder profileBuilder =
                         ProcessProfileWriter.getOrCreateVariant(
-                                        project.getPath(), variantData.getName())
+                                        project.getPath(), variantProperties.getName())
                                 .setIsDebug(buildType.isDebuggable())
                                 .setMinSdkVersion(
                                         AnalyticsUtil.toProto(variantDslInfo.getMinSdkVersion()))
                                 .setMinifyEnabled(variantScope.getCodeShrinker() != null)
                                 .setUseMultidex(variantDslInfo.isMultiDexEnabled())
                                 .setUseLegacyMultidex(variantDslInfo.isLegacyMultiDexMode())
-                                .setVariantType(variantData.getType().getAnalyticsVariantType())
+                                .setVariantType(
+                                        variantProperties
+                                                .getVariantType()
+                                                .getAnalyticsVariantType())
                                 .setDexBuilder(AnalyticsUtil.toProto(variantScope.getDexer()))
                                 .setDexMerger(AnalyticsUtil.toProto(variantScope.getDexMerger()))
                                 .setCoreLibraryDesugaringEnabled(
@@ -971,40 +864,60 @@ public class VariantManager {
                             ApiVersion.newBuilder().setApiLevel(variantDslInfo.getMaxSdkVersion()));
                 }
 
-                VariantScope.Java8LangSupport supportType =
-                        variantData.getScope().getJava8LangSupportType();
+                VariantScope.Java8LangSupport supportType = variantScope.getJava8LangSupportType();
                 if (supportType != VariantScope.Java8LangSupport.INVALID
                         && supportType != VariantScope.Java8LangSupport.UNUSED) {
                     profileBuilder.setJava8LangSupport(AnalyticsUtil.toProto(supportType));
                 }
 
-                if (variantFactory.hasTestScope()) {
+                if (variantFactory.getVariantType().getHasTestComponents()) {
                     if (buildTypeData == testBuildTypeData) {
-                        TestVariantData androidTestVariantData =
-                                createTestComponents(
-                                        dimensionCombination,
-                                        buildTypeData,
-                                        productFlavorDataList,
-                                        variantData,
-                                        ANDROID_TEST);
-                        if (androidTestVariantData != null) {
-                            addVariant(androidTestVariantData);
+                        ComponentInfo<
+                                        TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                                        TestComponentPropertiesImpl>
+                                androidTest =
+                                        createTestComponents(
+                                                dimensionCombination,
+                                                buildTypeData,
+                                                productFlavorDataList,
+                                                variantInfo.getVariant(),
+                                                variantProperties,
+                                                ANDROID_TEST);
+                        if (androidTest != null) {
+                            addTestComponent(androidTest);
                         }
                     }
 
-                    TestVariantData unitTestVariantData =
-                            createTestComponents(
-                                    dimensionCombination,
-                                    buildTypeData,
-                                    productFlavorDataList,
-                                    variantData,
-                                    UNIT_TEST);
-                    if (unitTestVariantData != null) {
-                        addVariant(unitTestVariantData);
+                    ComponentInfo<
+                                    TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                                    TestComponentPropertiesImpl>
+                            unitTest =
+                                    createTestComponents(
+                                            dimensionCombination,
+                                            buildTypeData,
+                                            productFlavorDataList,
+                                            variantInfo.getVariant(),
+                                            variantProperties,
+                                            UNIT_TEST);
+                    if (unitTest != null) {
+                        addTestComponent(unitTest);
                     }
                 }
             }
         }
+    }
+
+    private void addVariant(@NonNull ComponentInfo<VariantT, VariantPropertiesT> variant) {
+        variants.add(variant);
+    }
+
+    private void addTestComponent(
+            @NonNull
+                    ComponentInfo<
+                                    TestComponentImpl<? extends TestComponentPropertiesImpl>,
+                                    TestComponentPropertiesImpl>
+                            testComponent) {
+        testComponents.add(testComponent);
     }
 
     private SigningConfig createSigningOverride() {
@@ -1036,16 +949,18 @@ public class VariantManager {
     }
 
     @NonNull
-    private ManifestAttributeSupplier getParser(
-            @NonNull File file, boolean isManifestFileRequired) {
-        return manifestParserMap.computeIfAbsent(
+    private LazyManifestParser getLazyManifestParser(
+            @NonNull File file,
+            boolean isManifestFileRequired,
+            @NonNull BooleanSupplier isInExecutionPhase) {
+        return lazyManifestParserMap.computeIfAbsent(
                 file,
                 f ->
-                        new DefaultManifestParser(
-                                f,
-                                this::canParseManifest,
+                        new LazyManifestParser(
+                                projectServices.getObjectFactory().fileProperty().fileValue(f),
                                 isManifestFileRequired,
-                                globalScope.getDslScope().getIssueReporter()));
+                                projectServices,
+                                isInExecutionPhase));
     }
 
     private boolean canParseManifest() {
@@ -1054,5 +969,9 @@ public class VariantManager {
 
     public void setHasCreatedTasks(boolean hasCreatedTasks) {
         this.hasCreatedTasks = hasCreatedTasks;
+    }
+
+    public void lockVariantProperties() {
+        variantPropertiesApiServices.lockProperties();
     }
 }

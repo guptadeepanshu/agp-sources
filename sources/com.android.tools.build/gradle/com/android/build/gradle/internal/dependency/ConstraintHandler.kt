@@ -16,12 +16,20 @@
 
 package com.android.build.gradle.internal.dependency
 
+import com.android.build.gradle.internal.services.ServiceRegistrationAction
+import com.android.builder.internal.StringCachingService
 import org.gradle.api.Action
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ResolvableDependencies
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
-import org.gradle.api.artifacts.dsl.DependencyConstraintHandler
-import org.gradle.api.artifacts.result.ResolvedComponentResult
+import org.gradle.api.artifacts.component.ModuleComponentSelector
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.provider.Provider
+import org.gradle.api.services.BuildService
+import org.gradle.api.services.BuildServiceParameters
 
 /**
  * An Action to synchronize a dependency with a runtimeClasspath.
@@ -30,58 +38,83 @@ import org.gradle.api.artifacts.result.ResolvedComponentResult
  */
 class ConstraintHandler(
     private val srcConfiguration: Configuration,
-    private val constraints: DependencyConstraintHandler,
-    private val isTest: Boolean
+    private val dependencyHandler: DependencyHandler,
+    private val isTest: Boolean,
+    private val cachedStringBuildService: Provider<CachedStringBuildService>
 ) : Action<ResolvableDependencies> {
     override fun execute(resolvableDependencies: ResolvableDependencies) {
         val srcConfigName = srcConfiguration.name
-        val srcComponents: Set<ResolvedComponentResult> =
-            srcConfiguration.incoming.resolutionResult.allComponents
 
         val configName = resolvableDependencies.name
+        val cachedStrings = cachedStringBuildService.get()
 
-        // loop on all the artifacts and set constraints for the compile classpath.
-        srcComponents.forEach { resolvedComponentResult ->
-            val id = resolvedComponentResult.id
-            if (id is ModuleComponentIdentifier) {
-                // using a repository with a flatDir to stock local AARs will result in an
-                // external module dependency with no version.
-                if (!id.version.isNullOrEmpty()) {
-                    if (!isTest || id.module != "listenablefuture" || id.group != "com.google.guava" || id.version != "1.0") {
-                        constraints.add(
-                            configName,
-                            "${id.group}:${id.module}:${id.version}"
-                        ) { constraint ->
-                            constraint.because(cacheString("$srcConfigName uses version ${id.version}"))
-                            constraint.version { versionConstraint ->
-                                versionConstraint.strictly(id.version)
+        srcConfiguration.incoming.resolutionResult.allDependencies { dependency ->
+            if (dependency is ResolvedDependencyResult) {
+                val id = dependency.selected.id
+                if (id is ModuleComponentIdentifier) {
+                    // using a repository with a flatDir to stock local AARs will result in an
+                    // external module dependency with no version.
+                    if (!id.version.isNullOrEmpty()) {
+                        if (!isTest || id.module != "listenablefuture" || id.group != "com.google.guava" || id.version != "1.0") {
+                            dependencyHandler.constraints.add(
+                                configName,
+                                "${id.group}:${id.module}:${id.version}"
+                            ) { constraint ->
+                                constraint.because(cachedStrings.cacheString("$srcConfigName uses version ${id.version}"))
+                                constraint.version { versionConstraint ->
+                                    versionConstraint.strictly(id.version)
+                                }
                             }
                         }
                     }
+                } else if (id is ProjectComponentIdentifier
+                    && id.build.isCurrentBuild
+                    && dependency.requested is ModuleComponentSelector
+                ) {
+                    // Requested external library has been replaced with the project dependency, so
+                    // add the project dependency to the target configuration, so it can be chosen
+                    // instead of the external library as well.
+                    // We should avoid doing this for composite builds, so we check if the selected
+                    // project is from the current build.
+                    dependencyHandler.add(
+                        configName,
+                        dependencyHandler.project(mapOf("path" to id.projectPath))
+                    )
                 }
             }
         }
     }
 
-    companion object {
+    /** Build service used to cache strings used to specify why versions of dependencies change.  */
+    abstract class CachedStringBuildService : BuildService<BuildServiceParameters.None>,
+        AutoCloseable, StringCachingService {
         private val strings = mutableMapOf<String, String>()
 
-        internal fun cacheString(newString: String): String {
+        override fun cacheString(string: String): String {
             synchronized(strings) {
-                val existingString = strings[newString]
+                val existingString = strings[string]
                 return if (existingString == null) {
-                    strings[newString] = newString
-                    newString
+                    strings[string] = string
+                    string
                 } else {
                     existingString
                 }
             }
         }
 
-        @JvmStatic
-        fun clearCache() {
+        override fun close() {
             synchronized(strings) {
                 strings.clear()
+            }
+        }
+
+        class RegistrationAction(project: Project) :
+            ServiceRegistrationAction<CachedStringBuildService, BuildServiceParameters.None>(
+                project,
+                CachedStringBuildService::class.java
+            ) {
+            override fun configure(parameters: BuildServiceParameters.None) {
+                // do nothing
             }
         }
     }

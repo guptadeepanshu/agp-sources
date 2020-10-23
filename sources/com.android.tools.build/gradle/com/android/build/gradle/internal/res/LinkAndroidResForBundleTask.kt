@@ -16,18 +16,18 @@
 
 package com.android.build.gradle.internal.res
 
+import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.dsl.convert
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_RESOURCE_PKG
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
-import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.ExistingBuildElements
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
-import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -46,10 +46,9 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -73,21 +72,17 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Input
     abstract val debuggable: Property<Boolean>
 
-    private lateinit var aaptOptions: AaptOptions
-
     private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
 
-    private var mergeBlameLogFolder: File? = null
+    // Not an input as it is only used to rewrite exceptions and doesn't affect task output
+    @get:Internal
+    abstract val mergeBlameLogFolder: DirectoryProperty
 
-    // Not an input as it is only used to rewrite exception and doesn't affect task output
-    private lateinit var manifestMergeBlameFile: Provider<RegularFile>
+    // Not an input as it is only used to rewrite exceptions and doesn't affect task output
+    @get:Internal
+    abstract val manifestMergeBlameFile: RegularFileProperty
 
     private var buildTargetDensity: String? = null
-
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NONE)
-    lateinit var androidJar: Provider<File>
-        private set
 
     @get:OutputFile
     abstract val bundledResFile: RegularFileProperty
@@ -101,19 +96,8 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Optional
     abstract val resOffset: Property<Int>
 
-    @get:Input
-    @get:Optional
-    abstract val versionName: Property<String?>
-
-    @get:Input
-    abstract val versionCode: Property<Int?>
-
     @get:OutputDirectory
     lateinit var incrementalFolder: File
-        private set
-
-    @get:Nested
-    lateinit var mainSplit: ApkData
         private set
 
     @get:Input
@@ -129,41 +113,38 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Internal
     abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
 
+    @get:Nested
+    abstract val androidJarInput: AndroidJarInput
+
     private var compiledDependenciesResources: ArtifactCollection? = null
 
     override fun doTaskAction() {
 
-        val manifestFile =
-            ExistingBuildElements.from(InternalArtifactType.BUNDLE_MANIFEST, manifestFiles)
-                .element(mainSplit)
-                ?.outputFile
-                ?: throw RuntimeException("Cannot find merged manifest file")
+        val manifestFile = manifestFile.get().asFile
 
         val outputFile = bundledResFile.get().asFile
         FileUtils.mkdirs(outputFile.parentFile)
 
         val featurePackagesBuilder = ImmutableList.builder<File>()
         for (featurePackage in featureResourcePackages) {
-            val buildElements =
-                ExistingBuildElements.from(InternalArtifactType.PROCESSED_RES, featurePackage)
-            if (buildElements.size() != 1) {
+            val buildElements = BuiltArtifactsLoaderImpl.loadFromDirectory(featurePackage)
+            if (buildElements?.elements?.size != 1) {
                 throw IOException("Found more than one PROCESSED_RES output at $featurePackage")
             }
 
-            featurePackagesBuilder.add(buildElements.iterator().next().outputFile)
+            featurePackagesBuilder.add(File(buildElements.elements.first().outputFile))
         }
 
         val compiledDependenciesResourcesDirs =
             getCompiledDependenciesResources()?.reversed()?.toImmutableList() ?: emptyList<File>()
 
         val config = AaptPackageConfig(
-            androidJarPath = androidJar.get().absolutePath,
+            androidJarPath = androidJarInput.getAndroidJar().get().absolutePath,
             generateProtos = true,
             manifestFile = manifestFile,
-            options = aaptOptions,
+            options = AaptOptions(noCompress.get(), aaptAdditionalParameters.get()),
             resourceOutputApk = outputFile,
             variantType = VariantTypeImpl.BASE_APK,
-            debuggable = debuggable.get(),
             packageId = resOffset.orNull,
             allowReservedPackageId = minSdkVersion < AndroidVersion.VersionCodes.O,
             dependentFeatures = featurePackagesBuilder.build(),
@@ -191,16 +172,16 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
                     aapt2ServiceKey,
                     config,
                     errorFormatMode,
-                    mergeBlameLogFolder,
+                    mergeBlameLogFolder.get().asFile,
                     manifestMergeBlameFile.orNull?.asFile
                 )
             )
         }
     }
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val manifestFiles: DirectoryProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val manifestFile: RegularFileProperty
 
     @InputFiles
     @Optional
@@ -210,10 +191,11 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Input
     lateinit var resConfig: Collection<String> private set
 
-    @Nested
-    fun getAaptOptionsInput(): LinkingTaskInputAaptOptions {
-        return LinkingTaskInputAaptOptions(aaptOptions)
-    }
+    @get:Input
+    abstract val noCompress: ListProperty<String>
+
+    @get:Input
+    abstract val aaptAdditionalParameters: ListProperty<String>
 
     /**
      * Returns a file collection of the directories containing the compiled remote libraries
@@ -230,60 +212,59 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     var minSdkVersion: Int = 1
         private set
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<LinkAndroidResForBundleTask>(variantScope) {
+    class CreationAction(apkCreationConfig: ApkCreationConfig) :
+        VariantTaskCreationAction<LinkAndroidResForBundleTask, ApkCreationConfig>(
+            apkCreationConfig
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("bundle", "Resources")
+            get() = computeTaskName("bundle", "Resources")
         override val type: Class<LinkAndroidResForBundleTask>
             get() = LinkAndroidResForBundleTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out LinkAndroidResForBundleTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<LinkAndroidResForBundleTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.LINKED_RES_FOR_BUNDLE,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                LinkAndroidResForBundleTask::bundledResFile,
-                "bundled-res.ap_"
-            )
-
+                LinkAndroidResForBundleTask::bundledResFile
+            ).withName("bundled-res.ap_").on(InternalArtifactType.LINKED_RES_FOR_BUNDLE)
         }
 
-        override fun configure(task: LinkAndroidResForBundleTask) {
+        override fun configure(
+            task: LinkAndroidResForBundleTask
+        ) {
             super.configure(task)
 
-            val variantScope = variantScope
-            val variantData = variantScope.variantData
-            val projectOptions = variantScope.globalScope.projectOptions
-            val variantDslInfo = variantData.variantDslInfo
+            val variantScope = creationConfig.variantScope
+            val projectOptions = creationConfig.services.projectOptions
 
-            task.incrementalFolder = variantScope.getIncrementalDir(name)
+            task.incrementalFolder = creationConfig.paths.getIncrementalDir(name)
 
-            val mainSplit = variantData.publicVariantPropertiesApi.outputs.getMainSplit()
-            task.versionCode.setDisallowChanges(mainSplit.versionCode)
-            task.versionName.setDisallowChanges(mainSplit.versionName)
-
-            task.mainSplit = mainSplit.apkData
-
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.BUNDLE_MANIFEST,
-                task.manifestFiles)
+                task.manifestFile)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_RES,
                 task.getInputResourcesDir()
             )
 
-            task.featureResourcePackages = variantScope.getArtifactFileCollection(
+            task.featureResourcePackages = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH, PROJECT, FEATURE_RESOURCE_PKG)
 
-            if (variantScope.type.isDynamicFeature) {
-                task.resOffset.set(variantScope.resOffset)
+            if (creationConfig.variantType.isDynamicFeature && creationConfig is DynamicFeatureCreationConfig) {
+                task.resOffset.set(creationConfig.resOffset)
                 task.resOffset.disallowChanges()
             }
 
-            task.debuggable.setDisallowChanges(variantData.variantDslInfo.isDebuggable)
-            task.aaptOptions = variantScope.globalScope.extension.aaptOptions.convert()
+            task.debuggable.setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
+
+            task.noCompress.setDisallowChanges(creationConfig.globalScope.extension.aaptOptions.noCompress)
+            task.aaptAdditionalParameters.setDisallowChanges(
+                creationConfig.aaptOptions.additionalParameters
+            )
 
             task.excludeResSourcesForReleaseBundles
                 .setDisallowChanges(
@@ -293,32 +274,37 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             task.buildTargetDensity =
                     projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
 
-            task.mergeBlameLogFolder = variantScope.resourceBlameLogDir
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
+            task.mergeBlameLogFolder.setDisallowChanges(creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_BLAME_FOLDER))
+
+            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
             task.aapt2Version = aapt2Version
-            task.minSdkVersion = variantScope.minSdkVersion.apiLevel
+            task.minSdkVersion = creationConfig.minSdkVersion.apiLevel
 
-            task.resConfig = variantScope.variantDslInfo.resourceConfigurations
+            task.resConfig = creationConfig.variantDslInfo.resourceConfigurations
 
-            task.androidJar = variantScope.globalScope.sdkComponents.androidJarProvider
 
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
-                variantScope.globalScope.projectOptions
+                creationConfig.services.projectOptions
             )
 
-            task.manifestMergeBlameFile = variantScope.artifacts.getFinalProduct(
+            task.manifestMergeBlameFile.setDisallowChanges(creationConfig.artifacts.get(
                 InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
-            )
+            ))
 
             if (variantScope.isPrecompileDependenciesResourcesEnabled) {
-                task.compiledDependenciesResources = variantScope.getArtifactCollection(
+                task.compiledDependenciesResources = creationConfig.variantDependencies.getArtifactCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
                     AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
                 )
             }
-            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
+            task.aapt2DaemonBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
+            task.androidJarInput.sdkBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
         }
     }
 }

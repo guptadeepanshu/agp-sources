@@ -42,39 +42,39 @@ import org.gradle.api.Incubating
  * [Add C and C++ Code to Your Project](https://developer.android.com/studio/projects/add-native-code.html)
  */
 @Incubating
-interface ExternalNativeBuild<CMakeOptionsT : CmakeOptions, NdkBuildOptionsT : NdkBuildOptions> {
+interface ExternalNativeBuild {
 
     /**
      * Encapsulates per-variant configurations for your external ndk-build project, such as the path
      * to your `Android.mk` build script and build output directory.
      *
      * For more information about the properties you can configure in this block, see
-     * [NdkBuildOptions]
+     * [NdkBuild]
      */
-    val ndkBuild: NdkBuildOptionsT
+    val ndkBuild: NdkBuild
 
     /**
      * Encapsulates per-variant configurations for your external ndk-build project, such as the path
      * to your `Android.mk` build script and build output directory.
      *
-     * For more information about the properties you can configure in this block, see [NdkBuildOptions]
+     * For more information about the properties you can configure in this block, see [NdkBuild]
      */
-    fun ndkBuild(action: NdkBuildOptionsT.() -> Unit)
+    fun ndkBuild(action: NdkBuild.() -> Unit)
 
     /**
      * Encapsulates per-variant configurations for your external ndk-build project, such as the path
      * to your `CMakeLists.txt` build script and build output directory.
      *
-     * For more information about the properties you can configure in this block, see [CmakeOptions]
+     * For more information about the properties you can configure in this block, see [Cmake]
      */
-    val cmake: CMakeOptionsT
+    val cmake: Cmake
 
     /**
      * Encapsulates per-variant configurations for your external ndk-build project, such as the path
      * to your `CMakeLists.txt` build script and build output directory.
      *
-     * For more information about the properties you can configure in this block, see [CmakeOptions]
+     * For more information about the properties you can configure in this block, see [Cmake]
      */
-    fun cmake(action: CMakeOptionsT.() -> Unit)
+    fun cmake(action: Cmake.() -> Unit)
 
 }

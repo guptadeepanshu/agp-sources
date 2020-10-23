@@ -117,4 +117,16 @@ public interface Variant {
      * @since 3.3
      */
     boolean isInstantAppCompatible();
+
+    /**
+     * Returns all desugared methods including backported methods handled by D8 and methods provided
+     * by core library desugaring. Only D8 backported methods are returned if coreLibraryDesugaring
+     * is disabled or we are not able to find expected lint files from the dependency of
+     * coreLibraryDesugaring configuration.
+     *
+     * @return all desugared methods
+     * @since 4.1
+     */
+    @NonNull
+    List<String> getDesugaredMethods();
 }

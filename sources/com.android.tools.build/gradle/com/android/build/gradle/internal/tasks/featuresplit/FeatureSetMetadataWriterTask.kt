@@ -18,9 +18,9 @@
 
 package com.android.build.gradle.internal.tasks.featuresplit
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.IntegerOption
@@ -106,35 +106,39 @@ abstract class FeatureSetMetadataWriterTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<FeatureSetMetadataWriterTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<FeatureSetMetadataWriterTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("generate", "FeatureMetadata")
+            get() = computeTaskName("generate", "FeatureMetadata")
         override val type: Class<FeatureSetMetadataWriterTask>
             get() = FeatureSetMetadataWriterTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out FeatureSetMetadataWriterTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<FeatureSetMetadataWriterTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.FEATURE_SET_METADATA,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                FeatureSetMetadataWriterTask::outputFile,
-                FeatureSetMetadata.OUTPUT_FILE_NAME
-            )
+                FeatureSetMetadataWriterTask::outputFile
+            ).withName(FeatureSetMetadata.OUTPUT_FILE_NAME).on(InternalArtifactType.FEATURE_SET_METADATA)
         }
 
-        override fun configure(task: FeatureSetMetadataWriterTask) {
+        override fun configure(
+            task: FeatureSetMetadataWriterTask
+        ) {
             super.configure(task)
 
-            task.minSdkVersion = variantScope.minSdkVersion.apiLevel
+            task.minSdkVersion = creationConfig.minSdkVersion.apiLevel
 
-            task.inputFiles = variantScope.getArtifactFileCollection(
+            task.inputFiles = creationConfig.variantDependencies.getArtifactFileCollection(
                 AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                 AndroidArtifacts.ArtifactScope.PROJECT,
                 AndroidArtifacts.ArtifactType.REVERSE_METADATA_FEATURE_DECLARATION
             )
-            val maxNumberOfFeaturesBeforeOreo = variantScope.globalScope.projectOptions
+            val maxNumberOfFeaturesBeforeOreo = creationConfig.services.projectOptions
                 .get(IntegerOption.PRE_O_MAX_NUMBER_OF_FEATURES)
             if (maxNumberOfFeaturesBeforeOreo != null) {
                 task.maxNumberOfFeaturesBeforeOreo =

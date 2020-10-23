@@ -16,13 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.MANIFEST
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.NON_NAMESPACED_MANIFEST
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
-import com.android.build.gradle.internal.scope.VariantScope
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
@@ -39,9 +38,7 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
 
     // list of Android only compile and runtime classpath.
     private lateinit var compileManifests: ArtifactCollection
-    private lateinit var compileNonNamespacedManifests: ArtifactCollection
     private lateinit var runtimeManifests: ArtifactCollection
-    private lateinit var runtimeNonNamespacedManifests: ArtifactCollection
 
     @get:OutputDirectory
     lateinit var fakeOutputDirectory: File
@@ -49,12 +46,12 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
 
     @get:Input
     val compileDependencies: Set<String> by lazy {
-        getAndroidDependencies(compileManifests, compileNonNamespacedManifests)
+        getAndroidDependencies(compileManifests)
     }
 
     @get:Input
     val runtimeDependencies: Set<String> by lazy {
-        getAndroidDependencies(runtimeManifests, runtimeNonNamespacedManifests)
+        getAndroidDependencies(runtimeManifests)
     }
 
     override fun doTaskAction() {
@@ -74,36 +71,32 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
         }
     }
 
-    private class EmptyCreationAction(variantScope: VariantScope) :
-        TaskManager.AbstractPreBuildCreationAction<AndroidVariantTask>(variantScope) {
+    private class EmptyCreationAction(componentProperties: ComponentPropertiesImpl) :
+        TaskManager.AbstractPreBuildCreationAction<AndroidVariantTask>(componentProperties) {
 
         override val type: Class<AndroidVariantTask>
             get() = AndroidVariantTask::class.java
     }
 
-    private class CheckCreationAction(variantScope: VariantScope) :
-        TaskManager.AbstractPreBuildCreationAction<AppPreBuildTask>(variantScope) {
+    private class CheckCreationAction(componentProperties: ComponentPropertiesImpl) :
+        TaskManager.AbstractPreBuildCreationAction<AppPreBuildTask>(componentProperties) {
 
         override val type: Class<AppPreBuildTask>
             get() = AppPreBuildTask::class.java
 
-        override fun configure(task: AppPreBuildTask) {
+        override fun configure(
+            task: AppPreBuildTask
+        ) {
             super.configure(task)
 
             task.compileManifests =
-                variantScope.getArtifactCollection(COMPILE_CLASSPATH, ALL, MANIFEST)
-            task.compileNonNamespacedManifests = variantScope.getArtifactCollection(
-                COMPILE_CLASSPATH, ALL, NON_NAMESPACED_MANIFEST
-            )
+                creationConfig.variantDependencies.getArtifactCollection(COMPILE_CLASSPATH, ALL, MANIFEST)
             task.runtimeManifests =
-                variantScope.getArtifactCollection(RUNTIME_CLASSPATH, ALL, MANIFEST)
-            task.runtimeNonNamespacedManifests = variantScope.getArtifactCollection(
-                RUNTIME_CLASSPATH, ALL, NON_NAMESPACED_MANIFEST
-            )
+                creationConfig.variantDependencies.getArtifactCollection(RUNTIME_CLASSPATH, ALL, MANIFEST)
 
             task.fakeOutputDirectory = File(
-                variantScope.globalScope.intermediatesDir,
-                "prebuild/${variantScope.variantDslInfo.dirName}"
+                creationConfig.globalScope.intermediatesDir,
+                "prebuild/${creationConfig.dirName}"
             )
         }
     }
@@ -111,25 +104,18 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
     companion object {
         @JvmStatic
         fun getCreationAction(
-            variantScope: VariantScope
+            componentProperties: ComponentPropertiesImpl
         ): TaskManager.AbstractPreBuildCreationAction<*> {
-            return if (variantScope.type.isBaseModule && variantScope.globalScope.hasDynamicFeatures()) {
-                CheckCreationAction(variantScope)
-            } else EmptyCreationAction(variantScope)
+            return if (componentProperties.variantType.isBaseModule && componentProperties.globalScope.hasDynamicFeatures()) {
+                CheckCreationAction(componentProperties)
+            } else EmptyCreationAction(componentProperties)
 
         }
     }
 }
 
-private fun getAndroidDependencies(
-    artifactView1: ArtifactCollection,
-    artifactView2: ArtifactCollection
-): Set<String> {
-    val set = mutableSetOf<String>()
-    set.addAll(artifactView1.artifacts.mapNotNull { it.toIdString() })
-    set.addAll(artifactView2.artifacts.mapNotNull { it.toIdString() })
-
-    return set.toSortedSet()
+private fun getAndroidDependencies(artifactView: ArtifactCollection): Set<String> {
+    return artifactView.artifacts.asSequence().mapNotNull { it.toIdString() }.toSortedSet()
 }
 
 private fun ResolvedArtifactResult.toIdString(): String? {

@@ -16,17 +16,66 @@
 
 package com.android.build.gradle.internal.core
 
+import com.android.build.api.component.ComponentProperties
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.api.BaseVariantImpl
+import com.android.build.gradle.internal.errors.DeprecationReporter
+import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.AbstractProductFlavor
+import com.android.builder.core.DefaultVectorDrawablesOptions
 import com.android.builder.errors.IssueReporter
+import com.android.builder.model.BaseConfig
 import com.android.builder.model.ProductFlavor
 import com.google.common.collect.Lists
-
+import org.gradle.api.provider.Property
 
 /**
  * The merger of the default config and all of a variant's flavors (if any)
  */
-public class MergedFlavor(
-        name: String, val issueReporter: IssueReporter) : AbstractProductFlavor(name) {
+class MergedFlavor(
+    name: String,
+    private val _applicationId: Property<String>,
+    private val dslServices: DslServices
+) : AbstractProductFlavor(name), InternalBaseVariant.MergedFlavor {
+
+    // in the merged flavor scenario which is still accessible from the old variant API, we need
+    // to reset the value in the VariantProperties which we can do through the DslInfo reference.
+    override var applicationId: String?
+        get() {
+            // consider throwing an exception instead, as this is not reliable.
+            dslServices.deprecationReporter
+                .reportDeprecatedApi(
+                    "VariantProperties.getApplicationId()",
+                    "MergedFlavor.getApplicationId()",
+                    BaseVariantImpl.USE_PROPERTIES_DEPRECATION_URL,
+                    DeprecationReporter.DeprecationTarget.USE_PROPERTIES
+                )
+
+            if (!dslServices.projectOptions.get(BooleanOption.ENABLE_LEGACY_API)) {
+                dslServices.issueReporter
+                    .reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException(
+                            """
+                                Access to deprecated legacy com.android.builder.model.ProductFlavor.getApplicationId() requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionCode
+                                $ComponentPropertiesImpl.ENABLE_LEGACY_API
+                                """.trimIndent()
+                        )
+                    )
+                // return default value
+                return null
+            }
+            return _applicationId.get()
+        }
+        set(value) {
+            setApplicationId(value)
+        }
+
+    override fun setApplicationId(applicationId: String?): ProductFlavor {
+        _applicationId.set(applicationId)
+        return this
+    }
 
     companion object {
 
@@ -37,8 +86,8 @@ public class MergedFlavor(
          * @return a new MergedFlavor instance that is a clone of the flavor.
          */
         @JvmStatic
-        fun clone(productFlavor: ProductFlavor, issueReporter: IssueReporter): MergedFlavor {
-            val mergedFlavor = MergedFlavor(productFlavor.name, issueReporter)
+        fun clone(productFlavor: ProductFlavor, applicationId: Property<String>, dslServices: DslServices): MergedFlavor {
+            val mergedFlavor = MergedFlavor(productFlavor.name, applicationId, dslServices)
             mergedFlavor._initWith(productFlavor)
             return mergedFlavor
         }
@@ -58,10 +107,12 @@ public class MergedFlavor(
          */
         @JvmStatic
         fun mergeFlavors(
-                lowestPriority: ProductFlavor,
-                flavors: List<ProductFlavor>,
-                issueReporter: IssueReporter): MergedFlavor {
-            val mergedFlavor = clone(lowestPriority, issueReporter)
+            lowestPriority: ProductFlavor,
+            flavors: List<ProductFlavor>,
+            applicationId: Property<String>,
+            dslServices: DslServices
+        ): MergedFlavor {
+            val mergedFlavor = clone(lowestPriority, applicationId, dslServices)
             for (flavor in Lists.reverse(flavors)) {
                 mergedFlavor.mergeWithHigherPriorityFlavor(flavor)
             }
@@ -79,7 +130,8 @@ public class MergedFlavor(
                 applicationIdSuffix = mergeApplicationIdSuffix(
                         mFlavor.applicationIdSuffix, applicationIdSuffix)
                 versionNameSuffix = mergeVersionNameSuffix(
-                        mFlavor.versionNameSuffix, versionNameSuffix)
+                    mFlavor.versionNameSuffix, versionNameSuffix
+                )
             }
             mergedFlavor.applicationIdSuffix = applicationIdSuffix
             mergedFlavor.versionNameSuffix = versionNameSuffix
@@ -88,22 +140,39 @@ public class MergedFlavor(
         }
     }
 
-    override fun setVersionCode(versionCode: Int?): ProductFlavor {
-        // calling setVersionCode results in a sync Error because the manifest merger doesn't pick
-        // up the change.
-        reportErrorWithWorkaround("versionCode", "versionCodeOverride", versionCode)
-        return this
+    private var _vectorDrawables: DefaultVectorDrawablesOptions = DefaultVectorDrawablesOptions()
+
+    override val vectorDrawables: DefaultVectorDrawablesOptions
+        get() = _vectorDrawables
+
+    override fun _initWith(that: BaseConfig) {
+        super._initWith(that)
+        if (that is ProductFlavor) {
+            _vectorDrawables = DefaultVectorDrawablesOptions.copyOf(that.vectorDrawables)
+        }
     }
 
-    override fun setVersionName(versionName: String?): ProductFlavor {
-        // calling setVersionName results in a sync Error because the manifest merger doesn't pick
-        // up the change.
-        reportErrorWithWorkaround("versionName", "versionNameOverride", versionName)
-        return this
-    }
+    override var versionCode: Int?
+        get() = super.versionCode
+        set(value) {
+            // calling setVersionCode results in a sync Error because the manifest merger doesn't pick
+            // up the change.
+            reportErrorWithWorkaround("versionCode", "versionCodeOverride", value)
+        }
+
+    override var versionName: String?
+        get() = super.versionName
+        set(value) {
+            // calling setVersionName results in a sync Error because the manifest merger doesn't pick
+            // up the change.
+            reportErrorWithWorkaround("versionName", "versionNameOverride", value)
+        }
 
     private fun reportErrorWithWorkaround(
-            fieldName: String, outputFieldName: String, fieldValue: Any?) {
+        fieldName: String,
+        outputFieldName: String,
+        fieldValue: Any?
+    ) {
         val formattedFieldValue = if (fieldValue is String) {
             "\"" + fieldValue + "\""
         } else {
@@ -120,6 +189,6 @@ public class MergedFlavor(
                 |    }
                 |}""".trimMargin()
 
-        issueReporter.reportError(IssueReporter.Type.GENERIC, message)
+        dslServices.issueReporter.reportError(IssueReporter.Type.GENERIC, message)
     }
 }

@@ -325,9 +325,7 @@ class GradleModelConverter(
                     manifestValues = mergedConfig.manifestValues.copy(
                         applicationId = applicationId
                     ),
-                    resValues = mergedConfig.resValues + classFieldsToDynamicResourceValues(
-                        resValues
-                    )
+                    resValues = mergedConfig.resValues
                 )
             }
 
@@ -547,7 +545,8 @@ fun SourceProvider.toSourceSet() = SourceSet(
         AndroidPathType.RES to resDirectories.toPathStrings(),
         AndroidPathType.ASSETS to assetsDirectories.toPathStrings(),
         AndroidPathType.JNI_LIBS to jniLibsDirectories.toPathStrings(),
-        AndroidPathType.SHADERS to shadersDirectories.toPathStrings()
+        AndroidPathType.SHADERS to shadersDirectories.toPathStrings(),
+        AndroidPathType.ML_MODELS to mlModelsDirectories.toPathStrings()
     )
 )
 

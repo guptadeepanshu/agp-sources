@@ -24,7 +24,6 @@ import com.android.ide.common.symbols.Symbol
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
 import com.android.ide.common.symbols.getPackageNameFromManifest
-import com.android.ide.common.symbols.loadDependenciesSymbolTables
 import com.android.ide.common.symbols.mergeAndRenumberSymbols
 import com.android.ide.common.symbols.parseManifest
 import com.android.resources.ResourceType
@@ -47,7 +46,7 @@ import java.nio.file.Path
  * @param sourceOut directory to contain R.java
  * @param rClassOutputJar file to output R.jar.
  * @param symbolFileOut R.txt file location
- * @param namespacedRClass if true, the generated R class for this library and the  R.txt will
+ * @param nonTransitiveRClass if true, the generated R class for this library and the  R.txt will
  *                         contain only the resources defined in this library, otherwise they will
  *                         contain all the resources merged from the transitive dependencies.
  */
@@ -57,11 +56,10 @@ fun processLibraryMainSymbolTable(
         libraries: Set<File>,
         mainPackageName: String?,
         manifestFile: File,
-        sourceOut: File?,
         rClassOutputJar: File?,
         symbolFileOut: File?,
         platformSymbols: SymbolTable,
-        namespacedRClass: Boolean,
+        nonTransitiveRClass: Boolean,
         generateDependencyRClasses: Boolean,
         idProvider: IdProvider
 ) {
@@ -70,24 +68,18 @@ fun processLibraryMainSymbolTable(
     val finalPackageName = mainPackageName ?: getPackageNameFromManifest(parseManifest(manifestFile))
 
     // Get symbol tables of the libraries we depend on.
-    val depSymbolTables = loadDependenciesSymbolTables(libraries)
+    val depSymbolTables = SymbolIo().loadDependenciesSymbolTables(libraries)
     val tablesToWrite =
         processLibraryMainSymbolTable(
             finalPackageName,
             librarySymbols,
             depSymbolTables,
             platformSymbols,
-            namespacedRClass,
+            nonTransitiveRClass,
             symbolFileOut?.toPath(),
             generateDependencyRClasses,
             idProvider
         )
-
-    if (sourceOut != null) {
-        FileUtils.cleanOutputDir(sourceOut)
-        // Generate R.java files for main and dependencies
-        tablesToWrite.forEach { SymbolIo.exportToJava(it, sourceOut, false) }
-    }
 
     if (rClassOutputJar != null) {
         FileUtils.deleteIfExists(rClassOutputJar)
@@ -99,9 +91,9 @@ fun processLibraryMainSymbolTable(
 internal fun processLibraryMainSymbolTable(
     finalPackageName: String,
     librarySymbols: SymbolTable,
-    depSymbolTables: Set<SymbolTable>,
+    depSymbolTables: List<SymbolTable>,
     platformSymbols: SymbolTable,
-    namespacedRClass: Boolean,
+    nonTransitiveRClass: Boolean,
     symbolFileOut: Path?,
     generateDependencyRClasses: Boolean = true,
     idProvider: IdProvider = IdProvider.sequential()
@@ -114,7 +106,7 @@ internal fun processLibraryMainSymbolTable(
         finalPackageName, librarySymbols, depSymbolTables, platformSymbols, idProvider
     )
 
-    val mainSymbolTable = if (namespacedRClass) allSymbols.filter(librarySymbols) else allSymbols
+    val mainSymbolTable = if (nonTransitiveRClass) allSymbols.filter(librarySymbols) else allSymbols
 
     // Generate R.txt file.
     symbolFileOut?.let {

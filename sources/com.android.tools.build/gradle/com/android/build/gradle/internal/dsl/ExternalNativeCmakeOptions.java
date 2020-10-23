@@ -24,15 +24,9 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 
-/**
- * DSL object for per-variant CMake options, such as CMake arguments and compiler flags.
- *
- * <p>To learn more about including CMake builds to your Android Studio projects, read <a
- * href="https://developer.android.com/studio/projects/add-native-code.html">Add C and C++ Code to
- * Your Project</a>. You can also read more documentation about <a
- * href="https://developer.android.com/ndk/guides/cmake.html">the Android CMake toolchain</a>.
- */
-public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOptions {
+public class ExternalNativeCmakeOptions
+        implements CoreExternalNativeCmakeOptions,
+                com.android.build.api.dsl.ExternalNativeCmakeOptions {
 
     @NonNull
     private final List<String> arguments = Lists.newArrayList();
@@ -48,7 +42,6 @@ public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOption
     @Inject
     public ExternalNativeCmakeOptions() {}
 
-    /** {@inheritDoc} */
     @NonNull
     @Override
     public List<String> getArguments() {
@@ -59,26 +52,32 @@ public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOption
         this.arguments.addAll(arguments);
     }
 
-    public void arguments(@NonNull String ...arguments) {
+    @Override
+    public void arguments(@NonNull String... arguments) {
         Collections.addAll(this.arguments, arguments);
     }
 
-    /** {@inheritDoc} */
+    @NonNull
+    @Override
+    public List<String> getCFlags() {
+        return cFlags;
+    }
+
     @NonNull
     @Override
     public List<String> getcFlags() {
-        return cFlags;
+        return getCFlags();
     }
 
     public void setcFlags(@NonNull List<String> flags) {
         this.cFlags.addAll(flags);
     }
 
-    public void cFlags(@NonNull String ...flags) {
+    @Override
+    public void cFlags(@NonNull String... flags) {
         Collections.addAll(this.cFlags, flags);
     }
 
-    /** {@inheritDoc} */
     @NonNull
     @Override
     public List<String> getCppFlags() {
@@ -89,11 +88,11 @@ public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOption
         this.cppFlags.addAll(flags);
     }
 
-    public void cppFlags(@NonNull String ...flags) {
+    @Override
+    public void cppFlags(@NonNull String... flags) {
         Collections.addAll(this.cppFlags, flags);
     }
 
-    /** {@inheritDoc} */
     @NonNull
     @Override
     public Set<String> getAbiFilters() {
@@ -104,11 +103,11 @@ public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOption
         this.abiFilters.addAll(abiFilters);
     }
 
-    public void abiFilters(@NonNull String ...abiFilters) {
+    @Override
+    public void abiFilters(@NonNull String... abiFilters) {
         Collections.addAll(this.abiFilters, abiFilters);
     }
 
-    /** {@inheritDoc} */
     @NonNull
     @Override
     public Set<String> getTargets() {
@@ -119,7 +118,8 @@ public class ExternalNativeCmakeOptions implements CoreExternalNativeCmakeOption
         this.targets.addAll(targets);
     }
 
-    public void targets(@NonNull String ...targets) {
+    @Override
+    public void targets(@NonNull String... targets) {
         Collections.addAll(this.targets, targets);
     }
 

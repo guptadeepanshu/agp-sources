@@ -25,8 +25,10 @@ import com.android.tools.build.apkzlib.utils.IOExceptionRunnable;
 import com.android.tools.build.apkzlib.zip.compress.Zip64NotSupportedException;
 import com.android.tools.build.apkzlib.zip.utils.ByteTracker;
 import com.android.tools.build.apkzlib.zip.utils.CloseableByteSource;
+import com.android.tools.build.apkzlib.zip.utils.CloseableDelegateByteSource;
 import com.android.tools.build.apkzlib.zip.utils.LittleEndianUtils;
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Supplier;
@@ -37,6 +39,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.hash.Hashing;
+import com.google.common.io.ByteSource;
 import com.google.common.io.Closer;
 import com.google.common.primitives.Ints;
 import com.google.common.util.concurrent.FutureCallback;
@@ -1705,6 +1708,35 @@ public class ZFile implements Closeable {
    * @throws IllegalStateException if the file is in read-only mode
    */
   public void add(String name, InputStream stream, boolean mayCompress) throws IOException {
+    add(name, storage.fromStream(stream), mayCompress);
+  }
+
+  /**
+   * Adds a file to the archive.
+   *
+   * <p>Adding the file will not update the archive immediately. Updating will only happen when the
+   * {@link #update()} method is invoked.
+   *
+   * <p>Adding a file with the same name as an existing file will replace that file in the archive.
+   *
+   * @param name the file name (<em>i.e.</em>, path); paths should be defined using slashes and the
+   *     name should not end in slash
+   * @param source the source for the file's data
+   * @param mayCompress can the file be compressed? This flag will be ignored if the alignment rules
+   *     force the file to be aligned, in which case the file will not be compressed.
+   * @throws IOException failed to read the source data
+   * @throws IllegalStateException if the file is in read-only mode
+   */
+  public void add(String name, ByteSource source, boolean mayCompress) throws IOException {
+    Optional<Long> sizeBytes = source.sizeIfKnown();
+    if (!sizeBytes.isPresent()) {
+      throw new IllegalArgumentException("Can only add ByteSources with known size");
+    }
+    add(name, new CloseableDelegateByteSource(source, sizeBytes.get()), mayCompress);
+  }
+
+  private void add(String name, CloseableByteSource source, boolean mayCompress)
+      throws IOException {
     checkNotInReadOnlyMode();
 
     /*
@@ -1712,7 +1744,7 @@ public class ZFile implements Closeable {
      */
     processAllReadyEntries();
 
-    add(makeStoredEntry(name, stream, mayCompress));
+    add(makeStoredEntry(name, source, mayCompress));
   }
 
   /**
@@ -1738,14 +1770,13 @@ public class ZFile implements Closeable {
    * StoredEntry} object.
    *
    * @param name the name of the entry
-   * @param stream the input stream with the entry's data
+   * @param source the source with the entry's data
    * @param mayCompress can the entry be compressed?
    * @return the created entry
    * @throws IOException failed to create the entry
    */
-  private StoredEntry makeStoredEntry(String name, InputStream stream, boolean mayCompress)
+  private StoredEntry makeStoredEntry(String name, CloseableByteSource source, boolean mayCompress)
       throws IOException {
-    CloseableByteSource source = storage.fromStream(stream);
     long crc32 = source.hash(Hashing.crc32()).padToLong();
 
     boolean encodeWithUtf8 = !EncodeUtils.canAsciiEncode(name);

@@ -17,9 +17,9 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.signing.SigningConfigProvider
 import com.android.tools.build.bundletool.commands.BuildApksCommand
@@ -112,33 +112,37 @@ abstract class BundleToApkTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<BundleToApkTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<BundleToApkTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("makeApkFromBundleFor")
+            get() = computeTaskName("makeApkFromBundleFor")
         override val type: Class<BundleToApkTask>
             get() = BundleToApkTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out BundleToApkTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<BundleToApkTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.APKS_FROM_BUNDLE,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                BundleToApkTask::outputFile,
-                "bundle.apks"
-            )
+                BundleToApkTask::outputFile
+            ).withName("bundle.apks").on(InternalArtifactType.APKS_FROM_BUNDLE)
         }
 
-        override fun configure(task: BundleToApkTask) {
+        override fun configure(
+            task: BundleToApkTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE, task.bundle)
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
+            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
             task.aapt2Version = aapt2Version
-            task.signingConfig = SigningConfigProvider.create(variantScope)
+            task.signingConfig = SigningConfigProvider.create(creationConfig)
         }
     }
 }

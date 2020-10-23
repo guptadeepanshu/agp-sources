@@ -28,32 +28,23 @@ import org.gradle.api.Incubating
  */
 @Incubating
 interface TestExtension<
-        BuildTypeT : BuildType,
-        CMakeOptionsT : CmakeOptions,
-        CompileOptionsT : CompileOptions,
-        DefaultConfigT : DefaultConfig,
-        ExternalNativeBuildT : ExternalNativeBuild<CMakeOptionsT, NdkBuildOptionsT>,
-        JacocoOptionsT : JacocoOptions,
-        NdkBuildOptionsT : NdkBuildOptions,
-        ProductFlavorT : ProductFlavor,
-        SigningConfigT : SigningConfig,
-        TestOptionsT : TestOptions<UnitTestOptionsT>,
-        UnitTestOptionsT : UnitTestOptions> :
+        AndroidSourceSetT : AndroidSourceSet,
+        BuildTypeT : TestBuildType<SigningConfigT>,
+        DefaultConfigT : TestDefaultConfig<SigningConfigT>,
+        ProductFlavorT : TestProductFlavor<SigningConfigT>,
+        SigningConfigT : SigningConfig> :
     CommonExtension<
+            AndroidSourceSetT,
             TestBuildFeatures,
             BuildTypeT,
-            CMakeOptionsT,
-            CompileOptionsT,
             DefaultConfigT,
-            ExternalNativeBuildT,
-            JacocoOptionsT,
-            NdkBuildOptionsT,
             ProductFlavorT,
             SigningConfigT,
-            TestOptionsT,
-            UnitTestOptionsT,
-            TestVariant,
+            TestVariant<TestVariantProperties>,
             TestVariantProperties> {
     // TODO(b/140406102)
-
+    /**
+     * The Gradle path of the project that this test project tests.
+     */
+    var targetProjectPath: String?
 }

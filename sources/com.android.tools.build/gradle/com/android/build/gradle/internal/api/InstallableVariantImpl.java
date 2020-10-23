@@ -18,21 +18,20 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.artifact.ArtifactType;
+import com.android.build.api.artifact.Artifact;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.InstallableVariant;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.scope.BuildArtifactsHolder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.variant.BaseVariantData;
-import com.android.build.gradle.internal.variant.InstallableVariantData;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.build.gradle.internal.variant.ApkVariantData;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Incubating;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Task;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemLocation;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
 
@@ -42,32 +41,28 @@ import org.gradle.api.tasks.TaskProvider;
 public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl implements InstallableVariant {
 
     protected InstallableVariantImpl(
-            @NonNull ObjectFactory objectFactory,
+            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider immutableObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(objectFactory, immutableObjectProvider, outputs);
+        super(componentProperties, services, immutableObjectProvider, outputs);
     }
 
     @NonNull
     @Override
-    public abstract InstallableVariantData getVariantData();
+    public abstract ApkVariantData getVariantData();
 
     @Override
     public DefaultTask getInstall() {
-        BaseVariantData variantData = getVariantData();
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variantOutput.getInstallProvider()",
                         "variantOutput.getInstall()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
 
-        if (variantData.getTaskContainer().getInstallTask() != null) {
-            return variantData.getTaskContainer().getInstallTask().getOrNull();
+        if (componentProperties.getTaskContainer().getInstallTask() != null) {
+            return componentProperties.getTaskContainer().getInstallTask().getOrNull();
         }
 
         return null;
@@ -79,25 +74,20 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
         // Double cast needed to satisfy the compiler
         //noinspection unchecked
         return (TaskProvider<Task>)
-                (TaskProvider<?>) getVariantData().getTaskContainer().getInstallTask();
+                (TaskProvider<?>) componentProperties.getTaskContainer().getInstallTask();
     }
 
     @Override
     public DefaultTask getUninstall() {
-        BaseVariantData variantData = getVariantData();
-        variantData
-                .getScope()
-                .getGlobalScope()
-                .getDslScope()
-                .getDeprecationReporter()
+        services.getDeprecationReporter()
                 .reportDeprecatedApi(
                         "variantOutput.getUninstallProvider()",
                         "variantOutput.getUninstall()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
 
-        if (variantData.getTaskContainer().getUninstallTask() != null) {
-            return variantData.getTaskContainer().getUninstallTask().getOrNull();
+        if (componentProperties.getTaskContainer().getUninstallTask() != null) {
+            return componentProperties.getTaskContainer().getUninstallTask().getOrNull();
         }
 
         return null;
@@ -109,7 +99,7 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
         // Double cast needed to satisfy the compiler
         //noinspection unchecked
         return (TaskProvider<Task>)
-                (TaskProvider<?>) getVariantData().getTaskContainer().getUninstallTask();
+                (TaskProvider<?>) componentProperties.getTaskContainer().getUninstallTask();
     }
 
     /**
@@ -123,8 +113,18 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
     @NonNull
     @Incubating
     public Provider<FileCollection> getFinalArtifact(
-            @NonNull ArtifactType<? extends FileSystemLocation> artifactType) {
-        BuildArtifactsHolder artifacts = getVariantData().getScope().getArtifacts();
-        return artifacts.getFinalProductAsFileCollection((InternalArtifactType) artifactType);
+            @NonNull Artifact<? extends FileSystemLocation> artifactType) {
+        return componentProperties
+                .getGlobalScope()
+                .getProject()
+                .getProviders()
+                .provider(
+                        () ->
+                                componentProperties
+                                        .getServices()
+                                        .fileCollection(
+                                                componentProperties
+                                                        .getArtifacts()
+                                                        .get((InternalArtifactType) artifactType)));
     }
 }

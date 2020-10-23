@@ -15,16 +15,18 @@
  */
 package com.android.build.gradle.internal.res.namespaced
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.MultipleArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
-import com.android.build.gradle.internal.services.getAapt2DaemonBuildService
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
@@ -33,17 +35,15 @@ import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -62,11 +62,6 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) abstract val inputResourcesDirectories: ListProperty<Directory>
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) lateinit var libraryDependencies: FileCollection private set
 
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.NONE)
-    @get:Optional
-    abstract val convertedLibraryDependencies: DirectoryProperty
-
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) lateinit var sharedLibraryDependencies: FileCollection private set
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) @get:Optional abstract val tested: RegularFileProperty
 
@@ -82,10 +77,8 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:OutputDirectory lateinit var aaptIntermediateDir: File private set
     @get:OutputFile abstract val staticLibApk: RegularFileProperty
 
-    @get:InputFile
-    @get:PathSensitive(PathSensitivity.NONE)
-    lateinit var androidJar: Provider<File>
-        private set
+    @get:Nested
+    abstract val androidJarInput: AndroidJarInput
 
     @get:Internal
     abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
@@ -97,15 +90,12 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
         val imports = ImmutableList.builder<File>()
         // Link against library dependencies
         imports.addAll(libraryDependencies.files)
-        convertedLibraryDependencies.let {
-            it.get().asFile.listFiles().forEach { imports.add(it) }
-        }
         imports.addAll(sharedLibraryDependencies.files)
 
         val request = AaptPackageConfig(
-                androidJarPath = androidJar.get().absolutePath,
+                androidJarPath = androidJarInput.getAndroidJar().get().absolutePath,
                 manifestFile = manifestFile.get().asFile,
-                options = AaptOptions(null, false, null),
+                options = AaptOptions(),
                 resourceDirs = ImmutableList.copyOf(inputResourcesDirectories.get().stream()
                     .map(Directory::getAsFile).iterator()),
                 staticLibrary = true,
@@ -128,55 +118,52 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<LinkLibraryAndroidResourcesTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<LinkLibraryAndroidResourcesTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("link", "Resources")
+            get() = computeTaskName("link", "Resources")
         override val type: Class<LinkLibraryAndroidResourcesTask>
             get() = LinkLibraryAndroidResourcesTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out LinkLibraryAndroidResourcesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<LinkLibraryAndroidResourcesTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.RES_STATIC_LIBRARY,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                LinkLibraryAndroidResourcesTask::staticLibApk,
-                "res.apk"
-            )
+                LinkLibraryAndroidResourcesTask::staticLibApk
+            ).withName("res.apk").on(InternalArtifactType.RES_STATIC_LIBRARY)
         }
 
-        override fun configure(task: LinkLibraryAndroidResourcesTask) {
+        override fun configure(
+            task: LinkLibraryAndroidResourcesTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.STATIC_LIBRARY_MANIFEST,
                 task.manifestFile
             )
 
             task.inputResourcesDirectories.set(
-                variantScope.artifacts.getOperations().getAll(
-                    MultipleArtifactType.RES_COMPILED_FLAT_FILES))
+                creationConfig.artifacts.getAll(
+                    InternalMultipleArtifactType.RES_COMPILED_FLAT_FILES))
             task.libraryDependencies =
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                             AndroidArtifacts.ArtifactScope.ALL,
                             AndroidArtifacts.ArtifactType.RES_STATIC_LIBRARY)
-            if (variantScope.artifacts.hasFinalProduct(
-                    InternalArtifactType.RES_CONVERTED_NON_NAMESPACED_REMOTE_DEPENDENCIES)) {
-                variantScope.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.RES_CONVERTED_NON_NAMESPACED_REMOTE_DEPENDENCIES,
-                    task.convertedLibraryDependencies)
-            }
             task.sharedLibraryDependencies =
-                    variantScope.getArtifactFileCollection(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                             AndroidArtifacts.ArtifactScope.ALL,
                             AndroidArtifacts.ArtifactType.RES_SHARED_STATIC_LIBRARY)
 
-            val testedScope = variantScope.testedVariantData?.scope
-            if (testedScope != null) {
-                testedScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.onTestedConfig {
+                it.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.RES_STATIC_LIBRARY,
                     task.tested
                 )
@@ -184,24 +171,22 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
 
             task.aaptIntermediateDir =
                     FileUtils.join(
-                            variantScope.globalScope.intermediatesDir, "res-link-intermediate", variantScope.variantDslInfo.dirName)
+                            creationConfig.globalScope.intermediatesDir, "res-link-intermediate", creationConfig.variantDslInfo.dirName)
 
-            task.packageForR.set(variantScope.globalScope.project.provider {
-                variantScope.variantDslInfo.originalApplicationId
-            })
-            task.packageForR.disallowChanges()
+            task.packageForR.setDisallowChanges(creationConfig.packageName)
 
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
+            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
             task.aapt2Version = aapt2Version
-
-            task.androidJar = variantScope.globalScope.sdkComponents.androidJarProvider
-
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
-                variantScope.globalScope.projectOptions
+                creationConfig.services.projectOptions
             )
-            task.aapt2DaemonBuildService.set(getAapt2DaemonBuildService(task.project))
+            task.aapt2DaemonBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
+            task.androidJarInput.sdkBuildService.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
         }
     }
-
 }

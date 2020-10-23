@@ -17,10 +17,10 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants.FN_INTERMEDIATE_FULL_JAR
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.utils.FileUtils
@@ -88,34 +88,38 @@ abstract class ZipMergingTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<ZipMergingTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<ZipMergingTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("createFullJar")
+            get() = computeTaskName("createFullJar")
         override val type: Class<ZipMergingTask>
             get() = ZipMergingTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out ZipMergingTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<ZipMergingTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.FULL_JAR,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                ZipMergingTask::outputFile,
-                FN_INTERMEDIATE_FULL_JAR
-            )
+                ZipMergingTask::outputFile
+            ).withName(FN_INTERMEDIATE_FULL_JAR).on(InternalArtifactType.FULL_JAR)
         }
 
-        override fun configure(task: ZipMergingTask) {
+        override fun configure(
+            task: ZipMergingTask
+        ) {
             super.configure(task)
 
-            val buildArtifacts = variantScope.artifacts
-            buildArtifacts.setTaskInputToFinalProduct(InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR, task.libraryInputFile)
-            buildArtifacts.setTaskInputToFinalProduct(
+            val artifacts = creationConfig.artifacts
+            artifacts.setTaskInputToFinalProduct(InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR, task.libraryInputFile)
+            artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.LIBRARY_JAVA_RES,
                 task.javaResInputFile
             )
-            task.jarCreatorType = variantScope.jarCreatorType
+            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
         }
     }
 }

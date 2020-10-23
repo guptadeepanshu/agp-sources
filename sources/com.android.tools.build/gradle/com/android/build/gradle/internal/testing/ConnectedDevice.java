@@ -122,6 +122,10 @@ public class ConnectedDevice extends DeviceConnector {
             // Prepend -t to install apk marked as testOnly.
             List<String> installOptions = Lists.newArrayListWithCapacity(1 + options.size());
             installOptions.add("-t");
+            if (iDevice.getVersion().getApiLevel() >= 23) {
+                // Grant all permissions listed in the app manifest (Introduced at Android 6.0).
+                installOptions.add("-g");
+            }
             installOptions.addAll(options);
             iDevice.installPackage(
                     apkFile.getAbsolutePath(),
@@ -144,6 +148,10 @@ public class ConnectedDevice extends DeviceConnector {
             // Prepend -t to install apk marked as testOnly.
             List<String> installOptions = Lists.newArrayListWithCapacity(1 + options.size());
             installOptions.add("-t");
+            if (iDevice.getVersion().getApiLevel() >= 23) {
+                // Grant all permissions listed in the app manifest (Introduced at Android 6.0).
+                installOptions.add("-g");
+            }
             installOptions.addAll(options);
             iDevice.installPackages(
                     splitApkFiles,

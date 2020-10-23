@@ -273,9 +273,10 @@ object AnalyticsSettings {
    */
   @JvmStatic
   @JvmOverloads
-  fun initialize(logger: ILogger, scheduler: ScheduledExecutorService? = null) {
+  fun initialize(logger: ILogger, scheduler: ScheduledExecutorService? = null, environment: Environment? = null) {
     synchronized(gate) {
       try {
+        environment?.let { Environment.instance = environment }
         if (instance != null) {
           return
         }
@@ -447,7 +448,10 @@ class AnalyticsSettingsData {
             channel.truncate(0)
             val outputStream = Channels.newOutputStream(channel)
             val writer = OutputStreamWriter(outputStream)
-            gson.toJson(this, writer)
+
+            // Write out using pre-Java9 date format to let older releases read the file correctly.
+            val datePatternJava8 = "MMM d, y h:mm:ss a"
+            GsonBuilder().setDateFormat(datePatternJava8).create().toJson(this, writer)
             writer.flush()
             outputStream.flush()
           }

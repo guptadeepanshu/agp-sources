@@ -26,6 +26,7 @@ import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.ATTR_PARENT;
 import static com.android.SdkConstants.ATTR_SHRINK_MODE;
 import static com.android.SdkConstants.ATTR_TYPE;
+import static com.android.SdkConstants.CONSTRAINT_REFERENCED_IDS;
 import static com.android.SdkConstants.PREFIX_ANDROID;
 import static com.android.SdkConstants.PREFIX_BINDING_EXPR;
 import static com.android.SdkConstants.PREFIX_RESOURCE_REF;
@@ -42,6 +43,7 @@ import static com.android.SdkConstants.TOOLS_URI;
 import static com.android.SdkConstants.VALUE_SAFE;
 import static com.android.SdkConstants.VALUE_STRICT;
 import static com.android.SdkConstants.VIEW_FRAGMENT;
+import static com.android.ide.common.resources.ResourcesUtil.resourceNameToFieldName;
 import static com.android.utils.SdkUtils.endsWithIgnoreCase;
 import static com.android.utils.SdkUtils.fileNameToResourceName;
 import static com.android.utils.SdkUtils.globToRegexp;
@@ -58,14 +60,17 @@ import com.android.utils.SdkUtils;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,7 +126,7 @@ public class ResourceUsageModel {
 
 
     public static String getResourceFieldName(Element element) {
-        return SdkUtils.getResourceFieldName(element.getAttribute(ATTR_NAME));
+        return resourceNameToFieldName(element.getAttribute(ATTR_NAME));
     }
 
     @Nullable
@@ -154,7 +159,7 @@ public class ResourceUsageModel {
     public Resource getResource(@NonNull ResourceType type, @NonNull String name) {
         Map<String, Resource> nameMap = mTypeToName.get(type);
         if (nameMap != null) {
-            return nameMap.get(SdkUtils.getResourceFieldName(name));
+            return nameMap.get(resourceNameToFieldName(name));
         }
         return null;
     }
@@ -163,7 +168,7 @@ public class ResourceUsageModel {
     public Resource getResourceFromUrl(@NonNull String possibleUrlReference) {
         ResourceUrl url = ResourceUrl.parse(possibleUrlReference);
         if (url != null && !url.isFramework()) {
-            return addResource(url.type, SdkUtils.getResourceFieldName(url.name), null);
+            return addResource(url.type, resourceNameToFieldName(url.name), null);
         }
 
         return null;
@@ -280,7 +285,7 @@ public class ResourceUsageModel {
          * an include; a style reference in a layout references that layout style, and so on. */
         public List<Resource> references;
 
-        public List<File> declarations;
+        public List<Path> declarations;
 
         /** Whether we found a declaration for this resource (otherwise we might have seen
          * a reference to this before we came across its potential declaration, so we added it
@@ -381,10 +386,14 @@ public class ResourceUsageModel {
         }
 
         public void addLocation(@NonNull File file) {
+            addLocation(file.toPath());
+        }
+
+        public void addLocation(@NonNull Path path) {
             if (declarations == null) {
                 declarations = Lists.newArrayList();
             }
-            declarations.add(file);
+            declarations.add(path);
         }
 
         public void addReference(@Nullable Resource resource) {
@@ -427,6 +436,15 @@ public class ResourceUsageModel {
 
     public String dumpConfig() {
         StringBuilder sb = new StringBuilder();
+        mResources.sort(
+                (resource1, resource2) -> {
+                    int delta = resource1.type.compareTo(resource2.type);
+                    if (delta != 0) {
+                        return delta;
+                    }
+                    return resource1.name.compareTo(resource2.name);
+                });
+
         for (Resource resource : mResources) {
             sb.append(resource.type);
             sb.append('/');
@@ -550,13 +568,18 @@ public class ResourceUsageModel {
     }
 
     @NonNull
-    public Resource addResource(@NonNull ResourceType type, @NonNull String name,
-            @Nullable String value) {
-        int realValue = value != null ? Integer.decode(value) : -1;
+    public Resource addResource(
+            @NonNull ResourceType type, @NonNull String name, @Nullable String value) {
+        return addResource(type, name, value != null ? Integer.decode(value) : -1);
+    }
+
+    @NonNull
+    public Resource addResource(
+            @NonNull ResourceType type, @NonNull String name, @Nullable int realValue) {
         Resource resource = getResource(type, name);
         if (resource != null) {
             //noinspection VariableNotUsedInsideIf
-            if (value != null) {
+            if (realValue != -1) {
                 if (resource.value == -1) {
                     resource.value = realValue;
                 } else {
@@ -573,7 +596,7 @@ public class ResourceUsageModel {
         }
         Map<String, Resource> nameMap =
                 mTypeToName.computeIfAbsent(type, k -> Maps.newHashMapWithExpectedSize(30));
-        nameMap.put(SdkUtils.getResourceFieldName(name), resource);
+        nameMap.put(resourceNameToFieldName(name), resource);
 
         // TODO: Assert that we don't set the same resource multiple times to different values.
         // Could happen if you pass in stale data!
@@ -614,7 +637,7 @@ public class ResourceUsageModel {
             addResourceToWhitelist(resource);
         } else if (url.name.contains("*") || url.name.contains("?")) {
             // Look for globbing patterns
-            String regexp = globToRegexp(SdkUtils.getResourceFieldName(url.name));
+            String regexp = globToRegexp(resourceNameToFieldName(url.name));
             try {
                 Pattern pattern = Pattern.compile(regexp);
                 Map<String, Resource> nameMap = mTypeToName.get(url.type);
@@ -650,7 +673,7 @@ public class ResourceUsageModel {
             markUnreachable(resource);
         } else if (url.name.contains("*") || url.name.contains("?")) {
             // Look for globbing patterns
-            String regexp = globToRegexp(SdkUtils.getResourceFieldName(url.name));
+            String regexp = globToRegexp(resourceNameToFieldName(url.name));
             try {
                 Pattern pattern = Pattern.compile(regexp);
                 Map<String, Resource> nameMap = mTypeToName.get(url.type);
@@ -711,22 +734,46 @@ public class ResourceUsageModel {
         String localName = attr.getLocalName();
         String value = attr.getValue();
         if (ATTR_KEEP.equals(localName)) {
-            if (mKeepAttributes == null) {
-                mKeepAttributes = Lists.newArrayList();
-            }
-            mKeepAttributes.add(value);
+            recordKeepToolAttribute(value);
         } else if (ATTR_DISCARD.equals(localName)) {
-            if (mDiscardAttributes == null) {
-                mDiscardAttributes = Lists.newArrayList();
-            }
-            mDiscardAttributes.add(value);
+            recordDiscardToolAttribute(value);
         } else if (ATTR_SHRINK_MODE.equals(localName)) {
-            if (VALUE_STRICT.equals(value)) {
-                mSafeMode = false;
-            } else if (VALUE_SAFE.equals(value)) {
-                mSafeMode = true;
-            }
+            recordShrinkModeAttribute(value);
         }
+    }
+
+    public void recordKeepToolAttribute(@NonNull String value) {
+        if (mKeepAttributes == null) {
+            mKeepAttributes = Lists.newArrayList();
+        }
+        mKeepAttributes.add(value);
+    }
+
+    public void recordDiscardToolAttribute(@NonNull String value) {
+        if (mDiscardAttributes == null) {
+            mDiscardAttributes = Lists.newArrayList();
+        }
+        mDiscardAttributes.add(value);
+    }
+
+    public void recordShrinkModeAttribute(@NonNull String value) {
+        if (VALUE_STRICT.equals(value)) {
+            mSafeMode = false;
+        } else if (VALUE_SAFE.equals(value)) {
+            mSafeMode = true;
+        }
+    }
+
+    public List<String> getKeepAttributes() {
+        return mKeepAttributes == null
+                ? Collections.emptyList()
+                : ImmutableList.copyOf(mKeepAttributes);
+    }
+
+    public List<String> getDiscardAttributes() {
+        return mDiscardAttributes == null
+                ? Collections.emptyList()
+                : ImmutableList.copyOf(mDiscardAttributes);
     }
 
     protected Resource declareResource(ResourceType type, String name, Node node) {
@@ -887,6 +934,15 @@ public class ResourceUsageModel {
                     String value = attr.getValue();
                     if (!(value.startsWith(PREFIX_RESOURCE_REF)
                             || value.startsWith(PREFIX_THEME_REF))) {
+
+                        String name = attr.getLocalName();
+                        if (CONSTRAINT_REFERENCED_IDS.equals(name)) {
+                            Splitter splitter = Splitter.on(',').trimResults().omitEmptyStrings();
+                            for (String id : splitter.split(value)) {
+                                markReachable(addResource(ResourceType.ID, id, null));
+                            }
+                        }
+
                         continue;
                     }
                     ResourceUrl url = ResourceUrl.parse(value);
@@ -1089,8 +1145,7 @@ public class ResourceUsageModel {
                                     parentStyle = STYLE_RESOURCE_PREFIX + parentStyle;
                                 }
                             }
-                            Resource ps =
-                                    getResourceFromUrl(SdkUtils.getResourceFieldName(parentStyle));
+                            Resource ps = getResourceFromUrl(resourceNameToFieldName(parentStyle));
                             if (ps != null && definition != null) {
                                 definition.addReference(ps);
                             }
@@ -1105,7 +1160,7 @@ public class ResourceUsageModel {
                                 Resource ps =
                                         getResourceFromUrl(
                                                 STYLE_RESOURCE_PREFIX
-                                                        + SdkUtils.getResourceFieldName(name));
+                                                        + resourceNameToFieldName(name));
                                 if (ps != null && definition != null) {
                                     definition.addReference(ps);
                                 }
@@ -1137,8 +1192,7 @@ public class ResourceUsageModel {
             }
         } else if (nodeType == Node.TEXT_NODE || nodeType == Node.CDATA_SECTION_NODE) {
             String text = node.getNodeValue().trim();
-            // Why are we calling getResourceFieldName here? That doesn't make sense! for styles I guess
-            Resource textResource = getResourceFromUrl(SdkUtils.getResourceFieldName(text));
+            Resource textResource = getResourceFromUrl(resourceNameToFieldName(text));
             if (textResource != null && from != null) {
                 from.addReference(textResource);
             }
@@ -1609,39 +1663,44 @@ public class ResourceUsageModel {
     /** Look through binary/unknown files looking for resource URLs */
     public void tokenizeUnknownBinary(@Nullable Resource from, @NonNull File file) {
         try {
-            if (sAndroidResBytes == null) {
-                sAndroidResBytes = ANDROID_RES.getBytes(SdkConstants.UTF_8);
-            }
-            byte[] bytes = Files.toByteArray(file);
-            int index = 0;
-            while (index != -1) {
-                index = indexOf(bytes, sAndroidResBytes, index);
-                if (index != -1) {
-                    index += sAndroidResBytes.length;
+            tokenizeUnknownBinary(from, Files.toByteArray(file));
+        } catch (IOException e) {
+            // Ignore
+        }
+    }
 
-                    // Find the end of the URL
-                    int begin = index;
-                    int end = begin;
-                    for (; end < bytes.length; end++) {
-                        byte c = bytes[end];
-                        if (c != '/' && !Character.isJavaIdentifierPart((char)c)) {
-                            // android_res/raw/my_drawable.png ⇒ @raw/my_drawable
-                            String url = "@" + new String(bytes, begin, end - begin, UTF_8);
-                            Resource resource = getResourceFromUrl(url);
-                            if (resource != null) {
-                                if (from != null) {
-                                    from.addReference(resource);
-                                } else {
-                                    markReachable(resource);
-                                }
+    /** Look through binary/unknown files looking for resource URLs */
+    public void tokenizeUnknownBinary(@Nullable Resource from, @NonNull byte[] bytes)
+            throws IOException {
+        if (sAndroidResBytes == null) {
+            sAndroidResBytes = ANDROID_RES.getBytes(SdkConstants.UTF_8);
+        }
+        int index = 0;
+        while (index != -1) {
+            index = indexOf(bytes, sAndroidResBytes, index);
+            if (index != -1) {
+                index += sAndroidResBytes.length;
+
+                // Find the end of the URL
+                int begin = index;
+                int end = begin;
+                for (; end < bytes.length; end++) {
+                    byte c = bytes[end];
+                    if (c != '/' && !Character.isJavaIdentifierPart((char) c)) {
+                        // android_res/raw/my_drawable.png ⇒ @raw/my_drawable
+                        String url = "@" + new String(bytes, begin, end - begin, UTF_8);
+                        Resource resource = getResourceFromUrl(url);
+                        if (resource != null) {
+                            if (from != null) {
+                                from.addReference(resource);
+                            } else {
+                                markReachable(resource);
                             }
-                            break;
                         }
+                        break;
                     }
                 }
             }
-        } catch (IOException e) {
-            // Ignore
         }
     }
 
@@ -1812,8 +1871,7 @@ public class ResourceUsageModel {
             // URLs are often within the raw folder
             resource =
                     getResource(
-                            ResourceType.RAW,
-                            SdkUtils.getResourceFieldName(fileNameToResourceName(url)));
+                            ResourceType.RAW, resourceNameToFieldName(fileNameToResourceName(url)));
         }
         if (resource != null) {
             if (from != null) {

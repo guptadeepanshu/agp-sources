@@ -24,6 +24,7 @@ import com.android.SdkConstants.TOOLS_CONFIGURATION_FOLDER
 import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.ide.common.blame.MessageReceiver
 import com.android.tools.r8.ArchiveProgramResourceProvider
+import com.android.tools.r8.AssertionsConfiguration
 import com.android.tools.r8.ClassFileConsumer
 import com.android.tools.r8.CompatProguardCommandBuilder
 import com.android.tools.r8.CompilationMode
@@ -121,6 +122,11 @@ fun runR8(
                 .addSpecialLibraryConfiguration(libConfiguration)
                 .setDesugaredLibraryKeepRuleConsumer(StringConsumer.FileConsumer(outputKeepRules!!))
         }
+        if (toolConfig.isDebuggable) {
+            r8CommandBuilder.addAssertionsConfiguration(
+                AssertionsConfiguration.Builder::enableAllAssertions
+            )
+        }
     }
 
     r8CommandBuilder
@@ -143,6 +149,7 @@ fun runR8(
         Files.deleteIfExists(proguardOutputFiles.proguardMapOutput)
         Files.deleteIfExists(proguardOutputFiles.proguardSeedsOutput)
         Files.deleteIfExists(proguardOutputFiles.proguardUsageOutput)
+        Files.deleteIfExists(proguardOutputFiles.proguardConfigurationOutput)
 
         Files.createDirectories(proguardOutputFiles.proguardMapOutput.parent)
         r8CommandBuilder.setProguardMapOutputPath(proguardOutputFiles.proguardMapOutput)
@@ -150,6 +157,11 @@ fun runR8(
             StringConsumer.FileConsumer(proguardOutputFiles.proguardSeedsOutput))
         r8CommandBuilder.setProguardUsageConsumer(
             StringConsumer.FileConsumer(proguardOutputFiles.proguardUsageOutput))
+        r8CommandBuilder.setProguardConfigurationConsumer(
+            StringConsumer.FileConsumer(
+                proguardOutputFiles.proguardConfigurationOutput
+            )
+        )
     }
 
     val compilationMode =
@@ -280,7 +292,8 @@ data class ProguardConfig(
 data class ProguardOutputFiles(
     val proguardMapOutput: Path,
     val proguardSeedsOutput: Path,
-    val proguardUsageOutput: Path
+    val proguardUsageOutput: Path,
+    val proguardConfigurationOutput: Path
 )
 
 /** Configuration parameters for the R8 tool. */

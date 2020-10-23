@@ -28,9 +28,8 @@ import com.google.common.collect.ImmutableList
  * This returns a list of [DimensionCombination]
  */
 class DimensionCombinator(
-    private val variantInputModel : VariantInputModel,
+    private val variantInputModel : VariantInputModel<*,*,*,*>,
     private val errorReporter: IssueReporter,
-    private val variantType: VariantType,
     private val flavorDimensionList: List<String>
 ) {
     companion object {
@@ -159,7 +158,7 @@ class DimensionCombinator(
                 val productFlavor = flavor.productFlavor
                 val dim = productFlavor.dimension
                 if (dim == null) {
-                    productFlavor.setDimension(FAKE_DIMENSION)
+                    productFlavor.dimension = FAKE_DIMENSION
                 } else {
                     dimensions.add(dim)
                 }
@@ -178,7 +177,7 @@ class DimensionCombinator(
             for (flavorData in variantInputModel.productFlavors.values) {
                 val flavor = flavorData.productFlavor
                 if (flavor.dimension == null) {
-                    flavor.setDimension(dimensionName)
+                    flavor.dimension = dimensionName
                 }
             }
         }

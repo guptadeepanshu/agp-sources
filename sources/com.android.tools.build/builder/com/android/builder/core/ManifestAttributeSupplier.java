@@ -21,6 +21,7 @@ import com.android.annotations.Nullable;
 /**
  * An interface that provides methods for reading some of the attribute values from the manifest.
  */
+@Deprecated
 public interface ManifestAttributeSupplier {
 
     /** Whether the manifest file is required to exist. */
@@ -57,21 +58,6 @@ public interface ManifestAttributeSupplier {
      * @return the targetSdkVersion or null if not found
      */
     Object getTargetSdkVersion();
-
-    /**
-     * Returns the version name from the manifest file.
-     *
-     * @return the version name or null if not found.
-     */
-    @Nullable
-    String getVersionName();
-
-    /**
-     * Returns the version code from the manifest file.
-     *
-     * @return the version code or -1 if value is not set.
-     */
-    int getVersionCode();
 
     /**
      * Returns the instrumentation runner from the instrumentation tag in the manifest file.

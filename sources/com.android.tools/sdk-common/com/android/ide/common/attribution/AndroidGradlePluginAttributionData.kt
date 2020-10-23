@@ -45,7 +45,18 @@ data class AndroidGradlePluginAttributionData(
      * The key of the map represents the absolute path to the file or the directory output and the
      * key contains a list of tasks declaring this file or directory as their output.
      */
-    val tasksSharingOutput: Map<String, List<String>> = emptyMap()
+    val tasksSharingOutput: Map<String, List<String>> = emptyMap(),
+
+    /**
+     * Contains garbage collection data for the last build.
+     * The key of the map represents the name of the garbage collector, while the value represents
+     * the time spent collecting in milliseconds.
+     */
+    val garbageCollectionData: Map<String, Long> = emptyMap(),
+    /**
+     * Contains the ids of the plugins defined in the buildSrc.
+     */
+    val buildSrcPlugins: Set<String> = emptySet()
 ) : Serializable {
     companion object {
         fun save(outputDir: File, attributionData: AndroidGradlePluginAttributionData) {
@@ -72,8 +83,6 @@ data class AndroidGradlePluginAttributionData(
                 }
             } catch (e: Exception) {
                 return null
-            } finally {
-                FileUtils.deleteRecursivelyIfExists(file.parentFile)
             }
         }
     }
@@ -102,6 +111,21 @@ data class AndroidGradlePluginAttributionData(
                 writer.endObject()
             }
             writer.endArray()
+
+            writer.name("garbageCollectionData").beginArray()
+            data.garbageCollectionData.forEach { (gcName, duration) ->
+                writer.beginObject()
+                writer.name("gcName").value(gcName)
+                writer.name("duration").value(duration)
+                writer.endObject()
+            }
+            writer.endArray()
+
+            writer.name("buildSrcPlugins").beginArray()
+            data.buildSrcPlugins.forEach { plugin ->
+                writer.value(plugin)
+            }
+            writer.endArray()
             writer.endObject()
         }
 
@@ -109,6 +133,8 @@ data class AndroidGradlePluginAttributionData(
             val taskNameToClassNameMap = HashMap<String, String>()
             val tasksSharingOutput = HashMap<String, List<String>>()
             val garbageCollectionData = HashMap<String, Long>()
+            val buildSrcPlugins = HashSet<String>()
+
             reader.beginObject()
 
             while (reader.hasNext()) {
@@ -172,6 +198,13 @@ data class AndroidGradlePluginAttributionData(
                         }
                         reader.endArray()
                     }
+                    "buildSrcPlugins" -> {
+                        reader.beginArray()
+                        while (reader.hasNext()) {
+                            buildSrcPlugins.add(reader.nextString())
+                        }
+                        reader.endArray()
+                    }
                     else -> {
                         reader.skipValue()
                     }
@@ -182,7 +215,9 @@ data class AndroidGradlePluginAttributionData(
 
             return AndroidGradlePluginAttributionData(
                 taskNameToClassNameMap = taskNameToClassNameMap,
-                tasksSharingOutput = tasksSharingOutput
+                tasksSharingOutput = tasksSharingOutput,
+                garbageCollectionData = garbageCollectionData,
+                buildSrcPlugins = buildSrcPlugins
             )
         }
     }

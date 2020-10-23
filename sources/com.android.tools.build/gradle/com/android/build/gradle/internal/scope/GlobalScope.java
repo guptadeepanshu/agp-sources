@@ -19,86 +19,96 @@ package com.android.build.gradle.internal.scope;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.MOCKABLE_JAR_RETURN_DEFAULT_VALUES;
 import static com.android.builder.core.BuilderConstants.FD_REPORTS;
-import static com.android.builder.model.AndroidProject.FD_GENERATED;
 import static com.android.builder.model.AndroidProject.FD_INTERMEDIATES;
 import static com.android.builder.model.AndroidProject.FD_OUTPUTS;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import android.databinding.tool.DataBindingBuilder;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.internal.SdkComponents;
-import com.android.build.gradle.internal.api.dsl.DslScope;
+import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension;
+import com.android.build.gradle.internal.ide.DependencyFailureHandler;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
+import com.android.build.gradle.internal.services.DslServices;
+import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
+import com.android.build.gradle.options.SyncOptions;
 import com.android.builder.model.OptionalCompilationStep;
-import com.android.builder.utils.FileCache;
 import com.android.ide.common.blame.MessageReceiver;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.component.SoftwareComponentFactory;
-import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.RegularFile;
+import org.gradle.api.plugins.BasePluginConvention;
+import org.gradle.api.provider.Provider;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** A scope containing data for the Android plugin. */
-public class GlobalScope implements TransformGlobalScope {
+public class GlobalScope {
 
     @NonNull private final Project project;
+    @NonNull private final DataBindingBuilder dataBindingBuilder;
     @NonNull private BaseExtension extension;
-    @NonNull private final SdkComponents sdkComponents;
+    @NonNull private final Provider<SdkComponentsBuildService> sdkComponents;
     @NonNull private final ToolingModelBuilderRegistry toolingRegistry;
     @NonNull private final Set<OptionalCompilationStep> optionalCompilationSteps;
-    @NonNull private final ProjectOptions projectOptions;
-    @Nullable private final FileCache buildCache;
     @NonNull private final MessageReceiver messageReceiver;
     @NonNull private final SoftwareComponentFactory componentFactory;
 
     @NonNull private final String createdBy;
-    @NonNull private final DslScope dslScope;
+    @NonNull private final DslServices dslServices;
 
     @NonNull private Configuration lintChecks;
     @NonNull private Configuration lintPublish;
 
     private Configuration androidJarConfig;
 
-    @NonNull private final BuildArtifactsHolder globalArtifacts;
+    @NonNull private final ArtifactsImpl globalArtifacts;
 
-    @Nullable private ConfigurableFileCollection bootClasspath = null;
+    @Nullable private Provider<List<RegularFile>> bootClasspath = null;
 
     public GlobalScope(
             @NonNull Project project,
             @NonNull String createdBy,
-            @NonNull ProjectOptions projectOptions,
-            @NonNull DslScope dslScope,
-            @NonNull SdkComponents sdkComponents,
+            @NonNull DslServices dslServices,
+            @NonNull Provider<SdkComponentsBuildService> sdkComponents,
             @NonNull ToolingModelBuilderRegistry toolingRegistry,
-            @Nullable FileCache buildCache,
             @NonNull MessageReceiver messageReceiver,
             @NonNull SoftwareComponentFactory componentFactory) {
         // Attention: remember that this code runs early in the build lifecycle, project may not
         // have been fully configured yet (e.g. buildDir can still change).
         this.project = checkNotNull(project);
         this.createdBy = createdBy;
-        this.dslScope = checkNotNull(dslScope);
-        this.sdkComponents = checkNotNull(sdkComponents);
+        this.dslServices = checkNotNull(dslServices);
+        this.sdkComponents = sdkComponents;
         this.toolingRegistry = checkNotNull(toolingRegistry);
-        this.optionalCompilationSteps = checkNotNull(projectOptions.getOptionalCompilationSteps());
-        this.projectOptions = checkNotNull(projectOptions);
-        this.buildCache = buildCache;
+        this.optionalCompilationSteps =
+                checkNotNull(dslServices.getProjectOptions().getOptionalCompilationSteps());
         this.messageReceiver = messageReceiver;
         this.componentFactory = componentFactory;
-        this.globalArtifacts = new GlobalBuildArtifactsHolder(project, this::getBuildDir);
+
+        this.globalArtifacts = new ArtifactsImpl(project, "global");
 
         // Create empty configurations before these have been set.
         this.lintChecks = project.getConfigurations().detachedConfiguration();
+
+        this.dataBindingBuilder = new DataBindingBuilder();
+        dataBindingBuilder.setPrintMachineReadableOutput(
+                SyncOptions.getErrorFormatMode(dslServices.getProjectOptions())
+                        == SyncOptions.ErrorFormatMode.MACHINE_PARSABLE);
     }
 
     public void setExtension(@NonNull BaseExtension extension) {
@@ -106,12 +116,6 @@ public class GlobalScope implements TransformGlobalScope {
     }
 
     @NonNull
-    public BuildFeatureValues getBuildFeatures() {
-        return dslScope.getBuildFeatures();
-    }
-
-    @NonNull
-    @Override
     public Project getProject() {
         return project;
     }
@@ -127,12 +131,20 @@ public class GlobalScope implements TransformGlobalScope {
     }
 
     @NonNull
-    public String getProjectBaseName() {
-        return (String) project.property("archivesBaseName");
+    public DataBindingBuilder getDataBindingBuilder() {
+        return dataBindingBuilder;
     }
 
     @NonNull
-    public SdkComponents getSdkComponents() {
+    public String getProjectBaseName() {
+        BasePluginConvention convention =
+                Preconditions.checkNotNull(
+                        project.getConvention().findPlugin(BasePluginConvention.class));
+        return convention.getArchivesBaseName();
+    }
+
+    @NonNull
+    public Provider<SdkComponentsBuildService> getSdkComponents() {
         return sdkComponents;
     }
 
@@ -142,7 +154,6 @@ public class GlobalScope implements TransformGlobalScope {
     }
 
     @NonNull
-    @Override
     public File getBuildDir() {
         return project.getBuildDir();
     }
@@ -150,11 +161,6 @@ public class GlobalScope implements TransformGlobalScope {
     @NonNull
     public File getIntermediatesDir() {
         return new File(getBuildDir(), FD_INTERMEDIATES);
-    }
-
-    @NonNull
-    public File getGeneratedDir() {
-        return new File(getBuildDir(), FD_GENERATED);
     }
 
     @NonNull
@@ -180,14 +186,8 @@ public class GlobalScope implements TransformGlobalScope {
         return new File(getBuildDir(), FD_OUTPUTS);
     }
 
-    @Override
     public boolean isActive(OptionalCompilationStep step) {
         return optionalCompilationSteps.contains(step);
-    }
-
-    @NonNull
-    public String getArchivesBaseName() {
-        return (String)getProject().getProperties().get("archivesBaseName");
     }
 
     @NonNull
@@ -201,15 +201,8 @@ public class GlobalScope implements TransformGlobalScope {
     }
 
     @NonNull
-    @Override
     public ProjectOptions getProjectOptions() {
-        return projectOptions;
-    }
-
-    @Nullable
-    @Override
-    public FileCache getBuildCache() {
-        return buildCache;
+        return dslServices.getProjectOptions();
     }
 
     public void setLintChecks(@NonNull Configuration lintChecks) {
@@ -260,9 +253,17 @@ public class GlobalScope implements TransformGlobalScope {
                 .getArtifactFiles();
     }
 
+    /**
+     * Do not use unless you have to.
+     *
+     * <p>If the code has access to DslServices directly, use that. If the code has access to
+     * VariantPropertiesApiServices or VariantApiServices, use that. If the code has access to
+     * TaskCreationServices, use that
+     */
+    @Deprecated
     @NonNull
-    public DslScope getDslScope() {
-        return dslScope;
+    public DslServices getDslServices() {
+        return dslServices;
     }
 
     @NonNull
@@ -273,21 +274,39 @@ public class GlobalScope implements TransformGlobalScope {
     /**
      * Gets the lint JAR from the lint checking configuration.
      *
-     * @return the resolved lint.jar ArtifactFile from the lint checking configuration
+     * @return the resolved lint.jar artifact files from the lint checking configuration
      */
     @NonNull
     public FileCollection getLocalCustomLintChecks() {
+        boolean lenientMode =
+                dslServices.getProjectOptions().get(BooleanOption.IDE_BUILD_MODEL_ONLY);
+
         // Query for JAR instead of PROCESSED_JAR as we want to get the original lint.jar
         Action<AttributeContainer> attributes =
                 container ->
                         container.attribute(
                                 ARTIFACT_TYPE, AndroidArtifacts.ArtifactType.JAR.getType());
 
-        return lintChecks
-                .getIncoming()
-                .artifactView(config -> config.attributes(attributes))
-                .getArtifacts()
-                .getArtifactFiles();
+        ArtifactCollection artifactCollection =
+                lintChecks
+                        .getIncoming()
+                        .artifactView(
+                                config -> {
+                                    config.attributes(attributes);
+                                    config.lenient(lenientMode);
+                                })
+                        .getArtifacts();
+
+        if (lenientMode) {
+            Collection<Throwable> failures = artifactCollection.getFailures();
+            if (!failures.isEmpty()) {
+                DependencyFailureHandler failureHandler = new DependencyFailureHandler();
+                failureHandler.addErrors(project.getPath() + "/" + lintChecks.getName(), failures);
+                failureHandler.registerIssues(dslServices.getIssueReporter());
+            }
+        }
+
+        return artifactCollection.getArtifactFiles();
     }
 
     /**
@@ -311,7 +330,7 @@ public class GlobalScope implements TransformGlobalScope {
     }
 
     @NonNull
-    public BuildArtifactsHolder getArtifacts() {
+    public ArtifactsImpl getGlobalArtifacts() {
         return globalArtifacts;
     }
 
@@ -330,12 +349,26 @@ public class GlobalScope implements TransformGlobalScope {
      * @return {@link FileCollection} for the boot classpath.
      */
     @NonNull
-    public FileCollection getBootClasspath() {
+    public Provider<List<RegularFile>> getBootClasspath() {
         if (bootClasspath == null) {
-            bootClasspath = project.files(getFilteredBootClasspath());
-            if (extension.getCompileOptions().getTargetCompatibility().isJava8Compatible()) {
-                bootClasspath.from(getSdkComponents().getCoreLambdaStubsProvider());
-            }
+            bootClasspath =
+                    project.provider(
+                            () -> {
+                                ImmutableList.Builder<RegularFile> builder =
+                                        ImmutableList.builder();
+                                builder.addAll(getFilteredBootClasspath().get());
+                                if (extension
+                                        .getCompileOptions()
+                                        .getTargetCompatibility()
+                                        .isJava8Compatible()) {
+                                    builder.add(
+                                            getSdkComponents()
+                                                    .get()
+                                                    .getCoreLambdaStubsProvider()
+                                                    .get());
+                                }
+                                return builder.build();
+                            });
         }
         return bootClasspath;
     }
@@ -348,15 +381,18 @@ public class GlobalScope implements TransformGlobalScope {
      *
      * @return a {@link FileCollection} that forms the filtered classpath.
      */
-    public FileCollection getFilteredBootClasspath() {
+    public Provider<List<RegularFile>> getFilteredBootClasspath() {
         return BootClasspathBuilder.INSTANCE.computeClasspath(
                 project,
-                getDslScope().getIssueReporter(),
-                getSdkComponents().getTargetBootClasspathProvider(),
-                getSdkComponents().getTargetAndroidVersionProvider(),
-                getSdkComponents().getAdditionalLibrariesProvider(),
-                getSdkComponents().getOptionalLibrariesProvider(),
-                getSdkComponents().getAnnotationsJarProvider(),
+                getDslServices().getIssueReporter(),
+                getSdkComponents()
+                        .flatMap(SdkComponentsBuildService::getTargetBootClasspathProvider),
+                getSdkComponents()
+                        .flatMap(SdkComponentsBuildService::getTargetAndroidVersionProvider),
+                getSdkComponents()
+                        .flatMap(SdkComponentsBuildService::getAdditionalLibrariesProvider),
+                getSdkComponents().flatMap(SdkComponentsBuildService::getOptionalLibrariesProvider),
+                getSdkComponents().flatMap(SdkComponentsBuildService::getAnnotationsJarProvider),
                 false,
                 ImmutableList.copyOf(getExtension().getLibraryRequests()));
     }
@@ -369,16 +405,34 @@ public class GlobalScope implements TransformGlobalScope {
      */
     @NonNull
     public FileCollection getFullBootClasspath() {
-        return BootClasspathBuilder.INSTANCE.computeClasspath(
-                project,
-                getDslScope().getIssueReporter(),
-                getSdkComponents().getTargetBootClasspathProvider(),
-                getSdkComponents().getTargetAndroidVersionProvider(),
-                getSdkComponents().getAdditionalLibrariesProvider(),
-                getSdkComponents().getOptionalLibrariesProvider(),
-                getSdkComponents().getAnnotationsJarProvider(),
-                true,
-                ImmutableList.of());
+        return project.files(
+                BootClasspathBuilder.INSTANCE
+                        .computeClasspath(
+                                project,
+                                getDslServices().getIssueReporter(),
+                                getSdkComponents()
+                                        .flatMap(
+                                                SdkComponentsBuildService
+                                                        ::getTargetBootClasspathProvider),
+                                getSdkComponents()
+                                        .flatMap(
+                                                SdkComponentsBuildService
+                                                        ::getTargetAndroidVersionProvider),
+                                getSdkComponents()
+                                        .flatMap(
+                                                SdkComponentsBuildService
+                                                        ::getAdditionalLibrariesProvider),
+                                getSdkComponents()
+                                        .flatMap(
+                                                SdkComponentsBuildService
+                                                        ::getOptionalLibrariesProvider),
+                                getSdkComponents()
+                                        .flatMap(
+                                                SdkComponentsBuildService
+                                                        ::getAnnotationsJarProvider),
+                                true,
+                                ImmutableList.of())
+                        .get());
     }
 
     @NonNull

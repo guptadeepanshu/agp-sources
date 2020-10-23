@@ -16,19 +16,23 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.TestComponentPropertiesImpl
+import com.android.build.api.variant.impl.VariantPropertiesImpl
 import com.android.build.gradle.internal.AndroidDependenciesRenderer
-import com.android.build.gradle.internal.scope.VariantScope
-import java.io.IOException
-import java.util.HashSet
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import java.io.IOException
 
 open class DependencyReportTask : DefaultTask() {
 
     private val renderer = AndroidDependenciesRenderer()
 
-    private val variants = HashSet<VariantScope>()
+    @get:Internal
+    lateinit var variants: List<VariantPropertiesImpl>
+    @get:Internal
+    lateinit var testComponents: List<TestComponentPropertiesImpl>
 
     @TaskAction
     @Throws(IOException::class)
@@ -37,13 +41,15 @@ open class DependencyReportTask : DefaultTask() {
         val sortedVariants = variants.sortedWith(compareBy { it.name })
 
         for (variant in sortedVariants) {
-            renderer.startVariant(variant)
+            renderer.startComponent(variant)
             renderer.render(variant)
         }
-    }
 
-    /** Sets the variants to generate the report for.  */
-    fun setVariants(variantScopes: Collection<VariantScope>) {
-        this.variants.addAll(variantScopes)
+        val sortedTestComponents = testComponents.sortedWith(compareBy { it.name })
+
+        for (testComponent in sortedTestComponents) {
+            renderer.startComponent(testComponent)
+            renderer.render(testComponent)
+        }
     }
 }

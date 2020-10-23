@@ -19,6 +19,7 @@
 package com.android.builder.dexing
 
 import com.android.tools.r8.ByteDataView
+import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.DexIndexedConsumer
 import com.android.tools.r8.DiagnosticsHandler
 import com.android.tools.r8.L8
@@ -39,7 +40,8 @@ fun runL8(
     libConfiguration: String,
     libraries: Collection<Path>,
     minSdkVersion: Int,
-    keepRules: KeepRulesConfig
+    keepRules: KeepRulesConfig,
+    isDebuggable: Boolean
 ) {
     val logger: Logger = Logger.getLogger("L8")
     if (logger.isLoggable(Level.FINE)) {
@@ -48,8 +50,9 @@ fun runL8(
         logger.fine("Special library configuration: $libConfiguration")
         logger.fine("Library classes: $libraries")
         logger.fine("Min Api level: $minSdkVersion")
-        keepRules.keepRulesFiles?.forEach { logger.fine("Keep rules file: $it") }
-        keepRules.keepRulesConfigurations?.forEach {
+        logger.fine("Is debuggable: $isDebuggable")
+        keepRules.keepRulesFiles.forEach { logger.fine("Keep rules file: $it") }
+        keepRules.keepRulesConfigurations.forEach {
             logger.fine("Keep rules configuration: $it") }
     }
     FileUtils.cleanOutputDir(output.toFile())
@@ -80,12 +83,13 @@ fun runL8(
         .addSpecialLibraryConfiguration(libConfiguration)
         .addLibraryFiles(libraries)
         .setMinApiLevel(minSdkVersion)
+        .setMode(if (isDebuggable) CompilationMode.DEBUG else CompilationMode.RELEASE)
 
-    if (keepRules.keepRulesFiles != null) {
+    if (keepRules.keepRulesFiles.isNotEmpty()) {
         l8CommandBuilder.addProguardConfigurationFiles(keepRules.keepRulesFiles)
     }
 
-    if (keepRules.keepRulesConfigurations != null) {
+    if (keepRules.keepRulesConfigurations.isNotEmpty()) {
         l8CommandBuilder.addProguardConfiguration(
             keepRules.keepRulesConfigurations, Origin.unknown())
     }
@@ -94,6 +98,6 @@ fun runL8(
 }
 
 data class KeepRulesConfig(
-    val keepRulesFiles: List<Path>?,
-    val keepRulesConfigurations: List<String>?
+    val keepRulesFiles: List<Path>,
+    val keepRulesConfigurations: List<String>
 )

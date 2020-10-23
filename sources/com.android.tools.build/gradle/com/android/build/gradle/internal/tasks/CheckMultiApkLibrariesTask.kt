@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.utils.FileUtils
 import com.google.common.io.Files
@@ -94,28 +94,33 @@ abstract class CheckMultiApkLibrariesTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<CheckMultiApkLibrariesTask>(variantScope, dependsOnPreBuildTask = false) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<CheckMultiApkLibrariesTask, ComponentPropertiesImpl>(
+            componentProperties,
+            dependsOnPreBuildTask = false
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("check", "Libraries")
+            get() = computeTaskName("check", "Libraries")
         override val type: Class<CheckMultiApkLibrariesTask>
             get() = CheckMultiApkLibrariesTask::class.java
 
-        override fun configure(task: CheckMultiApkLibrariesTask) {
+        override fun configure(
+            task: CheckMultiApkLibrariesTask
+        ) {
             super.configure(task)
 
             task.featureTransitiveDeps =
-                    variantScope.getArtifactCollection(
+                    creationConfig.variantDependencies.getArtifactCollection(
                         AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                         AndroidArtifacts.ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
                     )
             task.fakeOutputDir =
                     FileUtils.join(
-                        variantScope.globalScope.intermediatesDir,
+                        creationConfig.globalScope.intermediatesDir,
                         "check-libraries",
-                        variantScope.variantDslInfo.dirName
+                        creationConfig.dirName
                     )
         }
     }

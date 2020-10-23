@@ -16,53 +16,92 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.Artifact
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.BuiltArtifacts
-import com.android.build.gradle.internal.scope.BuildElements
+import com.android.build.api.variant.VariantOutputConfiguration
+import com.android.ide.common.build.CommonBuiltArtifacts
+import com.android.ide.common.workers.WorkerExecutorFacade
 import com.google.gson.GsonBuilder
 import org.gradle.api.file.Directory
-import org.gradle.api.file.RegularFile
 import java.io.File
+import java.io.Serializable
 import java.nio.file.Path
+import java.nio.file.Paths
+import java.util.function.Supplier
 
 class BuiltArtifactsImpl(
-    val version: Int = BuiltArtifacts.METADATA_FILE_VERSION,
-    override val artifactType: ArtifactType<*>,
+    override val version: Int = BuiltArtifacts.METADATA_FILE_VERSION,
+    override val artifactType: Artifact<*>,
     override val applicationId: String,
     override val variantName: String,
-    override val elements: Collection<BuiltArtifactImpl>) : BuiltArtifacts {
+    override val elements: Collection<BuiltArtifactImpl>)
+    : CommonBuiltArtifacts, BuiltArtifacts, Serializable {
 
     companion object {
         const val METADATA_FILE_NAME = "output-metadata.json"
     }
 
-    override fun transform(
-        newArtifactType: ArtifactType<*>,
-        transformer: (input: File) -> File
-    ): BuiltArtifacts =
-        BuiltArtifactsImpl(
-            version,
-            newArtifactType,
-            applicationId,
-            variantName,
-            elements.map {
-                it.newOutput(transformer(it.outputFile.toFile()).toPath())
-            })
-
     override fun save(out: Directory) {
         val outFile = File(out.asFile, METADATA_FILE_NAME)
-        save(outFile)
+        saveToFile(outFile)
     }
 
-    private fun save(out: File) {
-        out.writeText(persist(out.parentFile.toPath()), Charsets.UTF_8)
+    fun getBuiltArtifact(outputType: VariantOutputConfiguration.OutputType) =
+        elements.firstOrNull { it.outputType == outputType }
+
+
+    fun getBuiltArtifact(variantOutputConfiguration: VariantOutputConfiguration): BuiltArtifactImpl? =
+        elements.firstOrNull {
+            it.outputType == variantOutputConfiguration.outputType &&
+            it.filters == variantOutputConfiguration.filters }
+
+    /**
+     * Similar implementation of [BuiltArtifacts.transform] using the [WorkerExecutorFacade]
+     *
+     * TODO : move those 2 APIs to TaskBaseOperationsImpl class.
+     */
+    internal fun <T: BuiltArtifacts.TransformParams> transform(
+        newArtifactType: Artifact<Directory>,
+        workerFacade: WorkerExecutorFacade,
+        transformRunnableClass: Class<out Runnable>,
+        parametersFactory: (builtArtifact: BuiltArtifact) -> T
+    ): Supplier<BuiltArtifacts> {
+
+        val parametersList = mutableMapOf<BuiltArtifact, T>()
+        elements.forEach { builtArtifact ->
+            workerFacade.submit(transformRunnableClass,
+                parametersFactory(builtArtifact).also {
+                    parametersList[builtArtifact] = it
+                })
+        }
+        return Supplier {
+            workerFacade.await()
+            BuiltArtifactsImpl(
+                version,
+                newArtifactType,
+                applicationId,
+                variantName,
+                elements.map { builtArtifact ->
+                    builtArtifact.newOutput(
+                        parametersList[builtArtifact]?.output?.toPath()
+                            ?: throw java.lang.RuntimeException("Cannot find BuiltArtifact")
+                    )
+                }
+            )
+        }
     }
+
+    fun saveToDirectory(folder: File) =
+        saveToFile(File(folder, METADATA_FILE_NAME))
+
+    fun saveToFile(out: File) =
+        out.writeText(persist(out.parentFile.toPath()), Charsets.UTF_8)
 
     private fun persist(projectPath: Path): String {
         val gsonBuilder = GsonBuilder()
         gsonBuilder.registerTypeAdapter(BuiltArtifactImpl::class.java, BuiltArtifactTypeAdapter())
-        gsonBuilder.registerTypeHierarchyAdapter(ArtifactType::class.java, ArtifactTypeTypeAdapter())
+        gsonBuilder.registerTypeHierarchyAdapter(Artifact::class.java, ArtifactTypeTypeAdapter())
         val gson = gsonBuilder
             .enableComplexMapKeySerialization()
             .setPrettyPrinting()
@@ -77,14 +116,12 @@ class BuiltArtifactsImpl(
             elements
                 .asSequence()
                 .map { builtArtifact ->
-                    BuiltArtifactImpl(
-                        projectPath.relativize(builtArtifact.outputFile),
-                        builtArtifact.properties,
-                        builtArtifact.versionCode,
-                        builtArtifact.versionName,
-                        builtArtifact.isEnabled,
-                        builtArtifact.outputType,
-                        builtArtifact.filters
+                    BuiltArtifactImpl.make(
+                        outputFile = projectPath.relativize(
+                            Paths.get(builtArtifact.outputFile)).toString(),
+                        versionCode = builtArtifact.versionCode,
+                        versionName = builtArtifact.versionName,
+                        variantOutputConfiguration = builtArtifact.variantOutputConfiguration
                     )
                 }
             .toList()))

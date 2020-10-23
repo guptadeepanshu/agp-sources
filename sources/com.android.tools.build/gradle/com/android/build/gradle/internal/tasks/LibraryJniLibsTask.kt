@@ -19,9 +19,9 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants
 import com.android.SdkConstants.DOT_AAR
 import com.android.SdkConstants.DOT_JAR
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.utils.isValidZipEntryName
 import com.android.ide.common.workers.WorkerExecutorFacade
@@ -117,48 +117,57 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
     }
 
     abstract class CreationAction(
-        variantScope: VariantScope,
+        componentProperties: ComponentPropertiesImpl,
         val artifactType: InternalArtifactType<Directory>
-    ) : VariantTaskCreationAction<LibraryJniLibsTask>(variantScope) {
+    ) : VariantTaskCreationAction<LibraryJniLibsTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
         override val type = LibraryJniLibsTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out LibraryJniLibsTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<LibraryJniLibsTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesDir(
-                artifactType = artifactType,
-                taskProvider = taskProvider,
-                productProvider = LibraryJniLibsTask::outputDirectory,
-                fileName = SdkConstants.FD_JNI
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                LibraryJniLibsTask::outputDirectory
+            ).withName(SdkConstants.FD_JNI)
+                .on(artifactType)
         }
 
-        override fun configure(task: LibraryJniLibsTask) {
+        override fun configure(
+            task: LibraryJniLibsTask
+        ) {
             super.configure(task)
-            task.projectNativeLibs = variantScope.artifacts.getFinalProduct(STRIPPED_NATIVE_LIBS)
+            task.projectNativeLibs = creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS)
         }
     }
 
     class ProjectOnlyCreationAction(
-        variantScope: VariantScope,
+        componentProperties: ComponentPropertiesImpl,
         artifactType: InternalArtifactType<Directory>
-    ): CreationAction(variantScope, artifactType) {
-        override val name: String = variantScope.getTaskName("copy", "JniLibsProjectOnly")
+    ): CreationAction(componentProperties, artifactType) {
+        override val name: String = computeTaskName("copy", "JniLibsProjectOnly")
 
-        override fun configure(task: LibraryJniLibsTask) {
+        override fun configure(
+            task: LibraryJniLibsTask
+        ) {
             super.configure(task)
             task.localJarsNativeLibs = null
         }
     }
 
     class ProjectAndLocalJarsCreationAction(
-        variantScope: VariantScope,
+        componentProperties: ComponentPropertiesImpl,
         artifactType: InternalArtifactType<Directory>
-    ) : CreationAction(variantScope, artifactType) {
-        override val name: String = variantScope.getTaskName("copy", "JniLibsProjectAndLocalJars")
+    ) : CreationAction(componentProperties, artifactType) {
+        override val name: String = computeTaskName("copy", "JniLibsProjectAndLocalJars")
 
-        override fun configure(task: LibraryJniLibsTask) {
+        override fun configure(
+            task: LibraryJniLibsTask
+        ) {
             super.configure(task)
-            task.localJarsNativeLibs = variantScope.localPackagedJars
+            task.localJarsNativeLibs = creationConfig.variantScope.localPackagedJars
         }
     }
 }

@@ -20,13 +20,9 @@ import java.io.Serializable
 import java.util.Objects
 
 class IdeDependenciesInfo : DependenciesInfo, Serializable {
-    val includeInApk: Boolean
-    val includeInBundle: Boolean
+    override val includeInApk: Boolean
+    override val includeInBundle: Boolean
     val hashCode: Int
-
-    override fun isIncludeInApk() = includeInApk
-
-    override fun isIncludeInBundle() = includeInBundle
 
     companion object {
         @JvmStatic
@@ -34,8 +30,8 @@ class IdeDependenciesInfo : DependenciesInfo, Serializable {
     }
 
     constructor(model: DependenciesInfo) {
-        this.includeInApk = model.isIncludeInApk
-        this.includeInBundle = model.isIncludeInBundle
+        this.includeInApk = model.includeInApk
+        this.includeInBundle = model.includeInBundle
         this.hashCode = calculateHashCode()
     }
 

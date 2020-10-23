@@ -28,12 +28,13 @@ import com.android.aaptcompiler.ToolFingerprint
 import com.android.aaptcompiler.Value
 import com.android.aaptcompiler.android.ResTableConfig
 import com.android.aaptcompiler.android.ResValue
+import com.android.aaptcompiler.blameSource
 import com.android.aaptcompiler.buffer.BigBuffer
 import com.android.resources.ResourceVisibility
+import com.android.utils.ILogger
 import com.google.protobuf.ByteString
-import java.util.logging.Logger
 
-internal fun serializePoolToPb(pool: StringPool, logger: Logger?): Resources.StringPool {
+internal fun serializePoolToPb(pool: StringPool, logger: ILogger?): Resources.StringPool {
   val buffer = BigBuffer(1024)
   pool.flattenUtf8(buffer, logger)
 
@@ -56,7 +57,7 @@ internal fun serializeSourceToPb(source: Source, sourcePool: StringPool): Resour
   return sourceBuilder.build()
 }
 
-fun serializeTableToPb(table: ResourceTable, logger: Logger? = null): Resources.ResourceTable {
+fun serializeTableToPb(table: ResourceTable, logger: ILogger? = null): Resources.ResourceTable {
   val tableBuilder = Resources.ResourceTable.newBuilder()
   val sourcePool = StringPool()
 
@@ -91,59 +92,62 @@ fun serializeTableToPb(table: ResourceTable, logger: Logger? = null): Resources.
 
       groupBuilder.setName(resourceGroup.type.tagName)
 
-      for (entry in resourceGroup.entries) {
-        val entryBuilder = Resources.Entry.newBuilder()
+      for (idToEntries in resourceGroup.entries.values) {
+        for (entry in idToEntries.values) {
+          val entryBuilder = Resources.Entry.newBuilder()
 
-        val entryId = entry.id
-        if (entryId != null) {
-          entryBuilder.setEntryId(
-            Resources.EntryId.newBuilder()
-              .setId(entryId.toInt())
-              .build())
-        }
-        entryBuilder.setName(entry.name)
-
-        val visibilityBuilder = Resources.Visibility.newBuilder()
-        if (entry.visibility.source.isNotEmpty()) {
-          visibilityBuilder.setSource(serializeSourceToPb(entry.visibility.source, sourcePool))
-        }
-        entryBuilder.setVisibility(
-          visibilityBuilder
-            .setLevel(serializeVisibilityToPb(entry.visibility.level))
-            .setComment(entry.visibility.comment)
-            .build())
-
-        val entryAllowNew = entry.allowNew
-        if (entryAllowNew != null) {
-          val allowNewBuilder = Resources.AllowNew.newBuilder()
-          if (entryAllowNew.source.isNotEmpty()) {
-            allowNewBuilder.setSource(serializeSourceToPb(entryAllowNew.source, sourcePool))
+          val entryId = entry.id
+          if (entryId != null) {
+            entryBuilder.setEntryId(
+              Resources.EntryId.newBuilder()
+                .setId(entryId.toInt())
+                .build())
           }
-          entryBuilder.setAllowNew(
-            allowNewBuilder
-              .setComment(entryAllowNew.comment)
+          entryBuilder.setName(entry.name)
+
+          val visibilityBuilder = Resources.Visibility.newBuilder()
+          if (entry.visibility.source.isNotEmpty()) {
+            visibilityBuilder.setSource(serializeSourceToPb(entry.visibility.source, sourcePool))
+          }
+          entryBuilder.setVisibility(
+            visibilityBuilder
+              .setLevel(serializeVisibilityToPb(entry.visibility.level))
+              .setComment(entry.visibility.comment)
               .build())
-        }
 
-        val entryOverlayableItem = entry.overlayable
-        if (entryOverlayableItem != null) {
+          val entryAllowNew = entry.allowNew
+          if (entryAllowNew != null) {
+            val allowNewBuilder = Resources.AllowNew.newBuilder()
+            if (entryAllowNew.source.isNotEmpty()) {
+              allowNewBuilder.setSource(serializeSourceToPb(entryAllowNew.source, sourcePool))
+            }
+            entryBuilder.setAllowNew(
+              allowNewBuilder
+                .setComment(entryAllowNew.comment)
+                .build())
+          }
 
-          entryBuilder.setOverlayableItem(
-            serializeOverlayableToPb(
-              entryOverlayableItem,
-              overlayables,
-              tableBuilder,
-              sourcePool))
-        }
+          val entryOverlayableItem = entry.overlayable
+          if (entryOverlayableItem != null) {
 
-        for (configValue in entry.values) {
-          entryBuilder.addConfigValue(
-            Resources.ConfigValue.newBuilder()
-              .setConfig(serializeConfigToPb(configValue.config, configValue.product, logger))
-              .setValue(serializeValueToPb(configValue.value!!, sourcePool, logger))
-              .build())
+            entryBuilder.setOverlayableItem(
+              serializeOverlayableToPb(
+                entryOverlayableItem,
+                overlayables,
+                tableBuilder,
+                sourcePool))
+          }
+
+          for (configValue in entry.values) {
+            entryBuilder.addConfigValue(
+              Resources.ConfigValue.newBuilder()
+                .setConfig(serializeConfigToPb(configValue.config, configValue.product, logger))
+                .setValue(serializeValueToPb(configValue.value!!, sourcePool, logger))
+                .build()
+            )
+          }
+          groupBuilder.addEntry(entryBuilder.build())
         }
-        groupBuilder.addEntry(entryBuilder.build())
       }
       packageBuilder.addType(groupBuilder.build())
     }
@@ -182,7 +186,7 @@ fun serializeCompiledFileToPb(file: ResourceFile): ResourcesInternal.CompiledFil
 fun serializeConfigToPb(
   config: ConfigDescription,
   product: String?,
-  logger: Logger?): ConfigurationOuterClass.Configuration {
+  logger: ILogger?): ConfigurationOuterClass.Configuration {
 
   val configBuilder = ConfigurationOuterClass.Configuration.newBuilder()
   configBuilder.setMcc(config.mcc.toInt() and 0xffff)
@@ -481,13 +485,14 @@ fun serializeFileRefToPb(file: FileReference) =
     .setType(serializeFileTypeToPb(file.type))
     .build()
 
-fun serializeBinPrimitiveToPb(primitive: BinaryPrimitive, logger: Logger?): Resources.Primitive {
+fun serializeBinPrimitiveToPb(primitive: BinaryPrimitive, logger: ILogger?): Resources.Primitive {
   val resVal = primitive.flatten()
 
   val primitiveBuilder = Resources.Primitive.newBuilder()
 
   if (resVal == null) {
-    // TODO(b/139297538): Diagnostics
+    logger?.error(
+      null, "%s, Failed to serialize primitive %s.", blameSource(primitive.source), primitive)
     return primitiveBuilder.build()
   }
 
@@ -499,7 +504,8 @@ fun serializeBinPrimitiveToPb(primitive: BinaryPrimitive, logger: Logger?): Reso
         ResValue.NullFormat.EMPTY ->
           primitiveBuilder.setEmptyValue(Resources.Primitive.EmptyType.newBuilder().build())
         else -> {
-          // TODO(b/139297538): Diagnostics
+          val errorMsg = "%s, Invalid null format value '%s' for primitive %s."
+          logger?.error(null, errorMsg, blameSource(primitive.source), resVal.data, primitive)
         }
       }
     }
@@ -514,7 +520,8 @@ fun serializeBinPrimitiveToPb(primitive: BinaryPrimitive, logger: Logger?): Reso
     ResValue.DataType.INT_COLOR_ARGB4 -> primitiveBuilder.setColorArgb4Value(resVal.data)
     ResValue.DataType.INT_COLOR_RGB4 -> primitiveBuilder.setColorRgb4Value(resVal.data)
     else -> {
-      // TODO(b/139297538): Diagnostics
+      val errorMsg = "%s, Invalid data type '%s' for primitive %s."
+      logger?.error(null, errorMsg, blameSource(primitive.source), resVal.dataType, primitive)
     }
   }
 
@@ -544,7 +551,7 @@ fun serializeAttrToPb(attribute: AttributeResource, sourcePool: StringPool): Res
   return attrBuilder.build()
 }
 
-fun serializeStyleToPb(style: Style, sourcePool: StringPool, logger: Logger?): Resources.Style {
+fun serializeStyleToPb(style: Style, sourcePool: StringPool, logger: ILogger?): Resources.Style {
   val styleBuilder = Resources.Style.newBuilder()
 
   val parent = style.parent
@@ -588,7 +595,7 @@ fun serializeStyleableToPb(styleable: Styleable, sourcePool: StringPool): Resour
 }
 
 fun serializeArrayToPb(
-  array: ArrayResource, sourcePool: StringPool, logger: Logger?): Resources.Array {
+  array: ArrayResource, sourcePool: StringPool, logger: ILogger?): Resources.Array {
 
   val arrayBuilder = Resources.Array.newBuilder()
   for (element in array.elements) {
@@ -605,7 +612,9 @@ fun serializeArrayToPb(
   return arrayBuilder.build()
 }
 
-fun serializePluralToPb(plural: Plural, sourcePool: StringPool, logger: Logger?): Resources.Plural {
+fun serializePluralToPb(
+  plural: Plural, sourcePool: StringPool, logger: ILogger?): Resources.Plural {
+
   val pluralBuilder = Resources.Plural.newBuilder()
   for (type in Plural.Type.TYPES) {
     val entry = plural.values[type.ordinal]
@@ -624,7 +633,7 @@ fun serializePluralToPb(plural: Plural, sourcePool: StringPool, logger: Logger?)
   return pluralBuilder.build()
 }
 
-fun serializeItemToPb(item: Item, logger: Logger?): Resources.Item {
+fun serializeItemToPb(item: Item, logger: ILogger?): Resources.Item {
   val itemBuilder = Resources.Item.newBuilder()
   when (item) {
     is Reference -> itemBuilder.setRef(serializeReferenceToPb(item))
@@ -638,7 +647,7 @@ fun serializeItemToPb(item: Item, logger: Logger?): Resources.Item {
   return itemBuilder.build()
 }
 
-fun serializeValueToPb(value: Value, sourcePool: StringPool, logger: Logger?): Resources.Value {
+fun serializeValueToPb(value: Value, sourcePool: StringPool, logger: ILogger?): Resources.Value {
   val valueBuilder = Resources.Value.newBuilder()
 
   if (value is Item) {
@@ -652,7 +661,8 @@ fun serializeValueToPb(value: Value, sourcePool: StringPool, logger: Logger?): R
       is ArrayResource -> compoundBuilder.setArray(serializeArrayToPb(value, sourcePool, logger))
       is Plural -> compoundBuilder.setPlural(serializePluralToPb(value, sourcePool, logger))
       else -> {
-        // TODO(b/139297538) diagnostics
+        val errorMsg = "%s, Unrecognized type %s, for value %s."
+        logger?.error(null, errorMsg, blameSource(value.source), value.javaClass, value)
       }
     }
     valueBuilder.setCompoundValue(compoundBuilder.build())

@@ -17,8 +17,8 @@
 package com.android.build.gradle.tasks;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import java.io.File;
@@ -66,16 +66,16 @@ public abstract class CheckTestedAppObfuscation extends NonIncrementalTask {
     }
 
     public static class CreationAction
-            extends VariantTaskCreationAction<CheckTestedAppObfuscation> {
+            extends VariantTaskCreationAction<CheckTestedAppObfuscation, ComponentPropertiesImpl> {
 
-        public CreationAction(VariantScope scope) {
-            super(scope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("checkTestedAppObfuscation");
+            return computeTaskName("checkTestedAppObfuscation");
         }
 
         @NonNull
@@ -85,11 +85,13 @@ public abstract class CheckTestedAppObfuscation extends NonIncrementalTask {
         }
 
         @Override
-        public void configure(@NonNull CheckTestedAppObfuscation task) {
+        public void configure(
+                @NonNull CheckTestedAppObfuscation task) {
             super.configure(task);
 
             task.mappingFile =
-                    getVariantScope()
+                    creationConfig
+                            .getVariantDependencies()
                             .getArtifactFileCollection(
                                     AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
                                     AndroidArtifacts.ArtifactScope.ALL,

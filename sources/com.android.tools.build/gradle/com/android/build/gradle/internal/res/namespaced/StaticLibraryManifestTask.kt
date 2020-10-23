@@ -17,10 +17,11 @@
 package com.android.build.gradle.internal.res.namespaced
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -49,30 +50,31 @@ abstract class StaticLibraryManifestTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<StaticLibraryManifestTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<StaticLibraryManifestTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("create", "StaticLibraryManifest")
+            get() = computeTaskName("create", "StaticLibraryManifest")
         override val type: Class<StaticLibraryManifestTask>
             get() = StaticLibraryManifestTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out StaticLibraryManifestTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<StaticLibraryManifestTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.STATIC_LIBRARY_MANIFEST,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                StaticLibraryManifestTask::manifestFile,
-                SdkConstants.ANDROID_MANIFEST_XML
-            )
+                StaticLibraryManifestTask::manifestFile
+            ).withName(SdkConstants.ANDROID_MANIFEST_XML).on(InternalArtifactType.STATIC_LIBRARY_MANIFEST)
         }
 
-        override fun configure(task: StaticLibraryManifestTask) {
+        override fun configure(
+            task: StaticLibraryManifestTask
+        ) {
             super.configure(task)
-            task.packageName.set(variantScope.globalScope.project.provider {
-                variantScope.variantDslInfo.originalApplicationId
-            })
-            task.packageName.disallowChanges()
+            task.packageName.setDisallowChanges(creationConfig.packageName)
         }
     }
 }

@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.tasks.factory
 
+import com.android.build.gradle.internal.component.BaseCreationConfig
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.Task
@@ -26,12 +26,12 @@ import org.gradle.api.tasks.TaskProvider
 /**
  * Basic task information for creation
  */
-interface TaskInformation<T: Task> {
+interface TaskInformation<TaskT: Task> {
     /** The name of the task to be created.  */
     val name: String
 
     /** The class type of the task to created.  */
-    val type: Class<T>
+    val type: Class<TaskT>
 }
 
 /** Lazy Creation Action for non variant aware tasks
@@ -39,14 +39,14 @@ interface TaskInformation<T: Task> {
  * This contains both meta-data to create the task ([name], [type])
  * and actions to configure the task ([preConfigure], [configure], [handleProvider])
  */
-abstract class TaskCreationAction<T : Task> : TaskInformation<T>, PreConfigAction,
-    TaskConfigAction<T>, TaskProviderCallback<T> {
+abstract class TaskCreationAction<TaskT : Task> : TaskInformation<TaskT>, PreConfigAction,
+    TaskConfigAction<TaskT>, TaskProviderCallback<TaskT> {
 
     override fun preConfigure(taskName: String) {
         // default does nothing
     }
 
-    override fun handleProvider(taskProvider: TaskProvider<out T>) {
+    override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
         // default does nothing
     }
 }
@@ -59,21 +59,35 @@ abstract class TaskCreationAction<T : Task> : TaskInformation<T>, PreConfigActio
  * This contains both meta-data to create the task ([name], [type])
  * and actions to configure the task ([preConfigure], [configure], [handleProvider])
  */
-abstract class VariantTaskCreationAction<T>(
-    protected val variantScope: VariantScope, private val dependsOnPreBuildTask: Boolean
-) : TaskCreationAction<T>() where T: Task, T: VariantAwareTask {
+abstract class VariantTaskCreationAction<TaskT, CreationConfigT: BaseCreationConfig>(
+    @JvmField protected val creationConfig: CreationConfigT,
+    private val dependsOnPreBuildTask: Boolean
+) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: VariantAwareTask {
 
-    constructor(variantScope: VariantScope): this(variantScope, true)
+    constructor(
+        creationConfig: CreationConfigT
+    ): this(creationConfig, true)
 
-    override fun configure(task: T) {
+    @JvmOverloads
+    protected fun computeTaskName(prefix: String, suffix: String = ""): String =
+        creationConfig.computeTaskName(prefix, suffix)
+
+    override fun preConfigure(taskName: String) {
+        // default does nothing
+    }
+    override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
+        // default does nothing
+    }
+
+    override fun configure(task: TaskT) {
         if (dependsOnPreBuildTask) {
-            val taskContainer: MutableTaskContainer = variantScope.taskContainer
+            val taskContainer: MutableTaskContainer = creationConfig.taskContainer
             task.dependsOn(taskContainer.preBuildTask)
         }
 
-        task.variantName = variantScope.name
+        task.variantName = creationConfig.name
         task.enableGradleWorkers.set(
-            variantScope.globalScope.projectOptions.get(BooleanOption.ENABLE_GRADLE_WORKERS)
+            creationConfig.services.projectOptions.get(BooleanOption.ENABLE_GRADLE_WORKERS)
         )
     }
 }
@@ -81,10 +95,10 @@ abstract class VariantTaskCreationAction<T>(
 /**
  * Configuration Action for tasks.
  */
-interface TaskConfigAction<T: Task> {
+interface TaskConfigAction<TaskT: Task> {
 
     /** Configures the task. */
-    fun configure(task: T)
+    fun configure(task: TaskT)
 }
 
 /**
@@ -107,6 +121,6 @@ interface PreConfigAction {
  *
  * Once a TaskProvider is created this is called to process it.
  */
-interface TaskProviderCallback<T: Task> {
-    fun handleProvider(taskProvider: TaskProvider<out T>)
+interface TaskProviderCallback<TaskT: Task> {
+    fun handleProvider(taskProvider: TaskProvider<TaskT>)
 }

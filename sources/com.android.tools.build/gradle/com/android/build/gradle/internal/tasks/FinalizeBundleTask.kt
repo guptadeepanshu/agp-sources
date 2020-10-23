@@ -17,18 +17,16 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.apksig.ApkSigner
-import com.android.build.VariantOutput
-import com.android.build.gradle.internal.scope.ApkData
-import com.android.build.gradle.internal.scope.BuildElements
-import com.android.build.gradle.internal.scope.BuildOutput
-import com.android.build.gradle.internal.scope.ExistingBuildElements
+import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.impl.BuiltArtifactImpl
+import com.android.build.api.variant.impl.BuiltArtifactsImpl
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.signing.SigningConfigProvider
 import com.android.build.gradle.internal.signing.SigningConfigProviderParams
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.StringOption
 import com.android.ide.common.signing.KeystoreHelper
 import com.android.utils.FileUtils
 import org.gradle.api.file.RegularFileProperty
@@ -76,9 +74,6 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
     @get:Input
     abstract val applicationId: Property<String>
 
-    @get:Input
-    abstract val variantType: Property<String>
-
     override fun doTaskAction() {
         getWorkerFacadeWithWorkers().use {
             it.submit(
@@ -89,7 +84,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                     signingConfig = signingConfig?.convertToParams(),
                     bundleIdeModel = bundleIdeModel.get().asFile,
                     applicationId = applicationId.get(),
-                    variantType = variantType.get()
+                    variantName = variantName
                 )
             )
         }
@@ -101,12 +96,12 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
         val signingConfig: SigningConfigProviderParams?,
         val bundleIdeModel: File,
         val applicationId: String,
-        val variantType: String
+        val variantName: String
     ) : Serializable
 
     private class BundleToolRunnable @Inject constructor(private val params: Params): Runnable {
         override fun run() {
-            FileUtils.cleanOutputDir(params.finalBundleFile.parentFile)
+            FileUtils.deleteIfExists(params.finalBundleFile)
 
             params.signingConfig?.resolve()?.let {
                 val certificateInfo =
@@ -135,16 +130,12 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                 FileUtils.copyFile(params.intermediaryBundleFile, params.finalBundleFile)
             }
 
-            BuildElements(
+            BuiltArtifactsImpl(
+                artifactType = InternalArtifactType.BUNDLE,
                 applicationId = params.applicationId,
-                variantType = params.variantType,
+                variantName = params.variantName,
                 elements = listOf(
-                    BuildOutput(
-                        InternalArtifactType.BUNDLE,
-                        ApkData.of(VariantOutput.OutputType.MAIN, listOf(), -1),
-                        params.finalBundleFile
-                    )
-                )
+                    BuiltArtifactImpl.make(outputFile = params.finalBundleFile.absolutePath))
             ).saveToFile(params.bundleIdeModel)
         }
     }
@@ -152,60 +143,61 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
     /**
      * CreateAction for a task that will sign the bundle artifact.
      */
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<FinalizeBundleTask>(variantScope) {
+    class CreationAction(creationConfig: ApkCreationConfig) :
+        VariantTaskCreationAction<FinalizeBundleTask, ApkCreationConfig>(
+            creationConfig
+        ) {
         override val name: String
-            get() = variantScope.getTaskName("sign", "Bundle")
+            get() = computeTaskName("sign", "Bundle")
 
         override val type: Class<FinalizeBundleTask>
             get() = FinalizeBundleTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out FinalizeBundleTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<FinalizeBundleTask>
+        ) {
             super.handleProvider(taskProvider)
 
-            val bundleName = "${variantScope.globalScope.projectBaseName}-${variantScope.variantDslInfo.baseName}.aab"
-            val apkLocationOverride = variantScope.globalScope.projectOptions.get(StringOption.IDE_APK_LOCATION)
+            val bundleName = "${creationConfig.globalScope.projectBaseName}-${creationConfig.baseName}.aab"
+            val apkLocationOverride = creationConfig.services.projectOptions.get(StringOption.IDE_APK_LOCATION)
             if (apkLocationOverride == null) {
-                variantScope.artifacts.producesFile(
-                    InternalArtifactType.BUNDLE,
+                creationConfig.artifacts.setInitialProvider(
                     taskProvider,
-                    FinalizeBundleTask::finalBundleFile,
-                    bundleName
-                )
+                    FinalizeBundleTask::finalBundleFile
+                ).withName(bundleName).on(InternalArtifactType.BUNDLE)
             } else {
-                variantScope.artifacts.producesFile(
-                    InternalArtifactType.BUNDLE,
+                creationConfig.artifacts.setInitialProvider(
                     taskProvider,
-                    FinalizeBundleTask::finalBundleFile,
-                    FileUtils.join(
-                        variantScope.globalScope.project.file(apkLocationOverride),
-                        variantScope.variantDslInfo.dirName).absolutePath,
-                    bundleName
-                )
+                    FinalizeBundleTask::finalBundleFile)
+                    .atLocation(FileUtils.join(
+                        creationConfig.services.file(apkLocationOverride),
+                        creationConfig.dirName).absolutePath)
+                    .withName(bundleName)
+                    .on(InternalArtifactType.BUNDLE)
             }
 
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.BUNDLE_IDE_MODEL,
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                FinalizeBundleTask::bundleIdeModel,
-                ExistingBuildElements.METADATA_FILE_NAME
-            )
+                FinalizeBundleTask::bundleIdeModel
+            ).withName(BuiltArtifactsImpl.METADATA_FILE_NAME)
+                .on(InternalArtifactType.BUNDLE_IDE_MODEL)
         }
 
-        override fun configure(task: FinalizeBundleTask) {
+        override fun configure(
+            task: FinalizeBundleTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE,
                 task.intermediaryBundleFile)
 
             // Don't sign debuggable bundles.
-            if (!variantScope.variantDslInfo.isDebuggable) {
-                task.signingConfig = SigningConfigProvider.create(variantScope)
+            if (!creationConfig.debuggable) {
+                task.signingConfig = SigningConfigProvider.create(creationConfig as ComponentPropertiesImpl)
             }
 
-            task.applicationId.setDisallowChanges(variantScope.variantData.publicVariantPropertiesApi.applicationId)
-            task.variantType.setDisallowChanges(variantScope.variantData.type.toString())
+            task.applicationId.setDisallowChanges(creationConfig.applicationId)
         }
 
     }

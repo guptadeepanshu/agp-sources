@@ -16,18 +16,90 @@
 
 package com.android.build.api.component.impl
 
-import com.android.build.api.artifact.Operations
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.UnitTestProperties
-import com.android.build.gradle.internal.api.dsl.DslScope
+import com.android.build.api.variant.impl.VariantPropertiesImpl
+import com.android.build.gradle.internal.component.UnitTestCreationConfig
+import com.android.build.gradle.internal.core.VariantDslInfo
+import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.scope.BuildFeatureValues
+import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.variant.BaseVariantData
+import com.android.build.gradle.internal.variant.VariantPathHelper
+import com.google.common.collect.ImmutableList
+import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
-internal open class UnitTestPropertiesImpl @Inject constructor(
-    dslScope: DslScope,
+open class UnitTestPropertiesImpl @Inject constructor(
+    componentIdentity: ComponentIdentity,
+    buildFeatureValues: BuildFeatureValues,
+    variantDslInfo: VariantDslInfo,
+    variantDependencies: VariantDependencies,
+    variantSources: VariantSources,
+    paths: VariantPathHelper,
+    artifacts: ArtifactsImpl,
     variantScope: VariantScope,
-    operations: Operations,
-    configuration: ComponentIdentity
-) : ComponentPropertiesImpl(dslScope, variantScope, operations, configuration),
-    UnitTestProperties {
+    variantData: BaseVariantData,
+    testedVariant: VariantPropertiesImpl,
+    transformManager: TransformManager,
+    internalServices: VariantPropertiesApiServices,
+    taskCreationServices: TaskCreationServices,
+    globalScope: GlobalScope
+) : TestComponentPropertiesImpl(
+    componentIdentity,
+    buildFeatureValues,
+    variantDslInfo,
+    variantDependencies,
+    variantSources,
+    paths,
+    artifacts,
+    variantScope,
+    variantData,
+    testedVariant,
+    transformManager,
+    internalServices,
+    taskCreationServices,
+    globalScope
+), UnitTestProperties, UnitTestCreationConfig {
+
+    // ---------------------------------------------------------------------------------------------
+    // PUBLIC API
+    // ---------------------------------------------------------------------------------------------
+
+
+
+    // ---------------------------------------------------------------------------------------------
+    // INTERNAL API
+    // ---------------------------------------------------------------------------------------------
+
+    override val applicationId: Provider<String> =
+        internalServices.providerOf(String::class.java, variantDslInfo.applicationId)
+
+    override val testedApplicationId: Provider<String>
+        get() = testedConfig.applicationId
+
+    // these would normally be public but not for unit-test. They are there to feed the
+    // manifest but aren't actually used.
+    override val instrumentationRunner: Provider<String>
+        get() = variantDslInfo.instrumentationRunner
+    override val handleProfiling: Provider<Boolean>
+        get() = variantDslInfo.handleProfiling
+    override val functionalTest: Provider<Boolean>
+        get() = variantDslInfo.functionalTest
+    override val testLabel: Provider<String?>
+        get() = variantDslInfo.testLabel
+    override val instrumentationRunnerArguments: Map<String, String>
+        get() = variantDslInfo.instrumentationRunnerArguments
+    override val isTestCoverageEnabled: Boolean
+        get() = variantDslInfo.isTestCoverageEnabled
+
+    override fun addDataBindingSources(
+        sourceSets: ImmutableList.Builder<ConfigurableFileTree>) {}
 }

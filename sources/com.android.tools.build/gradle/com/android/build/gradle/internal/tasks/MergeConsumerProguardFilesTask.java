@@ -20,17 +20,20 @@ import static com.android.build.gradle.internal.scope.InternalArtifactType.GENER
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.ComponentPropertiesImpl;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
-import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
+import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.builder.errors.EvalIssueException;
 import java.io.IOException;
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.TaskProvider;
@@ -56,14 +59,15 @@ public abstract class MergeConsumerProguardFilesTask extends MergeFileTask {
     @PathSensitive(PathSensitivity.RELATIVE)
     public abstract ConfigurableFileCollection getConsumerProguardFiles();
 
+    @Internal("only for task execution")
+    public abstract DirectoryProperty getBuildDirectory();
+
     @Override
     public void doTaskAction() throws IOException {
-        final Project project = getProject();
-
         // We check for default files unless it's a base feature, which can include default files.
         if (!isBaseModule) {
             ExportConsumerProguardFilesTask.checkProguardFiles(
-                    project,
+                    getBuildDirectory(),
                     isDynamicFeature,
                     getConsumerProguardFiles().getFiles(),
                     errorMessage -> {
@@ -74,16 +78,17 @@ public abstract class MergeConsumerProguardFilesTask extends MergeFileTask {
     }
 
     public static class CreationAction
-            extends VariantTaskCreationAction<MergeConsumerProguardFilesTask> {
+            extends VariantTaskCreationAction<
+                    MergeConsumerProguardFilesTask, ComponentPropertiesImpl> {
 
-        public CreationAction(@NonNull VariantScope variantScope) {
-            super(variantScope);
+        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
+            super(componentProperties);
         }
 
         @NonNull
         @Override
         public String getName() {
-            return getVariantScope().getTaskName("merge", "ConsumerProguardFiles");
+            return computeTaskName("merge", "ConsumerProguardFiles");
         }
 
         @NonNull
@@ -94,37 +99,36 @@ public abstract class MergeConsumerProguardFilesTask extends MergeFileTask {
 
         @Override
         public void handleProvider(
-                @NonNull TaskProvider<? extends MergeConsumerProguardFilesTask> taskProvider) {
+                @NonNull TaskProvider<MergeConsumerProguardFilesTask> taskProvider) {
             super.handleProvider(taskProvider);
 
-            getVariantScope()
+            creationConfig
                     .getArtifacts()
-                    .producesFile(
-                            InternalArtifactType.MERGED_CONSUMER_PROGUARD_FILE.INSTANCE,
-                            taskProvider,
-                            MergeConsumerProguardFilesTask::getOutputFile,
-                            SdkConstants.FN_PROGUARD_TXT);
+                    .setInitialProvider(taskProvider, MergeConsumerProguardFilesTask::getOutputFile)
+                    .withName(SdkConstants.FN_PROGUARD_TXT)
+                    .on(InternalArtifactType.MERGED_CONSUMER_PROGUARD_FILE.INSTANCE);
         }
 
         @Override
-        public void configure(@NonNull MergeConsumerProguardFilesTask task) {
+        public void configure(
+                @NonNull MergeConsumerProguardFilesTask task) {
             super.configure(task);
-            GlobalScope globalScope = getVariantScope().getGlobalScope();
+            GlobalScope globalScope = creationConfig.getGlobalScope();
             Project project = globalScope.getProject();
 
-            task.isBaseModule = getVariantScope().getType().isBaseModule();
-            task.isDynamicFeature = getVariantScope().getType().isDynamicFeature();
+            task.isBaseModule = creationConfig.getVariantType().isBaseModule();
+            task.isDynamicFeature = creationConfig.getVariantType().isDynamicFeature();
 
             task.getConsumerProguardFiles()
-                    .from(getVariantScope().getConsumerProguardFilesForFeatures());
+                    .from(creationConfig.getVariantScope().getConsumerProguardFilesForFeatures());
 
             ConfigurableFileCollection inputFiles =
                     project.files(
                             task.getConsumerProguardFiles(),
-                            getVariantScope()
-                                    .getArtifacts()
-                                    .getFinalProduct(GENERATED_PROGUARD_FILE.INSTANCE));
+                            creationConfig.getArtifacts().get(GENERATED_PROGUARD_FILE.INSTANCE));
             task.setInputFiles(inputFiles);
+            HasConfigurableValuesKt.setDisallowChanges(
+                    task.getBuildDirectory(), task.getProject().getLayout().getBuildDirectory());
         }
     }
 }

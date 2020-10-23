@@ -15,9 +15,9 @@
  */
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.DuplicatesStrategy
@@ -42,34 +42,37 @@ abstract class ProcessJavaResTask : Sync(), VariantAwareTask {
     override lateinit var variantName: String
 
     /** Configuration Action for a process*JavaRes tasks.  */
-    class CreationAction(scope: VariantScope) :
-        VariantTaskCreationAction<ProcessJavaResTask>(scope) {
+    class CreationAction(
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<ProcessJavaResTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
 
         override val name: String
-            get() = variantScope.getTaskName("process", "JavaRes")
+            get() = computeTaskName("process", "JavaRes")
 
         override val type: Class<ProcessJavaResTask>
             get() = ProcessJavaResTask::class.java
 
         override fun handleProvider(
-            taskProvider: TaskProvider<out ProcessJavaResTask>
+            taskProvider: TaskProvider<ProcessJavaResTask>
         ) {
             super.handleProvider(taskProvider)
-            variantScope.taskContainer.processJavaResourcesTask = taskProvider
-            variantScope
-                .artifacts
-                .producesDir(
-                    InternalArtifactType.JAVA_RES,
+            creationConfig.taskContainer.processJavaResourcesTask = taskProvider
+
+            creationConfig.artifacts.setInitialProvider(
                     taskProvider,
                     ProcessJavaResTask::outDirectory
-                )
+                ).withName("out").on(InternalArtifactType.JAVA_RES)
         }
 
-        override fun configure(task: ProcessJavaResTask) {
+        override fun configure(
+            task: ProcessJavaResTask
+        ) {
             super.configure(task)
 
-            for (sourceProvider in variantScope.variantSources.sortedSourceProviders) {
-                task.from((sourceProvider as AndroidSourceSet).resources.sourceFiles)
+            for (sourceProvider in creationConfig.variantSources.sortedSourceProviders) {
+                task.from((sourceProvider as AndroidSourceSet).resources.getSourceFiles())
             }
             task.duplicatesStrategy = DuplicatesStrategy.INCLUDE
         }

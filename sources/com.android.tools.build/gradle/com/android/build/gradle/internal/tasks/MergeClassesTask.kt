@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_JAR
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.packaging.JarCreatorType
@@ -24,7 +25,6 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.res.namespaced.JarRequest
 import com.android.build.gradle.internal.res.namespaced.JarWorkerRunnable
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
 import com.android.ide.common.workers.WorkerExecutorFacade
@@ -97,39 +97,43 @@ abstract class MergeClassesTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        variantScope: VariantScope
-    ) : VariantTaskCreationAction<MergeClassesTask>(variantScope) {
+        componentProperties: ComponentPropertiesImpl
+    ) : VariantTaskCreationAction<MergeClassesTask, ComponentPropertiesImpl>(
+        componentProperties
+    ) {
         override val type = MergeClassesTask::class.java
-        override val name: String = variantScope.getTaskName("merge", "Classes")
+        override val name: String = computeTaskName("merge", "Classes")
 
         // Because ordering matters for the transform pipeline, we need to fetch the classes as soon
         // as this creation action is instantiated.
         private val inputFiles =
-            variantScope
+            componentProperties
                 .transformManager
                 .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                     contentTypes.contains(QualifiedContent.DefaultContentType.CLASSES)
                             && scopes.intersect(TransformManager.SCOPE_FULL_PROJECT).isNotEmpty()
                 }
 
-        override fun handleProvider(taskProvider: TaskProvider<out MergeClassesTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<MergeClassesTask>
+        ) {
             super.handleProvider(taskProvider)
-            variantScope.artifacts.producesFile(
-                artifactType = InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
-                taskProvider = taskProvider,
-                productProvider = MergeClassesTask::outputFile,
-                fileName = if (variantScope.type.isBaseModule) {
-                    "base.jar"
-                } else {
-                    TaskManager.getFeatureFileName(variantScope.globalScope.project.path, DOT_JAR)
-                }
-            )
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                MergeClassesTask::outputFile
+            ).withName(if (creationConfig.variantType.isBaseModule) {
+                "base.jar"
+            } else {
+                TaskManager.getFeatureFileName(creationConfig.globalScope.project.path, DOT_JAR)
+            }).on(InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES)
         }
 
-        override fun configure(task: MergeClassesTask) {
+        override fun configure(
+            task: MergeClassesTask
+        ) {
             super.configure(task)
             task.inputFiles = inputFiles
-            task.jarCreatorType = variantScope.jarCreatorType
+            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
         }
     }
 }

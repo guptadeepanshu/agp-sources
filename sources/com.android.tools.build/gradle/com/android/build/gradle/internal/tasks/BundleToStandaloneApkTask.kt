@@ -17,9 +17,9 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.signing.SigningConfigProvider
 import com.android.tools.build.bundletool.commands.BuildApksCommand
@@ -167,36 +167,41 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
         }
     }
 
-    class CreationAction(variantScope: VariantScope) :
-        VariantTaskCreationAction<BundleToStandaloneApkTask>(variantScope) {
+    class CreationAction(componentProperties: ComponentPropertiesImpl) :
+        VariantTaskCreationAction<BundleToStandaloneApkTask, ComponentPropertiesImpl>(
+            componentProperties
+        ) {
 
         override val name: String
-            get() = variantScope.getTaskName("package", "UniversalApk")
+            get() = computeTaskName("package", "UniversalApk")
         override val type: Class<BundleToStandaloneApkTask>
             get() = BundleToStandaloneApkTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<out BundleToStandaloneApkTask>) {
+        override fun handleProvider(
+            taskProvider: TaskProvider<BundleToStandaloneApkTask>
+        ) {
             super.handleProvider(taskProvider)
             // Mirrors logic in OutputFactory.getOutputFileName, but without splits.
-            val suffix = if (variantScope.variantDslInfo.isSigningReady) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
-            variantScope.artifacts.producesFile(
-                InternalArtifactType.UNIVERSAL_APK,
+            val suffix = if (creationConfig.variantDslInfo.isSigningReady) SdkConstants.DOT_ANDROID_PACKAGE else "-unsigned.apk"
+            creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                BundleToStandaloneApkTask::outputFile,
-                "${variantScope.globalScope.projectBaseName}-${variantScope.variantDslInfo.baseName}-universal$suffix"
-            )
+                BundleToStandaloneApkTask::outputFile
+            ).withName("${creationConfig.globalScope.projectBaseName}-${creationConfig.baseName}-universal$suffix")
+                .on(InternalArtifactType.UNIVERSAL_APK)
         }
 
-        override fun configure(task: BundleToStandaloneApkTask) {
+        override fun configure(
+            task: BundleToStandaloneApkTask
+        ) {
             super.configure(task)
 
-            variantScope.artifacts.setTaskInputToFinalProduct(
+            creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.INTERMEDIARY_BUNDLE, task.bundle)
-            val (aapt2FromMaven,aapt2Version) = getAapt2FromMavenAndVersion(variantScope.globalScope)
+            val (aapt2FromMaven,aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
             task.aapt2FromMaven.from(aapt2FromMaven)
             task.aapt2Version = aapt2Version
-            task.tempDirectory = variantScope.getIncrementalDir(name)
-            task.signingConfig = SigningConfigProvider.create(variantScope)
+            task.tempDirectory = creationConfig.paths.getIncrementalDir(name)
+            task.signingConfig = SigningConfigProvider.create(creationConfig)
         }
     }
 }
