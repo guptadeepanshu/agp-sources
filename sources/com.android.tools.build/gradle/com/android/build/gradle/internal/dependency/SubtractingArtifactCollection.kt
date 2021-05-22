@@ -22,6 +22,7 @@ import org.gradle.api.artifacts.component.ComponentArtifactIdentifier
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.specs.Spec
 import java.io.File
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream

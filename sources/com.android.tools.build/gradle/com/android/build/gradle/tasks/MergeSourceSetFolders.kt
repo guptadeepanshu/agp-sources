@@ -15,15 +15,17 @@
  */
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ASSETS
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.IncrementalTask
+import com.android.build.gradle.internal.tasks.Workers
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
@@ -115,7 +117,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
 
         val logger = LoggerWrapper(logger)
         try {
-            getWorkerFacadeWithWorkers().use { workerExecutor ->
+            Workers.withGradleWorkers(projectName, path, workerExecutor, analyticsService).use { workerExecutor ->
                 for (assetSet in assetSets) {
                     // set needs to be loaded.
                     assetSet.loadFromFiles(logger)
@@ -149,7 +151,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
         // create a merger and load the known state.
         val merger = AssetMerger()
         try {
-            getWorkerFacadeWithWorkers().use { workerExecutor ->
+            Workers.withGradleWorkers(projectName, path, workerExecutor, analyticsService).use { workerExecutor ->
                 if (!/*incrementalState*/merger.loadFromBlob(incrementalFolder!!, true, aaptEnv)) {
                     doFullTaskAction()
                     return
@@ -305,9 +307,9 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
     }
 
     abstract class CreationAction protected constructor(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<MergeSourceSetFolders, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<MergeSourceSetFolders, ComponentCreationConfig>(
+        creationConfig
     ) {
 
         override val type: Class<MergeSourceSetFolders>
@@ -325,10 +327,10 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
     }
 
     open class MergeAssetBaseCreationAction(
-        componentProperties: ComponentPropertiesImpl,
+        creationConfig: ComponentCreationConfig,
         private val outputArtifactType: InternalArtifactType<Directory>,
         private val includeDependencies: Boolean
-    ) : CreationAction(componentProperties) {
+    ) : CreationAction(creationConfig) {
 
         override val name: String
             get() = computeTaskName("merge", "Assets")
@@ -358,7 +360,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
                 ANDROID_AAPT_IGNORE
             ).forUseAtConfigurationTime().orNull
 
-            task.assetSets.set(creationConfig.globalScope.project.provider {
+            task.assetSets.set(task.project.provider {
                 variantSources.getSourceFilesAsAssetSets(assetDirFunction, task.aaptEnv)
             })
             task.assetSets.disallowChanges()
@@ -393,9 +395,9 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
         }
     }
 
-    class MergeAppAssetCreationAction(componentProperties: ComponentPropertiesImpl) :
+    class MergeAppAssetCreationAction(creationConfig: ComponentCreationConfig) :
         MergeAssetBaseCreationAction(
-            componentProperties,
+            creationConfig,
             InternalArtifactType.MERGED_ASSETS,
             true
         ) {
@@ -404,9 +406,9 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
             get() = computeTaskName("merge", "Assets")
     }
 
-    class LibraryAssetCreationAction(componentProperties: ComponentPropertiesImpl) :
+    class LibraryAssetCreationAction(creationConfig: VariantCreationConfig) :
         MergeAssetBaseCreationAction(
-            componentProperties,
+            creationConfig,
             InternalArtifactType.LIBRARY_ASSETS,
             false
         ) {
@@ -415,8 +417,8 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
             get() = computeTaskName("package", "Assets")
     }
 
-    class MergeJniLibFoldersCreationAction(componentProperties: ComponentPropertiesImpl) :
-        CreationAction(componentProperties) {
+    class MergeJniLibFoldersCreationAction(creationConfig: VariantCreationConfig) :
+        CreationAction(creationConfig) {
 
         override val name: String
             get() = computeTaskName("merge", "JniLibFolders")
@@ -442,7 +444,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
             task.aaptEnv = creationConfig.services.gradleEnvironmentProvider.getEnvVariable(
                 ANDROID_AAPT_IGNORE
             ).forUseAtConfigurationTime().orNull
-            task.assetSets.set(creationConfig.globalScope.project.provider {
+            task.assetSets.set(task.project.provider {
                 variantSources.getSourceFilesAsAssetSets(assetDirFunction, task.aaptEnv)
             })
             task.assetSets.disallowChanges()
@@ -450,8 +452,8 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
         }
     }
 
-    class MergeShaderSourceFoldersCreationAction(componentProperties: ComponentPropertiesImpl) :
-        CreationAction(componentProperties) {
+    class MergeShaderSourceFoldersCreationAction(creationConfig: VariantCreationConfig) :
+        CreationAction(creationConfig) {
 
         override val name: String
             get() = computeTaskName("merge", "Shaders")
@@ -476,7 +478,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
             task.aaptEnv = creationConfig.services.gradleEnvironmentProvider.getEnvVariable(
                 ANDROID_AAPT_IGNORE
             ).forUseAtConfigurationTime().orNull
-            task.assetSets.set(creationConfig.globalScope.project.provider {
+            task.assetSets.set(task.project.provider {
                 variantSources.getSourceFilesAsAssetSets(assetDirFunction, task.aaptEnv)
             })
             task.assetSets.disallowChanges()
@@ -484,8 +486,8 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
         }
     }
 
-    class MergeMlModelsSourceFoldersCreationAction(componentProperties: ComponentPropertiesImpl) :
-        CreationAction(componentProperties) {
+    class MergeMlModelsSourceFoldersCreationAction(creationConfig: VariantCreationConfig) :
+        CreationAction(creationConfig) {
 
         override val name: String
             get() = computeTaskName("merge", "MlModels")
@@ -511,7 +513,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
             task.aaptEnv = creationConfig.services.gradleEnvironmentProvider.getEnvVariable(
                 ANDROID_AAPT_IGNORE
             ).forUseAtConfigurationTime().orNull
-            task.assetSets.setDisallowChanges(creationConfig.globalScope.project.provider {
+            task.assetSets.setDisallowChanges(task.project.provider {
                 variantSources.getSourceFilesAsAssetSets(mlModelsDirFunction, task.aaptEnv)
             })
             task.sourceFolderInputs.from(Callable {

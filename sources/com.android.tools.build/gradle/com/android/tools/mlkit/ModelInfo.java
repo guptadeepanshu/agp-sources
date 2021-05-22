@@ -15,7 +15,9 @@
  */
 package com.android.tools.mlkit;
 
+import static com.android.tools.mlkit.DataInputOutputUtils.readTensorGroupInfoList;
 import static com.android.tools.mlkit.DataInputOutputUtils.readTensorInfoList;
+import static com.android.tools.mlkit.DataInputOutputUtils.writeTensorGroupInfoList;
 import static com.android.tools.mlkit.DataInputOutputUtils.writeTensorInfoList;
 
 import com.android.annotations.NonNull;
@@ -28,60 +30,68 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import org.tensorflow.lite.support.metadata.MetadataExtractor;
 import org.tensorflow.lite.support.metadata.schema.ModelMetadata;
+import org.tensorflow.lite.support.metadata.schema.SubGraphMetadata;
 
 /** Stores necessary data for one model. */
 public class ModelInfo {
-
-    /**
-     * Version of current parser. If model metadata's minParserVersion is higher than this, we will
-     * use fallback APIs (use TensorBuffer for all APIs).
-     */
-    public static final String PARSER_VERSION = "1.0.0";
-
     private final long modelSize;
-    private final String modelHash;
+    @NonNull private final String modelHash;
 
     private final boolean metadataExisted;
-    private final String modelName;
-    private final String modelDescription;
-    private final String modelVersion;
-    private final String modelAuthor;
-    private final String modelLicense;
-    private final String minParserVersion;
+    private final boolean minParserVersionSatisfied;
+    @NonNull private final String modelName;
+    @NonNull private final String modelDescription;
+    @NonNull private final String modelVersion;
+    @NonNull private final String modelAuthor;
+    @NonNull private final String modelLicense;
+    @NonNull private final String minParserVersion;
 
-    private final List<TensorInfo> inputs;
-    private final List<TensorInfo> outputs;
+    @NonNull private final List<TensorInfo> inputs;
+    @NonNull private final List<TensorInfo> outputs;
+    @NonNull private final List<TensorGroupInfo> inputTensorGroupInfos;
+    @NonNull private final List<TensorGroupInfo> outputTensorGroupInfos;
 
     public ModelInfo(
-            long modelSize, @NonNull String modelHash, @Nullable ModelMetadata modelMetadata) {
+            long modelSize, @NonNull String modelHash, @NonNull MetadataExtractor extractor) {
         this.modelSize = modelSize;
         this.modelHash = modelHash;
+
+        ModelMetadata modelMetadata = extractor.hasMetadata() ? extractor.getModelMetadata() : null;
         if (modelMetadata != null) {
             metadataExisted = true;
+            minParserVersionSatisfied = extractor.isMinimumParserVersionSatisfied();
             modelName = Strings.nullToEmpty(modelMetadata.name());
             modelDescription = Strings.nullToEmpty(modelMetadata.description());
             modelVersion = Strings.nullToEmpty(modelMetadata.version());
             modelAuthor = Strings.nullToEmpty(modelMetadata.author());
             modelLicense = Strings.nullToEmpty(modelMetadata.license());
-            minParserVersion = Strings.nullToEmpty(modelMetadata.minParserVersion());
+            minParserVersion =
+                    Strings.isNullOrEmpty(modelMetadata.minParserVersion())
+                            ? "1.0.0"
+                            : modelMetadata.minParserVersion();
         } else {
             metadataExisted = false;
+            minParserVersionSatisfied = true;
             modelName = "";
             modelDescription = "";
             modelVersion = "";
             modelAuthor = "";
             modelLicense = "";
-            minParserVersion = "";
+            minParserVersion = "1.0.0";
         }
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
+        inputTensorGroupInfos = new ArrayList<>();
+        outputTensorGroupInfos = new ArrayList<>();
     }
 
     public ModelInfo(@NonNull DataInput in) throws IOException {
         modelSize = in.readLong();
         modelHash = in.readUTF();
         metadataExisted = in.readBoolean();
+        minParserVersionSatisfied = in.readBoolean();
         modelName = in.readUTF();
         modelDescription = in.readUTF();
         modelVersion = in.readUTF();
@@ -90,12 +100,15 @@ public class ModelInfo {
         minParserVersion = in.readUTF();
         inputs = readTensorInfoList(in);
         outputs = readTensorInfoList(in);
+        inputTensorGroupInfos = readTensorGroupInfoList(in);
+        outputTensorGroupInfos = readTensorGroupInfoList(in);
     }
 
     public void save(DataOutput out) throws IOException {
         out.writeLong(modelSize);
         out.writeUTF(modelHash);
         out.writeBoolean(metadataExisted);
+        out.writeBoolean(minParserVersionSatisfied);
         out.writeUTF(modelName);
         out.writeUTF(modelDescription);
         out.writeUTF(modelVersion);
@@ -104,6 +117,8 @@ public class ModelInfo {
         out.writeUTF(minParserVersion);
         writeTensorInfoList(out, inputs);
         writeTensorInfoList(out, outputs);
+        writeTensorGroupInfoList(out, inputTensorGroupInfos);
+        writeTensorGroupInfoList(out, outputTensorGroupInfos);
     }
 
     public long getModelSize() {
@@ -150,6 +165,11 @@ public class ModelInfo {
     }
 
     @NonNull
+    public boolean isMinParserVersionSatisfied() {
+        return minParserVersionSatisfied;
+    }
+
+    @NonNull
     public List<TensorInfo> getInputs() {
         return inputs;
     }
@@ -159,8 +179,14 @@ public class ModelInfo {
         return outputs;
     }
 
-    public boolean isMetadataVersionTooHigh() {
-        return isMetadataVersionTooHigh(minParserVersion);
+    @NonNull
+    public List<TensorGroupInfo> getInputTensorGroups() {
+        return inputTensorGroupInfos;
+    }
+
+    @NonNull
+    public List<TensorGroupInfo> getOutputTensorGroups() {
+        return outputTensorGroupInfos;
     }
 
     @Override
@@ -178,7 +204,9 @@ public class ModelInfo {
                 && modelLicense.equals(that.modelLicense)
                 && minParserVersion.equals(that.minParserVersion)
                 && inputs.equals(that.inputs)
-                && outputs.equals(that.outputs);
+                && outputs.equals(that.outputs)
+                && inputTensorGroupInfos.equals(that.inputTensorGroupInfos)
+                && outputTensorGroupInfos.equals(that.outputTensorGroupInfos);
     }
 
     @Override
@@ -187,12 +215,10 @@ public class ModelInfo {
     }
 
     @NonNull
-    public static ModelInfo buildFrom(ByteBuffer byteBuffer) throws TfliteModelException {
-        ModelVerifier.verifyModel(byteBuffer);
+    public static ModelInfo buildFrom(@NonNull ByteBuffer byteBuffer) throws TfliteModelException {
+        MetadataExtractor extractor = ModelVerifier.getExtractorWithVerification(byteBuffer);
         String modelHash = Hashing.sha256().hashBytes(byteBuffer.array()).toString();
-        MetadataExtractor extractor = new MetadataExtractor(byteBuffer);
-        ModelMetadata modelMetadata = extractor.getModelMetaData();
-        ModelInfo modelInfo = new ModelInfo(byteBuffer.remaining(), modelHash, modelMetadata);
+        ModelInfo modelInfo = new ModelInfo(byteBuffer.remaining(), modelHash, extractor);
 
         int inputLength = extractor.getInputTensorCount();
         for (int i = 0; i < inputLength; i++) {
@@ -203,14 +229,21 @@ public class ModelInfo {
             modelInfo.outputs.add(TensorInfo.parseFrom(extractor, TensorInfo.Source.OUTPUT, i));
         }
 
-        return modelInfo;
-    }
-
-    static boolean isMetadataVersionTooHigh(@NonNull String minParserVersion) {
-        if (Strings.isNullOrEmpty(minParserVersion)) {
-            return false;
+        if (extractor.hasMetadata()) {
+            ModelMetadata modelMetadata = extractor.getModelMetadata();
+            SubGraphMetadata subGraphMetadata = modelMetadata.subgraphMetadata(0);
+            int inputGroupLen = subGraphMetadata.inputTensorGroupsLength();
+            for (int i = 0; i < inputGroupLen; i++) {
+                modelInfo.inputTensorGroupInfos.add(
+                        new TensorGroupInfo(subGraphMetadata.inputTensorGroups(i)));
+            }
+            int outputGroupLen = subGraphMetadata.outputTensorGroupsLength();
+            for (int i = 0; i < outputGroupLen; i++) {
+                modelInfo.outputTensorGroupInfos.add(
+                        new TensorGroupInfo(subGraphMetadata.outputTensorGroups(i)));
+            }
         }
 
-        return MetadataExtractor.compareVersions(PARSER_VERSION, minParserVersion) < 0;
+        return modelInfo;
     }
 }

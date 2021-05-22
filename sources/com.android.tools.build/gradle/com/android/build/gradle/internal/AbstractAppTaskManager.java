@@ -20,20 +20,22 @@ import static com.android.build.api.transform.QualifiedContent.DefaultContentTyp
 import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.QualifiedContent.ScopeType;
+import com.android.build.api.variant.impl.VariantBuilderImpl;
 import com.android.build.api.variant.impl.VariantImpl;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
 import com.android.build.gradle.internal.feature.BundleAllClasses;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.tasks.AnalyticsRecordingTask;
 import com.android.build.gradle.internal.tasks.ApkZipPackagingTask;
 import com.android.build.gradle.internal.tasks.AppClasspathCheckTask;
 import com.android.build.gradle.internal.tasks.AppPreBuildTask;
@@ -42,6 +44,7 @@ import com.android.build.gradle.internal.tasks.CheckManifest;
 import com.android.build.gradle.internal.tasks.CheckMultiApkLibrariesTask;
 import com.android.build.gradle.internal.tasks.CompressAssetsTask;
 import com.android.build.gradle.internal.tasks.ExtractNativeDebugMetadataTask;
+import com.android.build.gradle.internal.tasks.ExtractProfilerNativeDependenciesTask;
 import com.android.build.gradle.internal.tasks.ModuleMetadataWriterTask;
 import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask;
 import com.android.build.gradle.internal.tasks.TestPreBuildTask;
@@ -53,7 +56,6 @@ import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.ExtractDeepLinksTask;
 import com.android.build.gradle.tasks.MergeResources;
 import com.android.builder.core.VariantType;
-import com.android.builder.profile.Recorder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import java.util.List;
@@ -69,30 +71,25 @@ import org.gradle.api.tasks.compile.JavaCompile;
 
 /** TaskManager for creating tasks in an Android application project. */
 public abstract class AbstractAppTaskManager<
-                VariantT extends VariantImpl<VariantPropertiesT>,
-                VariantPropertiesT extends VariantPropertiesImpl>
-        extends TaskManager<VariantT, VariantPropertiesT> {
+                VariantBuilderT extends VariantBuilderImpl, VariantT extends VariantImpl>
+        extends TaskManager<VariantBuilderT, VariantT> {
 
     protected AbstractAppTaskManager(
-            @NonNull List<ComponentInfo<VariantT, VariantPropertiesT>> variants,
+            @NonNull List<ComponentInfo<VariantBuilderT, VariantT>> variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder recorder) {
-        super(variants, testComponents, hasFlavors, globalScope, extension, recorder);
+            @NonNull BaseExtension extension) {
+        super(variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     protected void createCommonTasks(
-            @NonNull ComponentInfo<VariantT, VariantPropertiesT> variant,
-            @NonNull List<ComponentInfo<VariantT, VariantPropertiesT>> allComponentsWithLint) {
-        VariantPropertiesT appVariantProperties = variant.getProperties();
+            @NonNull ComponentInfo<VariantBuilderT, VariantT> variant,
+            @NonNull
+                    List<? extends ComponentInfo<VariantBuilderT, VariantT>>
+                            allComponentsWithLint) {
+        VariantT appVariantProperties = variant.getVariant();
         ApkCreationConfig apkCreationConfig = (ApkCreationConfig) appVariantProperties;
 
         createAnchorTasks(appVariantProperties);
@@ -143,8 +140,9 @@ public abstract class AbstractAppTaskManager<
         createAidlTask(appVariantProperties);
 
         // Add external native build tasks
-        createExternalNativeBuildJsonGenerators(appVariantProperties);
         createExternalNativeBuildTasks(appVariantProperties);
+
+        maybeExtractProfilerDependencies(apkCreationConfig);
 
         // Add a task to merge the jni libs folders
         createMergeJniLibFoldersTasks(appVariantProperties);
@@ -178,42 +176,41 @@ public abstract class AbstractAppTaskManager<
         taskFactory.register(new ApkZipPackagingTask.CreationAction(appVariantProperties));
     }
 
-    private void createCompileTask(@NonNull VariantPropertiesImpl variantProperties) {
-        ApkCreationConfig apkCreationConfig = (ApkCreationConfig) variantProperties;
+    private void createCompileTask(@NonNull VariantImpl variant) {
+        ApkCreationConfig apkCreationConfig = (ApkCreationConfig) variant;
 
-        TaskProvider<? extends JavaCompile> javacTask = createJavacTask(variantProperties);
-        addJavacClassesStream(variantProperties);
-        setJavaCompilerTask(javacTask, variantProperties);
+        TaskProvider<? extends JavaCompile> javacTask = createJavacTask(variant);
+        addJavacClassesStream(variant);
+        setJavaCompilerTask(javacTask, variant);
         createPostCompilationTasks(apkCreationConfig);
     }
 
     @Override
-    protected void postJavacCreation(@NonNull ComponentPropertiesImpl componentProperties) {
-        final Provider<Directory> javacOutput =
-                componentProperties.getArtifacts().get(JAVAC.INSTANCE);
+    protected void postJavacCreation(@NonNull ComponentCreationConfig creationConfig) {
+        final Provider<Directory> javacOutput = creationConfig.getArtifacts().get(JAVAC.INSTANCE);
         final FileCollection preJavacGeneratedBytecode =
-                componentProperties.getVariantData().getAllPreJavacGeneratedBytecode();
+                creationConfig.getVariantData().getAllPreJavacGeneratedBytecode();
         final FileCollection postJavacGeneratedBytecode =
-                componentProperties.getVariantData().getAllPostJavacGeneratedBytecode();
+                creationConfig.getVariantData().getAllPostJavacGeneratedBytecode();
 
-        taskFactory.register(new BundleAllClasses.CreationAction(componentProperties));
+        taskFactory.register(new BundleAllClasses.CreationAction(creationConfig));
 
         // create a lighter weight version for usage inside the same module (unit tests basically)
         ConfigurableFileCollection files =
-                componentProperties
+                creationConfig
                         .getServices()
                         .fileCollection(
                                 javacOutput, preJavacGeneratedBytecode, postJavacGeneratedBytecode);
-        componentProperties.getArtifacts().appendToAllClasses(files);
+        creationConfig.getArtifacts().appendToAllClasses(files);
     }
 
     @Override
-    protected void createVariantPreBuildTask(@NonNull ComponentPropertiesImpl componentProperties) {
-        final VariantType variantType = componentProperties.getVariantType();
+    protected void createVariantPreBuildTask(@NonNull ComponentCreationConfig creationConfig) {
+        final VariantType variantType = creationConfig.getVariantType();
 
         if (variantType.isApk()) {
             boolean useDependencyConstraints =
-                    componentProperties
+                    creationConfig
                             .getServices()
                             .getProjectOptions()
                             .get(BooleanOption.USE_DEPENDENCY_CONSTRAINTS);
@@ -224,42 +221,48 @@ public abstract class AbstractAppTaskManager<
                 task =
                         taskFactory.register(
                                 new TestPreBuildTask.CreationAction(
-                                        (TestComponentPropertiesImpl) componentProperties));
+                                        (TestComponentImpl) creationConfig));
                 if (useDependencyConstraints) {
                     task.configure(t -> t.setEnabled(false));
                 }
             } else {
                 //noinspection unchecked
-                task = taskFactory.register(AppPreBuildTask.getCreationAction(componentProperties));
+                task = taskFactory.register(AppPreBuildTask.getCreationAction(creationConfig));
+                ApkCreationConfig config = (ApkCreationConfig) creationConfig;
+                // Only record application ids for release artifacts
+                if (!config.getDebuggable()) {
+                    TaskProvider<AnalyticsRecordingTask> recordTask =
+                            taskFactory.register(new AnalyticsRecordingTask.CreationAction(config));
+                    task.configure(it -> it.finalizedBy(recordTask));
+                }
             }
 
             if (!useDependencyConstraints) {
                 TaskProvider<AppClasspathCheckTask> classpathCheck =
                         taskFactory.register(
-                                new AppClasspathCheckTask.CreationAction(componentProperties));
+                                new AppClasspathCheckTask.CreationAction(creationConfig));
                 TaskFactoryUtils.dependsOn(task, classpathCheck);
             }
 
             if (variantType.isBaseModule() && globalScope.hasDynamicFeatures()) {
                 TaskProvider<CheckMultiApkLibrariesTask> checkMultiApkLibrariesTask =
                         taskFactory.register(
-                                new CheckMultiApkLibrariesTask.CreationAction(componentProperties));
+                                new CheckMultiApkLibrariesTask.CreationAction(creationConfig));
 
                 TaskFactoryUtils.dependsOn(task, checkMultiApkLibrariesTask);
             }
             return;
         }
 
-        super.createVariantPreBuildTask(componentProperties);
+        super.createVariantPreBuildTask(creationConfig);
     }
 
     @NonNull
     @Override
     protected Set<ScopeType> getJavaResMergingScopes(
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentCreationConfig creationConfig,
             @NonNull QualifiedContent.ContentType contentType) {
-        if (componentProperties.getVariantScope().consumesFeatureJars()
-                && contentType == RESOURCES) {
+        if (creationConfig.getVariantScope().consumesFeatureJars() && contentType == RESOURCES) {
             return TransformManager.SCOPE_FULL_WITH_FEATURES;
         }
         return TransformManager.SCOPE_FULL_PROJECT;
@@ -280,44 +283,49 @@ public abstract class AbstractAppTaskManager<
 
         TextResourceFactory resources = project.getResources().getText();
         // this builds the dependencies from the task, and its output is the textResource.
-        ((ComponentPropertiesImpl) creationConfig).getVariantData().applicationIdTextResource =
+        ((ComponentImpl) creationConfig).getVariantData().applicationIdTextResource =
                 resources.fromFile(applicationIdWriterTask);
     }
 
-    private void createMergeResourcesTasks(@NonNull VariantPropertiesImpl variantProperties) {
+    private void createMergeResourcesTasks(@NonNull VariantImpl variant) {
         // The "big merge" of all resources, will merge and compile resources that will later
         // be used for linking.
         createMergeResourcesTask(
-                variantProperties,
-                true,
-                Sets.immutableEnumSet(MergeResources.Flag.PROCESS_VECTOR_DRAWABLES));
+                variant, true, Sets.immutableEnumSet(MergeResources.Flag.PROCESS_VECTOR_DRAWABLES));
 
-        ProjectOptions projectOptions = variantProperties.getServices().getProjectOptions();
+        ProjectOptions projectOptions = variant.getServices().getProjectOptions();
         // TODO: get rid of separate flag for app modules.
         boolean nonTransitiveR =
                 projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS)
                         && projectOptions.get(BooleanOption.NON_TRANSITIVE_APP_R_CLASS);
         boolean namespaced =
-                variantProperties.getGlobalScope().getExtension().getAaptOptions().getNamespaced();
+                variant.getGlobalScope().getExtension().getAaptOptions().getNamespaced();
 
         // TODO(b/138780301): Also use compile time R class in android tests.
         if ((projectOptions.get(BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS) || nonTransitiveR)
-                && !variantProperties.getVariantType().isForTesting()
+                && !variant.getVariantType().isForTesting()
                 && !namespaced) {
             // The "small merge" of only the app's local resources (can be multiple source-sets, but
             // most of the time it's just one). This is used by the Process for generating the local
             // R-def.txt file containing a list of resources defined in this module.
             basicCreateMergeResourcesTask(
-                    variantProperties,
+                    variant,
                     MergeType.PACKAGE,
-                    variantProperties
-                            .getPaths()
+                    variant.getPaths()
                             .getIntermediateDir(InternalArtifactType.PACKAGED_RES.INSTANCE),
                     false,
                     false,
                     false,
                     ImmutableSet.of(),
                     null);
+        }
+    }
+
+    /** Extract dependencies for profiler supports if needed. */
+    private void maybeExtractProfilerDependencies(@NonNull ApkCreationConfig apkCreationConfig) {
+        if (apkCreationConfig.getShouldPackageProfilerDependencies()) {
+            taskFactory.register(
+                    new ExtractProfilerNativeDependenciesTask.CreationAction(apkCreationConfig));
         }
     }
 }

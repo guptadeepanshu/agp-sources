@@ -95,6 +95,8 @@ public interface AndroidProject {
 
     String PROPERTY_DEPLOY_AS_INSTANT_APP = "android.injected.deploy.instant-app";
 
+    String PROPERTY_BUILD_WITH_STABLE_IDS = "android.injected.enableStableIds";
+
     String PROPERTY_SIGNING_COLDSWAP_MODE = "android.injected.coldswap.mode";
 
     String PROPERTY_APK_SELECT_CONFIG = "android.inject.apkselect.config";
@@ -135,6 +137,9 @@ public interface AndroidProject {
      * selected by the user for installation on the device during deployment.
      */
     String PROPERTY_INJECTED_DYNAMIC_MODULES_LIST = "android.injected.modules.install.list";
+
+    /** Logging level of native build output. Possible values are "quiet" and "verbose". */
+    String PROPERTY_NATIVE_BUILD_OUTPUT_LEVEL = "android.native.buildOutput";
 
     String ARTIFACT_MAIN = "_main_";
     String ARTIFACT_ANDROID_TEST = "_android_test_";

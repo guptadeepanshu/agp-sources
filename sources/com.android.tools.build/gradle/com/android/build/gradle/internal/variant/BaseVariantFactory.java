@@ -16,21 +16,19 @@
 
 package com.android.build.gradle.internal.variant;
 
-import static com.android.build.gradle.tasks.factory.AbstractCompilesUtil.ANDROID_APT_PLUGIN_NAME;
-
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.VariantOutput;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.ComponentIdentity;
+import com.android.build.api.component.impl.AndroidTestBuilderImpl;
 import com.android.build.api.component.impl.AndroidTestImpl;
-import com.android.build.api.component.impl.AndroidTestPropertiesImpl;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.UnitTestBuilderImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
-import com.android.build.api.component.impl.UnitTestPropertiesImpl;
+import com.android.build.api.variant.impl.VariantBuilderImpl;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
@@ -60,9 +58,10 @@ import org.gradle.api.Project;
 
 /** Common superclass for all {@link VariantFactory} implementations. */
 public abstract class BaseVariantFactory<
-                VariantT extends VariantImpl<VariantPropertiesT>,
-                VariantPropertiesT extends VariantPropertiesImpl>
-        implements VariantFactory<VariantT, VariantPropertiesT> {
+                VariantBuilderT extends VariantBuilderImpl, VariantT extends VariantImpl>
+        implements VariantFactory<VariantBuilderT, VariantT> {
+
+    private static final String ANDROID_APT_PLUGIN_NAME = "com.neenbedankt.android-apt";
 
     @NonNull protected final ProjectServices projectServices;
     @NonNull protected final GlobalScope globalScope;
@@ -77,26 +76,14 @@ public abstract class BaseVariantFactory<
 
     @NonNull
     @Override
-    public UnitTestImpl createUnitTestObject(
+    public UnitTestBuilderImpl createUnitTestBuilder(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull VariantDslInfo variantDslInfo,
             @NonNull VariantApiServices variantApiServices) {
         return projectServices
                 .getObjectFactory()
                 .newInstance(
-                        UnitTestImpl.class, variantDslInfo, componentIdentity, variantApiServices);
-    }
-
-    @NonNull
-    @Override
-    public AndroidTestImpl createAndroidTestObject(
-            @NonNull ComponentIdentity componentIdentity,
-            @NonNull VariantDslInfo variantDslInfo,
-            @NonNull VariantApiServices variantApiServices) {
-        return projectServices
-                .getObjectFactory()
-                .newInstance(
-                        AndroidTestImpl.class,
+                        UnitTestBuilderImpl.class,
                         variantDslInfo,
                         componentIdentity,
                         variantApiServices);
@@ -104,8 +91,23 @@ public abstract class BaseVariantFactory<
 
     @NonNull
     @Override
-    public UnitTestPropertiesImpl createUnitTestProperties(
+    public AndroidTestBuilderImpl createAndroidTestBuilder(
             @NonNull ComponentIdentity componentIdentity,
+            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantApiServices variantApiServices) {
+        return projectServices
+                .getObjectFactory()
+                .newInstance(
+                        AndroidTestBuilderImpl.class,
+                        variantDslInfo,
+                        componentIdentity,
+                        variantApiServices);
+    }
+
+    @NonNull
+    @Override
+    public UnitTestImpl createUnitTest(
+            @NonNull UnitTestBuilderImpl unitTestBuilder,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull VariantDslInfo variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
@@ -114,16 +116,16 @@ public abstract class BaseVariantFactory<
             @NonNull ArtifactsImpl artifacts,
             @NonNull VariantScope variantScope,
             @NonNull TestVariantData variantData,
-            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull VariantImpl testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
             @NonNull TaskCreationServices taskCreationServices) {
-        UnitTestPropertiesImpl unitTestProperties =
+        UnitTestImpl unitTestProperties =
                 projectServices
                         .getObjectFactory()
                         .newInstance(
-                                UnitTestPropertiesImpl.class,
-                                componentIdentity,
+                                UnitTestImpl.class,
+                                unitTestBuilder,
                                 buildFeatures,
                                 variantDslInfo,
                                 variantDependencies,
@@ -132,7 +134,7 @@ public abstract class BaseVariantFactory<
                                 artifacts,
                                 variantScope,
                                 variantData,
-                                testedVariantProperties,
+                                testedVariant,
                                 transformManager,
                                 variantPropertiesApiServices,
                                 taskCreationServices,
@@ -146,8 +148,8 @@ public abstract class BaseVariantFactory<
 
     @NonNull
     @Override
-    public AndroidTestPropertiesImpl createAndroidTestProperties(
-            @NonNull ComponentIdentity componentIdentity,
+    public AndroidTestImpl createAndroidTest(
+            @NonNull AndroidTestBuilderImpl androidTestBuilder,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull VariantDslInfo variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
@@ -156,16 +158,16 @@ public abstract class BaseVariantFactory<
             @NonNull ArtifactsImpl artifacts,
             @NonNull VariantScope variantScope,
             @NonNull TestVariantData variantData,
-            @NonNull VariantPropertiesImpl testedVariantProperties,
+            @NonNull VariantImpl testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantPropertiesApiServices variantPropertiesApiServices,
             @NonNull TaskCreationServices taskCreationServices) {
-        AndroidTestPropertiesImpl androidTestProperties =
+        AndroidTestImpl androidTestProperties =
                 projectServices
                         .getObjectFactory()
                         .newInstance(
-                                AndroidTestPropertiesImpl.class,
-                                componentIdentity,
+                                AndroidTestImpl.class,
+                                androidTestBuilder,
                                 buildFeatures,
                                 variantDslInfo,
                                 variantDependencies,
@@ -174,7 +176,7 @@ public abstract class BaseVariantFactory<
                                 artifacts,
                                 variantScope,
                                 variantData,
-                                testedVariantProperties,
+                                testedVariant,
                                 transformManager,
                                 variantPropertiesApiServices,
                                 taskCreationServices,
@@ -190,18 +192,18 @@ public abstract class BaseVariantFactory<
     @Nullable
     public BaseVariantImpl createVariantApi(
             @NonNull GlobalScope globalScope,
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull BaseVariantData variantData,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider) {
         Class<? extends BaseVariantImpl> implementationClass =
-                getVariantImplementationClass(variantData);
+                getVariantImplementationClass();
 
         return projectServices
                 .getObjectFactory()
                 .newInstance(
                         implementationClass,
                         variantData,
-                        componentProperties,
+                        component,
                         servicesForOldVariantObjectsOnly,
                         readOnlyObjectProvider,
                         globalScope.getProject().container(VariantOutput.class));

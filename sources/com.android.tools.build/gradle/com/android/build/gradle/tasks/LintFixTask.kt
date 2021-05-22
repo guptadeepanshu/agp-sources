@@ -16,33 +16,21 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
-import com.android.build.api.variant.impl.VariantPropertiesImpl
+import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.scope.VariantScope
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 
 abstract class LintFixTask : LintBaseTask() {
 
     private var variantInputMap: Map<String, LintBaseTask.VariantInputs>? = null
-    private var allInputs: ConfigurableFileCollection? = null
 
-    @InputFiles
-    @PathSensitive(PathSensitivity.ABSOLUTE)
-    @Optional
-    fun getAllInputs(): FileCollection? {
-        return allInputs
-    }
-
-    @TaskAction
-    fun lint() {
+    override fun doTaskAction() {
         runLint(LintFixTaskDescriptor())
     }
 
@@ -65,7 +53,7 @@ abstract class LintFixTask : LintBaseTask() {
     }
 
     class GlobalCreationAction(
-        globalScope: GlobalScope, private val components: Collection<VariantPropertiesImpl>
+        globalScope: GlobalScope, private val components: Collection<VariantImpl>
     ) : BaseCreationAction<LintFixTask>(globalScope) {
 
         override val name: String
@@ -80,13 +68,14 @@ abstract class LintFixTask : LintBaseTask() {
                     "Runs lint on all variants and applies any safe suggestions to the source code."
             task.group = "cleanup"
 
-            task.allInputs = globalScope.project.files()
+            val allInputs = globalScope.project.files()
 
             task.variantInputMap = components.asSequence().map { component ->
                 val inputs = LintBaseTask.VariantInputs(component)
-                task.allInputs!!.from(inputs.allInputs)
+                allInputs.from(inputs.allInputs)
                 inputs
             }.associateBy { it.name }
+            task.dependsOn(allInputs)
         }
     }
 }

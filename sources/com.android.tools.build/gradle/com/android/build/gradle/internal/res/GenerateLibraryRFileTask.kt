@@ -16,17 +16,19 @@
 package com.android.build.gradle.internal.res
 
 import com.android.SdkConstants
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.SymbolTableBuildService
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -36,9 +38,6 @@ import com.android.builder.symbols.processLibraryMainSymbolTable
 import com.android.ide.common.symbols.IdProvider
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
-import java.io.File
-import java.io.IOException
-import javax.inject.Inject
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
@@ -52,7 +51,9 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-
+import java.io.File
+import java.io.IOException
+import javax.inject.Inject
 
 @CacheableTask
 abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
@@ -101,6 +102,9 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     @get:Input
     abstract val useConstantIds: Property<Boolean>
 
+    @get:Internal
+    abstract val symbolTableBuildService: Property<SymbolTableBuildService>
+
     @Throws(IOException::class)
     override fun doFullTaskAction() {
         val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(manifestFiles)
@@ -120,6 +124,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             it.compileClasspathLibraryRClasses.set(compileClasspathLibraryRClasses.get())
             it.symbolsWithPackageNameOutputFile.set(symbolsWithPackageNameOutputFile)
             it.useConstantIds.set(useConstantIds.get())
+            it.symbolTableBuildService.set(symbolTableBuildService)
         }
     }
 
@@ -140,6 +145,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
         abstract val compileClasspathLibraryRClasses: Property<Boolean>
         abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
         abstract val useConstantIds: Property<Boolean>
+        abstract val symbolTableBuildService: Property<SymbolTableBuildService>
     }
 
     abstract class GenerateLibRFileRunnable @Inject constructor() :
@@ -149,6 +155,9 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
 
             val symbolTable = SymbolIo.readRDef(parameters.localResourcesFile.asFile.get().toPath())
 
+            val depSymbolTables: List<SymbolTable> =
+                parameters.symbolTableBuildService.get().loadClasspath(parameters.dependencies)
+
             val idProvider =
                 if (parameters.useConstantIds.get()) {
                     IdProvider.constant()
@@ -157,7 +166,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
                 }
             processLibraryMainSymbolTable(
                 librarySymbols = symbolTable,
-                libraries = parameters.dependencies.files,
+                depSymbolTables = depSymbolTables,
                 mainPackageName = parameters.packageForR.get(),
                 manifestFile = parameters.manifest.asFile.get(),
                 rClassOutputJar = parameters.rClassOutputJar.asFile.orNull,
@@ -185,9 +194,9 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
     }
 
     internal class CreationAction(
-        componentProperties: ComponentPropertiesImpl,
+        creationConfig: ComponentCreationConfig,
         val isLibrary: Boolean)
-        : VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentPropertiesImpl>(componentProperties) {
+        : VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("generate", "RFile")
@@ -276,6 +285,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             task.useConstantIds.set(
                 (projectOptions[BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS] && !isLibrary)
                         || projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES])
+            task.symbolTableBuildService.setDisallowChanges(getBuildService(creationConfig.services.buildServiceRegistry))
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
@@ -283,9 +293,9 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
         }
     }
 
-    internal class TestRuntimeStubRClassCreationAction(componentProperties: ComponentPropertiesImpl) :
-        VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentPropertiesImpl>(
-            componentProperties
+    internal class TestRuntimeStubRClassCreationAction(creationConfig: ComponentCreationConfig) :
+        VariantTaskCreationAction<GenerateLibraryRFileTask, ComponentCreationConfig>(
+            creationConfig
         ) {
 
         override val name: String = computeTaskName("generate", "StubRFile")
@@ -325,6 +335,7 @@ abstract class GenerateLibraryRFileTask : ProcessAndroidResources() {
             task.packageForR.setDisallowChanges(creationConfig.packageName)
             task.mainSplit = creationConfig.outputs.getMainSplit()
             task.useConstantIds.setDisallowChanges(false)
+            task.symbolTableBuildService.setDisallowChanges(getBuildService(creationConfig.services.buildServiceRegistry))
 
             creationConfig.onTestedConfig {
                 it.artifacts.setTaskInputToFinalProduct(

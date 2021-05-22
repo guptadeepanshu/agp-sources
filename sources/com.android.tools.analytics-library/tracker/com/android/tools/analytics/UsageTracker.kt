@@ -45,7 +45,8 @@ object UsageTracker {
   var sessionId = UUID.randomUUID().toString()
 
   @JvmStatic
-  private var writer: UsageTrackerWriter = NullUsageTracker
+  @VisibleForTesting
+  var writer: UsageTrackerWriter = NullUsageTracker
   private var isTesting: Boolean = false
   /**
    * Indicates whether this UsageTracker has a maximum size at which point logs need to be flushed.
@@ -160,44 +161,49 @@ object UsageTracker {
     }
   }
 
-  /**
-   * Initializes a [UsageTrackerWriter] for use throughout this process based on user opt-in and
-   * other settings.
-   */
-  @JvmStatic
-  fun initialize(scheduler: ScheduledExecutorService): UsageTrackerWriter {
-    if (isTesting) {
-      return writer
-    }
-    synchronized(gate) {
-      val oldInstance = writer
-      if (AnalyticsSettings.optedIn) {
-        try {
-          writer = JournalingUsageTracker(
-            scheduler,
-            Paths.get(AnalyticsPaths.spoolDirectory)
-          )
+    /**
+    * Initializes a [UsageTrackerWriter] for use throughout this process based on user opt-in and
+    * other settings.
+    */
+    @JvmStatic
+    fun initialize(scheduler: ScheduledExecutorService): UsageTrackerWriter {
+        if (isTesting) {
+            return writer
         }
-        catch (ex: RuntimeException) {
-          writer = NullUsageTracker
-          throw ex
+        synchronized(gate) {
+            val oldInstance = writer
+            initializeTrackerWriter(scheduler)
+            try {
+                oldInstance.close()
+            }
+            catch (ex: Exception) {
+                throw RuntimeException("Unable to close usage tracker", ex)
+            }
+
+            initialized = true
+            return writer
         }
-
-      }
-      else {
-        writer = NullUsageTracker
-      }
-      try {
-        oldInstance.close()
-      }
-      catch (ex: Exception) {
-        throw RuntimeException("Unable to close usage tracker", ex)
-      }
-
-      initialized = true
-      return writer
     }
-  }
+
+    /**
+     *  Compared with [initialize], this function avoids re-initialize [UsageTracker] when it is
+     *  already initialized.
+     *
+     *  Note this function should not be used by Studio because Studio needs to be able to
+     *  re-initialize in the same process if the user changes the opt in settings.
+     */
+    @JvmStatic
+    fun initializeIfNotPresent(scheduler: ScheduledExecutorService): UsageTrackerWriter {
+        synchronized(gate) {
+            if (initialized) {
+                return writer
+            }
+            initializeTrackerWriter(scheduler)
+
+            initialized = true
+            return writer
+        }
+    }
 
   /**
    * initializes or updates AnalyticsSettings into a disabled state.
@@ -254,4 +260,19 @@ object UsageTracker {
     initialized = false
     exceptionThrown = false
   }
+
+    private fun initializeTrackerWriter(scheduler: ScheduledExecutorService) {
+        if (AnalyticsSettings.optedIn) {
+            try {
+                writer = JournalingUsageTracker(
+                        scheduler,
+                        Paths.get(AnalyticsPaths.spoolDirectory))
+            } catch (ex: RuntimeException) {
+                writer = NullUsageTracker
+                throw ex
+            }
+        } else {
+            writer = NullUsageTracker
+        }
+    }
 }

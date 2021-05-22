@@ -20,9 +20,11 @@ import com.android.Version;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.transform.Transform;
+import com.android.build.api.variant.AndroidVersion;
 import com.android.build.gradle.internal.core.Abi;
 import com.android.build.gradle.internal.dsl.Splits;
 import com.android.build.gradle.internal.scope.VariantScope;
+import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.OptionalBooleanOption;
@@ -32,12 +34,11 @@ import com.android.builder.dexing.DexMergerTool;
 import com.android.builder.dexing.DexerTool;
 import com.android.builder.model.CodeShrinker;
 import com.android.builder.model.TestOptions;
-import com.android.builder.profile.ProcessProfileWriter;
 import com.android.resources.Density;
-import com.android.sdklib.AndroidVersion;
 import com.android.tools.analytics.CommonMetricsData;
 import com.android.tools.build.gradle.internal.profile.GradleTaskExecutionType;
 import com.android.tools.build.gradle.internal.profile.GradleTransformExecutionType;
+import com.android.tools.build.gradle.internal.profile.VariantApiArtifactType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
@@ -95,7 +96,15 @@ public class AnalyticsUtil {
         }
     }
 
-    @VisibleForTesting
+    @NonNull
+    public static VariantApiArtifactType getVariantApiArtifactType(@NonNull Class<?> artifactType) {
+        try {
+            return VariantApiArtifactType.valueOf(artifactType.getSimpleName());
+        } catch (IllegalArgumentException ignored) {
+            return VariantApiArtifactType.CUSTOM_ARTIFACT_TYPE;
+        }
+    }
+
     @NonNull
     static String getPotentialTaskExecutionTypeName(Class<?> taskClass) {
         String taskImpl = taskClass.getSimpleName();
@@ -399,7 +408,11 @@ public class AnalyticsUtil {
         if (version == null) {
             return;
         }
-        ProcessProfileWriter.getProject(project.getPath())
+        AnalyticsConfiguratorService configuratorService =
+                BuildServicesKt.getBuildService(
+                        project.getGradle().getSharedServices(), AnalyticsConfiguratorService.class)
+                        .get();
+        configuratorService.getProjectBuilder(project.getPath())
                 .setFirebasePerformancePluginVersion(version);
     }
 

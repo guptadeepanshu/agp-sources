@@ -24,15 +24,9 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Cons
 import static com.android.build.gradle.internal.scope.ArtifactPublishingUtil.publishArtifactToConfiguration;
 import static com.android.build.gradle.internal.scope.ArtifactPublishingUtil.publishArtifactToDefaultVariant;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR;
-import static com.android.build.gradle.options.BooleanOption.ENABLE_D8;
-import static com.android.build.gradle.options.BooleanOption.ENABLE_D8_DESUGARING;
-import static com.android.build.gradle.options.BooleanOption.ENABLE_R8_DESUGARING;
 import static com.android.build.gradle.options.BooleanOption.USE_NEW_APK_CREATOR;
 import static com.android.build.gradle.options.BooleanOption.USE_NEW_JAR_CREATOR;
-import static com.android.build.gradle.options.OptionalBooleanOption.ENABLE_R8;
 import static com.android.builder.core.VariantTypeImpl.UNIT_TEST;
-import static com.android.builder.model.CodeShrinker.PROGUARD;
-import static com.android.builder.model.CodeShrinker.R8;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
@@ -40,13 +34,15 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.ComponentIdentity;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.PostprocessingFeatures;
 import com.android.build.gradle.internal.ProguardFileType;
+import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.core.Abi;
 import com.android.build.gradle.internal.core.PostProcessingOptions;
 import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.dependency.AndroidAttributes;
 import com.android.build.gradle.internal.dependency.ProvidedClasspath;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.packaging.JarCreatorType;
@@ -64,7 +60,6 @@ import com.android.builder.dexing.DexMergerTool;
 import com.android.builder.dexing.DexerTool;
 import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.internal.packaging.ApkCreatorType;
-import com.android.builder.model.CodeShrinker;
 import com.android.builder.model.OptionalCompilationStep;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
@@ -74,7 +69,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.File;
 import java.util.Collection;
@@ -90,6 +84,7 @@ import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.artifacts.SelfResolvingDependency;
+import org.gradle.api.attributes.LibraryElements;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
@@ -109,7 +104,7 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull private final VariantDependencies variantDependencies;
 
     @NonNull private final PublishingSpecs.VariantSpec variantPublishingSpec;
-    @Nullable private final VariantPropertiesImpl testedVariantProperties;
+    @Nullable private final VariantImpl testedVariantProperties;
 
     // Global Data
     @NonNull private final GlobalScope globalScope;
@@ -129,7 +124,7 @@ public class VariantScopeImpl implements VariantScope {
             @NonNull VariantPathHelper pathHelper,
             @NonNull ArtifactsImpl artifacts,
             @NonNull GlobalScope globalScope,
-            @Nullable VariantPropertiesImpl testedVariantProperties) {
+            @Nullable VariantImpl testedVariantProperties) {
         this.componentIdentity = componentIdentity;
         this.variantDslInfo = variantDslInfo;
         this.variantDependencies = variantDependencies;
@@ -155,8 +150,7 @@ public class VariantScopeImpl implements VariantScope {
                                                 "runtime-deps",
                                                 variantDslInfo.getDirName(),
                                                 "desugar_try_with_resources.jar")));
-        this.postProcessingOptions =
-                variantDslInfo.createPostProcessingOptions(project.getLayout().getBuildDirectory());
+        this.postProcessingOptions = variantDslInfo.getPostProcessingOptions();
 
         configureNdk();
     }
@@ -183,12 +177,14 @@ public class VariantScopeImpl implements VariantScope {
      * @param artifact Provider of File or FileSystemLocation to be published.
      * @param artifactType the artifact type.
      * @param configTypes the PublishedConfigType. (e.g. api, runtime, etc)
+     * @param libraryElements the artifact's library elements
      */
     @Override
     public void publishIntermediateArtifact(
             @NonNull Provider<?> artifact,
             @NonNull ArtifactType artifactType,
-            @NonNull Collection<PublishedConfigType> configTypes) {
+            @NonNull Collection<PublishedConfigType> configTypes,
+            @Nullable LibraryElements libraryElements) {
 
         Preconditions.checkState(!configTypes.isEmpty());
 
@@ -206,62 +202,10 @@ public class VariantScopeImpl implements VariantScope {
                     }
                     publishArtifactToDefaultVariant(config, artifact, artifactType, classifier);
                 } else {
-                    publishArtifactToConfiguration(config, artifact, artifactType);
+                    publishArtifactToConfiguration(config, artifact, artifactType, new AndroidAttributes(null, libraryElements));
                 }
             }
         }
-    }
-
-    @Override
-    public boolean useResourceShrinker() {
-        VariantType variantType = variantDslInfo.getVariantType();
-
-        if (variantType.isForTesting() || !postProcessingOptions.resourcesShrinkingEnabled()) {
-            return false;
-        }
-
-        // TODO: support resource shrinking for multi-apk applications http://b/78119690
-        if (variantType.isDynamicFeature() || globalScope.hasDynamicFeatures()) {
-            globalScope
-                    .getDslServices()
-                    .getIssueReporter()
-                    .reportError(
-                            Type.GENERIC,
-                            "Resource shrinker cannot be used for multi-apk applications");
-            return false;
-        }
-
-        if (variantType.isAar()) {
-            globalScope
-                    .getDslServices()
-                    .getIssueReporter()
-                    .reportError(Type.GENERIC, "Resource shrinker cannot be used for libraries.");
-            return false;
-        }
-
-        if (getCodeShrinker() == null) {
-            globalScope
-                    .getDslServices()
-                    .getIssueReporter()
-                    .reportError(
-                            Type.GENERIC,
-                            "Removing unused resources requires unused code shrinking to be turned on. See "
-                                    + "http://d.android.com/r/tools/shrink-resources.html "
-                                    + "for more information.");
-
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean isPrecompileDependenciesResourcesEnabled() {
-        // Resource shrinker expects MergeResources task to have all the resources merged and with
-        // overlay rules applied, so we have to go through the MergeResources pipeline in case it's
-        // enabled, see b/134766811.
-        return globalScope.getProjectOptions().get(BooleanOption.PRECOMPILE_DEPENDENCIES_RESOURCES)
-                && !useResourceShrinker();
     }
 
     @Override
@@ -295,57 +239,6 @@ public class VariantScopeImpl implements VariantScope {
         // custom transforms.
         return variantDslInfo.getVariantType().isAar()
                 && !globalScope.getExtension().getTransforms().isEmpty();
-    }
-
-    @Override
-    public boolean getNeedsMergedJavaResStream() {
-        // We need to create a stream from the merged java resources if we're in a library module,
-        // or if we're in an app/feature module which uses the transform pipeline.
-        return variantDslInfo.getVariantType().isAar()
-                || !globalScope.getExtension().getTransforms().isEmpty()
-                || getCodeShrinker() != null;
-    }
-
-    @Override
-    public boolean getNeedsMainDexListForBundle() {
-        return variantDslInfo.getVariantType().isBaseModule()
-                && globalScope.hasDynamicFeatures()
-                && variantDslInfo.getDexingType().getNeedsMainDexList();
-    }
-
-    @Nullable
-    @Override
-    public CodeShrinker getCodeShrinker() {
-        boolean isTestComponent = variantDslInfo.getVariantType().isTestComponent();
-
-        //noinspection ConstantConditions - getType() will not return null for a testing variant.
-        if (isTestComponent
-                && testedVariantProperties != null
-                && testedVariantProperties.getVariantType().isAar()) {
-            // For now we seem to include the production library code as both program and library
-            // input to the test ProGuard run, which confuses it.
-            return null;
-        }
-
-        CodeShrinker codeShrinker = postProcessingOptions.getCodeShrinker();
-        if (codeShrinker == null) {
-            return null;
-        }
-
-        Boolean enableR8 = globalScope.getProjectOptions().get(ENABLE_R8);
-        if (variantDslInfo.getVariantType().isAar()
-                && !globalScope.getProjectOptions().get(BooleanOption.ENABLE_R8_LIBRARIES)) {
-            // R8 is disabled for libraries
-            enableR8 = false;
-        }
-
-        if (enableR8 == null) {
-            return codeShrinker;
-        } else if (enableR8) {
-            return R8;
-        } else {
-            return PROGUARD;
-        }
     }
 
     @NonNull
@@ -419,9 +312,11 @@ public class VariantScopeImpl implements VariantScope {
      * </ul>
      *
      * <p>This value can be overridden by the OptionalBooleanOption.IDE_TEST_ONLY property.
+     *
+     * @param variant {@link VariantImpl} for this variant scope.
      */
     @Override
-    public boolean isTestOnly() {
+    public boolean isTestOnly(VariantImpl variant) {
         ProjectOptions projectOptions = globalScope.getProjectOptions();
         Boolean isTestOnlyOverride = projectOptions.get(OptionalBooleanOption.IDE_TEST_ONLY);
 
@@ -433,7 +328,7 @@ public class VariantScopeImpl implements VariantScope {
                 || !Strings.isNullOrEmpty(projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY))
                 || projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null
                 || isPreviewTargetPlatform()
-                || variantDslInfo.getMinSdkVersion().getCodename() != null
+                || variant.getVariantBuilder().getMinSdkVersion().getCodename() != null
                 || variantDslInfo.getTargetSdkVersion().getCodename() != null;
     }
 
@@ -450,16 +345,16 @@ public class VariantScopeImpl implements VariantScope {
      * <p>Java language desugaring and multidex are required for enabling core library desugaring.
      */
     @Override
-    public boolean isCoreLibraryDesugaringEnabled() {
+    public boolean isCoreLibraryDesugaringEnabled(ConsumableCreationConfig creationConfig) {
         BaseExtension extension = globalScope.getExtension();
 
         boolean libDesugarEnabled =
                 extension.getCompileOptions().getCoreLibraryDesugaringEnabled() != null
                         && extension.getCompileOptions().getCoreLibraryDesugaringEnabled();
 
-        boolean multidexEnabled = variantDslInfo.isMultiDexEnabled();
+        boolean multidexEnabled = creationConfig.isMultiDexEnabled();
 
-        Java8LangSupport langSupportType = getJava8LangSupportType();
+        Java8LangSupport langSupportType = creationConfig.getJava8LangSupportType();
         boolean langDesugarEnabled =
                 langSupportType == Java8LangSupport.D8 || langSupportType == Java8LangSupport.R8;
 
@@ -483,19 +378,6 @@ public class VariantScopeImpl implements VariantScope {
                                     + "please enable multidex.");
         }
         return libDesugarEnabled;
-    }
-
-    @Override
-    public boolean getNeedsShrinkDesugarLibrary() {
-        if (!isCoreLibraryDesugaringEnabled()) {
-            return false;
-        }
-        // Assume Java8LangSupport is either D8 or R8 as we checked that in
-        // isCoreLibraryDesugaringEnabled()
-        if (getJava8LangSupportType() == Java8LangSupport.D8 && variantDslInfo.isDebuggable()) {
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -588,82 +470,6 @@ public class VariantScopeImpl implements VariantScope {
             return testedVariantProperties
                     .getArtifacts()
                     .get(COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR.INSTANCE);
-        }
-    }
-
-    @NonNull
-    @Override
-    public Java8LangSupport getJava8LangSupportType() {
-        // in order of precedence
-        if (!globalScope
-                .getExtension()
-                .getCompileOptions()
-                .getTargetCompatibility()
-                .isJava8Compatible()) {
-            return Java8LangSupport.UNUSED;
-        }
-
-        if (globalScope.getProject().getPlugins().hasPlugin("me.tatarka.retrolambda")) {
-            return Java8LangSupport.RETROLAMBDA;
-        }
-
-        CodeShrinker shrinker = getCodeShrinker();
-        if (shrinker == R8) {
-            if (globalScope.getProjectOptions().get(ENABLE_R8_DESUGARING)) {
-                return Java8LangSupport.R8;
-            }
-        } else {
-            // D8 cannot be used if R8 is used
-            if (globalScope.getProjectOptions().get(ENABLE_D8_DESUGARING)
-                    && isValidJava8Flag(ENABLE_D8_DESUGARING, ENABLE_D8)) {
-                return Java8LangSupport.D8;
-            }
-        }
-
-        if (globalScope.getProjectOptions().get(BooleanOption.ENABLE_DESUGAR)) {
-            return Java8LangSupport.DESUGAR;
-        }
-
-        BooleanOption missingFlag = shrinker == R8 ? ENABLE_R8_DESUGARING : ENABLE_D8_DESUGARING;
-        globalScope
-                .getDslServices()
-                .getIssueReporter()
-                .reportError(
-                        Type.GENERIC,
-                        String.format(
-                                "Please add '%s=true' to your "
-                                        + "gradle.properties file to enable Java 8 "
-                                        + "language support.",
-                                missingFlag.name()),
-                        variantDslInfo.getComponentIdentity().getName());
-        return Java8LangSupport.INVALID;
-    }
-
-    private boolean isValidJava8Flag(
-            @NonNull BooleanOption flag, @NonNull BooleanOption... dependsOn) {
-        List<String> invalid = null;
-        for (BooleanOption requiredFlag : dependsOn) {
-            if (!globalScope.getProjectOptions().get(requiredFlag)) {
-                if (invalid == null) {
-                    invalid = Lists.newArrayList();
-                }
-                invalid.add("'" + requiredFlag.getPropertyName() + "= false'");
-            }
-        }
-
-        if (invalid == null) {
-            return true;
-        } else {
-            String template =
-                    "Java 8 language support, as requested by '%s= true' in your "
-                            + "gradle.properties file, is not supported when %s.";
-            String msg = String.format(template, flag.getPropertyName(), String.join(",", invalid));
-            globalScope
-                    .getDslServices()
-                    .getIssueReporter()
-                    .reportError(
-                            Type.GENERIC, msg, variantDslInfo.getComponentIdentity().getName());
-            return false;
         }
     }
 

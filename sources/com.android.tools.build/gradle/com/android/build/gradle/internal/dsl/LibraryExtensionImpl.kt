@@ -16,19 +16,12 @@
 
 package com.android.build.gradle.internal.dsl
 
-import com.android.build.api.component.GenericFilteredComponentActionRegistrar
-import com.android.build.api.component.impl.GenericFilteredComponentActionRegistrarImpl
 import com.android.build.api.dsl.LibraryBuildFeatures
-import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.PrefabPackagingOptions
 import com.android.build.api.variant.LibraryVariant
-import com.android.build.api.variant.LibraryVariantProperties
-import com.android.build.gradle.api.AndroidSourceSet
-import com.android.build.gradle.internal.CompileOptions
+import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
-import com.google.common.collect.Lists
 import org.gradle.api.NamedDomainObjectContainer
 
 /** Internal implementation of the 'new' DSL interface */
@@ -41,8 +34,8 @@ class LibraryExtensionImpl(
             BuildType,
             DefaultConfig,
             ProductFlavor,
-            LibraryVariant<LibraryVariantProperties>,
-            LibraryVariantProperties>(
+            LibraryVariantBuilder,
+            LibraryVariant>(
         dslServices,
         dslContainers
     ),
@@ -51,24 +44,16 @@ class LibraryExtensionImpl(
     override val buildFeatures: LibraryBuildFeatures =
         dslServices.newInstance(LibraryBuildFeaturesImpl::class.java)
 
-    @Suppress("UNCHECKED_CAST")
-    override val onVariants: GenericFilteredComponentActionRegistrar<LibraryVariant<LibraryVariantProperties>>
-        get() = dslServices.newInstance(
-            GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslServices,
-            variantOperations,
-            LibraryVariant::class.java
-        ) as GenericFilteredComponentActionRegistrar<LibraryVariant<LibraryVariantProperties>>
-    @Suppress("UNCHECKED_CAST")
-    override val onVariantProperties: GenericFilteredComponentActionRegistrar<LibraryVariantProperties>
-        get() = dslServices.newInstance(
-            GenericFilteredComponentActionRegistrarImpl::class.java,
-            dslServices,
-            variantPropertiesOperations,
-            LibraryVariantProperties::class.java
-        ) as GenericFilteredComponentActionRegistrar<LibraryVariantProperties>
+    @get:Suppress("WrongTerminology")
+    @set:Suppress("WrongTerminology")
+    @Deprecated("Use aidlPackagedList instead", ReplaceWith("aidlPackagedList"))
+    var aidlPackageWhiteList: MutableCollection<String>
+        get() = aidlPackagedList
+        set(value) {
+            aidlPackagedList = value
+        }
 
-    override var aidlPackageWhiteList: MutableCollection<String> = ArrayList<String>()
+    override var aidlPackagedList: MutableCollection<String> = ArrayList<String>()
         set(value) {
             field.addAll(value)
         }

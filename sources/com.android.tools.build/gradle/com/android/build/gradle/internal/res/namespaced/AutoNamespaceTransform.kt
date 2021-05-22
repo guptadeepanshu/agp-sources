@@ -17,9 +17,10 @@
 package com.android.build.gradle.internal.res.namespaced
 
 import com.android.SdkConstants
-import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.res.Aapt2CompileRunnable
+import com.android.build.gradle.internal.res.runAapt2Compile
 import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
+import com.android.build.gradle.internal.services.getErrorFormatMode
+import com.android.build.gradle.internal.services.registerAaptService
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
@@ -142,11 +143,6 @@ abstract class AutoNamespaceTransform : TransformAction<AutoNamespaceParameters>
         val compiledPublicXmlDir = tempDir.resolve("compiled_public_xml")
             .also { Files.createDirectory(it) }
         val requestList = ArrayList<CompileResourceRequest>()
-        val aapt2ServiceKey: Aapt2DaemonServiceKey =
-            parameters.aapt2DaemonBuildService.get().registerAaptService(
-                parameters.aapt2FromMaven.singleFile,
-                LoggerWrapper.getLogger(this::class.java)
-            )
 
         // Read the symbol tables from this AAR and the dependencies to enable the namespaced
         // rewriter to resolve symbols.
@@ -241,13 +237,8 @@ abstract class AutoNamespaceTransform : TransformAction<AutoNamespaceParameters>
 
         // TODO: Performance: This is single threaded (but multiple AARs could be being
         //       auto-namespaced in parallel), investigate whether it can be improved.
-        Aapt2CompileRunnable(
-            Aapt2CompileRunnable.Params(
-                aapt2ServiceKey,
-                requestList,
-                parameters.errorFormatMode.get()
-            )
-        ).run()
+        // TODO(b/152323103) errorFormatMode should be implicit
+        runAapt2Compile(parameters.aapt2, requestList, false)
 
         linkAndroidResources(
             manifestFile,
@@ -255,7 +246,6 @@ abstract class AutoNamespaceTransform : TransformAction<AutoNamespaceParameters>
             compiledPublicXmlDir,
             staticLibApk,
             aaptIntermediateDir,
-            aapt2ServiceKey,
             outputAar
         )
 
@@ -268,7 +258,6 @@ abstract class AutoNamespaceTransform : TransformAction<AutoNamespaceParameters>
         compiledPublicXmlDir: Path,
         staticLibApk: Path,
         aaptIntermediateDir: Path,
-        aapt2ServiceKey: Aapt2DaemonServiceKey,
         outputAar: ZipOutputStream
     ) {
         if (!Files.isRegularFile(manifestFile)) {
@@ -291,13 +280,9 @@ abstract class AutoNamespaceTransform : TransformAction<AutoNamespaceParameters>
             intermediateDir = aaptIntermediateDir.toFile()
         )
 
-        Aapt2LinkRunnable(
-            Aapt2LinkRunnable.Params(
-                aapt2ServiceKey,
-                request,
-                parameters.errorFormatMode.get()
-            )
-        ).run()
+        // TODO(b/152323103) this should be implicit
+        val aapt2ServiceKey: Aapt2DaemonServiceKey = parameters.aapt2.registerAaptService()
+        runAapt2Link(aapt2ServiceKey, request, parameters.aapt2.getErrorFormatMode())
 
         outputAar.putNextEntry(ZipEntry(SdkConstants.FN_RESOURCE_STATIC_LIBRARY))
         Files.copy(staticLibApk, outputAar)

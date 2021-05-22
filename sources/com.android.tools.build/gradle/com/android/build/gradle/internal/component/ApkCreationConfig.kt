@@ -17,13 +17,14 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.AaptOptions
-import com.android.build.api.variant.impl.ResValue
+import com.android.build.api.variant.ApkPackagingOptions
+import com.android.build.api.variant.SigningConfig
 import org.gradle.api.provider.MapProperty
 
 /**
  * Interface for properties common to all variant generating APKs
  */
-interface ApkCreationConfig: BaseCreationConfig {
+interface ApkCreationConfig: ConsumableCreationConfig {
 
     val aaptOptions: AaptOptions
 
@@ -31,13 +32,24 @@ interface ApkCreationConfig: BaseCreationConfig {
 
     val embedsMicroApp: Boolean
 
-    val debuggable: Boolean
-
     // TODO: move to a non variant object (GlobalTaskScope?)
     val testOnlyApk: Boolean
 
-    val resValues: MapProperty<ResValue.Key, ResValue>
+    val minifiedEnabled: Boolean
 
     /** If this variant should package desugar_lib DEX in the final APK. */
     val shouldPackageDesugarLibDex: Boolean
+
+    /**
+     * If this variant should package additional dependencies (code and native libraries) needed for
+     * profilers support in the IDE.
+     */
+    val shouldPackageProfilerDependencies: Boolean
+
+    /** List of transforms for profilers support in the IDE. */
+    val advancedProfilingTransforms: List<String>
+
+    override val packagingOptions: ApkPackagingOptions
+
+    val signingConfig: SigningConfig?
 }

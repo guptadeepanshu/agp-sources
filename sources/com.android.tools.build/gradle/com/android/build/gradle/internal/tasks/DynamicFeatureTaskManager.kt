@@ -16,61 +16,57 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.component.impl.TestComponentBuilderImpl
 import com.android.build.api.component.impl.TestComponentImpl
-import com.android.build.api.component.impl.TestComponentPropertiesImpl
+import com.android.build.api.variant.impl.DynamicFeatureVariantBuilderImpl
 import com.android.build.api.variant.impl.DynamicFeatureVariantImpl
-import com.android.build.api.variant.impl.DynamicFeatureVariantPropertiesImpl
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.AbstractAppTaskManager
-import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.tasks.databinding.DataBindingExportFeatureInfoTask
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureNameWriterTask
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSplitDeclarationWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
-import com.android.builder.profile.Recorder
 
 internal class DynamicFeatureTaskManager(
-    variants: List<ComponentInfo<DynamicFeatureVariantImpl, DynamicFeatureVariantPropertiesImpl>>,
-    testComponents: List<ComponentInfo<TestComponentImpl<out TestComponentPropertiesImpl>, TestComponentPropertiesImpl>>,
-    hasFlavors: Boolean,
-    globalScope: GlobalScope,
-    extension: BaseExtension,
-    recorder: Recorder
-) : AbstractAppTaskManager<DynamicFeatureVariantImpl, DynamicFeatureVariantPropertiesImpl>(
+        variants: List<ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>>,
+        testComponents: List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>>,
+        hasFlavors: Boolean,
+        globalScope: GlobalScope,
+        extension: BaseExtension
+) : AbstractAppTaskManager<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>(
     variants,
     testComponents,
     hasFlavors,
     globalScope,
-    extension,
-    recorder
+    extension
 ) {
 
     override fun doCreateTasksForVariant(
-        variant: ComponentInfo<DynamicFeatureVariantImpl, DynamicFeatureVariantPropertiesImpl>,
-        allVariants: MutableList<ComponentInfo<DynamicFeatureVariantImpl, DynamicFeatureVariantPropertiesImpl>>
+            variantInfo: ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>,
+            allVariants: List<ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>>
     ) {
-        createCommonTasks(variant, allVariants)
+        createCommonTasks(variantInfo, allVariants)
 
-        val variantProperties = variant.properties
+        val variant = variantInfo.variant
 
-        createDynamicBundleTask(variantProperties)
+        createDynamicBundleTask(variant)
 
         // Non-base feature specific task.
         // Task will produce artifacts consumed by the base feature
-        taskFactory.register(FeatureSplitDeclarationWriterTask.CreationAction(variantProperties))
-        if (variantProperties.buildFeatures.dataBinding) {
+        taskFactory.register(FeatureSplitDeclarationWriterTask.CreationAction(variant))
+        if (variant.buildFeatures.dataBinding) {
             // Create a task that will package necessary information about the feature into a
             // file which is passed into the Data Binding annotation processor.
-            taskFactory.register(DataBindingExportFeatureInfoTask.CreationAction(variantProperties))
+            taskFactory.register(DataBindingExportFeatureInfoTask.CreationAction(variant))
         }
-        taskFactory.register(ExportConsumerProguardFilesTask.CreationAction(variantProperties))
-        taskFactory.register(FeatureNameWriterTask.CreationAction(variantProperties))
+        taskFactory.register(ExportConsumerProguardFilesTask.CreationAction(variant))
+        taskFactory.register(FeatureNameWriterTask.CreationAction(variant))
 
     }
 
-    private fun createDynamicBundleTask(variantProperties: DynamicFeatureVariantPropertiesImpl) {
+    private fun createDynamicBundleTask(variantProperties: DynamicFeatureVariantImpl) {
 
         // If namespaced resources are enabled, LINKED_RES_FOR_BUNDLE is not generated,
         // and the bundle can't be created. For now, just don't add the bundle task.
@@ -79,14 +75,9 @@ internal class DynamicFeatureTaskManager(
             return
         }
 
-        taskFactory.register(
-            PerModuleBundleTask.CreationAction(
-                variantProperties,
-                TaskManager.packagesCustomClassDependencies(variantProperties)
-            )
-        )
+        taskFactory.register(PerModuleBundleTask.CreationAction(variantProperties))
 
-        if (!variantProperties.variantDslInfo.isDebuggable) {
+        if (!variantProperties.debuggable) {
             taskFactory.register(PerModuleReportDependenciesTask.CreationAction(variantProperties))
         }
     }

@@ -17,9 +17,10 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.QualifiedContent.Scope
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
@@ -287,9 +288,9 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<LibraryAarJarsTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: ConsumableCreationConfig
+    ) : VariantTaskCreationAction<LibraryAarJarsTask, ConsumableCreationConfig>(
+        creationConfig
     ) {
         override val type = LibraryAarJarsTask::class.java
         override val name =  computeTaskName("sync", "LibJars")
@@ -327,7 +328,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
 
             task.packageName.setDisallowChanges(creationConfig.packageName)
             task.jarCreatorType.setDisallowChanges(creationConfig.variantScope.jarCreatorType)
-            task.debugBuild.setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
+            task.debugBuild.setDisallowChanges(creationConfig.debuggable)
 
             /*
              * Only get files that are CLASS, and exclude files that are both CLASS and RESOURCES
@@ -339,7 +340,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
              * which means gradle will have to deal with possibly non-existent files in the cache
              */
             task.mainScopeClassFiles.from(
-                if (creationConfig.variantScope.codeShrinker == CodeShrinker.R8) {
+                if (creationConfig.codeShrinker == CodeShrinker.R8) {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_CLASSES)
                 } else {
@@ -360,7 +361,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             task.mainScopeClassFiles.disallowChanges()
 
             task.mainScopeResourceFiles.from(
-                if (creationConfig.variantScope.codeShrinker == CodeShrinker.R8) {
+                if (creationConfig.codeShrinker == CodeShrinker.R8) {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_JAVA_RES)
                 } else {

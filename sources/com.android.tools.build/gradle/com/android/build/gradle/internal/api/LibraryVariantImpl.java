@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.LibraryVariant;
 import com.android.build.gradle.api.TestVariant;
@@ -51,11 +51,11 @@ public class LibraryVariantImpl extends BaseVariantImpl implements LibraryVarian
     @Inject
     public LibraryVariantImpl(
             @NonNull LibraryVariantData variantData,
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(componentProperties, services, readOnlyObjectProvider, outputs);
+        super(component, services, readOnlyObjectProvider, outputs);
         this.variantData = variantData;
     }
 
@@ -97,13 +97,13 @@ public class LibraryVariantImpl extends BaseVariantImpl implements LibraryVarian
                         "variant.getPackageLibrary()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return componentProperties.getTaskContainer().getBundleLibraryTask().getOrNull();
+        return component.getTaskContainer().getBundleLibraryTask().getOrNull();
     }
 
     @Nullable
     @Override
     public TaskProvider<Zip> getPackageLibraryProvider() {
         //noinspection unchecked
-        return (TaskProvider<Zip>) componentProperties.getTaskContainer().getBundleLibraryTask();
+        return (TaskProvider<Zip>) component.getTaskContainer().getBundleLibraryTask();
     }
 }

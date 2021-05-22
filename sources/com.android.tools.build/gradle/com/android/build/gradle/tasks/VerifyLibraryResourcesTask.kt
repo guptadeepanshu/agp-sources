@@ -16,30 +16,22 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.aaptcompiler.canCompileResourceInJvm
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.AndroidJarInput
-import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.aapt.WorkerExecutorResourceCompilationService
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.profile.AnalyticsService
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.res.Aapt2CompileRunnable
-import com.android.build.gradle.internal.res.Aapt2ProcessResourcesRunnable
-import com.android.build.gradle.internal.res.ResourceCompilerRunnable
-import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
+import com.android.build.gradle.internal.res.processResources
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
-import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
-import com.android.build.gradle.internal.services.Aapt2WorkersBuildService
-import com.android.build.gradle.internal.services.aapt2WorkersServiceRegistry
+import com.android.build.gradle.internal.services.Aapt2Input
+import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.services.getLeasingAapt2
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.SyncOptions
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.files.SerializableInputChanges
 import com.android.builder.internal.aapt.AaptException
@@ -48,7 +40,7 @@ import com.android.builder.internal.aapt.AaptPackageConfig
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
 import com.android.ide.common.resources.CompileResourceRequest
 import com.android.ide.common.resources.FileStatus
-import com.android.ide.common.workers.WorkerExecutorFacade
+import com.android.ide.common.resources.ResourceCompilationService
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.ImmutableSet
@@ -56,28 +48,29 @@ import com.google.common.collect.Iterables
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
+import org.gradle.workers.WorkerExecutor
 import java.io.File
-import java.io.Serializable
 import javax.inject.Inject
 
 @CacheableTask
 abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
 
     @get:OutputDirectory
-    lateinit var compiledDirectory: File
-        private set
+    abstract val compiledDirectory: DirectoryProperty
 
     // Merged resources directory.
     @get:Incremental
@@ -89,27 +82,14 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val manifestFiles: DirectoryProperty
 
-    @get:Input
-    lateinit var aapt2Version: String
-        private set
-    @get:Internal
-    abstract val aapt2FromMaven: ConfigurableFileCollection
-
     /** A file collection of the directories containing the compiled dependencies resource files. */
     @get:Incremental
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val compiledDependenciesResources: ConfigurableFileCollection
 
-    @get:Input
-    var useJvmResourceCompiler: Boolean = false
-      private set
-
-    @get:Internal
-    abstract val aapt2WorkersBuildService: Property<Aapt2WorkersBuildService>
-
-    @get:Internal
-    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+    @get:Nested
+    abstract val aapt2: Aapt2Input
 
     // Not an input as it doesn't affect task outputs
     @get:Internal
@@ -120,95 +100,90 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
 
     private lateinit var manifestMergeBlameFile: Provider<RegularFile>
 
-    private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
-
     override fun doTaskAction(inputChanges: InputChanges) {
         val manifestsOutputs = BuiltArtifactsLoaderImpl().load(manifestFiles)
             ?: throw RuntimeException("Cannot load manifests from $manifestFiles")
         val manifestFile = Iterables.getOnlyElement(manifestsOutputs.elements).outputFile
 
-        val aapt2ServiceKey =
-            aapt2DaemonBuildService.get().registerAaptService(aapt2FromMaven.singleFile, LoggerWrapper(logger))
-        val aapt2WorkersBuildServiceKey = aapt2WorkersBuildService.get().getWorkersServiceKey()
-        val parameter = Params(
-            projectName = projectName,
-            owner = path,
-            androidJar = androidJarInput.getAndroidJar().get(),
-            aapt2ServiceKey = aapt2ServiceKey,
-            aapt2WorkersBuildServiceKey = aapt2WorkersBuildServiceKey,
-            errorFormatMode = errorFormatMode,
-            inputs = inputChanges.getChangesInSerializableForm(inputDirectory),
-            manifestFile = File(manifestFile),
-            compiledDependenciesResources = compiledDependenciesResources.files,
-            manifestMergeBlameFile = manifestMergeBlameFile.get().asFile,
-            compiledDirectory = compiledDirectory,
-            mergeBlameFolder = mergeBlameFolder.get().asFile,
-            useJvmResourceCompiler = useJvmResourceCompiler)
-        getWorkerFacadeWithWorkers().use {
-            it.submit(Action::class.java, parameter)
+        workerExecutor.noIsolation().submit(Action::class.java) { params ->
+            params.initializeFromAndroidVariantTask(this)
+            params.androidJar.set(androidJarInput.getAndroidJar().get())
+            params.aapt2.set(aapt2)
+            params.inputs.set(inputChanges.getChangesInSerializableForm(inputDirectory))
+            params.manifestFile.set(File(manifestFile))
+            params.compiledDependenciesResources.from(compiledDependenciesResources)
+            params.manifestMergeBlameFile.set(manifestMergeBlameFile)
+            params.compiledDirectory.set(compiledDirectory)
+            params.mergeBlameFolder.set(mergeBlameFolder)
         }
     }
 
-    private data class Params(
-        val projectName: String,
-        val owner: String,
-        val androidJar: File,
-        val aapt2ServiceKey: Aapt2DaemonServiceKey,
-        val aapt2WorkersBuildServiceKey: WorkerActionServiceRegistry.ServiceKey<Aapt2WorkersBuildService>,
-        val errorFormatMode: SyncOptions.ErrorFormatMode,
-        val inputs: SerializableInputChanges,
-        val manifestFile: File,
-        val compiledDependenciesResources: Iterable<File>,
-        val useJvmResourceCompiler: Boolean,
-        val manifestMergeBlameFile: File?,
-        val compiledDirectory: File,
-        val mergeBlameFolder: File
-        ) : Serializable
+    protected abstract class Params : ProfileAwareWorkAction.Parameters() {
+        abstract val androidJar: RegularFileProperty
+        @get:Nested
+        abstract val aapt2: Property<Aapt2Input>
+        abstract val inputs: Property<SerializableInputChanges>
+        abstract val manifestFile: RegularFileProperty
+        abstract val compiledDependenciesResources: ConfigurableFileCollection
+        abstract val manifestMergeBlameFile: RegularFileProperty
+        abstract val compiledDirectory: DirectoryProperty
+        abstract val mergeBlameFolder: DirectoryProperty
+    }
 
     /**
      * Compiles and links the resources of the library.
      */
-    private class Action @Inject constructor(private val params: Params) : Runnable {
+    protected abstract class Action : ProfileAwareWorkAction<Params>() {
+
+        @get:Inject
+        abstract val workerExecutor: WorkerExecutor
+
         override fun run() {
-            aapt2WorkersServiceRegistry
-                .getService(params.aapt2WorkersBuildServiceKey)
-                .service
-                .getSharedExecutorForAapt2(params.projectName, params.owner).use { facade ->
-                    compileResources(
-                        inputs = params.inputs,
-                        outDirectory = params.compiledDirectory,
-                        workerExecutor = facade,
-                        aapt2ServiceKey = params.aapt2ServiceKey,
-                        errorFormatMode = params.errorFormatMode,
-                        mergeBlameFolder = params.mergeBlameFolder,
-                        useJvmResourceCompiler = params.useJvmResourceCompiler
-                    )
+            val aapt2Input = parameters.aapt2.get()
+            WorkerExecutorResourceCompilationService(
+                projectName = parameters.projectName.get(),
+                taskOwner = parameters.taskOwner.get(),
+                analyticsService = parameters.analyticsService,
+                workerExecutor = workerExecutor,
+                aapt2Input = aapt2Input
+            ).use { compilationService ->
+                compileResources(
+                    inputs = parameters.inputs.get(),
+                    outDirectory = parameters.compiledDirectory.get().asFile,
+                    compilationService = compilationService,
+                    mergeBlameFolder = parameters.mergeBlameFolder.get().asFile
+                )
+            }
 
-                    val config = getAaptPackageConfig(
-                        compiledDependenciesResources = params.compiledDependenciesResources,
-                        androidJar = params.androidJar,
-                        resDir = params.compiledDirectory,
-                        manifestFile = params.manifestFile
-                    )
+            val compiledDependenciesResourcesDirs =
+                parameters.compiledDependenciesResources.reversed()
+            val config = AaptPackageConfig.Builder()
+                .setManifestFile(manifestFile = parameters.manifestFile.get().asFile)
+                .addResourceDirectories(compiledDependenciesResourcesDirs)
+                .addResourceDir(resourceDir = parameters.compiledDirectory.get().asFile)
+                .setLibrarySymbolTableFiles(ImmutableSet.of())
+                .setOptions(AaptOptions())
+                .setVariantType(VariantTypeImpl.LIBRARY)
+                .setAndroidTarget(androidJar = parameters.androidJar.get().asFile)
+                .setMergeBlameDirectory(parameters.mergeBlameFolder.get().asFile)
+                .setManifestMergeBlameFile(parameters.manifestMergeBlameFile.get().asFile)
+                .build()
 
-                    val params = Aapt2ProcessResourcesRunnable.Params(
-                        aapt2ServiceKey = params.aapt2ServiceKey,
-                        request = config,
-                        errorFormatMode = params.errorFormatMode,
-                        mergeBlameFolder = params.mergeBlameFolder,
-                        manifestMergeBlameFile = params.manifestMergeBlameFile
-                    )
-
-                    facade.await() // All compilation must be done before linking.
-                    facade.submit(Aapt2ProcessResourcesRunnable::class.java, params)
-                }
+            workerExecutor.await() // All compilation must be done before linking.
+            processResources(
+                aapt = aapt2Input.getLeasingAapt2(),
+                aaptConfig = config,
+                rJar = null,
+                logger = Logging.getLogger(this::class.java),
+                errorFormatMode = aapt2Input.buildService.get().parameters.errorFormatMode.get()
+            )
         }
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<VerifyLibraryResourcesTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: VariantCreationConfig
+    ) : VariantTaskCreationAction<VerifyLibraryResourcesTask, VariantCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -216,22 +191,25 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
         override val type: Class<VerifyLibraryResourcesTask>
             get() = VerifyLibraryResourcesTask::class.java
 
+        override fun handleProvider(taskProvider: TaskProvider<VerifyLibraryResourcesTask>) {
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider = taskProvider,
+                property = VerifyLibraryResourcesTask::compiledDirectory
+            ).on(InternalArtifactType.VERIFIED_LIBRARY_RESOURCES)
+        }
+
         /** Configure the given newly-created task object.  */
         override fun configure(
             task: VerifyLibraryResourcesTask
         ) {
             super.configure(task)
 
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
-            task.aapt2FromMaven.fromDisallowChanges(aapt2FromMaven)
-            task.aapt2Version = aapt2Version
-
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MERGED_RES,
                 task.inputDirectory
             )
 
-            task.compiledDirectory = creationConfig.paths.compiledResourcesOutputDir
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.AAPT_FRIENDLY_MERGED_MANIFESTS,
                 task.manifestFiles
@@ -242,11 +220,7 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                 InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
             )
 
-            task.errorFormatMode = SyncOptions.getErrorFormatMode(
-                creationConfig.services.projectOptions
-            )
-
-            if (creationConfig.variantScope.isPrecompileDependenciesResourcesEnabled) {
+            if (creationConfig.isPrecompileDependenciesResourcesEnabled) {
                 task.compiledDependenciesResources.fromDisallowChanges(
                     creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -255,35 +229,18 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                     ))
             }
 
-            task.useJvmResourceCompiler =
-              creationConfig.services.projectOptions[BooleanOption.ENABLE_JVM_RESOURCE_COMPILER]
-            task.aapt2WorkersBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
-            task.aapt2DaemonBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
+            creationConfig.services.initializeAapt2Input(task.aapt2)
             task.androidJarInput.sdkBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
             )
+            task.androidJarInput.compileSdkVersion.setDisallowChanges(
+                creationConfig.globalScope.extension.compileSdkVersion)
+            task.androidJarInput.buildToolsRevision.setDisallowChanges(
+                creationConfig.globalScope.extension.buildToolsRevision)
         }
     }
 
     companion object {
-        private fun getAaptPackageConfig(compiledDependenciesResources: Iterable<File>, androidJar: File, resDir: File, manifestFile: File): AaptPackageConfig {
-            val compiledDependenciesResourcesDirs = compiledDependenciesResources.reversed()
-
-            // We're do not want to generate any files - only to make sure everything links properly.
-            return AaptPackageConfig.Builder()
-                .setManifestFile(manifestFile)
-                .addResourceDirectories(compiledDependenciesResourcesDirs)
-                .addResourceDir(resDir)
-                .setLibrarySymbolTableFiles(ImmutableSet.of())
-                .setOptions(AaptOptions())
-                .setVariantType(VariantTypeImpl.LIBRARY)
-                .setAndroidTarget(androidJar)
-                .build()
-        }
 
         /**
          * Compiles new or changed files and removes files that were compiled from the removed files.
@@ -293,24 +250,17 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
          *
          * @param inputs the new, changed or modified files that need to be compiled or removed.
          * @param outDirectory the directory containing compiled resources.
-         * @param aapt AAPT tool to execute the resource compiling, either must be supplied or
-         * worker executor and revision must be supplied.
-         * @param aapt2ServiceKey the AAPT2 service to inject in to the worker executor.
-         * @param workerExecutor the worker executor to submit AAPT compilations to.
-         * @param mergedResDirectory directory containing merged uncompiled resources.
+         * @param compilationService AAPT tool to execute the resource compiling
+         * @param analyticsService the build service to record execution spans
          */
         @JvmStatic
         @VisibleForTesting
         fun compileResources(
             inputs: SerializableInputChanges,
             outDirectory: File,
-            workerExecutor: WorkerExecutorFacade,
-            aapt2ServiceKey: Aapt2DaemonServiceKey,
-            errorFormatMode: SyncOptions.ErrorFormatMode,
-            mergeBlameFolder: File,
-            useJvmResourceCompiler: Boolean
+            compilationService: ResourceCompilationService,
+            mergeBlameFolder: File
         ) {
-
             for (change in inputs.changes) {
                 // Accept only files in subdirectories of the merged resources directory.
                 // Ignore files and directories directly under the merged resources directory.
@@ -333,24 +283,7 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                                 isPngCrunching = false,
                                 mergeBlameFolder = mergeBlameFolder
                             )
-
-                            if (useJvmResourceCompiler &&
-                              canCompileResourceInJvm(request.inputFile, request.isPngCrunching)) {
-                                workerExecutor.submit(
-                                  ResourceCompilerRunnable::class.java,
-                                  ResourceCompilerRunnable.Params(request)
-                                )
-                            } else {
-                                workerExecutor.submit(
-                                  Aapt2CompileRunnable::class.java,
-                                  Aapt2CompileRunnable.Params(
-                                    aapt2ServiceKey,
-                                    listOf(request),
-                                    errorFormatMode,
-                                    true
-                                  )
-                                )
-                            }
+                            compilationService.submitCompile(request)
                         } catch (e: Exception) {
                             throw AaptException("Failed to compile file ${change.file.absolutePath}", e)
                         }
@@ -363,8 +296,6 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                         )
                 }
             }
-            // We need to wait for the files to finish compiling before we do the link.
-            workerExecutor.await()
         }
     }
 }

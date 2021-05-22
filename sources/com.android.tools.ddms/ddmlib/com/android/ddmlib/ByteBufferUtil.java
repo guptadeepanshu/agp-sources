@@ -16,10 +16,13 @@
 package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
@@ -52,5 +55,32 @@ public class ByteBufferUtil {
       int len = str.length();
       for (int i = 0; i < len; i++)
           buf.putChar(str.charAt(i));
+  }
+
+  /**
+   * Please use with care. In most cases leaving the job to the GC is enough.
+   */
+  public static boolean cleanBuffer(@NonNull ByteBuffer buffer) {
+    if (!buffer.isDirect()) return true;
+
+    // in Java 9+, the "official" dispose method is sun.misc.Unsafe#invokeCleaner
+    try {
+      Class<?> unsafeClass =
+        ByteBufferUtil.class.getClassLoader().loadClass("sun.misc.Unsafe");
+      Field f = unsafeClass.getDeclaredField("theUnsafe");
+      f.setAccessible(true);
+      Object unsafe = f.get(null);
+      MethodType type = MethodType.methodType(void.class, ByteBuffer.class);
+      @SuppressWarnings("JavaLangInvokeHandleSignature")
+      MethodHandle handle =
+        MethodHandles.lookup().findVirtual(unsafeClass, "invokeCleaner", type);
+      handle.invoke(unsafeClass.cast(unsafe), buffer);
+      return true;
+    }
+    catch (Throwable ex) {
+      // ignore, this is a best effort attempt.
+      Log.w("ddmlib", "ByteBufferUtil.cleanBuffer() failed " + ex);
+      return false;
+    }
   }
 }

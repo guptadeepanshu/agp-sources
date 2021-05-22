@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.services
 
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.provider.Provider
 import java.io.File
 
 /**
@@ -27,12 +28,14 @@ import java.io.File
  * This is meant to be used only by TaskManagers and TaskCreation actions. Other stages of the plugin
  * will use different services objects.
  *
- * This is accessed via [com.android.build.gradle.internal.component.BaseCreationConfig]
+ * This is accessed via [com.android.build.gradle.internal.component.ComponentCreationConfig]
  */
 interface TaskCreationServices: BaseServices {
     fun file(file: Any): File
 
     fun fileCollection(): ConfigurableFileCollection
     fun fileCollection(vararg files: Any): ConfigurableFileCollection
-
+    fun initializeAapt2Input(aapt2Input: Aapt2Input)
+    fun <T> provider(callable: () -> T): Provider<T>
+    val variantPropertiesApiServices: VariantPropertiesApiServices
 }

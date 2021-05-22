@@ -16,33 +16,39 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.attribution.generateChromeTrace
-import com.android.build.gradle.internal.cxx.gradle.generator.ExternalNativeJsonGenerator
-import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons
-import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValue
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxMetadataGenerator
+import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputLevel
+import com.android.build.gradle.internal.cxx.gradle.generator.createCxxMetadataGenerator
+import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.getNativeBuildMiniConfigs
 import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValueMini
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValueMini
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
+import com.android.build.gradle.internal.cxx.logging.lifecycleln
+import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.ninjaLogFile
 import com.android.build.gradle.internal.cxx.process.createProcessOutputJunction
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.cxx.settings.getEnvironmentVariableMap
-import com.android.build.gradle.internal.process.GradleProcessExecutor
+import com.android.build.gradle.internal.ndk.Stl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JNI
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.errors.DefaultIssueReporter
-import com.android.ide.common.process.BuildCommandException
 import com.android.ide.common.process.ProcessInfoBuilder
-import com.android.utils.FileUtils
-import com.android.utils.tokenizeCommandLineToEscaped
+import com.android.utils.FileUtils.isSameFile
+import com.android.utils.FileUtils.join
 import com.google.common.base.Joiner
 import com.google.common.base.Preconditions.checkElementIndex
 import com.google.common.base.Preconditions.checkNotNull
@@ -51,15 +57,15 @@ import com.google.common.base.Strings
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import com.google.common.io.Files
-import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.GradleException
 import org.gradle.api.Task
-import org.gradle.api.provider.Provider
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.process.ExecOperations
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files.createLink
 import java.time.Clock
 import javax.inject.Inject
 import kotlin.streams.toList
@@ -72,9 +78,30 @@ import kotlin.streams.toList
  * It declares no inputs or outputs, as it's supposed to always run when invoked. Incrementality
  * is left to the underlying build system.
  */
-abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Build task is always run as incrementality is left to the external build system.") {
+abstract class ExternalNativeBuildTask @Inject constructor(@get:Internal val ops: ExecOperations) :
+    UnsafeOutputsTask("External Native Build task is always run as incrementality is left to the external build system.") {
+    @get:Internal
+    abstract val sdkComponents: Property<SdkComponentsBuildService>
+    private lateinit var configurationModel: CxxConfigurationModel
 
-    private lateinit var generator: Provider<ExternalNativeJsonGenerator>
+    @Transient
+    private var generator: CxxMetadataGenerator? = null
+    private val variant get() = generator().variant
+    private val abis get() = generator().abis
+
+    private fun generator() : CxxMetadataGenerator {
+        if (generator != null) return generator!!
+        IssueReporterLoggingEnvironment(
+            DefaultIssueReporter(LoggerWrapper(logger))
+        ).use {
+            generator =
+                createCxxMetadataGenerator(
+                    configurationModel,
+                    analyticsService.get()
+                )
+        }
+        return generator!!
+    }
 
     /**
      * Get native build config minis. Also gather stats if they haven't already been gathered for
@@ -82,48 +109,63 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
      *
      * @return the mini configs
      */
-    private// Gather stats only if they haven't been gathered during model build
-    val nativeBuildConfigValueMinis: List<NativeBuildConfigValueMini>
-        @Throws(IOException::class)
-        get() = if (stats.nativeBuildConfigCount == 0) {
-            AndroidBuildGradleJsons.getNativeBuildMiniConfigs(
-                generator.get().nativeBuildConfigurationsJsons, stats
-            )
-        } else AndroidBuildGradleJsons.getNativeBuildMiniConfigs(
-            generator.get().nativeBuildConfigurationsJsons, null/* kotlin.Unit */
-        )
+    private val nativeBuildConfigValueMinis: List<NativeBuildConfigValueMini>
+        get() = getNativeBuildMiniConfigs(abis.map { it.jsonFile }, null)
 
     // Exposed in Variants API
     @get:Internal("Temporary to suppress warnings (bug 135900510), may need more investigation")
     val objFolder: File
-        get() = File(generator.get().objFolder)
+        get() = configurationModel.variant.objFolder
 
     // Exposed in Variants API
     @get:Internal("Temporary to suppress warnings (bug 135900510), may need more investigation")
     val soFolder: File
-        get() = File(generator.get().soFolder)
-
-    @get:Inject
-    abstract val execOperations: ExecOperations
-
-    private val stlSharedObjectFiles: Map<Abi, File>
-        get() = generator.get().getStlSharedObjectFiles()
-
-    private val stats: GradleBuildVariant.Builder
-        get() = generator.get().stats
+        get() = configurationModel.variant.soFolder
 
     /** Represents a single build step that, when executed, builds one or more libraries.  */
     private class BuildStep(
-        val buildCommand: String,
+        val buildCommandComponents: List<String>,
         val libraries: List<NativeLibraryValueMini>,
         val outputFolder: File
     )
 
     override fun doTaskAction() {
-        IssueReporterLoggingEnvironment(DefaultIssueReporter(LoggerWrapper(logger))).use { buildImpl() }
+        IssueReporterLoggingEnvironment(DefaultIssueReporter(LoggerWrapper(logger))).use {
+            buildImpl()
+        }
     }
 
-    @Throws(BuildCommandException::class, IOException::class)
+    private fun getStlSharedObjectFiles(): Map<Abi, File> {
+        if (variant.module.buildSystem != NativeBuildSystem.CMAKE) return mapOf()
+        // Search for ANDROID_STL build argument. Process in order / later flags take precedent.
+        var stl: Stl? = null
+        for (argument in variant.buildSystemArgumentList.map { it.replace(" ", "") }) {
+            if (argument.startsWith("-DANDROID_STL=")) {
+                val stlName = argument.split("=".toRegex(), 2).toTypedArray()[1]
+                stl = Stl.fromArgumentName(stlName)
+                if (stl == null) {
+                    errorln("Unrecognized STL in arguments: %s", stlName)
+                }
+            }
+        }
+
+        // TODO: Query the default from the NDK.
+        // We currently assume the default to not require packaging for the default STL. This is
+        // currently safe because the default for ndk-build has always been system (which doesn't
+        // require packaging because it's a system library) and gnustl_static or c++_static for
+        // CMake (which also doesn't require packaging).
+        //
+        // https://github.com/android-ndk/ndk/issues/744 wants to change the default for both to
+        // c++_shared, but that can't happen until we stop assuming the default does not need to be
+        // packaged.
+        return if (stl == null) {
+            mapOf()
+        } else {
+            variant.module.stlSharedObjectMap.getValue(stl)
+                .filter { e -> abis.map { it.abi }.contains(e.key) }
+        }
+    }
+
     private fun buildImpl() {
         infoln("starting build")
         checkNotNull(variantName)
@@ -131,7 +173,7 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
         val miniConfigs = nativeBuildConfigValueMinis
         infoln("done reading expected JSONs")
 
-        val targets = generator.get().variant.buildTargetSet
+        val targets = variant.buildTargetSet
 
         if (targets.isEmpty()) {
             infoln("executing build commands for targets that produce .so files or executables")
@@ -155,24 +197,22 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                 continue
             }
 
-            if (!Strings.isNullOrEmpty(config.buildTargetsCommand)) {
+            if (config.buildTargetsCommandComponents?.isNotEmpty() == true) {
                 // Build all libraries together in one step, using the names of the artifacts.
                 val artifactNames = librariesToBuild
-                    .stream()
-                    .filter { library -> library.artifactName != null }
-                    .map<String> { library -> library.artifactName }
-                    .sorted()
+                    .mapNotNull { library -> library.artifactName }
                     .distinct()
-                    .toList()
+                    .sorted()
                 val buildTargetsCommand =
-                    substituteBuildTargetsCommand(config.buildTargetsCommand!!, artifactNames)
+                    substituteBuildTargetsCommand(
+                        config.buildTargetsCommandComponents!!,
+                        artifactNames
+                    )
                 buildSteps.add(
                     BuildStep(
                         buildTargetsCommand,
                         librariesToBuild,
-                        generator
-                            .get()
-                            .nativeBuildConfigurationsJsons[miniConfigIndex]
+                        abis[miniConfigIndex].jsonFile
                             .parentFile
                     )
                 )
@@ -182,15 +222,12 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                 for (libraryValue in librariesToBuild) {
                     buildSteps.add(
                         BuildStep(
-                            libraryValue.buildCommand!!,
+                            libraryValue.buildCommandComponents!!,
                             listOf(libraryValue),
-                            generator
-                                .get()
-                                .nativeBuildConfigurationsJsons[miniConfigIndex]
-                                .parentFile
+                            abis[miniConfigIndex].jsonFile.parentFile
                         )
                     )
-                    infoln("about to build ${libraryValue.buildCommand!!}")
+                    infoln("about to build ${libraryValue.buildCommandComponents!!.joinToString(" ")}")
                 }
             }
         }
@@ -218,53 +255,49 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                 }
 
                 // If the build chose to write the library output somewhere besides objFolder
-                // then copy to objFolder (reference b.android.com/256515)
+                // then link or copy to objFolder (reference b.android.com/256515)
                 //
-                // Since there is now a .so file outside of the standard build/ folder we have to
-                // consider clean. Here's how the two files are covered.
+                // Since there is now a hard link outside of the standard build/ folder we have to
+                // make sure `clean` deletes both the original .so file and the hard link to so
+                // that the ref count on the inode goes down from two to zero. Here's how the two
+                // files are covered.
                 // (1) Gradle plugin deletes the build/ folder. This covers the destination of the
                 //     copy.
                 // (2) ExternalNativeCleanTask calls the individual clean targets for everything
-                //     that was built. This should cover the source of the copy but it is up to the
+                //     that was built. This is expected to delete the .so file but it is up to the
                 //     CMakeLists.txt or Android.mk author to ensure this.
                 val abi = Abi.getByName(library.abi!!) ?: throw RuntimeException(
-                    "Unknown ABI seen $(ibraryValue.abi}"
+                    "Unknown ABI seen ${library.abi}"
                 )
-                val expectedOutputFile = FileUtils.join(
-                    generator.get().variant.objFolder,
+                val expectedOutputFile = join(
+                    variant.objFolder,
                     abi.tag,
                     output.name
                 )
-                if (!FileUtils.isSameFile(output, expectedOutputFile)) {
+                if (!isSameFile(output, expectedOutputFile)) {
                     infoln("external build set its own library output location for " +
-                            "'${output.name}', copy to expected location")
+                            "'${output.name}', hard link or copy to expected location")
 
                     if (expectedOutputFile.parentFile.mkdirs()) {
                         infoln("created folder ${expectedOutputFile.parentFile}")
                     }
-                    infoln("copy file $output to $expectedOutputFile")
-                    Files.copy(output, expectedOutputFile)
+                    hardLinkOrCopy(output, expectedOutputFile)
                 }
 
                 for (runtimeFile in library.runtimeFiles) {
-                    val dest =
-                        FileUtils.join(generator.get().variant.objFolder, abi.tag, runtimeFile.name)
-                    // Dependencies within the same project will also show up as runtimeFiles, and
-                    // will have the same source and destination. Can skip those.
-                    if (!FileUtils.isSameFile(runtimeFile, dest)) {
-                        infoln("copying runtime file $runtimeFile to $dest")
-                        Files.copy(runtimeFile, dest)
-                    }
+                    val dest = join(variant.objFolder, abi.tag, runtimeFile.name)
+                    hardLinkOrCopy(runtimeFile, dest)
                 }
             }
         }
 
+        val stlSharedObjectFiles = getStlSharedObjectFiles()
         if (stlSharedObjectFiles.isNotEmpty()) {
             infoln("copy STL shared object files")
             for (abi in stlSharedObjectFiles.keys) {
                 val stlSharedObjectFile = stlSharedObjectFiles.getValue(abi)
-                val objAbi = FileUtils.join(
-                    generator.get().variant.objFolder,
+                val objAbi = join(
+                    variant.objFolder,
                     abi.tag,
                     stlSharedObjectFile.name
                 )
@@ -273,13 +306,48 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                     // and continue without copying STL.
                     infoln("didn't copy STL file to ${objAbi.parentFile} because that folder wasn't created by the build ")
                 } else {
-                    infoln("copy file $stlSharedObjectFile to $objAbi")
-                    Files.copy(stlSharedObjectFile, objAbi)
+                    hardLinkOrCopy(stlSharedObjectFile, objAbi)
                 }
             }
         }
 
         infoln("build complete")
+    }
+
+    /**
+     * Hard link [source] to [destination].
+     */
+    private fun hardLinkOrCopy(source:File, destination:File) {
+        // Dependencies within the same project will also show up as runtimeFiles, and
+        // will have the same source and destination. Can skip those.
+        if (isSameFile(source, destination)) {
+            // This happens if source and destination are lexically the same
+            // --or-- if one is a hard link to the other.
+            // Either way, no work to do.
+            return
+        }
+
+        if(destination.exists()) {
+            destination.delete()
+        }
+
+        // CMake can report runtime files that it doesn't later produce.
+        // Don't try to copy these. Also, don't warn because hard-link/copy
+        // is not the correct location to diagnose why the *original*
+        // runtime file was not created.
+        if(!source.exists()) {
+            return
+        }
+
+        try {
+            createLink(destination.toPath(), source.toPath().toRealPath())
+            infoln("linked $source to $destination")
+        } catch (e: IOException) {
+            // This can happen when hard linking from one drive to another on Windows
+            // In this case, copy the file instead.
+            Files.copy(source, destination)
+            infoln("copied $source to $destination")
+        }
     }
 
     /**
@@ -290,7 +358,7 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
         // Check the resulting JSON targets against the targets specified in ndkBuild.targets or
         // cmake.targets. If a target name specified by the user isn't present then provide an
         // error to the user that lists the valid target names.
-        val targets = generator.get().variant.buildTargetSet
+        val targets = variant.buildTargetSet
         infoln("executing build commands for targets: '${Joiner.on(", ").join(targets)}'")
 
         // Search libraries for matching targets.
@@ -323,8 +391,8 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
         config: NativeBuildConfigValueMini
     ): List<NativeLibraryValueMini> {
         val librariesToBuild = Lists.newArrayList<NativeLibraryValueMini>()
-        val targets = generator.get().variant.buildTargetSet
-        val implicitTargets = generator.get().variant.implicitBuildTargetSet.toMutableSet()
+        val targets = variant.buildTargetSet
+        val implicitTargets = variant.implicitBuildTargetSet.toMutableSet()
         loop@for (libraryValue in config.libraries.values) {
             infoln("evaluate library ${libraryValue.artifactName} (${libraryValue.abi})")
             if (targets.isNotEmpty() && !targets.contains(libraryValue.artifactName)) {
@@ -332,14 +400,12 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                 continue
             }
 
-            if (Strings.isNullOrEmpty(config.buildTargetsCommand) && Strings.isNullOrEmpty(
-                    libraryValue.buildCommand
-                )
+            if ((config.buildTargetsCommandComponents?.isEmpty() != false) && (libraryValue.buildCommandComponents?.isEmpty() != false)
             ) {
                 // This can happen when there's an externally referenced library.
                 infoln(
                     "not building target ${libraryValue.artifactName!!} because there was no " +
-                            "buildCommand for the target, nor a buildTargetsCommand for the config")
+                            "buildCommandComponents for the target, nor a buildTargetsCommandComponents for the config")
                 continue
             }
 
@@ -352,7 +418,7 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                     continue
                 }
 
-                if (generator.get().variant.implicitBuildTargetSet.contains(libraryValue.artifactName)) {
+                if (variant.implicitBuildTargetSet.contains(libraryValue.artifactName)) {
                     infoln("building target ${libraryValue.artifactName} because it is required by the build")
                 } else {
                     when (Files.getFileExtension(output.name)) {
@@ -384,13 +450,9 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
      * Given a list of build steps, execute each. If there is a failure, processing is stopped at
      * that point.
      */
-    @Throws(BuildCommandException::class, IOException::class)
     private fun executeProcessBatch(buildSteps: List<BuildStep>) {
-        val logger = logger
-        val processExecutor = GradleProcessExecutor(execOperations::exec)
-
         for (buildStep in buildSteps) {
-            val tokens = buildStep.buildCommand.tokenizeCommandLineToEscaped()
+            val tokens = buildStep.buildCommandComponents
             val processBuilder = ProcessInfoBuilder()
             processBuilder.setExecutable(tokens[0])
             for (i in 1 until tokens.size) {
@@ -407,23 +469,21 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                     .stream()
                     .map { library -> library.artifactName + "_" + library.abi }
                     .toList()
-                logger.lifecycle(
-                    String.format("Build multiple targets ${targetNames.joinToString(" ")}"))
+                lifecycleln("Build multiple targets ${targetNames.joinToString(" ")}")
             } else {
                 checkElementIndex(0, buildStep.libraries.size)
                 logFileSuffix = buildStep.libraries[0].artifactName + "_" + abiName
-                logger.lifecycle(
-                    String.format("Build $logFileSuffix"))
+                lifecycleln("Build $logFileSuffix")
             }
 
-            generator.get().abis
+            abis
                 .firstOrNull { abiModel -> abiModel.abi.tag == abiName }
                 ?.let {
                     applyBuildSettings(it.buildSettings, processBuilder)
                 }
 
             val generateChromeTraces =
-                generator.get().takeIf { it.nativeBuildSystem == NativeBuildSystem.CMAKE }
+                generator().takeIf { it.variant.module.buildSystem == NativeBuildSystem.CMAKE }
                     ?.abis
                     ?.firstOrNull { it.abi.tag == abiName }
                     ?.let { abiModel ->
@@ -446,16 +506,15 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                     }
 
             createProcessOutputJunction(
-                buildStep.outputFolder,
-                "android_gradle_build_$logFileSuffix",
+                buildStep.outputFolder.resolve("android_gradle_build_command_$logFileSuffix.txt"),
+                buildStep.outputFolder.resolve("android_gradle_build_stdout_$logFileSuffix.txt"),
+                buildStep.outputFolder.resolve("android_gradle_build_stderr_$logFileSuffix.txt"),
                 processBuilder,
-                logger,
-                processExecutor,
-                ""
-            )
-                .logStderrToInfo()
-                .logStdoutToInfo()
-                .execute(execOperations::exec)
+                "")
+                .logStderr()
+                .logStdout()
+                .logFullStdout(variant.module.nativeBuildOutputLevel == NativeBuildOutputLevel.VERBOSE)
+                .execute(ops::exec)
 
             generateChromeTraces?.invoke()
         }
@@ -466,11 +525,11 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
     }
 
     class CreationAction(
-        private val generator: Provider<ExternalNativeJsonGenerator>,
-        private val generateTask: TaskProvider<out Task>,
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<ExternalNativeBuildTask, ComponentPropertiesImpl>(
-        componentProperties
+        private val configurationModel : CxxConfigurationModel,
+        creationConfig: VariantCreationConfig,
+        private val generateTask: TaskProvider<out Task>
+    ) : VariantTaskCreationAction<ExternalNativeBuildTask, VariantCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -497,7 +556,10 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
                 creationConfig.variantDependencies.getArtifactFileCollection(RUNTIME_CLASSPATH, ALL, JNI)
             )
 
-            task.generator = generator
+            task.configurationModel = configurationModel
+            task.sdkComponents.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
         }
     }
 
@@ -508,17 +570,20 @@ abstract class ExternalNativeBuildTask : UnsafeOutputsTask("External Native Buil
         const val BUILD_TARGETS_PLACEHOLDER = "{LIST_OF_TARGETS_TO_BUILD}"
 
         /**
-         * @param buildTargetsCommand The build command that can build multiple targets in parallel.
+         * @param buildTargetsCommandComponents The build command that can build multiple targets in parallel.
          * @param artifactNames The names of artifacts the build command will build in parallel.
          * @return Replaces the placeholder in the input command with the given artifacts and returns a
          * command that can be executed directly.
          */
         private fun substituteBuildTargetsCommand(
-            buildTargetsCommand: String, artifactNames: List<String>
-        ): String {
-            return buildTargetsCommand.replace(
-                BUILD_TARGETS_PLACEHOLDER, artifactNames.joinToString(" ")
-            )
+            buildTargetsCommandComponents: List<String>, artifactNames: List<String>
+        ): List<String> {
+            if (BUILD_TARGETS_PLACEHOLDER !in buildTargetsCommandComponents) {
+                return buildTargetsCommandComponents
+            }
+            return buildTargetsCommandComponents.takeWhile { it != BUILD_TARGETS_PLACEHOLDER } +
+                    artifactNames +
+                    buildTargetsCommandComponents.takeLastWhile { it != BUILD_TARGETS_PLACEHOLDER }
         }
     }
 }

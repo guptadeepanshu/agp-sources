@@ -16,29 +16,31 @@
 
 package com.android.build.gradle.internal.dependency
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.dependency.AsmClassesTransform.Companion.ATTR_ASM_TRANSFORMED_VARIANT
 import com.android.build.gradle.internal.dexing.readDesugarGraph
 import com.android.build.gradle.internal.dexing.writeDesugarGraph
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.tasks.recordArtifactTransformSpan
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.dexing.ClassFileEntry
+import com.android.builder.dexing.ClassFileInput
 import com.android.builder.dexing.ClassFileInputs
 import com.android.builder.dexing.DependencyGraphUpdater
 import com.android.builder.dexing.DexArchiveBuilder
 import com.android.builder.dexing.DexParameters
 import com.android.builder.dexing.MutableDependencyGraph
-import com.android.builder.dexing.isClassFile
 import com.android.builder.dexing.isJarFile
 import com.android.builder.dexing.r8.ClassFileProviderFactory
 import com.android.builder.files.SerializableFileChanges
 import com.android.sdklib.AndroidVersion
-import com.android.tools.build.gradle.internal.profile.GradleTransformExecutionType
 import com.android.utils.FileUtils
 import com.google.common.io.Closer
 import com.google.common.io.Files
@@ -99,14 +101,10 @@ abstract class BaseDexingTransform<T : BaseDexingTransform.Parameters> : Transfo
     protected abstract fun computeClasspathFiles(): List<Path>
 
     override fun transform(outputs: TransformOutputs) {
-        recordArtifactTransformSpan(
-            parameters.projectName.get(),
-            GradleTransformExecutionType.DEX_ARTIFACT_TRANSFORM
-        ) {
-            val input = primaryInput.get().asFile
-            val outputDir = outputs.dir(Files.getNameWithoutExtension(input.name))
-            doTransform(input, outputDir)
-        }
+        //TODO(b/162813654) record transform execution span
+        val input = primaryInput.get().asFile
+        val outputDir = outputs.dir(Files.getNameWithoutExtension(input.name))
+        doTransform(input, outputDir)
     }
 
     private fun doTransform(inputFile: File, outputDir: File) {
@@ -194,7 +192,7 @@ abstract class BaseDexingTransform<T : BaseDexingTransform.Parameters> : Transfo
 
         // Remove stale dex outputs (not including those that will be overwritten)
         inputChanges.removedFiles.forEach {
-            if (isClassFile(it.file.path)) {
+            if (ClassFileInput.CLASS_MATCHER.test(it.file.path)) {
                 val staleOutputFile =
                     dexOutputDir.resolve(ClassFileEntry.withDexExtension(it.normalizedPath))
                 FileUtils.deleteRecursivelyIfExists(staleOutputFile)
@@ -324,18 +322,21 @@ abstract class DexingWithClasspathTransform : BaseDexingTransform<BaseDexingTran
     override fun computeClasspathFiles() = classpath.files.map(File::toPath)
 }
 
-fun getDexingArtifactConfigurations(components: Collection<ComponentPropertiesImpl>): Set<DexingArtifactConfiguration> {
-    return components.map { getDexingArtifactConfiguration(it) }.toSet()
+fun getDexingArtifactConfigurations(components: Collection<ComponentCreationConfig>): Set<DexingArtifactConfiguration> {
+    return components
+        .filterIsInstance<ApkCreationConfig>()
+        .map { getDexingArtifactConfiguration(it) }.toSet()
 }
 
-fun getDexingArtifactConfiguration(component: ComponentPropertiesImpl): DexingArtifactConfiguration {
+fun getDexingArtifactConfiguration(creationConfig: ApkCreationConfig): DexingArtifactConfiguration {
     return DexingArtifactConfiguration(
-        minSdk = component.variantDslInfo.minSdkVersionWithTargetDeviceApi.featureLevel,
-        isDebuggable = component.variantDslInfo.isDebuggable,
-        enableDesugaring = component.variantScope.java8LangSupportType == VariantScope.Java8LangSupport.D8,
-        enableCoreLibraryDesugaring = component.variantScope.isCoreLibraryDesugaringEnabled,
-        needsShrinkDesugarLibrary = component.variantScope.needsShrinkDesugarLibrary,
-        incrementalDexingTransform = component.globalScope.projectOptions.get(BooleanOption.ENABLE_INCREMENTAL_DEXING_TRANSFORM)
+        minSdk = creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel(),
+        isDebuggable = creationConfig.debuggable,
+        enableDesugaring = creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.D8,
+        enableCoreLibraryDesugaring = creationConfig.isCoreLibraryDesugaringEnabled,
+        needsShrinkDesugarLibrary = creationConfig.needsShrinkDesugarLibrary,
+        incrementalDexingTransform = creationConfig.globalScope.projectOptions.get(BooleanOption.ENABLE_INCREMENTAL_DEXING_TRANSFORM),
+        asmTransformedVariant = if (creationConfig.registeredDependenciesClassesVisitors.isNotEmpty()) creationConfig.name else null
     )
 }
 
@@ -345,7 +346,8 @@ data class DexingArtifactConfiguration(
     private val enableDesugaring: Boolean,
     private val enableCoreLibraryDesugaring: Boolean,
     private val needsShrinkDesugarLibrary: Boolean,
-    private val incrementalDexingTransform: Boolean
+    private val incrementalDexingTransform: Boolean,
+    private val asmTransformedVariant: String?
 ) {
 
     private val needsClasspath = enableDesugaring && minSdk < AndroidVersion.VersionCodes.N
@@ -374,11 +376,47 @@ data class DexingArtifactConfiguration(
                 }
                 parameters.incrementalDexingTransform.set(incrementalDexingTransform)
             }
-            // Put this behind a flag as we need to monitor the performance impact
-            if (incrementalDexingTransform) {
-                spec.from.attribute(ARTIFACT_FORMAT, AndroidArtifacts.ArtifactType.CLASSES.type)
-            } else {
-                spec.from.attribute(ARTIFACT_FORMAT, AndroidArtifacts.ArtifactType.CLASSES_JAR.type)
+            when {
+                asmTransformedVariant != null -> {
+                    spec.from.attribute(
+                        ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.ASM_INSTRUMENTED_JARS.type
+                    )
+                }
+                // There are 2 transform flows for DEX:
+                //   1. CLASSES_DIR -> CLASSES -> DEX
+                //   2. CLASSES_JAR -> CLASSES -> DEX
+                //
+                // For incremental dexing, when requesting DEX the consumer will indicate a
+                // preference for CLASSES_DIR over CLASSES_JAR (see DexMergingTask), otherwise
+                // Gradle will select CLASSES_JAR by default.
+                //
+                // However, there could be an issue if CLASSES_DIR is selected: For Java libraries
+                // using Kotlin, CLASSES_DIR has two separate directories: one for compiled Java
+                // classes and one for compiled Kotlin classes. Classes in one directory may
+                // reference classes in the other directory, but each directory is transformed to
+                // DEX independently. Therefore, if dexing requires a classpath (desugaring is
+                // enabled and minSdk < 24), desugaring may not work correctly.
+                //
+                // Android libraries do not have this issue, as their CLASSES_DIR is one directory
+                // containing both Java and Kotlin classes.
+                //
+                // Therefore, to ensure correctness in all cases, we transform CLASSES to DEX only
+                // when dexing does not require a classpath (and incremental dexing transform is
+                // enabled). Otherwise, we transform CLASSES_JAR to DEX directly so that CLASSES_DIR
+                // will not be selected.
+                incrementalDexingTransform && !needsClasspath -> {
+                    spec.from.attribute(
+                        ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.CLASSES.type
+                    )
+                }
+                else -> {
+                    spec.from.attribute(
+                        ARTIFACT_FORMAT,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR.type
+                    )
+                }
             }
             if (needsShrinkDesugarLibrary) {
                 spec.to.attribute(
@@ -389,9 +427,9 @@ data class DexingArtifactConfiguration(
                 spec.to.attribute(ARTIFACT_FORMAT, AndroidArtifacts.ArtifactType.DEX.type)
             }
 
-            getAttributes().forEach { (attribute, value) ->
-                spec.from.attribute(attribute, value)
-                spec.to.attribute(attribute, value)
+            getAttributes().apply {
+                addAttributesToContainer(spec.from)
+                addAttributesToContainer(spec.to)
             }
         }
     }
@@ -404,12 +442,15 @@ data class DexingArtifactConfiguration(
         }
     }
 
-    fun getAttributes(): Map<Attribute<String>, String> {
-        return mapOf(
-            ATTR_MIN_SDK to minSdk.toString(),
-            ATTR_IS_DEBUGGABLE to isDebuggable.toString(),
-            ATTR_ENABLE_DESUGARING to enableDesugaring.toString(),
-            ATTR_INCREMENTAL_DEXING_TRANSFORM to incrementalDexingTransform.toString()
+    fun getAttributes(): AndroidAttributes {
+        return AndroidAttributes(
+            mapOf(
+                ATTR_MIN_SDK to minSdk.toString(),
+                ATTR_IS_DEBUGGABLE to isDebuggable.toString(),
+                ATTR_ENABLE_DESUGARING to enableDesugaring.toString(),
+                ATTR_INCREMENTAL_DEXING_TRANSFORM to incrementalDexingTransform.toString(),
+                ATTR_ASM_TRANSFORMED_VARIANT to (asmTransformedVariant ?: "NONE")
+            )
         )
     }
 }

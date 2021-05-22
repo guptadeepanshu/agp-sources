@@ -18,10 +18,14 @@ package com.android.build.gradle.internal.plugins;
 
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
+import com.android.build.api.dsl.SdkComponents;
+import com.android.build.api.extension.TestAndroidComponentsExtension;
+import com.android.build.api.extension.impl.TestAndroidComponentsExtensionImpl;
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
-import com.android.build.api.variant.impl.TestVariantPropertiesImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
@@ -30,6 +34,7 @@ import com.android.build.gradle.internal.TestApplicationTaskManager;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.dsl.TestExtensionImpl;
 import com.android.build.gradle.internal.scope.GlobalScope;
@@ -37,26 +42,37 @@ import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.TestVariantFactory;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.options.BooleanOption;
+import com.android.builder.model.v2.ide.ProjectType;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
 import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** Gradle plugin class for 'test' projects. */
-public class TestPlugin extends BasePlugin<TestVariantImpl, TestVariantPropertiesImpl> {
+public class TestPlugin
+        extends BasePlugin<
+                TestAndroidComponentsExtension, TestVariantBuilderImpl, TestVariantImpl> {
     @Inject
     public TestPlugin(
-            ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
-        super(registry, componentFactory);
+            ToolingModelBuilderRegistry registry,
+            SoftwareComponentFactory componentFactory,
+            BuildEventsListenerRegistry listenerRegistry) {
+        super(registry, componentFactory, listenerRegistry);
     }
 
     @Override
     protected int getProjectType() {
         return AndroidProjectTypes.PROJECT_TYPE_TEST;
+    }
+
+    @Override
+    protected ProjectType getProjectTypeV2() {
+        return ProjectType.TEST;
     }
 
     @NonNull
@@ -69,6 +85,20 @@ public class TestPlugin extends BasePlugin<TestVariantImpl, TestVariantPropertie
                             dslContainers,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
             @NonNull ExtraModelInfo extraModelInfo) {
+        if (globalScope.getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+            return (BaseExtension)
+                    project.getExtensions()
+                            .create(
+                                    com.android.build.api.dsl.TestExtension.class,
+                                    "android",
+                                    TestExtension.class,
+                                    dslServices,
+                                    globalScope,
+                                    buildOutputs,
+                                    dslContainers.getSourceSetManager(),
+                                    extraModelInfo,
+                                    new TestExtensionImpl(dslServices, dslContainers));
+        }
         return project.getExtensions()
                 .create(
                         "android",
@@ -83,6 +113,32 @@ public class TestPlugin extends BasePlugin<TestVariantImpl, TestVariantPropertie
 
     @NonNull
     @Override
+    protected TestAndroidComponentsExtension createComponentExtension(
+            @NonNull DslServices dslServices,
+            @NonNull
+                    VariantApiOperationsRegistrar<TestVariantBuilderImpl, TestVariantImpl>
+                            variantApiOperationsRegistrar) {
+        SdkComponents sdkComponents =
+                dslServices.newInstance(
+                        SdkComponentsImpl.class,
+                        dslServices,
+                        project.provider(getExtension()::getCompileSdkVersion),
+                        project.provider(getExtension()::getBuildToolsRevision),
+                        project.provider(getExtension()::getNdkVersion),
+                        project.provider(getExtension()::getNdkPath));
+
+        return project.getExtensions()
+                .create(
+                        TestAndroidComponentsExtension.class,
+                        "androidComponents",
+                        TestAndroidComponentsExtensionImpl.class,
+                        dslServices,
+                        sdkComponents,
+                        variantApiOperationsRegistrar);
+    }
+
+    @NonNull
+    @Override
     protected GradleBuildProject.PluginType getAnalyticsPluginType() {
         return GradleBuildProject.PluginType.TEST;
     }
@@ -90,20 +146,14 @@ public class TestPlugin extends BasePlugin<TestVariantImpl, TestVariantPropertie
     @NonNull
     @Override
     protected TestApplicationTaskManager createTaskManager(
-            @NonNull List<ComponentInfo<TestVariantImpl, TestVariantPropertiesImpl>> variants,
+            @NonNull List<ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>> variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder recorder) {
+            @NonNull BaseExtension extension) {
         return new TestApplicationTaskManager(
-                variants, testComponents, hasFlavors, globalScope, extension, recorder);
+                variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     @Override

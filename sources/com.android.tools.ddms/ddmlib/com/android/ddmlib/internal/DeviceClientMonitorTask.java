@@ -32,6 +32,7 @@ import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -171,78 +172,75 @@ class DeviceClientMonitorTask implements Runnable {
 
     /** Registers track-jdwp key with the corresponding device's socket channel's selector. */
     void processChannelsToRegister() {
-        // register any new channels
-        mChannelsToRegister
-                .entrySet()
-                .removeIf(
-                        entry -> {
-                            try {
-                                entry.getKey()
-                                        .register(
-                                                mSelector, SelectionKey.OP_READ, entry.getValue());
-                            } catch (ClosedChannelException e) {
-                                // We'll remove the channel if there's an error. We most likely
-                                // won't be able to recover from this.
-                                Log.e(
-                                        "DeviceClientMonitorTask",
-                                        "Connection error while monitoring clients.");
-                            }
-                            return true;
-                        });
+        List<SocketChannel> channels = Collections.list(mChannelsToRegister.keys());
+        for (SocketChannel channel : channels) {
+            try {
+                channel.register(mSelector, SelectionKey.OP_READ, mChannelsToRegister.get(channel));
+            } catch (ClosedChannelException e) {
+                Log.w("DeviceClientMonitorTask", "Cannot register already-closed channel.");
+            } finally {
+                mChannelsToRegister.keySet().remove(channel);
+            }
+        }
     }
 
     @Override
     public void run() {
         final byte[] lengthBuffer = new byte[4];
         do {
+            int count = 0;
             try {
-                int count = mSelector.select();
+                count = mSelector.select();
+            } catch (IOException e) {
+                Log.e("DeviceClientMonitorTask", "Connection error while monitoring clients.");
+                Log.d("DeviceClientMonitorTask", e);
+                return;
+            }
 
-                if (mQuit) {
-                    return;
-                }
+            if (mQuit) {
+                return;
+            }
 
-                processChannelsToRegister();
-                processDropAndReopenClients();
+            processChannelsToRegister();
+            processDropAndReopenClients();
 
-                if (count == 0) {
-                    continue;
-                }
+            if (count == 0) {
+                continue;
+            }
 
-                Set<SelectionKey> keys = mSelector.selectedKeys();
-                Iterator<SelectionKey> iter = keys.iterator();
+            Set<SelectionKey> keys = mSelector.selectedKeys();
+            Iterator<SelectionKey> iter = keys.iterator();
 
-                while (iter.hasNext()) {
-                    SelectionKey key = iter.next();
-                    iter.remove();
+            while (iter.hasNext()) {
+                SelectionKey key = iter.next();
+                iter.remove();
 
-                    if (key.isValid() && key.isReadable()) {
-                        Object attachment = key.attachment();
+                if (key.isValid() && key.isReadable()) {
+                    Object attachment = key.attachment();
 
-                        if (attachment instanceof DeviceImpl) {
-                            DeviceImpl device = (DeviceImpl) attachment;
+                    if (attachment instanceof DeviceImpl) {
+                        DeviceImpl device = (DeviceImpl) attachment;
 
-                            SocketChannel socket = device.getClientMonitoringSocket();
+                        SocketChannel socket = device.getClientMonitoringSocket();
 
-                            if (socket != null) {
+                        if (socket != null) {
+                            try {
+                                int length = AdbSocketUtils.readLength(socket, lengthBuffer);
+                                processIncomingJdwpData(device, socket, length);
+                            } catch (IOException ioe) {
+                                Log.d(
+                                        "DeviceClientMonitorTask",
+                                        "Error reading jdwp list: " + ioe.getMessage());
                                 try {
-                                    int length = AdbSocketUtils.readLength(socket, lengthBuffer);
-                                    processIncomingJdwpData(device, socket, length);
-                                } catch (IOException ioe) {
-                                    Log.d(
-                                            "DeviceClientMonitorTask",
-                                            "Error reading jdwp list: " + ioe.getMessage());
                                     socket.close();
-                                    mChannelsToRegister.remove(socket);
-                                    device.getClientTracker().trackDeviceToDropAndReopen(device);
+                                } catch (IOException ignored) {
                                 }
+                                mChannelsToRegister.remove(socket);
+                                device.getClientTracker().trackDeviceToDropAndReopen(device);
                             }
                         }
                     }
                 }
-
-            } catch (IOException ex) {
-                Log.e("DeviceClientMonitorTask", "Connection error while monitoring clients.");
             }
         } while (!mQuit);
     }

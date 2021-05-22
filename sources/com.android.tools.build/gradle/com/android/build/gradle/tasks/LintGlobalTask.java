@@ -18,7 +18,7 @@ package com.android.build.gradle.tasks;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.internal.TaskManager;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import java.util.Collection;
@@ -27,27 +27,13 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Optional;
-import org.gradle.api.tasks.PathSensitive;
-import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.api.tasks.TaskAction;
 
 public abstract class LintGlobalTask extends LintBaseTask {
 
     private Map<String, VariantInputs> variantInputMap;
-    private ConfigurableFileCollection allInputs;
 
-    @InputFiles
-    @PathSensitive(PathSensitivity.ABSOLUTE)
-    @Optional
-    public FileCollection getAllInputs() {
-        return allInputs;
-    }
-
-    @TaskAction
-    public void lint() {
+    @Override
+    protected void doTaskAction() {
         runLint(new LintGlobalTaskDescriptor());
     }
 
@@ -76,11 +62,11 @@ public abstract class LintGlobalTask extends LintBaseTask {
 
     public static class GlobalCreationAction extends BaseCreationAction<LintGlobalTask> {
 
-        private final Collection<? extends VariantPropertiesImpl> variants;
+        private final Collection<? extends VariantImpl> variants;
 
         public GlobalCreationAction(
                 @NonNull GlobalScope globalScope,
-                @NonNull Collection<? extends VariantPropertiesImpl> variants) {
+                @NonNull Collection<? extends VariantImpl> variants) {
             super(globalScope);
             this.variants = variants;
         }
@@ -103,16 +89,17 @@ public abstract class LintGlobalTask extends LintBaseTask {
 
             lintTask.setDescription("Runs lint on all variants.");
 
-            lintTask.allInputs = getGlobalScope().getProject().files();
+            ConfigurableFileCollection allInputs = getGlobalScope().getProject().files();
             lintTask.variantInputMap =
                     variants.stream()
                             .map(
                                     variantProperties -> {
                                         VariantInputs inputs = new VariantInputs(variantProperties);
-                                        lintTask.allInputs.from(inputs.getAllInputs());
+                                        allInputs.from(inputs.getAllInputs());
                                         return inputs;
                                     })
                             .collect(Collectors.toMap(VariantInputs::getName, Function.identity()));
+            lintTask.dependsOn(allInputs);
         }
     }
 }

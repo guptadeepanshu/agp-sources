@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.plugins
 
 import com.android.SdkConstants
 import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.ProjectOptions
 import com.android.ide.common.repository.GradleVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -34,12 +33,14 @@ import java.io.File.separator
 class VersionCheckPlugin: Plugin<Project> {
 
     companion object {
+        // The minimum version of Gradle that this plugin should accept is the version of Gradle
+        // whose features the plugin uses, which may be substantially later than the earliest
+        // version of Gradle that has all the features that Studio uses directly.
         @JvmField
-        val GRADLE_MIN_VERSION = GradleVersion.parse(SdkConstants.GRADLE_MINIMUM_VERSION)
+        val GRADLE_MIN_VERSION = GradleVersion.parse(SdkConstants.GRADLE_LATEST_VERSION)
     }
 
     override fun apply(project: Project) {
-        val projectOptions = ProjectOptions(project)
         val logger = project.logger
 
         val currentVersion = project.gradle.gradleVersion
@@ -51,12 +52,23 @@ class VersionCheckPlugin: Plugin<Project> {
                         + "If using the gradle wrapper, try editing the distributionUrl in ${file.absolutePath} "
                         + "to gradle-$GRADLE_MIN_VERSION-all.zip")
 
-            if (projectOptions.get(BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY)) {
+            if (getVersionCheckOverridePropertyValue(project)) {
                 logger.warn(errorMessage)
                 logger.warn("As ${BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.propertyName} is set, continuing anyway.")
             } else {
                 throw RuntimeException(errorMessage)
             }
+        }
+    }
+
+    // Version check override property is not compatible with new pipeline of accessing gradle
+    // properties because providerFactory.gradleProperty API doesn't exist in lower Gradle versions
+    private fun getVersionCheckOverridePropertyValue(project: Project) : Boolean {
+        val value = project.extensions.extraProperties.properties[BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.propertyName]
+        return if (value == null) {
+            BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.defaultValue
+        } else {
+             BooleanOption.VERSION_CHECK_OVERRIDE_PROPERTY.parse(value)
         }
     }
 }

@@ -16,9 +16,8 @@
 
 package com.android.build.api.dsl
 
-import com.android.build.api.component.GenericFilteredComponentActionRegistrar
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantProperties
 import org.gradle.api.Action
 import org.gradle.api.Incubating
 import org.gradle.api.NamedDomainObjectContainer
@@ -37,8 +36,8 @@ interface CommonExtension<
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : ProductFlavor,
         SigningConfigT : SigningConfig,
-        VariantT : Variant<VariantPropertiesT>,
-        VariantPropertiesT : VariantProperties> {
+        VariantBuilderT : VariantBuilder,
+        VariantT : Variant> {
     // TODO(b/140406102)
 
     /**
@@ -360,50 +359,6 @@ interface CommonExtension<
     fun testOptions(action: TestOptions.() -> Unit)
 
     /**
-     * Adds an [Action] to be performed on all [VariantT] objects associated with this module
-     */
-    fun onVariants(action: Action<VariantT>)
-
-    /**
-     * Adds a lambda function to be performed on all [VariantT] objects associated with this module
-     */
-    fun onVariants(action: VariantT.() -> Unit)
-
-    /**
-     * A registrar to apply actions on subsets of [VariantT] via filters.
-     *
-     * @return a [GenericFilteredComponentActionRegistrar] of [VariantT]
-     */
-    val onVariants: GenericFilteredComponentActionRegistrar<VariantT>
-
-    /**
-     * Adds an [Action] to be performed on all [VariantPropertiesT] objects associated with this
-     * module
-     *
-     * This method is a shortcut for calling [onVariants] followed by [Variant.onProperties].
-     *
-     * @param action a lambda taking a [VariantProperties] as a parameter.
-     */
-    fun onVariantProperties(action: Action<VariantPropertiesT>)
-
-    /**
-     * Adds a lambda function to be performed on all [VariantPropertiesT] objects associated with
-     * this module.
-     *
-     * This method is a shortcut for calling [onVariants] followed by [Variant.onProperties].
-     *
-     * @param action a lambda taking a [VariantProperties] as a parameter.
-     */
-    fun onVariantProperties(action: VariantPropertiesT.() -> Unit)
-
-    /**
-     * A registrar to apply actions on subsets of [VariantPropertiesT] via filters.
-     *
-     * @areturn a [GenericFilteredComponentActionRegistrar] of [VariantPropertiesT]
-     */
-    val onVariantProperties: GenericFilteredComponentActionRegistrar<VariantPropertiesT>
-
-    /**
      * Specifies configurations for
      * [building multiple APKs](https://developer.android.com/studio/build/configure-apk-splits.html)
      * or APK splits.
@@ -634,7 +589,6 @@ interface CommonExtension<
      * @param name the name of the library.
      */
     fun useLibrary(name: String)
-
     /**
      * Includes the specified library to the classpath.
      *
@@ -662,6 +616,8 @@ interface CommonExtension<
      */
     fun useLibrary(name: String, required: Boolean)
 
+    @Deprecated(
+        message = "This API will be removed in AGP 7.0, replaced with AndroidComponents::sdkComponents")
     val sdkComponents: SdkComponents
 
     /**
@@ -687,4 +643,14 @@ interface CommonExtension<
     var compileSdkPreview: String?
 
     fun compileSdkAddon(vendor: String, name: String, version: Int)
+
+    /**
+     * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
+     * any relative class names that are declared in the AndroidManifest.xml.
+     *
+     * This value supersedes any value specified by the `package` attribute in the source
+     * AndroidManifest.xml, but doing a 'get' on this property will not retrieve the value specified
+     * in the AndroidManifest.xml.
+     */
+    var namespace: String?
 }

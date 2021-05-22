@@ -17,6 +17,8 @@
 package com.android.build.gradle.internal.signing
 
 import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.options.SigningOptions
 import com.google.common.hash.Hashing
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -28,17 +30,14 @@ import java.io.File
 import java.io.Serializable
 
 /**
- * A copy of the [SigningConfig] object, with input annotations on all of its properties to be used
- * with `@Nested`, with an important exception below.
+ * A derivative of the [SigningConfig] object, with input annotations on all of its properties to be
+ * used with `@Nested`, with an important exception below.
  *
  * IMPORTANT: To support cache relocatability, we annotate storeFile with `PathSensitivity.NONE` to
  * ignore the store file's path. This requires that the tasks consuming this object do not take the
  * store file's path as input (i.e., the store file's path does not affect the output of those
  * tasks). If the store file's path does affect the output of a task (e.g., as with
  * `SigningConfigWriterTask`), the task must explicitly declare the store file's path as an input.
- *
- * This class is immutable, which makes it more ideal than a mutable [SigningConfig] when passing
- * around.
  */
 data class SigningConfigData(
 
@@ -66,19 +65,7 @@ data class SigningConfigData(
     // Don't set the password as @Input as Gradle may store it to disk. Instead, we set the
     // password's hash as @Input (see getKeyPasswordHash()).
     @get:Internal
-    val keyPassword: String?,
-
-    @get:Input
-    val v1SigningEnabled: Boolean,
-
-    @get:Input
-    val v2SigningEnabled: Boolean,
-
-    @get:Input
-    val v1SigningConfigured: Boolean,
-
-    @get:Input
-    val v2SigningConfigured: Boolean
+    val keyPassword: String?
 ) : Serializable {
 
     @Input
@@ -94,7 +81,7 @@ data class SigningConfigData(
 
     companion object {
 
-        private const val serialVersionUID = 1L
+        private const val serialVersionUID = 2L
 
         fun fromSigningConfig(signingConfig: SigningConfig): SigningConfigData {
             return SigningConfigData(
@@ -103,12 +90,22 @@ data class SigningConfigData(
                 storeFile = signingConfig.storeFile,
                 storePassword = signingConfig.storePassword,
                 keyAlias = signingConfig.keyAlias,
-                keyPassword = signingConfig.keyPassword,
-                v1SigningEnabled = signingConfig.isV1SigningEnabled,
-                v2SigningEnabled = signingConfig.isV2SigningEnabled,
-                v1SigningConfigured = signingConfig.isV1SigningConfigured,
-                v2SigningConfigured = signingConfig.isV2SigningConfigured
+                keyPassword = signingConfig.keyPassword
             )
+        }
+
+        fun fromProjectOptions(projectOptions: ProjectOptions): SigningConfigData? {
+            val signingOptions = SigningOptions.readSigningOptions(projectOptions)
+            return signingOptions?.let {
+                SigningConfigData(
+                    name = SigningOptions.SIGNING_CONFIG_NAME,
+                    storeType = signingOptions.storeType,
+                    storeFile = File(signingOptions.storeFile),
+                    storePassword = signingOptions.storePassword,
+                    keyAlias = signingOptions.keyAlias,
+                    keyPassword = signingOptions.keyPassword
+                )
+            }
         }
     }
 }

@@ -18,13 +18,13 @@ package com.android.build.gradle.tasks
 
 import android.databinding.tool.DataBindingBuilder
 import com.android.SdkConstants
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.artifact.ArtifactType
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_AND_LOCAL_JARS_JNI
 import com.android.build.gradle.internal.tasks.AarMetadataTask
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.BuilderConstants
 import org.gradle.api.Action
 import org.gradle.api.file.ConfigurableFileCollection
@@ -75,9 +75,9 @@ abstract class BundleAar : Zip(), VariantAwareTask {
         }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<BundleAar, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: VariantCreationConfig
+    ) : VariantTaskCreationAction<BundleAar, VariantCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -92,12 +92,12 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             creationConfig.taskContainer.bundleLibraryTask = taskProvider
 
             val propertyProvider = { task : BundleAar ->
-                val property = creationConfig.globalScope.project.objects.fileProperty()
+                val property = task.project.objects.fileProperty()
                 property.set(task.archiveFile)
                 property
             }
             creationConfig.artifacts.setInitialProvider(taskProvider, propertyProvider)
-                .on(InternalArtifactType.AAR)
+                .on(ArtifactType.AAR)
         }
 
         override fun configure(
@@ -138,7 +138,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
 
             if (buildFeatures.dataBinding && buildFeatures.androidResources) {
                 task.from(
-                    creationConfig.globalScope.project.provider {
+                    task.project.provider {
                         creationConfig.artifacts.get(InternalArtifactType.DATA_BINDING_ARTIFACT) },
                     prependToCopyPath(DataBindingBuilder.DATA_BINDING_ROOT_FOLDER_IN_AAR)
                 )
@@ -160,7 +160,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             )
             if (!creationConfig.globalScope.extension.aaptOptions.namespaced) {
                 // In non-namespaced projects bundle the library manifest straight to the AAR.
-                task.from(artifacts.get(InternalArtifactType.LIBRARY_MANIFEST))
+                task.from(artifacts.get(ArtifactType.MERGED_MANIFEST))
             } else {
                 // In namespaced projects the bundled manifest needs to have stripped resource
                 // references for backwards compatibility.
@@ -213,7 +213,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                     it.name.toLowerCase(Locale.US).endsWith(SdkConstants.DOT_AAR)
                 }
             )
-            task.projectPath = creationConfig.globalScope.project.path
+            task.projectPath = task.project.path
         }
 
         private fun prependToCopyPath(pathSegment: String) = Action { copySpec: CopySpec ->

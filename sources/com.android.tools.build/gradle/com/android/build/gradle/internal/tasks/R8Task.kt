@@ -19,7 +19,9 @@ package com.android.build.gradle.internal.tasks
 import com.android.build.api.transform.Format
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.PostprocessingFeatures
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
@@ -170,9 +172,11 @@ abstract class R8Task: ProguardConfigurableTask() {
     abstract val mainDexListOutput: RegularFileProperty
 
     class CreationAction(
-        creationConfig: BaseCreationConfig,
-        isTestApplication: Boolean = false
-    ) : ProguardConfigurableTask.CreationAction<R8Task, BaseCreationConfig>(creationConfig, isTestApplication) {
+            creationConfig: ConsumableCreationConfig,
+            isTestApplication: Boolean = false,
+            addCompileRClass: Boolean
+    ) : ProguardConfigurableTask.CreationAction<R8Task, ConsumableCreationConfig>(
+            creationConfig, isTestApplication, addCompileRClass) {
         override val type = R8Task::class.java
         override val name =  computeTaskName("minify", "WithR8")
 
@@ -205,7 +209,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                         R8Task::baseDexDir
                     ).on(InternalArtifactType.BASE_DEX)
 
-                    if (creationConfig.variantScope.needsShrinkDesugarLibrary) {
+                    if (creationConfig.needsShrinkDesugarLibrary) {
                         creationConfig.artifacts
                             .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
                             .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
@@ -215,7 +219,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                     creationConfig.artifacts.use(taskProvider)
                         .wiredWith(R8Task::outputDex)
                         .toAppendTo(InternalMultipleArtifactType.DEX)
-                    if (creationConfig.variantScope.needsShrinkDesugarLibrary) {
+                    if (creationConfig.needsShrinkDesugarLibrary) {
                         creationConfig.artifacts
                             .setInitialProvider(taskProvider, R8Task::projectOutputKeepRules)
                             .on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
@@ -228,10 +232,10 @@ abstract class R8Task: ProguardConfigurableTask() {
                 R8Task::outputResources
             ).withName("shrunkJavaRes.jar").on(InternalArtifactType.SHRUNK_JAVA_RES)
 
-            if (creationConfig.variantScope.needsMainDexListForBundle) {
+            if (creationConfig is ApkCreationConfig && creationConfig.needsMainDexListForBundle) {
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    R8Task::mainDexListOutput
+                        taskProvider,
+                        R8Task::mainDexListOutput
                 ).withName("mainDexList.txt").on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
             }
         }
@@ -244,14 +248,14 @@ abstract class R8Task: ProguardConfigurableTask() {
             val artifacts = creationConfig.artifacts
 
             task.enableDesugaring.set(
-                creationConfig.variantScope.java8LangSupportType == VariantScope.Java8LangSupport.R8
+                creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.R8
                         && !variantType.isAar)
 
             task.bootClasspath.from(creationConfig.globalScope.fullBootClasspath)
             task.minSdkVersion
-                .set(creationConfig.variantDslInfo.minSdkVersionWithTargetDeviceApi.apiLevel)
+                .set(creationConfig.minSdkVersionWithTargetDeviceApi.apiLevel)
             task.debuggable
-                .setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
+                .setDisallowChanges(creationConfig.debuggable)
             task.disableTreeShaking.set(disableTreeShaking)
             task.disableMinification.set(disableMinification)
             task.messageReceiver = creationConfig.globalScope.messageReceiver
@@ -268,7 +272,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                     task.mainDexRulesFiles.from(multiDexKeepProguard)
                 }
 
-                if (creationConfig.needsMainDexList
+                if (creationConfig.dexingType.needsMainDexList
                     && !creationConfig.globalScope.extension.aaptOptions.namespaced
                 ) {
                     task.mainDexRulesFiles.from(
@@ -295,7 +299,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                         )
                     )
                 }
-                if (creationConfig.variantScope.isCoreLibraryDesugaringEnabled) {
+                if (creationConfig.isCoreLibraryDesugaringEnabled) {
                     task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.globalScope.project))
                 }
             }

@@ -18,11 +18,14 @@ package com.android.build.gradle.internal.plugins;
 
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
+import com.android.build.api.dsl.SdkComponents;
+import com.android.build.api.extension.DynamicFeatureAndroidComponentsExtension;
+import com.android.build.api.extension.impl.DynamicFeatureAndroidComponentsExtensionImpl;
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.impl.DynamicFeatureVariantBuilderImpl;
 import com.android.build.api.variant.impl.DynamicFeatureVariantImpl;
-import com.android.build.api.variant.impl.DynamicFeatureVariantPropertiesImpl;
-import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
@@ -31,6 +34,7 @@ import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.DynamicFeatureExtension;
 import com.android.build.gradle.internal.dsl.DynamicFeatureExtensionImpl;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.services.DslServices;
@@ -38,27 +42,39 @@ import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.tasks.DynamicFeatureTaskManager;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.DynamicFeatureVariantFactory;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.options.BooleanOption;
+import com.android.builder.model.v2.ide.ProjectType;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
 import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** Gradle plugin class for 'application' projects, applied on an optional APK module */
 public class DynamicFeaturePlugin
-        extends AbstractAppPlugin<DynamicFeatureVariantImpl, DynamicFeatureVariantPropertiesImpl> {
+        extends AbstractAppPlugin<
+                DynamicFeatureAndroidComponentsExtension,
+                DynamicFeatureVariantBuilderImpl,
+                DynamicFeatureVariantImpl> {
     @Inject
     public DynamicFeaturePlugin(
-            ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
-        super(registry, componentFactory);
+            ToolingModelBuilderRegistry registry,
+            SoftwareComponentFactory componentFactory,
+            BuildEventsListenerRegistry listenerRegistry) {
+        super(registry, componentFactory, listenerRegistry);
     }
 
     @Override
     protected int getProjectType() {
         return AndroidProjectTypes.PROJECT_TYPE_DYNAMIC_FEATURE;
+    }
+
+    @Override
+    protected ProjectType getProjectTypeV2() {
+        return ProjectType.DYNAMIC_FEATURE;
     }
 
     @NonNull
@@ -74,13 +90,7 @@ public class DynamicFeaturePlugin
 
     @NonNull
     @Override
-    protected Class<? extends AppExtension> getExtensionClass() {
-        return DynamicFeatureExtension.class;
-    }
-
-    @NonNull
-    @Override
-    protected AppExtension createExtension(
+    protected BaseExtension createExtension(
             @NonNull DslServices dslServices,
             @NonNull GlobalScope globalScope,
             @NonNull
@@ -88,10 +98,24 @@ public class DynamicFeaturePlugin
                             dslContainers,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
             @NonNull ExtraModelInfo extraModelInfo) {
+        if (globalScope.getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+            return (BaseExtension)
+                    project.getExtensions()
+                            .create(
+                                    com.android.build.api.dsl.DynamicFeatureExtension.class,
+                                    "android",
+                                    DynamicFeatureExtension.class,
+                                    dslServices,
+                                    globalScope,
+                                    buildOutputs,
+                                    dslContainers.getSourceSetManager(),
+                                    extraModelInfo,
+                                    new DynamicFeatureExtensionImpl(dslServices, dslContainers));
+        }
         return project.getExtensions()
                 .create(
                         "android",
-                        getExtensionClass(),
+                        DynamicFeatureExtension.class,
                         dslServices,
                         globalScope,
                         buildOutputs,
@@ -102,26 +126,44 @@ public class DynamicFeaturePlugin
 
     @NonNull
     @Override
+    protected DynamicFeatureAndroidComponentsExtension createComponentExtension(
+            @NonNull DslServices dslServices,
+            @NonNull
+                    VariantApiOperationsRegistrar<
+                                    DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>
+                            variantApiOperationsRegistrar) {
+        SdkComponents sdkComponents =
+                dslServices.newInstance(
+                        SdkComponentsImpl.class,
+                        dslServices,
+                        project.provider(getExtension()::getCompileSdkVersion),
+                        project.provider(getExtension()::getBuildToolsRevision),
+                        project.provider(getExtension()::getNdkVersion),
+                        project.provider(getExtension()::getNdkPath));
+
+        return project.getExtensions()
+                .create(
+                        DynamicFeatureAndroidComponentsExtension.class,
+                        "androidComponents",
+                        DynamicFeatureAndroidComponentsExtensionImpl.class,
+                        dslServices,
+                        sdkComponents,
+                        variantApiOperationsRegistrar);
+    }
+
+    @NonNull
+    @Override
     protected DynamicFeatureTaskManager createTaskManager(
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            DynamicFeatureVariantImpl,
-                                            DynamicFeatureVariantPropertiesImpl>>
+                    List<ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>>
                             variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder threadRecorder) {
+            @NonNull BaseExtension extension) {
         return new DynamicFeatureTaskManager(
-                variants, testComponents, hasFlavors, globalScope, extension, threadRecorder);
+                variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     @NonNull

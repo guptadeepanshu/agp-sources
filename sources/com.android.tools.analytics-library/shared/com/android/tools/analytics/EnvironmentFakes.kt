@@ -25,24 +25,24 @@ import com.google.common.annotations.VisibleForTesting
 @VisibleForTesting
 object EnvironmentFakes {
   /**
-   * Helper to fake the ANDROID_SDK_HOME environment variable to be set to `path`.
+   * Helper to fake the ANDROID_PREFS_ROOT environment variable to be set to `path`.
    */
-  fun setCustomAndroidSdkHomeEnvironment(path: String) {
-    setSingleProperty("ANDROID_SDK_HOME", path)
+  fun setCustomAndroidPrefsRootEnvironment(path: String) {
+    setSingleProperty("ANDROID_PREFS_ROOT", path)
   }
 
   fun setMap(map: Map<String, String>) {
     Environment.instance = object : Environment() {
-      override fun getVariable(name: String): String? {
-        return map[name]
+      override fun getVariable(name: EnvironmentVariable): String? {
+        return map[name.key]
       }
     }
   }
 
   fun setSingleProperty(key: String, value: String) {
     Environment.instance = object : Environment() {
-      override fun getVariable(name: String): String? {
-        return if (key == name) {
+      override fun getVariable(name: EnvironmentVariable): String? {
+        return if (key == name.key) {
           value
         }
         else null
@@ -50,10 +50,10 @@ object EnvironmentFakes {
     }
   }
 
-  /** Helper to fake the ANDROID_SDK_HOME environment variable to be unset.  */
+  /** Helper to fake the ANDROID_PREFS_ROOT environment variable to be unset.  */
   fun setNoEnvironmentVariable() {
     Environment.instance = object : Environment() {
-      override fun getVariable(name: String): String? {
+      override fun getVariable(name: EnvironmentVariable): String? {
         return null
       }
     }

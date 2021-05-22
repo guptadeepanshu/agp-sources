@@ -18,16 +18,12 @@ package com.android.build.gradle.internal.packaging;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.gradle.internal.incremental.CapturingChangesApkCreator;
-import com.android.build.gradle.internal.incremental.FolderBasedApkCreator;
 import com.android.build.gradle.internal.signing.SigningConfigData;
-import com.android.builder.core.DefaultManifestParser;
-import com.android.builder.core.ManifestAttributeSupplier;
+import com.android.build.gradle.internal.signing.SigningConfigVersions;
 import com.android.builder.files.RelativeFile;
 import com.android.builder.files.SerializableChange;
 import com.android.builder.internal.packaging.ApkCreatorType;
 import com.android.builder.internal.packaging.IncrementalPackager;
-import com.android.builder.packaging.PackagingUtils;
 import com.android.ide.common.resources.FileStatus;
 import com.android.ide.common.signing.CertificateInfo;
 import com.android.ide.common.signing.KeystoreHelper;
@@ -35,7 +31,6 @@ import com.android.ide.common.signing.KeytoolException;
 import com.android.tools.build.apkzlib.sign.SigningOptions;
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory;
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode;
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -64,42 +59,6 @@ import java.util.function.Predicate;
  * {@link #build()} method for information on which parameters are mandatory.
  */
 public class IncrementalPackagerBuilder {
-    private static int NO_V1_SDK = 24;
-
-
-    /** Enums for all the supported output format. */
-    public enum ApkFormat {
-        /** Usual APK format. */
-        FILE {
-            @Override
-            ApkCreatorFactory factory(boolean debuggableBuild) {
-                return ApkCreatorFactories.fromProjectProperties(debuggableBuild);
-            }
-        },
-
-        FILE_WITH_LIST_OF_CHANGES {
-            @SuppressWarnings({"OResourceOpenedButNotSafelyClosed", "resource"})
-            @Override
-            ApkCreatorFactory factory(boolean debuggableBuild) {
-                ApkCreatorFactory apk = ApkCreatorFactories.fromProjectProperties(debuggableBuild);
-                return creationData ->
-                        new CapturingChangesApkCreator(creationData, apk.make(creationData));
-            }
-        },
-
-        /** Directory with a structure mimicking the APK format. */
-        DIRECTORY {
-            @SuppressWarnings({"OResourceOpenedButNotSafelyClosed", "resource"})
-            @Override
-            ApkCreatorFactory factory(boolean debuggableBuild) {
-                return creationData ->
-                        new CapturingChangesApkCreator(
-                                creationData, new FolderBasedApkCreator(creationData));
-            }
-        };
-
-        abstract ApkCreatorFactory factory(boolean debuggableBuild);
-    }
 
     /**
      * Type of build that invokes the instance of IncrementalPackagerBuilder
@@ -117,21 +76,12 @@ public class IncrementalPackagerBuilder {
     private ApkCreatorFactory.CreationData.Builder creationDataBuilder =
             ApkCreatorFactory.CreationData.builder();
 
-
-    /** Desired format of the output. */
-    @NonNull private ApkFormat apkFormat;
-
     /**
-     * How should native libraries be packaged. If not defined, it can be inferred if {@link
-     * #manifestFile} is defined.
+     * How should native libraries be packaged. Only applicable if using apkzlib.
      */
     @Nullable private NativeLibrariesPackagingMode nativeLibrariesPackagingMode;
 
-    /**
-     * The no-compress predicate: returns {@code true} for paths that should not be compressed. If
-     * not defined, but {@link #aaptOptionsNoCompress} and {@link #manifestFile} are both defined,
-     * it can be inferred.
-     */
+    /** The no-compress predicate: returns {@code true} for paths that should not be compressed. */
     @Nullable private Predicate<String> noCompressPredicate;
 
     /**
@@ -146,6 +96,21 @@ public class IncrementalPackagerBuilder {
     private boolean debuggableBuild;
 
     /**
+     * Will APK entries be ordered deterministically?
+     */
+    private boolean deterministicEntryOrder = true;
+
+    /**
+     * Is v3 signing enabled?
+     */
+    private boolean enableV3Signing = false;
+
+    /**
+     * Is v4 signing enabled?
+     */
+    private boolean enableV4Signing = false;
+
+    /**
      * Is the build JNI-debuggable?
      */
     private boolean jniDebuggableBuild;
@@ -156,15 +121,6 @@ public class IncrementalPackagerBuilder {
     @NonNull
     private Set<String> abiFilters;
 
-    /** Manifest. */
-    @Nullable private File manifestFile;
-
-    /** Whether the manifest file is required to exist. */
-    private boolean isManifestFileRequired;
-
-    /** aapt options no compress config. */
-    @Nullable private Collection<String> aaptOptionsNoCompress;
-
     @NonNull private BuildType buildType;
 
     @NonNull private ApkCreatorType apkCreatorType = ApkCreatorType.APK_Z_FILE_CREATOR;
@@ -174,29 +130,13 @@ public class IncrementalPackagerBuilder {
     @NonNull private List<SerializableChange> changedAssets = new ArrayList<>();
     @NonNull private Map<RelativeFile, FileStatus> changedAndroidResources = new HashMap<>();
     @NonNull private Map<RelativeFile, FileStatus> changedNativeLibs = new HashMap<>();
+    @NonNull private List<SerializableChange> changedAppMetadata = new ArrayList<>();
 
     /** Creates a new builder. */
-    public IncrementalPackagerBuilder(@NonNull ApkFormat apkFormat, @NonNull BuildType buildType) {
+    public IncrementalPackagerBuilder(@NonNull BuildType buildType) {
         abiFilters = new HashSet<>();
-        this.apkFormat = apkFormat;
         this.buildType = buildType;
         creationDataBuilder.setIncremental(buildType == BuildType.INCREMENTAL);
-    }
-
-    /** Creates a new builder. */
-    public IncrementalPackagerBuilder(@NonNull ApkFormat apkFormat) {
-        this(apkFormat, BuildType.UNKNOWN);
-    }
-
-    /**
-     * Sets the signing configuration information for the incremental packager.
-     *
-     * @param signingConfig the signing config; if {@code null} then the APK will not be signed
-     * @return {@code this} for use with fluent-style notation
-     */
-    @NonNull
-    public IncrementalPackagerBuilder withSigning(@Nullable SigningConfigData signingConfig) {
-        return withSigning(signingConfig, 1);
     }
 
     /**
@@ -208,68 +148,9 @@ public class IncrementalPackagerBuilder {
      */
     @NonNull
     public IncrementalPackagerBuilder withSigning(
-            @Nullable SigningConfigData signingConfig, int minSdk) {
-        return withSigning(signingConfig, minSdk, null, null);
-    }
-
-    /**
-     * This method has a decision logic on whether to sign with v1 signature or not.
-     *
-     * @param v1Enabled if v1 signature is enabled by default or by the user
-     * @param v1Configured if v1 signature is configured by the user
-     * @param minSdk the minimum SDK
-     * @param targetApi optional injected target Api
-     * @return if we actually sign with v1 signature
-     */
-    @VisibleForTesting
-    static boolean enableV1Signing(
-            boolean v1Enabled, boolean v1Configured, int minSdk, @Nullable Integer targetApi) {
-        if (!v1Enabled) {
-            return false;
-        }
-
-        // we only do optimization(disable signing) if there is no user input
-        if (!v1Configured && (targetApi != null && targetApi >= NO_V1_SDK || minSdk >= NO_V1_SDK)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * This method has a decision logic on whether to sign with v2 signature or not.
-     *
-     * @param v2Enabled if v2 signature is enabled by default or by the user
-     * @param v2Configured if v2 signature is configured by the user
-     * @param targetApi optional injected target Api
-     * @return if we actually sign with v2 signature
-     */
-    @VisibleForTesting
-    static boolean enableV2Signing(
-            boolean v2Enabled, boolean v2Configured, @Nullable Integer targetApi) {
-        if (!v2Enabled) {
-            return false;
-        }
-
-        // we only do optimization(disable signing) if there is no user input
-        if (!v2Configured && (targetApi != null && targetApi < NO_V1_SDK)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Sets the signing configuration information for the incremental packager.
-     *
-     * @param signingConfig the signing config; if {@code null} then the APK will not be signed
-     * @param minSdk the minimum SDK
-     * @param targetApi optional injected target Api
-     * @return {@code this} for use with fluent-style notation
-     */
-    @NonNull
-    public IncrementalPackagerBuilder withSigning( //TODO change it to use dsl signingConfig class?
             @Nullable SigningConfigData signingConfig,
+            @NonNull SigningConfigVersions signingConfigVersions,
             int minSdk,
-            @Nullable Integer targetApi,
             @Nullable byte[] sdkDependencyData) {
         if (signingConfig == null) {
             return this;
@@ -291,17 +172,19 @@ public class IncrementalPackagerBuilder {
                             Preconditions.checkNotNull(
                                     signingConfig.getKeyAlias(), error, "keyAlias"));
 
-            boolean enableV1Signing =
-                    enableV1Signing(
-                            signingConfig.getV1SigningEnabled(),
-                            signingConfig.getV1SigningConfigured(),
-                            minSdk,
-                            targetApi);
-            boolean enableV2Signing =
-                    enableV2Signing(
-                            signingConfig.getV2SigningEnabled(),
-                            signingConfig.getV2SigningConfigured(),
-                            targetApi);
+            boolean enableV1Signing = signingConfigVersions.getEnableV1Signing();
+            boolean enableV2Signing = signingConfigVersions.getEnableV2Signing();
+            enableV3Signing = signingConfigVersions.getEnableV3Signing();
+            enableV4Signing = signingConfigVersions.getEnableV4Signing();
+
+            // Check that v2 or v3 signing is enabled if v4 signing is enabled.
+            if (enableV4Signing) {
+                Preconditions.checkState(
+                        enableV2Signing || enableV3Signing,
+                        "V4 signing enabled, but v2 and v3 signing are not enabled. V4 signing " +
+                                "requires either v2 or v3 signing."
+                );
+            }
 
             creationDataBuilder.setSigningOptions(
                     SigningOptions.builder()
@@ -371,7 +254,9 @@ public class IncrementalPackagerBuilder {
     }
 
     /**
-     * Sets the packaging mode for native libraries.
+     * Sets the packaging mode for native libraries. Only applicable if using apkzlib.
+     *
+     * TODO (b/134585392) Remove this after removing apkzlib dependency
      *
      * @param packagingMode the packging mode
      * @return {@code this} for use with fluent-style notation
@@ -380,21 +265,6 @@ public class IncrementalPackagerBuilder {
     public IncrementalPackagerBuilder withNativeLibraryPackagingMode(
             @NonNull NativeLibrariesPackagingMode packagingMode) {
         nativeLibrariesPackagingMode = packagingMode;
-        return this;
-    }
-
-    /**
-     * Sets the manifest. While the manifest itself is not used for packaging, information on the
-     * native libraries packaging mode can be inferred from the manifest.
-     *
-     * @param manifest the manifest
-     * @param isManifestFileRequired whether the manifest file is required to exist
-     * @return {@code this} for use with fluent-style notation
-     */
-    public IncrementalPackagerBuilder withManifest(
-            @NonNull File manifest, boolean isManifestFileRequired) {
-        this.manifestFile = manifest;
-        this.isManifestFileRequired = isManifestFileRequired;
         return this;
     }
 
@@ -409,19 +279,6 @@ public class IncrementalPackagerBuilder {
     public IncrementalPackagerBuilder withNoCompressPredicate(
             @NonNull Predicate<String> noCompressPredicate) {
         this.noCompressPredicate = noCompressPredicate;
-        return this;
-    }
-
-    /**
-     * Sets the {@code aapt} options no compress predicate.
-     *
-     * <p>The no-compress predicate can be computed if this and the manifest (see {@link
-     * #withManifest(File, boolean)}) are both defined.
-     */
-    @NonNull
-    public IncrementalPackagerBuilder withAaptOptionsNoCompress(
-            @Nullable Collection<String> aaptOptionsNoCompress) {
-        this.aaptOptionsNoCompress = aaptOptionsNoCompress;
         return this;
     }
 
@@ -458,6 +315,18 @@ public class IncrementalPackagerBuilder {
     @NonNull
     public IncrementalPackagerBuilder withDebuggableBuild(boolean debuggableBuild) {
         this.debuggableBuild = debuggableBuild;
+        return this;
+    }
+
+    /**
+     * Sets whether the APK entries will be ordered deterministically.
+     *
+     * @param deterministicEntryOrder will the APK entries be ordered deterministically?
+     * @return {@code this} for use with fluent-style notation
+     */
+    @NonNull
+    public IncrementalPackagerBuilder withDeterministicEntryOrder(boolean deterministicEntryOrder) {
+        this.deterministicEntryOrder = deterministicEntryOrder;
         return this;
     }
 
@@ -556,12 +425,25 @@ public class IncrementalPackagerBuilder {
     }
 
     /**
+     * Sets the changed app metadata
+     *
+     * @param changedAppMetadata the changed app metadata
+     * @return {@code this} for use with fluent-style notation
+     */
+    public IncrementalPackagerBuilder withChangedAppMetadata(
+            @NonNull Collection<SerializableChange> changedAppMetadata) {
+        this.changedAppMetadata = ImmutableList.copyOf(changedAppMetadata);
+        return this;
+    }
+
+    /**
      * Creates the packager, verifying that all the minimum data has been provided. The required
      * information are:
      *
      * <ul>
      *    <li>{@link #withOutputFile(File)}
      *    <li>{@link #withIntermediateDir(File)}
+     *    <li>{@link #withNoCompressPredicate(Predicate)}
      * </ul>
      *
      * @return the incremental packager
@@ -570,30 +452,8 @@ public class IncrementalPackagerBuilder {
     public IncrementalPackager build() {
         Preconditions.checkState(intermediateDir != null, "intermediateDir == null");
 
-        ManifestAttributeSupplier manifest =
-                this.manifestFile != null
-                        ? new DefaultManifestParser(
-                                this.manifestFile, () -> true, isManifestFileRequired, null)
-                        : null;
-
-        if (noCompressPredicate == null) {
-            if (manifest != null) {
-                noCompressPredicate =
-                        PackagingUtils.getNoCompressPredicate(aaptOptionsNoCompress, manifest);
-            } else {
-                noCompressPredicate = path -> false;
-            }
-        }
-
-        if (nativeLibrariesPackagingMode == null) {
-            if (manifest != null) {
-                nativeLibrariesPackagingMode =
-                        PackagingUtils.getNativeLibrariesLibrariesPackagingMode(manifest);
-            } else {
-                nativeLibrariesPackagingMode = NativeLibrariesPackagingMode.COMPRESSED;
-            }
-        }
-
+        Preconditions.checkNotNull(nativeLibrariesPackagingMode);
+        Preconditions.checkNotNull(noCompressPredicate);
         creationDataBuilder
                 .setNativeLibrariesPackagingMode(nativeLibrariesPackagingMode)
                 .setNoCompressPredicate(noCompressPredicate::test);
@@ -602,17 +462,20 @@ public class IncrementalPackagerBuilder {
             return new IncrementalPackager(
                     creationDataBuilder.build(),
                     intermediateDir,
-                    apkFormat.factory(debuggableBuild),
-                    ApkFormat.FILE.name().equals(apkFormat.name()),
+                    ApkCreatorFactories.fromProjectProperties(debuggableBuild),
                     abiFilters,
                     jniDebuggableBuild,
                     debuggableBuild,
+                    deterministicEntryOrder,
+                    enableV3Signing,
+                    enableV4Signing,
                     apkCreatorType,
                     changedDexFiles,
                     changedJavaResources,
                     changedAssets,
                     changedAndroidResources,
-                    changedNativeLibs);
+                    changedNativeLibs,
+                    changedAppMetadata);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

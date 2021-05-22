@@ -16,8 +16,11 @@
 
 package com.android.build.gradle.internal.tasks.factory
 
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.MutableTaskContainer
+import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.Task
@@ -59,7 +62,7 @@ abstract class TaskCreationAction<TaskT : Task> : TaskInformation<TaskT>, PreCon
  * This contains both meta-data to create the task ([name], [type])
  * and actions to configure the task ([preConfigure], [configure], [handleProvider])
  */
-abstract class VariantTaskCreationAction<TaskT, CreationConfigT: BaseCreationConfig>(
+abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreationConfig>(
     @JvmField protected val creationConfig: CreationConfigT,
     private val dependsOnPreBuildTask: Boolean
 ) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: VariantAwareTask {
@@ -86,12 +89,33 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT: BaseCreationCon
         }
 
         task.variantName = creationConfig.name
-        task.enableGradleWorkers.set(
-            creationConfig.services.projectOptions.get(BooleanOption.ENABLE_GRADLE_WORKERS)
-        )
+        task.analyticsService.set(getBuildService(task.project.gradle.sharedServices))
     }
 }
 
+/**
+ * Lazy Creation Action for non variant aware tasks.
+ *
+ * Tasks must implement [BaseTask]
+ *
+ * This contains both meta-data to create the task ([name], [type])
+ * and actions to configure the task ([preConfigure], [configure], [handleProvider])
+ */
+abstract class GlobalTaskCreationAction<TaskT>(
+    @JvmField protected val globalScope: GlobalScope
+) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: BaseTask {
+
+    override fun preConfigure(taskName: String) {
+        // default does nothing
+    }
+    override fun handleProvider(taskProvider: TaskProvider<TaskT>) {
+        // default does nothing
+    }
+
+    override fun configure(task: TaskT) {
+        task.analyticsService.set(getBuildService(task.project.gradle.sharedServices))
+    }
+}
 /**
  * Configuration Action for tasks.
  */

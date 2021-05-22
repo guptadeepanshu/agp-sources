@@ -63,9 +63,6 @@ interface LintModelModule {
      */
     val lintRuleJars: List<File>
 
-    /** Build features in effect */
-    val buildFeatures: LintModelBuildFeatures
-
     /**
      * The resource prefix to use, if any. This is an optional prefix which can be set and
      * which is used by the defaults to automatically choose new resources with a certain prefix,
@@ -138,9 +135,9 @@ interface LintModelModuleLoaderProvider {
  * A provider which loads modules given various keys
  */
 interface LintModelModuleLoader {
-    /** Loads a module from a file */
-    fun getModule(file: File): LintModelModule {
-        return LintModelSerialization.readModule(file)
+    /** Loads a module from a folder */
+    fun getModule(folder: File): LintModelModule {
+        return LintModelSerialization.readModule(folder)
     }
 
     /** Loads a module from a dependency in a dependency graph */
@@ -160,7 +157,6 @@ class DefaultLintModelModule(
     override val buildFolder: File,
     override val lintOptions: LintModelLintOptions,
     override val lintRuleJars: List<File>,
-    override val buildFeatures: LintModelBuildFeatures,
     override val resourcePrefix: String?,
     override val dynamicFeatures: Collection<String>,
     override val bootClassPath: List<File>,
@@ -178,6 +174,6 @@ class DefaultLintModelModule(
 /**
  * Writes this module model to the given file
  */
-fun LintModelModule.writeModule(xmlFile: File, createdBy: String? = null) {
-    LintModelSerialization.writeModule(this, destination = xmlFile, createdBy = createdBy)
+fun LintModelModule.writeModule(destination: File, createdBy: String? = null) {
+    LintModelSerialization.writeModule(this, destination = destination, createdBy = createdBy)
 }

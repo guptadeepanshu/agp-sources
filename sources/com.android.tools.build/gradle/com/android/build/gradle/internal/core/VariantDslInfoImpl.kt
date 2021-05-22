@@ -40,6 +40,7 @@ import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.DefaultApiVersion
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
+import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.errors.IssueReporter
 import com.android.builder.internal.ClassFieldImpl
 import com.android.builder.model.ApiVersion
@@ -56,12 +57,10 @@ import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
 import com.google.common.collect.Maps
 import com.google.common.collect.Sets
-import jdk.internal.org.objectweb.asm.Type
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.File
-import java.lang.IllegalArgumentException
 import java.util.ArrayList
 import java.util.concurrent.Callable
 
@@ -70,7 +69,7 @@ import java.util.concurrent.Callable
  *
  * This class allows querying for the values set via the DSL model.
  *
- * Use [VariantBuilder] to instantiate.
+ * Use [VariantDslInfoBuilder] to instantiate.
  *
  */
 open class VariantDslInfoImpl internal constructor(
@@ -85,10 +84,12 @@ open class VariantDslInfoImpl internal constructor(
     override val productFlavorList: List<ProductFlavor>,
     private val signingConfigOverride: SigningConfig? = null,
     private val testedVariantImpl: VariantDslInfoImpl? = null,
-    private val dataProvider: ManifestDataProvider,
+    val dataProvider: ManifestDataProvider,
     @Deprecated("Only used for merged flavor")
     private val dslServices: DslServices,
-    private val services: VariantPropertiesApiServices
+    private val services: VariantPropertiesApiServices,
+    private val buildDirectory: DirectoryProperty,
+    private val dslNamespace: String?
 ): VariantDslInfo, DimensionCombination {
 
     override val buildType: String?
@@ -105,12 +106,6 @@ open class VariantDslInfoImpl internal constructor(
     val mergedFlavor: MergedFlavor by lazy {
         mergeFlavors(defaultConfig, productFlavorList, applicationId, dslServices)
     }
-
-    /** Variant-specific build Config fields.  */
-    private val mBuildConfigFields: MutableMap<String, ClassField> = Maps.newTreeMap()
-
-    /** Variant-specific res values.  */
-    private val mResValues: MutableMap<String, ClassField> = Maps.newTreeMap()
 
     /**
      * Optional tested config in case this variant is used for testing another variant.
@@ -137,7 +132,7 @@ open class VariantDslInfoImpl internal constructor(
      * @return a unique name made up of the variant and split names.
      */
     override fun computeFullNameWithSplits(splitName: String): String {
-        return VariantBuilder.computeFullNameWithSplits(
+        return VariantDslInfoBuilder.computeFullNameWithSplits(
             componentIdentity,
             variantType,
             splitName
@@ -151,7 +146,7 @@ open class VariantDslInfoImpl internal constructor(
      * @return the name of the variant
      */
     override val baseName: String by lazy {
-        VariantBuilder.computeBaseName(this, variantType)
+        VariantDslInfoBuilder.computeBaseName(this, variantType)
     }
 
     /**
@@ -277,36 +272,52 @@ open class VariantDslInfoImpl internal constructor(
             // Special case for test components
             // The package name is the tested component package name + .test
             testedVariantImpl != null -> {
-                testedVariantImpl.packageName.map {
-                    "$it.test"
-                }
+                testedVariantImpl.packageName.map { "$it.test" }
             }
 
             // -------------
             // Special case for separate test sub-projects
-            // if there is no manifest with no packageName but there is a testApplicationId
-            // then we use that. This allows the test project to not have a manifest if all
-            // is declared in the DSL.
+            // If there is no namespace from the DSL or package attribute in the manifest, we use
+            // testApplicationId, if present. This allows the test project to not have a manifest if
+            // all is declared in the DSL.
+            // TODO(Issue 172361895) Remove this special case - users should use namespace DSL
+            // instead of testApplicationId DSL for this.
             variantType.isSeparateTestProject -> {
-                val testAppIdFromFlavors =
-                    productFlavorList.asSequence().map { it.testApplicationId }
-                        .firstOrNull { it != null }
-                        ?: defaultConfig.testApplicationId
+                if (dslNamespace != null) {
+                    services.provider { dslNamespace }
+                } else {
+                    val testAppIdFromFlavors =
+                            productFlavorList.asSequence().map { it.testApplicationId }
+                                    .firstOrNull { it != null }
+                                    ?: defaultConfig.testApplicationId
 
-                dataProvider.manifestData.map {
-                    it.packageName
-                        ?: testAppIdFromFlavors
-                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
+                    dataProvider.manifestData.map {
+                        it.packageName
+                                ?: testAppIdFromFlavors
+                                ?: throw RuntimeException(
+                                        "Package Name not found in ${dataProvider.manifestLocation}"
+                                )
+                    }
                 }
             }
 
             // -------------
-            // All other types of projects, just read from the manifest.
-            else -> {
-                dataProvider.manifestData.map {
-                    it.packageName
-                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
-                }
+            // All other types of projects, get it from the DSL or read it from the manifest.
+            else -> dslOrManifestNamespace
+        }
+    }
+
+    // The packageName as specified by the user, either via the DSL or the `package` attribute of
+    // the source AndroidManifest.xml
+    private val dslOrManifestNamespace: Provider<String> by lazy {
+        if (dslNamespace != null) {
+            services.provider { dslNamespace }
+        } else {
+            dataProvider.manifestData.map {
+                it.packageName
+                        ?: throw RuntimeException(
+                                "Package Name not found in ${dataProvider.manifestLocation}"
+                        )
             }
         }
     }
@@ -355,15 +366,10 @@ open class VariantDslInfoImpl internal constructor(
                     ?: defaultConfig.applicationId
 
             return if (appIdFromFlavors == null) {
-                // No appId value set from DSL,  rely on package name value from manifest.
+                // No appId value set from DSL, rely on package name value from DSL or manifest.
                 // using map will allow us to keep task dependency should the manifest be generated
                 // or transformed via a task.
-                dataProvider.manifestData.map {
-                    it.packageName?.let { pName ->
-                        "$pName${computeApplicationIdSuffix()}"
-                    }
-                        ?: throw RuntimeException("Package Name not found in ${dataProvider.manifestLocation}")
-                }
+                dslOrManifestNamespace.map { "$it${computeApplicationIdSuffix()}" }
             } else {
                 // use value from flavors/defaultConfig
                 // needed to make nullability work in kotlinc
@@ -472,7 +478,7 @@ open class VariantDslInfoImpl internal constructor(
 
             // TODO: figure out whether it's worth it to put all this inside a Provider to make it lazy.
             val injectedVersionCode =
-                services.projectOptions[IntegerOption.IDE_VERSION_CODE_OVERRIDE]
+                services.projectOptions.get(IntegerOption.IDE_VERSION_CODE_OVERRIDE)
             if (injectedVersionCode != null) {
                 return services.provider(Callable { injectedVersionCode })
             }
@@ -495,8 +501,7 @@ open class VariantDslInfoImpl internal constructor(
             }
         }
 
-    override val instrumentationRunner: Provider<String>
-        get() {
+    override fun getInstrumentationRunner(dexingType: DexingType): Provider<String> {
             if (!variantType.isForTesting) {
                 throw RuntimeException("instrumentationRunner is not available to non-test variant")
             }
@@ -515,7 +520,7 @@ open class VariantDslInfoImpl internal constructor(
             // else return the value from the Manifest
             return dataProvider.manifestData.map {
                 it.instrumentationRunner
-                    ?: if (isLegacyMultiDexMode) {
+                    ?: if (dexingType.isLegacyMultiDexMode()) {
                         MULTIDEX_TEST_RUNNER
                     } else {
                         DEFAULT_TEST_RUNNER
@@ -590,20 +595,6 @@ open class VariantDslInfoImpl internal constructor(
             return dataProvider.manifestData.map { it.testLabel }
         }
 
-    val extractNativeLibs: Provider<Boolean?>
-        get() {
-            // there is actually no DSL value for this, also we should add one
-            // FIXME b/149770867
-            return dataProvider.manifestData.map { it.extractNativeLibs }
-        }
-
-    val useEmbeddedDex: Provider<Boolean?>
-        get() {
-            // there is actually no DSL value for this, also we should add one
-            // FIXME b/149770867
-            return dataProvider.manifestData.map { it.useEmbeddedDex }
-        }
-
     /**
      * Return the minSdkVersion for this variant.
      *
@@ -650,15 +641,7 @@ open class VariantDslInfoImpl internal constructor(
                 ?: DefaultApiVersion.create(Integer.valueOf(-1))
         }
 
-    override val renderscriptTarget: Int
-        get() {
-            val targetApi = mergedFlavor.renderscriptTargetApi ?: -1
-
-            // default to -1 if not in build.gradle file.
-            val minSdk = minSdkVersion.featureLevel
-
-            return if (targetApi > minSdk) targetApi else minSdk
-        }
+    override val renderscriptTarget: Int = mergedFlavor.renderscriptTargetApi ?: -1
 
     override val isWearAppUnbundled: Boolean?
         get() = mergedFlavor.wearAppUnbundled
@@ -673,36 +656,6 @@ open class VariantDslInfoImpl internal constructor(
     override val vectorDrawables: VectorDrawablesOptions
         get() = mergedFlavor.vectorDrawables
 
-    /**
-     * Adds a variant-specific BuildConfig field.
-     *
-     * @param type the type of the field
-     * @param name the name of the field
-     * @param value the value of the field
-     */
-    override fun addBuildConfigField(
-        type: String,
-        name: String,
-        value: String
-    ) {
-        val classField: ClassField = ClassFieldImpl(type, name, value)
-        mBuildConfigFields[name] = classField
-    }
-
-    /**
-     * Adds a variant-specific res value.
-     *
-     * @param type the type of the field
-     * @param name the name of the field
-     * @param value the value of the field
-     */
-    override fun addResValue(type: String, name: String, value: String) {
-        val classField: ClassField = ClassFieldImpl(type, name, value)
-        mResValues[name] = classField
-    } // keep track of the names already added. This is because we show where the items
-// come from so we cannot just put everything a map and let the new ones override the
-// old ones.
-
     override fun getBuildConfigFields(): Map<String, BuildConfigField<out java.io.Serializable>> {
         val buildConfigFieldsMap =
             mutableMapOf<String, BuildConfigField<out java.io.Serializable>>()
@@ -712,10 +665,6 @@ open class VariantDslInfoImpl internal constructor(
                 buildConfigFieldsMap[classField.name] =
                         BuildConfigField(classField.type , classField.value, comment)
             }
-        }
-
-        mBuildConfigFields.values.forEach { classField ->
-            addToListIfNotAlreadyPresent(classField, "Field from the variant API")
         }
 
         buildTypeObj.buildConfigFields.values.forEach { classField ->
@@ -758,10 +707,6 @@ open class VariantDslInfoImpl internal constructor(
             }
         }
 
-        mResValues.values.forEach { classField ->
-            addToListIfNotAlreadyPresent(classField, "Value from the variant")
-        }
-
         buildTypeObj.resValues.values.forEach { classField ->
             addToListIfNotAlreadyPresent(classField, "Value from build type: ${buildTypeObj.name}")
         }
@@ -787,13 +732,24 @@ open class VariantDslInfoImpl internal constructor(
             if (variantType.isDynamicFeature) {
                 return null
             }
-            if (signingConfigOverride != null) {
-                return signingConfigOverride
-            }
-            val signingConfig: SigningConfig? = buildTypeObj.signingConfig
             // cast builder.SigningConfig to dsl.SigningConfig because MergedFlavor merges
             // dsl.SigningConfig of ProductFlavor objects
-            return signingConfig ?: mergedFlavor.signingConfig as SigningConfig?
+            val dslSigningConfig: SigningConfig? =
+                    buildTypeObj.signingConfig ?: (mergedFlavor.signingConfig as SigningConfig?)
+            signingConfigOverride?.let {
+                // use enableV1 and enableV2 from the DSL if the override values are null
+                if (it.enableV1Signing == null) {
+                    it.enableV1Signing = dslSigningConfig?.enableV1Signing
+                }
+                if (it.enableV2Signing == null) {
+                    it.enableV2Signing = dslSigningConfig?.enableV2Signing
+                }
+                // use enableV3 and enableV4 from the DSL because they're not injectable
+                it.enableV3Signing = dslSigningConfig?.enableV3Signing
+                it.enableV4Signing = dslSigningConfig?.enableV4Signing
+                return it
+            }
+            return dslSigningConfig
         }
 
     override val isSigningReady: Boolean
@@ -824,12 +780,11 @@ open class VariantDslInfoImpl internal constructor(
     }
 
     // Only require specific multidex opt-in for legacy multidex.
-    override val isMultiDexEnabled: Boolean
+    override val isMultiDexEnabled: Boolean?
         get() {
             // Only require specific multidex opt-in for legacy multidex.
             return buildTypeObj.multiDexEnabled
                 ?: mergedFlavor.multiDexEnabled
-                ?: (minSdkVersion.featureLevel >= 21)
         }
 
     override val multiDexKeepFile: File?
@@ -852,11 +807,8 @@ open class VariantDslInfoImpl internal constructor(
             return value
         }
 
-    override val isLegacyMultiDexMode: Boolean
-        get() = dexingType === DexingType.LEGACY_MULTIDEX
-
     // dynamic features can always be build in native multidex mode
-    override val dexingType: DexingType
+    override val dexingType: DexingType?
         get() = if (variantType.isDynamicFeature) {
             if (buildTypeObj.multiDexEnabled != null ||
                 mergedFlavor.multiDexEnabled != null
@@ -871,11 +823,7 @@ open class VariantDslInfoImpl internal constructor(
             }
             // dynamic features can always be build in native multidex mode
             DexingType.NATIVE_MULTIDEX
-        } else if (isMultiDexEnabled) {
-            if (minSdkVersion.featureLevel < 21) DexingType.LEGACY_MULTIDEX else DexingType.NATIVE_MULTIDEX
-        } else {
-            DexingType.MONO_DEX
-        }
+        } else null
 
     /** Returns the renderscript support mode.  */
     override val renderscriptSupportModeEnabled: Boolean
@@ -897,27 +845,11 @@ open class VariantDslInfoImpl internal constructor(
         get() = variantType.isAar // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
 
     /**
-     * Returns the minimum SDK version for this variant, potentially overridden by a property passed
-     * by the IDE.
-     *
-     * @see .getMinSdkVersion
+     * Returns if the property passed by the IDE is set, the minimum SDK version or
+     * null if not.
      */
-    override val minSdkVersionWithTargetDeviceApi: AndroidVersion
-        get() {
-            val targetApiLevel = dslServices.projectOptions[IntegerOption.IDE_TARGET_DEVICE_API]
-            return if (targetApiLevel != null && isMultiDexEnabled && buildTypeObj.isDebuggable) {
-                // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is
-                // debuggable.
-                val minVersion: Int =
-                    if (targetSdkVersion.apiLevel > 1) Integer.min(
-                        targetSdkVersion.apiLevel,
-                        targetApiLevel
-                    ) else targetApiLevel
-                AndroidVersion(minVersion)
-            } else {
-                minSdkVersion
-            }
-        }
+    override val minSdkVersionFromIDE: Int? =
+        dslServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
 
     /**
      * Merge Gradle specific options from build types, product flavors and default config.
@@ -1016,34 +948,35 @@ open class VariantDslInfoImpl internal constructor(
     override val javaCompileOptions: JavaCompileOptions
         get() = mergedJavaCompileOptions
 
-    override fun createPostProcessingOptions(buildDirectory: DirectoryProperty) : PostProcessingOptions {
-        return if (buildTypeObj.postProcessingConfiguration == PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
-            PostProcessingBlockOptions(
-                buildTypeObj.postprocessing, variantType.isTestComponent
-            )
-        } else object : PostProcessingOptions {
-            override fun getProguardFiles(type: ProguardFileType): Collection<File> =
-                buildTypeObj.getProguardFiles(type)
-
-            override fun getDefaultProguardFiles(): List<File> =
-                listOf(
-                    ProguardFiles.getDefaultProguardFile(
-                        ProguardFiles.ProguardFile.DONT_OPTIMIZE.fileName,
-                        buildDirectory
-                    )
+    var _postProcessingOptions: PostProcessingOptions =
+            if (buildTypeObj.postProcessingConfiguration == PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
+                PostProcessingBlockOptions(
+                    buildTypeObj.postprocessing, variantType.isTestComponent
                 )
+            } else object : PostProcessingOptions {
+                override fun getProguardFiles(type: ProguardFileType): Collection<File> =
+                    buildTypeObj.getProguardFiles(type)
 
-            override fun getPostprocessingFeatures(): PostprocessingFeatures? = null
+                override fun getDefaultProguardFiles(): List<File> =
+                    listOf(
+                        ProguardFiles.getDefaultProguardFile(
+                            ProguardFiles.ProguardFile.DONT_OPTIMIZE.fileName,
+                            buildDirectory
+                        )
+                    )
 
-            override fun getCodeShrinker() = when {
-                !buildTypeObj.isMinifyEnabled -> null
-                buildTypeObj.isUseProguard == true -> CodeShrinker.PROGUARD
-                else -> CodeShrinker.R8
+                override fun getPostprocessingFeatures(): PostprocessingFeatures? = null
+
+                override fun getCodeShrinker() = when {
+                    !buildTypeObj.isMinifyEnabled -> null
+                    buildTypeObj.isUseProguard == true -> CodeShrinker.PROGUARD
+                    else -> CodeShrinker.R8
+                }
+
+                override fun resourcesShrinkingEnabled(): Boolean = buildTypeObj.isShrinkResources
             }
 
-            override fun resourcesShrinkingEnabled(): Boolean = buildTypeObj.isShrinkResources
-        }
-    }
+    override fun getPostProcessingOptions(): PostProcessingOptions = _postProcessingOptions
 
     // add the lower priority one, to override them with the higher priority ones.
     // cant use merge flavor as it's not a prop on the base class.

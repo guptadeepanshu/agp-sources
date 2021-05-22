@@ -16,8 +16,11 @@
 
 package com.android.build.gradle.internal.transforms;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.builder.dexing.DexArchiveEntry;
 import com.android.builder.dexing.DexArchiveMerger;
 import com.android.builder.dexing.DexMergerTool;
 import com.android.builder.dexing.DexingType;
@@ -27,6 +30,7 @@ import com.android.ide.common.process.ProcessOutput;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 
@@ -40,8 +44,9 @@ public class DexMergerTransformCallable implements Callable<Void> {
     @NonNull private final DexingType dexingType;
     @NonNull private final ProcessOutput processOutput;
     @NonNull private final File dexOutputDir;
-    @NonNull private final Iterator<Path> dexArchives;
-    @NonNull private final ForkJoinPool forkJoinPool;
+    @NonNull private final List<DexArchiveEntry> dexArchiveEntries;
+    @NonNull private final List<Path> dexRootsForDx;
+    @Nullable private final ForkJoinPool forkJoinPool;
     @Nullable private final Path mainDexList;
     @NonNull private final DexMergerTool dexMerger;
     private final int minSdkVersion;
@@ -52,9 +57,10 @@ public class DexMergerTransformCallable implements Callable<Void> {
             @NonNull DexingType dexingType,
             @NonNull ProcessOutput processOutput,
             @NonNull File dexOutputDir,
-            @NonNull Iterator<Path> dexArchives,
+            @NonNull List<DexArchiveEntry> dexArchiveEntries,
+            @NonNull List<Path> dexRootsForDx,
             @Nullable Path mainDexList,
-            @NonNull ForkJoinPool forkJoinPool,
+            @Nullable ForkJoinPool forkJoinPool,
             @NonNull DexMergerTool dexMerger,
             int minSdkVersion,
             boolean isDebuggable) {
@@ -62,7 +68,8 @@ public class DexMergerTransformCallable implements Callable<Void> {
         this.dexingType = dexingType;
         this.processOutput = processOutput;
         this.dexOutputDir = dexOutputDir;
-        this.dexArchives = dexArchives;
+        this.dexArchiveEntries = dexArchiveEntries;
+        this.dexRootsForDx = dexRootsForDx;
         this.mainDexList = mainDexList;
         this.forkJoinPool = forkJoinPool;
         this.dexMerger = dexMerger;
@@ -78,7 +85,9 @@ public class DexMergerTransformCallable implements Callable<Void> {
                 DxContext dxContext =
                         new DxContext(
                                 processOutput.getStandardOutput(), processOutput.getErrorOutput());
-                merger = DexArchiveMerger.createDxDexMerger(dxContext, forkJoinPool, isDebuggable);
+                merger =
+                        DexArchiveMerger.createDxDexMerger(
+                                dxContext, checkNotNull(forkJoinPool), isDebuggable);
                 break;
             case D8:
                 int d8MinSdkVersion = minSdkVersion;
@@ -99,7 +108,8 @@ public class DexMergerTransformCallable implements Callable<Void> {
                 throw new AssertionError("Unknown dex merger " + dexMerger.name());
         }
 
-        merger.mergeDexArchives(dexArchives, dexOutputDir.toPath(), mainDexList, dexingType);
+        merger.mergeDexArchives(
+                dexArchiveEntries, dexRootsForDx, dexOutputDir.toPath(), mainDexList, dexingType);
         return null;
     }
 

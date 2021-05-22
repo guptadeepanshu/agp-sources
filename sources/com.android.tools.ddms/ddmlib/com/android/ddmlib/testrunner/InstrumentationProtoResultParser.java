@@ -92,6 +92,9 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
         /** The logcat output emitted during this test case */
         private StringBuilder mLogcat = new StringBuilder();
 
+        /** A maximum length of logcat message to be stored and reported. */
+        private static final int MAX_LOGCAT_LENGTH = 10000;
+
         /**
          * The test status metrics emitted during the execution of the test case by {@code
          * android.app.Instrumentation#sendStatus}. The insertion order is preserved unless the test
@@ -113,7 +116,14 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
         }
 
         public void appendLogcat(String logcat) {
-            mLogcat.append(logcat);
+            if (mLogcat.length() >= MAX_LOGCAT_LENGTH) {
+                return;
+            }
+            if (mLogcat.length() + logcat.length() < MAX_LOGCAT_LENGTH) {
+                mLogcat.append(logcat);
+            } else {
+                mLogcat.append(logcat.subSequence(0, MAX_LOGCAT_LENGTH - mLogcat.length()));
+            }
         }
 
         public void clearLogcat() {
@@ -224,6 +234,7 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
 
             String testClassName = "";
             String testMethodName = "";
+            int currentTestIndex = -1;
             String stackTrace = "";
             LinkedHashMap<String, String> testMetrics = new LinkedHashMap<>();
             for (InstrumentationData.ResultsBundleEntry entry :
@@ -237,6 +248,9 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
                         break;
                     case StatusKeys.STACK:
                         stackTrace = entry.getValueString();
+                        break;
+                    case StatusKeys.CURRENT:
+                        currentTestIndex = entry.getValueInt();
                         break;
                     default:
                         if (!StatusKeys.KNOWN_KEYS.contains(entry.getKey())) {
@@ -259,6 +273,7 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
                 if (previousTestStatus.isPresent()) {
                     testClassName = previousTestStatus.get().getKey().getClassName();
                     testMethodName = previousTestStatus.get().getKey().getTestName();
+                    currentTestIndex = previousTestStatus.get().getKey().getTestIndex();
                     resultCodeOverride =
                             Optional.of(previousTestStatus.get().getValue().mTestResultCode);
                 } else {
@@ -271,6 +286,7 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
                 updateTestState(
                         testClassName,
                         testMethodName,
+                        currentTestIndex,
                         resultCodeOverride.orElse(status.getResultCode()),
                         status.getLogcat(),
                         stackTrace,
@@ -372,11 +388,12 @@ public class InstrumentationProtoResultParser implements IInstrumentationResultP
     private void updateTestState(
             String testClassName,
             String testMethodName,
+            int currentTestIndex,
             int testResultCode,
             String logcat,
             String stackTrace,
             LinkedHashMap<String, String> testMetrics) {
-        TestIdentifier testId = new TestIdentifier(testClassName, testMethodName);
+        TestIdentifier testId = new TestIdentifier(testClassName, testMethodName, currentTestIndex);
         TestStatus status =
                 mTestStatuses.computeIfAbsent(
                         testId,

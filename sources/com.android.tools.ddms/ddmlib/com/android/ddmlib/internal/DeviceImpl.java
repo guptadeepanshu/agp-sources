@@ -78,16 +78,18 @@ public final class DeviceImpl implements IDevice {
     private final String mSerialNumber;
 
     /** Name of the AVD */
-    private String mAvdName = null;
+    @Nullable private String mAvdName;
+
+    @Nullable private String mAvdPath;
 
     /** State of the device. */
     private DeviceState mState;
 
     /** True if ADB is running as root */
-    private boolean mIsRoot = false;
+    private boolean mIsRoot;
 
     /** Information about the most recent installation via this device */
-    private InstallMetrics lastInstallMetrics = null;
+    private InstallMetrics lastInstallMetrics;
 
     /** Device properties. */
     private final PropertyFetcher mPropFetcher = new PropertyFetcher(this);
@@ -102,7 +104,7 @@ public final class DeviceImpl implements IDevice {
     /** Maps pid's of clients in {@link #mClients} to their package name. */
     private final Map<Integer, String> mClientInfo = new ConcurrentHashMap<>();
 
-    private ClientTracker mClientTracer;
+    private final ClientTracker mClientTracer;
 
     private static final String LOG_TAG = "Device";
     private static final char SEPARATOR = '-';
@@ -147,16 +149,13 @@ public final class DeviceImpl implements IDevice {
     @Nullable private AndroidVersion mVersion;
     private String mName;
 
-    /*
-     * (non-Javadoc)
-     * @see com.android.ddmlib.IDevice#getSerialNumber()
-     */
     @NonNull
     @Override
     public String getSerialNumber() {
         return mSerialNumber;
     }
 
+    @Nullable
     @Override
     public String getAvdName() {
         return mAvdName;
@@ -172,6 +171,21 @@ public final class DeviceImpl implements IDevice {
         mAvdName = avdName;
     }
 
+    @Nullable
+    @Override
+    public String getAvdPath() {
+        return mAvdPath;
+    }
+
+    void setAvdPath(@NonNull String avdPath) {
+        if (!isEmulator()) {
+            throw new IllegalStateException();
+        }
+
+        mAvdPath = avdPath;
+    }
+
+    @NonNull
     @Override
     public String getName() {
         if (mName != null) {
@@ -187,6 +201,7 @@ public final class DeviceImpl implements IDevice {
         }
     }
 
+    @NonNull
     private String constructName() {
         if (isEmulator()) {
             String avdName = getAvdName();
@@ -224,6 +239,7 @@ public final class DeviceImpl implements IDevice {
         }
     }
 
+    @Nullable
     private static String cleanupStringForDisplay(String s) {
         if (s == null) {
             return null;
@@ -243,10 +259,6 @@ public final class DeviceImpl implements IDevice {
         return sb.toString();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.android.ddmlib.IDevice#getState()
-     */
     @Override
     public DeviceState getState() {
         return mState;
@@ -257,6 +269,7 @@ public final class DeviceImpl implements IDevice {
         mState = state;
     }
 
+    @NonNull
     @Override
     public Map<String, String> getProperties() {
         return Collections.unmodifiableMap(mPropFetcher.getProperties());
@@ -267,6 +280,7 @@ public final class DeviceImpl implements IDevice {
         return mPropFetcher.getProperties().size();
     }
 
+    @Nullable
     @Override
     public String getProperty(@NonNull String name) {
         Map<String, String> properties = mPropFetcher.getProperties();
@@ -719,6 +733,13 @@ public final class DeviceImpl implements IDevice {
     }
 
     @Override
+    public SocketChannel rawExec(String executable, String[] parameters)
+            throws AdbCommandRejectedException, TimeoutException, IOException {
+        return AdbHelper.rawExec(
+                AndroidDebugBridge.getSocketAddress(), this, executable, parameters);
+    }
+
+    @Override
     public void runEventLogService(LogReceiver receiver)
             throws TimeoutException, AdbCommandRejectedException, IOException {
         AdbHelper.runEventLogService(AndroidDebugBridge.getSocketAddress(), this, receiver);
@@ -772,7 +793,7 @@ public final class DeviceImpl implements IDevice {
                 String.format("%s:%s", namespace.getType(), remoteSocketName)); //$NON-NLS-1$
     }
 
-    @VisibleForTesting
+    // @VisibleForTesting
     public DeviceImpl(ClientTracker clientTracer, String serialNumber, DeviceState deviceState) {
         mClientTracer = clientTracer;
         mSerialNumber = serialNumber;

@@ -17,15 +17,15 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.FN_LINT_JAR
+import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
-import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.FileCollection
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
@@ -44,11 +44,13 @@ import javax.inject.Inject
  * publish, we have to do this.
  */
 abstract class PrepareLintJarForPublish : DefaultTask() {
+
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
-    lateinit var lintChecks: FileCollection
-        private set
-    @get:OutputFile abstract val outputLintJar: RegularFileProperty
+    abstract val lintChecks: ConfigurableFileCollection
+
+    @get:OutputFile
+    abstract val outputLintJar: RegularFileProperty
 
     @get:Internal
     val projectName = project.name
@@ -56,8 +58,8 @@ abstract class PrepareLintJarForPublish : DefaultTask() {
     @get:Inject
     abstract val workerExecutor: WorkerExecutor
 
-    @get:Input
-    abstract val enableGradleWorkers: Property<Boolean>
+    @get:Internal
+    abstract val analyticsService: Property<AnalyticsService>
 
     companion object {
         const val NAME = "prepareLintJarForPublish"
@@ -65,31 +67,30 @@ abstract class PrepareLintJarForPublish : DefaultTask() {
 
     @TaskAction
     fun prepare() {
-        Workers.preferWorkers(projectName, path, workerExecutor, enableGradleWorkers.get()).use {
-            it.submit(
-                PublishLintJarWorkerRunnable::class.java, PublishLintJarRequest(
-                    files = lintChecks.files,
-                    outputLintJar = outputLintJar.get().asFile
-                )
-            )
+        workerExecutor.noIsolation().submit(PublishLintJarWorkerRunnable::class.java) {
+            it.initializeWith(projectName, path, analyticsService)
+            it.files.from(lintChecks)
+            it.outputLintJar.set(outputLintJar)
         }
     }
 
-    class CreationAction(private val scope: GlobalScope) : TaskCreationAction<PrepareLintJarForPublish>() {
+    class CreationAction(private val scope: GlobalScope) :
+            TaskCreationAction<PrepareLintJarForPublish>() {
+
         override val name = NAME
         override val type = PrepareLintJarForPublish::class.java
 
         override fun handleProvider(taskProvider: TaskProvider<PrepareLintJarForPublish>) {
             super.handleProvider(taskProvider)
             scope.globalArtifacts.setInitialProvider(
-                taskProvider,
-                PrepareLintJarForPublish::outputLintJar
+                    taskProvider,
+                    PrepareLintJarForPublish::outputLintJar
             ).withName(FN_LINT_JAR).on(InternalArtifactType.LINT_PUBLISH_JAR)
         }
 
         override fun configure(task: PrepareLintJarForPublish) {
-            task.lintChecks = scope.publishedCustomLintChecks
-            task.enableGradleWorkers.set(scope.projectOptions[BooleanOption.ENABLE_GRADLE_WORKERS])
+            task.lintChecks.from(scope.publishedCustomLintChecks)
+            task.analyticsService.set(getBuildService(task.project.gradle.sharedServices))
         }
     }
 }

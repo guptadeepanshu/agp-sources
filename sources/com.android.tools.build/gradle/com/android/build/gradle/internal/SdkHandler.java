@@ -231,6 +231,52 @@ public class SdkHandler {
         this.sdkLibData = sdkLibData;
     }
 
+    /**
+     * Ensures that that the system image corresponding to the given hash is installed.
+     *
+     * <p>Reports an evaluation warning if the system image package is not present and could not be
+     * automatically downloaded and installed.
+     *
+     * @param imageHash the target hash of the system image.
+     * @return The location of the SystemImage directory, is null if the system image could not be
+     *     retrieved.
+     */
+    @Nullable
+    public File installSystemImageWarnOnFailure(@NonNull String imageHash) {
+        SdkLoader loader = getSdkLoader();
+        if (loader == null) {
+            // If the loader is null it means we couldn't set-up one based on a local SDK.
+            // So we can't even try to installPackage something. This set up error will be
+            // reported during SdkHandler set-up.
+            return null;
+        }
+
+        try {
+            loader.getSdkInfo(logger);
+            File imageLocation = loader.installSdkTool(sdkLibData, imageHash);
+            if (imageLocation == null) {
+                issueReporter.reportWarning(
+                        Type.MISSING_SDK_PACKAGE,
+                        imageHash + " package is not installed.",
+                        imageHash);
+            }
+            return imageLocation;
+        } catch (LicenceNotAcceptedException e) {
+            issueReporter.reportWarning(
+                    IssueReporter.Type.MISSING_SDK_PACKAGE,
+                    imageHash
+                            + " package is not installed. Please accept the installation"
+                            + "licence to continue",
+                    imageHash);
+        } catch (InstallFailedException e) {
+            issueReporter.reportWarning(
+                    IssueReporter.Type.MISSING_SDK_PACKAGE,
+                    imageHash + " package is not installed, and automatic installation failed.",
+                    imageHash);
+        }
+        return null;
+    }
+
     /** Installs the NDK. */
     @Nullable
     public File installNdk(@NonNull Revision ndkRevision) {
@@ -271,5 +317,17 @@ public class SdkHandler {
         } catch (LicenceNotAcceptedException | InstallFailedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Nullable
+    public File getLocalEmulator() {
+        SdkLoader loader = getSdkLoader();
+        if (loader == null) {
+            // If the loader is null it means we couldn't set-up one based on a local SDK.
+            // So we can't even try to installPackage something. This set up error will be reported
+            // during SdkHandler set-up.
+            return null;
+        }
+        return loader.getLocalEmulator();
     }
 }

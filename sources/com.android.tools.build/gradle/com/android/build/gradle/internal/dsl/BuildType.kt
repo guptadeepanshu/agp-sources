@@ -30,16 +30,16 @@ import com.android.builder.internal.ClassFieldImpl
 import com.android.builder.model.BaseConfig
 import com.android.builder.model.CodeShrinker
 import com.google.common.collect.Iterables
-import java.io.File
-import java.io.Serializable
-import javax.inject.Inject
 import org.gradle.api.Action
 import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
+import java.io.File
+import java.io.Serializable
+import javax.inject.Inject
 
 /** DSL object to configure build types.  */
-open class BuildType @Inject constructor(
+abstract class BuildType @Inject constructor(
     private val name: String,
     private val dslServices: DslServices
 ) :
@@ -70,7 +70,16 @@ open class BuildType @Inject constructor(
 
     override var renderscriptOptimLevel = 3
 
+    @Deprecated("This property is deprecated. Changing its value has no effect.")
     override var isZipAlignEnabled: Boolean = true
+
+    /**
+     * Whether to enable the checks that the both the old and new way of configuring
+     * bytecode postProcessing are not used at the same time.
+     *
+     * The checks are disabled during [.initWith].
+     */
+    private var dslChecksEnabled = true
 
     /**
      * Describes how code postProcessing is configured. We don't allow mixing the old and new DSLs.
@@ -488,7 +497,7 @@ open class BuildType @Inject constructor(
         }
         set(_: Boolean?) {
             checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "setUseProguard")
-            if (dslChecksEnabled.get()) {
+            if (dslChecksEnabled) {
                 dslServices.deprecationReporter
                     .reportObsoleteUsage(
                         "useProguard", DeprecationReporter.DeprecationTarget.DSL_USE_PROGUARD
@@ -537,7 +546,7 @@ open class BuildType @Inject constructor(
         used: PostProcessingConfiguration,
         methodName: String
     ) {
-        if (!dslChecksEnabled.get()) {
+        if (!dslChecksEnabled) {
             return
         }
         if (_postProcessingConfiguration == null) {
@@ -573,24 +582,22 @@ open class BuildType @Inject constructor(
         if (that === this) {
             return this
         }
-        dslChecksEnabled.set(false)
+        dslChecksEnabled = false
+        if (that is BuildType) {
+            that.dslChecksEnabled = false
+        }
         try {
             this.signingConfig = that.signingConfig as SigningConfig?
             return super.initWith(that) as BuildType
         } finally {
-            dslChecksEnabled.set(true)
+            dslChecksEnabled = true
+            if (that is BuildType) {
+                that.dslChecksEnabled = true
+            }
         }
     }
 
     companion object {
         private const val serialVersionUID = 1L
-        /**
-         * Whether the current thread should check that the both the old and new way of configuring
-         * bytecode postProcessing are not used at the same time.
-         *
-         * The checks are disabled during [.initWith].
-         */
-        private val dslChecksEnabled =
-            ThreadLocal.withInitial { true }
     }
 }

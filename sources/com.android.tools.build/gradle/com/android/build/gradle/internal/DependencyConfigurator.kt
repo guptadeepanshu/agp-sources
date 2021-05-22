@@ -18,17 +18,19 @@ package com.android.build.gradle.internal
 
 import com.android.build.api.attributes.BuildTypeAttr.Companion.ATTRIBUTE
 import com.android.build.api.attributes.ProductFlavorAttr
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.component.impl.TestComponentBuilderImpl
 import com.android.build.api.component.impl.TestComponentImpl
-import com.android.build.api.component.impl.TestComponentPropertiesImpl
+import com.android.build.api.variant.impl.VariantBuilderImpl
 import com.android.build.api.variant.impl.VariantImpl
-import com.android.build.api.variant.impl.VariantPropertiesImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.dependency.AarResourcesCompilerTransform
 import com.android.build.gradle.internal.dependency.AarToClassTransform
 import com.android.build.gradle.internal.dependency.AarTransform
 import com.android.build.gradle.internal.dependency.AlternateCompatibilityRule
 import com.android.build.gradle.internal.dependency.AlternateDisambiguationRule
 import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution.replaceOldSupportLibraries
+import com.android.build.gradle.internal.dependency.AsmClassesTransform.Companion.registerAsmTransformForComponent
 import com.android.build.gradle.internal.dependency.ClassesDirToClassesTransform
 import com.android.build.gradle.internal.dependency.EnumerateClassesTransform
 import com.android.build.gradle.internal.dependency.ExtractAarTransform
@@ -37,11 +39,14 @@ import com.android.build.gradle.internal.dependency.FilterShrinkerRulesTransform
 import com.android.build.gradle.internal.dependency.GenericTransformParameters
 import com.android.build.gradle.internal.dependency.IdentityTransform
 import com.android.build.gradle.internal.dependency.JetifyTransform
-import com.android.build.gradle.internal.dependency.LibraryDependencySourcesTransform
+import com.android.build.gradle.internal.dependency.CollectResourceSymbolsTransform
+import com.android.build.gradle.internal.dependency.CollectClassesTransform
 import com.android.build.gradle.internal.dependency.LibrarySymbolTableTransform
 import com.android.build.gradle.internal.dependency.MockableJarTransform
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule.Companion.setUp
 import com.android.build.gradle.internal.dependency.PlatformAttrTransform
+import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerGlobalRecalculateStackFramesTransform
+import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerRecalculateStackFramesTransformForComponent
 import com.android.build.gradle.internal.dependency.VersionedCodeShrinker.Companion.of
 import com.android.build.gradle.internal.dependency.getDexingArtifactConfigurations
 import com.android.build.gradle.internal.dependency.registerDexingOutputSplitTransform
@@ -51,12 +56,10 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
 import com.android.build.gradle.internal.res.namespaced.AutoNamespacePreProcessTransform
 import com.android.build.gradle.internal.res.namespaced.AutoNamespaceTransform
-import com.android.build.gradle.internal.res.namespaced.init
 import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -65,13 +68,12 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.model.CodeShrinker
-import com.google.common.base.Strings
 import com.google.common.collect.Maps
-import org.gradle.api.Action
 import org.gradle.api.ActionConfiguration
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.dsl.DependencyHandler
+import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformSpec
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
 import org.gradle.api.attributes.Attribute
@@ -86,13 +88,18 @@ class DependencyConfigurator(
     private val project: Project,
     private val projectName: String,
     private val globalScope: GlobalScope,
-    private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
+    private val projectServices: ProjectServices
 ) {
-
     fun configureDependencySubstitutions(): DependencyConfigurator {
         // If Jetifier is enabled, replace old support libraries with AndroidX.
-        if (globalScope.projectOptions[BooleanOption.ENABLE_JETIFIER]) {
-            replaceOldSupportLibraries(project)
+        if (globalScope.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
+            replaceOldSupportLibraries(
+                project,
+                // Inline the property name for a slight memory improvement (so that the JVM doesn't
+                // create a new string every time this code is executed, which could be many when
+                // there are many subprojects).
+                reasonToReplace = "android.enableJetifier=true")
         }
         return this
     }
@@ -105,9 +112,13 @@ class DependencyConfigurator(
         // Arguments passed to an ArtifactTransform must not be null
         val jetifierSkipIfPossible =
             globalScope.projectOptions[BooleanOption.JETIFIER_SKIP_IF_POSSIBLE]
-        val jetifierBlackList = Strings.nullToEmpty(
-            globalScope.projectOptions[StringOption.JETIFIER_BLACKLIST]
-        )
+
+        @Suppress("DEPRECATION")
+        val jetifierIgnoreList =
+            globalScope.projectOptions[StringOption.JETIFIER_IGNORE_LIST]
+                ?: globalScope.projectOptions[StringOption.JETIFIER_BLACKLIST]
+                ?: ""
+
         val autoNamespaceDependencies =
             globalScope.extension.aaptOptions.namespaced &&
                     globalScope.projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]
@@ -116,78 +127,45 @@ class DependencyConfigurator(
         } else {
             AndroidArtifacts.ArtifactType.PROCESSED_AAR
         }
-        if (globalScope.projectOptions[BooleanOption.ENABLE_JETIFIER]) {
-            dependencies.registerTransform(
-                JetifyTransform::class.java
-            ) { spec: TransformSpec<JetifyTransform.Parameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.parameters.skipIfPossible.set(jetifierSkipIfPossible)
-                spec.parameters.blackListOption.set(jetifierBlackList)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.AAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    jetifiedAarOutputType.type
-                )
+        if (globalScope.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
+            registerTransform(
+                JetifyTransform::class.java,
+                AndroidArtifacts.ArtifactType.AAR,
+                jetifiedAarOutputType
+            ) { params ->
+                params.skipIfPossible.setDisallowChanges(jetifierSkipIfPossible)
+                params.ignoreListOption.setDisallowChanges(jetifierIgnoreList)
             }
-            dependencies.registerTransform(
-                JetifyTransform::class.java
-            ) { spec: TransformSpec<JetifyTransform.Parameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.parameters.skipIfPossible.set(jetifierSkipIfPossible)
-                spec.parameters.blackListOption.set(jetifierBlackList)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.JAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PROCESSED_JAR.type
-                )
+            registerTransform(
+                JetifyTransform::class.java,
+                AndroidArtifacts.ArtifactType.JAR,
+                AndroidArtifacts.ArtifactType.PROCESSED_JAR
+            ) { params ->
+                params.skipIfPossible.setDisallowChanges(jetifierSkipIfPossible)
+                params.ignoreListOption.setDisallowChanges(jetifierIgnoreList)
             }
         } else {
-            dependencies.registerTransform(
-                IdentityTransform::class.java
-            ) { spec: TransformSpec<GenericTransformParameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.AAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    jetifiedAarOutputType.type
-                )
-            }
-            dependencies.registerTransform(
-                IdentityTransform::class.java
-            ) { spec: TransformSpec<GenericTransformParameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.JAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PROCESSED_JAR.type
-                )
-            }
-        }
-        dependencies.registerTransform(
-            ExtractAarTransform::class.java
-        ) { spec: TransformSpec<GenericTransformParameters> ->
-            spec.parameters.projectName.set(projectName)
-            spec.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.ArtifactType.PROCESSED_AAR.type
+            registerTransform(
+                IdentityTransform::class.java,
+                AndroidArtifacts.ArtifactType.AAR,
+                jetifiedAarOutputType
             )
-            spec.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.ArtifactType.EXPLODED_AAR.type
+            registerTransform(
+                IdentityTransform::class.java,
+                AndroidArtifacts.ArtifactType.JAR,
+                AndroidArtifacts.ArtifactType.PROCESSED_JAR
             )
         }
+        registerTransform(
+            ExtractAarTransform::class.java,
+            AndroidArtifacts.ArtifactType.PROCESSED_AAR,
+            AndroidArtifacts.ArtifactType.EXPLODED_AAR
+        )
+        registerTransform(
+            ExtractAarTransform::class.java,
+            AndroidArtifacts.ArtifactType.LOCAL_AAR_FOR_LINT,
+            AndroidArtifacts.ArtifactType.LOCAL_EXPLODED_AAR_FOR_LINT
+        )
         dependencies.registerTransform(
             MockableJarTransform::class.java
         ) { spec: TransformSpec<MockableJarTransform.Parameters> ->
@@ -235,70 +213,32 @@ class DependencyConfigurator(
             )
         }
         // transform to extract attr info from android.jar
-        dependencies.registerTransform(
-            PlatformAttrTransform::class.java
-        ) { spec: TransformSpec<GenericTransformParameters> ->
-            spec.parameters.projectName.set(projectName)
+        registerTransform(
+            PlatformAttrTransform::class.java,
             // Query for JAR instead of PROCESSED_JAR as android.jar doesn't need processing
-            spec.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.ArtifactType.JAR.type
-            )
-            spec.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.TYPE_PLATFORM_ATTR
-            )
-        }
+            AndroidArtifacts.ArtifactType.JAR.type,
+            AndroidArtifacts.TYPE_PLATFORM_ATTR
+        )
         val sharedLibSupport = globalScope
             .projectOptions[BooleanOption.CONSUME_DEPENDENCIES_AS_SHARED_LIBRARIES]
 
         for (transformTarget in AarTransform.getTransformTargets()) {
-            dependencies.registerTransform(
-                AarTransform::class.java
-            ) { spec: TransformSpec<AarTransform.Parameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.parameters.targetType.set(transformTarget)
-                spec.parameters.sharedLibSupport.set(sharedLibSupport)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.EXPLODED_AAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    transformTarget.type
-                )
+            registerTransform(
+                AarTransform::class.java,
+                AndroidArtifacts.ArtifactType.EXPLODED_AAR,
+                transformTarget
+            ) { params ->
+                params.targetType.setDisallowChanges(transformTarget)
+                params.sharedLibSupport.setDisallowChanges(sharedLibSupport)
             }
         }
         if (globalScope.projectOptions[BooleanOption.PRECOMPILE_DEPENDENCIES_RESOURCES]) {
-            dependencies.registerTransform(
-                AarResourcesCompilerTransform::class.java
-            ) { reg: TransformSpec<AarResourcesCompilerTransform.Parameters> ->
-                reg.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.EXPLODED_AAR.type
-                )
-                reg.to
-                    .attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
-                        AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES.type
-                    )
-                reg.parameters { params: AarResourcesCompilerTransform.Parameters ->
-                    val (first, second) = getAapt2FromMavenAndVersion(
-                        globalScope
-                    )
-                    params.aapt2FromMaven
-                        .from(first)
-                    params.aapt2Version
-                        .set(second)
-                    params.errorFormatMode
-                        .set(
-                            SyncOptions.getErrorFormatMode(
-                                globalScope.projectOptions
-                            )
-                        )
-                    params.aapt2DaemonBuildService
-                        .setDisallowChanges(getBuildService(project.gradle.sharedServices))
-                }
+            registerTransform(
+                AarResourcesCompilerTransform::class.java,
+                AndroidArtifacts.ArtifactType.EXPLODED_AAR,
+                AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
             }
         }
         // API Jar: Produce a single API jar that can also contain the library R class from the AAR
@@ -362,88 +302,52 @@ class DependencyConfigurator(
             }
         }
         if (globalScope.projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
-            dependencies.registerTransform(
-                ExtractProGuardRulesTransform::class.java
-            ) { spec: TransformSpec<GenericTransformParameters> ->
-                spec.parameters.projectName.set(projectName)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PROCESSED_JAR.type
-                )
-                spec.to
-                    .attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
-                        AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES.type
-                    )
-            }
-        }
-        dependencies.registerTransform(
-            LibrarySymbolTableTransform::class.java
-        ) { spec: TransformSpec<GenericTransformParameters> ->
-            spec.parameters.projectName.set(projectName)
-            spec.from.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.ArtifactType.EXPLODED_AAR.type
+            registerTransform(
+                ExtractProGuardRulesTransform::class.java,
+                AndroidArtifacts.ArtifactType.PROCESSED_JAR,
+                AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES
             )
-            spec.to
-                .attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME.type
-                )
         }
+        registerTransform(
+            LibrarySymbolTableTransform::class.java,
+            AndroidArtifacts.ArtifactType.EXPLODED_AAR,
+            AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
+        )
         if (autoNamespaceDependencies) {
-            dependencies.registerTransform(AutoNamespacePreProcessTransform::class.java) { spec ->
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.MAYBE_NON_NAMESPACED_PROCESSED_AAR.type
-                )
-                spec.to.attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
-                        AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE.type
-                )
-                spec.parameters.init(globalScope)
+            registerTransform(
+                AutoNamespacePreProcessTransform::class.java,
+                AndroidArtifacts.ArtifactType.MAYBE_NON_NAMESPACED_PROCESSED_AAR,
+                AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
             }
-            dependencies.registerTransform(AutoNamespacePreProcessTransform::class.java) { spec ->
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.JAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE.type
-                )
-                spec.parameters.init(globalScope)
+            registerTransform(
+                AutoNamespacePreProcessTransform::class.java,
+                AndroidArtifacts.ArtifactType.JAR,
+                AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
             }
 
-            dependencies.registerTransform(AutoNamespaceTransform::class.java) { spec ->
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PROCESSED_AAR.type
-                )
-                spec.parameters.init(globalScope)
+            registerTransform(
+                AutoNamespaceTransform::class.java,
+                AndroidArtifacts.ArtifactType.PREPROCESSED_AAR_FOR_AUTO_NAMESPACE,
+                AndroidArtifacts.ArtifactType.PROCESSED_AAR
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
             }
-
         }
         // Transform to go from external jars to CLASSES and JAVA_RES artifacts. This returns the
         // same exact file but with different types, since a jar file can contain both.
         for (classesOrResources in arrayOf(
-            AndroidArtifacts.ArtifactType.CLASSES_JAR.type,
-            AndroidArtifacts.ArtifactType.JAVA_RES.type
+            AndroidArtifacts.ArtifactType.CLASSES_JAR,
+            AndroidArtifacts.ArtifactType.JAVA_RES
         )) {
-            dependencies.registerTransform(IdentityTransform::class.java) { spec: TransformSpec<GenericTransformParameters?> ->
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.PROCESSED_JAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    classesOrResources
-                )
-            }
+            registerTransform(
+                IdentityTransform::class.java,
+                AndroidArtifacts.ArtifactType.PROCESSED_JAR,
+                classesOrResources
+            )
         }
         // The Kotlin Kapt plugin should query for PROCESSED_JAR, but it is currently querying for
         // JAR, so we need to have the workaround below to make it get PROCESSED_JAR. See
@@ -459,74 +363,84 @@ class DependencyConfigurator(
             }
         }
 
-        // When consuming classes from Android libraries, there are 2 transforms:
-        //     1. `android-classes-directory` -> `android-classes`
-        //     2. `android-classes-jar` -> `android-classes`
-        // Currently Gradle always takes transform flow #1, which is ideal for incremental dexing.
-        // (We don't know why Gradle does that, but IncrementalDesugaringTest should catch it if
-        // this behavior changes.)
-        dependencies.registerTransform(
+        // From an Android library subproject, there are 2 transform flows to CLASSES:
+        //     1. CLASSES_DIR -> CLASSES
+        //     2. CLASSES_JAR -> CLASSES
+        // From a Java library subproject, there are also 2 transform flows to CLASSES:
+        //     1. JVM_CLASS_DIRECTORY -> CLASSES
+        //     2. JAR -> PROCESSED_JAR -> `CLASSES_JAR -> CLASSES
+        registerTransform(
             ClassesDirToClassesTransform::class.java,
-            Action { spec: TransformSpec<GenericTransformParameters?> ->
-                spec.from
-                    .attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
-                        AndroidArtifacts.ArtifactType.CLASSES_DIR.type
-                    )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.CLASSES.type
-                )
-            }
+            AndroidArtifacts.ArtifactType.CLASSES_DIR,
+            AndroidArtifacts.ArtifactType.CLASSES
         )
-        dependencies.registerTransform(
+        registerTransform(
             IdentityTransform::class.java,
-            Action { spec: TransformSpec<GenericTransformParameters?> ->
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.CLASSES_JAR.type
-                )
-                spec.to.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.CLASSES.type
-                )
-            }
+            AndroidArtifacts.ArtifactType.CLASSES_JAR,
+            AndroidArtifacts.ArtifactType.CLASSES
         )
-        dependencies.registerTransform(
-                LibraryDependencySourcesTransform::class.java,
-                Action { spec: TransformSpec<GenericTransformParameters> ->
-                    spec.parameters.projectName.set(projectName)
-                    spec.from.attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
-                            AndroidArtifacts.ArtifactType.EXPLODED_AAR.type
-                    )
-                    spec.to.attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
-                            AndroidArtifacts.ArtifactType.AAR_CLASS_LIST_AND_RES_SYMBOLS.type
-                    )
-                }
-        )
-
-
-        // When consuming classes from Java libraries, there are 2 transforms:
-        //     1. `java-classes-directory` -> `android-classes`
-        //     2. `jar` -> `processed-jar` -> `android-classes-jar` -> `android-classes`
-        // Currently Gradle always takes transform flow #2, which is not ideal for incremental
-        // dexing.
-        // TODO(147137579): Configure Gradle to take transform flow #1.
-        dependencies.registerTransform(IdentityTransform::class.java) { spec: TransformSpec<GenericTransformParameters?> ->
-            spec.from
-                .attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    ArtifactTypeDefinition.JVM_CLASS_DIRECTORY
-                )
-            spec.to.attribute(
-                ArtifactAttributes.ARTIFACT_FORMAT,
-                AndroidArtifacts.ArtifactType.CLASSES.type
-            )
+        registerTransform(
+            IdentityTransform::class.java,
+            ArtifactTypeDefinition.JVM_CLASS_DIRECTORY,
+            AndroidArtifacts.ArtifactType.CLASSES.type
+        ) { params ->
+            params.acceptNonExistentInputFile.setDisallowChanges(true)
         }
 
-        val schema = dependencies.attributesSchema
+        registerTransform(
+            CollectResourceSymbolsTransform::class.java,
+            AndroidArtifacts.ArtifactType.ANDROID_RES.type,
+            AndroidArtifacts.ArtifactType.ANDROID_RES_SYMBOLS.type
+        )
+        registerTransform(
+            CollectClassesTransform::class.java,
+            AndroidArtifacts.ArtifactType.CLASSES_JAR,
+            AndroidArtifacts.ArtifactType.JAR_CLASS_LIST
+        )
+
+        registerGlobalRecalculateStackFramesTransform(
+            projectName,
+            dependencies,
+            globalScope.fullBootClasspathProvider,
+            projectServices.buildServiceRegistry
+        )
+
+        return this
+    }
+
+    private fun <T : GenericTransformParameters> registerTransform(
+        transformClass: Class<out TransformAction<T>>,
+        fromArtifactType: AndroidArtifacts.ArtifactType,
+        toArtifactType: AndroidArtifacts.ArtifactType,
+        parametersSetter: ((T) -> Unit)? = null
+    ) {
+        registerTransform(
+            transformClass,
+            fromArtifactType.type,
+            toArtifactType.type,
+            parametersSetter
+        )
+    }
+
+    private fun <T : GenericTransformParameters> registerTransform(
+        transformClass: Class<out TransformAction<T>>,
+        fromArtifactType: String,
+        toArtifactType: String,
+        parametersSetter: ((T) -> Unit)? = null
+    ) {
+        project.dependencies.registerTransform(
+            transformClass
+        ) { spec: TransformSpec<T> ->
+            spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, fromArtifactType)
+            spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, toArtifactType)
+            spec.parameters.projectName.setDisallowChanges(projectName)
+            parametersSetter?.let { it(spec.parameters) }
+        }
+    }
+
+    fun configureAttributeMatchingStrategies(): DependencyConfigurator {
+        val schema = project.dependencies.attributesSchema
+
         // custom strategy for build-type and product-flavor.
         setBuildTypeStrategy(schema)
         setupFlavorStrategy(schema)
@@ -624,13 +538,30 @@ class DependencyConfigurator(
     }
 
     /** Configure artifact transforms that require variant-specific attribute information.  */
-    fun <VariantT: VariantImpl<VariantPropertiesT>, VariantPropertiesT: VariantPropertiesImpl> configureVariantTransforms(
-        variants: List<ComponentInfo<VariantT, VariantPropertiesT>>,
-        testComponents: List<ComponentInfo<TestComponentImpl<out TestComponentPropertiesImpl>, TestComponentPropertiesImpl>>
+    fun <VariantBuilderT : VariantBuilderImpl, VariantT : VariantImpl>
+            configureVariantTransforms(
+        variants: List<ComponentInfo<VariantBuilderT, VariantT>>,
+        testComponents: List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>>
     ): DependencyConfigurator {
-        val allComponents: List<ComponentPropertiesImpl> = (variants + testComponents).map { it.properties }
+        val allComponents: List<ComponentCreationConfig> =
+            (variants + testComponents).map { it.variant as ComponentCreationConfig }
 
         val dependencies = project.dependencies
+
+        for (component in allComponents) {
+            registerAsmTransformForComponent(
+                globalScope.project.name,
+                dependencies,
+                component
+            )
+
+            registerRecalculateStackFramesTransformForComponent(
+                globalScope.project.name,
+                dependencies,
+                component
+            )
+        }
+
         if (globalScope.projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
             for (artifactConfiguration in getDexingArtifactConfigurations(
                 allComponents
@@ -648,7 +579,8 @@ class DependencyConfigurator(
         if (globalScope.projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
             val shrinkers: Set<CodeShrinker> = allComponents
                 .asSequence()
-                .map { it.variantScope.codeShrinker }
+                .filterIsInstance(ConsumableCreationConfig::class.java)
+                .map { it.codeShrinker }
                 .filterNotNull()
                 .toSet()
             for (shrinker in shrinkers) {
@@ -683,20 +615,11 @@ class DependencyConfigurator(
         }
 
         if (globalScope.projectOptions[BooleanOption.ENABLE_DUPLICATE_CLASSES_CHECK]) {
-            dependencies.registerTransform(
-                EnumerateClassesTransform::class.java
-            ) { spec: TransformSpec<GenericTransformParameters> ->
-                spec.parameters.projectName.set(globalScope.project.name)
-                spec.from.attribute(
-                    ArtifactAttributes.ARTIFACT_FORMAT,
-                    AndroidArtifacts.ArtifactType.CLASSES_JAR.type
-                )
-                spec.to
-                    .attribute(
-                        ArtifactAttributes.ARTIFACT_FORMAT,
-                        AndroidArtifacts.ArtifactType.ENUMERATED_RUNTIME_CLASSES.type
-                    )
-            }
+            registerTransform(
+                EnumerateClassesTransform::class.java,
+                AndroidArtifacts.ArtifactType.CLASSES_JAR,
+                AndroidArtifacts.ArtifactType.ENUMERATED_RUNTIME_CLASSES
+            )
         }
 
         registerDexingOutputSplitTransform(dependencies)

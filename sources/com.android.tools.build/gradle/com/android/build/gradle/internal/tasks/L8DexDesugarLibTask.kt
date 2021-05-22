@@ -16,9 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.AndroidJarInput
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.dependency.getDexingArtifactConfiguration
+import com.android.build.gradle.internal.initialize
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
@@ -26,12 +29,13 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.getDesugarLibJarFromMaven
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.dexing.KeepRulesConfig
 import com.android.builder.dexing.runL8
 import com.android.builder.model.CodeShrinker
-import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -45,9 +49,7 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
-import java.io.Serializable
 import java.nio.file.Path
-import javax.inject.Inject
 
 /**
  * A task using L8 tool to dex and shrink (if needed) desugar library with keep rules.
@@ -82,29 +84,27 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
     abstract val desugarLibDex: DirectoryProperty
 
     override fun doTaskAction() {
-        getWorkerFacadeWithWorkers().use {
-            it.submit(
-                L8DexRunnable::class.java,
-                L8DexParams(
-                    desugarLibJar.files,
-                    desugarLibDex.get().asFile,
-                    libConfiguration.get(),
-                    androidJarInput.getAndroidJar().get(),
-                    minSdkVersion.get(),
-                    keepRulesFiles.files,
-                    keepRulesConfigurations.orNull,
-                    debuggable.get()
-                )
-            )
+        workerExecutor.noIsolation().submit(
+            L8DexWorkAction::class.java
+        ) {
+            it.initializeFromAndroidVariantTask(this)
+            it.desugarLibJar.from(desugarLibJar)
+            it.desugarLibDex.set(desugarLibDex)
+            it.libConfiguration.set(libConfiguration)
+            it.androidJar.fileProvider(androidJarInput.getAndroidJar())
+            it.minSdkVersion.set(minSdkVersion)
+            it.keepRulesFiles.from(keepRulesFiles)
+            it.keepRulesConfigurations.set(keepRulesConfigurations)
+            it.debuggable.set(debuggable)
         }
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl,
-        private val enableDexingArtifactTransform: Boolean,
-        private val separateFileDependenciesDexingTask: Boolean
-    ) : VariantTaskCreationAction<L8DexDesugarLibTask, ComponentPropertiesImpl>(
-        componentProperties
+            creationConfig: ApkCreationConfig,
+            private val enableDexingArtifactTransform: Boolean,
+            private val separateFileDependenciesDexingTask: Boolean
+    ) : VariantTaskCreationAction<L8DexDesugarLibTask, ApkCreationConfig>(
+        creationConfig
     ) {
         override val name = computeTaskName("l8DexDesugarLib")
         override val type = L8DexDesugarLibTask::class.java
@@ -124,149 +124,125 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
             super.configure(task)
             task.libConfiguration.set(getDesugarLibConfig(creationConfig.globalScope.project))
             task.desugarLibJar.from(getDesugarLibJarFromMaven(creationConfig.globalScope.project))
-            task.androidJarInput.sdkBuildService.set(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
-            task.minSdkVersion.set(creationConfig.variantDslInfo.minSdkVersionWithTargetDeviceApi.featureLevel)
+            task.androidJarInput.initialize(creationConfig)
+            task.minSdkVersion.set(creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel())
 
-            setKeepRules(task)
-
-            task.debuggable.set(creationConfig.variantDslInfo.isDebuggable)
-        }
-
-        private fun setKeepRules(task: L8DexDesugarLibTask) {
-            if (!creationConfig.variantScope.needsShrinkDesugarLibrary) {
-                return;
-            }
-
-            val attributes = getDexingArtifactConfiguration(creationConfig).getAttributes()
-            if (enableDexingArtifactTransform) {
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactCollection(
-                        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                        AndroidArtifacts.ArtifactScope.PROJECT,
-                        AndroidArtifacts.ArtifactType.KEEP_RULES,
-                        attributes
-                    ).artifactFiles
+            if (creationConfig.needsShrinkDesugarLibrary) {
+                setDesugarLibKeepRules(
+                    task.keepRulesFiles,
+                    creationConfig,
+                    enableDexingArtifactTransform,
+                    separateFileDependenciesDexingTask
                 )
 
-                val artifactScope = if (separateFileDependenciesDexingTask) {
-                    AndroidArtifacts.ArtifactScope.REPOSITORY_MODULE
-                } else {
-                    AndroidArtifacts.ArtifactScope.EXTERNAL
+                // make sure non-minified release build is not obfuscated
+                if (creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.D8) {
+                    task.keepRulesConfigurations.set(listOf("-dontobfuscate"))
                 }
-
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactCollection(
-                        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                        artifactScope,
-                        AndroidArtifacts.ArtifactType.KEEP_RULES,
-                        attributes
-                    ).artifactFiles
-                )
-            } else if (creationConfig.variantScope.codeShrinker != CodeShrinker.R8) {
-                task.keepRulesFiles.from(
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES
-                    ),
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES
-                    ),
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES
-                    ),
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES
-                    )
-                )
             }
 
-            task.keepRulesFiles.from(
-                creationConfig.artifacts.get(
-                    InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES
-                )
-            )
-
-            if (separateFileDependenciesDexingTask) {
-                task.keepRulesFiles.from(
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES))
-            }
-
-            val nonMinified = creationConfig.variantScope.java8LangSupportType == VariantScope.Java8LangSupport.D8
-            if (creationConfig.globalScope.hasDynamicFeatures() && nonMinified) {
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
-                )
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.PROJECT,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES)
-                )
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES)
-                )
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.REPOSITORY_MODULE,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES)
-                )
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.FILE,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES)
-                )
-                task.keepRulesFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
-                        AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
-                        AndroidArtifacts.ArtifactScope.FILE,
-                        AndroidArtifacts.ArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES)
-                )
-            }
-            // make sure non-minified release build is not obfuscated
-            if (nonMinified) {
-                task.keepRulesConfigurations.set(listOf("-dontobfuscate"))
-            }
+            task.debuggable.set(creationConfig.debuggable)
         }
     }
 }
 
-@VisibleForTesting
-class L8DexParams(
-    val desugarLibJar: Collection<File>,
-    val desugarLibDex: File,
-    val libConfiguration: String,
-    val androidJar: File,
-    val minSdkVersion: Int,
-    val keepRulesFiles: Set<File>,
-    val keepRulesConfigurations: List<String>?,
-    val debuggable: Boolean
-) : Serializable
-
-@VisibleForTesting
-class L8DexRunnable @Inject constructor(val params: L8DexParams) : Runnable {
-    override fun run() {
-        params.desugarLibDex.mkdir()
-        val keepRulesConfig =
-            KeepRulesConfig(getAllFilesUnderDirectories(params.keepRulesFiles), params.keepRulesConfigurations ?: emptyList())
-        runL8(
-            params.desugarLibJar.map { it.toPath() },
-            params.desugarLibDex.toPath(),
-            params.libConfiguration,
-            listOf(params.androidJar.toPath()),
-            params.minSdkVersion,
-            keepRulesConfig,
-            params.debuggable
+fun setDesugarLibKeepRules(
+    keepRulesFiles: ConfigurableFileCollection,
+    creationConfig: ApkCreationConfig,
+    enableDexingArtifactTransform: Boolean,
+    separateFileDependenciesDexingTask: Boolean
+) {
+    val attributes = getDexingArtifactConfiguration(creationConfig).getAttributes()
+    if (enableDexingArtifactTransform) {
+        keepRulesFiles.from(
+            creationConfig.variantDependencies.getArtifactCollection(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.KEEP_RULES,
+                attributes
+            ).artifactFiles
         )
+
+        val artifactScope = if (separateFileDependenciesDexingTask) {
+            AndroidArtifacts.ArtifactScope.REPOSITORY_MODULE
+        } else {
+            AndroidArtifacts.ArtifactScope.EXTERNAL
+        }
+
+        keepRulesFiles.from(
+            creationConfig.variantDependencies.getArtifactCollection(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                artifactScope,
+                AndroidArtifacts.ArtifactType.KEEP_RULES,
+                attributes
+            ).artifactFiles
+        )
+    } else if (creationConfig.codeShrinker != CodeShrinker.R8) {
+        keepRulesFiles.from(
+            creationConfig.artifacts.get(
+                InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES
+            ),
+            creationConfig.artifacts.get(
+                InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES
+            ),
+            creationConfig.artifacts.get(
+                InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES
+            ),
+            creationConfig.artifacts.get(
+                InternalArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES
+            )
+        )
+    }
+
+    keepRulesFiles.from(
+        creationConfig.artifacts.get(
+            InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES
+        )
+    )
+
+    if (separateFileDependenciesDexingTask) {
+        keepRulesFiles.from(
+            creationConfig.artifacts.get(
+                InternalArtifactType.DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES))
+    }
+
+    val nonMinified = creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.D8
+    if (creationConfig.globalScope.hasDynamicFeatures() && nonMinified) {
+        keepRulesFiles.from(
+            creationConfig.variantDependencies.getArtifactFileCollection(
+                AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
+                AndroidArtifacts.ArtifactScope.ALL,
+                AndroidArtifacts.ArtifactType.DESUGAR_LIB_MERGED_KEEP_RULES
+            )
+        )
+    }
+}
+
+abstract class L8DexWorkAction : ProfileAwareWorkAction<L8DexWorkAction.Params>() {
+    abstract class Params: ProfileAwareWorkAction.Parameters() {
+        abstract val desugarLibJar: ConfigurableFileCollection
+        abstract val desugarLibDex: DirectoryProperty
+        abstract val libConfiguration: Property<String>
+        abstract val androidJar: RegularFileProperty
+        abstract val minSdkVersion: Property<Int>
+        abstract val keepRulesFiles: ConfigurableFileCollection
+        abstract val keepRulesConfigurations: ListProperty<String>
+        abstract val debuggable: Property<Boolean>
+    }
+
+    override fun run() {
+        parameters.desugarLibDex.get().asFile.mkdir()
+        val keepRulesConfig = KeepRulesConfig(
+            getAllFilesUnderDirectories(parameters.keepRulesFiles.files),
+            parameters.keepRulesConfigurations.orNull ?: emptyList())
+        runL8(
+            parameters.desugarLibJar.files.map { it.toPath() },
+            parameters.desugarLibDex.get().asFile.toPath(),
+            parameters.libConfiguration.get(),
+            listOf(parameters.androidJar.get().asFile.toPath()),
+            parameters.minSdkVersion.get(),
+            keepRulesConfig,
+            parameters.debuggable.get())
     }
 
     private fun getAllFilesUnderDirectories(dirs: Set<File>) : List<Path> {

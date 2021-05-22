@@ -23,6 +23,7 @@ import com.android.sdklib.AndroidVersion;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -170,6 +171,16 @@ public interface IDevice extends IShellEnabledDevice {
      */
     @Nullable
     String getAvdName();
+
+    /**
+     * Returns the absolute path to the virtual device in the file system. The path is operating
+     * system dependent; it will have / name separators on Linux and \ separators on Windows.
+     *
+     * @return the AVD path or null if this is a physical device, the emulator console subcommand
+     *     failed, or the emulator's version is older than 30.0.18
+     */
+    @Nullable
+    String getAvdPath();
 
     /** Returns the state of the device. */
     DeviceState getState();
@@ -902,4 +913,19 @@ public interface IDevice extends IShellEnabledDevice {
      */
     @NonNull
     AndroidVersion getVersion();
+
+    /**
+     * Invoke the host:exec service on a remote device. Return a socket channel that is connected to
+     * the executing process. Note that exec service does not differentiate stdout and stderr so
+     * whatever is read from the socket can come from either output and be interleaved.
+     *
+     * <p>Ownership of the SocketChannel is relinquished to the caller, it must be explicitly closed
+     * after usage.
+     *
+     * @return A SocketChannel connected to the executing process on the device. after use.
+     */
+    default SocketChannel rawExec(String executable, String[] parameters)
+            throws AdbCommandRejectedException, TimeoutException, IOException {
+        throw new UnsupportedOperationException();
+    }
 }

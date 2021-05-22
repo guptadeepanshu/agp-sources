@@ -17,16 +17,16 @@
 package com.android.build.gradle.internal.tasks.databinding
 
 import android.databinding.tool.CompilerArguments
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_DEPENDENCY_ARTIFACTS
+import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_EXPORT_CLASS_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_MERGE
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DATA_BINDING_BASE_FEATURE_INFO
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_DATA_BINDING_FEATURE_INFO
-import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_EXPORT_CLASS_LIST
-import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
 import com.android.build.gradle.options.BooleanOption
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
@@ -40,7 +40,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.process.CommandLineArgumentProvider
-import java.io.File
 
 /**
  * Arguments passed to data binding. This class mimics the [CompilerArguments] class except that it
@@ -66,7 +65,7 @@ class DataBindingCompilerArguments constructor(
     // annotate it with @Internal, expecting that the directory's contents should be stable and this
     // won't affect correctness.
     @get:Internal
-    val sdkDir: File,
+    val sdkDir: Provider<Directory>,
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -90,7 +89,6 @@ class DataBindingCompilerArguments constructor(
     @get:PathSensitive(PathSensitivity.RELATIVE)
     val featureInfoDir: Provider<Directory>,
 
-    @get:Optional
     @get:OutputDirectory
     val aarOutDir: Provider<Directory>,
 
@@ -124,13 +122,13 @@ class DataBindingCompilerArguments constructor(
             artifactType = artifactType,
             modulePackage = packageName.get(),
             minApi = minApi,
-            sdkDir = sdkDir,
+            sdkDir = sdkDir.get().asFile,
             dependencyArtifactsDir = dependencyArtifactsDir.get().asFile,
             layoutInfoDir = layoutInfoDir.get().asFile,
             classLogDir = classLogDir.get().asFile,
             baseFeatureInfoDir = baseFeatureInfoDir.orNull?.asFile,
             featureInfoDir = featureInfoDir.orNull?.asFile,
-            aarOutDir = aarOutDir.orNull?.asFile,
+            aarOutDir = aarOutDir.get().asFile,
             exportClassListOutFile = exportClassListOutFile.orNull?.asFile,
             enableDebugLogs = enableDebugLogs,
             printEncodedErrorLogs = printEncodedErrorLogs,
@@ -149,40 +147,40 @@ class DataBindingCompilerArguments constructor(
 
         @JvmStatic
         fun createArguments(
-            componentProperties: ComponentPropertiesImpl,
+            creationConfig: ComponentCreationConfig,
             enableDebugLogs: Boolean,
             printEncodedErrorLogs: Boolean
         ): DataBindingCompilerArguments {
-            val globalScope = componentProperties.globalScope
-            val artifacts = componentProperties.artifacts
+            val globalScope = creationConfig.globalScope
+            val artifacts = creationConfig.artifacts
 
             return DataBindingCompilerArguments(
-                incremental = componentProperties.services.projectOptions
+                incremental = creationConfig.services.projectOptions
                     .get(BooleanOption.ENABLE_INCREMENTAL_DATA_BINDING),
-                artifactType = getModuleType(componentProperties),
-                packageName = componentProperties.packageName,
-                minApi = componentProperties.minSdkVersion.apiLevel,
-                sdkDir = globalScope.sdkComponents.flatMap { it.sdkDirectoryProvider }.get().asFile,
+                artifactType = getModuleType(creationConfig),
+                packageName = creationConfig.packageName,
+                minApi = creationConfig.minSdkVersion.apiLevel,
+                sdkDir = globalScope.sdkComponents.flatMap { it.sdkDirectoryProvider },
                 dependencyArtifactsDir = artifacts.get(DATA_BINDING_DEPENDENCY_ARTIFACTS),
-                layoutInfoDir = artifacts.get(getLayoutInfoArtifactType(componentProperties)),
+                layoutInfoDir = artifacts.get(getLayoutInfoArtifactType(creationConfig)),
                 classLogDir = artifacts.get(DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),
                 baseFeatureInfoDir = artifacts.get(
                     FEATURE_DATA_BINDING_BASE_FEATURE_INFO
                 ),
                 featureInfoDir = artifacts.get(FEATURE_DATA_BINDING_FEATURE_INFO),
                 // Note that aarOurDir and exportClassListOutFile below are outputs. In the usual
-                // pattern, they need to be a DirectoryProperty or RegularFileProperty and should
-                // be created by calling project.objects.directoryProperty() or fileProperty().
-                // However, we currently create these properties in JavaCompile.kt to register them
-                // as artifacts in AGP, so it is not possible here. Instead, we have to call
-                // getFinalProduct() to get the artifacts' locations.
-                // This is a non-standard pattern, but we've used it only for data binding so far,
-                // so it's probably acceptable for now.
+                // pattern, they need to be wired as producers of the corresponding artifacts
+                // through AGP Artifacts API. However, since the actual task that will produce these
+                // artifacts is not known at this point (it could be either JavaCompile or Kapt),
+                // using the Artifacts API is not possible.
+                //
+                // Instead, we wire them when JavaCompile or Kapt is registered, and here we'll just
+                // get the artifacts' locations.
                 aarOutDir = artifacts.get(DATA_BINDING_ARTIFACT),
                 exportClassListOutFile = artifacts.get(DATA_BINDING_EXPORT_CLASS_LIST),
                 enableDebugLogs = enableDebugLogs,
                 printEncodedErrorLogs = printEncodedErrorLogs,
-                isTestVariant = componentProperties.variantType.isTestComponent,
+                isTestVariant = creationConfig.variantType.isTestComponent,
                 isEnabledForTests = globalScope.extension.dataBinding.isEnabledForTests,
                 isEnableV2 = true
             )
@@ -193,10 +191,10 @@ class DataBindingCompilerArguments constructor(
          * of the tested variant.
          */
         @JvmStatic
-        fun getModuleType(componentProperties: ComponentPropertiesImpl): CompilerArguments.Type {
-            val component = componentProperties.onTestedConfig {
+        fun getModuleType(creationConfig: ComponentCreationConfig): CompilerArguments.Type {
+            val component = creationConfig.onTestedConfig {
                 it
-            } ?: componentProperties
+            } ?: creationConfig
 
             return if (component.variantType.isAar) {
                 CompilerArguments.Type.LIBRARY
@@ -214,8 +212,8 @@ class DataBindingCompilerArguments constructor(
          * trigger unnecessary computations (see bug 133092984 and 110412851).
          */
         @JvmStatic
-        fun getLayoutInfoArtifactType(componentProperties: ComponentPropertiesImpl): InternalArtifactType<Directory> {
-            return if (componentProperties.variantType.isAar) {
+        fun getLayoutInfoArtifactType(creationConfig: ComponentCreationConfig): InternalArtifactType<Directory> {
+            return if (creationConfig.variantType.isAar) {
                 DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE
             } else {
                 DATA_BINDING_LAYOUT_INFO_TYPE_MERGE

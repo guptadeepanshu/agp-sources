@@ -17,25 +17,25 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_JAR
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.packaging.JarCreatorFactory
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.android.build.gradle.internal.res.namespaced.JarRequest
-import com.android.build.gradle.internal.res.namespaced.JarWorkerRunnable
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
-import com.android.ide.common.workers.WorkerExecutorFacade
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
 import java.util.zip.Deflater
 
 /**
@@ -60,46 +60,46 @@ abstract class MergeClassesTask : NonIncrementalTask() {
         private set
 
     override fun doTaskAction() {
-        // We use a delegate here to simplify testing
-        MergeClassesDelegate(
-            inputFiles.files,
-            outputFile.get().asFile,
-            getWorkerFacadeWithWorkers(),
-            jarCreatorType
-        ).mergeClasses()
+        workerExecutor.noIsolation().submit(MergeClassesWorkAction::class.java) {
+            it.initializeFromAndroidVariantTask(this)
+            it.inputFiles.from(inputFiles)
+            it.outputFile.set(outputFile)
+            it.jarCreatorType.set(jarCreatorType)
+        }
     }
 
-    class MergeClassesDelegate(
-        val inputFiles: Collection<File>,
-        val outputFile: File,
-        val workers: WorkerExecutorFacade,
-        val jarCreatorType: JarCreatorType
-    ) {
-        fun mergeClasses() {
-            val fromJars = inputFiles.filter { it.isFile && it.name.endsWith(DOT_JAR) }
-            val fromDirectories = inputFiles.filter { it.isDirectory }
-            workers.use { workers ->
-                workers.submit(
-                    JarWorkerRunnable::class.java,
-                    // Don't compress because compressing takes extra time, and this jar doesn't go
-                    // into any APKs or AARs.
-                    JarRequest(
-                        toFile = outputFile,
-                        jarCreatorType = jarCreatorType,
-                        fromDirectories = fromDirectories,
-                        fromJars = fromJars,
-                        filter = { CLASS_MATCHER.test(it) },
-                        compressionLevel = Deflater.NO_COMPRESSION
-                    )
-                )
+    abstract class MergeClassesWorkAction :
+        ProfileAwareWorkAction<MergeClassesWorkAction.Parameters>() {
+        abstract class Parameters : ProfileAwareWorkAction.Parameters() {
+            abstract val inputFiles: ConfigurableFileCollection
+            abstract val outputFile: RegularFileProperty
+            abstract val jarCreatorType: Property<JarCreatorType>
+        }
+
+        override fun run() {
+            JarCreatorFactory.make(
+                parameters.outputFile.asFile.get().toPath(),
+                CLASS_MATCHER,
+                parameters.jarCreatorType.get()
+            ).use { out ->
+                // Don't compress because compressing takes extra time, and this jar doesn't go
+                // into any APKs or AARs.
+                out.setCompressionLevel(Deflater.NO_COMPRESSION)
+                parameters.inputFiles.forEach {
+                    if (it.isFile && it.name.endsWith(DOT_JAR)) {
+                        out.addJar(it.toPath())
+                    } else if (it.isDirectory) {
+                        out.addDirectory(it.toPath())
+                    }
+                }
             }
         }
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<MergeClassesTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: VariantCreationConfig
+    ) : VariantTaskCreationAction<MergeClassesTask, VariantCreationConfig>(
+        creationConfig
     ) {
         override val type = MergeClassesTask::class.java
         override val name: String = computeTaskName("merge", "Classes")
@@ -107,7 +107,7 @@ abstract class MergeClassesTask : NonIncrementalTask() {
         // Because ordering matters for the transform pipeline, we need to fetch the classes as soon
         // as this creation action is instantiated.
         private val inputFiles =
-            componentProperties
+            creationConfig
                 .transformManager
                 .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                     contentTypes.contains(QualifiedContent.DefaultContentType.CLASSES)

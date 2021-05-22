@@ -22,7 +22,4 @@ import org.gradle.api.provider.MapProperty
 /**
  * Internal interface for Android Test component
  */
-interface AndroidTestCreationConfig: TestComponentCreationConfig, ApkCreationConfig {
-
-    val buildConfigFields: MapProperty<String, BuildConfigField<out java.io.Serializable>>
-}
+interface AndroidTestCreationConfig: TestComponentCreationConfig, ApkCreationConfig

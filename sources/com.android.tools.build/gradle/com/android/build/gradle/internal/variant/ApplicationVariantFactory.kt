@@ -23,8 +23,8 @@ import com.android.build.api.dsl.ApplicationBuildFeatures
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.FilterConfiguration
+import com.android.build.api.variant.impl.ApplicationVariantBuilderImpl
 import com.android.build.api.variant.impl.ApplicationVariantImpl
-import com.android.build.api.variant.impl.ApplicationVariantPropertiesImpl
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.VariantOutputList
@@ -60,22 +60,22 @@ import java.util.function.Consumer
 class ApplicationVariantFactory(
     projectServices: ProjectServices,
     globalScope: GlobalScope
-) : AbstractAppVariantFactory<ApplicationVariantImpl, ApplicationVariantPropertiesImpl>(
+) : AbstractAppVariantFactory<ApplicationVariantBuilderImpl, ApplicationVariantImpl>(
     projectServices,
     globalScope
 ) {
 
-    override fun createVariantObject(
+    override fun createVariantBuilder(
         componentIdentity: ComponentIdentity,
         variantDslInfo: VariantDslInfo,
         variantApiServices: VariantApiServices
-    ): ApplicationVariantImpl {
+    ): ApplicationVariantBuilderImpl {
         val extension = globalScope.extension as BaseAppModuleExtension
 
         return projectServices
             .objectFactory
             .newInstance(
-                ApplicationVariantImpl::class.java,
+                ApplicationVariantBuilderImpl::class.java,
                 variantDslInfo,
                 extension.dependenciesInfo,
                 componentIdentity,
@@ -83,26 +83,26 @@ class ApplicationVariantFactory(
             )
     }
 
-    override fun createVariantPropertiesObject(
-        variant: ApplicationVariantImpl,
-        componentIdentity: ComponentIdentity,
-        buildFeatures: BuildFeatureValues,
-        variantDslInfo: VariantDslInfo,
-        variantDependencies: VariantDependencies,
-        variantSources: VariantSources,
-        paths: VariantPathHelper,
-        artifacts: ArtifactsImpl,
-        variantScope: VariantScope,
-        variantData: BaseVariantData,
-        transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
-        taskCreationServices: TaskCreationServices
-    ): ApplicationVariantPropertiesImpl {
-        val variantProperties = projectServices
+    override fun createVariant(
+            variantBuilder: ApplicationVariantBuilderImpl,
+            componentIdentity: ComponentIdentity,
+            buildFeatures: BuildFeatureValues,
+            variantDslInfo: VariantDslInfo,
+            variantDependencies: VariantDependencies,
+            variantSources: VariantSources,
+            paths: VariantPathHelper,
+            artifacts: ArtifactsImpl,
+            variantScope: VariantScope,
+            variantData: BaseVariantData,
+            transformManager: TransformManager,
+            variantPropertiesApiServices: VariantPropertiesApiServices,
+            taskCreationServices: TaskCreationServices
+    ): ApplicationVariantImpl {
+        val appVariant = projectServices
             .objectFactory
             .newInstance(
-                ApplicationVariantPropertiesImpl::class.java,
-                componentIdentity,
+                ApplicationVariantImpl::class.java,
+                variantBuilder,
                 buildFeatures,
                 variantDslInfo,
                 variantDependencies,
@@ -111,30 +111,26 @@ class ApplicationVariantFactory(
                 artifacts,
                 variantScope,
                 variantData,
-                variant.dependenciesInfo as DependenciesInfo,
+                variantBuilder.dependenciesInfo as DependenciesInfo,
                 transformManager,
                 variantPropertiesApiServices,
                 taskCreationServices,
                 globalScope
             )
 
-        computeOutputs(variantProperties, (variantData as ApplicationVariantData))
+        computeOutputs(appVariant, (variantData as ApplicationVariantData))
 
-        return variantProperties
+        return appVariant
     }
 
     override fun createBuildFeatureValues(
         buildFeatures: BuildFeatures,
         projectOptions: ProjectOptions
     ): BuildFeatureValues {
-        val features = buildFeatures as? ApplicationBuildFeatures
+        buildFeatures as? ApplicationBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
-        return BuildFeatureValuesImpl(
-            buildFeatures,
-            dataBinding = features.dataBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_DATABINDING],
-            mlModelBinding = features.mlModelBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_MLMODELBINDING],
-            projectOptions = projectOptions)
+        return BuildFeatureValuesImpl(buildFeatures, projectOptions)
     }
 
     override fun createTestBuildFeatureValues(
@@ -142,23 +138,26 @@ class ApplicationVariantFactory(
         dataBindingOptions: DataBindingOptions,
         projectOptions: ProjectOptions
     ): BuildFeatureValues {
-        val features = buildFeatures as? ApplicationBuildFeatures
+        buildFeatures as? ApplicationBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
-        val dataBinding =
-            features.dataBinding ?: projectOptions[BooleanOption.BUILD_FEATURE_DATABINDING]
         return BuildFeatureValuesImpl(
             buildFeatures,
-            dataBinding = dataBinding && dataBindingOptions.isEnabledForTests,
-            projectOptions = projectOptions)
+            projectOptions,
+            dataBindingOverride = if (!dataBindingOptions.isEnabledForTests) {
+                false
+            } else {
+                null // means whatever is default.
+            },
+            mlModelBindingOverride = false
+        )
     }
 
-    override fun getVariantType(): VariantType {
-        return VariantTypeImpl.BASE_APK
-    }
+    override val variantType
+        get() = VariantTypeImpl.BASE_APK
 
     private fun computeOutputs(
-        variantProperties: ApplicationVariantPropertiesImpl,
+        appVariant: ApplicationVariantImpl,
         variant: ApplicationVariantData
     ) {
         val extension = globalScope.extension
@@ -167,16 +166,17 @@ class ApplicationVariantFactory(
             variant.getFilters(VariantOutput.FilterType.DENSITY)
         val abis =
             variant.getFilters(VariantOutput.FilterType.ABI)
-        checkSplitsConflicts(variantProperties.variantDslInfo, variant, abis)
+        checkSplitsConflicts(appVariant.variantDslInfo, variant, abis)
         if (!densities.isEmpty()) {
             variant.compatibleScreens = extension.splits.density
                 .compatibleScreens
         }
         val variantOutputs =
             populateMultiApkOutputs(abis, densities)
-        variantOutputs.forEach { variantProperties.addVariantOutput(it) }
+        variantOutputs.forEach { appVariant.addVariantOutput(it) }
         restrictEnabledOutputs(
-            variantProperties.variantDslInfo, variantProperties.outputs
+                appVariant.variantDslInfo,
+                appVariant.outputs
         )
     }
 

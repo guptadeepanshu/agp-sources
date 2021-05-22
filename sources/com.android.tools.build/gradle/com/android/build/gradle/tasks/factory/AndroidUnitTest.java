@@ -18,18 +18,17 @@ package com.android.build.gradle.tasks.factory;
 
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.component.TestComponentProperties;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
-import com.android.build.api.component.impl.UnitTestPropertiesImpl;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
+import com.android.build.api.component.TestComponent;
+import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.UnitTestCreationConfig;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
@@ -40,16 +39,22 @@ import com.android.build.gradle.tasks.GenerateTestConfig;
 import com.android.builder.core.VariantType;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
+import java.io.Serializable;
+import java.util.Collections;
 import java.util.concurrent.Callable;
+import org.gradle.api.Task;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.reporting.ConfigurableReport;
+import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.TestTaskReports;
+import org.gradle.testing.jacoco.plugins.JacocoPlugin;
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
 
 /** Patched version of {@link Test} that we need to use for local unit tests support. */
 @CacheableTask
@@ -78,13 +83,13 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
     }
 
     public static class CreationAction
-            extends VariantTaskCreationAction<AndroidUnitTest, ComponentPropertiesImpl> {
+            extends VariantTaskCreationAction<AndroidUnitTest, ComponentCreationConfig> {
 
-        @NonNull private final UnitTestPropertiesImpl unitTestProperties;
+        @NonNull private final UnitTestCreationConfig unitTestCreationConfig;
 
-        public CreationAction(@NonNull UnitTestPropertiesImpl unitTestProperties) {
-            super(unitTestProperties);
-            this.unitTestProperties = unitTestProperties;
+        public CreationAction(@NonNull UnitTestCreationConfig unitTestCreationConfig) {
+            super(unitTestCreationConfig);
+            this.unitTestCreationConfig = unitTestCreationConfig;
         }
 
         @NonNull
@@ -103,12 +108,34 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         public void configure(@NonNull AndroidUnitTest task) {
             super.configure(task);
 
+            unitTestCreationConfig.onTestedConfig(
+                    testedConfig -> {
+                        if (testedConfig.getVariantType().isAar()
+                                && testedConfig.getVariantDslInfo().isTestCoverageEnabled()) {
+                            // Library project runtime classes are instrumented offline and
+                            // published like such, so we need to exclude all classes from being
+                            // re-instrumented by the Jacoco jvm agent.
+                            task.getProject()
+                                    .getPlugins()
+                                    .withType(
+                                            JacocoPlugin.class,
+                                            plugin -> {
+                                                JacocoTaskExtension jacocoTaskExtension =
+                                                        task.getExtensions()
+                                                                .findByType(
+                                                                        JacocoTaskExtension.class);
+                                                jacocoTaskExtension.setExcludes(
+                                                        Collections.singletonList("*"));
+                                            });
+                        }
+                        return null;
+                    });
+
             GlobalScope globalScope = creationConfig.getGlobalScope();
             BaseExtension extension = globalScope.getExtension();
 
-            VariantPropertiesImpl testedVariant =
-                    (VariantPropertiesImpl)
-                            ((TestComponentProperties) creationConfig).getTestedVariant();
+            VariantImpl testedVariant =
+                    (VariantImpl) ((TestComponent) creationConfig).getTestedVariant();
 
             boolean includeAndroidResources =
                     extension.getTestOptions().getUnitTests().isIncludeAndroidResources();
@@ -135,7 +162,8 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                 // class for details).
                 // Since this task also depends on the indirect inputs to the GenerateTestConfig
                 // task, we also need to register those inputs with Gradle.
-                task.testConfigInputs = new GenerateTestConfig.TestConfigInputs(unitTestProperties);
+                task.testConfigInputs =
+                        new GenerateTestConfig.TestConfigInputs(unitTestCreationConfig);
             }
 
             // Put the variant name in the report path, so that different testing tasks don't
@@ -159,16 +187,19 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                             "AndroidUnitTest task is not yet cacheable"
                                     + " when includeAndroidResources=true"
                                     + " and android.testConfig.useRelativePath=false",
-                            (thisTask) -> includeAndroidResources && !useRelativePathInTestConfig);
+                            (Spec<? super Task> & Serializable)
+                                    ((thisTask) ->
+                                            includeAndroidResources
+                                                    && !useRelativePathInTestConfig));
         }
 
         @NonNull
         private ConfigurableFileCollection computeClasspath(
-                ComponentPropertiesImpl component, boolean includeAndroidResources) {
-            GlobalScope globalScope = component.getGlobalScope();
-            ArtifactsImpl artifacts = component.getArtifacts();
+                ComponentCreationConfig creationConfig, boolean includeAndroidResources) {
+            GlobalScope globalScope = creationConfig.getGlobalScope();
+            ArtifactsImpl artifacts = creationConfig.getArtifacts();
 
-            ConfigurableFileCollection collection = component.getServices().fileCollection();
+            ConfigurableFileCollection collection = creationConfig.getServices().fileCollection();
 
             // the test classpath is made up of:
             // 1. the config file
@@ -177,19 +208,16 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                         artifacts.get(InternalArtifactType.UNIT_TEST_CONFIG_DIRECTORY.INSTANCE));
             }
 
-            // 2. the test component classes and java_res
-            collection.from(component.getArtifacts().getAllClasses());
+            // 2. the test creationConfig classes and java_res
+            collection.from(creationConfig.getAllProjectClassesPostAsmInstrumentation());
             // TODO is this the right thing? this doesn't include the res merging via transform
             // AFAIK
             collection.from(artifacts.get(InternalArtifactType.JAVA_RES.INSTANCE));
 
             // 3. the runtime dependencies for both CLASSES and JAVA_RES type
+            collection.from(creationConfig.getDependenciesClassesJarsPostAsmInstrumentation(ALL));
             collection.from(
-                    component
-                            .getVariantDependencies()
-                            .getArtifactFileCollection(RUNTIME_CLASSPATH, ALL, CLASSES_JAR));
-            collection.from(
-                    component
+                    creationConfig
                             .getVariantDependencies()
                             .getArtifactFileCollection(
                                     RUNTIME_CLASSPATH, ALL, ArtifactType.JAVA_RES));
@@ -197,15 +225,16 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             // 4. The separately compile R class, if applicable.
             if (creationConfig.getBuildFeatures().getAndroidResources()
                     && !globalScope.getExtension().getAaptOptions().getNamespaced()) {
-                collection.from(component.getVariantScope().getRJarForUnitTests());
+                collection.from(creationConfig.getVariantScope().getRJarForUnitTests());
             }
 
             // 5. Any additional or requested optional libraries
-            collection.from(getAdditionalAndRequestedOptionalLibraries(component.getGlobalScope()));
+            collection.from(
+                    getAdditionalAndRequestedOptionalLibraries(creationConfig.getGlobalScope()));
 
             // 6. Mockable JAR is last, to make sure you can shadow the classes with
             // dependencies.
-            collection.from(component.getGlobalScope().getMockableJarArtifact());
+            collection.from(creationConfig.getGlobalScope().getMockableJarArtifact());
 
             return collection;
         }
@@ -223,30 +252,28 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                     .getServices()
                     .fileCollection(
                             (Callable)
-                                    () ->
-                                            BootClasspathBuilder.INSTANCE
-                                                    .computeAdditionalAndRequestedOptionalLibraries(
-                                                            globalScope.getProject(),
-                                                            globalScope
-                                                                    .getSdkComponents()
-                                                                    .flatMap(
-                                                                            SdkComponentsBuildService
-                                                                                    ::getAdditionalLibrariesProvider)
-                                                                    .get(),
-                                                            globalScope
-                                                                    .getSdkComponents()
-                                                                    .flatMap(
-                                                                            SdkComponentsBuildService
-                                                                                    ::getOptionalLibrariesProvider)
-                                                                    .get(),
-                                                            false,
-                                                            ImmutableList.copyOf(
-                                                                    globalScope
-                                                                            .getExtension()
-                                                                            .getLibraryRequests()),
-                                                            creationConfig
-                                                                    .getServices()
-                                                                    .getIssueReporter()));
+                                    () -> {
+                                        SdkComponentsBuildService.VersionedSdkLoader
+                                                versionedSdkLoader =
+                                                        globalScope.getVersionedSdkLoader().get();
+                                        return BootClasspathBuilder.INSTANCE
+                                                .computeAdditionalAndRequestedOptionalLibraries(
+                                                        globalScope.getProject(),
+                                                        versionedSdkLoader
+                                                                .getAdditionalLibrariesProvider()
+                                                                .get(),
+                                                        versionedSdkLoader
+                                                                .getOptionalLibrariesProvider()
+                                                                .get(),
+                                                        false,
+                                                        ImmutableList.copyOf(
+                                                                globalScope
+                                                                        .getExtension()
+                                                                        .getLibraryRequests()),
+                                                        creationConfig
+                                                                .getServices()
+                                                                .getIssueReporter());
+                                    });
         }
     }
 }

@@ -436,8 +436,8 @@ public final class AndroidSdkHandler {
     }
 
     /**
-     * @see #getLatestLocalPackageForPrefix(String, boolean, ProgressIndicator) , but for {@link
-     *     RemotePackage}s instead.
+     * @see #getLatestLocalPackageForPrefix(String, Predicate, boolean, ProgressIndicator), but
+     *     for {@link RemotePackage}s instead.
      */
     @Nullable
     public RemotePackage getLatestRemotePackageForPrefix(@NonNull String prefix,
@@ -448,8 +448,8 @@ public final class AndroidSdkHandler {
     }
 
     /**
-     * @see #getLatestLocalPackageForPrefix(String, boolean, Function, ProgressIndicator) , but for
-     *     {@link RemotePackage}s instead.
+     * @see #getLatestLocalPackageForPrefix(String, Predicate, boolean, Function,
+     *     ProgressIndicator), but for {@link RemotePackage}s instead.
      */
     @Nullable
     public RemotePackage getLatestRemotePackageForPrefix(
@@ -462,8 +462,8 @@ public final class AndroidSdkHandler {
     }
 
     /**
-     * @see #getLatestLocalPackageForPrefix(String, boolean, Function, Comparator,
-     * ProgressIndicator) , but for {@link RemotePackage}s instead.
+     * @see #getLatestLocalPackageForPrefix(String, Predicate, boolean, Function, Comparator,
+     *     ProgressIndicator), but for {@link RemotePackage}s instead.
      */
     @Nullable
     public <T> RemotePackage getLatestRemotePackageForPrefix(@NonNull String prefix,

@@ -17,7 +17,8 @@
 package com.android.build.gradle.internal.res.namespaced
 
 import com.android.SdkConstants
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.artifact.ArtifactType
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -45,19 +46,18 @@ abstract class CreateNonNamespacedLibraryManifestTask : NonIncrementalTask() {
     abstract val libraryManifest: RegularFileProperty
 
     override fun doTaskAction() {
-        getWorkerFacadeWithWorkers().use {
-            it.submit(
-                CreateNonNamespacedLibraryManifestRunnable::class.java,
-                CreateNonNamespacedLibraryManifestRequest(
-                    libraryManifest.get().asFile, outputStrippedManifestFile.get().asFile)
-            )
-        }
+        workerExecutor.noIsolation()
+            .submit(CreateNonNamespacedLibraryManifestRunnable::class.java) {
+                it.initializeFromAndroidVariantTask(this)
+                it.originalManifestFile.set(libraryManifest)
+                it.strippedManifestFile.set(outputStrippedManifestFile)
+            }
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<CreateNonNamespacedLibraryManifestTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<CreateNonNamespacedLibraryManifestTask, ComponentCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -81,7 +81,8 @@ abstract class CreateNonNamespacedLibraryManifestTask : NonIncrementalTask() {
         ) {
             super.configure(task)
             creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.LIBRARY_MANIFEST, task.libraryManifest)
+                ArtifactType.MERGED_MANIFEST, task.libraryManifest
+            )
         }
     }
 }

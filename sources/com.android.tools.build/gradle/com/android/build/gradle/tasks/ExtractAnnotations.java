@@ -28,9 +28,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.services.BuildServicesKt;
+import com.android.build.gradle.internal.services.LintClassLoaderBuildService;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.AndroidXDependency;
@@ -58,10 +60,12 @@ import org.gradle.api.file.FileVisitDetails;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.file.RelativePath;
 import org.gradle.api.plugins.BasePlugin;
+import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.CompileClasspath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.PathSensitive;
@@ -185,6 +189,9 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
         this.classDir = classDir;
     }
 
+    @Internal
+    public abstract Property<LintClassLoaderBuildService> getLintClassLoader();
+
     @Override
     protected void doTaskAction() {
         SourceFileVisitor fileVisitor = new SourceFileVisitor();
@@ -196,14 +203,14 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
             return;
         }
 
-        List<File> roots = fileVisitor.getSourceRoots();
+        List<File> classpathRoots = new ArrayList<>();
         FileCollection classpath = getClasspath();
         if (classpath != null) {
             for (File jar : classpath) {
-                roots.add(jar);
+                classpathRoots.add(jar);
             }
         }
-        roots.addAll(getBootClasspath().getFiles());
+        classpathRoots.addAll(getBootClasspath().getFiles());
 
         ExtractAnnotationRequest request =
                 new ExtractAnnotationRequest(
@@ -212,11 +219,13 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                         getClassDir(),
                         getOutput().get().getAsFile(),
                         sourceFiles,
-                        roots);
+                        fileVisitor.getSourceRoots(),
+                        classpathRoots);
         FileCollection lintClassPath = getLintClassPath();
         if (lintClassPath != null) {
-            new ReflectiveLintRunner().extractAnnotations(getProject().getGradle(),
-                    request, lintClassPath.getFiles());
+            new ReflectiveLintRunner()
+                    .extractAnnotations(
+                            getLintClassLoader().get(), request, lintClassPath.getFiles());
         }
     }
 
@@ -295,11 +304,10 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     }
 
     public static class CreationAction
-            extends VariantTaskCreationAction<ExtractAnnotations, ComponentPropertiesImpl> {
+            extends VariantTaskCreationAction<ExtractAnnotations, VariantCreationConfig> {
 
-
-        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
-            super(componentProperties);
+        public CreationAction(@NonNull VariantCreationConfig creationConfig) {
+            super(creationConfig);
         }
 
         @NonNull
@@ -350,7 +358,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                             .getExtension()
                             .getCompileOptions()
                             .getEncoding());
-            task.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR);
+            task.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null);
 
             task.libraries =
                     creationConfig
@@ -375,6 +383,11 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                     task.getProject()
                             .files((Callable<List<Object>>) () -> task.sources)
                             .getAsFileTree();
+            task.getLintClassLoader()
+                    .set(
+                            BuildServicesKt.getBuildService(
+                                    creationConfig.getServices().getBuildServiceRegistry(),
+                                    LintClassLoaderBuildService.class));
         }
     }
 

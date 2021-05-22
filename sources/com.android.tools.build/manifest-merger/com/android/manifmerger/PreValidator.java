@@ -173,10 +173,10 @@ public class PreValidator {
     private static void validateManifestAttribute(
             @NonNull MergingReport.Builder mergingReport, @NonNull XmlElement manifest, XmlDocument.Type fileType) {
         Attr attributeNode = manifest.getXml().getAttributeNode(AndroidManifest.ATTRIBUTE_PACKAGE);
-        // it's ok for an overlay or a sub-manifest to have no package name, but it's an error for
-        // other manifest types.
+        // it's ok for other manifest types to have no package name, but it's an error for
+        // library manifest types.
         if ((attributeNode == null || attributeNode.getValue().isEmpty())
-                && fileType != XmlDocument.Type.OVERLAY
+                && fileType == XmlDocument.Type.LIBRARY
                 && !isSubManifest(manifest)) {
             mergingReport.addMessage(
                     manifest,
@@ -262,6 +262,7 @@ public class PreValidator {
                     .getAttribute(attributeOperationTypeEntry.getKey());
             switch(attributeOperationTypeEntry.getValue()) {
                 case STRICT:
+                case IGNORE_WARNING:
                     break;
                 case REMOVE:
                     // check we are not provided a new value.

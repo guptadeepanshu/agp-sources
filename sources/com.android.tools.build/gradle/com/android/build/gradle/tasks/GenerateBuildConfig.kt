@@ -20,7 +20,6 @@ import com.android.build.gradle.internal.generators.BuildConfigByteCodeGenerator
 import com.android.build.gradle.internal.generators.BuildConfigData
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.component.BaseCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -138,9 +137,15 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
                     if (count > 1) {
                         var i = 0
                         while (i < count) {
+                            val sanitizedDimensionName = sanitizeFlavorDimension(flavors[i + 1])
                             addStringField(
-                                    "FLAVOR_${flavors[i + 1]}",
-                                    "${flavors[i]}"
+                                    "FLAVOR_$sanitizedDimensionName",
+                                    "${flavors[i]}",
+                                    if (sanitizedDimensionName == flavors[i + 1]) {
+                                        null
+                                    } else {
+                                        "From flavor dimension ${flavors[i + 1]}"
+                                    }
                             )
                             i += 2
                         }
@@ -183,10 +188,16 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
         generator.generate()
     }
 
+    private fun sanitizeFlavorDimension(name: String): String {
+        assert(name.isNotEmpty())
+        // Replace invalid characters
+        return name.replace("[^a-zA-Z0-9_\$]".toRegex(), "_")
+    }
+
     // ----- Config Action -----
 
-    internal class CreationAction(creationConfig: BaseCreationConfig) :
-        VariantTaskCreationAction<GenerateBuildConfig, BaseCreationConfig>(
+    internal class CreationAction(creationConfig: VariantCreationConfig) :
+        VariantTaskCreationAction<GenerateBuildConfig, VariantCreationConfig>(
             creationConfig
         ) {
 
@@ -241,7 +252,7 @@ abstract class GenerateBuildConfig : NonIncrementalTask() {
                 task.hasVersionInfo.setDisallowChanges(false)
             }
 
-            task.debuggable.setDisallowChanges(creationConfig.variantDslInfo.isDebuggable)
+            task.debuggable.setDisallowChanges(creationConfig.debuggable)
 
             task.buildTypeName.setDisallowChanges(variantDslInfo.componentIdentity.buildType)
 

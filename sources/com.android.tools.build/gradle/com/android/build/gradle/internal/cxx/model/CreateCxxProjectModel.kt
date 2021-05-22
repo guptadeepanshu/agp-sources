@@ -16,14 +16,13 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.cxx.configure.CXX_DEFAULT_CONFIGURATION_SUBFOLDER
 import com.android.build.gradle.internal.cxx.configure.CXX_LOCAL_PROPERTIES_CACHE_DIR
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.android.build.gradle.internal.profile.ProfilerInitializer
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.StringOption
-import com.android.builder.profile.ChromeTracingProfileConverter
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
+
 import com.android.utils.FileUtils.join
 import java.io.File
 
@@ -34,47 +33,27 @@ import java.io.File
  * For this reason, [CxxProjectModel] is not suitable to hold services that are meant to
  * be strictly per-project.
  */
-fun createCxxProjectModel(componentProperties: ComponentPropertiesImpl) : CxxProjectModel {
-    val global = componentProperties.globalScope
-    fun option(option: BooleanOption) = global.projectOptions.get(option)
-    fun option(option: StringOption) = global.projectOptions.get(option)
+fun createCxxProjectModel(
+    sdkComponents: SdkComponentsBuildService,
+    configurationParameters: CxxConfigurationParameters
+) : CxxProjectModel {
     fun localPropertyFile(property : String) : File? {
-        val path = gradleLocalProperties(global.project.rootDir)
+        val path = gradleLocalProperties(configurationParameters.rootDir)
             .getProperty(property) ?: return null
         return File(path)
     }
-    return object : CxxProjectModel {
-        override val rootBuildGradleFolder
-            get() = global.project.rootDir
-        override val sdkFolder by lazy {
-            global.sdkComponents.flatMap { it.sdkDirectoryProvider }.get().asFile
-        }
-        override val isNativeCompilerSettingsCacheEnabled by lazy {
-            option(BooleanOption.ENABLE_NATIVE_COMPILER_SETTINGS_CACHE)
-        }
-        override val isBuildOnlyTargetAbiEnabled by lazy {
-            option(BooleanOption.BUILD_ONLY_TARGET_ABI)
-        }
-        override val ideBuildTargetAbi by lazy {
-            option(StringOption.IDE_BUILD_TARGET_ABI)
-        }
-        override val isCmakeBuildCohabitationEnabled by lazy {
-            option(BooleanOption.ENABLE_CMAKE_BUILD_COHABITATION)
-        }
-        override val compilerSettingsCacheFolder by lazy {
-            localPropertyFile(CXX_LOCAL_PROPERTIES_CACHE_DIR) ?:
-            join(global.project.rootDir, CXX_DEFAULT_CONFIGURATION_SUBFOLDER)
-        }
-        override val chromeTraceJsonFolder: File?
-            get() {
-                if (!option(BooleanOption.ENABLE_PROFILE_JSON)) return null
-                val gradle = global.project.gradle
-                val profileDir: File = option(StringOption.PROFILE_OUTPUT_DIR)
-                    ?.let { gradle.rootProject.file(it) }
-                    ?: gradle.rootProject.buildDir.resolve(ProfilerInitializer.PROFILE_DIRECTORY)
-                return profileDir.resolve(ChromeTracingProfileConverter.EXTRA_CHROME_TRACE_DIRECTORY)
-            }
-
-        override val isPrefabEnabled: Boolean = componentProperties.buildFeatures.prefab
-    }
+    return CxxProjectModel(
+        rootBuildGradleFolder = configurationParameters.rootDir,
+        cxxFolder = join(configurationParameters.rootDir, ".cxx"),
+        sdkFolder = sdkComponents.sdkDirectoryProvider.get().asFile,
+        isNativeCompilerSettingsCacheEnabled = configurationParameters.isNativeCompilerSettingsCacheEnabled,
+        isBuildOnlyTargetAbiEnabled = configurationParameters.isBuildOnlyTargetAbiEnabled,
+        ideBuildTargetAbi = configurationParameters.ideBuildTargetAbi,
+        isCmakeBuildCohabitationEnabled = configurationParameters.isCmakeBuildCohabitationEnabled,
+        compilerSettingsCacheFolder = localPropertyFile(CXX_LOCAL_PROPERTIES_CACHE_DIR) ?:
+            join(configurationParameters.rootDir, CXX_DEFAULT_CONFIGURATION_SUBFOLDER),
+        chromeTraceJsonFolder = configurationParameters.chromeTraceJsonFolder,
+        isPrefabEnabled = configurationParameters.isPrefabEnabled,
+        isV2NativeModelEnabled = configurationParameters.isV2NativeModelEnabled
+    )
 }

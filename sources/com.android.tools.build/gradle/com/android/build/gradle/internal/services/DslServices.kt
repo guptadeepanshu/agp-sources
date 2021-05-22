@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import org.gradle.api.DomainObjectSet
+import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
 import org.gradle.api.file.DirectoryProperty
@@ -46,9 +47,14 @@ interface DslServices: BaseServices {
         type: Class<T>,
         factory: NamedDomainObjectFactory<T>
     ): NamedDomainObjectContainer<T>
+    fun <T> polymorphicDomainObjectContainer(
+        type: Class<T>
+    ): ExtensiblePolymorphicDomainObjectContainer<T>
 
     @Deprecated("do not use. DSL elements should not use Property<T> objects")
     fun <T> property(type: Class<T>): Property<T>
+
+    fun <T> provider(type: Class<T>, value: T?): Provider<T>
 
     fun <T> newVar(initialValue: T): ReadWriteProperty<Any?, T>
 

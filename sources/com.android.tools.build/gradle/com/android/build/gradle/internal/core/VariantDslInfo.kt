@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
@@ -32,7 +33,6 @@ import com.android.builder.model.VectorDrawablesOptions
 import com.android.sdklib.AndroidVersion
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -42,7 +42,7 @@ import java.io.File
  *
  * This class allows querying for the values set via the DSL model.
  *
- * Use [VariantBuilder] to instantiate.
+ * Use [VariantDslInfoBuilder] to instantiate.
  *
  */
 interface VariantDslInfo {
@@ -185,9 +185,10 @@ interface VariantDslInfo {
      * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
      * the one to use to test the tested variant.
      *
+     * @param dexingType the selected dexing type for this variant.
      * @return the instrumentation test runner name
      */
-    val instrumentationRunner: Provider<String>
+    fun getInstrumentationRunner(dexingType: DexingType): Provider<String>
 
     /**
      * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
@@ -249,26 +250,6 @@ interface VariantDslInfo {
     val vectorDrawables: VectorDrawablesOptions
 
     /**
-     * Adds a variant-specific BuildConfig field.
-     *
-     * @param type the type of the field
-     * @param name the name of the field
-     * @param value the value of the field
-     */
-    fun addBuildConfigField(
-        type: String, name: String, value: String
-    )
-
-    /**
-     * Adds a variant-specific res value.
-     *
-     * @param type the type of the field
-     * @param name the name of the field
-     * @param value the value of the field
-     */
-    fun addResValue(type: String, name: String, value: String)
-
-    /**
      * Returns a list of items for the BuildConfig class.
      *
      *
@@ -290,6 +271,7 @@ interface VariantDslInfo {
      */
     fun getResValues(): Map<ResValue.Key, ResValue>
 
+    /** Holds all SigningConfig information from the DSL and/or [ProjectOptions].  */
     val signingConfig: SigningConfig?
 
     val isSigningReady: Boolean
@@ -305,16 +287,14 @@ interface VariantDslInfo {
     val manifestPlaceholders: Map<String, String>
 
     // Only require specific multidex opt-in for legacy multidex.
-    val isMultiDexEnabled: Boolean
+    val isMultiDexEnabled: Boolean?
 
     val multiDexKeepFile: File?
 
     val multiDexKeepProguard: File?
 
-    val isLegacyMultiDexMode: Boolean
-
     // dynamic features can always be build in native multidex mode
-    val dexingType: DexingType
+    val dexingType: DexingType?
 
     /** Returns the renderscript support mode.  */
     val renderscriptSupportModeEnabled: Boolean
@@ -329,19 +309,17 @@ interface VariantDslInfo {
     val isBundled: Boolean
 
     /**
-     * Returns the minimum SDK version for this variant, potentially overridden by a property passed
-     * by the IDE.
-     *
-     * @see .getMinSdkVersion
+     * Returns if the property passed by the IDE is set, the minimum SDK version or
+     * null if not.
      */
-    val minSdkVersionWithTargetDeviceApi: AndroidVersion
+    val minSdkVersionFromIDE: Int?
 
     val ndkConfig: MergedNdkConfig
 
     val externalNativeBuildOptions: CoreExternalNativeBuildOptions
 
     /**
-     * Returns the ABI filters associated with the artifact, or null if there are no filters.
+     * Returns the ABI filters associated with the artifact, or empty set if there are no filters.
      *
      * If the list contains values, then the artifact only contains these ABIs and excludes
      * others.
@@ -353,7 +331,7 @@ interface VariantDslInfo {
 
     val javaCompileOptions: JavaCompileOptions
 
-    fun createPostProcessingOptions(buildDirectory: DirectoryProperty) : PostProcessingOptions
+    fun getPostProcessingOptions(): PostProcessingOptions
 
     val defaultGlslcArgs: List<String>
 

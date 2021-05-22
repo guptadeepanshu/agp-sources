@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.ApkVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
@@ -36,11 +36,11 @@ import org.gradle.api.tasks.TaskProvider;
 public abstract class ApkVariantImpl extends InstallableVariantImpl implements ApkVariant {
 
     protected ApkVariantImpl(
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider immutableObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(componentProperties, services, immutableObjectProvider, outputs);
+        super(component, services, immutableObjectProvider, outputs);
     }
 
     @Nullable
@@ -60,13 +60,13 @@ public abstract class ApkVariantImpl extends InstallableVariantImpl implements A
                         "variant.getPackageApplication()",
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
-        return componentProperties.getTaskContainer().getPackageAndroidTask().getOrNull();
+        return component.getTaskContainer().getPackageAndroidTask().getOrNull();
     }
 
     @Nullable
     @Override
     public TaskProvider<PackageAndroidArtifact> getPackageApplicationProvider() {
         return (TaskProvider<PackageAndroidArtifact>)
-                componentProperties.getTaskContainer().getPackageAndroidTask();
+                component.getTaskContainer().getPackageAndroidTask();
     }
 }

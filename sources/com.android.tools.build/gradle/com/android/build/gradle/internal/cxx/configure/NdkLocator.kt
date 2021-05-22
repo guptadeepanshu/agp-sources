@@ -39,7 +39,7 @@ import java.io.File
 /**
  * The hard-coded NDK version for this Android Gradle Plugin.
  */
-const val ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION = "21.1.6352462"
+const val ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION = "21.4.7075529"
 
 /**
  * Logic to find the NDK and optionally download it if not found.
@@ -126,7 +126,7 @@ private fun findNdkPathImpl(
                         "android.ndkVersion to [$revision] would result in the same NDK")
                 val resolutionWithoutNdkDir = PassThroughPrefixingLoggingEnvironment(
                     tag = "ndk.dir delete check",
-                    treatWarningsAndErrorsAsInfo = true // We don't want hypothetical warnings and errors
+                    treatAllMessagesAsInfo = true // We don't want hypothetical warnings and errors
                     ).use {
                         val resolutionWithoutNdkDir = findNdkPathImpl(
                             userSettings.copy(

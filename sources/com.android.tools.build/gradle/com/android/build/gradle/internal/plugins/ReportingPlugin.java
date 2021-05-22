@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.tasks.AndroidReportTask;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.test.report.ReportType;
+import com.android.build.gradle.options.ProjectOptionService;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.utils.FileUtils;
@@ -55,11 +56,17 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
         // it's evaluated last.
         project.evaluationDependsOnChildren();
 
-        ProjectOptions projectOptions = new ProjectOptions(project);
+        ProjectOptions projectOptions =
+                new ProjectOptionService.RegistrationAction(project)
+                        .execute()
+                        .get()
+                        .getProjectOptions();
 
         SyncIssueReporterImpl syncIssueHandler =
                 new SyncIssueReporterImpl(
-                        SyncOptions.getModelQueryMode(projectOptions), project.getLogger());
+                        SyncOptions.getModelQueryMode(projectOptions),
+                        SyncOptions.getErrorFormatMode(projectOptions),
+                        project.getLogger());
 
         DeprecationReporterImpl deprecationReporter =
                 new DeprecationReporterImpl(syncIssueHandler, projectOptions, project.getPath());
@@ -74,6 +81,8 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
                         project.getLayout(),
                         projectOptions,
                         project.getGradle().getSharedServices(),
+                        null,
+                        project.getGradle().getStartParameter().getMaxWorkerCount(),
                         project::file);
 
         DslServices dslServices =

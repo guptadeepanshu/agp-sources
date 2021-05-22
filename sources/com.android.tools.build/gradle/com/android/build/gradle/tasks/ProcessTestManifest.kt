@@ -20,9 +20,12 @@ import com.android.build.api.variant.BuiltArtifacts
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.dirName
+import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.TestCreationConfig
+import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
@@ -69,7 +72,7 @@ import java.io.IOException
  * For both test modules and tests in androidTest process is the same, except for how the tested
  * application id is extracted.
  *
- * Tests in androidTest get that info from the [BaseCreationConfig.getApplicationId] on
+ * Tests in androidTest get that info from the [ComponentCreationConfig.getApplicationId] on
  * the [TestComponentCreationConfig.getTestedConfig()] object,
  * while the test modules get the info from the published intermediate manifest with type
  * [AndroidArtifacts.TYPE_METADATA] of the tested app.
@@ -115,6 +118,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             computeProviders(),
             placeholdersValues.get(),
             navJsons,
+            jniLibsUseLegacyPackaging.orNull,
             manifestOutputFile,
             tmpDir!!
         )
@@ -149,6 +153,10 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
      * @param manifestProviders the manifest providers
      * @param manifestPlaceholders used placeholders in the manifest
      * @param navigationJsons the list of navigation JSON files
+     * @param jniLibsUseLegacyPackaging whether or not native libraries will be compressed in the
+     * APK. If false, native libraries will be uncompressed, so `android:extractNativeLibs="false"`
+     * will be injected in the manifest's application tag, unless that attribute is already
+     * explicitly set. If true, nothing if injected.
      * @param outManifest the output location for the merged manifest
      * @param tmpDir temporary dir used for processing
      */
@@ -165,6 +173,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
         manifestProviders: List<ManifestProvider?>,
         manifestPlaceholders: Map<String?, Any?>,
         navigationJsons: Collection<File>,
+        jniLibsUseLegacyPackaging: Boolean?,
         outManifest: File,
         tmpDir: File
     ) {
@@ -256,6 +265,9 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     invoker.setOverride(
                         ManifestSystemProperty.TARGET_SDK_VERSION, targetSdkVersion
                     )
+                }
+                if (jniLibsUseLegacyPackaging == false) {
+                    invoker.withFeatures(ManifestMerger2.Invoker.Feature.DO_NOT_EXTRACT_NATIVE_LIBS)
                 }
                 val mergingReport = invoker.merge()
                 if (manifestProviders.isEmpty()) {
@@ -371,7 +383,11 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
     abstract val testLabel: Property<String?>
 
     @get:Input
-    abstract val placeholdersValues: MapProperty<String, Any>
+    abstract val placeholdersValues: MapProperty<String, String>
+
+    @get:Optional
+    @get:Input
+    abstract val jniLibsUseLegacyPackaging: Property<Boolean>
 
     /**
      * Compute the final list of providers based on the manifest file collection.
@@ -442,7 +458,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                 creationConfig.dirName
             )
             task.minSdkVersion
-                .set(project.provider { creationConfig.minSdkVersion.apiString })
+                .set(project.provider { creationConfig.minSdkVersion.getApiString() })
             task.minSdkVersion.disallowChanges()
             task.targetSdkVersion
                 .set(
@@ -453,7 +469,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
             task.testApplicationId.setDisallowChanges(creationConfig.applicationId)
             task.testedApplicationId.setDisallowChanges(creationConfig.testedApplicationId)
 
-            task.instrumentationRunner.setDisallowChanges(variantDslInfo.instrumentationRunner)
+            task.instrumentationRunner.setDisallowChanges(creationConfig.instrumentationRunner)
             task.handleProfiling.setDisallowChanges(variantDslInfo.handleProfiling)
             task.functionalTest.setDisallowChanges(variantDslInfo.functionalTest)
             task.testLabel.setDisallowChanges(variantDslInfo.testLabel)
@@ -464,12 +480,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     ArtifactScope.ALL,
                     AndroidArtifacts.ArtifactType.MANIFEST
                 )
-            task.placeholdersValues
-                .set(
-                    project.provider<Map<String, Any>>(
-                        variantDslInfo::manifestPlaceholders
-                    )
-                )
+            task.placeholdersValues.setDisallowChanges(creationConfig.manifestPlaceholders)
             task.placeholdersValues.disallowChanges()
             if (!creationConfig.globalScope.extension.aaptOptions.namespaced) {
                 task.navigationJsons = project.files(
@@ -481,6 +492,21 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                             AndroidArtifacts.ArtifactType.NAVIGATION_JSON
                         )
                 )
+            }
+            when (creationConfig) {
+                is AndroidTestCreationConfig -> {
+                    task.jniLibsUseLegacyPackaging.setDisallowChanges(
+                        creationConfig.packagingOptions.jniLibs.useLegacyPackaging
+                    )
+                }
+                is TestVariantCreationConfig -> {
+                    task.jniLibsUseLegacyPackaging.setDisallowChanges(
+                        creationConfig.packagingOptions.jniLibs.useLegacyPackaging
+                    )
+                }
+                else -> {
+                    task.jniLibsUseLegacyPackaging.disallowChanges()
+                }
             }
         }
     }

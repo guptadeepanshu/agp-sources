@@ -20,9 +20,8 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.SdkComponents
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.Variant
-import com.android.build.api.variant.VariantProperties
-import com.android.build.api.variant.impl.VariantOperations
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.coverage.JacocoOptions
@@ -42,8 +41,8 @@ abstract class CommonExtensionImpl<
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
         ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        VariantT : Variant<VariantPropertiesT>,
-        VariantPropertiesT : VariantProperties>(
+        VariantBuilderT : VariantBuilder,
+        VariantT : Variant>(
             protected val dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : InternalCommonExtension<
@@ -51,8 +50,8 @@ abstract class CommonExtensionImpl<
         BuildTypeT,
         DefaultConfigT,
         ProductFlavorT,
-        VariantT,
-        VariantPropertiesT>, ActionableVariantObjectOperationsExecutor<VariantT, VariantPropertiesT> {
+        VariantBuilderT,
+        VariantT> {
 
     private val sourceSetManager = dslContainers.sourceSetManager
 
@@ -62,8 +61,16 @@ abstract class CommonExtensionImpl<
     // TODO: Make private when AndroidConfig is removed
     val libraryRequests: MutableList<LibraryRequest> = mutableListOf()
 
-    override val sdkComponents: SdkComponents =
-        dslServices.newInstance(SdkComponentsImpl::class.java, dslServices)
+    override val sdkComponents: SdkComponents by lazy {
+        dslServices.newInstance(
+            SdkComponentsImpl::class.java,
+            dslServices,
+            dslServices.provider(String::class.java, _compileSdkVersion),
+            dslServices.provider(Revision::class.java, buildToolsRevision),
+            dslServices.provider(String::class.java, ndkVersion),
+            dslServices.provider(String::class.java, ndkPath)
+        )
+    }
 
     override val buildTypes: NamedDomainObjectContainer<BuildTypeT> =
         dslContainers.buildTypeContainer
@@ -99,9 +106,6 @@ abstract class CommonExtensionImpl<
     override fun buildFeatures(action: BuildFeaturesT.() -> Unit) {
         action(buildFeatures)
     }
-
-    protected val variantOperations = VariantOperations<VariantT>()
-    protected val variantPropertiesOperations = VariantOperations<VariantPropertiesT>()
 
     override val compileOptions: CompileOptions =
         dslServices.newInstance(CompileOptions::class.java)
@@ -187,7 +191,7 @@ abstract class CommonExtensionImpl<
     }
 
     override val packagingOptions: PackagingOptions =
-        dslServices.newInstance(PackagingOptions::class.java)
+        dslServices.newInstance(PackagingOptions::class.java, dslServices)
 
     override fun packagingOptions(action: com.android.build.api.dsl.PackagingOptions.() -> Unit) {
         action.invoke(packagingOptions)
@@ -222,30 +226,6 @@ abstract class CommonExtensionImpl<
         action.invoke(testOptions)
     }
 
-    override fun onVariants(action: Action<VariantT>) {
-        variantOperations.actions.add(action)
-    }
-
-    override fun onVariants(action: VariantT.() -> Unit) {
-        variantOperations.actions.add(Action { action.invoke(it) } )
-    }
-
-    override fun onVariantProperties(action: Action<VariantPropertiesT>) {
-        variantPropertiesOperations.actions.add(action)
-    }
-
-    override fun onVariantProperties(action: (VariantPropertiesT) -> Unit) {
-        variantPropertiesOperations.actions.add(Action { action.invoke(it) })
-    }
-
-    override fun executeVariantOperations(variant: VariantT) {
-        variantOperations.executeActions(variant)
-    }
-
-    override fun executeVariantPropertiesOperations(variant: VariantPropertiesT) {
-        variantPropertiesOperations.executeActions(variant)
-    }
-
     override val flavorDimensions: MutableList<String> = mutableListOf()
 
     override var resourcePrefix: String? = null
@@ -270,4 +250,6 @@ abstract class CommonExtensionImpl<
     override fun useLibrary(name: String, required: Boolean) {
         libraryRequests.add(LibraryRequest(name, required))
     }
+
+    override var namespace: String? = null
 }

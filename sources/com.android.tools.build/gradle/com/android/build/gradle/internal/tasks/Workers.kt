@@ -16,25 +16,22 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.profile.ProfilerInitializer
+import com.android.build.gradle.internal.profile.AnalyticsService
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.ide.common.workers.ExecutorServiceAdapter
-import com.android.ide.common.workers.GradlePluginMBeans
 import com.android.ide.common.workers.WorkerExecutorException
 import com.android.ide.common.workers.WorkerExecutorFacade
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
-import org.gradle.workers.IsolationMode
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.workers.WorkerExecutionException
 import org.gradle.workers.WorkerExecutor
-import java.io.Serializable
-import java.lang.reflect.Constructor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.ForkJoinPool
-import javax.inject.Inject
 
 /**
  * Singleton object responsible for providing instances of [WorkerExecutorFacade]
- * in the context of the current build settings (like whether or not we should use
- * Gradle's [WorkerExecutor] or the level of parallelism allowed by users.
+ * that relies on Gradle's [WorkerExecutor].
  */
 object Workers {
 
@@ -45,69 +42,21 @@ object Workers {
     private val defaultExecutorService: ExecutorService = ForkJoinPool.commonPool()
 
     /**
-     * Creates a [WorkerExecutorFacade] using the passed [WorkerExecutor], using the value of
-     * [enableGradleWorkers] to decide which implementation to use.
-     *
-     * If the Gradle workers are enabled, submission of work items will be handled preferably
-     * by a [WorkerExecutor.submit], otherwise by a [ExecutorService.submit] call.
+     * Creates a [WorkerExecutorFacade] using the passed [WorkerExecutor].
      *
      * @param projectName name of the project owning the task
      * @param owner the task path issuing the request and owning the [WorkerExecutor] instance.
      * @param worker [WorkerExecutor] to use if Gradle's worker executor are enabled.
-     * @param enableGradleWorkers if Gradle workers should be used.
-     * @param executor [ExecutorService] to use if the Gradle's worker are not enabled or null
-     * if the default installed version is to be used.
-     * @return an instance of [WorkerExecutorFacade] using the passed worker or the default
-     * [ExecutorService] depending on the project options.
+     * @param analyticsService the build service to record worker execution spans
+     * @return an instance of [WorkerExecutorFacade] using the passed worker
      */
-    @JvmOverloads
-    fun preferWorkers(
+    fun withGradleWorkers(
         projectName: String,
         owner: String,
         worker: WorkerExecutor,
-        enableGradleWorkers: Boolean,
-        executor: ExecutorService? = null
+        analyticsService: Provider<AnalyticsService>
     ): WorkerExecutorFacade {
-        return if (enableGradleWorkers) {
-            WorkerExecutorAdapter(
-                projectName,
-                owner,
-                worker
-            )
-        } else {
-            ProfileAwareExecutorServiceAdapter(
-                projectName,
-                owner,
-                executor ?: defaultExecutorService,
-                WorkerExecutorAdapter(projectName, owner, worker)
-            )
-        }
-    }
-
-    /**
-     * Creates a [WorkerExecutorFacade] using the passed [WorkerExecutor]
-     *
-     * Submission will preferably use a default [ExecutorService] to submit work items, but
-     * environment settings may force to use Gradle Workers instead.
-     *
-     * @param projectName the project name.
-     * @param owner the task path issuing the request and owning the [WorkerExecutor] instance.
-     * @param workerExecutor [WorkerExecutor] to use if Gradle's worker executor are enabled.
-     * @param enableGradleWorkers if Gradle workers can be used.
-     * if the default installed version is to be used.
-     * @return an instance of [WorkerExecutorFacade].
-     */
-    fun preferThreads(
-        projectName: String,
-        owner: String,
-        workerExecutor: WorkerExecutor,
-        enableGradleWorkers: Boolean
-    ): WorkerExecutorFacade {
-        return ProfileAwareExecutorServiceAdapter(
-            projectName,
-            owner,
-            defaultExecutorService,
-            preferWorkers(projectName, owner, workerExecutor, enableGradleWorkers))
+        return WorkerExecutorAdapter(projectName, owner, worker, analyticsService)
     }
 
     /**
@@ -116,12 +65,12 @@ object Workers {
      * Callers cannot use a [WorkerExecutor] probably due to Serialization requirement of parameters
      * being not possible.
      *
-     * @param projectName the project name.
      * @param owner the task path issuing the request.
+     * @param analyticsService the build service to record worker execution spans
      * @return an instance of [WorkerExecutorFacade]
      */
-    fun withThreads(projectName: String, owner: String) =
-        ProfileAwareExecutorServiceAdapter(projectName, owner, defaultExecutorService)
+    fun withThreads(owner: String, analyticsService: AnalyticsService) =
+        ProfileAwareExecutorServiceAdapter(owner, defaultExecutorService, null, analyticsService)
 
     /**
      * Simple implementation of [WorkerExecutorFacade] that uses a Gradle [WorkerExecutor]
@@ -131,54 +80,26 @@ object Workers {
     private class WorkerExecutorAdapter(
         private val projectName: String,
         private val owner: String,
-        private val workerExecutor: WorkerExecutor
-    ) :
-        WorkerExecutorFacade {
+        private val workerExecutor: WorkerExecutor,
+        private val analyticsService: Provider<AnalyticsService>
+    ) : WorkerExecutorFacade {
 
         val taskRecord by lazy {
-            ProfilerInitializer.getListener()?.getTaskRecord(owner)
+           analyticsService.get().getTaskRecord(owner)
         }
 
-        override fun submit(
-            actionClass: Class<out Runnable>,
-            parameter: Serializable
-        ) {
-            submit(
-                actionClass,
-                WorkerExecutorFacade.Configuration(
-                    parameter,
-                    WorkerExecutorFacade.IsolationMode.NONE,
-                    listOf()
-                )
-            )
-        }
-
-        override fun submit(
-            actionClass: Class<out Runnable>,
-            configuration: WorkerExecutorFacade.Configuration
-        ) {
-            val workerKey = "$owner${actionClass.name}${configuration.parameter.hashCode()}"
-            val submissionParameters = ActionParameters(
-                actionClass,
-                configuration.parameter,
-                projectName,
-                owner,
-                workerKey
-            )
-
+        override fun submit(action: WorkerExecutorFacade.WorkAction) {
+            val workerKey = "$owner${action::class.java.name}${action.hashCode()}"
             taskRecord?.addWorker(workerKey, GradleBuildProfileSpan.ExecutionType.WORKER_EXECUTION)
 
-            val classpath = configuration.classPath.toList()
-
-            workerExecutor.submit(ActionFacade::class.java) {
-                it.isolationMode = configuration.isolationMode.toGradleIsolationMode()
-                if (classpath.isNotEmpty()) {
-                    it.classpath = classpath
-                }
-                if (configuration.jvmArgs.isNotEmpty()) {
-                    it.forkOptions.setJvmArgs(configuration.jvmArgs)
-                }
-                it.params(submissionParameters)
+            workerExecutor.noIsolation().submit(
+                RunnableWrapperWorkAction::class.java
+            ) { params: RunnableWrapperParams ->
+                params.projectName.set(projectName)
+                params.taskOwner.set(owner)
+                params.workerKey.set(workerKey)
+                params.runnableAction.set(action)
+                params.analyticsService.set(analyticsService)
             }
         }
 
@@ -207,54 +128,6 @@ object Workers {
          * @TaskAction starts (so, we are safe!).
          */
         override fun close() {
-            taskRecord?.setTaskClosed()
-        }
-    }
-
-    /**
-     * Translates sdk common [WorkerExecutorFacade.IsolationMode] into Gradle's [IsolationMode]
-     */
-    fun WorkerExecutorFacade.IsolationMode.toGradleIsolationMode() =
-        when (this) {
-            WorkerExecutorFacade.IsolationMode.NONE -> IsolationMode.NONE
-            WorkerExecutorFacade.IsolationMode.CLASSLOADER -> IsolationMode.CLASSLOADER
-            WorkerExecutorFacade.IsolationMode.PROCESS -> IsolationMode.PROCESS
-            else -> throw IllegalArgumentException("$this is not a handled isolation mode")
-        }
-
-    class ActionParameters(
-        val delegateAction: Class<out Runnable>,
-        val delegateParameters: Serializable,
-        val projectName: String,
-        val taskOwner: String,
-        val workerKey: String
-    ) : Serializable
-
-    class ActionFacade @Inject constructor(val params: ActionParameters) : Runnable {
-
-        override fun run() {
-            val constructor = findAppropriateConstructor()
-                ?: throw RuntimeException("Cannot find constructor with @Inject in ${params.delegateAction.name}")
-
-            val delegate = constructor.newInstance(params.delegateParameters) as Runnable
-            GradlePluginMBeans.getProfileMBean(params.projectName)
-                ?.workerStarted(params.taskOwner, params.workerKey)
-            delegate.run()
-            GradlePluginMBeans.getProfileMBean(params.projectName)
-                ?.workerFinished(params.taskOwner, params.workerKey)
-        }
-
-        private fun findAppropriateConstructor(): Constructor<*>? {
-            for (constructor in params.delegateAction.constructors) {
-                if (constructor.parameterTypes.size == 1
-                    && constructor.isAnnotationPresent(Inject::class.java)
-                    && Serializable::class.java.isAssignableFrom(constructor.parameterTypes[0])
-                ) {
-                    constructor.isAccessible = true
-                    return constructor
-                }
-            }
-            return null
         }
     }
 
@@ -264,20 +137,48 @@ object Workers {
      * This will allow to record thread execution, just like WorkerItems.
      */
     class ProfileAwareExecutorServiceAdapter(
-        projectName: String,
-        owner: String,
+        private val owner: String,
         executor: ExecutorService,
-        delegate: WorkerExecutorFacade? = null
-    ) :
-        ExecutorServiceAdapter(projectName, owner, executor, delegate) {
+        /**
+         * [WorkerExecutorFacade] to delegate submissions that cannot be handled by this adapter or
+         * null if no delegation expected.
+         */
+        val delegate: WorkerExecutorFacade? = null,
+        private val analyticsService: AnalyticsService
+    ) : ExecutorServiceAdapter(executor), WorkerExecutorFacade {
 
         private val taskRecord by lazy {
-            ProfilerInitializer.getListener()?.getTaskRecord(owner)
+            analyticsService.getTaskRecord(owner)
         }
 
         override fun workerSubmission(workerKey: String) {
             super.workerSubmission(workerKey)
             taskRecord?.addWorker(workerKey, GradleBuildProfileSpan.ExecutionType.THREAD_EXECUTION)
+        }
+
+        override fun submit(action: WorkerExecutorFacade.WorkAction) {
+            val key = "$owner${action::class.java.name}${action.hashCode()}"
+            workerSubmission(key)
+
+            val submission = executor.submit {
+                analyticsService.workerStarted(owner, key)
+                action.run()
+                analyticsService.workerFinished(owner, key)
+            }
+            synchronized(this) {
+                futures.add(submission)
+            }
+        }
+    }
+
+    abstract class RunnableWrapperParams : ProfileAwareWorkAction.Parameters() {
+        abstract val runnableAction: Property<Runnable>
+    }
+
+    /* Used as a wrapper around runnables submitted using [WorkerExecutorAdapter]. */
+    abstract class RunnableWrapperWorkAction : ProfileAwareWorkAction<RunnableWrapperParams>() {
+        override fun run() {
+            parameters.runnableAction.get().run()
         }
     }
 }

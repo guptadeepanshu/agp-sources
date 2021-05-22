@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.AndroidArtifactVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.services.BaseServices;
@@ -37,11 +37,11 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
         implements AndroidArtifactVariant {
 
     protected AndroidArtifactVariantImpl(
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider immutableObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(componentProperties, services, immutableObjectProvider, outputs);
+        super(component, services, immutableObjectProvider, outputs);
     }
 
     @NonNull
@@ -51,13 +51,16 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
     @Override
     public SigningConfig getSigningConfig() {
         return readOnlyObjectProvider.getSigningConfig(
-                componentProperties.getVariantDslInfo().getSigningConfig());
+                component.getVariantDslInfo().getSigningConfig());
     }
 
     @Override
     public boolean isSigningReady() {
-        return componentProperties.getVariantDslInfo().isSigningReady();
+        return component.getVariantDslInfo().isSigningReady();
     }
+
+    private Integer _versionCode = null;
+    private String _versionName = null;
 
     @Nullable
     @Override
@@ -68,13 +71,17 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
                             IssueReporter.Type.GENERIC,
                             new RuntimeException(
                                     "Access to deprecated legacy com.android.build.gradle.api.VersionedVariant.getVersionName() requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionName\n"
-                                            + ComponentPropertiesImpl.Companion
-                                                    .getENABLE_LEGACY_API()));
+                                            + ComponentImpl.Companion.getENABLE_LEGACY_API()));
             // return default value during sync
             return null;
         }
+        synchronized (this) {
+            if (_versionName == null) {
+                _versionName = component.getOutputs().getMainSplit().getVersionName().getOrNull();
+            }
+        }
 
-        return componentProperties.getOutputs().getMainSplit().getVersionName().getOrNull();
+        return _versionName;
     }
 
     @Override
@@ -85,13 +92,17 @@ public abstract class AndroidArtifactVariantImpl extends BaseVariantImpl
                             IssueReporter.Type.GENERIC,
                             new RuntimeException(
                                     "Access to deprecated legacy com.android.build.gradle.api.VersionedVariant.getVersionCode() requires compatibility mode for Property values in new com.android.build.api.variant.VariantOutput.versionCode\n"
-                                            + ComponentPropertiesImpl.Companion
-                                                    .getENABLE_LEGACY_API()));
+                                            + ComponentImpl.Companion.getENABLE_LEGACY_API()));
             // return default value during sync
             return -1;
         }
 
-        return componentProperties.getOutputs().getMainSplit().getVersionCode().getOrElse(-1);
+        synchronized (this) {
+            if (_versionCode == null) {
+                _versionCode = component.getOutputs().getMainSplit().getVersionCode().getOrElse(-1);
+            }
+        }
+        return _versionCode;
     }
 
     @NonNull

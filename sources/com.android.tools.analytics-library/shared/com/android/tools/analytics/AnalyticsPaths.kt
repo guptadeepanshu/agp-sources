@@ -16,8 +16,8 @@
 
 package com.android.tools.analytics
 
-import com.google.common.base.Strings
-
+import com.android.tools.analytics.Environment.EnvironmentVariable
+import com.android.tools.analytics.Environment.SystemProperty
 import java.io.File
 import java.nio.file.Paths
 
@@ -38,14 +38,29 @@ object AnalyticsPaths {
   @JvmStatic
   fun getAndEnsureAndroidSettingsHome(): String {
     // currently can't be shared with AndroidLocation see b/37123089
-    var home = Environment.instance.getVariable("ANDROID_SDK_HOME")
-    if (Strings.isNullOrEmpty(home)) {
-      home = Environment.instance.getSystemProperty("ANDROID_SDK_HOME")
+    val prefsRoot = getEnvOrPropValue(EnvironmentVariable.ANDROID_PREFS_ROOT, SystemProperty.ANDROID_PREFS_ROOT)
+      ?: getEnvOrPropValue(EnvironmentVariable.ANDROID_SDK_HOME, SystemProperty.ANDROID_SDK_HOME)
+      ?: Paths.get(Environment.instance.getSystemProperty(SystemProperty.USER_HOME)!!, ".android").toString()
+
+    File(prefsRoot).mkdirs()
+    return prefsRoot
+  }
+
+  private fun getEnvOrPropValue(
+    envVar: EnvironmentVariable,
+    sysProp: SystemProperty
+  ): String? {
+    val v1 = Environment.instance.getVariable(envVar)
+    if (!v1.isNullOrEmpty()) {
+      return v1
     }
-    if (Strings.isNullOrEmpty(home)) {
-      home = Paths.get(Environment.instance.getSystemProperty("user.home")!!, ".android").toString()
+
+    val v2 = Environment.instance.getSystemProperty(sysProp)
+    if (!v2.isNullOrEmpty()) {
+      return v2
     }
-    File(home).mkdirs()
-    return home!!
+
+    return null
   }
 }
+

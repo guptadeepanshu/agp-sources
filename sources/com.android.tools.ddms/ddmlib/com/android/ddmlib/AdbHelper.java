@@ -16,6 +16,8 @@
 
 package com.android.ddmlib;
 
+import static java.nio.charset.StandardCharsets.US_ASCII;
+
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Slow;
@@ -24,11 +26,13 @@ import com.google.common.base.Strings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,6 +51,8 @@ public final class AdbHelper {
 
     static final int WAIT_TIME = 5; // spin-wait sleep, in ms
 
+    static final int ADB_HEADER_SIZE = 4;
+
     public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     public static final String HOST_TRANSPORT = "host:transport:";
@@ -55,6 +61,56 @@ public final class AdbHelper {
      * do not instantiate
      */
     private AdbHelper() {}
+
+    /**
+     * Invoke the host:exec service on a remote device. Return a socket channel that is connected to
+     * the executing process. Note that exec service does not differentiate stdout and stderr so
+     * whatever is read from the socket can come from either output and be interleaved.
+     *
+     * <p>ddlmib relinquishes ownership of the returned SocketChannel and must be explicitly closed
+     * after use.
+     *
+     * @param socketAddress
+     * @param device the device to connect to. Can be null in which case the connection will be to
+     *     the first available device.
+     * @param executable the absolute path of the executable to run
+     * @param parameters the parameters to get given upon execing the executable
+     * @return
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws AdbCommandRejectedException
+     */
+    public static SocketChannel rawExec(
+            InetSocketAddress socketAddress, IDevice device, String executable, String[] parameters)
+            throws IOException, TimeoutException, AdbCommandRejectedException {
+        SocketChannel adbChan = SocketChannel.open(socketAddress);
+        try {
+            adbChan.socket().setTcpNoDelay(true);
+            adbChan.configureBlocking(false);
+            adbChan.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
+            setDevice(adbChan, device);
+
+            StringBuilder command = new StringBuilder(executable);
+            for (String parameter : parameters) {
+                command.append(" ");
+                command.append(parameter);
+            }
+
+            String serviceName = AdbService.EXEC.name().toLowerCase(Locale.US);
+            byte[] request = formAdbRequest(serviceName + ":" + command);
+            write(adbChan, request);
+
+            AdbResponse resp = readAdbResponse(adbChan, false);
+            if (!resp.okay) {
+                Log.e("ddms", "ADB rejected exec command (" + command + "): " + resp.message);
+                throw new AdbCommandRejectedException(resp.message);
+            }
+        } catch (Exception e) {
+            adbChan.close();
+            throw e;
+        }
+        return adbChan;
+    }
 
     /**
      * Response from ADB.
@@ -199,11 +255,15 @@ public final class AdbHelper {
      * is the length of the rest of the string, encoded as ASCII hex (case
      * doesn't matter).
      */
-    public static byte[] formAdbRequest(String req) {
-        String resultStr = String.format("%04X%s", req.length(), req); //$NON-NLS-1$
-        byte[] result = resultStr.getBytes(DEFAULT_CHARSET);
-        assert result.length == req.length() + 4;
-        return result;
+    public static byte[] formAdbRequest(String payloadString) {
+        byte[] payload = payloadString.getBytes(DEFAULT_CHARSET);
+        assert payload.length <= 9999; // Max encodable length;
+        byte[] header = String.format("%04X", payload.length).getBytes(US_ASCII);
+        assert header.length == ADB_HEADER_SIZE;
+        ByteBuffer request = ByteBuffer.allocate(header.length + payload.length);
+        request.put(header);
+        request.put(payload);
+        return request.array();
     }
 
     /**
@@ -512,7 +572,11 @@ public final class AdbHelper {
             // talk to a specific device
             setDevice(adbChan, device);
 
-            byte[] request = formAdbRequest(adbService.name().toLowerCase() + ":" + command); //$NON-NLS-1$
+            byte[] request =
+                    formAdbRequest(
+                            adbService.name().toLowerCase(Locale.US)
+                                    + ":"
+                                    + command); //$NON-NLS-1$
             write(adbChan, request);
 
             AdbResponse resp = readAdbResponse(adbChan, false /* readDiagString */);

@@ -19,11 +19,10 @@ package com.android.build.gradle.internal.api;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.Artifact;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.InstallableVariant;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.internal.variant.ApkVariantData;
 import org.gradle.api.DefaultTask;
@@ -41,11 +40,11 @@ import org.gradle.api.tasks.TaskProvider;
 public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl implements InstallableVariant {
 
     protected InstallableVariantImpl(
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider immutableObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(componentProperties, services, immutableObjectProvider, outputs);
+        super(component, services, immutableObjectProvider, outputs);
     }
 
     @NonNull
@@ -61,8 +60,8 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
 
-        if (componentProperties.getTaskContainer().getInstallTask() != null) {
-            return componentProperties.getTaskContainer().getInstallTask().getOrNull();
+        if (component.getTaskContainer().getInstallTask() != null) {
+            return component.getTaskContainer().getInstallTask().getOrNull();
         }
 
         return null;
@@ -73,8 +72,7 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
     public TaskProvider<Task> getInstallProvider() {
         // Double cast needed to satisfy the compiler
         //noinspection unchecked
-        return (TaskProvider<Task>)
-                (TaskProvider<?>) componentProperties.getTaskContainer().getInstallTask();
+        return (TaskProvider<Task>) (TaskProvider<?>) component.getTaskContainer().getInstallTask();
     }
 
     @Override
@@ -86,8 +84,8 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
                         TASK_ACCESS_DEPRECATION_URL,
                         DeprecationReporter.DeprecationTarget.TASK_ACCESS_VIA_VARIANT);
 
-        if (componentProperties.getTaskContainer().getUninstallTask() != null) {
-            return componentProperties.getTaskContainer().getUninstallTask().getOrNull();
+        if (component.getTaskContainer().getUninstallTask() != null) {
+            return component.getTaskContainer().getUninstallTask().getOrNull();
         }
 
         return null;
@@ -99,7 +97,7 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
         // Double cast needed to satisfy the compiler
         //noinspection unchecked
         return (TaskProvider<Task>)
-                (TaskProvider<?>) componentProperties.getTaskContainer().getUninstallTask();
+                (TaskProvider<?>) component.getTaskContainer().getUninstallTask();
     }
 
     /**
@@ -113,18 +111,16 @@ public abstract class InstallableVariantImpl extends AndroidArtifactVariantImpl 
     @NonNull
     @Incubating
     public Provider<FileCollection> getFinalArtifact(
-            @NonNull Artifact<? extends FileSystemLocation> artifactType) {
-        return componentProperties
+            @NonNull Artifact.SingleArtifact<? extends FileSystemLocation> artifactType) {
+        return component
                 .getGlobalScope()
                 .getProject()
                 .getProviders()
                 .provider(
                         () ->
-                                componentProperties
+                                component
                                         .getServices()
                                         .fileCollection(
-                                                componentProperties
-                                                        .getArtifacts()
-                                                        .get((InternalArtifactType) artifactType)));
+                                                component.getArtifacts().get(artifactType)));
     }
 }

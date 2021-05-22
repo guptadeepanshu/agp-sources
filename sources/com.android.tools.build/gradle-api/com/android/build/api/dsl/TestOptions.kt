@@ -17,6 +17,7 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
+import org.gradle.api.NamedDomainObjectContainer
 
 /** Options for running tests. */
 @Incubating
@@ -47,6 +48,24 @@ interface TestOptions {
     var animationsDisabled: Boolean
 
     /**
+     * List of test devices for this project for use with the Unified Test Platform
+     *
+     * These APIs are experimental and may change without notice.
+     */
+    val devices: org.gradle.api.ExtensiblePolymorphicDomainObjectContainer<Device>
+
+    /**
+     * List of DeviceGroups that can be run through connected check, using the Unified Test
+     * Platform.
+     *
+     * DeviceGroups with individual devices are added automatically, with the same name of the
+     * individual device.
+     *
+     * These APIs are experimental and may change without notice.
+     */
+    val deviceGroups: NamedDomainObjectContainer<DeviceGroup>
+
+    /**
      * Specifies whether to use on-device test orchestration.
      *
      * If you want to [use Android Test Orchestrator](https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator)
@@ -64,4 +83,26 @@ interface TestOptions {
      * @since 3.0.0
      */
     var execution: String
+
+    /**
+     * Configures Android Test Retention.
+     *
+     * Android Test Retention automatically takes emulator snapshots on test failures. It can only
+     * work with Unified Test Platform (UTP), thus would require
+     * "execution 'ANDROID_TEST_ORCHESTRATOR'".
+     *
+     * ```
+     * android {
+     *   testOptions {
+     *     execution 'ANDROID_TEST_ORCHESTRATOR'
+     *     failureRetention {
+     *       enable true
+     *       maxSnapshots 5
+     *       compressSnapshots false
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    var failureRetention: FailureRetention
 }

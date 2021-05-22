@@ -20,8 +20,8 @@ import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.options.StringOption
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
+import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.ArtifactAttributes
-import java.io.File
 
 /**
  * To update:
@@ -29,7 +29,7 @@ import java.io.File
  * 1. Update this version string.
  * 2. Run bazel run //tools/base/bazel:add_dependency com.google.prefab:cli:jar:all:$VERSION
  * 3. Add the following block to
- *    //prebuilts/tools/common/repository/m2/com/google/prefab/cli/$VERSION/BUILD:
+ *    //prebuilts/tools/common/m2/repository/com/google/prefab/cli/$VERSION/BUILD:
  *
  *    maven_java_import(
  *        name = "jar",
@@ -44,12 +44,12 @@ import java.io.File
  *    See http://b/146079078 for more information.
  *
  * 4. Update the "prebuilts" maven_repo target in
- *    //tools/base/build-system/integration-test/native/BUILD.bazel with the new version number.
+ *    //tools/base/build-system/integration-test/BUILD.bazel with the new version number.
  */
-private const val DEFAULT_PREFAB_VERSION = "1.0.0"
+private const val DEFAULT_PREFAB_VERSION = "1.1.1"
 private const val PREFAB_CONFIG_NAME = "_internal_prefab_binary"
 
-private fun getPrefabArtifact(configuration: Configuration): File =
+private fun getPrefabArtifact(configuration: Configuration): FileCollection =
     configuration.incoming.artifactView { config ->
         config.attributes {
             it.attribute(
@@ -57,13 +57,13 @@ private fun getPrefabArtifact(configuration: Configuration): File =
                 ArtifactTypeDefinition.JAR_TYPE
             )
         }
-    }.artifacts.artifactFiles.singleFile
+    }.artifacts.artifactFiles
 
-fun getPrefabFromMaven(globalScope: GlobalScope): File {
+fun getPrefabFromMaven(globalScope: GlobalScope): FileCollection {
     val project = globalScope.project
 
     globalScope.projectOptions[StringOption.PREFAB_CLASSPATH]?.let {
-        return project.file(it)
+        return project.files(it)
     }
 
     project.configurations.findByName(PREFAB_CONFIG_NAME)?.let {

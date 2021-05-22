@@ -16,7 +16,9 @@
 
 package com.android.tools.build.apkzlib.zip;
 
-import com.google.common.base.Charsets;
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
@@ -85,8 +87,8 @@ public class EncodeUtils {
     } catch (CharacterCodingException e) {
       // If we're trying to decode ASCII, try UTF-8. Otherwise, revert to the default
       // behavior (usually replacing invalid characters).
-      if (charset.equals(Charsets.US_ASCII)) {
-        return decode(data, Charsets.UTF_8);
+      if (charset.equals(US_ASCII)) {
+        return decode(data, UTF_8);
       } else {
         return charset.decode(ByteBuffer.wrap(data)).toString();
       }
@@ -116,9 +118,9 @@ public class EncodeUtils {
    */
   private static Charset flagsCharset(GPFlags flags) {
     if (flags.isUtf8FileName()) {
-      return Charsets.UTF_8;
+      return UTF_8;
     } else {
-      return Charsets.US_ASCII;
+      return US_ASCII;
     }
   }
 
@@ -129,6 +131,6 @@ public class EncodeUtils {
    * @return can it be encoded using ASCII?
    */
   public static boolean canAsciiEncode(String text) {
-    return Charsets.US_ASCII.newEncoder().canEncode(text);
+    return US_ASCII.newEncoder().canEncode(text);
   }
 }

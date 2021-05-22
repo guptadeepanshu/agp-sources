@@ -21,9 +21,9 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
+import org.gradle.workers.WorkAction
+import org.gradle.workers.WorkParameters
 import java.io.File
-import java.io.Serializable
-import javax.inject.Inject
 
 /**
  * Task responsible for creating the asset pack's manifest file from the settings in the module's
@@ -51,50 +51,45 @@ abstract class AssetPackManifestGenerationTask : NonIncrementalTask() {
     @get:Optional
     abstract val instantDeliveryType: Property<String>
 
-    override val enableGradleWorkers: Property<Boolean> = project.objects.property(Boolean::class.java).value(true)
-
     public override fun doTaskAction() {
-        getWorkerFacadeWithWorkers().use {
-            it.submit(
-                AssetPackManifestGenerationRunnable::class.java,
-                AssetPackManifestGenerationRunnable.Params(
-                    manifestFile = manifestFile.get().asFile,
-                    packName = packName.get(),
-                    deliveryType = deliveryType.get(),
-                    instantDeliveryType = instantDeliveryType.orNull
-                )
-            )
+        workerExecutor.noIsolation().submit(AssetPackManifestGenerationRunnable::class.java) {
+            it.manifestFile.set(manifestFile.asFile)
+            it.packName.set(packName)
+            it.deliveryType.set(deliveryType)
+            it.instantDeliveryType.set(instantDeliveryType)
         }
     }
 }
 
-class AssetPackManifestGenerationRunnable @Inject constructor(private val params: Params) : Runnable {
-    override fun run() {
+//TODO(b/162727093) record worker execution span
+abstract class AssetPackManifestGenerationRunnable :
+    WorkAction<AssetPackManifestGenerationRunnable.Params> {
+    override fun execute() {
         var manifestText =
             ("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\" "
                     + "xmlns:dist=\"http://schemas.android.com/apk/distribution\" "
                     + "package=\"basePackage\" " // Currently filled in by a different task.
-                    + "split=\"${params.packName}\">\n"
+                    + "split=\"${parameters.packName.get()}\">\n"
                     + "  <dist:module dist:type=\"asset-pack\">\n"
                     + "    <dist:fusing dist:include=\"true\" />"
                     + "    <dist:delivery>\n"
-                    + "      <dist:${params.deliveryType}/>\n"
+                    + "      <dist:${parameters.deliveryType.get()}/>\n"
                     + "    </dist:delivery>\n")
-        if (params.instantDeliveryType != null) {
+        if (parameters.instantDeliveryType.orNull != null) {
             manifestText +=
                 ("    <dist:instantDelivery>\n"
-                 +"      <dist:${params.instantDeliveryType}/>\n"
+                 +"      <dist:${parameters.instantDeliveryType.get()}/>\n"
                  +"    </dist:instantDelivery>\n")
         }
         manifestText += ("  </dist:module>\n"
                     + "</manifest>\n")
-        params.manifestFile.writeText(manifestText)
+        parameters.manifestFile.get().writeText(manifestText)
     }
 
-    class Params(
-        val manifestFile: File,
-        val packName: String,
-        val deliveryType: String,
-        val instantDeliveryType: String?
-    ) : Serializable
+    abstract class Params: WorkParameters {
+        abstract val manifestFile: Property<File>
+        abstract val packName: Property<String>
+        abstract val deliveryType: Property<String>
+        abstract val instantDeliveryType: Property<String>
+    }
 }

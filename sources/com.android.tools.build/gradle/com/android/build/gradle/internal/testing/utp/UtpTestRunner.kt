@@ -20,8 +20,8 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.BaseTestRunner
 import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.StaticTestData
-import com.android.build.gradle.internal.testing.utp.UtpDependency.CORE
 import com.android.build.gradle.internal.testing.utp.UtpDependency.LAUNCHER
+import com.android.build.gradle.internal.testing.utp.RetentionConfig
 import com.android.builder.testing.api.DeviceConnector
 import com.android.ddmlib.testrunner.TestIdentifier
 import com.android.ide.common.process.JavaProcessExecutor
@@ -34,9 +34,8 @@ import com.android.utils.ILogger
 import com.google.common.collect.ImmutableList
 import com.google.common.io.Files
 import com.google.protobuf.TextFormat
-import com.google.test.platform.core.proto.TestStatusProto
-import com.google.test.platform.core.proto.TestSuiteResultProto
-import org.gradle.api.artifacts.ConfigurationContainer
+import com.google.testing.platform.proto.api.core.TestStatusProto
+import com.google.testing.platform.proto.api.core.TestSuiteResultProto
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -54,9 +53,9 @@ class UtpTestRunner @JvmOverloads constructor(
         processExecutor: ProcessExecutor,
         private val javaProcessExecutor: JavaProcessExecutor,
         executor: ExecutorServiceAdapter,
-        private val configurations: ConfigurationContainer,
-        private val sdkComponents: SdkComponentsBuildService,
-        private val usesIcebox: Boolean,
+        private val utpDependencies: UtpDependencies,
+        private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
+        private val retentionConfig: RetentionConfig,
         private val configFactory: UtpConfigFactory = UtpConfigFactory())
     : BaseTestRunner(splitSelectExec, processExecutor, executor) {
 
@@ -74,7 +73,7 @@ class UtpTestRunner @JvmOverloads constructor(
             coverageDir: File,
             logger: ILogger): MutableList<TestResult> {
         return apksForDevice.map { (deviceConnector, apks) ->
-            val utpOutputDir = Files.createTempDir()
+            val utpOutputDir = resultsDir
             val utpTmpDir = Files.createTempDir()
             val utpTestLogDir = Files.createTempDir()
             val utpTestRunLogDir = Files.createTempDir()
@@ -84,13 +83,13 @@ class UtpTestRunner @JvmOverloads constructor(
                             deviceConnector,
                             testData,
                             apks.union(helperApks) + testData.testApk,
-                            configurations,
-                            sdkComponents,
+                            utpDependencies,
+                            versionedSdkLoader,
                             utpOutputDir,
                             utpTmpDir,
                             utpTestLogDir,
                             utpTestRunLogDir,
-                            usesIcebox).writeTo(writer)
+                            retentionConfig).writeTo(writer)
                 }
             }
             val serverConfigProtoFile = File.createTempFile("serverConfig", ".pb").also { file ->
@@ -106,9 +105,9 @@ class UtpTestRunner @JvmOverloads constructor(
                 """.trimIndent())
             }
             val javaProcessInfo = ProcessInfoBuilder().apply {
-                setClasspath(configurations.getByName(LAUNCHER.configurationName).singleFile.absolutePath)
+                setClasspath(utpDependencies.launcher.singleFile.absolutePath)
                 setMain(LAUNCHER.mainClass)
-                addArgs(configurations.getByName(CORE.configurationName).singleFile.absolutePath)
+                addArgs(utpDependencies.core.singleFile.absolutePath)
                 addArgs("--proto_config=${runnerConfigProtoFile.absolutePath}")
                 addArgs("--proto_server_config=${serverConfigProtoFile.absolutePath}")
                 addJvmArg("-Djava.util.logging.config.file=${loggingPropertiesFile.absolutePath}")
@@ -116,9 +115,9 @@ class UtpTestRunner @JvmOverloads constructor(
 
             javaProcessExecutor.execute(javaProcessInfo, LoggedProcessOutputHandler(logger))
             val resultsProto = getResultsProto(utpOutputDir)
+            resultsProto.writeTo(File(utpOutputDir, "test-result.pb").outputStream())
 
             try {
-                FileUtils.deleteRecursivelyIfExists(utpOutputDir)
                 FileUtils.deleteRecursivelyIfExists(utpTestLogDir)
                 FileUtils.deleteRecursivelyIfExists(utpTestRunLogDir)
                 FileUtils.deleteRecursivelyIfExists(utpTmpDir)

@@ -18,31 +18,28 @@ package com.android.build.gradle.internal.testing.utp
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.StaticTestData
-import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DEVICE_CONTROLLER_ADB
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DEVICE_PROVIDER_LOCAL
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_DRIVER_INSTRUMENTATION
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN
+import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_DEVICE_INFO_PLUGIN
 import com.android.build.gradle.internal.testing.utp.UtpDependency.ANDROID_TEST_PLUGIN_HOST_RETENTION
 import com.android.builder.testing.api.DeviceConnector
 import com.android.sdklib.BuildToolInfo
 import com.google.protobuf.Any
-import com.google.test.platform.config.v1.proto.AdbDeviceControllerProto
-import com.google.test.platform.config.v1.proto.DeviceControllerProto
-import com.google.test.platform.config.v1.proto.DeviceProto
-import com.google.test.platform.config.v1.proto.DeviceProviderProto
-import com.google.test.platform.config.v1.proto.EnvironmentProto
-import com.google.test.platform.config.v1.proto.ExecutorProto
-import com.google.test.platform.config.v1.proto.FixtureProto
-import com.google.test.platform.config.v1.proto.HostPluginProto
-import com.google.test.platform.config.v1.proto.LocalAndroidDeviceProviderProto
-import com.google.test.platform.config.v1.proto.AndroidInstrumentationDriverProto
-import com.google.test.platform.config.v1.proto.RunnerConfigProto
-import com.google.test.platform.plugin.android.icebox.host.proto.IceboxPluginProto.IceboxPlugin
-import com.google.test.platform.core.proto.ExtensionProto
-import com.google.test.platform.core.proto.PathProto
-import com.google.test.platform.core.proto.TestArtifactProto
-import com.google.test.platform.server.proto.ServerConfigProto
-import org.gradle.api.artifacts.ConfigurationContainer
+import com.google.testing.platform.plugin.android.icebox.host.proto.IceboxPluginProto
+import com.google.testing.platform.plugin.android.icebox.host.proto.IceboxPluginProto.IceboxPlugin
+import com.google.testing.platform.proto.api.config.AndroidInstrumentationDriverProto
+import com.google.testing.platform.proto.api.config.DeviceProto
+import com.google.testing.platform.proto.api.config.EnvironmentProto
+import com.google.testing.platform.proto.api.config.ExecutorProto
+import com.google.testing.platform.proto.api.config.FixtureProto
+import com.google.testing.platform.proto.api.config.LocalAndroidDeviceProviderProto
+import com.google.testing.platform.proto.api.config.RunnerConfigProto
+import com.google.testing.platform.proto.api.core.ExtensionProto
+import com.google.testing.platform.proto.api.core.LabelProto
+import com.google.testing.platform.proto.api.core.PathProto
+import com.google.testing.platform.proto.api.core.TestArtifactProto
+import com.google.testing.platform.proto.api.service.ServerConfigProto
 import java.io.File
 
 // This is an arbitrary string. This ID is used to lookup test results from UTP.
@@ -55,9 +52,8 @@ private const val UTP_TEST_FIXTURE_ID = "AGP_Test_Fixture"
 private const val UTP_SERVER_ADDRESS = "localhost:20000"
 
 // Emulator gRPC address
-private const val DEFAULT_EMULATOR_GRPC_ADDRESS = "localhost";
-// Emulator gRPC port
-private const val DEFAULT_EMULATOR_GRPC_PORT = 8554;
+private const val DEFAULT_EMULATOR_GRPC_ADDRESS = "localhost"
+
 /**
  * A factory class to construct UTP runner and server configuration protos.
  */
@@ -67,22 +63,27 @@ class UtpConfigFactory {
      * Creates a runner config proto which you can pass into the Unified Test Platform's
      * test executor.
      */
-    fun createRunnerConfigProto(device: DeviceConnector,
-                                testData: StaticTestData,
-                                apks: Iterable<File>,
-                                configurations: ConfigurationContainer,
-                                sdkComponents: SdkComponentsBuildService,
-                                outputDir: File,
-                                tmpDir: File,
-                                testLogDir: File,
-                                testRunLogDir: File,
-                                usesIcebox: Boolean): RunnerConfigProto.RunnerConfig {
+    fun createRunnerConfigProto(
+        device: DeviceConnector,
+        testData: StaticTestData,
+        apks: Iterable<File>,
+        utpDependencies: UtpDependencies,
+        versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
+        outputDir: File,
+        tmpDir: File,
+        testLogDir: File,
+        testRunLogDir: File,
+        retentionConfig: RetentionConfig
+    ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
-            addDevice(createLocalDevice(device, testData, configurations))
-            addTestFixture(createTestFixture(
-                    device, apks, testData, configurations, sdkComponents,
+            addDevice(createLocalDevice(device, testData, utpDependencies))
+            addTestFixture(
+                createTestFixture(
+                    device, apks, testData, utpDependencies, versionedSdkLoader,
                     outputDir, tmpDir, testLogDir, testRunLogDir,
-                    usesIcebox))
+                    retentionConfig
+                )
+            )
             singleDeviceExecutor = createSingleDeviceExecutor(device)
         }.build()
     }
@@ -97,55 +98,52 @@ class UtpConfigFactory {
         }.build()
     }
 
-    private fun createLocalDevice(device: DeviceConnector,
-                                  testData: StaticTestData,
-                                  configurations: ConfigurationContainer): DeviceProto.Device {
+    private fun createLocalDevice(
+        device: DeviceConnector,
+        testData: StaticTestData,
+        utpDependencies: UtpDependencies
+    ): DeviceProto.Device {
         return DeviceProto.Device.newBuilder().apply {
             deviceIdBuilder.apply {
                 id = device.serialNumber
             }
-            provider = createLocalDeviceProvider(device, configurations)
-            controller = createAdbDeviceController(configurations)
+            provider = createLocalDeviceProvider(device, utpDependencies)
         }.build()
     }
 
-    private fun createLocalDeviceProvider(device: DeviceConnector,
-                                          configurations: ConfigurationContainer): DeviceProviderProto.DeviceProvider {
-        return DeviceProviderProto.DeviceProvider.newBuilder().apply {
-            providerClass = ANDROID_DEVICE_PROVIDER_LOCAL.mainClass
-            addAllProviderJar(configurations.getByName(ANDROID_DEVICE_PROVIDER_LOCAL.configurationName).files.map {
+    private fun createLocalDeviceProvider(
+        device: DeviceConnector,
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
+        return ExtensionProto.Extension.newBuilder().apply {
+            label = LabelProto.Label.newBuilder().apply {
+                label = "local_android_device_provider"
+            }.build()
+            className = ANDROID_DEVICE_PROVIDER_LOCAL.mainClass
+            addAllJar(utpDependencies.deviceProviderLocal.files.map {
                 PathProto.Path.newBuilder().apply {
                     path = it.absolutePath
                 }.build()
             })
-            deviceProviderConfig = Any.pack(LocalAndroidDeviceProviderProto.LocalAndroidDeviceProvider.newBuilder().apply {
-                serial = device.serialNumber
-            }.build())
+            config =
+                Any.pack(LocalAndroidDeviceProviderProto.LocalAndroidDeviceProvider.newBuilder().apply {
+                    serial = device.serialNumber
+                }.build())
         }.build()
     }
 
-    private fun createAdbDeviceController(configurations: ConfigurationContainer): DeviceControllerProto.DeviceController {
-        return DeviceControllerProto.DeviceController.newBuilder().apply {
-            controllerClass = ANDROID_DEVICE_CONTROLLER_ADB.mainClass
-            addAllControllerJar(configurations.getByName(ANDROID_DEVICE_CONTROLLER_ADB.configurationName).files.map {
-                PathProto.Path.newBuilder().apply {
-                    path = it.absolutePath
-                }.build()
-            })
-            deviceControllerConfig = Any.pack(AdbDeviceControllerProto.AdbDeviceController.getDefaultInstance())
-        }.build()
-    }
-
-    private fun createTestFixture(device: DeviceConnector,
-                                  apks: Iterable<File>,
-                                  testData: StaticTestData,
-                                  configurations: ConfigurationContainer,
-                                  sdkComponents: SdkComponentsBuildService,
-                                  outputDir: File,
-                                  tmpDir: File,
-                                  testLogDir: File,
-                                  testRunLogDir: File,
-                                  usesRetention: Boolean): FixtureProto.TestFixture {
+    private fun createTestFixture(
+        device: DeviceConnector,
+        apks: Iterable<File>,
+        testData: StaticTestData,
+        utpDependencies: UtpDependencies,
+        versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
+        outputDir: File,
+        tmpDir: File,
+        testLogDir: File,
+        testRunLogDir: File,
+        retentionConfig: RetentionConfig
+    ): FixtureProto.TestFixture {
         return FixtureProto.TestFixture.newBuilder().apply {
             testFixtureIdBuilder.apply {
                 id = UTP_TEST_FIXTURE_ID
@@ -161,47 +159,62 @@ class UtpConfigFactory {
                 })
             }
             environment = createEnvironment(
-                    outputDir,
-                    tmpDir,
-                    testLogDir,
-                    testRunLogDir,
-                    sdkComponents)
+                outputDir,
+                tmpDir,
+                testLogDir,
+                testRunLogDir,
+                versionedSdkLoader
+            )
 
-            if (usesRetention) {
+            if (retentionConfig.enabled) {
                 var retentionTestData = testData.copy(
                     instrumentationRunnerArguments = testData.instrumentationRunnerArguments
                         .toMutableMap()
                         .apply { put("debug", "true") })
-                testDriver = createTestDriver(retentionTestData, configurations)
-                addHostPlugin(HostPluginProto.HostPlugin.newBuilder().apply {
-                    pluginClass = ANDROID_TEST_PLUGIN_HOST_RETENTION.mainClass
-                    pluginConfig = Any.pack(IceboxPlugin.newBuilder().apply{
+                testDriver = createTestDriver(retentionTestData, utpDependencies)
+                addHostPlugin(ExtensionProto.Extension.newBuilder().apply {
+                    label = LabelProto.Label.newBuilder().apply {
+                        label = "icebox_plugin"
+                    }.build()
+                    className = ANDROID_TEST_PLUGIN_HOST_RETENTION.mainClass
+                    config = Any.pack(IceboxPlugin.newBuilder().apply {
                         appPackage = testData.testedApplicationId
                         // TODO(155308548): query device for the following fields
                         emulatorGrpcAddress = DEFAULT_EMULATOR_GRPC_ADDRESS
-                        emulatorGrpcPort = DEFAULT_EMULATOR_GRPC_PORT
+                        emulatorGrpcPort = findGrpcPort(device.serialNumber)
+                        snapshotCompression = if (retentionConfig.compressSnapshots) {
+                            IceboxPluginProto.Compression.TARGZ
+                        } else {
+                            IceboxPluginProto.Compression.NONE
+                        }
+                        skipSnapshot = false
+                        maxSnapshotNumber = if (retentionConfig.retainAll) {
+                            0
+                        } else {
+                            retentionConfig.maxSnapshots
+                        }
                     }.build())
-                    addAllPluginJar(
-                        configurations.getByName(
-                            ANDROID_TEST_PLUGIN_HOST_RETENTION.configurationName).files.map {
-                                PathProto.Path.newBuilder().apply {
-                                    path = it.absolutePath
-                                }.build()
-                    })
+                    addAllJar(
+                        utpDependencies.testPluginHostRetention.files.map {
+                            PathProto.Path.newBuilder().apply {
+                                path = it.absolutePath
+                            }.build()
+                        })
                 }.build())
             } else {
-                testDriver = createTestDriver(testData, configurations)
+                testDriver = createTestDriver(testData, utpDependencies)
             }
-            addHostPlugin(createAndroidTestPlugin(configurations))
+            addHostPlugin(createAndroidTestPlugin(utpDependencies))
+            addHostPlugin(createAndroidTestDeviceInfoPlugin(utpDependencies))
         }.build()
     }
 
     private fun createEnvironment(
-            outputDir: File,
-            tmpDir: File,
-            testLogDir: File,
-            testRunLogDir: File,
-            sdkComponents: SdkComponentsBuildService
+        outputDir: File,
+        tmpDir: File,
+        testLogDir: File,
+        testRunLogDir: File,
+        versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader
     ): EnvironmentProto.Environment {
         return EnvironmentProto.Environment.newBuilder().apply {
             outputDirBuilder.apply {
@@ -213,16 +226,18 @@ class UtpConfigFactory {
             androidEnvironmentBuilder.apply {
                 androidSdkBuilder.apply {
                     sdkPathBuilder.apply {
-                        path = sdkComponents.sdkDirectoryProvider.get().asFile.absolutePath
+                        path = versionedSdkLoader.sdkDirectoryProvider.get().asFile.absolutePath
                     }
                     adbPathBuilder.apply {
-                        path = sdkComponents.adbExecutableProvider.get().asFile.absolutePath
+                        path = versionedSdkLoader.adbExecutableProvider.get().asFile.absolutePath
                     }
                     aaptPathBuilder.apply {
-                        path = sdkComponents.buildToolInfoProvider.get().getPath(BuildToolInfo.PathId.AAPT)
+                        path = versionedSdkLoader.buildToolInfoProvider.get()
+                            .getPath(BuildToolInfo.PathId.AAPT)
                     }
                     dexdumpPathBuilder.apply {
-                        path = sdkComponents.buildToolInfoProvider.get().getPath(BuildToolInfo.PathId.DEXDUMP)
+                        path = versionedSdkLoader.buildToolInfoProvider.get()
+                            .getPath(BuildToolInfo.PathId.DEXDUMP)
                     }
                     testLogDirBuilder.apply {
                         path = testLogDir.absolutePath
@@ -235,37 +250,43 @@ class UtpConfigFactory {
         }.build()
     }
 
-    private fun createTestDriver(testData: StaticTestData,
-                                 configurations: ConfigurationContainer): ExtensionProto.Extension {
+    private fun createTestDriver(
+        testData: StaticTestData,
+        utpDependencies: UtpDependencies
+    ): ExtensionProto.Extension {
         return ExtensionProto.Extension.newBuilder().apply {
             className = ANDROID_DRIVER_INSTRUMENTATION.mainClass
             labelBuilder.apply {
                 label = ANDROID_DRIVER_INSTRUMENTATION.name
             }
-            addAllJar(configurations.getByName(ANDROID_DRIVER_INSTRUMENTATION.configurationName).files.map {
+            addAllJar(utpDependencies.driverInstrumentation.files.map {
                 PathProto.Path.newBuilder().apply {
                     path = it.absolutePath
                 }.build()
             })
-            config = Any.pack(AndroidInstrumentationDriverProto.AndroidInstrumentationDriver.newBuilder().apply {
-                androidInstrumentationRuntimeBuilder.apply {
-                    instrumentationInfoBuilder.apply {
-                        appPackage = testData.testedApplicationId
-                        testPackage = testData.applicationId
-                        testRunnerClass = testData.instrumentationRunner
+            config =
+                Any.pack(AndroidInstrumentationDriverProto.AndroidInstrumentationDriver.newBuilder().apply {
+                    androidInstrumentationRuntimeBuilder.apply {
+                        instrumentationInfoBuilder.apply {
+                            appPackage = testData.testedApplicationId
+                            testPackage = testData.applicationId
+                            testRunnerClass = testData.instrumentationRunner
+                        }
+                        instrumentationArgsBuilder.apply {
+                            putAllArgsMap(testData.instrumentationRunnerArguments)
+                        }
                     }
-                    instrumentationArgsBuilder.apply {
-                        putAllArgsMap(testData.instrumentationRunnerArguments)
-                    }
-                }
-            }.build())
+                }.build())
         }.build()
     }
 
-    private fun createAndroidTestPlugin(configurations: ConfigurationContainer): HostPluginProto.HostPlugin {
-        return HostPluginProto.HostPlugin.newBuilder().apply {
-            pluginClass = ANDROID_TEST_PLUGIN.mainClass
-            addAllPluginJar(configurations.getByName(ANDROID_TEST_PLUGIN.configurationName).files.map {
+    private fun createAndroidTestPlugin(utpDependencies: UtpDependencies): ExtensionProto.Extension {
+        return ExtensionProto.Extension.newBuilder().apply {
+            label = LabelProto.Label.newBuilder().apply {
+                label = "android_device_plugin"
+            }.build()
+            className = ANDROID_TEST_PLUGIN.mainClass
+            addAllJar(utpDependencies.testPlugin.files.map {
                 PathProto.Path.newBuilder().apply {
                     path = it.absolutePath
                 }.build()
@@ -273,10 +294,13 @@ class UtpConfigFactory {
         }.build()
     }
 
-    private fun createAndroidTestPluginHostRetention(configurations: ConfigurationContainer): HostPluginProto.HostPlugin {
-        return HostPluginProto.HostPlugin.newBuilder().apply {
-            pluginClass = ANDROID_TEST_PLUGIN_HOST_RETENTION.mainClass
-            addAllPluginJar(configurations.getByName(ANDROID_TEST_PLUGIN_HOST_RETENTION.configurationName).files.map {
+    private fun createAndroidTestDeviceInfoPlugin(utpDependencies: UtpDependencies): ExtensionProto.Extension {
+        return ExtensionProto.Extension.newBuilder().apply {
+            label = LabelProto.Label.newBuilder().apply {
+                label = "android_test_device_info_plugin"
+            }.build()
+            className = ANDROID_TEST_DEVICE_INFO_PLUGIN.mainClass
+            addAllJar(utpDependencies.testDeviceInfoPlugin.files.map {
                 PathProto.Path.newBuilder().apply {
                     path = it.absolutePath
                 }.build()

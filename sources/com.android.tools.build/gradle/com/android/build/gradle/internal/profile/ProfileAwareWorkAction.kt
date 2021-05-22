@@ -18,9 +18,9 @@ package com.android.build.gradle.internal.profile
 
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.ide.common.workers.GradlePluginMBeans
 import com.google.wireless.android.sdk.stats.GradleBuildProfileSpan
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
 
@@ -31,24 +31,49 @@ abstract class ProfileAwareWorkAction<T : ProfileAwareWorkAction.Parameters> : W
         abstract val projectName: Property<String>
         abstract val taskOwner: Property<String>
         abstract val workerKey: Property<String>
+        abstract val analyticsService: Property<AnalyticsService>
         fun initializeFromAndroidVariantTask(task: AndroidVariantTask) {
-            projectName.setDisallowChanges(task.projectName)
-            val taskOwnerString = task.path
-            taskOwner.setDisallowChanges(taskOwnerString)
+            initializeWith(task.projectName, task.path, task.analyticsService)
+        }
+        fun initializeWith(
+            projectName: String,
+            taskOwner:  String,
+            analyticsService: Provider<AnalyticsService>
+        ) {
             val workerKeyString = "$taskOwner{${this.javaClass.name}${this.hashCode()}"
-            workerKey.setDisallowChanges(workerKeyString)
-            ProfilerInitializer.getListener()
-                ?.getTaskRecord(taskOwnerString)
-                ?.addWorker(workerKeyString, GradleBuildProfileSpan.ExecutionType.WORKER_EXECUTION)
+            initAllProperties(projectName, taskOwner, workerKeyString, analyticsService)
+        }
+        fun initializeFromProfileAwareWorkAction(workAction: Parameters) {
+            val workerKeyString = "${workAction.workerKey.get()}${this.hashCode()}"
+            initAllProperties(
+                workAction.projectName.get(),
+                workAction.taskOwner.get(),
+                workerKeyString,
+                workAction.analyticsService
+            )
+        }
+        private fun initAllProperties(
+            projectName: String,
+            taskOwner: String,
+            workerKey: String,
+            analyticsService: Provider<AnalyticsService>
+        ) {
+            this.projectName.setDisallowChanges(projectName)
+            this.taskOwner.setDisallowChanges(taskOwner)
+            this.workerKey.setDisallowChanges(workerKey)
+            this.analyticsService.setDisallowChanges(analyticsService)
+            this.analyticsService.get()
+                .getTaskRecord(taskOwner)
+                ?.addWorker(workerKey, GradleBuildProfileSpan.ExecutionType.WORKER_EXECUTION)
         }
     }
 
     final override fun execute() {
-        GradlePluginMBeans.getProfileMBean(parameters.projectName.get())
-            ?.workerStarted(parameters.taskOwner.get(), parameters.workerKey.get())
+        parameters.analyticsService.get()
+            .workerStarted(parameters.taskOwner.get(), parameters.workerKey.get())
         run()
-        GradlePluginMBeans.getProfileMBean(parameters.projectName.get())
-            ?.workerFinished(parameters.taskOwner.get(), parameters.workerKey.get())
+        parameters.analyticsService.get()
+            .workerFinished(parameters.taskOwner.get(), parameters.workerKey.get())
     }
 
     abstract fun run()

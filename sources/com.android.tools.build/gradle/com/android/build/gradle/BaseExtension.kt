@@ -375,7 +375,14 @@ abstract class BaseExtension protected constructor(
     val ndkDirectory: File
         get() {
         // do not call this method from within the plugin code as it forces part of SDK initialization.
-            return dslServices.sdkComponents.flatMap { it.ndkDirectoryProvider }.get().asFile
+            return dslServices.sdkComponents.map {
+                it.versionedNdkHandler(
+                    compileSdkVersion
+                        ?: throw kotlin.IllegalStateException("compileSdkVersion not set in the android configuration"),
+                    ndkVersion,
+                    ndkPath
+                ).ndkPlatform.getOrThrow().ndkDirectory
+            }.get()
     }
 
     // do not call this method from within the plugin code as it forces SDK initialization.
@@ -393,7 +400,8 @@ abstract class BaseExtension protected constructor(
      */
     val adbExecutable: File
         get() {
-            return dslServices.sdkComponents.flatMap { it.adbExecutableProvider }.get().asFile
+            return globalScope.versionedSdkLoader.flatMap {
+                it.adbExecutableProvider }.get().asFile
         }
 
     /** This property is deprecated. Instead, use [adbExecutable]. */
@@ -424,8 +432,13 @@ abstract class BaseExtension protected constructor(
             "generatePureSplits is deprecated and has no effect anymore. Use bundletool to generate configuration splits."
         )
 
+    @get:Suppress("WrongTerminology")
+    @Deprecated("Use aidlPackagedList instead", ReplaceWith("aidlPackagedList"))
     override val aidlPackageWhiteList: MutableCollection<String>?
-        get() = throw GradleException("aidlPackageWhiteList is not supported.")
+        get() = aidlPackagedList
+
+    override val aidlPackagedList: MutableCollection<String>?
+        get() = throw GradleException("aidlPackagedList is not supported.")
 
     // For compatibility with FeatureExtension.
     override val baseFeature: Boolean
@@ -496,7 +509,8 @@ abstract class BaseExtension protected constructor(
 
     abstract override val testOptions: TestOptions
 
-    // this is indirectly implemented by extensions when they implement the new public
+    // these are indirectly implemented by extensions when they implement the new public
     // extension interfaces via delegates.
     abstract val buildFeatures: BuildFeatures
+    abstract var namespace: String?
 }

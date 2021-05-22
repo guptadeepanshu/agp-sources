@@ -16,18 +16,18 @@
 
 package com.android.builder.dexing;
 
+import com.android.SdkConstants;
 import com.android.annotations.NonNull;
-import com.android.utils.FileUtils;
 import com.android.utils.PathUtils;
-import com.google.common.collect.ImmutableList;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Locale;
 
 /**
  * Directory representing a dex archive. All dex entries, {@link DexArchiveEntry}, are stored under
@@ -60,27 +60,33 @@ final class DirDexArchive implements DexArchive {
 
     @Override
     @NonNull
-    public List<DexArchiveEntry> getFiles() throws IOException {
-        ImmutableList.Builder<DexArchiveEntry> builder = ImmutableList.builder();
-
-        Iterator<Path> files;
-        try (Stream<Path> paths = Files.walk(getRootPath())) {
-            files = paths.filter(DexArchives.DEX_ENTRY_FILTER).iterator();
-            while (files.hasNext()) {
-                builder.add(createEntry(files.next()));
-            }
+    public List<DexArchiveEntry> getSortedDexArchiveEntries() {
+        List<Path> dexFiles =
+                DexUtilsKt.getSortedFilesInDir(
+                        rootDir,
+                        relativePath ->
+                                relativePath
+                                        .toLowerCase(Locale.ENGLISH)
+                                        .endsWith(SdkConstants.DOT_DEX));
+        List<DexArchiveEntry> dexArchiveEntries = new ArrayList<>(dexFiles.size());
+        for (Path dexFile : dexFiles) {
+            dexArchiveEntries.add(createEntry(dexFile));
         }
-
-        return builder.build();
+        return dexArchiveEntries;
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // do nothing
     }
 
-    private DexArchiveEntry createEntry(@NonNull Path dexFile) throws IOException {
-        byte[] content = Files.readAllBytes(dexFile);
+    private DexArchiveEntry createEntry(@NonNull Path dexFile) {
+        byte[] content;
+        try {
+            content = Files.readAllBytes(dexFile);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
         Path relativePath = getRootPath().relativize(dexFile);
 
         return new DexArchiveEntry(content, PathUtils.toSystemIndependentPath(relativePath), this);

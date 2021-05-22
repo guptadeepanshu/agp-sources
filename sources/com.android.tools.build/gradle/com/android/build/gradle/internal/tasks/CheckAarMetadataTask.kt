@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants.AAR_FORMAT_VERSION_PROPERTY
 import com.android.SdkConstants.AAR_METADATA_VERSION_PROPERTY
 import com.android.SdkConstants.MIN_COMPILE_SDK_PROPERTY
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -32,7 +32,7 @@ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
@@ -44,8 +44,8 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
-import org.gradle.workers.WorkerExecutor
 import java.io.File
+import java.io.Serializable
 import java.util.Properties
 import javax.inject.Inject
 
@@ -57,10 +57,6 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     // depend on this task.
     @get:OutputDirectory
     abstract val dummyOutputDirectory: DirectoryProperty
-
-    // Use a property to hold the [WorkerExecutor] so unit tests can reset it if necessary.
-    @get:Internal
-    abstract val workerExecutorProperty: Property<WorkerExecutor>
 
     @VisibleForTesting
     @get:Internal
@@ -81,29 +77,31 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
     abstract val compileSdkVersion: Property<String>
 
     override fun doTaskAction() {
-        for (artifact in aarMetadataArtifacts.artifacts) {
-            workerExecutorProperty.get().noIsolation().submit(
-                CheckAarMetadataWorkAction::class.java
-            ) {
-                it.aarMetadataFile.set(artifact.file)
-                it.displayName.set(
-                    when (val id = artifact.id.componentIdentifier) {
-                        is LibraryBinaryIdentifier -> id.projectPath
-                        is ModuleComponentIdentifier -> "${id.group}:${id.module}:${id.version}"
-                        is ProjectComponentIdentifier -> id.projectPath
-                        else -> id.displayName
-                    }
-                )
-                it.aarFormatVersion.set(aarFormatVersion)
-                it.aarMetadataVersion.set(aarMetadataVersion)
-                it.compileSdkVersion.set(compileSdkVersion)
-            }
+        workerExecutor.noIsolation().submit(
+            CheckAarMetadataWorkAction::class.java
+        ) {
+            it.aarMetadataArtifacts.addAll(
+                aarMetadataArtifacts.artifacts.map { artifact ->
+                    AarMetadataArtifact(
+                        artifact.file,
+                        when (val id = artifact.id.componentIdentifier) {
+                            is LibraryBinaryIdentifier -> id.projectPath
+                            is ModuleComponentIdentifier -> "${id.group}:${id.module}:${id.version}"
+                            is ProjectComponentIdentifier -> id.projectPath
+                            else -> id.displayName
+                        }
+                    )
+                }
+            )
+            it.aarFormatVersion.set(aarFormatVersion)
+            it.aarMetadataVersion.set(aarMetadataVersion)
+            it.compileSdkVersion.set(compileSdkVersion)
         }
     }
 
     class CreationAction(
-        creationConfig: BaseCreationConfig
-    ) : VariantTaskCreationAction<CheckAarMetadataTask, BaseCreationConfig>(creationConfig) {
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<CheckAarMetadataTask, ComponentCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("check", "AarMetadata")
@@ -122,7 +120,6 @@ abstract class CheckAarMetadataTask : NonIncrementalTask() {
         override fun configure(task: CheckAarMetadataTask) {
             super.configure(task)
 
-            task.workerExecutorProperty.setDisallowChanges(task.workerExecutor)
             task.aarMetadataArtifacts =
                 creationConfig.variantDependencies.getArtifactCollection(
                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -145,9 +142,15 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
 ): WorkAction<CheckAarMetadataWorkParameters> {
 
     override fun execute() {
-        val aarMetadataFile = checkAarMetadataWorkParameters.aarMetadataFile.get().asFile
-        val aarMetadataReader = AarMetadataReader(aarMetadataFile)
+        checkAarMetadataWorkParameters.aarMetadataArtifacts.get().forEach {
+            checkAarMetadataArtifact(it)
+        }
+    }
 
+    private fun checkAarMetadataArtifact(aarMetadataArtifact: AarMetadataArtifact) {
+        val aarMetadataFile = aarMetadataArtifact.file
+        val displayName = aarMetadataArtifact.displayName
+        val aarMetadataReader = AarMetadataReader(aarMetadataFile)
 
         // check aarFormatVersion
         val aarFormatVersion = aarMetadataReader.aarFormatVersion
@@ -156,7 +159,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                 """
                     A dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH}) does
                     not specify an $AAR_FORMAT_VERSION_PROPERTY value, which is a required value.
-                    Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                    Dependency: $displayName.
                     AAR metadata file: ${aarMetadataFile.absolutePath}.
                     """.trimIndent()
             )
@@ -173,7 +176,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                             dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                             is not compatible with this version of the Android Gradle Plugin.
                             Please upgrade to a newer version of the Android Gradle Plugin.
-                            Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                            Dependency: $displayName.
                             AAR metadata file: ${aarMetadataFile.absolutePath}.
                             """.trimIndent()
                     )
@@ -184,7 +187,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                         A dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                         has an invalid $AAR_FORMAT_VERSION_PROPERTY value.
                         ${e.message}
-                        Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                        Dependency: $displayName.
                         AAR metadata file: ${aarMetadataFile.absolutePath}.
                         """.trimIndent()
                 )
@@ -198,7 +201,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                 """
                     A dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH}) does
                     not specify an $AAR_METADATA_VERSION_PROPERTY value, which is a required value.
-                    Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                    Dependency: $displayName.
                     AAR metadata file: ${aarMetadataFile.absolutePath}.
                     """.trimIndent()
             )
@@ -215,7 +218,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                             dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                             is not compatible with this version of the Android Gradle Plugin.
                             Please upgrade to a newer version of the Android Gradle Plugin.
-                            Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                            Dependency: $displayName.
                             AAR metadata file: ${aarMetadataFile.absolutePath}.
                             """.trimIndent()
                     )
@@ -226,7 +229,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                         A dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                         has an invalid $AAR_METADATA_VERSION_PROPERTY value.
                         ${e.message}
-                        Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                        Dependency: $displayName.
                         AAR metadata file: ${aarMetadataFile.absolutePath}.
                         """.trimIndent()
                 )
@@ -243,7 +246,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                         A dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                         has an invalid $MIN_COMPILE_SDK_PROPERTY value. $MIN_COMPILE_SDK_PROPERTY
                         must be an integer.
-                        Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                        Dependency: $displayName.
                         AAR metadata file: ${aarMetadataFile.absolutePath}.
                         """.trimIndent()
 
@@ -257,7 +260,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
                             The $MIN_COMPILE_SDK_PROPERTY ($minCompileSdk) specified in a
                             dependency's AAR metadata (${AarMetadataTask.AAR_METADATA_ENTRY_PATH})
                             is greater than this module's compileSdkVersion ($compileSdkVersion).
-                            Dependency: ${checkAarMetadataWorkParameters.displayName.get()}.
+                            Dependency: $displayName.
                             AAR metadata file: ${aarMetadataFile.absolutePath}.
                             """.trimIndent()
                     )
@@ -277,8 +280,7 @@ abstract class CheckAarMetadataWorkAction @Inject constructor(
 
 /** [WorkParameters] for [CheckAarMetadataWorkAction] */
 abstract class CheckAarMetadataWorkParameters: WorkParameters {
-    abstract val aarMetadataFile: RegularFileProperty
-    abstract val displayName: Property<String>
+    abstract val aarMetadataArtifacts: ListProperty<AarMetadataArtifact>
     abstract val aarFormatVersion: Property<String>
     abstract val aarMetadataVersion: Property<String>
     abstract val compileSdkVersion: Property<String>
@@ -298,3 +300,5 @@ private data class AarMetadataReader(val file: File) {
         minCompileSdk = properties.getProperty(MIN_COMPILE_SDK_PROPERTY)
     }
 }
+
+data class AarMetadataArtifact(val file: File, val displayName: String): Serializable

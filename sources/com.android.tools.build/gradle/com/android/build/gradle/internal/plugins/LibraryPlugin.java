@@ -17,10 +17,14 @@ package com.android.build.gradle.internal.plugins;
 
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
+import com.android.build.api.dsl.SdkComponents;
+import com.android.build.api.extension.LibraryAndroidComponentsExtension;
+import com.android.build.api.extension.impl.LibraryAndroidComponentsExtensionImpl;
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.impl.LibraryVariantBuilderImpl;
 import com.android.build.api.variant.impl.LibraryVariantImpl;
-import com.android.build.api.variant.impl.LibraryVariantPropertiesImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
@@ -30,28 +34,35 @@ import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.LibraryExtensionImpl;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.LibraryVariantFactory;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.options.BooleanOption;
+import com.android.builder.model.v2.ide.ProjectType;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
 import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** Gradle plugin class for 'library' projects. */
-public class LibraryPlugin extends BasePlugin<LibraryVariantImpl, LibraryVariantPropertiesImpl> {
+public class LibraryPlugin
+        extends BasePlugin<
+                LibraryAndroidComponentsExtension, LibraryVariantBuilderImpl, LibraryVariantImpl> {
 
     @Inject
     public LibraryPlugin(
-            ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
-        super(registry, componentFactory);
+            ToolingModelBuilderRegistry registry,
+            SoftwareComponentFactory componentFactory,
+            BuildEventsListenerRegistry listenerRegistry) {
+        super(registry, componentFactory, listenerRegistry);
     }
 
     @NonNull
@@ -64,10 +75,24 @@ public class LibraryPlugin extends BasePlugin<LibraryVariantImpl, LibraryVariant
                             dslContainers,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
             @NonNull ExtraModelInfo extraModelInfo) {
+        if (globalScope.getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+            return (BaseExtension)
+                    project.getExtensions()
+                            .create(
+                                    com.android.build.api.dsl.LibraryExtension.class,
+                                    "android",
+                                    LibraryExtension.class,
+                                    dslServices,
+                                    globalScope,
+                                    buildOutputs,
+                                    dslContainers.getSourceSetManager(),
+                                    extraModelInfo,
+                                    new LibraryExtensionImpl(dslServices, dslContainers));
+        }
         return project.getExtensions()
                 .create(
                         "android",
-                        getExtensionClass(),
+                        LibraryExtension.class,
                         dslServices,
                         globalScope,
                         buildOutputs,
@@ -77,8 +102,29 @@ public class LibraryPlugin extends BasePlugin<LibraryVariantImpl, LibraryVariant
     }
 
     @NonNull
-    protected Class<? extends BaseExtension> getExtensionClass() {
-        return LibraryExtension.class;
+    @Override
+    protected LibraryAndroidComponentsExtension createComponentExtension(
+            @NonNull DslServices dslServices,
+            @NonNull
+                    VariantApiOperationsRegistrar<LibraryVariantBuilderImpl, LibraryVariantImpl>
+                            variantApiOperationsRegistrar) {
+        SdkComponents sdkComponents =
+                dslServices.newInstance(
+                        SdkComponentsImpl.class,
+                        dslServices,
+                        project.provider(getExtension()::getCompileSdkVersion),
+                        project.provider(getExtension()::getBuildToolsRevision),
+                        project.provider(getExtension()::getNdkVersion),
+                        project.provider(getExtension()::getNdkPath));
+
+        return project.getExtensions()
+                .create(
+                        LibraryAndroidComponentsExtension.class,
+                        "androidComponents",
+                        LibraryAndroidComponentsExtensionImpl.class,
+                        dslServices,
+                        sdkComponents,
+                        variantApiOperationsRegistrar);
     }
 
     @NonNull
@@ -99,23 +145,22 @@ public class LibraryPlugin extends BasePlugin<LibraryVariantImpl, LibraryVariant
         return AndroidProjectTypes.PROJECT_TYPE_LIBRARY;
     }
 
+    @Override
+    protected ProjectType getProjectTypeV2() {
+        return ProjectType.LIBRARY;
+    }
+
     @NonNull
     @Override
     protected LibraryTaskManager createTaskManager(
-            @NonNull List<ComponentInfo<LibraryVariantImpl, LibraryVariantPropertiesImpl>> variants,
+            @NonNull List<ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder recorder) {
+            @NonNull BaseExtension extension) {
         return new LibraryTaskManager(
-                variants, testComponents, hasFlavors, globalScope, extension, recorder);
+                variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     @Override

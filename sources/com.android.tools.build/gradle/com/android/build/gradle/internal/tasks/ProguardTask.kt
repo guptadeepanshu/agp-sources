@@ -17,7 +17,8 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.build.gradle.internal.PostprocessingFeatures
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.pipeline.OriginalStream
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -125,8 +126,13 @@ abstract class ProguardTask : ProguardConfigurableTask() {
 
     }
 
-    class CreationAction(creationConfig: BaseCreationConfig, isTestApplication: Boolean) :
-        ProguardConfigurableTask.CreationAction<ProguardTask, BaseCreationConfig>(creationConfig, isTestApplication) {
+    class CreationAction(
+            creationConfig: ConsumableCreationConfig,
+            isTestApplication: Boolean,
+            addCompileRClass: Boolean
+    ) :
+        ProguardConfigurableTask.CreationAction<ProguardTask, ConsumableCreationConfig>(
+                creationConfig, isTestApplication, addCompileRClass) {
 
         override val name = computeTaskName("minify", "WithProguard")
         override val type = ProguardTask::class.java
@@ -145,7 +151,7 @@ abstract class ProguardTask : ProguardConfigurableTask() {
                 .get(InternalArtifactType.SHRUNK_JAR)
             val project = creationConfig.globalScope.project
             creationConfig.transformManager.addStream(
-                OriginalStream.builder(project, "shrunk_classes_and_resources")
+                OriginalStream.builder("shrunk_classes_and_resources")
                     .addContentTypes(TransformManager.CONTENT_JARS)
                     .addScopes(inputScopes)
                     .setFileCollection(project.layout.files(shrunkClassesAndResourcesProvider))

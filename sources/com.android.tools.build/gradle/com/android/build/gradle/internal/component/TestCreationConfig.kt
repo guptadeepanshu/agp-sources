@@ -17,12 +17,13 @@
 package com.android.build.gradle.internal.component
 
 import org.gradle.api.Named
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
 
 /**
- * Interface for properties common to all variant generating APKs
+ * Interface for properties common to all test components.
  */
-interface TestCreationConfig: BaseCreationConfig, Named {
+interface TestCreationConfig: ComponentCreationConfig, Named {
 
     /**
      * The application of the app under tests
@@ -63,4 +64,6 @@ interface TestCreationConfig: BaseCreationConfig, Named {
     val testLabel: Provider<String?>
 
     val isTestCoverageEnabled: Boolean
+
+    val manifestPlaceholders: MapProperty<String, String>
 }

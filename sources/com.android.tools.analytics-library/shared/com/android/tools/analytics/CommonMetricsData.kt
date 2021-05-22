@@ -19,9 +19,15 @@ import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Strings
 import com.google.wireless.android.sdk.stats.*
 import com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface
+import com.sun.jna.Library
+import com.sun.jna.Memory
+import com.sun.jna.Pointer
+import com.sun.jna.ptr.IntByReference
 import java.io.File
 import java.util.*
 import java.util.regex.Pattern
+
+private const val TRANSLATED = 1
 
 /** Calculates common pieces of metrics data, used in various Android DevTools.  */
 object CommonMetricsData {
@@ -45,18 +51,27 @@ object CommonMetricsData {
   val garbageCollectionStatsCache: HashMap<String, GarbageCollectionStatsDiffs> = HashMap()
 
   /**
-   * Detects and returns the OS architecture: x86, x86_64, ppc. This may differ or be equal to the
-   * JVM architecture in the sense that a 64-bit OS can run a 32-bit JVM.
+   * Detects and returns the OS architecture: x86, x86_64, ppc, arm, or arm on jvm.
+   * This may differ or be equal to the JVM architecture in the sense that a 64-bit
+   * OS can run a 32-bit JVM.
    */
   @JvmStatic
   val osArchitecture: ProductDetails.CpuArchitecture
     get() {
       val jvmArchitecture = jvmArchitecture
+      val os = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)!!.toLowerCase()
+
+      // An x86 jvm running on an M1 chip will be translated to ARM using Rosetta. Checking for Rosetta
+      // requires jna. The current version of jna (net.java.dev.jna:jna-5.6.0)  will fail if we're running
+      // on an arm jvm. Only call isRosetta if we're using an x86 jvm
+      if (jvmArchitecture == ProductDetails.CpuArchitecture.X86_64 && os.startsWith("mac") && isRosetta()) {
+        return ProductDetails.CpuArchitecture.X86_ON_ARM
+      }
+
       if (jvmArchitecture == ProductDetails.CpuArchitecture.X86) {
 
-        val os = Environment.instance.getSystemProperty("os.name")!!.toLowerCase()
         if (os.startsWith("win")) {
-          val w6432 = Environment.instance.getVariable("PROCESSOR_ARCHITEW6432")
+          val w6432 = Environment.instance.getVariable(Environment.EnvironmentVariable.PROCESSOR_ARCHITEW6432)
           // This is the misleading case: the JVM is 32-bit but the OS
           // might be either 32 or 64. We can't tell just from this
           // property.
@@ -71,7 +86,7 @@ object CommonMetricsData {
           }
         }
         else if (os.startsWith("linux")) {
-          val s = Environment.instance.getVariable("HOSTTYPE")
+          val s = Environment.instance.getVariable(Environment.EnvironmentVariable.HOSTTYPE)
           return cpuArchitectureFromString(s)
         }
       }
@@ -84,7 +99,7 @@ object CommonMetricsData {
   @JvmStatic
   val jvmArchitecture: ProductDetails.CpuArchitecture
     get() {
-      val arch = Environment.instance.getSystemProperty("os.arch")
+      val arch = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_ARCH)
       return cpuArchitectureFromString(arch)
     }
 
@@ -94,7 +109,7 @@ object CommonMetricsData {
   @JvmStatic
   val osName: String
     get() {
-      var os: String? = Environment.instance.getSystemProperty("os.name")
+      var os: String? = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_NAME)
 
       if (os == null || os.isEmpty()) {
         return "unknown"
@@ -128,7 +143,7 @@ object CommonMetricsData {
       }
 
       val p = Pattern.compile("(\\d+)\\.(\\d+).*")
-      val osVers = Environment.instance.getSystemProperty("os.version")
+      val osVers = Environment.instance.getSystemProperty(Environment.SystemProperty.OS_VERSION)
       if (osVers != null && osVers.isNotEmpty()) {
         val m = p.matcher(osVers)
         if (m.matches()) {
@@ -234,6 +249,10 @@ object CommonMetricsData {
       return ProductDetails.CpuArchitecture.X86
     }
 
+    if (cpuArchitecture.equals("aarch64", ignoreCase = true)) {
+      return ProductDetails.CpuArchitecture.ARM
+    }
+
     return if (cpuArchitecture.length == 4
                && cpuArchitecture[0] == 'i'
                && cpuArchitecture.indexOf("86") == 2) {
@@ -318,3 +337,54 @@ object CommonMetricsData {
     }
   }
 }
+
+/*
+Returns true if the current process is translated from ARM to x86 by Rosetta
+Processes running under Rosetta translation return 1 when sysctlbyname is called
+with sysctl.proc_translated
+https://developer.apple.com/documentation/apple_silicon/about_the_rosetta_translation_environment
+ */
+fun isRosetta() : Boolean {
+  val clazz = try {
+    @Suppress("UNCHECKED_CAST")
+    Class.forName("com.sun.jna.platform.mac.SystemB") as? Class<Library> ?: return false
+  }
+  catch (e: ClassNotFoundException) {
+    return false
+  }
+
+  val instanceField = try {
+    clazz.getField("INSTANCE")
+  }
+  catch (e: NoSuchFieldException) {
+    return false
+  }
+
+  val instance = try {
+    instanceField.get(null)
+  }
+  catch (e: IllegalArgumentException) {
+    return false
+  }
+
+  val sysctlbyname = try {
+    clazz.getMethod("sysctlbyname", String::class.java, Pointer::class.java, IntByReference::class.java, Pointer::class.java, Int::class.java)
+  }
+  catch(e: NoSuchMethodException) {
+    return false
+  }
+
+  val memory = Memory(4)
+  val retSize = IntByReference(4)
+
+  val errorCode = try {
+    sysctlbyname.invoke(instance, "sysctl.proc_translated", memory, retSize, null, 0)
+  }
+  catch(e: Exception) {
+    return false
+  }
+
+  return errorCode == 0 && memory.getInt(0) == TRANSLATED
+}
+
+

@@ -17,18 +17,12 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ApplicationBuildFeatures
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DependenciesInfo
-import com.android.build.api.variant.ApplicationVariant
-import com.android.build.api.variant.ApplicationVariantProperties
 import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.ViewBindingOptions
-import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.ExtraModelInfo
-import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.services.DslServices
@@ -52,8 +46,7 @@ open class BaseAppModuleExtension(
     sourceSetManager,
     extraModelInfo,
     true
-), InternalApplicationExtension by publicExtensionImpl,
-    ActionableVariantObjectOperationsExecutor<ApplicationVariant<ApplicationVariantProperties>, ApplicationVariantProperties> by publicExtensionImpl {
+), InternalApplicationExtension by publicExtensionImpl {
 
     override val viewBinding: ViewBindingOptions =
         dslServices.newInstance(

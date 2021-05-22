@@ -36,9 +36,10 @@ fun enforceTheSamePluginVersions(project: Project) {
     val currentVersion = Version.ANDROID_GRADLE_PLUGIN_VERSION
     val currentProjectPath = project.projectDir.canonicalPath
     // all projects in the current build
-    project.rootProject.allprojects {
+    project.gradle.afterProject {
         compareVersions(currentProjectPath, currentVersion, it)
     }
+
     // all projects in the included build, these are included builds in the composite build
     project.gradle.includedBuilds.forEach { includedBuild ->
         when (includedBuild) {
@@ -61,7 +62,7 @@ private fun compareVersions(
     projectToCheck: Project
 ) {
     val currentProjectPath = projectToCheck.projectDir.canonicalPath
-    projectToCheck.plugins.withId("com.android.base") {
+    projectToCheck.plugins.withId(ANDROID_GRADLE_PLUGIN_ID) {
         val versionValue = try {
             val versionClass = try {
                 it::class.java.classLoader.loadClass(com.android.Version::class.java.name)
@@ -84,11 +85,12 @@ private fun compareVersions(
         if (versionValue != firstVersion) throw IllegalStateException(
             """
 Using multiple versions of the Android Gradle plugin in the same build is not allowed.
-- Project `$firstProjectPath` is using version `$firstVersion` 
+- Project `$firstProjectPath` is using version `$firstVersion`
 - Project `$currentProjectPath` is using version `$versionValue`
             """.trimIndent()
         )
     }
 }
 
+const val ANDROID_GRADLE_PLUGIN_ID = "com.android.base"
 private const val CHECK_PERFORMED = "android.agp.version.check.performed"

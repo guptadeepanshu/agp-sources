@@ -24,6 +24,7 @@ import com.android.tools.build.apkzlib.zfile.ApkCreator
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode
 import com.android.zipflinger.BytesSource
+import com.android.zipflinger.Source
 import com.android.zipflinger.StableArchive
 import com.android.zipflinger.SynchronizedArchive
 import com.android.zipflinger.Zip64
@@ -48,12 +49,18 @@ import java.util.zip.Deflater
  *
  * @param deterministicEntryOrder whether or not the order of the entries in the created APK will be
  * deterministic, regardless of any multi-threading in the implementation and/or regardless of the
- * order of calls to [writeZip], [writeFile], and [deleteFile].
+ * order of calls to [writeZip], [writeFile], and [deleteFile]. Importantly, deterministicEntryOrder
+ * does not guarantee that the resulting APK will be deterministic for a given set of source files;
+ * that is true for clean builds, but not incremental builds. Instead, if deterministicEntryOrder is
+ * true, the resulting APK will be deterministic given the same initial APK and the same calls to
+ * [writeZip], [writeFile], and [deleteFile].
  */
 class ApkFlinger(
     creationData: ApkCreatorFactory.CreationData,
     private val compressionLevel: Int,
-    deterministicEntryOrder: Boolean = false
+    deterministicEntryOrder: Boolean = true,
+    enableV3Signing: Boolean = false,
+    enableV4Signing: Boolean = false
 ) : ApkCreator {
 
     /**
@@ -103,10 +110,17 @@ class ApkFlinger(
                         .setSdkDependencies(signingOptions.sdkDependencyData)
                         .setV1Enabled(signingOptions.isV1SigningEnabled)
                         .setV2Enabled(signingOptions.isV2SigningEnabled)
+                        .setV3Enabled(enableV3Signing)
+                        .setV4Enabled(enableV4Signing)
                         .setV1CreatedBy(creationData.createdBy ?: DEFAULT_CREATED_BY)
                         .setV1TrustManifest(creationData.isIncremental)
                         .also { builder ->
                             signingOptions.executor?.let { builder.setExecutor(it) }
+                            if (enableV4Signing) {
+                                builder.setV4Output(
+                                    File("${creationData.apkPath.absolutePath}.idsig")
+                                )
+                            }
                         }
                         .build()
                 )
@@ -153,15 +167,12 @@ class ApkFlinger(
             if (name.contains("../")) {
                 throw InvalidPathException(name, "Entry name contains invalid characters")
             }
-            val zipSourceEntry = zipSource.select(entry.name, name)
-            if (!entry.isCompressed) {
-                if (pageAlignPredicate.apply(name)) {
-                    zipSourceEntry.align(PAGE_ALIGNMENT)
-                } else {
-                    // by default all uncompressed entries are aligned at 4 byte boundaries.
-                    zipSourceEntry.align(DEFAULT_ALIGNMENT)
-                }
+            val alignment = when {
+                !entry.isCompressed && pageAlignPredicate.apply(name) -> PAGE_ALIGNMENT
+                !entry.isCompressed -> DEFAULT_ALIGNMENT
+                else -> Source.NO_ALIGNMENT
             }
+            zipSource.select(entry.name, name, ZipSource.COMPRESSION_NO_CHANGE, alignment)
         }
         archive.add(zipSource)
     }

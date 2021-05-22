@@ -58,13 +58,10 @@ public interface DexArchive extends Closeable {
             throws IOException;
 
     /**
-     * Returns collection of all entries, {@link DexArchiveEntry}, in this dex archive. The entries
-     * contain information about the relative path, {@link
-     * DexArchiveEntry#getRelativePathInArchive()} as well as the actual DEX file content, {@link
-     * DexArchiveEntry#getDexFileContent()}.
+     * Returns all dex archive entries in this dex archive.
      *
-     * @return all entries of the archive
+     * <p>The dex archive entries are sorted to ensure deterministic order.
      */
     @NonNull
-    List<DexArchiveEntry> getFiles() throws IOException;
+    List<DexArchiveEntry> getSortedDexArchiveEntries();
 }

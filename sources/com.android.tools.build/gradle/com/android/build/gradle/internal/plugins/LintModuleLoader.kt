@@ -18,8 +18,9 @@ package com.android.build.gradle.internal.plugins
 
 import com.android.builder.model.AndroidProject
 import com.android.ide.common.gradle.model.IdeAndroidProject
-import com.android.ide.common.gradle.model.IdeAndroidProjectImpl
-import com.android.ide.common.gradle.model.level2.IdeDependenciesFactory
+import com.android.ide.common.gradle.model.IdeVariant
+import com.android.ide.common.gradle.model.impl.ModelCache
+import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelDependency
 import com.android.tools.lint.model.LintModelFactory
 import com.android.tools.lint.model.LintModelModule
@@ -28,7 +29,7 @@ import org.gradle.api.Project
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry
 
 class LintModuleLoader(
-    private val plugin: BasePlugin<*, *>,
+    private val plugin: BasePlugin<*, *, *>,
     private val registry: ToolingModelBuilderRegistry
 ) : LintModelModuleLoader {
     override fun getModule(library: LintModelDependency): LintModelModule? {
@@ -48,14 +49,14 @@ class LintModuleLoader(
         gradleProject: Project,
         defaultFactory: LintModelFactory?
     ): LintModelModule? {
-        val project = createAndroidProject(gradleProject)
+        val (project, variants) = createAndroidProject(gradleProject)
         val factory = defaultFactory ?: LintModelFactory()
-        return factory.create(project, gradleProject.rootDir)
+        return factory.create(project, variants, gradleProject.rootDir)
     }
 
     private fun createAndroidProject(
         project: Project
-    ): IdeAndroidProject {
+    ): Pair<IdeAndroidProject, List<IdeVariant>> {
         val modelName = AndroidProject::class.java.name
         val modelBuilder = registry.getBuilder(modelName)
         val ext = project.extensions.extraProperties
@@ -67,10 +68,17 @@ class LintModuleLoader(
             ext[AndroidProject.PROPERTY_BUILD_MODEL_ONLY_VERSIONED] =
                 AndroidProject.MODEL_LEVEL_3_VARIANT_OUTPUT_POST_BUILD.toString()
             return try {
+                val modelCache = ModelCache.create()
                 val model = modelBuilder.buildAll(modelName, project) as AndroidProject
-                val factory = IdeDependenciesFactory()
+                val variants = model.variants.map {
+                    modelCache.variantFrom(
+                        it,
+                        GradleVersion.tryParseAndroidGradlePluginVersion(model.modelVersion)
+                    )
+                }
                 // Sync issues are not used in lint.
-                IdeAndroidProjectImpl.create(model, factory, model.variants, emptyList())
+                val androidProject = ModelCache.create().androidProjectFrom(model)
+                androidProject to variants
             } finally {
                 ext[AndroidProject.PROPERTY_BUILD_MODEL_ONLY_VERSIONED] = null
             }

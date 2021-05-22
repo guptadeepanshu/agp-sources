@@ -16,11 +16,15 @@
 
 package com.android.build.gradle.internal.testing.utp
 
+import org.gradle.api.NonExtensible
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.tasks.Classpath
+import org.gradle.api.tasks.Optional
 
-private const val NITROGEN_MAVEN_GROUP_ID = "com.google.test.platform"
-private const val NITROGEN_DEFAULT_VERSION = "0.0.2-dev"
+private const val NITROGEN_MAVEN_GROUP_ID = "com.google.testing.platform"
+private const val NITROGEN_DEFAULT_VERSION = "0.0.8-alpha01"
 
 /**
  * Available Unified Test Platform dependencies.
@@ -33,31 +37,56 @@ enum class UtpDependency(
         private val version: String = NITROGEN_DEFAULT_VERSION) {
     LAUNCHER(
             "launcher",
-            "com.google.test.platform.launcher.Launcher"),
+            "com.google.testing.platform.launcher.Launcher"),
     CORE(
             "core",
-            "com.google.test.platform.main.MainKt"),
+            "com.google.testing.platform.main.MainKt"),
     ANDROID_DEVICE_PROVIDER_LOCAL(
             "android-device-provider-local",
-            "com.google.test.platform.runtime.android.provider.local.LocalAndroidDeviceProvider"),
-    ANDROID_DEVICE_CONTROLLER_ADB(
-            "android-device-controller-adb",
-            "com.google.test.platform.runtime.android.adb.controller.AdbDeviceController"),
+            "com.google.testing.platform.runtime.android.provider.local.LocalAndroidDeviceProvider"),
     ANDROID_DRIVER_INSTRUMENTATION(
             "android-driver-instrumentation",
-            "com.google.test.platform.runtime.android.driver.AndroidInstrumentationDriver"),
+            "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"),
     ANDROID_TEST_PLUGIN(
-            "android-test-plugin",
-            "com.google.test.platform.plugin.android.AndroidDevicePlugin"),
+        "android-test-plugin",
+        "com.google.testing.platform.plugin.android.AndroidDevicePlugin"),
+    ANDROID_TEST_DEVICE_INFO_PLUGIN(
+        "android-test-plugin-host-device-info",
+        "com.google.testing.platform.plugin.android.info.host.AndroidTestDeviceInfoPlugin"),
     ANDROID_TEST_PLUGIN_HOST_RETENTION(
             "android-test-plugin-host-retention",
-            "com.google.test.platform.plugin.android.icebox.host.IceboxPlugin"),
+            "com.google.testing.platform.plugin.android.icebox.host.IceboxPlugin"),
     ;
 
     /**
      * Returns a maven coordinate string to download dependencies from the Maven repository.
      */
     fun mavenCoordinate(): String = "${groupId}:${artifactId}:${version}"
+}
+
+@NonExtensible
+abstract class UtpDependencies {
+    @get:Optional
+    @get:Classpath
+    abstract val launcher: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val core: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val deviceProviderLocal: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val driverInstrumentation: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val testPlugin: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val testDeviceInfoPlugin: ConfigurableFileCollection
+    @get:Optional
+    @get:Classpath
+    abstract val testPluginHostRetention: ConfigurableFileCollection
 }
 
 /**

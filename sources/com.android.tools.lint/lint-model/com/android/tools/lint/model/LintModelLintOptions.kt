@@ -17,6 +17,7 @@
 package com.android.tools.lint.model
 
 import java.io.File
+import java.io.Serializable
 
 /**
  * Options for lint. Example:
@@ -58,15 +59,19 @@ import java.io.File
  * textReport true
  * // location to write the output; can be a file or 'stdout' or 'stderr'
  * //textOutput 'stdout'
- * textOutput file("lint-results.txt")
+ * textOutput file("$reportsDir/lint-results.txt")
  * // if true, generate an XML report for use by for example Jenkins
  * xmlReport true
  * // file to write report to (if not specified, defaults to lint-results.xml)
- * xmlOutput file("lint-report.xml")
+ * xmlOutput file("$reportsDir/lint-report.xml")
  * // if true, generate an HTML report (with issue explanations, sourcecode, etc)
  * htmlReport true
  * // optional path to report (default will be lint-results.html in the builddir)
- * htmlOutput file("lint-report.html")
+ * htmlOutput file("$reportsDir/lint-report.html")
+ * // if true, generate a SARIF report for use by for example GitHub
+ * sarifReport true
+ * // file to write report to (if not specified, defaults to lint-results.sarif)
+ * sarifOutput file("$reportsDir/lint-report.sarif.json")
  * // Set the severity of the given issues to fatal (which means they will be
  * // checked during release builds (even if the lint target is not included)
  * fatal 'NewApi', 'InlineApi'
@@ -121,7 +126,7 @@ interface LintModelLintOptions {
      */
     val check: Set<String>?
 
-    /** Whether lint should abort the build if errors are found  */
+    /** Whether lint should abort the build if errors are found */
     val abortOnError: Boolean
 
     /**
@@ -142,13 +147,13 @@ interface LintModelLintOptions {
      */
     val quiet: Boolean
 
-    /** Returns whether lint should check all warnings, including those off by default  */
+    /** Returns whether lint should check all warnings, including those off by default */
     val checkAllWarnings: Boolean
 
-    /** Returns whether lint will only check for errors (ignoring warnings)  */
+    /** Returns whether lint will only check for errors (ignoring warnings) */
     val ignoreWarnings: Boolean
 
-    /** Returns whether lint should treat all warnings as errors  */
+    /** Returns whether lint should treat all warnings as errors */
     val warningsAsErrors: Boolean
 
     /**
@@ -180,7 +185,7 @@ interface LintModelLintOptions {
     val checkGeneratedSources: Boolean
 
     /** Returns whether lint should include explanations for issue errors. (Note that
-     * HTML and XML reports intentionally do this unconditionally, ignoring this setting.)  */
+     * HTML and XML reports intentionally do this unconditionally, ignoring this setting.) */
     val explainIssues: Boolean
 
     /**
@@ -195,7 +200,7 @@ interface LintModelLintOptions {
     val lintConfig: File?
 
     /** Whether we should write an text report. Default false. The location can be
-     * controlled by [.getTextOutput].  */
+     * controlled by [.getTextOutput]. */
     val textReport: Boolean
 
     /**
@@ -205,18 +210,30 @@ interface LintModelLintOptions {
     val textOutput: File?
 
     /** Whether we should write an HTML report. Default true. The location can be
-     * controlled by [.getHtmlOutput].  */
+     * controlled by [.getHtmlOutput]. */
     val htmlReport: Boolean
 
-    /** The optional path to where an HTML report should be written  */
+    /** The optional path to where an HTML report should be written */
     val htmlOutput: File?
 
     /** Whether we should write an XML report. Default true. The location can be
-     * controlled by [.getXmlOutput].  */
+     * controlled by [.getXmlOutput]. */
     val xmlReport: Boolean
 
-    /** The optional path to where an XML report should be written  */
+    /** The optional path to where an XML report should be written */
     val xmlOutput: File?
+
+    /**
+     * Whether we should write a SARIF (OASIS Static Analysis Results Interchange Format) report.
+     * Default is false. The location can be controlled by [sarifOutput].
+     */
+    val sarifReport: Boolean
+
+    /**
+     * The optional path to where a SARIF report (OASIS Static
+     * Analysis Results Interchange Format) should be written.
+     */
+    val sarifOutput: File?
 
     /**
      * Returns whether lint should check for fatal errors during release builds. Default is true.
@@ -276,8 +293,10 @@ class DefaultLintModelLintOptions(
     override val htmlOutput: File?,
     override val xmlReport: Boolean,
     override val xmlOutput: File?,
+    override val sarifReport: Boolean,
+    override val sarifOutput: File?,
     override val checkReleaseBuilds: Boolean,
     override val checkDependencies: Boolean,
     override val baselineFile: File?,
     override val severityOverrides: Map<String, LintModelSeverity>?
-) : LintModelLintOptions
+) : LintModelLintOptions, Serializable

@@ -16,9 +16,10 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.RENDERSCRIPT
@@ -94,7 +95,13 @@ abstract class RenderscriptCompile : NdkTask() {
 
     @Input
     fun getBuildToolsVersion(): String =
-        sdkBuildService.get().buildToolInfoProvider.get().revision.toString()
+        buildToolsRevision.get().toString()
+
+    @get: Input
+    abstract val compileSdkVersion: Property<String>
+
+    @get: Internal
+    abstract val buildToolsRevision: Property<Revision>
 
     @get:Internal
     abstract val sdkBuildService: Property<SdkComponentsBuildService>
@@ -156,7 +163,10 @@ abstract class RenderscriptCompile : NdkTask() {
 
         val sourceDirectories = sourceDirs.files
 
-        val buildToolsInfo = sdkBuildService.get().buildToolInfoProvider.get()
+        val buildToolsInfo = sdkBuildService.get().sdkLoader(
+            compileSdkVersion = compileSdkVersion,
+            buildToolsRevision = buildToolsRevision
+        ).buildToolInfoProvider.get()
         compileAllRenderscriptFiles(
             sourceDirectories,
             importFolders,
@@ -250,9 +260,9 @@ abstract class RenderscriptCompile : NdkTask() {
     // ----- CreationAction -----
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<RenderscriptCompile, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: ConsumableCreationConfig
+    ) : VariantTaskCreationAction<RenderscriptCompile, ConsumableCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -282,16 +292,12 @@ abstract class RenderscriptCompile : NdkTask() {
         ) {
             super.configure(task)
 
-            val globalScope = creationConfig.globalScope
-
             val variantDslInfo = creationConfig.variantDslInfo
             val variantSources = creationConfig.variantSources
 
             val ndkMode = variantDslInfo.renderscriptNdkModeEnabled
 
-            task.targetApi.set(globalScope.project.provider {
-                variantDslInfo.renderscriptTarget
-            })
+            task.targetApi.set(creationConfig.renderscriptTargetApi)
             task.targetApi.disallowChanges()
 
             task.isSupportMode = variantDslInfo.renderscriptSupportModeEnabled
@@ -299,9 +305,8 @@ abstract class RenderscriptCompile : NdkTask() {
             task.isNdkMode = ndkMode
             task.optimLevel = variantDslInfo.renderscriptOptimLevel
 
-            task.sourceDirs = globalScope
-                .project
-                .files(Callable { variantSources.renderscriptSourceList })
+            task.sourceDirs =
+                creationConfig.services.fileCollection(Callable { variantSources.renderscriptSourceList })
             task.importDirs = creationConfig.variantDependencies.getArtifactFileCollection(
                 COMPILE_CLASSPATH, ALL, RENDERSCRIPT
             )
@@ -311,6 +316,12 @@ abstract class RenderscriptCompile : NdkTask() {
 
             task.ndkConfig = variantDslInfo.ndkConfig
 
+            task.buildToolsRevision.setDisallowChanges(
+                creationConfig.globalScope.extension.buildToolsRevision
+            )
+            task.compileSdkVersion.setDisallowChanges(
+                creationConfig.globalScope.extension.compileSdkVersion
+            )
             task.sdkBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
             )

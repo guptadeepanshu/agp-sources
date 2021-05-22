@@ -27,11 +27,12 @@ import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.internal.AndroidJarInput
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.component.BaseCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
+import com.android.build.gradle.internal.initialize
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
@@ -39,23 +40,23 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.SplitList
-import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
-import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
-import com.android.build.gradle.internal.services.getAaptDaemon
+import com.android.build.gradle.internal.services.Aapt2Input
+import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.services.getErrorFormatMode
+import com.android.build.gradle.internal.services.getLeasingAapt2
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
-import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.ProcessAndroidResources
 import com.android.builder.core.VariantType
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
-import com.android.builder.internal.aapt.v2.Aapt2Exception
+import com.android.builder.internal.aapt.v2.Aapt2
 import com.android.ide.common.process.ProcessException
 import com.android.ide.common.resources.FileStatus
 import com.android.ide.common.symbols.SymbolIo
@@ -63,7 +64,6 @@ import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
-import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -75,6 +75,7 @@ import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -88,27 +89,15 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.tooling.BuildException
+import org.gradle.workers.WorkerExecutor
 import java.io.File
 import java.io.IOException
-import java.io.Serializable
 import java.util.ArrayList
 import javax.inject.Inject
 
 @CacheableTask
 abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: ObjectFactory) :
     ProcessAndroidResources() {
-
-    companion object {
-        private val LOG = Logging.getLogger(LinkApplicationAndroidResourcesTask::class.java)
-
-        private fun getOutputBaseNameFile(variantOutput: VariantOutputImpl.SerializedForm,
-            resPackageOutputFolder: File): File {
-            return File(
-                resPackageOutputFolder,
-                FN_RES_BASE + RES_QUALIFIER_SEP + variantOutput.fullName + SdkConstants.DOT_RES
-            )
-        }
-    }
 
     @get:OutputDirectory
     @get:Optional
@@ -141,8 +130,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:InputFiles
     @get:Optional
     @get:PathSensitive(PathSensitivity.NONE)
-    var dependenciesFileCollection: FileCollection? = null
-        private set
+    abstract val dependenciesFileCollection: ConfigurableFileCollection
 
     @get:InputFile
     @get:Optional
@@ -152,8 +140,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:InputFiles
     @get:Optional
     @get:PathSensitive(PathSensitivity.NONE)
-    var sharedLibraryDependencies: FileCollection? = null
-        private set
+    abstract val sharedLibraryDependencies: ConfigurableFileCollection
 
     @get:Optional
     @get:Input
@@ -162,13 +149,10 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     private lateinit var type: VariantType
 
     @get:Input
-    lateinit var aapt2Version: String
-        private set
-    @get:Internal
-    abstract val aapt2FromMaven: ConfigurableFileCollection
+    val canHaveSplits: Property<Boolean> = objects.property(Boolean::class.java)
 
     @get:Input
-    val canHaveSplits: Property<Boolean> = objects.property(Boolean::class.java)
+    abstract val resourceConfigs: SetProperty<String>
 
     @get:Input
     @get:Optional
@@ -185,8 +169,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:InputFiles
     @get:Optional
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    var featureResourcePackages: FileCollection? = null
-        private set
+    abstract val featureResourcePackages: ConfigurableFileCollection
 
     @get:Input
     abstract val packageName: Property<String>
@@ -217,11 +200,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
     @get:Input
     var isNamespaced = false
-        private set
-
-    @get:Nested
-    @get:Optional
-    lateinit var splitList: SplitList
         private set
 
     @get:Input
@@ -256,15 +234,19 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:PathSensitive(PathSensitivity.NONE)
     abstract val aarMetadataCheck: ConfigurableFileCollection
 
+    @get:Nested
+    abstract val aapt2: Aapt2Input
+
     @get:Internal
-    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+    abstract val symbolTableBuildService: Property<SymbolTableBuildService>
 
     // Not an input as it is only used to rewrite exception and doesn't affect task output
     private lateinit var manifestMergeBlameFile: Provider<RegularFile>
 
-    private var compiledDependenciesResources: ArtifactCollection? = null
-
-    private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
+    @get:InputFiles
+    @get:Optional
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val compiledDependenciesResources: ConfigurableFileCollection
 
     override val incremental: Boolean
         get() = useStableIds
@@ -280,111 +262,178 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     }
 
     fun doFullTaskAction(inputStableIdsFile: File?) {
-        val outputDirectory = resPackageOutputFolder.get().asFile
-        FileUtils.deleteDirectoryContents(outputDirectory)
+        workerExecutor.noIsolation().submit(TaskAction::class.java) { parameters ->
+            parameters.initializeFromAndroidVariantTask(this)
 
-        val manifestBuiltArtifacts =
-            (if (aaptFriendlyManifestFiles.isPresent)
-                BuiltArtifactsLoaderImpl().load(aaptFriendlyManifestFiles)
-            else BuiltArtifactsLoaderImpl().load(manifestFiles))
-                ?: throw RuntimeException("Cannot load processed manifest files, please file a bug.")
+            parameters.mainDexListProguardOutputFile.set(mainDexListProguardOutputFile)
+            parameters.outputStableIdsFile.set(stableIdsOutputFileProperty)
+            parameters.proguardOutputFile.set(proguardOutputFile)
+            parameters.rClassOutputJar.set(rClassOutputJar)
+            parameters.resPackageOutputDirectory.set(resPackageOutputFolder)
+            parameters.sourceOutputDirectory.set(sourceOutputDirProperty)
+            parameters.symbolsWithPackageNameOutputFile.set(symbolsWithPackageNameOutputFile)
+            parameters.textSymbolOutputFile.set(textSymbolOutputFileProperty)
 
-        val featureResourcePackages = if (featureResourcePackages != null)
-            featureResourcePackages!!.files
-        else
-            ImmutableSet.of()
+            parameters.androidJarInput.set(androidJarInput)
+            parameters.aapt2.set(aapt2)
+            parameters.symbolTableBuildService.set(symbolTableBuildService)
 
-        val dependencies = if (dependenciesFileCollection != null)
-            dependenciesFileCollection!!.files
-        else
-            emptySet()
-        val imports = if (sharedLibraryDependencies != null)
-            sharedLibraryDependencies!!.files
-        else
-            emptySet()
-        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
-            aapt2FromMaven.singleFile, LoggerWrapper(logger)
-        )
-
-        getWorkerFacadeWithWorkers().use {
-            val variantOutputsList = variantOutputs.get()
-
-            val unprocessedOutputs = variantOutputsList.toMutableList()
-            val mainOutput = chooseOutput(variantOutputsList)
-
-            unprocessedOutputs.remove(mainOutput)
-
-            val compiledDependenciesResourcesDirs =
-                getCompiledDependenciesResources()?.reversed()?.toImmutableList()
-                    ?: emptyList<File>()
-
-            it.submit(
-                AaptSplitInvoker::class.java,
-                AaptSplitInvokerParams(
-                    mainOutput.toSerializedForm(),
-                    manifestBuiltArtifacts.getBuiltArtifact(mainOutput)
-                        ?: throw RuntimeException("Cannot find built manifest for $mainOutput"),
-                    dependencies,
-                    localResourcesFile.orNull?.asFile,
-                    imports,
-                    splitList,
-                    featureResourcePackages,
-                    true,
-                    aapt2ServiceKey,
-                    compiledDependenciesResourcesDirs,
-                    this,
-                    rClassOutputJar.orNull?.asFile,
-                    inputStableIdsFile,
-                    AaptOptions(noCompress.orNull, aaptAdditionalParameters.orNull)
-                )
-            )
-
-            if (canHaveSplits.get()) {
-                // If there are remaining splits to be processed we await for the main split to
-                // finish since the output of the main split is used by the full splits bellow.
-                it.await()
-
-                for (variantOutput in unprocessedOutputs) {
-                    // If we're supporting stable IDs we need to make sure the splits get exactly
-                    // the same IDs as the main one.
-                    it.submit(
-                        AaptSplitInvoker::class.java,
-                        AaptSplitInvokerParams(
-                            variantOutput.toSerializedForm(),
-                            manifestBuiltArtifacts.getBuiltArtifact(variantOutput)
-                                ?: throw RuntimeException("Cannot find build manifest for $variantOutput"),
-                            dependencies,
-                            localResourcesFile.orNull?.asFile,
-                            imports,
-                            splitList,
-                            featureResourcePackages,
-                            false,
-                            aapt2ServiceKey,
-                            compiledDependenciesResourcesDirs,
-                            this,
-                            null,
-                            if (useStableIds) stableIdsOutputFileProperty.get().asFile else null,
-                            AaptOptions(noCompress.orNull, aaptAdditionalParameters.orNull)
-                        )
-                    )
-                }
-            }
-            it
+            parameters.aaptOptions.set(AaptOptions(noCompress.orNull, aaptAdditionalParameters.orNull))
+            parameters.applicationId.set(applicationId)
+            parameters.buildTargetDensity.set(buildTargetDensity)
+            parameters.canHaveSplits.set(canHaveSplits)
+            parameters.compiledDependenciesResources.from(compiledDependenciesResources)
+            parameters.dependencies.from(dependenciesFileCollection)
+            parameters.featureResourcePackages.from(featureResourcePackages)
+            parameters.imports.from(sharedLibraryDependencies)
+            parameters.incrementalDirectory.set(incrementalFolder)
+            parameters.inputResourcesDirectory.set(inputResourcesDir)
+            parameters.inputStableIdsFile.set(inputStableIdsFile)
+            parameters.library.set(isLibrary)
+            parameters.localResourcesFile.set(localResourcesFile)
+            parameters.manifestFiles.set(if (aaptFriendlyManifestFiles.isPresent) aaptFriendlyManifestFiles else manifestFiles)
+            parameters.manifestMergeBlameFile.set(manifestMergeBlameFile)
+            parameters.mergeBlameDirectory.set(mergeBlameLogFolder)
+            parameters.namespaced.set(isNamespaced)
+            parameters.packageId.set(resOffset)
+            parameters.packageName.set(packageName)
+            parameters.resourceConfigs.set(resourceConfigs)
+            parameters.sharedLibraryDependencies.from(sharedLibraryDependencies)
+            parameters.useConditionalKeepRules.set(useConditionalKeepRules)
+            parameters.useFinalIds.set(useFinalIds)
+            parameters.useMinimalKeepRules.set(useMinimalKeepRules)
+            parameters.useStableIds.set(useStableIds)
+            parameters.variantName.set(variantName)
+            parameters.variantOutputs.set(variantOutputs.get().map { it.toSerializedForm() })
+            parameters.variantType.set(type)
         }
     }
 
-    private fun chooseOutput(variantOutputs: List<VariantOutputImpl>): VariantOutputImpl =
-           variantOutputs.firstOrNull{ variantOutput ->
-               variantOutput.variantOutputConfiguration.getFilter(
-                   FilterConfiguration.FilterType.DENSITY) == null
-                } ?: throw RuntimeException("No non-density apk found")
+    abstract class TaskWorkActionParameters : ProfileAwareWorkAction.Parameters() {
+
+        abstract val mainDexListProguardOutputFile: RegularFileProperty
+        abstract val outputStableIdsFile: RegularFileProperty
+        abstract val proguardOutputFile: RegularFileProperty
+        abstract val rClassOutputJar: RegularFileProperty
+        abstract val resPackageOutputDirectory: DirectoryProperty
+        abstract val sourceOutputDirectory: DirectoryProperty
+        abstract val symbolsWithPackageNameOutputFile: RegularFileProperty
+        abstract val textSymbolOutputFile: RegularFileProperty
+
+        @get:Nested abstract val androidJarInput: Property<AndroidJarInput>
+        @get:Nested abstract val aapt2: Property<Aapt2Input>
+        abstract val symbolTableBuildService: Property<SymbolTableBuildService>
+        abstract val aaptOptions: Property<AaptOptions>
+        abstract val applicationId: Property<String>
+        abstract val buildTargetDensity: Property<String?>
+        abstract val canHaveSplits: Property<Boolean>
+        abstract val compiledDependenciesResources: ConfigurableFileCollection
+        abstract val dependencies: ConfigurableFileCollection
+        abstract val featureResourcePackages: ConfigurableFileCollection
+        abstract val imports: ConfigurableFileCollection
+        abstract val incrementalDirectory: DirectoryProperty
+        abstract val inputResourcesDirectory: DirectoryProperty
+        abstract val inputStableIdsFile: RegularFileProperty
+        abstract val library: Property<Boolean>
+        abstract val localResourcesFile: RegularFileProperty
+        abstract val manifestFiles: DirectoryProperty
+        abstract val manifestMergeBlameFile: RegularFileProperty
+        abstract val mergeBlameDirectory: DirectoryProperty
+        abstract val namespaced: Property<Boolean>
+        abstract val packageId: Property<Int>
+        abstract val packageName: Property<String>
+        abstract val resourceConfigs: SetProperty<String>
+        abstract val sharedLibraryDependencies: ConfigurableFileCollection
+        abstract val useConditionalKeepRules: Property<Boolean>
+        abstract val useFinalIds: Property<Boolean>
+        abstract val useMinimalKeepRules: Property<Boolean>
+        abstract val useStableIds: Property<Boolean>
+        abstract val variantName: Property<String>
+        abstract val variantOutputs: ListProperty<VariantOutputImpl.SerializedForm>
+        abstract val variantType: Property<VariantType>
+    }
+
+    abstract class TaskAction : ProfileAwareWorkAction<TaskWorkActionParameters>() {
+
+        @get:Inject
+        abstract val workerExecutor: WorkerExecutor
+
+        override fun run() {
+            val manifestBuiltArtifacts = BuiltArtifactsLoaderImpl().load(parameters.manifestFiles)
+                ?: throw RuntimeException("Cannot load processed manifest files, please file a bug.")
+            // 'Incremental' runs should only preserve the stable IDs file.
+            FileUtils.deleteDirectoryContents(parameters.resPackageOutputDirectory.get().asFile)
+
+            val variantOutputsList: List<VariantOutputImpl.SerializedForm> = parameters.variantOutputs.get()
+            val mainOutput = chooseOutput(variantOutputsList)
+
+
+            invokeAaptForSplit(
+                    mainOutput,
+                    manifestBuiltArtifacts.getBuiltArtifact(mainOutput.variantOutputConfiguration)
+                        ?: throw RuntimeException("Cannot find built manifest for $mainOutput"),
+                    true,
+                    parameters.aapt2.get().getLeasingAapt2(),
+                    parameters.inputStableIdsFile.orNull?.asFile, parameters
+            )
+
+            if (parameters.canHaveSplits.get()) {
+                // This must happen after the main split is done, since the output of the main
+                // split is used by the full splits.
+                val workQueue = workerExecutor.noIsolation()
+                val unprocessedOutputs = variantOutputsList.minus(mainOutput)
+                for (variantOutput in unprocessedOutputs) {
+
+                    val manifestOutput: BuiltArtifactImpl =
+                        manifestBuiltArtifacts.getBuiltArtifact(variantOutput.variantOutputConfiguration)
+                            ?: throw RuntimeException("Cannot find build manifest for $variantOutput")
+
+                    workQueue.submit(InvokeAaptForSplitAction::class.java) { splitParameters ->
+                        splitParameters.initializeFromProfileAwareWorkAction(this.parameters)
+                        splitParameters.globalParameters.set(parameters)
+                        splitParameters.variantOutput.set(variantOutput)
+                        splitParameters.manifestOutput.set(manifestOutput)
+                    }
+                }
+            }
+        }
+        private fun chooseOutput(variantOutputs: List<VariantOutputImpl.SerializedForm>): VariantOutputImpl.SerializedForm =
+            variantOutputs.firstOrNull { variantOutput ->
+                variantOutput.variantOutputConfiguration.getFilter(
+                    FilterConfiguration.FilterType.DENSITY
+                ) == null
+            } ?: throw RuntimeException("No non-density apk found")
+
+    }
+
+
+    abstract class InvokeAaptForSplitAction : ProfileAwareWorkAction<InvokeAaptForSplitAction.Parameters>() {
+        abstract class Parameters: ProfileAwareWorkAction.Parameters() {
+            abstract val globalParameters: Property<TaskWorkActionParameters>
+            abstract val variantOutput: Property<VariantOutputImpl.SerializedForm>
+            abstract val manifestOutput: Property<BuiltArtifactImpl>
+        }
+
+        override fun run() {
+            // If we're supporting stable IDs we need to make sure the splits get exactly
+            // the same IDs as the main one.
+            val globalParameters = parameters.globalParameters.get()
+            invokeAaptForSplit(
+                parameters.variantOutput.get(),
+                parameters.manifestOutput.get(),
+                false,
+                globalParameters.aapt2.get().getLeasingAapt2(),
+                if (globalParameters.useStableIds.get()) globalParameters.outputStableIdsFile.get().asFile else null,
+                globalParameters)
+        }
+    }
 
     abstract class BaseCreationAction(
-        creationConfig: BaseCreationConfig,
+        creationConfig: ComponentCreationConfig,
         private val generateLegacyMultidexMainDexProguardRules: Boolean,
         private val baseName: String?,
         private val isLibrary: Boolean
-    ) : VariantTaskCreationAction<LinkApplicationAndroidResourcesTask, BaseCreationConfig>(
+    ) : VariantTaskCreationAction<LinkApplicationAndroidResourcesTask, ComponentCreationConfig>(
         creationConfig
     ) {
 
@@ -394,7 +443,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
         override val type: Class<LinkApplicationAndroidResourcesTask>
             get() = LinkApplicationAndroidResourcesTask::class.java
 
-        protected open fun preconditionsCheck(creationConfig: BaseCreationConfig) {}
+        protected open fun preconditionsCheck(creationConfig: ComponentCreationConfig) {}
 
         override fun handleProvider(
             taskProvider: TaskProvider<LinkApplicationAndroidResourcesTask>
@@ -436,39 +485,17 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             preconditionsCheck(creationConfig)
 
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
-            task.aapt2FromMaven.from(aapt2FromMaven)
-            task.aapt2Version = aapt2Version
-
             task.applicationId.setDisallowChanges(creationConfig.applicationId)
 
             task.incrementalFolder = creationConfig.paths.getIncrementalDir(name)
-            if (creationConfig.variantType.canHaveSplits) {
-                val splits = creationConfig.globalScope.extension.splits
 
-                val densitySet = if (splits.density.isEnable)
-                    ImmutableSet.copyOf(splits.densityFilters)
-                else
+            task.resourceConfigs.setDisallowChanges(
+                if (creationConfig.variantType.canHaveSplits) {
+                    creationConfig.resourceConfigurations
+                } else {
                     ImmutableSet.of()
-                val languageSet = if (splits.language.isEnable)
-                    ImmutableSet.copyOf(splits.languageFilters)
-                else
-                    ImmutableSet.of()
-                val abiSet = if (splits.abi.isEnable)
-                    ImmutableSet.copyOf(splits.abiFilters)
-                else
-                    ImmutableSet.of()
-                val resConfigSet = creationConfig.resourceConfigurations
-
-                task.splitList = SplitList(densitySet, languageSet, abiSet, resConfigSet)
-            } else {
-                task.splitList = SplitList(
-                    ImmutableSet.of(),
-                    ImmutableSet.of(),
-                    ImmutableSet.of(),
-                    ImmutableSet.of()
-                )
-            }
+                }
+            )
 
             task.mainSplit = creationConfig.outputs.getMainSplitOrNull()
             task.packageName.setDisallowChanges(creationConfig.packageName)
@@ -497,19 +524,26 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
             task.useMinimalKeepRules = projectOptions.get(BooleanOption.MINIMAL_KEEP_RULES)
             task.canHaveSplits.set(creationConfig.variantType.canHaveSplits)
 
-            task.mergeBlameLogFolder.setDisallowChanges(creationConfig.artifacts.get(InternalArtifactType.MERGED_RES_BLAME_FOLDER))
+            task.mergeBlameLogFolder.setDisallowChanges(
+                creationConfig.artifacts.get(
+                    InternalArtifactType.MERGED_RES_BLAME_FOLDER
+                )
+            )
 
             val variantType = creationConfig.variantType
 
             // Tests should not have feature dependencies, however because they include the
             // tested production component in their dependency graph, we see the tested feature
             // package in their graph. Therefore we have to manually not set this up for tests.
-            task.featureResourcePackages = if (variantType.isForTesting)
-                null
-            else
-                creationConfig.variantDependencies.getArtifactFileCollection(
-                    COMPILE_CLASSPATH, PROJECT, FEATURE_RESOURCE_PKG
+            if (!variantType.isForTesting) {
+                task.featureResourcePackages.fromDisallowChanges(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
+                        COMPILE_CLASSPATH, PROJECT, FEATURE_RESOURCE_PKG
+                    )
                 )
+            } else {
+                task.featureResourcePackages.disallowChanges()
+            }
 
             if (variantType.isDynamicFeature && creationConfig is DynamicFeatureCreationConfig) {
                 task.resOffset.set(creationConfig.resOffset)
@@ -521,19 +555,12 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             task.useFinalIds = !projectOptions.get(BooleanOption.USE_NON_FINAL_RES_IDS)
 
-            task.errorFormatMode = SyncOptions.getErrorFormatMode(
-                creationConfig.services.projectOptions
-            )
-
             task.manifestMergeBlameFile = creationConfig.artifacts.get(
                 InternalArtifactType.MANIFEST_MERGE_BLAME_FILE
             )
-            task.aapt2DaemonBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
-            task.androidJarInput.sdkBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
+            creationConfig.services.initializeAapt2Input(task.aapt2)
+            task.symbolTableBuildService.set(getBuildService(creationConfig.services.buildServiceRegistry))
+            task.androidJarInput.initialize(creationConfig)
 
             task.useStableIds = projectOptions[BooleanOption.ENABLE_STABLE_IDS]
 
@@ -546,7 +573,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     }
 
     internal class CreationAction(
-        creationConfig: BaseCreationConfig,
+        creationConfig: ComponentCreationConfig,
         generateLegacyMultidexMainDexProguardRules: Boolean,
         private val sourceArtifactType: TaskManager.MergeType,
         baseName: String,
@@ -558,7 +585,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
         isLibrary
     ) {
 
-        override fun preconditionsCheck(creationConfig: BaseCreationConfig) {
+        override fun preconditionsCheck(creationConfig: ComponentCreationConfig) {
             if (creationConfig.variantType.isAar) {
                 throw IllegalArgumentException("Use GenerateLibraryRFileTask")
             } else {
@@ -602,31 +629,37 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             // TODO: Remove separate flag for app R class.
             if (creationConfig.services.projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
-                && creationConfig.services.projectOptions[BooleanOption.NON_TRANSITIVE_APP_R_CLASS]) {
+                && creationConfig.services.projectOptions[BooleanOption.NON_TRANSITIVE_APP_R_CLASS]
+            ) {
                 // List of local resources, used to generate a non-transitive R for the app module.
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.LOCAL_ONLY_SYMBOL_LIST,
-                    task.localResourcesFile)
+                    task.localResourcesFile
+                )
             }
 
-            task.dependenciesFileCollection = creationConfig
-                .variantDependencies.getArtifactFileCollection(
-                    RUNTIME_CLASSPATH,
-                    ALL,
-                    AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
-                )
+            task.dependenciesFileCollection.fromDisallowChanges(
+                creationConfig
+                    .variantDependencies.getArtifactFileCollection(
+                        RUNTIME_CLASSPATH,
+                        ALL,
+                        AndroidArtifacts.ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
+                    )
+            )
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 sourceArtifactType.outputType,
                 task.inputResourcesDir
             )
 
             if (creationConfig.isPrecompileDependenciesResourcesEnabled) {
-                task.compiledDependenciesResources =
-                    creationConfig.variantDependencies.getArtifactCollection(
+                task.compiledDependenciesResources.fromDisallowChanges(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
                         RUNTIME_CLASSPATH,
                         ALL,
                         AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
-                    )
+                    ))
+            } else {
+                task.compiledDependenciesResources.disallowChanges()
             }
         }
     }
@@ -665,119 +698,131 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
             val dependencies = ArrayList<FileCollection>(2)
             dependencies.add(
                 creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(InternalArtifactType.RES_STATIC_LIBRARY))
+                    creationConfig.artifacts.get(InternalArtifactType.RES_STATIC_LIBRARY)
+                )
             )
             dependencies.add(
                 creationConfig.variantDependencies.getArtifactFileCollection(
-                    RUNTIME_CLASSPATH,
-                    ALL,
-                    AndroidArtifacts.ArtifactType.RES_STATIC_LIBRARY
+                    RUNTIME_CLASSPATH, ALL, AndroidArtifacts.ArtifactType.RES_STATIC_LIBRARY
                 )
             )
 
-            task.dependenciesFileCollection = creationConfig.services.fileCollection(dependencies)
+            task.dependenciesFileCollection.fromDisallowChanges(
+                creationConfig.services.fileCollection(
+                    dependencies
+                )
+            )
 
-            task.sharedLibraryDependencies = creationConfig.variantDependencies.getArtifactFileCollection(
-                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                AndroidArtifacts.ArtifactScope.ALL,
-                AndroidArtifacts.ArtifactType.RES_SHARED_STATIC_LIBRARY
+            task.sharedLibraryDependencies.fromDisallowChanges(
+                creationConfig.variantDependencies.getArtifactFileCollection(
+                    COMPILE_CLASSPATH, ALL, AndroidArtifacts.ArtifactType.RES_SHARED_STATIC_LIBRARY
+                )
             )
 
             task.isNamespaced = true
         }
     }
 
-    private class AaptSplitInvoker @Inject
-    internal constructor(private val params: AaptSplitInvokerParams) : Runnable {
+    companion object {
+        private val LOG = Logging.getLogger(LinkApplicationAndroidResourcesTask::class.java)
 
-        companion object {
-            @Synchronized
-            @Throws(IOException::class)
-            fun appendOutput(
-                applicationId: String,
-                variantName: String,
-                output: BuiltArtifactImpl,
-                resPackageOutputFolder: File
-            ) {
-                val currentBuiltArtifacts = ArrayList(
-                    BuiltArtifactsLoaderImpl.loadFromDirectory(resPackageOutputFolder)?.elements
-                        ?: ArrayList()
-                )
-                currentBuiltArtifacts.add(output)
-                BuiltArtifactsImpl(
-                    artifactType = InternalArtifactType.PROCESSED_RES,
-                    applicationId = applicationId,
-                    variantName = variantName,
-                    elements = currentBuiltArtifacts
-                ).saveToDirectory(resPackageOutputFolder)
-            }
+        private fun getOutputBaseNameFile(
+            variantOutput: VariantOutputImpl.SerializedForm,
+            resPackageOutputFolder: File
+        ): File {
+            return File(
+                resPackageOutputFolder,
+                FN_RES_BASE + RES_QUALIFIER_SEP + variantOutput.fullName + SdkConstants.DOT_RES
+            )
         }
 
-        override fun run() {
-            try {
-                invokeAaptForSplit(params)
-            } catch (e: IOException) {
-                throw RuntimeException(e)
-            }
-
+        @Synchronized
+        @Throws(IOException::class)
+        fun appendOutput(
+            applicationId: String,
+            variantName: String,
+            output: BuiltArtifactImpl,
+            resPackageOutputFolder: File
+        ) {
+            val currentBuiltArtifacts = ArrayList(
+                BuiltArtifactsLoaderImpl.loadFromDirectory(resPackageOutputFolder)?.elements
+                    ?: ArrayList()
+            )
+            currentBuiltArtifacts.add(output)
+            BuiltArtifactsImpl(
+                artifactType = InternalArtifactType.PROCESSED_RES,
+                applicationId = applicationId,
+                variantName = variantName,
+                elements = currentBuiltArtifacts
+            ).saveToDirectory(resPackageOutputFolder)
         }
 
         @Throws(IOException::class)
-        private fun invokeAaptForSplit(params: AaptSplitInvokerParams) {
+        private fun invokeAaptForSplit(
+            variantOutput: VariantOutputImpl.SerializedForm,
+            manifestOutput: BuiltArtifactImpl,
+            generateRClass: Boolean,
+            aapt2: Aapt2,
+            stableIdsInputFile: File?,
+            parameters: TaskWorkActionParameters) {
 
             val featurePackagesBuilder = ImmutableList.builder<File>()
-            for (featurePackage in params.featureResourcePackages) {
+            for (featurePackage in parameters.featureResourcePackages.files) {
                 val buildElements = BuiltArtifactsLoaderImpl.loadFromDirectory(featurePackage)
 
                 if (buildElements?.elements != null && buildElements.elements.isNotEmpty()) {
-                    val mainBuildOutput = buildElements.getBuiltArtifact(VariantOutputConfiguration.OutputType.SINGLE)
+                    val mainBuildOutput =
+                        buildElements.getBuiltArtifact(VariantOutputConfiguration.OutputType.SINGLE)
                     if (mainBuildOutput != null) {
                         featurePackagesBuilder.add(File(mainBuildOutput.outputFile))
                     } else {
                         throw IOException(
-                            "Cannot find PROCESSED_RES output for " + params.variantOutput
+                            "Cannot find PROCESSED_RES output for " + variantOutput
                         )
                     }
                 }
             }
 
             val resOutBaseNameFile =
-                getOutputBaseNameFile(params.variantOutput, params.resPackageOutputFolder)
-            val manifestFile = params.manifestOutput.outputFile
+                getOutputBaseNameFile(variantOutput,
+                    parameters.resPackageOutputDirectory.get().asFile
+                )
+            val manifestFile = manifestOutput.outputFile
 
             var packageForR: String? = null
             var srcOut: File? = null
             var symbolOutputDir: File? = null
             var proguardOutputFile: File? = null
             var mainDexListProguardOutputFile: File? = null
-            if (params.generateCode) {
-                packageForR = if (params.variantType.isForTesting) {
+            if (generateRClass) {
+                packageForR = if (parameters.variantType.get().isForTesting) {
                     // Workaround for b/162244493: Use application ID in the test variant to match
                     // previous behaviour.
-                    // TODO(b/162244493): migrate everything to use the actual package name in
-                    //  AGP 5.0.
-                    params.applicationId
+                    // TODO(170945282): migrate everything to use the actual package name in AGP
+                    //  7.0.
+                    parameters.applicationId.get()
                 } else {
-                    params.packageName
+                    parameters.packageName.get()
                 }
 
+
                 // we have to clean the source folder output in case the package name changed.
-                srcOut = params.sourceOutputDir
+                srcOut = parameters.sourceOutputDirectory.orNull?.asFile
                 if (srcOut != null) {
                     FileUtils.cleanOutputDir(srcOut)
                 }
 
-                symbolOutputDir = params.textSymbolOutputFile?.parentFile
-                proguardOutputFile = params.proguardOutputFile
-                mainDexListProguardOutputFile = params.mainDexListProguardOutputFile
+                symbolOutputDir = parameters.textSymbolOutputFile.orNull?.asFile?.parentFile
+                proguardOutputFile = parameters.proguardOutputFile.orNull?.asFile
+                mainDexListProguardOutputFile = parameters.mainDexListProguardOutputFile.orNull?.asFile
             }
 
-            val densityFilterData = params.variantOutput.variantOutputConfiguration
+            val densityFilterData = variantOutput.variantOutputConfiguration
                 .getFilter(FilterConfiguration.FilterType.DENSITY)
             // if resConfigs is set, we should not use our preferredDensity.
             val preferredDensity =
                 densityFilterData?.identifier
-                    ?: if (params.resourceConfigs.isEmpty()) params.buildTargetDensity else null
+                    ?: if (parameters.resourceConfigs.get().isEmpty()) parameters.buildTargetDensity.orNull else null
 
 
             try {
@@ -787,87 +832,76 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
                 run {
                     val configBuilder = AaptPackageConfig.Builder()
                         .setManifestFile(File(manifestFile))
-                        .setOptions(params.aaptOptions)
+                        .setOptions(parameters.aaptOptions.get())
                         .setCustomPackageForR(packageForR)
                         .setSymbolOutputDir(symbolOutputDir)
                         .setSourceOutputDir(srcOut)
                         .setResourceOutputApk(resOutBaseNameFile)
                         .setProguardOutputFile(proguardOutputFile)
                         .setMainDexListProguardOutputFile(mainDexListProguardOutputFile)
-                        .setVariantType(params.variantType)
-                        .setResourceConfigs(params.resourceConfigs)
+                        .setVariantType(parameters.variantType.get())
+                        .setResourceConfigs(parameters.resourceConfigs.get())
                         .setPreferredDensity(preferredDensity)
-                        .setPackageId(params.packageId)
+                        .setPackageId(parameters.packageId.orNull)
                         .setAllowReservedPackageId(
-                            params.packageId != null && params.packageId < FeatureSetMetadata.BASE_ID
+                            parameters.packageId.isPresent && parameters.packageId.get() < FeatureSetMetadata.BASE_ID
                         )
                         .setDependentFeatures(featurePackagesBuilder.build())
-                        .setImports(params.imports)
-                        .setIntermediateDir(params.incrementalFolder)
-                        .setAndroidJarPath(params.androidJarPath)
-                        .setUseConditionalKeepRules(params.useConditionalKeepRules)
-                        .setUseMinimalKeepRules(params.useMinimalKeepRules)
-                        .setUseFinalIds(params.useFinalIds)
-                        .addResourceDirectories(params.compiledDependenciesResourcesDirs)
-                        .setEmitStableIdsFile(params.stableIdsOutputFile)
-                        .setConsumeStableIdsFile(params.stableIdsInputFile)
-                        .setLocalSymbolTableFile(params.localResourcesFile)
+                        .setImports(parameters.imports.files)
+                        .setIntermediateDir(parameters.incrementalDirectory.get().asFile)
+                        .setAndroidJarPath(parameters.androidJarInput.get().getAndroidJar().get().absolutePath)
+                        .setUseConditionalKeepRules(parameters.useConditionalKeepRules.get())
+                        .setUseMinimalKeepRules(parameters.useMinimalKeepRules.get())
+                        .setUseFinalIds(parameters.useFinalIds.get())
+                        .addResourceDirectories(parameters.compiledDependenciesResources.files.reversed().toImmutableList())
+                        .setEmitStableIdsFile(parameters.outputStableIdsFile.orNull?.asFile)
+                        .setConsumeStableIdsFile(stableIdsInputFile)
+                        .setLocalSymbolTableFile(parameters.localResourcesFile.orNull?.asFile)
+                        .setMergeBlameDirectory(parameters.mergeBlameDirectory.get().asFile)
+                        .setManifestMergeBlameFile(parameters.manifestMergeBlameFile.orNull?.asFile)
 
-                    if (params.isNamespaced) {
-                        configBuilder.setStaticLibraryDependencies(ImmutableList.copyOf(params.dependencies))
+                    if (parameters.namespaced.get()) {
+                        configBuilder.setStaticLibraryDependencies(ImmutableList.copyOf(parameters.dependencies.files))
                     } else {
-                        if (params.generateCode) {
-                            configBuilder.setLibrarySymbolTableFiles(params.dependencies)
+                        if (generateRClass) {
+                            configBuilder.setLibrarySymbolTableFiles(parameters.dependencies.files)
                         }
-                        configBuilder.addResourceDir(checkNotNull(params.inputResourcesDir))
+                        configBuilder.addResourceDir(checkNotNull(parameters.inputResourcesDirectory.orNull?.asFile))
                     }
 
-                    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-                    Preconditions.checkNotNull<Aapt2DaemonServiceKey>(
-                        params.aapt2ServiceKey, "AAPT2 daemon manager service not initialized"
-                    )
                     val logger = Logging.getLogger(LinkApplicationAndroidResourcesTask::class.java)
-                    try {
-                        getAaptDaemon(params.aapt2ServiceKey!!).use { aaptDaemon ->
 
-                            processResources(
-                                aaptDaemon,
-                                configBuilder.build(),
-                                params.rClassOutputJar,
-                                LoggerWrapper(logger)
-                            )
-                        }
-                    } catch (e: Aapt2Exception) {
-                        throw rewriteLinkException(
-                            e,
-                            params.errorFormatMode,
-                            params.mergeBlameFolder,
-                            params.manifestMergeBlameFile,
-                            logger
-                        )
-                    }
+                    processResources(
+                        aapt = aapt2,
+                        aaptConfig = configBuilder.build(),
+                        rJar = if(generateRClass) parameters.rClassOutputJar.orNull?.asFile else null,
+                        logger = logger,
+                        errorFormatMode = parameters.aapt2.get().getErrorFormatMode(),
+                        symbolTableLoader = parameters.symbolTableBuildService.get()::loadClasspath
+                    )
 
                     if (LOG.isInfoEnabled) {
                         LOG.info("Aapt output file {}", resOutBaseNameFile.absolutePath)
                     }
                 }
-                if (params.generateCode
-                    && (params.isLibrary || !params.dependencies.isEmpty())
-                    && params.symbolsWithPackageNameOutputFile != null
+
+                if (generateRClass
+                    && (parameters.library.get() || !parameters.dependencies.files.isEmpty())
+                    && parameters.symbolsWithPackageNameOutputFile.isPresent
                 ) {
                     SymbolIo.writeSymbolListWithPackageName(
-                        params.textSymbolOutputFile!!.toPath(),
+                        parameters.textSymbolOutputFile.orNull?.asFile!!.toPath(),
                         packageForR,
-                        params.symbolsWithPackageNameOutputFile.toPath()
+                        parameters.symbolsWithPackageNameOutputFile.get().asFile.toPath()
                     )
                 }
                 appendOutput(
-                    params.applicationId.orEmpty(),
-                    params.variantName,
-                    params.manifestOutput.newOutput(
+                    parameters.applicationId.get().orEmpty(),
+                    parameters.variantName.get(),
+                    manifestOutput.newOutput(
                         resOutBaseNameFile.toPath()
                     ),
-                    params.resPackageOutputFolder
+                    parameters.resPackageOutputDirectory.get().asFile
                 )
             } catch (e: ProcessException) {
                 throw BuildException(
@@ -877,48 +911,6 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
         }
     }
 
-    private class AaptSplitInvokerParams internal constructor(
-        val variantOutput: VariantOutputImpl.SerializedForm,
-        val manifestOutput: BuiltArtifactImpl,
-        val dependencies: Set<File>,
-        val localResourcesFile: File?,
-        val imports: Set<File>,
-        splitList: SplitList,
-        val featureResourcePackages: Set<File>,
-        val generateCode: Boolean,
-        val aapt2ServiceKey: Aapt2DaemonServiceKey?,
-        val compiledDependenciesResourcesDirs: List<File>,
-        task: LinkApplicationAndroidResourcesTask,
-        val rClassOutputJar: File? = null,
-        val stableIdsInputFile: File?,
-        val aaptOptions: AaptOptions
-    ) : Serializable {
-        val resourceConfigs: Set<String> = splitList.resourceConfigs
-        val resPackageOutputFolder: File = task.resPackageOutputFolder.get().asFile
-        val isNamespaced: Boolean = task.isNamespaced
-        val packageName: String = task.packageName.get()
-        val applicationId: String? = task.applicationId.get()
-        val sourceOutputDir: File? = task.getSourceOutputDir()
-        val textSymbolOutputFile: File? = task.textSymbolOutputFileProperty.orNull?.asFile
-        val proguardOutputFile: File? = task.proguardOutputFile.orNull?.asFile
-        val mainDexListProguardOutputFile: File? = task.mainDexListProguardOutputFile.orNull?.asFile
-        val buildTargetDensity: String? = task.buildTargetDensity
-        val variantType: VariantType = task.type
-        val variantName: String = task.name
-        val packageId: Int? = task.resOffset.orNull
-        val incrementalFolder: File = task.incrementalFolder!!
-        val androidJarPath: String = task.androidJarInput.getAndroidJar().get().absolutePath
-        val inputResourcesDir: File? = task.inputResourcesDir.orNull?.asFile
-        val mergeBlameFolder: File = task.mergeBlameLogFolder.get().asFile
-        val isLibrary: Boolean = task.isLibrary
-        val symbolsWithPackageNameOutputFile: File? = task.symbolsWithPackageNameOutputFile.orNull?.asFile
-        val useConditionalKeepRules: Boolean = task.useConditionalKeepRules
-        val useMinimalKeepRules: Boolean = task.useMinimalKeepRules
-        val useFinalIds: Boolean = task.useFinalIds
-        val errorFormatMode: SyncOptions.ErrorFormatMode = task.errorFormatMode
-        val manifestMergeBlameFile: File? = task.manifestMergeBlameFile.orNull?.asFile
-        val stableIdsOutputFile: File? = task.stableIdsOutputFileProperty.orNull?.asFile
-    }
 
     @Internal // sourceOutputDirProperty is already marked as @OutputDirectory
     override fun getSourceOutputDir(): File? {
@@ -936,35 +928,5 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
     fun setType(type: VariantType) {
         this.type = type
-    }
-
-    /**
-     * Returns a file collection of the directories containing the compiled dependencies resource
-     * files.
-     */
-    @Optional
-    @InputFiles
-    @PathSensitive(PathSensitivity.RELATIVE)
-    fun getCompiledDependenciesResources(): FileCollection? {
-        return compiledDependenciesResources?.artifactFiles
-    }
-
-    /**
-     * Un-mangle a split name as created by the aapt tool to retrieve a split name as configured in
-     * the project's build.gradle.
-     *
-     *
-     * when dealing with several split language in a single split, each language (+ optional
-     * region) will be separated by an underscore.
-     *
-     *
-     * note that there is currently an aapt bug, remove the 'r' in the region so for instance,
-     * fr-rCA becomes fr-CA, temporarily put it back until it is fixed.
-     *
-     * @param splitWithOptionalSuffix the mangled split name.
-     */
-    private fun unMangleSplitName(splitWithOptionalSuffix: String): String {
-        val mangledName = splitWithOptionalSuffix.replace("_".toRegex(), ",")
-        return if (mangledName.contains("-r")) mangledName else mangledName.replace("-", "-r")
     }
 }

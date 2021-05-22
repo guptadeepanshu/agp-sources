@@ -16,10 +16,13 @@
 
 package com.android.tools.mlkit;
 
+import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.google.common.annotations.VisibleForTesting;
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.Set;
+import org.tensorflow.lite.support.metadata.MetadataExtractor;
 import org.tensorflow.lite.support.metadata.schema.ModelMetadata;
 import org.tensorflow.lite.support.metadata.schema.TensorMetadata;
 
@@ -27,7 +30,9 @@ import org.tensorflow.lite.support.metadata.schema.TensorMetadata;
 class ModelVerifier {
     private static final String MODEL_UNSUPPORTED_PREFIX = "This model is not supported: ";
 
-    static void verifyModel(ByteBuffer byteBuffer) throws TfliteModelException {
+    @NonNull
+    static MetadataExtractor getExtractorWithVerification(@NonNull ByteBuffer byteBuffer)
+            throws TfliteModelException {
         MetadataExtractor extractor;
         try {
             extractor = new MetadataExtractor(byteBuffer);
@@ -36,11 +41,12 @@ class ModelVerifier {
         }
 
         verifyModel(extractor);
+        return extractor;
     }
 
     @VisibleForTesting
-    static void verifyModel(MetadataExtractor extractor) throws TfliteModelException {
-        ModelMetadata metadata = extractor.getModelMetaData();
+    static void verifyModel(@NonNull MetadataExtractor extractor) throws TfliteModelException {
+        ModelMetadata metadata = extractor.hasMetadata() ? extractor.getModelMetadata() : null;
 
         Set<String> inputNameSet = new HashSet<>();
         for (int i = 0; i < extractor.getInputTensorCount(); i++) {
@@ -89,7 +95,7 @@ class ModelVerifier {
     }
 
     private static void verifyTensorMetadata(
-            TensorMetadata tensorMetadata, int index, TensorInfo.Source source)
+            @Nullable TensorMetadata tensorMetadata, int index, @NonNull TensorInfo.Source source)
             throws TfliteModelException {
         if (tensorMetadata == null) {
             throw new TfliteModelException(
@@ -108,7 +114,7 @@ class ModelVerifier {
     }
 
     @VisibleForTesting
-    static void verifyDataType(byte dataType, int index, TensorInfo.Source source)
+    static void verifyDataType(byte dataType, int index, @NonNull TensorInfo.Source source)
             throws TfliteModelException {
         if (TensorInfo.DataType.fromByte(dataType) == TensorInfo.DataType.UNKNOWN) {
             throw new TfliteModelException(

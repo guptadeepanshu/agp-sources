@@ -21,7 +21,6 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS;
 
 import com.android.annotations.NonNull;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition;
 import org.gradle.api.attributes.Attribute;
 
@@ -60,9 +59,11 @@ public class AndroidArtifacts {
     private static final String TYPE_CLASSES_JAR = "android-classes-jar"; // In AAR
     private static final String TYPE_CLASSES_DIR = "android-classes-directory"; // Not in AAR
     private static final String TYPE_SHARED_CLASSES = "android-shared-classes";
+    private static final String TYPE_CLASSES_FIXED_FRAMES_JAR = "android-classes-fixed-frames-jar";
     private static final String TYPE_DEX = "android-dex";
     private static final String TYPE_DEX_AND_KEEP_RULES = "android-dex-and-keep-rules";
     private static final String TYPE_KEEP_RULES = "android-keep-rules";
+    private static final String TYPE_ASM_INSTRUMENTED_JARS = "android-asm-instrumented-jars";
     private static final String TYPE_JAVA_RES = "android-java-res";
     private static final String TYPE_SHARED_JAVA_RES = "android-shared-java-res";
     private static final String TYPE_MANIFEST = "android-manifest";
@@ -79,6 +80,10 @@ public class AndroidArtifacts {
     private static final String TYPE_AIDL = "android-aidl";
     private static final String TYPE_RENDERSCRIPT = "android-renderscript";
     private static final String TYPE_LINT_JAR = "android-lint";
+    private static final String TYPE_LINT_PROJECT_GLOBAL_MODEL = "android-lint-project-global-model";
+    private static final String TYPE_LINT_VARIANT_DEPENDENCIES_MODEL = "android-lint-variant-dependencies-model";
+    private static final String TYPE_LOCAL_AAR_FOR_LINT = "android-lint-local-aar";
+    private static final String TYPE_LOCAL_EXPLODED_AAR_FOR_LINT = "android-lint-exploded-aar";
     private static final String TYPE_EXT_ANNOTATIONS = "android-ext-annot";
     private static final String TYPE_PUBLIC_RES = "android-public-res";
     private static final String TYPE_SYMBOL = "android-symbol";
@@ -93,6 +98,7 @@ public class AndroidArtifacts {
     private static final String TYPE_AAR_OR_JAR = "android-aar-or-jar";
     private static final String TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS =
             "aar-class-list-and-res-symbols";
+    private static final String TYPE_JAR_ClASS_LIST = "jar-class-list";
     private static final String TYPE_COMPILED_DEPENDENCIES_RESOURCES =
             "android-compiled-dependencies-resources";
     private static final String TYPE_MODULE_BUNDLE = "android-module-bundle";
@@ -111,7 +117,10 @@ public class AndroidArtifacts {
     private static final String TYPE_BASE_MODULE_METADATA = "android-base-module-metadata";
     private static final String TYPE_FEATURE_RESOURCE_PKG = "android-feature-res-ap_";
     private static final String TYPE_FEATURE_DEX = "android-feature-dex";
-    private static final String TYPE_FEATURE_SIGNING_CONFIG = "android-feature-signing-config";
+    private static final String TYPE_FEATURE_SIGNING_CONFIG_DATA =
+            "android-feature-signing-config-data";
+    private static final String TYPE_FEATURE_SIGNING_CONFIG_VERSIONS =
+            "android-feature-signing-config-versions";
     private static final String TYPE_FEATURE_NAME = "android-feature-name";
 
     // types for reverse metadata content.
@@ -137,18 +146,8 @@ public class AndroidArtifacts {
 
     private static final String TYPE_PREFAB_PACKAGE = "android-prefab";
 
-    private static final String TYPE_DESUGAR_LIB_PROJECT_KEEP_RULES =
-            "android-desugar-lib-project-keep-rules";
-    private static final String TYPE_DESUGAR_LIB_SUBPROJECT_KEEP_RULES =
-            "android-desugar-lib-subproject-keep-rules";
-    private static final String TYPE_DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES =
-            "android-desugar-lib-external-libs-keep-rules";
-    private static final String TYPE_DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES =
-            "android-desugar-lib-mixed-scope-keep-rules";
-    private static final String TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES =
-            "android-desugar-lib-external-file-keep-rules";
-    private static final String TYPE_DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES =
-            "android-desugar-lib-external-artifact-transform-file-keep-rules";
+    private static final String TYPE_DESUGAR_LIB_MERGED_KEEP_RULES =
+            "android-desugar-lib-merged-keep-rules";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -279,6 +278,8 @@ public class AndroidArtifacts {
          */
         CLASSES_DIR(TYPE_CLASSES_DIR),
         SHARED_CLASSES(TYPE_SHARED_CLASSES),
+        /** A jar containing classes with recalculated stack frames */
+        CLASSES_FIXED_FRAMES_JAR(TYPE_CLASSES_FIXED_FRAMES_JAR),
         // Jar or processed jar, used for purposes such as computing the annotation processor
         // classpath or building the model.
         // IMPORTANT: Consumers should generally use PROCESSED_JAR instead of JAR, as the jars may
@@ -293,6 +294,9 @@ public class AndroidArtifacts {
         DEX_AND_KEEP_RULES(TYPE_DEX_AND_KEEP_RULES),
         // a file named keep_rules for shrinking desugar lib
         KEEP_RULES(TYPE_KEEP_RULES),
+
+        // Dependencies jars that are instrumented by the registered asm class visitors
+        ASM_INSTRUMENTED_JARS(TYPE_ASM_INSTRUMENTED_JARS),
 
         // A list of enumerated runtime classes by module,
         // used to reduce IO in checking for duplicates
@@ -351,6 +355,13 @@ public class AndroidArtifacts {
         AAPT_PROGUARD_RULES(TYPE_AAPT_PROGUARD_RULES),
 
         LINT(TYPE_LINT_JAR),
+        LINT_PROJECT_GLOBAL_MODEL(TYPE_LINT_PROJECT_GLOBAL_MODEL),
+        LINT_VARIANT_DEPENDENCIES_MODEL(TYPE_LINT_VARIANT_DEPENDENCIES_MODEL),
+        // An AAR built from a library project for lint to consume.
+        LOCAL_AAR_FOR_LINT(TYPE_LOCAL_AAR_FOR_LINT),
+        // Exploded AARs from library projects for lint to consume when not run with check
+        // dependencies.
+        LOCAL_EXPLODED_AAR_FOR_LINT(TYPE_LOCAL_EXPLODED_AAR_FOR_LINT),
 
         APK_MAPPING(TYPE_MAPPING),
         APK_METADATA(TYPE_METADATA),
@@ -374,7 +385,12 @@ public class AndroidArtifacts {
         // the res ID offset, both tied to the feature module path. Published by the base for the
         // other features to consume and find their own metadata.
         FEATURE_SET_METADATA(TYPE_FEATURE_SET_METADATA),
-        FEATURE_SIGNING_CONFIG(TYPE_FEATURE_SIGNING_CONFIG),
+        // file containing the signing config data to be used by any features. Published by the base
+        // for the features to consume.
+        FEATURE_SIGNING_CONFIG_DATA(TYPE_FEATURE_SIGNING_CONFIG_DATA),
+        // file containing the signing config versions to be used by any features. Published by the
+        // base for the features to consume.
+        FEATURE_SIGNING_CONFIG_VERSIONS(TYPE_FEATURE_SIGNING_CONFIG_VERSIONS),
 
         // file containing the base module info (appId, versionCode, debuggable, ...).
         // This is published by the base module and read by the dynamic feature modules
@@ -413,19 +429,15 @@ public class AndroidArtifacts {
         PROCESSED_AAR(TYPE_PROCESSED_AAR),
         EXPLODED_AAR(TYPE_EXPLODED_AAR),
         AAR_OR_JAR(TYPE_AAR_OR_JAR), // See ArtifactUtils for how this is used.
-        // A directory containing a two files; a txt file containing all AAR .class filepaths
-        // containing unique AAR resource symbols.
-        AAR_CLASS_LIST_AND_RES_SYMBOLS(TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS),
+        // A file containing unique resource symbols from ANDROID_RES.
+        ANDROID_RES_SYMBOLS(TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS),
+        // A file containing classpaths from CLASSES_JAR.
+        JAR_CLASS_LIST(TYPE_JAR_ClASS_LIST),
 
         NAVIGATION_JSON(TYPE_NAVIGATION_JSON),
 
-        DESUGAR_LIB_PROJECT_KEEP_RULES(TYPE_DESUGAR_LIB_PROJECT_KEEP_RULES),
-        DESUGAR_LIB_SUBPROJECT_KEEP_RULES(TYPE_DESUGAR_LIB_SUBPROJECT_KEEP_RULES),
-        DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES),
-        DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES(TYPE_DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES),
-        DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES(TYPE_DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES),
-        DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES(
-                TYPE_DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES);
+        // merged desugar lib keep rules from dynamic feature modules
+        DESUGAR_LIB_MERGED_KEEP_RULES(TYPE_DESUGAR_LIB_MERGED_KEEP_RULES);
 
         @NonNull private final String type;
 

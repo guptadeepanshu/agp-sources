@@ -34,10 +34,12 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
+import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
+import java.util.Collections
 
 /**
  * Implementation of the [Artifacts] Variant API interface.
@@ -55,7 +57,8 @@ class ArtifactsImpl(
 
     private val storageProvider = StorageProviderImpl()
     private val objects= project.objects
-    private val buildDirectory = project.layout.buildDirectory
+    internal val buildDirectory = project.layout.buildDirectory
+    private val outstandingRequests = Collections.synchronizedList(ArrayList<ArtifactOperationRequest>())
 
     override fun getBuiltArtifactsLoader(): BuiltArtifactsLoader {
         return BuiltArtifactsLoaderImpl()
@@ -79,7 +82,9 @@ class ArtifactsImpl(
             = getArtifactContainer(type).get()
 
     override fun <TaskT : Task> use(taskProvider: TaskProvider<TaskT>): TaskBasedOperationImpl<TaskT> {
-        return TaskBasedOperationImpl(objects, this, taskProvider)
+        return TaskBasedOperationImpl(objects, this, taskProvider).also {
+            outstandingRequests.add(it)
+        }
     }
 
     // End of public API implementation, start of private AGP services.
@@ -90,6 +95,16 @@ class ArtifactsImpl(
      */
     internal fun <T: FileSystemLocation> getOutputPath(type: Artifact<T>, vararg paths: String)=
         type.getOutputPath(buildDirectory, identifier, *paths)
+
+    /**
+     * Returns a [RegularFile] that can be used to output a [SingleArtifact]
+     * @param type expect output [ArtifactType]
+     * @param paths the extra folder to add when constructing the file path.
+     */
+    internal fun getOutputRegularFile(
+            type: SingleArtifact<RegularFile>,
+            vararg paths: String) =
+            buildDirectory.file(type.getOutputPath(buildDirectory, identifier, *paths).absolutePath)
 
     /**
      * Returns the [ArtifactContainer] for the passed [type]. The instance may be allocated as part
@@ -233,6 +248,24 @@ class ArtifactsImpl(
      * The returned file collection is final but its content can change.
      */
     fun getAllClasses(): FileCollection = allClasses
+
+    fun addRequest(request: ArtifactOperationRequest) {
+        outstandingRequests.add(request)
+    }
+
+    fun closeRequest(request: ArtifactOperationRequest) {
+        outstandingRequests.remove(request)
+    }
+
+    fun ensureAllOperationsAreSatisfied() {
+        if (outstandingRequests.isEmpty()) return
+        throw RuntimeException(outstandingRequests.joinToString(
+            separator = "\n\t",
+            prefix = "The following Variant API operations are incomplete :\n",
+            transform = ArtifactOperationRequest::description,
+            postfix = "\nMake sure to correctly chain all calls."
+        ))
+    }
 }
 
 
@@ -278,7 +311,9 @@ internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSyste
         val artifactContainer = artifactsImpl.getArtifactContainer(type)
         taskProvider.configure {
             // Regular-file artifacts require a file name (see bug 151076862)
-            if (type.kind is ArtifactKind.FILE && fileName == null) {
+            if (type.kind is ArtifactKind.FILE
+                && fileName.isNullOrEmpty()
+                && type.getFileSystemLocationName().isNullOrEmpty()) {
                 fileName = DEFAULT_FILE_NAME_OF_REGULAR_FILE_ARTIFACTS
             }
             val outputAbsolutePath = when {

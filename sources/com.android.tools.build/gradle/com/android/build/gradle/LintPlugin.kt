@@ -22,9 +22,10 @@ import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.plugins.BasePlugin
 import com.android.build.gradle.internal.services.DslServicesImpl
+import com.android.build.gradle.internal.services.LintClassLoaderBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.tasks.LintStandaloneTask
-import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.SyncOptions
 import org.gradle.api.Action
 import org.gradle.api.Plugin
@@ -118,6 +119,7 @@ open class LintPlugin : Plugin<Project> {
             task.lintOptions = lintOptions
             task.lintChecks = customLintChecksConfig
             task.outputs.upToDateWhen { false }
+            task.lintClassLoader.set(LintClassLoaderBuildService.RegistrationAction(project).execute())
         }
     }
 
@@ -137,15 +139,20 @@ open class LintPlugin : Plugin<Project> {
         val objectFactory = project.objects
         val logger = project.logger
         val projectPath = project.path
-        val projectOptions = ProjectOptions(project)
+        val projectOptions = ProjectOptionService.RegistrationAction(project).execute().get()
+            .projectOptions
         val syncIssueReporter =
-            SyncIssueReporterImpl(SyncOptions.getModelQueryMode(projectOptions), logger)
+                SyncIssueReporterImpl(
+                        SyncOptions.getModelQueryMode(projectOptions),
+                        SyncOptions.getErrorFormatMode(projectOptions),
+                        logger)
         this.syncIssueReporter = syncIssueReporter
         val deprecationReporter =
             DeprecationReporterImpl(syncIssueReporter, projectOptions, projectPath)
         projectServices = ProjectServices(
             syncIssueReporter, deprecationReporter, objectFactory, project.logger,
-            project.providers, project.layout, projectOptions, project.gradle.sharedServices
+            project.providers, project.layout, projectOptions, project.gradle.sharedServices,
+            maxWorkerCount = project.gradle.startParameter.maxWorkerCount
         ) { o: Any -> project.file(o) }
     }
 }

@@ -17,9 +17,13 @@
 package com.android.build.gradle.internal.services
 
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
+import org.gradle.api.provider.Provider
 import java.io.File
 
-class TaskCreationServicesImpl(projectServices: ProjectServices) :
+class TaskCreationServicesImpl(
+    override val variantPropertiesApiServices: VariantPropertiesApiServices,
+    projectServices: ProjectServices) :
     BaseServicesImpl(projectServices), TaskCreationServices {
 
     override fun file(file: Any): File = projectServices.fileResolver(file)
@@ -29,4 +33,12 @@ class TaskCreationServicesImpl(projectServices: ProjectServices) :
 
     override fun fileCollection(vararg files: Any): ConfigurableFileCollection =
         projectServices.objectFactory.fileCollection().from(*files)
+
+    override fun initializeAapt2Input(aapt2Input: Aapt2Input) {
+        projectServices.initializeAapt2Input(aapt2Input)
+    }
+
+    override fun <T> provider(callable: () -> T): Provider<T> {
+        return projectServices.providerFactory.provider(callable)
+    }
 }

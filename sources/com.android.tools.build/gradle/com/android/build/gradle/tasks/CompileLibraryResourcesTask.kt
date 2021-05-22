@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The Android Open Source Project
+ * Copyright (C) 2020 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,205 +17,221 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants.FD_RES_VALUES
-import com.android.build.api.component.impl.ComponentPropertiesImpl
-import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.aapt.SharedExecutorResourceCompilationService
-import com.android.build.gradle.internal.res.getAapt2FromMavenAndVersion
+import com.android.build.gradle.internal.aapt.WorkerExecutorResourceCompilationService
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.Aapt2DaemonBuildService
-import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
-import com.android.build.gradle.internal.services.Aapt2WorkersBuildService
-import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
+import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
-import com.android.build.gradle.options.BooleanOption
-import com.android.build.gradle.options.SyncOptions
+import com.android.builder.files.SerializableInputChanges
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
 import com.android.ide.common.resources.CompileResourceRequest
+import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
-import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileType
+import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.work.ChangeType
-import org.gradle.work.FileChange
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
+import org.gradle.workers.WorkerExecutor
 import java.io.File
-import java.io.Serializable
 import javax.inject.Inject
 
 @CacheableTask
 abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
-    private lateinit var errorFormatMode: SyncOptions.ErrorFormatMode
-
     @get:InputFiles
     @get:Incremental
     @get:PathSensitive(PathSensitivity.ABSOLUTE) // TODO(b/141301405): use relative paths
-    abstract val mergedLibraryResourcesDir: DirectoryProperty
+    abstract val inputDirectories: ConfigurableFileCollection
 
     @get:Input
-    var pseudoLocalesEnabled: Boolean = false
-        private set
+    abstract val pseudoLocalesEnabled: Property<Boolean>
 
     @get:Input
-    var crunchPng: Boolean = true
-        private set
+    abstract val crunchPng: Property<Boolean>
 
     @get:Input
-    lateinit var aapt2Version: String
-        private set
-
-    @get:Internal
-    abstract val aapt2FromMaven: ConfigurableFileCollection
+    abstract val excludeValuesFiles: Property<Boolean>
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
-    @get:Input
-    var useJvmResourceCompiler: Boolean = false
-        private set
+    @get:OutputDirectory
+    @get:Optional
+    abstract val partialRDirectory: DirectoryProperty
 
-    @get:Internal
-    abstract val aapt2WorkersBuildService: Property<Aapt2WorkersBuildService>
-
-    @get:Internal
-    abstract val aapt2DaemonBuildService: Property<Aapt2DaemonBuildService>
+    @get:Nested
+    abstract val aapt2: Aapt2Input
 
     override fun doTaskAction(inputChanges: InputChanges) {
-        val aapt2ServiceKey = aapt2DaemonBuildService.get().registerAaptService(
-            aapt2FromMaven.singleFile, LoggerWrapper(logger)
-        )
-
-        getWorkerFacadeWithWorkers().use { workers ->
-            val requests = ImmutableList.builder<CompileResourceRequest>()
-
-            if (inputChanges.isIncremental) {
-                doIncrementalTaskAction(
-                    inputChanges.getFileChanges(mergedLibraryResourcesDir),
-                    requests
+        workerExecutor.noIsolation()
+            .submit(CompileLibraryResourcesAction::class.java) { parameters ->
+                parameters.initializeFromAndroidVariantTask(this)
+                parameters.outputDirectory.set(outputDir)
+                parameters.aapt2.set(aapt2)
+                parameters.incremental.set(inputChanges.isIncremental)
+                parameters.incrementalChanges.set(
+                    if (inputChanges.isIncremental) {
+                        inputChanges.getChangesInSerializableForm(inputDirectories)
+                    } else {
+                        null
+                    }
                 )
-            } else {
-                // do full task action
-                FileUtils.deleteDirectoryContents(outputDir.asFile.get())
+                parameters.inputDirectories.from(inputDirectories)
+                parameters.partialRDirectory.set(partialRDirectory)
+                parameters.pseudoLocalize.set(pseudoLocalesEnabled)
+                parameters.crunchPng.set(crunchPng)
+                parameters.excludeValues.set(excludeValuesFiles)
+            }
+    }
 
-                // filter out the values files as they have to go through the resources merging
-                // pipeline.
-                mergedLibraryResourcesDir.asFile.get().listFiles()!!
-                    .filter { it.isDirectory && !it.name.startsWith(FD_RES_VALUES) }
+    protected abstract class CompileLibraryResourcesParams : ProfileAwareWorkAction.Parameters() {
+        abstract val outputDirectory: DirectoryProperty
+
+        @get:Nested
+        abstract val aapt2: Property<Aapt2Input>
+        abstract val incremental: Property<Boolean>
+        abstract val incrementalChanges: Property<SerializableInputChanges>
+        abstract val inputDirectories: ConfigurableFileCollection
+        abstract val partialRDirectory: DirectoryProperty
+        abstract val pseudoLocalize: Property<Boolean>
+        abstract val crunchPng: Property<Boolean>
+        abstract val excludeValues: Property<Boolean>
+    }
+
+    protected abstract class CompileLibraryResourcesAction :
+        ProfileAwareWorkAction<CompileLibraryResourcesParams>() {
+
+        @get:Inject
+        abstract val workerExecutor: WorkerExecutor
+
+        override fun run() {
+
+            WorkerExecutorResourceCompilationService(
+                projectName = parameters.projectName.get(),
+                taskOwner = parameters.taskOwner.get(),
+                workerExecutor = workerExecutor,
+                analyticsService = parameters.analyticsService,
+                aapt2Input = parameters.aapt2.get()
+            ).use { compilationService ->
+                if (parameters.incremental.get()) {
+                    handleIncrementalChanges(
+                        parameters.incrementalChanges.get(),
+                        compilationService
+                    )
+                } else {
+                    handleFullRun(compilationService)
+                }
+            }
+        }
+
+        /**
+         * In the non-namespaced case, filter out the values directories,
+         * as they have to go through the resources merging pipeline.
+         */
+        private fun includeDirectory(directory: File): Boolean {
+            if (parameters.excludeValues.get()) {
+                return !directory.name.startsWith(FD_RES_VALUES)
+            }
+            return true
+        }
+
+        private fun handleFullRun(processor: WorkerExecutorResourceCompilationService) {
+            FileUtils.deleteDirectoryContents(parameters.outputDirectory.asFile.get())
+
+            for (inputDirectory in parameters.inputDirectories) {
+                if (!inputDirectory.isDirectory) {
+                    continue
+                }
+                inputDirectory.listFiles()!!
+                    .filter { it.isDirectory && includeDirectory(it) }
                     .forEach { dir ->
                         dir.listFiles()!!.forEach { file ->
-                            submitFileToBeCompiled(file, requests)
+                            submitFileToBeCompiled(file, processor)
                         }
                     }
             }
-
-            workers.submit(
-                CompileLibraryResourcesRunnable::class.java,
-                CompileLibraryResourcesParams(
-                    projectName,
-                    path,
-                    aapt2ServiceKey,
-                    aapt2WorkersBuildService.get().getWorkersServiceKey(),
-                    errorFormatMode,
-                    requests.build(),
-                    useJvmResourceCompiler
-                )
-            )
         }
-    }
 
-    private fun submitFileToBeCompiled(
-        file: File,
-        requests: ImmutableList.Builder<CompileResourceRequest>
-    ) {
-        requests.add(
-            CompileResourceRequest(
+        /**
+         *  Given an input resource file return the partial R file to generate,
+         *  or null if partial R generation is not enabled
+         */
+        private fun computePartialR(file: File): File? {
+            val partialRDirectory = parameters.partialRDirectory.orNull?.asFile ?: return null
+            val compiledName = Aapt2RenamingConventions.compilationRename(file)
+            return partialRDirectory.resolve(partialRDirectory.resolve("$compiledName-R.txt"))
+        }
+
+        private fun submitFileToBeCompiled(
+            file: File,
+            compilationService: WorkerExecutorResourceCompilationService
+        ) {
+            val request = CompileResourceRequest(
                 file,
-                outputDir.asFile.get(),
-                isPseudoLocalize = pseudoLocalesEnabled,
-                isPngCrunching = crunchPng
+                parameters.outputDirectory.asFile.get(),
+                partialRFile = computePartialR(file),
+                isPseudoLocalize = parameters.pseudoLocalize.get(),
+                isPngCrunching = parameters.crunchPng.get()
             )
-        )
-    }
+            compilationService.submitCompile(request)
+        }
 
-    private fun handleModifiedFile(
-        file: File,
-        changeType: ChangeType,
-        requests: ImmutableList.Builder<CompileResourceRequest>
-    ) {
-        if (changeType == ChangeType.MODIFIED || changeType == ChangeType.REMOVED) {
-            FileUtils.deleteIfExists(
-                File(
-                    outputDir.asFile.get(),
-                    Aapt2RenamingConventions.compilationRename(file)
+        private fun handleModifiedFile(
+            file: File,
+            changeType: FileStatus,
+            compilationService: WorkerExecutorResourceCompilationService
+        ) {
+            if (changeType == FileStatus.CHANGED || changeType == FileStatus.REMOVED) {
+                FileUtils.deleteIfExists(
+                    File(
+                        parameters.outputDirectory.asFile.get(),
+                        Aapt2RenamingConventions.compilationRename(file)
+                    )
                 )
-            )
-        }
-        if (changeType == ChangeType.ADDED || changeType == ChangeType.MODIFIED) {
-            submitFileToBeCompiled(file, requests)
-        }
-    }
+                computePartialR(file)?.let { partialRFile -> FileUtils.delete(partialRFile) }
 
-    private fun doIncrementalTaskAction(
-        fileChanges: Iterable<FileChange>,
-        requests: ImmutableList.Builder<CompileResourceRequest>
-    ) {
-        fileChanges.filter {
-            it.fileType == FileType.FILE &&
-                    !it.file.parentFile.name.startsWith(FD_RES_VALUES)
-        }
-            .forEach { fileChange ->
-                handleModifiedFile(
-                    fileChange.file,
-                    fileChange.changeType,
-                    requests
-                )
             }
-    }
-
-    private data class CompileLibraryResourcesParams(
-        val projectName: String,
-        val owner: String,
-        val aapt2ServiceKey: Aapt2DaemonServiceKey,
-        val aapt2WorkersBuildServiceKey: WorkerActionServiceRegistry.ServiceKey<Aapt2WorkersBuildService>,
-        val errorFormatMode: SyncOptions.ErrorFormatMode,
-        val requests: List<CompileResourceRequest>,
-        val useJvmResourceCompiler: Boolean
-    ) : Serializable
-
-    private class CompileLibraryResourcesRunnable
-    @Inject constructor(private val params: CompileLibraryResourcesParams) : Runnable {
-        override fun run() {
-            SharedExecutorResourceCompilationService(
-                params.projectName,
-                params.owner,
-                params.aapt2WorkersBuildServiceKey,
-                params.aapt2ServiceKey,
-                params.errorFormatMode,
-                params.useJvmResourceCompiler
-            ).use {
-                it.submitCompile(params.requests)
+            if (changeType == FileStatus.NEW || changeType == FileStatus.CHANGED) {
+                submitFileToBeCompiled(file, compilationService)
             }
+        }
+
+        private fun handleIncrementalChanges(
+            fileChanges: SerializableInputChanges,
+            compilationService: WorkerExecutorResourceCompilationService
+        ) {
+            fileChanges.changes.filter { includeDirectory(it.file.parentFile) }
+                .forEach { fileChange ->
+                    handleModifiedFile(
+                        fileChange.file,
+                        fileChange.fileStatus,
+                        compilationService
+                    )
+                }
         }
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<CompileLibraryResourcesTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: VariantCreationConfig
+    ) : VariantTaskCreationAction<CompileLibraryResourcesTask, VariantCreationConfig>(
+        creationConfig
     ) {
         override val name: String
             get() = computeTaskName("compile", "LibraryResources")
@@ -238,32 +254,57 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
         ) {
             super.configure(task)
 
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.PACKAGED_RES,
-                task.mergedLibraryResourcesDir
-            )
+            task.inputDirectories.fromDisallowChanges(creationConfig.artifacts.get(InternalArtifactType.PACKAGED_RES))
 
-            val (aapt2FromMaven, aapt2Version) = getAapt2FromMavenAndVersion(creationConfig.globalScope)
-            task.aapt2FromMaven.from(aapt2FromMaven)
-            task.aapt2Version = aapt2Version
-
-            task.pseudoLocalesEnabled = creationConfig
+            task.pseudoLocalesEnabled.setDisallowChanges(creationConfig
                 .variantDslInfo
-                .isPseudoLocalesEnabled
+                .isPseudoLocalesEnabled)
 
-            task.crunchPng = creationConfig.variantScope.isCrunchPngs
+            task.crunchPng.setDisallowChanges(creationConfig.variantScope.isCrunchPngs)
+            task.excludeValuesFiles.setDisallowChanges(true)
+            creationConfig.services.initializeAapt2Input(task.aapt2)
+            task.partialRDirectory.disallowChanges()
+        }
+    }
 
-            task.errorFormatMode =
-                SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions)
 
-            task.useJvmResourceCompiler =
-              creationConfig.services.projectOptions[BooleanOption.ENABLE_JVM_RESOURCE_COMPILER]
-            task.aapt2WorkersBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
-            task.aapt2DaemonBuildService.setDisallowChanges(
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
+    class NamespacedCreationAction(
+        override val name: String,
+        private val inputDirectories: FileCollection,
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<CompileLibraryResourcesTask, ComponentCreationConfig>(
+        creationConfig
+    ) {
+
+        override val type: Class<CompileLibraryResourcesTask>
+            get() = CompileLibraryResourcesTask::class.java
+
+        override fun handleProvider(
+            taskProvider: TaskProvider<CompileLibraryResourcesTask>
+        ) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts.use(taskProvider)
+                .wiredWith(CompileLibraryResourcesTask::partialRDirectory)
+                .toAppendTo(InternalMultipleArtifactType.PARTIAL_R_FILES)
+
+            creationConfig.artifacts.use(taskProvider)
+                .wiredWith(CompileLibraryResourcesTask::outputDir)
+                .toAppendTo(InternalMultipleArtifactType.RES_COMPILED_FLAT_FILES)
+        }
+
+        override fun configure(
+            task: CompileLibraryResourcesTask
+        ) {
+            super.configure(task)
+
+            task.inputDirectories.from(inputDirectories)
+            task.crunchPng.setDisallowChanges(creationConfig.variantScope.isCrunchPngs)
+            task.pseudoLocalesEnabled.set(creationConfig.variantDslInfo.isPseudoLocalesEnabled)
+            task.excludeValuesFiles.set(false)
+            task.dependsOn(creationConfig.taskContainer.resourceGenTask)
+
+            creationConfig.services.initializeAapt2Input(task.aapt2)
         }
     }
 }

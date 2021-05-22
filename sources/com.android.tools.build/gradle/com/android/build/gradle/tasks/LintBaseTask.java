@@ -20,35 +20,35 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Arti
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.LINT;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
-import static com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_MANIFEST;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MERGE_REPORT;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_MANIFESTS;
 
 import com.android.Version;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.artifact.ArtifactType;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.api.variant.BuiltArtifact;
 import com.android.build.api.variant.VariantOutputConfiguration;
 import com.android.build.api.variant.impl.BuiltArtifactsImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryExtension;
 import com.android.build.gradle.api.BaseVariant;
-import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
-import com.android.build.gradle.internal.SdkComponentsKt;
+import com.android.build.gradle.internal.StartParameterUtils;
 import com.android.build.gradle.internal.dsl.LintOptions;
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollections;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.services.BuildServicesKt;
-import com.android.build.gradle.internal.tasks.factory.TaskCreationAction;
+import com.android.build.gradle.internal.services.LintClassLoaderBuildService;
+import com.android.build.gradle.internal.tasks.NonIncrementalGlobalTask;
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.builder.core.VariantType;
-import com.android.builder.errors.DefaultIssueReporter;
 import com.android.repository.Revision;
 import com.android.tools.lint.gradle.api.ReflectiveLintRunner;
 import com.android.tools.lint.model.LintModelFactory;
@@ -64,11 +64,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
-import org.gradle.api.DefaultTask;
 import org.gradle.api.DomainObjectSet;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemLocation;
 import org.gradle.api.file.RegularFile;
@@ -85,7 +85,7 @@ import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
-public abstract class LintBaseTask extends DefaultTask {
+public abstract class LintBaseTask extends NonIncrementalGlobalTask {
     public static final String LINT_CLASS_PATH = "lintClassPath";
 
     protected static final Logger LOG = Logging.getLogger(LintBaseTask.class);
@@ -100,8 +100,11 @@ public abstract class LintBaseTask extends DefaultTask {
         return lintClassPath;
     }
 
-    @Nullable protected LintOptions lintOptions;
-    protected File sdkHome;
+    @Nullable protected transient LintOptions lintOptions;
+
+    @Internal
+    public abstract DirectoryProperty getSdkHome();
+
     protected ToolingModelBuilderRegistry toolingRegistry;
     @Nullable protected File reportsDir;
 
@@ -111,22 +114,29 @@ public abstract class LintBaseTask extends DefaultTask {
         return lintOptions;
     }
 
+    @Internal
+    public abstract Property<LintClassLoaderBuildService> getLintClassLoader();
+
     protected void runLint(LintBaseTaskDescriptor descriptor) {
+        if (Boolean.TRUE.equals(
+                StartParameterUtils.isConfigurationCache(
+                        getProject().getGradle().getStartParameter()))) {
+            throw new IllegalStateException(
+                    "Android Lint in Android Gradle Plugin "
+                            + Version.ANDROID_GRADLE_PLUGIN_VERSION
+                            + " is incompatible with configuration caching."
+                            + "\n Please try Android Gradle Plugin 7 or above, or disable configuration caching.");
+        }
         FileCollection lintClassPath = getLintClassPath();
         if (lintClassPath != null) {
-            new ReflectiveLintRunner().runLint(getProject().getGradle(),
-                    descriptor, lintClassPath.getFiles());
+            new ReflectiveLintRunner()
+                    .runLint(getLintClassLoader().get(), descriptor, lintClassPath.getFiles());
         }
     }
 
     // No influence on output, this is to give access to the build tools version.
-    @NonNull
-    private Revision getBuildToolsRevision() {
-        return getSdkBuildService().get().getBuildToolsRevisionProvider().get();
-    }
-
     @Internal
-    public abstract Property<SdkComponentsBuildService> getSdkBuildService();
+    public abstract Property<Revision> getBuildToolsRevision();
 
     protected abstract class LintBaseTaskDescriptor extends
             com.android.tools.lint.gradle.api.LintExecutionRequest {
@@ -134,7 +144,7 @@ public abstract class LintBaseTask extends DefaultTask {
         @Override
         @NonNull
         public File getSdkHome() {
-            return sdkHome;
+            return LintBaseTask.this.getSdkHome().get().getAsFile();
         }
 
         @NonNull
@@ -168,7 +178,7 @@ public abstract class LintBaseTask extends DefaultTask {
         @NonNull
         @Override
         public Revision getBuildToolsRevision() {
-            return LintBaseTask.this.getBuildToolsRevision();
+            return LintBaseTask.this.getBuildToolsRevision().get();
         }
 
         @Override
@@ -256,26 +266,24 @@ public abstract class LintBaseTask extends DefaultTask {
      * would make sure they are resolved before starting the task.
      */
     protected static void addModelArtifactsToInputs(
-            @NonNull ConfigurableFileCollection inputs,
-            @NonNull ComponentPropertiesImpl componentProperties) {
+            @NonNull ConfigurableFileCollection inputs, @NonNull ComponentImpl component) {
 
         inputs.from(
                 (Callable<Collection<ArtifactCollection>>)
                         () ->
-                                new ArtifactCollections(componentProperties, COMPILE_CLASSPATH)
+                                new ArtifactCollections(component, COMPILE_CLASSPATH)
                                         .getAllCollections());
         inputs.from(
                 (Callable<Collection<ArtifactCollection>>)
                         () ->
-                                new ArtifactCollections(componentProperties, RUNTIME_CLASSPATH)
+                                new ArtifactCollections(component, RUNTIME_CLASSPATH)
                                         .getAllCollections());
 
-        if (componentProperties instanceof VariantPropertiesImpl) {
-            VariantPropertiesImpl variantProperties = (VariantPropertiesImpl) componentProperties;
+        if (component instanceof VariantImpl) {
+            VariantImpl variant = (VariantImpl) component;
 
             for (VariantType variantType : VariantType.Companion.getTestComponents()) {
-                ComponentPropertiesImpl testVariant =
-                        variantProperties.getTestComponents().get(variantType);
+                ComponentImpl testVariant = variant.getTestComponents().get(variantType);
                 if (testVariant != null) {
                     addModelArtifactsToInputs(inputs, testVariant);
                 }
@@ -291,10 +299,10 @@ public abstract class LintBaseTask extends DefaultTask {
 
         private final ConfigurableFileCollection allInputs;
 
-        public VariantInputs(@NonNull ComponentPropertiesImpl componentProperties) {
-            GlobalScope globalScope = componentProperties.getGlobalScope();
+        public VariantInputs(@NonNull ComponentImpl component) {
+            GlobalScope globalScope = component.getGlobalScope();
 
-            name = componentProperties.getName();
+            name = component.getName();
             allInputs = globalScope.getProject().files();
 
             FileCollection localLintJarCollection;
@@ -302,7 +310,7 @@ public abstract class LintBaseTask extends DefaultTask {
             FileCollection dependencyLintJarCollection;
             allInputs.from(
                     dependencyLintJarCollection =
-                            componentProperties
+                            component
                                     .getVariantDependencies()
                                     .getArtifactFileCollection(RUNTIME_CLASSPATH, ALL, LINT));
 
@@ -311,16 +319,16 @@ public abstract class LintBaseTask extends DefaultTask {
                             .getProject()
                             .files(localLintJarCollection, dependencyLintJarCollection);
 
-            ArtifactsImpl artifacts = componentProperties.getArtifacts();
+            ArtifactsImpl artifacts = component.getArtifacts();
             Provider<? extends FileSystemLocation> tmpMergedManifest =
                     artifacts.get(PACKAGED_MANIFESTS.INSTANCE);
             if (!tmpMergedManifest.isPresent()) {
-                tmpMergedManifest = artifacts.get(LIBRARY_MANIFEST.INSTANCE);
+                tmpMergedManifest = artifacts.get(ArtifactType.MERGED_MANIFEST.INSTANCE);
             }
             if (!tmpMergedManifest.isPresent()) {
                 throw new RuntimeException(
                         "VariantInputs initialized with no merged manifest on: "
-                                + componentProperties.getVariantType());
+                                + component.getVariantType());
             }
             mergedManifest = tmpMergedManifest;
             allInputs.from(mergedManifest);
@@ -331,14 +339,14 @@ public abstract class LintBaseTask extends DefaultTask {
             } else {
                 throw new RuntimeException(
                         "VariantInputs initialized with no merged manifest report on: "
-                                + componentProperties.getVariantType());
+                                + component.getVariantType());
             }
 
             // these inputs are only there to ensure that the lint task runs after these build
             // intermediates are built.
-            allInputs.from(componentProperties.getArtifacts().getAllClasses());
+            allInputs.from(component.getArtifacts().getAllClasses());
 
-            addModelArtifactsToInputs(allInputs, componentProperties);
+            addModelArtifactsToInputs(allInputs, component);
         }
 
         @NonNull
@@ -415,12 +423,10 @@ public abstract class LintBaseTask extends DefaultTask {
     }
 
     public abstract static class BaseCreationAction<T extends LintBaseTask>
-            extends TaskCreationAction<T> {
-
-        @NonNull protected final GlobalScope globalScope;
+            extends GlobalTaskCreationAction<T> {
 
         public BaseCreationAction(@NonNull GlobalScope globalScope) {
-            this.globalScope = globalScope;
+            super(globalScope);
         }
 
         @NonNull
@@ -430,22 +436,31 @@ public abstract class LintBaseTask extends DefaultTask {
 
         @Override
         public void configure(@NonNull T lintTask) {
+            super.configure(lintTask);
+
             lintTask.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
             lintTask.lintOptions = globalScope.getExtension().getLintOptions();
-            lintTask.sdkHome =
-                    SdkComponentsKt.getSdkDir(
-                            lintTask.getProject().getRootDir(),
-                            new DefaultIssueReporter(LoggerWrapper.getLogger(LintBaseTask.class)));
+            HasConfigurableValuesKt.setDisallowChanges(
+                    lintTask.getSdkHome(),
+                    globalScope
+                            .getSdkComponents()
+                            .flatMap(SdkComponentsBuildService::getSdkDirectoryProvider));
+
             lintTask.toolingRegistry = globalScope.getToolingRegistry();
             lintTask.reportsDir = globalScope.getReportsDir();
             HasConfigurableValuesKt.setDisallowChanges(
-                    lintTask.getSdkBuildService(),
-                    BuildServicesKt.getBuildService(
-                            lintTask.getProject().getGradle().getSharedServices(),
-                            SdkComponentsBuildService.class));
+                    lintTask.getBuildToolsRevision(),
+                    getGlobalScope()
+                            .getProject()
+                            .provider(getGlobalScope().getExtension()::getBuildToolsRevision));
 
             lintTask.lintClassPath = globalScope.getProject().getConfigurations()
                     .getByName(LINT_CLASS_PATH);
+            lintTask.getLintClassLoader()
+                    .set(
+                            BuildServicesKt.getBuildService(
+                                    lintTask.getProject().getGradle().getSharedServices(),
+                                    LintClassLoaderBuildService.class));
         }
     }
 }

@@ -34,6 +34,7 @@ import java.io.File
 import java.util.UUID
 
 /** Builder class for [NativeAndroidProject] or [NativeVariantAbi]. */
+// TODO(153964094) Separate into one for NativeAndroidProject and one for NativeVariantAbi.
 class NativeAndroidProjectBuilder {
     private val projectName: String
     private val selectedAbiName: String?
@@ -58,6 +59,10 @@ class NativeAndroidProjectBuilder {
 
     fun addBuildSystem(buildSystem : String) {
         buildSystems.add(buildSystem)
+    }
+
+    fun addBuildFile(buildFile : File) {
+        buildFiles.add(buildFile)
     }
 
     /** Add information about a particular variant.  */
@@ -295,7 +300,9 @@ class NativeAndroidProjectBuilder {
         }
 
         private fun getSettingsName(flags: String): String {
-            val tokens = builder.interner.internFlags(flags)
+            // Note: this code will go away with V1 sync. So we won't pass the proper source name
+            // here
+            val tokens = builder.interner.internFlags(flags, "placeholder")
             var setting = builder.settingsMap[tokens]
             if (setting == null) {
                 // Settings needs to be unique so that AndroidStudio can combine settings

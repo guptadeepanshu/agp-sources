@@ -18,7 +18,6 @@
 package com.android.builder.symbols
 
 import com.android.ide.common.symbols.IdProvider
-import com.google.common.annotations.VisibleForTesting
 import com.android.ide.common.symbols.RGeneration
 import com.android.ide.common.symbols.Symbol
 import com.android.ide.common.symbols.SymbolIo
@@ -28,6 +27,7 @@ import com.android.ide.common.symbols.mergeAndRenumberSymbols
 import com.android.ide.common.symbols.parseManifest
 import com.android.resources.ResourceType
 import com.android.utils.FileUtils
+import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.ImmutableList
 import java.io.File
 import java.io.IOException
@@ -40,7 +40,7 @@ import java.nio.file.Path
  * `R.java` or `R.jar` for all libraries the main library depends on.
  *
  * @param librarySymbols table with symbols of resources for the library.
- * @param libraries libraries which this library depends on
+ * @param depSymbolTables symbol tables of the libraries which this library depends on
  * @param mainPackageName package name of this library
  * @param manifestFile manifest file
  * @param sourceOut directory to contain R.java
@@ -53,7 +53,7 @@ import java.nio.file.Path
 @Throws(IOException::class)
 fun processLibraryMainSymbolTable(
         librarySymbols: SymbolTable,
-        libraries: Set<File>,
+        depSymbolTables: List<SymbolTable>,
         mainPackageName: String?,
         manifestFile: File,
         rClassOutputJar: File?,
@@ -68,7 +68,6 @@ fun processLibraryMainSymbolTable(
     val finalPackageName = mainPackageName ?: getPackageNameFromManifest(parseManifest(manifestFile))
 
     // Get symbol tables of the libraries we depend on.
-    val depSymbolTables = SymbolIo().loadDependenciesSymbolTables(libraries)
     val tablesToWrite =
         processLibraryMainSymbolTable(
             finalPackageName,
@@ -138,6 +137,26 @@ fun writeSymbolListWithPackageName(table: SymbolTable, writer: Writer) {
                     writer.write(child)
                 }
             }
+            writer.write('\n'.toInt())
+        }
+    }
+}
+
+/**
+ * Writes the symbol table treating all symbols as public in the AAR R.txt format.
+ *
+ * See [SymbolIo.readFromPublicTxtFile] for the reading counterpart.
+ *
+ * The format does not include styleable children (see `SymbolExportUtilsTest`)
+ */
+fun writePublicTxtFile(table: SymbolTable, writer: Writer) {
+    for (resType in ResourceType.values()) {
+        val symbols =
+            table.getSymbolByResourceType(resType)
+        for (s in symbols) {
+            writer.write(s.resourceType.getName())
+            writer.write(' '.toInt())
+            writer.write(s.canonicalName)
             writer.write('\n'.toInt())
         }
     }

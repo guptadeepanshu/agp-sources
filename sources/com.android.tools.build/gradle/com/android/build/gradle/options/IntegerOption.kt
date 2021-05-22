@@ -56,6 +56,8 @@ enum class IntegerOption(
      */
     DEXING_READ_BUFFER_SIZE("android.dexingReadBuffer.size", ApiStage.Experimental),
     DEXING_WRITE_BUFFER_SIZE("android.dexingWriteBuffer.size", ApiStage.Experimental),
+
+    /** Number of buckets used by `DexArchiveBuilderTask` and `DexMergingTask`. */
     DEXING_NUMBER_OF_BUCKETS("android.dexingNumberOfBuckets", ApiStage.Experimental),
 
     /**
@@ -67,6 +69,14 @@ enum class IntegerOption(
      * Override the thread pool size dedicated to AAPT2 work units when not running with WorkerAPI.
      */
     AAPT2_THREAD_POOL_SIZE("android.aapt2ThreadPoolSize", ApiStage.Experimental),
+
+    /**
+     * Flags for Android Test Retention
+     * >=1: enable Android Test Retention and set it as maximum number of snapshots.
+     * 0: disable Android Test Retention.
+     * <0: enable Android Test Retention with unlimited number of snapshots.
+     */
+    TEST_FAILURE_RETENTION("android.experimental.testOptions.failureRetention", ApiStage.Experimental),
 
     /* ------------
      * REMOVED APIS

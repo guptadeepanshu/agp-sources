@@ -17,6 +17,7 @@ package com.android.build.gradle.tasks
 
 import com.android.build.api.artifact.ArtifactType
 import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -28,7 +29,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MERGE_REPORT
 import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_JSON
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.tasks.manifest.mergeManifestsForApplication
+import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ProcessApplicationManifest.CreationAction.ManifestProviderImpl
@@ -67,7 +68,6 @@ import java.io.IOException
 import java.io.UncheckedIOException
 import java.util.ArrayList
 import java.util.EnumSet
-import java.util.stream.Collectors
 
 /** A task that processes the manifest  */
 @CacheableTask
@@ -89,8 +89,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     @get:InputFiles
-    var microApkManifest: FileCollection? = null
-        private set
+    abstract val microApkManifest: RegularFileProperty
 
     @get:Optional
     @get:Input
@@ -142,7 +141,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         }
         val navJsons = navigationJsons?.files ?: setOf()
 
-        val mergingReport = mergeManifestsForApplication(
+        val mergingReport = mergeManifests(
             mainManifest.get(),
             manifestOverlays.get(),
             computeFullProviderList(),
@@ -158,7 +157,13 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             null /* aaptFriendlyManifestOutputFile */,
             ManifestMerger2.MergeType.APPLICATION,
             manifestPlaceholders.get(),
-            optionalFeatures.get(),
+            optionalFeatures.get().plus(
+                mutableListOf<Invoker.Feature>().also {
+                    if (!jniLibsUseLegacyPackaging.get()) {
+                        it.add(Invoker.Feature.DO_NOT_EXTRACT_NATIVE_LIBS)
+                    }
+                }
+            ),
             dependencyFeatureNames,
             reportFile.get().asFile,
             LoggerWrapper.getLogger(ProcessApplicationManifest::class.java)
@@ -187,11 +192,11 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 )
             )
         }
-        if (microApkManifest != null) {
+        if (microApkManifest.isPresent) {
             // this is now always present if embedding is enabled, but it doesn't mean
             // anything got embedded so the file may not run (the file path exists and is
             // returned by the FC but the file doesn't exist.
-            val microManifest = microApkManifest!!.singleFile
+            val microManifest = microApkManifest.get().asFile
             if (microManifest.isFile) {
                 providers.add(
                     ManifestProviderImpl(
@@ -240,18 +245,11 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Input
     abstract val maxSdkVersion: Property<Int?>
 
-    /** Not an input, see [.getOptionalFeaturesString].  */
-    @get:Internal
+    @get:Input
     abstract val optionalFeatures: SetProperty<Invoker.Feature>
 
-    /** Synthetic input for [.getOptionalFeatures]  */
     @get:Input
-    val optionalFeaturesString: List<String>
-        get() = optionalFeatures
-            .get()
-            .stream()
-            .map { obj: Invoker.Feature -> obj.toString() }
-            .collect(Collectors.toList())
+    abstract val jniLibsUseLegacyPackaging: Property<Boolean>
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
@@ -282,9 +280,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     abstract val variantOutput: Property<VariantOutputImpl>
 
     class CreationAction(
-        creationConfig: ApkCreationConfig,
-        // TODO : remove this variable and find ways to access it from scope.
-        private val isAdvancedProfilingOn: Boolean
+        creationConfig: ApkCreationConfig
     ) : VariantTaskCreationAction<ProcessApplicationManifest, ApkCreationConfig>(creationConfig) {
         override val name: String
             get() = computeTaskName("process", "MainManifest")
@@ -358,14 +354,17 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             if (creationConfig.taskContainer.microApkTask != null
                 && creationConfig.embedsMicroApp
             ) {
-                task.microApkManifest = project.files(creationConfig.paths.microApkManifestFile)
+                creationConfig.artifacts.setTaskInputToFinalProduct(
+                        InternalArtifactType.MICRO_APK_MANIFEST_FILE,
+                        task.microApkManifest
+                )
             }
             task.applicationId.set(creationConfig.applicationId)
             task.applicationId.disallowChanges()
             task.variantType.set(creationConfig.variantType.toString())
             task.variantType.disallowChanges()
             task.minSdkVersion
-                .set(project.provider { creationConfig.minSdkVersion.apiString })
+                .set(project.provider { creationConfig.minSdkVersion.getApiString() })
             task.minSdkVersion.disallowChanges()
             task.targetSdkVersion
                 .set(
@@ -376,18 +375,12 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                     }
                 )
             task.targetSdkVersion.disallowChanges()
-            task.maxSdkVersion
-                .set(project.provider(creationConfig::maxSdkVersion))
-            task.maxSdkVersion.disallowChanges()
-            task.optionalFeatures
-                .set(
-                    project.provider {
-                        getOptionalFeatures(
-                            creationConfig, isAdvancedProfilingOn
-                        )
-                    }
-                )
+            task.maxSdkVersion.setDisallowChanges(creationConfig.maxSdkVersion)
+            task.optionalFeatures.set(project.provider { getOptionalFeatures(creationConfig) })
             task.optionalFeatures.disallowChanges()
+            task.jniLibsUseLegacyPackaging.setDisallowChanges(
+                creationConfig.packagingOptions.jniLibs.useLegacyPackaging
+            )
             task.variantOutput.setDisallowChanges(
                 creationConfig.outputs.getMainSplit()
             )
@@ -493,7 +486,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         }
 
         private fun getOptionalFeatures(
-            creationConfig: ApkCreationConfig, isAdvancedProfilingOn: Boolean
+            creationConfig: ApkCreationConfig
         ): EnumSet<Invoker.Feature> {
             val features: MutableList<Invoker.Feature> =
                 ArrayList()
@@ -506,7 +499,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             }
             if (creationConfig.debuggable) {
                 features.add(Invoker.Feature.DEBUGGABLE)
-                if (isAdvancedProfilingOn) {
+                if (creationConfig.advancedProfilingTransforms.isNotEmpty()) {
                     features.add(Invoker.Feature.ADVANCED_PROFILING)
                 }
             }

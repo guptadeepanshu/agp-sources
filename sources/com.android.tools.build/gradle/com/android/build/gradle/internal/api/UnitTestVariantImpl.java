@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.UnitTestVariant;
 import com.android.build.gradle.internal.services.BaseServices;
@@ -39,12 +39,12 @@ public class UnitTestVariantImpl extends BaseVariantImpl implements UnitTestVari
     @Inject
     public UnitTestVariantImpl(
             @NonNull TestVariantData variantData,
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentImpl component,
             @NonNull TestedVariant testedVariant,
             @NonNull BaseServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
-        super(componentProperties, services, readOnlyObjectProvider, outputs);
+        super(component, services, readOnlyObjectProvider, outputs);
 
         this.variantData = variantData;
         this.testedVariant = testedVariant;

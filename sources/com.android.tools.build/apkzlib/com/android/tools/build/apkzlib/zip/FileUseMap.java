@@ -63,7 +63,8 @@ class FileUseMap {
    * Tree with all free blocks ordered by size. This is essentially a view over {@link #map}
    * containing only the free blocks, but in a different order.
    */
-  private final TreeSet<FileUseMapEntry<?>> free;
+  private final TreeSet<FileUseMapEntry<?>> freeBySize;
+  private final TreeSet<FileUseMapEntry<?>> freeByStart;
 
   /** If defined, defines the minimum size for a free entry. */
   private int mMinFreeSize;
@@ -80,7 +81,8 @@ class FileUseMap {
 
     this.size = size;
     map = new TreeSet<>(FileUseMapEntry.COMPARE_BY_START);
-    free = new TreeSet<>(FileUseMapEntry.COMPARE_BY_SIZE);
+    freeBySize = new TreeSet<>(FileUseMapEntry.COMPARE_BY_SIZE);
+    freeByStart = new TreeSet<>(FileUseMapEntry.COMPARE_BY_START);
     mMinFreeSize = minFreeSize;
 
     if (size > 0) {
@@ -97,7 +99,8 @@ class FileUseMap {
     map.add(entry);
 
     if (entry.isFree()) {
-      free.add(entry);
+      freeBySize.add(entry);
+      freeByStart.add(entry);
     }
   }
 
@@ -111,7 +114,8 @@ class FileUseMap {
     Preconditions.checkState(wasRemoved, "entry not in map");
 
     if (entry.isFree()) {
-      free.remove(entry);
+      freeBySize.remove(entry);
+      freeByStart.remove(entry);
     }
   }
 
@@ -379,10 +383,10 @@ class FileUseMap {
 
     switch (alg) {
       case BEST_FIT:
-        matches = free.tailSet(minimumSizedEntry);
+        matches = freeBySize.tailSet(minimumSizedEntry);
         break;
       case FIRST_FIT:
-        matches = map;
+        matches = freeByStart;
         break;
       default:
         throw new AssertionError();

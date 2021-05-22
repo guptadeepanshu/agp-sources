@@ -16,8 +16,12 @@
 
 package com.android.build.gradle.internal.cxx.logging
 
-import com.android.build.gradle.internal.cxx.logging.LoggingLevel.*
+import com.android.build.gradle.internal.cxx.logging.LoggingLevel.ERROR
+import com.android.build.gradle.internal.cxx.logging.LoggingLevel.INFO
+import com.android.build.gradle.internal.cxx.logging.LoggingLevel.LIFECYCLE
+import com.android.build.gradle.internal.cxx.logging.LoggingLevel.WARN
 import com.android.utils.ILogger
+import com.android.utils.cxx.CxxDiagnosticCode
 import org.gradle.api.logging.Logging
 
 /**
@@ -37,14 +41,25 @@ import org.gradle.api.logging.Logging
 /**
  * Report an error.
  */
-fun errorln(format: String, vararg args: Any) =
-    ThreadLoggingEnvironment.reportFormattedErrorToCurrentLogger(checkedFormat(format, args))
+fun errorln(format: String, vararg args: Any) = errorln(CxxDiagnosticCode.UNKNOWN, format, *args)
+
+fun errorln(diagnosticCode: CxxDiagnosticCode, format: String, vararg args: Any) =
+    ThreadLoggingEnvironment.reportFormattedErrorToCurrentLogger(checkedFormat(format, args), diagnosticCode)
 
 /**
  * Report a warning.
  */
-fun warnln(format: String, vararg args: Any) =
-    ThreadLoggingEnvironment.reportFormattedWarningToCurrentLogger(checkedFormat(format, args))
+fun warnln(format: String, vararg args: Any) = warnln(CxxDiagnosticCode.UNKNOWN, format, *args)
+
+fun warnln(diagnosticCode: CxxDiagnosticCode, format: String, vararg args: Any) =
+    ThreadLoggingEnvironment.reportFormattedWarningToCurrentLogger(checkedFormat(format, args), diagnosticCode)
+
+/**
+ * Report a non-error/non-warning message that should be displayed during normal gradle build
+ * without --info flag.
+ */
+fun lifecycleln(format: String, vararg args: Any) =
+        ThreadLoggingEnvironment.reportFormattedLifecycleToCurrentLogger(checkedFormat(format, args))
 
 /**
  * Report diagnostic/informational message.
@@ -81,6 +96,7 @@ private fun checkedFormat(format: String, args: Array<out Any>): String {
 interface LoggingEnvironment : AutoCloseable {
     fun log(message : LoggingMessage)
 }
+
 
 /**
  * Logger base class. When used from Java try-with-resources or Kotlin use() function it will
@@ -126,6 +142,7 @@ abstract class ThreadLoggingEnvironment : LoggingEnvironment {
                 when(message.level) {
                     ERROR -> logger.error(message.toString())
                     WARN -> logger.warn(message.toString())
+                    LIFECYCLE -> logger.lifecycle(message.toString())
                     INFO -> logger.info(message.toString())
                 }
             }
@@ -148,7 +165,10 @@ abstract class ThreadLoggingEnvironment : LoggingEnvironment {
         /**
          * Pop the top logging environment.
          */
-        private fun pop() = loggerStack.set(loggerStack.get()?.next)
+        private fun pop() {
+            val next = loggerStack.get()?.next
+            if (next != null) loggerStack.set(next) else loggerStack.remove()
+        }
 
         /**
          * Get the parent of the current logger.
@@ -160,14 +180,21 @@ abstract class ThreadLoggingEnvironment : LoggingEnvironment {
         /**
          * Report an error.
          */
-        fun reportFormattedErrorToCurrentLogger(message: String) =
-            logger.log(errorRecordOf(message))
+        fun reportFormattedErrorToCurrentLogger(message: String, diagnosticCode: CxxDiagnosticCode) =
+            logger.log(errorRecordOf(message, diagnosticCode))
 
         /**
          * Report a warning.
          */
-        fun reportFormattedWarningToCurrentLogger(message: String) =
-            logger.log(warnRecordOf(message))
+        fun reportFormattedWarningToCurrentLogger(message: String, diagnosticCode: CxxDiagnosticCode) =
+            logger.log(warnRecordOf(message, diagnosticCode))
+
+        /**
+         * Report a non-error/non-warning message that should be displayed during normal gradle build
+         * without --info flag.
+         */
+        fun reportFormattedLifecycleToCurrentLogger(message: String) =
+            logger.log(lifecycleRecordOf(message))
 
         /**
          * Report diagnostic/informational message.
@@ -176,15 +203,24 @@ abstract class ThreadLoggingEnvironment : LoggingEnvironment {
             logger.log(infoRecordOf(message))
 
         /**
+         * Throw an exception if the currently registered logger is the
+         * default one.
+         */
+        fun requireExplicitLogger() {
+            if (logger == BOTTOM_LOGGING_ENVIRONMENT)
+                throw Exception("Non-default logger is required")
+        }
+
+        /**
          * Produce an ILogger over the current logger.
          */
-        fun getILogger() = object : ILogger {
+        fun getILogger(warningDiagnosticCode: CxxDiagnosticCode, errorDiagnosticCode: CxxDiagnosticCode) = object : ILogger {
             override fun error(t: Throwable?, format: String?, vararg args: Any) {
                 if (t != null) throw t
-                logger.log(errorRecordOf(checkedFormat(format!!, args)))
+                logger.log(errorRecordOf(checkedFormat(format!!, args), errorDiagnosticCode))
             }
             override fun warning(format: String, vararg args: Any) {
-                logger.log(warnRecordOf(checkedFormat(format, args)))
+                logger.log(warnRecordOf(checkedFormat(format, args), warningDiagnosticCode))
             }
             override fun info(format: String, vararg args: Any) {
                 logger.log(infoRecordOf(checkedFormat(format, args)))

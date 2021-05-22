@@ -92,6 +92,10 @@ import kotlin.text.StringsKt;
  */
 public class IncrementalPackager implements Closeable {
 
+    public static final String APP_METADATA_FILE_NAME = "app-metadata.properties";
+    public static final String APP_METADATA_ENTRY_PATH =
+            "META-INF/com/android/build/gradle/" + APP_METADATA_FILE_NAME;
+
     /**
      * {@link ApkCreator}, which is {@code null} until it's initialized via getApkCreator(). Use
      * getApkCreator() instead of accessing this field directly, except in {@link
@@ -107,7 +111,16 @@ public class IncrementalPackager implements Closeable {
     @NonNull private final ApkCreatorFactory mApkCreatorFactory;
 
     /** Whether the build is debuggable, which might influence the compression level. */
-    private boolean mIsDebuggableBuild;
+    private final boolean mIsDebuggableBuild;
+
+    /** Whether the zip entries will be ordered deterministically. */
+    private final boolean mDeterministicEntryOrder;
+
+    /** Whether v3 signing is enabled. */
+    private final boolean mEnableV3Signing;
+
+    /** Whether v4 signing is enabled. */
+    private final boolean mEnableV4Signing;
 
     /** Returns mApkCreator, initialized lazily. */
     @NonNull
@@ -115,12 +128,27 @@ public class IncrementalPackager implements Closeable {
         if (mApkCreator == null) {
             switch (mApkCreatorType) {
                 case APK_Z_FILE_CREATOR:
+                    Preconditions.checkState(
+                            !mEnableV3Signing,
+                            ""
+                                    + "enableV3Signing cannot be true unless "
+                                    + "android.useNewApkCreator is also true.");
+                    Preconditions.checkState(
+                            !mEnableV4Signing,
+                            ""
+                                    + "enableV4Signing cannot be true unless "
+                                    + "android.useNewApkCreator is also true.");
                     mApkCreator = mApkCreatorFactory.make(mCreationData);
                     break;
                 case APK_FLINGER:
                     int compressionLevel = mIsDebuggableBuild ? BEST_SPEED : DEFAULT_COMPRESSION;
                     mApkCreator =
-                            new ApkFlinger(mCreationData, compressionLevel, !mIsDebuggableBuild);
+                            new ApkFlinger(
+                                    mCreationData,
+                                    compressionLevel,
+                                    mDeterministicEntryOrder,
+                                    mEnableV3Signing,
+                                    mEnableV4Signing);
                     break;
                 default:
                     throw new RuntimeException("unexpected apkCreatorType");
@@ -161,6 +189,8 @@ public class IncrementalPackager implements Closeable {
 
     @NonNull private final Map<RelativeFile, FileStatus> mChangedNativeLibs;
 
+    @NonNull private final List<SerializableChange> mChangedAppMetadata;
+
     /**
      * Creates a new instance.
      *
@@ -169,32 +199,38 @@ public class IncrementalPackager implements Closeable {
      * @param creationData APK creation data
      * @param intermediateDir a directory where to store intermediate files
      * @param factory the factory used to create APK creators
-     * @param apkFormatIsFile is ApkFormat FILE?
      * @param acceptedAbis the set of accepted ABIs; if empty then all ABIs are accepted
      * @param jniDebugMode is JNI debug mode enabled?
      * @param debuggableBuild is this a debuggable build?
+     * @param deterministicEntryOrder will APK entries be ordered deterministically?
+     * @param enableV3Signing is v3 signing enabled?
+     * @param enableV4Signing is v4 signing enabled?
      * @param apkCreatorType the {@link ApkCreatorType}
      * @param changedDexFiles the changed dex files
      * @param changedJavaResources the changed java resources
      * @param changedAssets the changed assets
      * @param changedAndroidResources the changed android resources
      * @param changedNativeLibs the changed native libraries
+     * @param changedAppMetadata the changed app metadata
      * @throws IOException failed to create the APK
      */
     public IncrementalPackager(
             @NonNull ApkCreatorFactory.CreationData creationData,
             @NonNull File intermediateDir,
             @NonNull ApkCreatorFactory factory,
-            boolean apkFormatIsFile,
             @NonNull Set<String> acceptedAbis,
             boolean jniDebugMode,
             boolean debuggableBuild,
+            boolean deterministicEntryOrder,
+            boolean enableV3Signing,
+            boolean enableV4Signing,
             @NonNull ApkCreatorType apkCreatorType,
             @NonNull Map<RelativeFile, FileStatus> changedDexFiles,
             @NonNull Map<RelativeFile, FileStatus> changedJavaResources,
             @NonNull List<SerializableChange> changedAssets,
             @NonNull Map<RelativeFile, FileStatus> changedAndroidResources,
-            @NonNull Map<RelativeFile, FileStatus> changedNativeLibs)
+            @NonNull Map<RelativeFile, FileStatus> changedNativeLibs,
+            @NonNull List<SerializableChange> changedAppMetadata)
             throws IOException {
         if (!intermediateDir.isDirectory()) {
             throw new IllegalArgumentException(
@@ -205,17 +241,17 @@ public class IncrementalPackager implements Closeable {
         mCreationData = creationData;
         mApkCreatorFactory = factory;
         mIsDebuggableBuild = debuggableBuild;
+        mDeterministicEntryOrder = deterministicEntryOrder;
+        mEnableV3Signing = enableV3Signing;
+        mEnableV4Signing = enableV4Signing;
         mClosed = false;
-        if (!apkFormatIsFile) {
-            mApkCreatorType = ApkCreatorType.APK_Z_FILE_CREATOR;
-        } else {
-            mApkCreatorType = apkCreatorType;
-        }
+        mApkCreatorType = apkCreatorType;
         mChangedDexFiles = changedDexFiles;
         mChangedJavaResources = changedJavaResources;
         mChangedAssets = changedAssets;
         mChangedAndroidResources = changedAndroidResources;
         mChangedNativeLibs = changedNativeLibs;
+        mChangedAppMetadata = changedAppMetadata;
         mDexRenamer = new DexIncrementalRenameManager(intermediateDir);
         mAbiPredicate = new NativeLibraryAbiPredicate(acceptedAbis, jniDebugMode);
     }
@@ -243,6 +279,7 @@ public class IncrementalPackager implements Closeable {
                         Maps.filterKeys(
                                 mChangedNativeLibs,
                                 rf -> mAbiPredicate.test(rf.getRelativePath()))));
+        packagedFileUpdates.addAll(getAppMetadataUpdates(mChangedAppMetadata));
 
         // First delete all REMOVED (and maybe CHANGED) files, then add all NEW or CHANGED files.
         deleteFiles(packagedFileUpdates);
@@ -293,6 +330,27 @@ public class IncrementalPackager implements Closeable {
         for (File addedJar : addedJars) {
             getApkCreator().writeZip(addedJar, null, null);
         }
+    }
+
+    /**
+     * Produce a list of app metadata PackagedFileUpdates given a list of app metadata
+     * SerializableChanges, which should either be empty or contain a single element.
+     *
+     * @param changes the collection of app metadata changes
+     * @return a corresponding list of PackagedFileUpdates
+     */
+    private static List<PackagedFileUpdate> getAppMetadataUpdates(
+            @NonNull Collection<SerializableChange> changes) {
+        return changes.stream()
+                .map(
+                        change ->
+                                new PackagedFileUpdate(
+                                        new RelativeFile(
+                                                change.getFile().getParentFile(),
+                                                change.getFile()),
+                                        APP_METADATA_ENTRY_PATH,
+                                        change.getFileStatus()))
+                .collect(Collectors.toList());
     }
 
     /**

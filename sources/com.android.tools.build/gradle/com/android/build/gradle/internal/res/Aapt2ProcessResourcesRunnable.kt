@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.res
 
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.services.Aapt2DaemonServiceKey
 import com.android.build.gradle.internal.services.useAaptDaemon
 import com.android.build.gradle.options.SyncOptions
@@ -30,40 +31,32 @@ import com.android.ide.common.symbols.RGeneration
 import com.android.ide.common.symbols.SymbolIo
 import com.android.ide.common.symbols.SymbolTable
 import com.android.ide.common.symbols.getPackageNameFromManifest
-import com.android.utils.ILogger
+import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
 import java.io.File
 import java.io.IOException
-import java.io.Serializable
-import javax.inject.Inject
 
-class Aapt2ProcessResourcesRunnable @Inject constructor(
-        private val params: Params) : Runnable {
+abstract class Aapt2ProcessResourcesRunnable : ProfileAwareWorkAction<Aapt2ProcessResourcesRunnable.Params>() {
 
     override fun run() {
         val logger = Logging.getLogger(this::class.java)
-        useAaptDaemon(params.aapt2ServiceKey) { daemon ->
-            try {
-                processResources(daemon, params.request, null, LoggerWrapper(logger))
-            } catch (exception: Aapt2Exception) {
-                throw rewriteLinkException(
-                    exception,
-                    params.errorFormatMode,
-                    params.mergeBlameFolder,
-                    params.manifestMergeBlameFile,
-                    logger
-                )
-            }
+        useAaptDaemon(parameters.aapt2ServiceKey.get()) { daemon ->
+            processResources(
+                aapt = daemon,
+                aaptConfig = parameters.request.get(),
+                rJar = null,
+                logger = logger,
+                errorFormatMode = parameters.errorFormatMode.get()
+            )
         }
     }
 
-    class Params(
-        val aapt2ServiceKey: Aapt2DaemonServiceKey,
-        val request: AaptPackageConfig,
-        val errorFormatMode: SyncOptions.ErrorFormatMode,
-        val mergeBlameFolder: File?,
-        val manifestMergeBlameFile: File?
-    ) : Serializable
+    abstract class Params: ProfileAwareWorkAction.Parameters() {
+        abstract val aapt2ServiceKey: Property<Aapt2DaemonServiceKey>
+        abstract val request: Property<AaptPackageConfig>
+        abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
+    }
 }
 
 @Throws(IOException::class, ProcessException::class)
@@ -71,13 +64,21 @@ fun processResources(
     aapt: Aapt2,
     aaptConfig: AaptPackageConfig,
     rJar: File?,
-    logger: ILogger
+    logger: Logger,
+    errorFormatMode: SyncOptions.ErrorFormatMode,
+    symbolTableLoader: (Iterable<File>) -> List<SymbolTable> = { SymbolIo().loadDependenciesSymbolTables(it) }
 ) {
 
     try {
-        aapt.link(aaptConfig, logger)
+        aapt.link(aaptConfig, LoggerWrapper(logger))
     } catch (e: Aapt2Exception) {
-        throw e
+        throw rewriteLinkException(
+            e,
+            errorFormatMode,
+            aaptConfig.mergeBlameDirectory,
+            aaptConfig.manifestMergeBlameFile,
+            logger
+        )
     } catch (e: Aapt2InternalException) {
         throw e
     } catch (e: Exception) {
@@ -100,7 +101,7 @@ fun processResources(
             SymbolTable.builder().tablePackage(mainPackageName).build()
 
         // For each dependency, load its symbol file.
-        var depSymbolTables: List<SymbolTable> = SymbolIo().loadDependenciesSymbolTables(
+        var depSymbolTables: List<SymbolTable> = symbolTableLoader.invoke(
             aaptConfig.librarySymbolTableFiles
         )
 

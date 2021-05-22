@@ -16,7 +16,11 @@
 
 package com.android.build.gradle.internal.cxx.settings
 
-import com.android.build.gradle.internal.cxx.configure.CmakeProperty.*
+import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_BUILD_TYPE
+import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_CXX_FLAGS
+import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_C_FLAGS
+import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_FIND_ROOT_PATH
+import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_TOOLCHAIN_FILE
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument
 import com.android.build.gradle.internal.cxx.configure.getCmakeProperty
 import com.android.build.gradle.internal.cxx.configure.getGenerator
@@ -30,10 +34,18 @@ import com.android.build.gradle.internal.cxx.configure.toCmakeArgument
 import com.android.build.gradle.internal.cxx.hashing.toBase36
 import com.android.build.gradle.internal.cxx.hashing.update
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
-import com.android.build.gradle.internal.cxx.model.replaceWith
-import com.android.build.gradle.internal.cxx.settings.Macro.*
-import com.android.build.gradle.internal.cxx.settings.PropertyValue.*
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_ABI
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_BUILD_ROOT
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CMAKE_TOOLCHAIN
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CONFIGURATION_HASH
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CPP_FLAGS
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_C_FLAGS
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_DEFAULT_BUILD_TYPE
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_FULL_CONFIGURATION_HASH
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_PREFAB_PATH
+import com.android.build.gradle.internal.cxx.settings.PropertyValue.StringPropertyValue
 import com.android.build.gradle.tasks.NativeBuildSystem
+import com.android.utils.tokenizeCommandLineToEscaped
 import java.io.File
 import java.security.MessageDigest
 
@@ -52,27 +64,26 @@ fun CxxAbiModel.rewriteCxxAbiModelWithCMakeSettings() : CxxAbiModel {
             rewriteConfig.configuration
         }
 
-        val cmakeModule = original.variant.module.cmake!!.replaceWith(
-            cmakeExe = { configuration.cmakeExecutable.toFile()!! }
+        val cmakeModule = original.variant.module.cmake!!.copy(
+            cmakeExe = configuration.cmakeExecutable.toFile()
         )
-        val module = original.variant.module.replaceWith(
-            cmake = { cmakeModule },
-            cmakeToolchainFile = { configuration.cmakeToolchain.toFile()!! }
+        val module = original.variant.module.copy(
+            cmake = cmakeModule,
+            cmakeToolchainFile = configuration.cmakeToolchain.toFile()!!
         )
-        val variant = original.variant.replaceWith(
-            module = { module }
+        val variant = original.variant.copy(
+            module = module
         )
-        val cmakeAbi = original.cmake?.replaceWith(
-            cmakeArtifactsBaseFolder =  { configuration.buildRoot.toFile()!! },
-            effectiveConfiguration = {
-                configuration
-            }
+        val cmakeAbi = original.cmake?.copy(
+            cmakeArtifactsBaseFolder = configuration.buildRoot.toFile()!!,
+            effectiveConfiguration = configuration
         )
-        return original.replaceWith(
-            cmake = { cmakeAbi },
-            variant = { variant },
-            cxxBuildFolder = { configuration.buildRoot.toFile()!! },
-            buildSettings = { rewriteConfig.buildSettings }
+        return original.copy(
+                variant = ({ variant })(),
+                cmake = ({ cmakeAbi })(),
+                cxxBuildFolder = ({ configuration.buildRoot.toFile()!! })(),
+                buildSettings = ({ rewriteConfig.buildSettings }
+                        )()
         )
     } else {
 //        TODO(jomof) separate CMake-ness from macro expansion and add it to NDK build
@@ -284,8 +295,9 @@ fun CxxAbiModel.getFinalCmakeCommandLineArguments() : List<CommandLineArgument> 
 * Returns the Ninja build commands from CMakeSettings.json.
 * Returns an empty string if it does not exist.
 */
-fun CxxAbiModel.getBuildCommandArguments() : String {
-    return cmake?.effectiveConfiguration?.buildCommandArgs ?: ""
+fun CxxAbiModel.getBuildCommandArguments(): List<String> {
+    return cmake?.effectiveConfiguration?.buildCommandArgs?.tokenizeCommandLineToEscaped()
+        ?: emptyList()
 }
 
 /**

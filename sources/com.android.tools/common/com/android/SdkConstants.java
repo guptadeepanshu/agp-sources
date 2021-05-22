@@ -55,7 +55,7 @@ public final class SdkConstants {
      * @see <a href="https://developer.android.com/studio/command-line/variables">Android SDK
      *     environment variables</a>
      */
-    public static final String ANDROID_HOME_ENV = "ANDROID_HOME";
+    @Deprecated public static final String ANDROID_HOME_ENV = "ANDROID_HOME";
 
     /**
      * ANDROID_SDK_ROOT environment variable that specifies the installation path of an Android SDK.
@@ -87,6 +87,11 @@ public final class SdkConstants {
     public static final String AAR_FORMAT_VERSION_PROPERTY = "aarFormatVersion";
     public static final String AAR_METADATA_VERSION_PROPERTY = "aarMetadataVersion";
     public static final String MIN_COMPILE_SDK_PROPERTY = "minCompileSdk";
+
+    /** Properties in app-metadata.properties file */
+    public static final String APP_METADATA_VERSION_PROPERTY = "appMetadataVersion";
+    public static final String ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY =
+            "androidGradlePluginVersion";
 
     /**
      * The encoding we strive to use for all files we write.
@@ -355,6 +360,12 @@ public final class SdkConstants {
      * used in the IDE build attribution.
      */
     public static final String FN_AGP_ATTRIBUTION_DATA = "androidGradlePluginAttributionData";
+
+    /** Dependency Analyzer */
+    /** File holding list of resource symbols */
+    public static final String FN_RESOURCE_SYMBOLS = "resources_symbols.txt";
+    /** File holding relative class entries */
+    public static final String FN_CLASS_LIST = "classes.txt";
 
     /* Folder Names for Android Projects . */
 
@@ -780,6 +791,9 @@ public final class SdkConstants {
     public static final AndroidxName CLASS_SUPPORT_PREFERENCE_SCREEN =
             AndroidxName.of("android.support.v7.preference.", "PreferenceScreen");
 
+    public static final String CLASS_FRAGMENT_CONTAINER_VIEW =
+            "androidx.fragment.app.FragmentContainerView";
+
     public static final String CLASS_AD_VIEW = "com.google.android.gms.ads.AdView"; //$NON-NLS-1$
     public static final String CLASS_MAP_FRAGMENT =
             "com.google.android.gms.maps.MapFragment"; //$NON-NLS-1$
@@ -1166,6 +1180,7 @@ public final class SdkConstants {
     public static final String TAG_DEEP_LINK = "deepLink";
     public static final String TAG_NAVIGATION = "navigation";
     public static final String TAG_FRAGMENT = "fragment";
+    public static final String TAG_ARGUMENT = "argument";
     public static final String ATTR_MODULE_NAME = "moduleName";
 
     public static final String VIEW = "View"; //$NON-NLS-1$
@@ -1251,6 +1266,7 @@ public final class SdkConstants {
     public static final AndroidxName RECYCLER_VIEW = CLASS_RECYCLER_VIEW_V7;
     public static final AndroidxName CARD_VIEW = CLASS_CARD_VIEW;
     public static final AndroidxName ACTION_MENU_VIEW = CLASS_ACTION_MENU_VIEW;
+    public static final String FRAGMENT_CONTAINER_VIEW = CLASS_FRAGMENT_CONTAINER_VIEW;
     public static final String AD_VIEW = CLASS_AD_VIEW;
     public static final String MAP_FRAGMENT = CLASS_MAP_FRAGMENT;
     public static final String MAP_VIEW = CLASS_MAP_VIEW;
@@ -1742,6 +1758,7 @@ public final class SdkConstants {
     public static final String ATTR_CONSTRAINT_SET_START = "constraintSetStart";
     public static final String ATTR_CONSTRAINT_SET_END = "constraintSetEnd";
     public static final String ATTR_DERIVE_CONSTRAINTS_FROM = "deriveConstraintsFrom";
+    public static final String ATTR_LAYOUT_CONSTRAINT_TAG = "layout_constraintTag";
 
     public static final String ATTR_GUIDELINE_ORIENTATION_HORIZONTAL = "horizontal"; //$NON-NLS-1$
     public static final String ATTR_GUIDELINE_ORIENTATION_VERTICAL = "vertical"; //$NON-NLS-1$
@@ -2756,8 +2773,16 @@ public final class SdkConstants {
     public static final String VALUE_HORIZONTAL = "horizontal"; //$NON-NLS-1$
 
     public static final String GRADLE_PLUGIN_NAME = "com.android.tools.build:gradle:";
-    public static final String GRADLE_MINIMUM_VERSION = "6.5";
-    public static final String GRADLE_LATEST_VERSION = GRADLE_MINIMUM_VERSION;
+    /** The minimum version of Gradle that this version of Studio will support. */
+    public static final String GRADLE_MINIMUM_VERSION = "4.8.1";
+    /**
+     * The minimum version of Gradle that this version of the Gradle plugin will support. This also
+     * happens to be a version of Gradle that is embedded and distributed along with the Android
+     * Studio product. It need not actually be the latest version of Gradle, but it will most likely
+     * be fairly recent.
+     */
+    public static final String GRADLE_LATEST_VERSION = "6.7.1";
+
     public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "1.0.0";
     public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "3.3.2";
     // Temporary - can be removed once the recommended version supports AIA (with splits).
@@ -2777,7 +2802,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "29.0.2";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "30.0.2";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";
@@ -2787,6 +2812,7 @@ public final class SdkConstants {
     public static final String CARD_VIEW_LIB_ARTIFACT = "com.android.support:cardview-v7";
     public static final String GRID_LAYOUT_LIB_ARTIFACT = "com.android.support:gridlayout-v7";
     public static final String RECYCLER_VIEW_LIB_ARTIFACT = "com.android.support:recyclerview-v7";
+    public static final String FRAGMENT_LIB_ARTIFACT = "androidx.fragment:fragment";
     public static final String MAPS_ARTIFACT = "com.google.android.gms:play-services-maps";
     public static final String ADS_ARTIFACT = "com.google.android.gms:play-services-ads";
     public static final String LEANBACK_V17_ARTIFACT = "com.android.support:leanback-v17";

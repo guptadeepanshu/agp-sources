@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.tasks.databinding
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
@@ -57,16 +57,16 @@ abstract class DataBindingMergeBaseClassLogTask: IncrementalTask() {
         get() = true
 
     override fun doFullTaskAction() {
-        delegate.doFullRun(getWorkerFacadeWithWorkers())
+        delegate.doFullRun(workerExecutor)
     }
 
     override fun doIncrementalTaskAction(changedInputs: Map<File, FileStatus>) {
-        delegate.doIncrementalRun(getWorkerFacadeWithWorkers(), changedInputs)
+        delegate.doIncrementalRun(workerExecutor, changedInputs)
     }
 
-    class CreationAction(componentProperties: ComponentPropertiesImpl) :
-        VariantTaskCreationAction<DataBindingMergeBaseClassLogTask, ComponentPropertiesImpl>(
-            componentProperties
+    class CreationAction(creationConfig: ComponentCreationConfig) :
+        VariantTaskCreationAction<DataBindingMergeBaseClassLogTask, ComponentCreationConfig>(
+            creationConfig
         ) {
 
         override val name = computeTaskName("dataBindingMergeGenClasses")
@@ -101,6 +101,7 @@ abstract class DataBindingMergeBaseClassLogTask: IncrementalTask() {
             )
 
             task.delegate = DataBindingMergeBaseClassLogDelegate(
+                task,
                 task.moduleClassLog,
                 task.externalClassLog,
                 task.outFolder)

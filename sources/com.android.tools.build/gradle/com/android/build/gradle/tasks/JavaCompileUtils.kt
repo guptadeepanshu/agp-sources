@@ -18,13 +18,13 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PROCESSED_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
-import com.android.builder.profile.ProcessProfileWriter
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import com.google.gson.GsonBuilder
@@ -57,11 +57,11 @@ const val DEFAULT_INCREMENTAL_COMPILATION = true
  *
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
-fun JavaCompile.configureProperties(componentProperties: ComponentPropertiesImpl) {
-    val compileOptions = componentProperties.globalScope.extension.compileOptions
+fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
+    val compileOptions = creationConfig.globalScope.extension.compileOptions
 
-    this.options.bootstrapClasspath = componentProperties.variantScope.bootClasspath
-    this.classpath = componentProperties.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR)
+    this.options.bootstrapClasspath = creationConfig.variantScope.bootClasspath
+    this.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
 
     this.sourceCompatibility = compileOptions.sourceCompatibility.toString()
     this.targetCompatibility = compileOptions.targetCompatibility.toString()
@@ -74,12 +74,12 @@ fun JavaCompile.configureProperties(componentProperties: ComponentPropertiesImpl
  * @see [JavaCompile.configureProperties]
  */
 fun JavaCompile.configurePropertiesForAnnotationProcessing(
-    componentProperties: ComponentPropertiesImpl
+    creationConfig: ComponentCreationConfig
 ) {
-    val processorOptions = componentProperties.variantDslInfo.javaCompileOptions.annotationProcessorOptions
+    val processorOptions = creationConfig.variantDslInfo.javaCompileOptions.annotationProcessorOptions
     val compileOptions = this.options
 
-    configureAnnotationProcessorPath(componentProperties)
+    configureAnnotationProcessorPath(creationConfig)
 
     if (processorOptions.classNames.isNotEmpty()) {
         compileOptions.compilerArgs.add("-processor")
@@ -100,8 +100,8 @@ fun JavaCompile.configurePropertiesForAnnotationProcessing(
  *
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
-fun JavaCompile.configureAnnotationProcessorPath(componentProperties: ComponentPropertiesImpl) {
-    options.annotationProcessorPath = componentProperties.variantDependencies.getArtifactFileCollection(
+fun JavaCompile.configureAnnotationProcessorPath(creationConfig: ComponentCreationConfig) {
+    options.annotationProcessorPath = creationConfig.variantDependencies.getArtifactFileCollection(
         ANNOTATION_PROCESSOR,
         ALL,
         PROCESSED_JAR
@@ -245,9 +245,10 @@ fun readAnnotationProcessorsFromJsonFile(
 fun recordAnnotationProcessorsForAnalytics(
     processors: Map<String, Boolean>,
     projectPath: String,
-    variantName: String
+    variantName: String,
+    analyticService: AnalyticsService
 ) {
-    val variant = ProcessProfileWriter.getOrCreateVariant(projectPath, variantName)
+    val variant = analyticService.getVariantBuilder(projectPath, variantName)
     for (processor in processors.entries) {
         val builder = AnnotationProcessorInfo.newBuilder()
         builder.spec = processor.key

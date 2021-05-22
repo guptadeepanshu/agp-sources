@@ -16,12 +16,27 @@
 
 package com.android.build.gradle.internal.variant
 
+import com.android.build.api.component.impl.ComponentBuilderImpl
 import com.android.build.api.component.impl.ComponentImpl
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
+import com.android.build.api.variant.impl.VariantBuilderImpl
+import com.android.build.api.variant.impl.VariantImpl
+import com.google.wireless.android.sdk.stats.GradleBuildVariant
 
-class ComponentInfo<
-        ComponentT : ComponentImpl<out ComponentPropertiesT>,
-        ComponentPropertiesT : ComponentPropertiesImpl>(
+open class ComponentInfo<
+        ComponentBuilderT : ComponentBuilderImpl,
+        ComponentT : ComponentImpl>(
+    val variantBuilder: ComponentBuilderT,
     val variant: ComponentT,
-    val properties: ComponentPropertiesT
+    val stats: GradleBuildVariant.Builder
 )
+
+class VariantComponentInfo<
+        VariantBuilderT : VariantBuilderImpl,
+        VariantT : VariantImpl>
+(
+        variantBuilder: VariantBuilderT,
+        variant: VariantT,
+        stats: GradleBuildVariant.Builder,
+        val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<in VariantBuilderT, in VariantT>
+) : ComponentInfo<VariantBuilderT, VariantT>(variantBuilder, variant, stats)

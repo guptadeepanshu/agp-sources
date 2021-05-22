@@ -20,8 +20,12 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Immutable;
 
+/** Class containing only the SigningConfig information which is injectable via ProjectOptions. */
 @Immutable
 public final class SigningOptions {
+
+    // The name to use if creating a SigningConfig or SigningConfigData instance from this object.
+    public static final String SIGNING_CONFIG_NAME = "externalOverride";
 
     /**
      * Reads the override signing options from the project properties.
@@ -36,10 +40,6 @@ public final class SigningOptions {
         String signingStorePassword = options.get(StringOption.IDE_SIGNING_STORE_PASSWORD);
         String signingKeyAlias = options.get(StringOption.IDE_SIGNING_KEY_ALIAS);
         String signingKeyPassword = options.get(StringOption.IDE_SIGNING_KEY_PASSWORD);
-        Boolean isV1SigningConfigured =
-                options.get(OptionalBooleanOption.SIGNING_V1_ENABLED) != null;
-        Boolean isV2SigningConfigured =
-                options.get(OptionalBooleanOption.SIGNING_V2_ENABLED) != null;
 
         if (signingStoreFile != null
                 && signingStorePassword != null
@@ -53,9 +53,7 @@ public final class SigningOptions {
                     signingKeyPassword,
                     options.get(StringOption.IDE_SIGNING_STORE_TYPE),
                     options.get(OptionalBooleanOption.SIGNING_V1_ENABLED),
-                    options.get(OptionalBooleanOption.SIGNING_V2_ENABLED),
-                    isV1SigningConfigured,
-                    isV2SigningConfigured);
+                    options.get(OptionalBooleanOption.SIGNING_V2_ENABLED));
         }
 
         return null;
@@ -68,8 +66,6 @@ public final class SigningOptions {
     @Nullable private final String storeType;
     @Nullable private final Boolean v1Enabled;
     @Nullable private final Boolean v2Enabled;
-    @NonNull private final Boolean v1Configured;
-    @NonNull private final Boolean v2Configured;
 
     public SigningOptions(
             @NonNull String storeFile,
@@ -78,9 +74,7 @@ public final class SigningOptions {
             @NonNull String keyPassword,
             @Nullable String storeType,
             @Nullable Boolean v1Enabled,
-            @Nullable Boolean v2Enabled,
-            @NonNull Boolean v1Configured,
-            @NonNull Boolean v2Configured) {
+            @Nullable Boolean v2Enabled) {
         this.storeFile = storeFile;
         this.storeType = storeType;
         this.storePassword = storePassword;
@@ -88,8 +82,6 @@ public final class SigningOptions {
         this.keyPassword = keyPassword;
         this.v1Enabled = v1Enabled;
         this.v2Enabled = v2Enabled;
-        this.v1Configured = v1Configured;
-        this.v2Configured = v2Configured;
     }
 
     @NonNull
@@ -125,15 +117,5 @@ public final class SigningOptions {
     @Nullable
     public Boolean getV2Enabled() {
         return v2Enabled;
-    }
-
-    @NonNull
-    public Boolean getV1Configured() {
-        return v1Configured;
-    }
-
-    @NonNull
-    public Boolean getV2Configured() {
-        return v2Configured;
     }
 }

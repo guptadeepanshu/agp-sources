@@ -15,14 +15,23 @@
  */
 package com.android.ide.common.gradle.model
 
-import com.android.builder.model.Variant
-import java.io.Serializable
+interface IdeVariantHeader {
+  val name: String
+  val buildType: String
+  val productFlavors: List<String>
+  val displayName: String
+}
 
-interface IdeVariant : Variant, Serializable {
-  override fun getMainArtifact(): IdeAndroidArtifact
+interface IdeVariant: IdeVariantHeader {
+  val mainArtifact: IdeAndroidArtifact
   val androidTestArtifact: IdeAndroidArtifact?
   val unitTestArtifact: IdeJavaArtifact?
-  override fun getExtraAndroidArtifacts(): Collection<IdeAndroidArtifact>
-  override fun getExtraJavaArtifacts(): Collection<IdeJavaArtifact>
-  val testArtifacts: Collection<IdeBaseArtifact>
+
+  /**
+   * The result of the merge of all the flavors and of the main default config. If no flavors
+   * are defined then this is the same as the default config.
+   */
+  val mergedFlavor: IdeProductFlavor
+  val testedTargetVariants: List<IdeTestedTargetVariant>
+  val instantAppCompatible: Boolean
 }

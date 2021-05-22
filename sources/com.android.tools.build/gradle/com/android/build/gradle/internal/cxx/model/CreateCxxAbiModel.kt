@@ -16,70 +16,57 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.core.Abi
-import com.android.build.gradle.internal.cxx.services.createDefaultAbiServiceRegistry
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
 import com.android.build.gradle.internal.cxx.settings.CMakeSettingsConfiguration
 import com.android.build.gradle.internal.cxx.settings.createBuildSettingsFromFile
-import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.utils.FileUtils.join
-import java.io.File
 
 /**
- * Construct a [CxxAbiModel], careful to be lazy with module level fields.
+ * Construct a [CxxAbiModel].
  */
 fun createCxxAbiModel(
+    sdkComponents: SdkComponentsBuildService,
+    configurationParameters: CxxConfigurationParameters,
     variant: CxxVariantModel,
-    abi: Abi,
-    global: GlobalScope,
-    componentProperties: ComponentPropertiesImpl) : CxxAbiModel {
-    return object : CxxAbiModel {
-        override val services by lazy { createDefaultAbiServiceRegistry() }
-        override val variant = variant
-        override val abi = abi
-        override val info by lazy {
-            variant.module.ndkMetaAbiList.single { it.abi == abi }
-        }
-        override val originalCxxBuildFolder by lazy {
-            join(variant.jsonFolder, abi.tag)
-        }
-        override val cxxBuildFolder by lazy {
-            join(variant.jsonFolder, abi.tag)
-        }
-        override val abiPlatformVersion by lazy {
-            val minSdkVersion = componentProperties.minSdkVersion
-            global
-                .sdkComponents
-                .get()
-                .ndkHandler
+    abi: Abi
+) : CxxAbiModel {
+    val cxxBuildFolder = join(
+        configurationParameters.cxxFolder,
+        configurationParameters.buildSystem.tag,
+        configurationParameters.variantName,
+        abi.tag)
+    return CxxAbiModel(
+        variant = variant,
+        abi = abi,
+        info = variant.module.ndkMetaAbiList.single { it.abi == abi },
+        originalCxxBuildFolder = cxxBuildFolder,
+        cxxBuildFolder = cxxBuildFolder,
+        abiPlatformVersion =
+            sdkComponents
+                .versionedNdkHandler(
+                                compileSdkVersion = configurationParameters.compileSdkVersion,
+                                ndkVersion = configurationParameters.ndkVersion,
+                                ndkPath = configurationParameters.ndkPath
+                            )
                 .ndkPlatform
                 .getOrThrow()
                 .ndkInfo
-                .findSuitablePlatformVersion(abi.tag, minSdkVersion)
-        }
-        override val cmake by lazy {
+                .findSuitablePlatformVersion(abi.tag, configurationParameters.minSdkVersion),
+        cmake =
             if (variant.module.buildSystem == NativeBuildSystem.CMAKE) {
-                object : CxxCmakeAbiModel {
-                    override val cmakeServerLogFile by lazy {
-                        join(cmakeArtifactsBaseFolder, "cmake_server_log.txt")
-                    }
-                    override val effectiveConfiguration by lazy { CMakeSettingsConfiguration() }
-                    override val cmakeWrappingBaseFolder by lazy {
-                       join(variant.gradleBuildOutputFolder, abi.tag)
-                    }
-                    override val cmakeArtifactsBaseFolder by lazy {
-                        join(variant.jsonFolder, abi.tag)
-                    }
-                }
+                CxxCmakeAbiModel(
+                    cmakeServerLogFile = join(cxxBuildFolder, "cmake_server_log.txt"),
+                    effectiveConfiguration = CMakeSettingsConfiguration(),
+                    cmakeWrappingBaseFolder = join(variant.gradleBuildOutputFolder, abi.tag),
+                    cmakeArtifactsBaseFolder = cxxBuildFolder
+                )
             } else {
                 null
-            }
-        }
-
-        override val buildSettings by lazy {
-            createBuildSettingsFromFile(variant.module.buildSettingsFile)
-        }
-        override val prefabFolder: File = variant.prefabDirectory.resolve(abi.tag)
-    }
+            },
+        buildSettings = createBuildSettingsFromFile(variant.module.buildSettingsFile),
+        prefabFolder = variant.prefabDirectory.resolve(abi.tag)
+    )
 }

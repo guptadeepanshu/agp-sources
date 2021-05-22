@@ -215,6 +215,8 @@ public class HardwareConfigHelper {
             // Example: 320x200, tvpdi (Round Chin)
             if (name.startsWith("Android Wear ")) {
                 name = name.substring("Android Wear ".length());
+            } else if (name.startsWith("Wear OS ")) {
+                name = name.substring("Wear OS ".length());
             }
             return String.format(Locale.US, "%1$s (%2$s)", getResolutionString(device), name);
         } else {
@@ -320,7 +322,9 @@ public class HardwareConfigHelper {
 
     /** Whether the given device is an Automotive device */
     public static boolean isAutomotive(@Nullable Device device) {
-        return device != null && "android-automotive".equals(device.getTagId());
+        return device != null
+                && ("android-automotive".equals(device.getTagId())
+                        || "android-automotive-playstore".equals(device.getTagId()));
     }
 
     /**

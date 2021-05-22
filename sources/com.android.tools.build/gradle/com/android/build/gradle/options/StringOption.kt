@@ -67,6 +67,9 @@ enum class StringOption(
     // The exact version of Android Support plugin used, e.g. 2.4.0.6
     IDE_ANDROID_STUDIO_VERSION(AndroidProject.PROPERTY_ANDROID_SUPPORT_VERSION, ApiStage.Stable),
 
+    // Native
+    NATIVE_BUILD_OUTPUT_LEVEL(AndroidProject.PROPERTY_NATIVE_BUILD_OUTPUT_LEVEL, ApiStage.Stable),
+
     // User-specified path to Prefab jar to return from getPrefabFromMaven.
     PREFAB_CLASSPATH("android.prefabClassPath", ApiStage.Experimental),
 
@@ -74,7 +77,12 @@ enum class StringOption(
     PREFAB_VERSION("android.prefabVersion", ApiStage.Experimental),
 
     // Jetifier: List of regular expressions for libraries that should not be jetified
-    JETIFIER_BLACKLIST("android.jetifier.blacklist", ApiStage.Experimental),
+    @Suppress("WrongTerminology")
+    @Deprecated(message = "Use JETIFIER_IGNORE_LIST instead", replaceWith = ReplaceWith("JETIFIER_IGNORE_LIST"))
+    JETIFIER_BLACKLIST("android.jetifier.blacklist", ApiStage.Deprecated(DeprecationReporter.DeprecationTarget.JETIFIER_IGNORE_LIST)),
+
+    // Jetifier: List of regular expressions for libraries that should not be jetified
+    JETIFIER_IGNORE_LIST("android.jetifier.ignorelist", ApiStage.Experimental),
 
     @Suppress("unused")
     BUILD_CACHE_DIR(

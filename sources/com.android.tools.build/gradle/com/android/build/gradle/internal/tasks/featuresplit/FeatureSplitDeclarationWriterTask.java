@@ -17,13 +17,12 @@
 package com.android.build.gradle.internal.tasks.featuresplit;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
-import org.gradle.api.Project;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Input;
@@ -57,10 +56,10 @@ public abstract class FeatureSplitDeclarationWriterTask extends NonIncrementalTa
 
     public static class CreationAction
             extends VariantTaskCreationAction<
-                    FeatureSplitDeclarationWriterTask, ComponentPropertiesImpl> {
+                    FeatureSplitDeclarationWriterTask, VariantCreationConfig> {
 
-        public CreationAction(@NonNull ComponentPropertiesImpl componentProperties) {
-            super(componentProperties);
+        public CreationAction(@NonNull VariantCreationConfig creationConfig) {
+            super(creationConfig);
         }
 
         @NonNull
@@ -93,8 +92,7 @@ public abstract class FeatureSplitDeclarationWriterTask extends NonIncrementalTa
                 @NonNull FeatureSplitDeclarationWriterTask task) {
             super.configure(task);
 
-            final Project project = creationConfig.getGlobalScope().getProject();
-            task.uniqueIdentifier = project.getPath();
+            task.uniqueIdentifier = task.getProject().getPath();
             // rename this as packageName since this is really what this is
             // TODO b/152002064
             task.getApplicationId().set(creationConfig.getPackageName());

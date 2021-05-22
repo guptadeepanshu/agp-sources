@@ -17,11 +17,15 @@
 package com.android.build.gradle.internal.plugins;
 
 import com.android.annotations.NonNull;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
+import com.android.build.api.dsl.ApplicationExtension;
+import com.android.build.api.dsl.SdkComponents;
+import com.android.build.api.extension.ApplicationAndroidComponentsExtension;
+import com.android.build.api.extension.impl.ApplicationAndroidComponentsExtensionImpl;
+import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.impl.ApplicationVariantBuilderImpl;
 import com.android.build.api.variant.impl.ApplicationVariantImpl;
-import com.android.build.api.variant.impl.ApplicationVariantPropertiesImpl;
-import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.AppModelBuilder;
@@ -31,6 +35,7 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.services.DslServices;
@@ -39,21 +44,28 @@ import com.android.build.gradle.internal.tasks.ApplicationTaskManager;
 import com.android.build.gradle.internal.variant.ApplicationVariantFactory;
 import com.android.build.gradle.internal.variant.ComponentInfo;
 import com.android.build.gradle.internal.variant.VariantModel;
-import com.android.builder.profile.Recorder;
+import com.android.build.gradle.options.BooleanOption;
+import com.android.builder.model.v2.ide.ProjectType;
 import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
 import org.gradle.api.component.SoftwareComponentFactory;
+import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
 /** Gradle plugin class for 'application' projects, applied on the base application module */
 public class AppPlugin
-        extends AbstractAppPlugin<ApplicationVariantImpl, ApplicationVariantPropertiesImpl> {
+        extends AbstractAppPlugin<
+                ApplicationAndroidComponentsExtension,
+                ApplicationVariantBuilderImpl,
+                ApplicationVariantImpl> {
     @Inject
     public AppPlugin(
-            ToolingModelBuilderRegistry registry, SoftwareComponentFactory componentFactory) {
-        super(registry, componentFactory);
+            ToolingModelBuilderRegistry registry,
+            SoftwareComponentFactory componentFactory,
+            BuildEventsListenerRegistry listenerRegistry) {
+        super(registry, componentFactory, listenerRegistry);
     }
 
     @Override
@@ -77,16 +89,9 @@ public class AppPlugin
                         getProjectType()));
     }
 
-
-    @Override
-    @NonNull
-    protected Class<? extends AppExtension> getExtensionClass() {
-        return BaseAppModuleExtension.class;
-    }
-
     @NonNull
     @Override
-    protected AppExtension createExtension(
+    protected BaseExtension createExtension(
             @NonNull DslServices dslServices,
             @NonNull GlobalScope globalScope,
             @NonNull
@@ -94,10 +99,24 @@ public class AppPlugin
                             dslContainers,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> buildOutputs,
             @NonNull ExtraModelInfo extraModelInfo) {
+        if (globalScope.getProjectOptions().get(BooleanOption.USE_NEW_DSL_INTERFACES)) {
+            return (BaseExtension)
+                    project.getExtensions()
+                            .create(
+                                    ApplicationExtension.class,
+                                    "android",
+                                    BaseAppModuleExtension.class,
+                                    dslServices,
+                                    globalScope,
+                                    buildOutputs,
+                                    dslContainers.getSourceSetManager(),
+                                    extraModelInfo,
+                                    new ApplicationExtensionImpl(dslServices, dslContainers));
+        }
         return project.getExtensions()
                 .create(
                         "android",
-                        getExtensionClass(),
+                        BaseAppModuleExtension.class,
                         dslServices,
                         globalScope,
                         buildOutputs,
@@ -108,23 +127,44 @@ public class AppPlugin
 
     @NonNull
     @Override
+    protected ApplicationAndroidComponentsExtension createComponentExtension(
+            @NonNull DslServices dslServices,
+            @NonNull
+                    VariantApiOperationsRegistrar<
+                                    ApplicationVariantBuilderImpl, ApplicationVariantImpl>
+                            variantApiOperationsRegistrar) {
+        SdkComponents sdkComponents =
+                dslServices.newInstance(
+                        SdkComponentsImpl.class,
+                        dslServices,
+                        project.provider(getExtension()::getCompileSdkVersion),
+                        project.provider(getExtension()::getBuildToolsRevision),
+                        project.provider(getExtension()::getNdkVersion),
+                        project.provider(getExtension()::getNdkPath));
+
+        return project.getExtensions()
+                .create(
+                        ApplicationAndroidComponentsExtension.class,
+                        "androidComponents",
+                        ApplicationAndroidComponentsExtensionImpl.class,
+                        dslServices,
+                        sdkComponents,
+                        variantApiOperationsRegistrar);
+    }
+
+    @NonNull
+    @Override
     protected ApplicationTaskManager createTaskManager(
             @NonNull
-                    List<ComponentInfo<ApplicationVariantImpl, ApplicationVariantPropertiesImpl>>
+                    List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>
                             variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder threadRecorder) {
+            @NonNull BaseExtension extension) {
         return new ApplicationTaskManager(
-                variants, testComponents, hasFlavors, globalScope, extension, threadRecorder);
+                variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     @NonNull
@@ -132,5 +172,10 @@ public class AppPlugin
     protected ApplicationVariantFactory createVariantFactory(
             @NonNull ProjectServices projectServices, @NonNull GlobalScope globalScope) {
         return new ApplicationVariantFactory(projectServices, globalScope);
+    }
+
+    @Override
+    protected ProjectType getProjectTypeV2() {
+        return ProjectType.APPLICATION;
     }
 }

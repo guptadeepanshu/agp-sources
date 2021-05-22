@@ -17,8 +17,6 @@ package com.android.ide.common.rendering.api;
 
 import com.android.annotations.Nullable;
 import com.android.ide.common.rendering.api.SessionParams.Key;
-import com.android.resources.Density;
-import com.android.resources.ScreenSize;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +33,11 @@ public abstract class RenderParams {
     private final LayoutlibCallback mLayoutlibCallback;
     private final int mMinSdkVersion;
     private final int mTargetSdkVersion;
+    /** The configuration uiMode, see {@link android.content.res.Configuration#uiMode}. */
+    private int mUiMode = 0;
+
     private float mFontScale = 1f;
-    private final LayoutLog mLog;
+    private final ILayoutLog mLog;
 
     private boolean mSetTransparentBackground;
     private long mTimeout;
@@ -62,8 +63,8 @@ public abstract class RenderParams {
      * @param projectKey An Object identifying the project. This is used for the cache mechanism.
      * @param hardwareConfig the {@link HardwareConfig}.
      * @param renderResources a {@link RenderResources} object providing access to the resources.
-     * @param layoutlibCallback The {@link LayoutlibCallback} object to get information from
-     * the project.
+     * @param layoutlibCallback The {@link LayoutlibCallback} object to get information from the
+     *     project.
      * @param minSdkVersion the minSdkVersion of the project
      * @param targetSdkVersion the targetSdkVersion of the project
      * @param log the object responsible for displaying warning/errors to the user.
@@ -73,8 +74,9 @@ public abstract class RenderParams {
             HardwareConfig hardwareConfig,
             RenderResources renderResources,
             LayoutlibCallback layoutlibCallback,
-            int minSdkVersion, int targetSdkVersion,
-            LayoutLog log) {
+            int minSdkVersion,
+            int targetSdkVersion,
+            ILayoutLog log) {
         mProjectKey = projectKey;
         mHardwareConfig = hardwareConfig;
         mRenderResources = renderResources;
@@ -97,6 +99,7 @@ public abstract class RenderParams {
         mLayoutlibCallback = params.mLayoutlibCallback;
         mMinSdkVersion = params.mMinSdkVersion;
         mTargetSdkVersion = params.mTargetSdkVersion;
+        mUiMode = params.mUiMode;
         mLog = params.mLog;
         mSetTransparentBackground = params.mSetTransparentBackground;
         mTimeout = params.mTimeout;
@@ -183,6 +186,16 @@ public abstract class RenderParams {
         return mFontScale;
     }
 
+    /** Sets the uiMode. See {@link android.content.res.Configuration#uiMode} */
+    public void setUiMode(int uiMode) {
+        mUiMode = uiMode;
+    }
+
+    /** Returns the uiMode. See {@link android.content.res.Configuration#uiMode} */
+    public int getUiMode() {
+        return mUiMode;
+    }
+
     public Object getProjectKey() {
         return mProjectKey;
     }
@@ -199,46 +212,6 @@ public abstract class RenderParams {
         return mTargetSdkVersion;
     }
 
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public int getScreenWidth() {
-        return mHardwareConfig.getScreenWidth();
-    }
-
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public int getScreenHeight() {
-        return mHardwareConfig.getScreenHeight();
-    }
-
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public Density getDensity() {
-        return mHardwareConfig.getDensity();
-    }
-
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public float getXdpi() {
-        return mHardwareConfig.getXdpi();
-    }
-
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public float getYdpi() {
-        return mHardwareConfig.getYdpi();
-    }
-
     public RenderResources getResources() {
         return mRenderResources;
     }
@@ -251,7 +224,7 @@ public abstract class RenderParams {
         return mLayoutlibCallback;
     }
 
-    public LayoutLog getLog() {
+    public ILayoutLog getLog() {
         return mLog;
     }
 
@@ -263,36 +236,12 @@ public abstract class RenderParams {
         return mSetTransparentBackground;
     }
 
-    /** @deprecated use {@link #isTransparentBackground()} instead */
-    @Deprecated
-    public boolean isBgColorOverridden() {
-        return mSetTransparentBackground;
-    }
-
-    /**
-     * @deprecated background color may only be overridden with transparent background. If for some
-     *     reason in the future one wants to override background with a specific color one can do it
-     *     in studio and drawing the image with transparent background on top.
-     */
-    @Deprecated
-    public int getOverrideBgColor() {
-        return 0;
-    }
-
     public long getTimeout() {
         return mTimeout;
     }
 
     public IImageFactory getImageFactory() {
         return mImageFactory;
-    }
-
-    /**
-     * @deprecated Use {@link #getHardwareConfig()}
-     */
-    @Deprecated
-    public ScreenSize getConfigScreenSize() {
-        return mHardwareConfig.getScreenSize();
     }
 
     /** Returns the application icon resource, or null if there is no icon. */

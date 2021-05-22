@@ -17,6 +17,9 @@
 package com.android.build.gradle.internal.publishing
 
 import com.android.build.api.artifact.Artifact
+import com.android.build.api.artifact.ArtifactType.APK
+import com.android.build.api.artifact.ArtifactType.MERGED_MANIFEST
+import com.android.build.api.artifact.ArtifactType.OBFUSCATION_MAPPING_FILE
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_API_PUBLICATION
@@ -30,24 +33,16 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.AAPT_PROGUARD_FILE
 import com.android.build.gradle.internal.scope.InternalArtifactType.AAR_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.AIDL_PARCELABLE
-import com.android.build.gradle.internal.scope.InternalArtifactType.APK
-import com.android.build.gradle.internal.scope.InternalArtifactType.APK_MAPPING
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_ZIP
 import com.android.build.gradle.internal.scope.InternalArtifactType.APP_CLASSES
 import com.android.build.gradle.internal.scope.InternalArtifactType.BASE_MODULE_METADATA
-import com.android.build.gradle.internal.scope.InternalArtifactType.BUNDLE
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILED_LOCAL_RESOURCES
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_LIBRARY_CLASSES_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_SYMBOL_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.CONSUMER_PROGUARD_DIR
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_ARTIFACT
 import com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES
-import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES
+import com.android.build.gradle.internal.scope.InternalArtifactType.DESUGAR_LIB_MERGED_KEEP_RULES
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_NAME
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_RESOURCE_PKG
 import com.android.build.gradle.internal.scope.InternalArtifactType.FEATURE_SET_METADATA
@@ -56,7 +51,8 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_ASSETS
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_JNI
-import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_MANIFEST
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_VARIANT_DEPENDENCIES_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_PROJECT_GLOBAL_MODEL
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_PUBLISH_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_JAVA_RES
@@ -76,13 +72,15 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT
 import com.android.build.gradle.internal.scope.InternalArtifactType.RES_STATIC_LIBRARY
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_LIBRARY_CLASSES_DIR
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_LIBRARY_CLASSES_JAR
-import com.android.build.gradle.internal.scope.InternalArtifactType.SIGNING_CONFIG
+import com.android.build.gradle.internal.scope.InternalArtifactType.SIGNING_CONFIG_DATA
+import com.android.build.gradle.internal.scope.InternalArtifactType.SIGNING_CONFIG_VERSIONS
 import com.android.build.gradle.internal.scope.InternalArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.builder.core.VariantType
 import com.android.builder.core.VariantTypeImpl
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
+import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.file.FileSystemLocation
 
 /**
@@ -116,6 +114,7 @@ class PublishingSpecs {
         val outputType: Artifact.SingleArtifact<out FileSystemLocation>
         val artifactType: ArtifactType
         val publishedConfigTypes: ImmutableList<PublishedConfigType>
+        val libraryElements: String?
     }
 
     companion object {
@@ -132,7 +131,7 @@ class PublishingSpecs {
                 api(APP_CLASSES, ArtifactType.JAR)
                 output(APP_CLASSES, ArtifactType.CLASSES_JAR)
                 output(JAVA_RES, ArtifactType.JAVA_RES)
-                api(APK_MAPPING, ArtifactType.APK_MAPPING)
+                api(OBFUSCATION_MAPPING_FILE, ArtifactType.APK_MAPPING)
 
                 api(RES_STATIC_LIBRARY, ArtifactType.RES_STATIC_LIBRARY)
                 api(FEATURE_RESOURCE_PKG, ArtifactType.FEATURE_RESOURCE_PKG)
@@ -148,12 +147,13 @@ class PublishingSpecs {
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
 
                 // output of bundle-tool
-                publish(BUNDLE, ArtifactType.BUNDLE)
+                publish(com.android.build.api.artifact.ArtifactType.BUNDLE, ArtifactType.BUNDLE)
 
                 // this is only for base modules.
                 api(FEATURE_SET_METADATA, ArtifactType.FEATURE_SET_METADATA)
                 api(BASE_MODULE_METADATA, ArtifactType.BASE_MODULE_METADATA)
-                api(SIGNING_CONFIG, ArtifactType.FEATURE_SIGNING_CONFIG)
+                api(SIGNING_CONFIG_DATA, ArtifactType.FEATURE_SIGNING_CONFIG_DATA)
+                api(SIGNING_CONFIG_VERSIONS, ArtifactType.FEATURE_SIGNING_CONFIG_VERSIONS)
             }
 
             variantSpec(VariantTypeImpl.OPTIONAL_APK) {
@@ -165,7 +165,7 @@ class PublishingSpecs {
                 api(APP_CLASSES, ArtifactType.JAR)
                 output(APP_CLASSES, ArtifactType.CLASSES_JAR)
                 output(JAVA_RES, ArtifactType.JAVA_RES)
-                api(APK_MAPPING, ArtifactType.APK_MAPPING)
+                api(OBFUSCATION_MAPPING_FILE, ArtifactType.APK_MAPPING)
 
                 api(RES_STATIC_LIBRARY, ArtifactType.RES_STATIC_LIBRARY)
                 api(FEATURE_RESOURCE_PKG, ArtifactType.FEATURE_RESOURCE_PKG)
@@ -189,13 +189,7 @@ class PublishingSpecs {
                 reverseMetadata(PACKAGED_DEPENDENCIES, ArtifactType.PACKAGED_DEPENDENCIES)
                 reverseMetadata(NATIVE_DEBUG_METADATA, ArtifactType.REVERSE_METADATA_NATIVE_DEBUG_METADATA)
                 reverseMetadata(NATIVE_SYMBOL_TABLES, ArtifactType.REVERSE_METADATA_NATIVE_SYMBOL_TABLES)
-
-                reverseMetadata(DESUGAR_LIB_PROJECT_KEEP_RULES, ArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
-                reverseMetadata(DESUGAR_LIB_SUBPROJECT_KEEP_RULES, ArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES)
-                reverseMetadata(DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES, ArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES)
-                reverseMetadata(DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES, ArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES)
-                reverseMetadata(DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES, ArtifactType.DESUGAR_LIB_EXTERNAL_FILE_KEEP_RULES)
-                reverseMetadata(DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES, ArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES)
+                reverseMetadata(DESUGAR_LIB_MERGED_KEEP_RULES, ArtifactType.DESUGAR_LIB_MERGED_KEEP_RULES)
 
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
                 runtime(FEATURE_NAME, ArtifactType.FEATURE_NAME)
@@ -203,7 +197,7 @@ class PublishingSpecs {
 
 
             variantSpec(VariantTypeImpl.LIBRARY) {
-                publish(InternalArtifactType.AAR, ArtifactType.AAR)
+                publish(com.android.build.api.artifact.ArtifactType.AAR, ArtifactType.AAR)
 
                 api(AIDL_PARCELABLE, ArtifactType.AIDL)
                 api(RENDERSCRIPT_HEADERS, ArtifactType.RENDERSCRIPT)
@@ -212,7 +206,7 @@ class PublishingSpecs {
 
                 // manifest is published to both to compare and detect provided-only library
                 // dependencies.
-                output(LIBRARY_MANIFEST, ArtifactType.MANIFEST)
+                output(MERGED_MANIFEST, ArtifactType.MANIFEST)
                 output(RES_STATIC_LIBRARY, ArtifactType.RES_STATIC_LIBRARY)
                 output(DATA_BINDING_ARTIFACT, ArtifactType.DATA_BINDING_ARTIFACT)
                 output(DATA_BINDING_BASE_CLASS_LOG_ARTIFACT,
@@ -223,7 +217,12 @@ class PublishingSpecs {
                 output(SYMBOL_LIST_WITH_PACKAGE_NAME, ArtifactType.SYMBOL_LIST_WITH_PACKAGE_NAME)
 
                 runtime(RUNTIME_LIBRARY_CLASSES_JAR, ArtifactType.CLASSES_JAR)
-                runtime(RUNTIME_LIBRARY_CLASSES_DIR, ArtifactType.CLASSES_DIR)
+
+                // Publish the CLASSES_DIR artifact type with a LibraryElements.CLASSES attribute to
+                // match the behavior of the Java library plugin. The LibraryElements attribute will
+                // be used for incremental dexing of library subprojects.
+                runtime(RUNTIME_LIBRARY_CLASSES_DIR, ArtifactType.CLASSES_DIR, LibraryElements.CLASSES)
+
                 runtime(LIBRARY_ASSETS, ArtifactType.ASSETS)
                 runtime(PACKAGED_RES, ArtifactType.ANDROID_RES)
                 runtime(PUBLIC_RES, ArtifactType.PUBLIC_RES)
@@ -235,8 +234,17 @@ class PublishingSpecs {
                 runtime(NAVIGATION_JSON, ArtifactType.NAVIGATION_JSON)
                 runtime(COMPILED_LOCAL_RESOURCES, ArtifactType.COMPILED_DEPENDENCIES_RESOURCES)
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
+
+                runtime(LINT_PROJECT_GLOBAL_MODEL, ArtifactType.LINT_PROJECT_GLOBAL_MODEL)
+                runtime(LINT_VARIANT_DEPENDENCIES_MODEL, ArtifactType.LINT_VARIANT_DEPENDENCIES_MODEL)
+                runtime(
+                    com.android.build.api.artifact.ArtifactType.AAR,
+                    ArtifactType.LOCAL_AAR_FOR_LINT)
             }
 
+            // Publishing will be done manually from the lint standalone plugin for now.
+            // Eventually we should just unify the infrastructure to declare the publications here.
+            variantSpec(VariantTypeImpl.JAVA_LIBRARY)
             // empty specs
             variantSpec(VariantTypeImpl.TEST_APK)
             variantSpec(VariantTypeImpl.ANDROID_TEST)
@@ -286,7 +294,7 @@ class PublishingSpecs {
 
         fun output(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType)
         fun api(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType)
-        fun runtime(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType)
+        fun runtime(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType, libraryElements: String? = null)
         fun reverseMetadata(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType)
         fun publish(taskOutputType: Artifact.SingleArtifact<out FileSystemLocation>, artifactType: ArtifactType)
     }
@@ -352,7 +360,9 @@ private class VariantPublishingSpecImpl(
 private data class OutputSpecImpl(
         override val outputType: Artifact.SingleArtifact<out FileSystemLocation>,
         override val artifactType: ArtifactType,
-        override val publishedConfigTypes: ImmutableList<PublishedConfigType> = API_AND_RUNTIME_ELEMENTS) : PublishingSpecs.OutputSpec
+        override val publishedConfigTypes: ImmutableList<PublishedConfigType> = API_AND_RUNTIME_ELEMENTS,
+        override val libraryElements: String? = null
+) : PublishingSpecs.OutputSpec
 
 // -- Implementation of the internal Spec Builder interfaces
 
@@ -369,8 +379,8 @@ private open class VariantSpecBuilderImpl (
         outputs.add(OutputSpecImpl(taskOutputType, artifactType, API_ELEMENTS_ONLY))
     }
 
-    override fun runtime(taskOutputType: Artifact.SingleArtifact<*>, artifactType: ArtifactType) {
-        outputs.add(OutputSpecImpl(taskOutputType, artifactType, RUNTIME_ELEMENTS_ONLY))
+    override fun runtime(taskOutputType: Artifact.SingleArtifact<*>, artifactType: ArtifactType, libraryElements: String?) {
+        outputs.add(OutputSpecImpl(taskOutputType, artifactType, RUNTIME_ELEMENTS_ONLY, libraryElements))
     }
 
     override fun reverseMetadata(taskOutputType: Artifact.SingleArtifact<*>, artifactType: ArtifactType) {

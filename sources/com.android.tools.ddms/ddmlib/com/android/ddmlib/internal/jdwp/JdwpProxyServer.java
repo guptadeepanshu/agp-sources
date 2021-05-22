@@ -16,6 +16,7 @@
 package com.android.ddmlib.internal.jdwp;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.concurrency.GuardedBy;
 import com.android.ddmlib.Log;
 import com.android.ddmlib.TimeoutException;
 import com.google.common.annotations.VisibleForTesting;
@@ -52,6 +53,7 @@ import java.util.Set;
  */
 public class JdwpProxyServer implements Runnable {
     private static final long THROTTLE_TIMEOUT_MS = 1000;
+    private static final long JOIN_TIMEOUT_MS = 5000;
     /**
      * Callback for when a server drops and a new server has taken its place.
      */
@@ -61,11 +63,21 @@ public class JdwpProxyServer implements Runnable {
 
     private final int mListenPort;
     private final ConnectionState mConnectionStateChangedCallback;
+    /**
+     * The sockets can be accessed on the JdwpProxyConnection thread or the main thread. The main
+     * thread is responsible for shutting down the server. If the server is shutdown from the main
+     * thread while transitioning state this can cause a variety of timing issues.
+     */
+    private final Object myChannelLock = new Object();
+
+    @GuardedBy("myChannelLock")
     private ServerSocketChannel mListenChannel;
+
+    @GuardedBy("myChannelLock")
     private SocketChannel mFallbackChannel;
+
     private boolean mQuit = false;
     private Selector mSelector;
-    private final byte[] mBuffer = new byte[1024 * 1024];
     private JdwpClientManagerFactory mFactory;
     private boolean mIsRunningAsServer = false;
     private InetSocketAddress mServerAddress;
@@ -99,8 +111,10 @@ public class JdwpProxyServer implements Runnable {
 
     @VisibleForTesting
     boolean IsConnectedOrListening() {
-        return (mListenChannel != null && mListenChannel.socket().isBound()) ||
-               (mFallbackChannel != null && mFallbackChannel.isConnected());
+        synchronized (myChannelLock) {
+            return (mListenChannel != null && mListenChannel.socket().isBound())
+                    || (mFallbackChannel != null && mFallbackChannel.isConnected());
+        }
     }
 
     @VisibleForTesting
@@ -109,20 +123,24 @@ public class JdwpProxyServer implements Runnable {
     }
 
     private void startAsServer() throws IOException {
-        mListenChannel = ServerSocketChannel.open();
-        mSelector = Selector.open();
-        mFactory = new JdwpClientManagerFactory(mSelector, mBuffer);
-        mListenChannel.socket().setReuseAddress(true);  // enable SO_REUSEADDR
-        mListenChannel.socket().bind(mServerAddress);
-        mListenChannel.configureBlocking(false);
-        mListenChannel.register(mSelector, SelectionKey.OP_ACCEPT, this);
-        mIsRunningAsServer = true;
+        synchronized (myChannelLock) {
+            mListenChannel = ServerSocketChannel.open();
+            mSelector = Selector.open();
+            mFactory = new JdwpClientManagerFactory(mSelector);
+            mListenChannel.socket().setReuseAddress(true); // enable SO_REUSEADDR
+            mListenChannel.socket().bind(mServerAddress);
+            mListenChannel.configureBlocking(false);
+            mListenChannel.register(mSelector, SelectionKey.OP_ACCEPT, this);
+            mIsRunningAsServer = true;
+        }
     }
 
     @VisibleForTesting
     int getBindPort() {
-        assert mListenChannel != null;
-        return mListenChannel.socket().getLocalPort();
+        synchronized (myChannelLock) {
+            assert mListenChannel != null;
+            return mListenChannel.socket().getLocalPort();
+        }
     }
 
     private void startAsClient() {
@@ -131,25 +149,20 @@ public class JdwpProxyServer implements Runnable {
 
     public void stop() {
         mQuit = true;
-        mSelector.wakeup();
-        if (mFallbackChannel != null) {
-            try {
-                mFallbackChannel.close();
-            }
-            catch (IOException ex) {
-                // Failed to close client socket
+        if (mSelector != null) {
+            mSelector.wakeup();
+        }
+        synchronized (myChannelLock) {
+            if (mFallbackChannel != null) {
+                try {
+                    mFallbackChannel.close();
+                } catch (IOException ex) {
+                    // Failed to close client socket
+                }
             }
         }
-        // Wait until our run thread exits. This guarantees we can cleanup all data used by this
-        // this thread without risk of threading issues.
-        if (myRunThread != null) {
-            try {
-                myRunThread.join();
-            }
-            catch (InterruptedException ex) {
-                // Failed to wait for thread to stop.
-            }
-        }
+        // Shutdown the sockets first, so that they will stop reading packets, potentially
+        // causing the join to hang (which will freeze the UI).
         try {
             // Close any open child sockets.
             if (mSelector != null) {
@@ -168,19 +181,34 @@ public class JdwpProxyServer implements Runnable {
         catch (IOException ex) {
             // Failed to close selector
         }
-        if (mListenChannel != null) {
+        // Wait until our run thread exits. This guarantees we can cleanup all data used by this
+        // this thread without risk of threading issues.
+        if (myRunThread != null) {
             try {
-                mListenChannel.close();
-                mListenChannel.socket().close();
+                myRunThread.join(JOIN_TIMEOUT_MS);
+                if (myRunThread.isAlive()) {
+                    Log.e("ddms", "Run thread still alive after " + JOIN_TIMEOUT_MS + "ms");
+                }
+            } catch (InterruptedException ex) {
+                // Failed to wait for thread to stop.
             }
-            catch (IOException ex) {
-                // Failed to close server socket.
+        }
+        synchronized (myChannelLock) {
+            if (mListenChannel != null) {
+                try {
+                    mListenChannel.close();
+                    mListenChannel.socket().close();
+                } catch (IOException ex) {
+                    // Failed to close server socket.
+                }
             }
         }
 
         mSelector = null;
-        mListenChannel = null;
-        mFallbackChannel = null;
+        synchronized (myChannelLock) {
+            mListenChannel = null;
+            mFallbackChannel = null;
+        }
         myRunThread = null;
     }
 
@@ -192,13 +220,21 @@ public class JdwpProxyServer implements Runnable {
                 Thread.sleep(THROTTLE_TIMEOUT_MS);
             }
             mLastAttemptTime = System.currentTimeMillis();
-            if (mFallbackChannel == null) {
-                mFallbackChannel = SocketChannel.open(mServerAddress);
+            SocketChannel chan;
+            synchronized (myChannelLock) {
+                if (mQuit) {
+                    return;
+                }
+                if (mFallbackChannel == null) {
+                    mFallbackChannel = SocketChannel.open(mServerAddress);
+                }
+                chan = mFallbackChannel;
             }
-            ByteBuffer buffer = ByteBuffer.wrap(mBuffer);
-            // If we are able to open a socket attempt to read from the channel. Our server never writes data to clients that haven't
+            ByteBuffer buffer = ByteBuffer.allocate(1);
+            // If we are able to open a socket attempt to read from the channel. Our server never
+            // writes data to clients that haven't
             // initialized themselves as such this read will block the thread until the server dies.
-            mFallbackChannel.read(buffer);
+            chan.read(buffer);
             retryAsServer();
         }
         catch (IOException ex) {
@@ -210,10 +246,13 @@ public class JdwpProxyServer implements Runnable {
         if (mQuit) {
             return;
         }
-        // If we fail to connect or our connection is interrupted, maybe the server died attempt to start as a server.
-        if (mFallbackChannel != null) {
-            mFallbackChannel.close();
-            mFallbackChannel = null;
+        // If we fail to connect or our connection is interrupted, maybe the server died attempt to
+        // start as a server.
+        synchronized (myChannelLock) {
+            if (mFallbackChannel != null) {
+                mFallbackChannel.close();
+                mFallbackChannel = null;
+            }
         }
         if (mSelector != null) {
             mSelector.close();
@@ -239,9 +278,14 @@ public class JdwpProxyServer implements Runnable {
             iter.remove();
             try {
                 if (key.isAcceptable()) {
-                    SocketChannel client = mListenChannel.accept();
-                    client.configureBlocking(false);
-                    client.register(mSelector, SelectionKey.OP_READ, new JdwpProxyClient(client, mFactory, mBuffer));
+                    synchronized (myChannelLock) {
+                        SocketChannel client = mListenChannel.accept();
+                        client.configureBlocking(false);
+                        client.register(
+                                mSelector,
+                                SelectionKey.OP_READ,
+                                new JdwpProxyClient(client, mFactory));
+                    }
                 }
                 else if (key.attachment() instanceof JdwpSocketHandler) {
                     JdwpSocketHandler handler = (JdwpSocketHandler)key.attachment();

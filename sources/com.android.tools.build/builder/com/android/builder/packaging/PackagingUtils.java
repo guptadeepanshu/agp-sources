@@ -21,6 +21,7 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.builder.core.ManifestAttributeSupplier;
+import com.android.sdklib.AndroidVersion;
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
@@ -47,7 +48,7 @@ public class PackagingUtils {
                     ".jpg", ".jpeg", ".png", ".gif", ".opus", ".wav", ".mp2", ".mp3", ".ogg",
                     ".aac", ".mpg", ".mpeg", ".mid", ".midi", ".smf", ".jet", ".rtttl", ".imy",
                     ".xmf", ".mp4", ".m4a", ".m4v", ".3gp", ".3gpp", ".3g2", ".3gpp2", ".amr",
-                    ".awb", ".wma", ".wmv", ".webm", ".mkv");
+                    ".awb", ".wma", ".wmv", ".webm", ".mkv", ".webp");
 
     /** Set of characters that need to be escaped when creating an ECMAScript regular expression. */
     public static final ImmutableSet<Character> ECMA_SCRIPT_ESCAPABLE_CHARACTERS =
@@ -127,13 +128,11 @@ public class PackagingUtils {
     @NonNull
     public static Predicate<String> getNoCompressPredicate(
             @Nullable Collection<String> aaptOptionsNoCompress,
-            @NonNull ManifestAttributeSupplier manifest) {
-        NativeLibrariesPackagingMode packagingMode =
-                getNativeLibrariesLibrariesPackagingMode(manifest);
-        PackageEmbeddedDex useEmbeddedDex = getUseEmbeddedDex(manifest);
-
+            @NonNull NativeLibrariesPackagingMode nativeLibsPackagingMode,
+            @NonNull DexPackagingMode dexPackagingMode) {
         return getNoCompressPredicateForExtensions(
-                getAllNoCompressExtensions(aaptOptionsNoCompress, packagingMode, useEmbeddedDex));
+                getAllNoCompressExtensions(
+                        aaptOptionsNoCompress, nativeLibsPackagingMode, dexPackagingMode));
     }
 
     @NonNull
@@ -143,7 +142,7 @@ public class PackagingUtils {
                 getAllNoCompressExtensions(
                         aaptOptionsNoCompress,
                         NativeLibrariesPackagingMode.COMPRESSED,
-                        PackageEmbeddedDex.DEFAULT));
+                        DexPackagingMode.COMPRESSED));
     }
 
     @NonNull
@@ -152,7 +151,8 @@ public class PackagingUtils {
         return getAllNoCompressExtensions(
                         aaptOptionsNoCompress,
                         NativeLibrariesPackagingMode.COMPRESSED,
-                        PackageEmbeddedDex.DEFAULT)
+                        // TODO(b/161461387) Does bundletool automatically uncompress dex for P+?
+                        DexPackagingMode.COMPRESSED)
                 .stream()
                 .map(PackagingUtils::toCaseInsensitiveGlobForBundle)
                 .sorted()
@@ -227,11 +227,9 @@ public class PackagingUtils {
 
     @NonNull
     public static NativeLibrariesPackagingMode getNativeLibrariesLibrariesPackagingMode(
-            @NonNull ManifestAttributeSupplier manifest) {
-        Boolean extractNativeLibs = manifest.getExtractNativeLibs();
-
-        // The default is "true", so we only package *.so files differently if the user explicitly
-        // set this to "false".
+            @Nullable Boolean extractNativeLibs) {
+        // The default is "true", so we only package *.so files differently if
+        // android:extractNativeLibs is explicitly set to "false".
         if (Boolean.FALSE.equals(extractNativeLibs)) {
             return NativeLibrariesPackagingMode.UNCOMPRESSED_AND_ALIGNED;
         } else {
@@ -240,16 +238,15 @@ public class PackagingUtils {
     }
 
     @NonNull
-    public static PackageEmbeddedDex getUseEmbeddedDex(
-            @NonNull ManifestAttributeSupplier manifest) {
-        Boolean useEmbeddedDex = manifest.getUseEmbeddedDex();
-
-        if (useEmbeddedDex == null) {
-            return PackageEmbeddedDex.DEFAULT;
-        } else if (Boolean.TRUE.equals(useEmbeddedDex)) {
-            return PackageEmbeddedDex.UNCOMPRESSED;
+    public static DexPackagingMode getDexPackagingMode(
+            @Nullable Boolean useEmbeddedDex, boolean useLegacyPackaging) {
+        if (Boolean.TRUE.equals(useEmbeddedDex)) {
+            // If useEmbeddedDex is true, dex files must be uncompressed.
+            return DexPackagingMode.UNCOMPRESSED;
+        } else if (useLegacyPackaging) {
+            return DexPackagingMode.COMPRESSED;
         } else {
-            return PackageEmbeddedDex.COMPRESSED;
+            return DexPackagingMode.UNCOMPRESSED;
         }
     }
 
@@ -273,7 +270,7 @@ public class PackagingUtils {
     private static List<String> getAllNoCompressExtensions(
             @Nullable Collection<String> aaptOptionsNoCompress,
             @NonNull NativeLibrariesPackagingMode nativeLibrariesPackagingMode,
-            @NonNull PackageEmbeddedDex useEmbeddedDex) {
+            @NonNull DexPackagingMode dexPackagingMode) {
         List<String> result = Lists.newArrayList(DEFAULT_AAPT_NO_COMPRESS_EXTENSIONS);
 
         // .tflite files should always be uncompressed (Issue 152875817)
@@ -282,7 +279,7 @@ public class PackagingUtils {
         if (nativeLibrariesPackagingMode == NativeLibrariesPackagingMode.UNCOMPRESSED_AND_ALIGNED) {
             result.add(SdkConstants.DOT_NATIVE_LIBS);
         }
-        if (!useEmbeddedDex.isCompressed()) {
+        if (dexPackagingMode == DexPackagingMode.UNCOMPRESSED) {
             result.add(SdkConstants.DOT_DEX);
         }
 

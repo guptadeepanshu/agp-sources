@@ -31,6 +31,7 @@ import com.android.ddmlib.testrunner.IRemoteAndroidTestRunner.CoverageOutput;
 import com.android.ddmlib.testrunner.RemoteAndroidTestRunner;
 import com.android.ddmlib.testrunner.TestIdentifier;
 import com.android.ddmlib.testrunner.TestRunResult;
+import com.android.ide.common.workers.WorkerExecutorFacade;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.google.common.annotations.VisibleForTesting;
@@ -43,6 +44,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -60,7 +62,7 @@ import javax.inject.Inject;
  *
  * <p>The boolean return value is true if success.
  */
-public class SimpleTestRunnable implements Runnable {
+public class SimpleTestRunnable implements WorkerExecutorFacade.WorkAction {
 
     public static final String FILE_COVERAGE_EC = "coverage.ec";
     private static final String TMP = "/data/local/tmp/";
@@ -135,10 +137,27 @@ public class SimpleTestRunnable implements Runnable {
                 }
             }
 
-            for (File helperApk : helperApks) {
-                logger.verbose(
-                        "DeviceConnector '%s': installing helper APK %s", deviceName, helperApk);
-                device.installPackage(helperApk, installOptions, timeoutInMs, logger);
+            if (!helperApks.isEmpty()) {
+                ArrayList<String> helperApkInstallOptions = new ArrayList<>(installOptions);
+                int apiLevel = device.getApiLevel();
+                if (apiLevel >= 23) {
+                    // Grant all permissions listed in the app manifest (Introduced at Android 6.0)
+                    // for test helper APKs.
+                    helperApkInstallOptions.add("-g");
+                }
+                if (apiLevel >= 30) {
+                    // AndroidX Test services and orchestrator APK set android:forceQueryable="true"
+                    // in their manifest file however this attribute seems to be ignored on some
+                    // physical devices. See https://github.com/android/android-test/issues/743
+                    // for details.
+                    helperApkInstallOptions.add("--force-queryable");
+                }
+                for (File helperApk : helperApks) {
+                    logger.verbose(
+                            "DeviceConnector '%s': installing helper APK %s",
+                            deviceName, helperApk);
+                    device.installPackage(helperApk, helperApkInstallOptions, timeoutInMs, logger);
+                }
             }
 
             logger.verbose(
@@ -325,7 +344,7 @@ public class SimpleTestRunnable implements Runnable {
 
         executeShellCommand(
                 "content query --uri content://media/external/file"
-                        + " --projection _data --where \"_data LIKE '%Android'\"",
+                        + " --projection _data --where \"_data LIKE '%/Android'\"",
                 receiver);
 
         receiver.flush();

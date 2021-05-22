@@ -16,104 +16,76 @@
 
 package com.android.build.gradle.internal.cxx.model
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
-import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.cxx.caching.CachingEnvironment
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurationKey
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurator
-import com.android.build.gradle.internal.cxx.configure.createNativeBuildSystemVariantConfig
-import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.cxx.gradle.generator.*
+import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment.Companion.requireExplicitLogger
 import com.android.build.gradle.tasks.NativeBuildSystem
-import com.android.build.gradle.tasks.getPrefabFromMaven
 import com.android.utils.FileUtils.join
 import java.io.File
 
 /**
- * Construct a [CxxVariantModel], careful to be lazy with module-level fields.
+ * Construct a [CxxVariantModel]
  */
 fun createCxxVariantModel(
-    module: CxxModuleModel,
-    componentProperties: ComponentPropertiesImpl) : CxxVariantModel {
-
-    return object : CxxVariantModel {
-        private val buildSystem by lazy {
-            createNativeBuildSystemVariantConfig(
-                module.buildSystem,
-                componentProperties.variantDslInfo
-            )
-        }
-        private val intermediatesFolder by lazy {
-            join(module.intermediatesFolder, module.buildSystem.tag, variantName)
-        }
-        override val buildTargetSet get() = buildSystem.targets
-        override val implicitBuildTargetSet
-            get() = when (val extension = componentProperties.globalScope.extension) {
-                is LibraryExtension -> extension.prefab.map { it.name }.toSet()
-                else -> emptySet()
-            }
-        override val module = module
-        override val buildSystemArgumentList get() = buildSystem.arguments
-        override val cFlagsList get() = buildSystem.cFlags
-        override val cppFlagsList get() = buildSystem.cppFlags
-        override val variantName get() = componentProperties.name
-        override val cmakeSettingsConfiguration
-            // TODO remove this after configuration has been added to DSL
-            // If CMakeSettings.json has a configuration with this exact name then
-            // it will be used. The point is to delay adding 'configuration' to the
-            // DSL.
-            get() = "android-gradle-plugin-predetermined-name"
-        override val objFolder get() =
-            if (module.buildSystem == NativeBuildSystem.NDK_BUILD) {
-                // ndkPlatform-build create libraries in a "local" subfolder.
-                join(intermediatesFolder, "obj", "local")
-            } else {
-                join(intermediatesFolder, "obj")
-            }
-        override val isDebuggableEnabled
-            get() = componentProperties.variantDslInfo.isDebuggable
-        override val validAbiList by lazy {
-            CachingEnvironment(module.cxxFolder).use {
-                AbiConfigurator(
-                    AbiConfigurationKey(
+    configurationParameters: CxxConfigurationParameters,
+    module: CxxModuleModel) : CxxVariantModel {
+    val validAbiList = CachingEnvironment(module.cxxFolder).use {
+        AbiConfigurator(
+                AbiConfigurationKey(
                         module.ndkSupportedAbiList,
                         module.ndkDefaultAbiList,
-                        buildSystem.externalNativeBuildAbiFilters,
-                        buildSystem.ndkAbiFilters,
+                        configurationParameters.nativeVariantConfig.externalNativeBuildAbiFilters,
+                        configurationParameters.nativeVariantConfig.ndkAbiFilters,
                         module.splitsAbiFilterSet,
                         module.project.isBuildOnlyTargetAbiEnabled,
                         module.project.ideBuildTargetAbi
-                    )
-                ).validAbis.toList()
-            }
-        }
-
-        override val prefabClassPath: File? by lazy {
-            // Don't fetch Prefab from maven unless we actually need it.
-            if (module.project.isPrefabEnabled && prefabPackageDirectoryList.isNotEmpty()) {
-                getPrefabFromMaven(componentProperties.globalScope)
-            } else {
-                null
-            }
-        }
-
-        override val prefabPackageDirectoryList: List<File> by lazy {
-            componentProperties.variantDependencies.getArtifactCollection(
-                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                AndroidArtifacts.ArtifactScope.ALL,
-                AndroidArtifacts.ArtifactType.PREFAB_PACKAGE
-            ).artifactFiles.toList()
-        }
-
-        override val prefabDirectory: File = jsonFolder.resolve("prefab")
+                )
+        ).validAbis.toList()
     }
+    val variantIntermediatesFolder = join(
+            configurationParameters.intermediatesFolder,
+            configurationParameters.buildSystem.tag,
+            configurationParameters.variantName
+    )
+    return CxxVariantModel(
+        buildTargetSet = configurationParameters.nativeVariantConfig.targets,
+        implicitBuildTargetSet = configurationParameters.implicitBuildTargetSet,
+        module = module,
+        buildSystemArgumentList = configurationParameters.nativeVariantConfig.arguments,
+        cFlagsList = configurationParameters.nativeVariantConfig.cFlags,
+        cppFlagsList = configurationParameters.nativeVariantConfig.cppFlags,
+        variantName = configurationParameters.variantName,
+        // TODO remove this after configuration has been added to DSL
+        // If CMakeSettings.json has a configuration with this exact name then
+        // it will be used. The point is to delay adding 'configuration' to the
+        // DSL.
+        cmakeSettingsConfiguration = "android-gradle-plugin-predetermined-name",
+        objFolder = if (configurationParameters.buildSystem == NativeBuildSystem.NDK_BUILD) {
+            // ndkPlatform-build create libraries in a "local" subfolder.
+            join(variantIntermediatesFolder, "obj", "local")
+        } else {
+            join(variantIntermediatesFolder, "obj")
+        },
+        soFolder = join(variantIntermediatesFolder, "lib"),
+        isDebuggableEnabled = configurationParameters.isDebuggable,
+        validAbiList = validAbiList,
+        prefabClassPathFileCollection = configurationParameters.prefabClassPath,
+        prefabPackageDirectoryListFileCollection = configurationParameters.prefabPackageDirectoryList,
+        prefabDirectory = join(
+            configurationParameters.cxxFolder,
+            configurationParameters.buildSystem.tag,
+            configurationParameters.variantName,
+            "prefab")
+    )
 }
 
-/**
- * Base folder for android_gradle_build.json files
- *   ex, $moduleRootFolder/.cxx/cmake/debug
- */
-val CxxVariantModel.jsonFolder
-        get() = join(module.cxxFolder, module.buildSystem.tag, variantName)
+val CxxVariantModel.prefabClassPath : File?
+    get() = prefabClassPathFileCollection?.singleFile
+
+val CxxVariantModel.prefabPackageDirectoryList : List<File>
+    get() = prefabPackageDirectoryListFileCollection?.toList()?:listOf()
 
 /**
  * The gradle build output folder

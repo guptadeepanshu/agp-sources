@@ -21,7 +21,6 @@ import static com.android.SdkConstants.ATTR_SPLIT;
 import static com.android.manifmerger.PlaceholderHandler.APPLICATION_ID;
 import static com.android.manifmerger.PlaceholderHandler.KeyBasedValueResolver;
 import static com.android.manifmerger.PlaceholderHandler.PACKAGE_NAME;
-import static com.android.sdklib.AndroidVersion.VersionCodes.M;
 
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
@@ -30,6 +29,7 @@ import com.android.annotations.concurrency.Immutable;
 import com.android.ide.common.xml.XmlFormatPreferences;
 import com.android.ide.common.xml.XmlFormatStyle;
 import com.android.ide.common.xml.XmlPrettyPrinter;
+import com.android.sdklib.SdkVersionInfo;
 import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.android.utils.Pair;
@@ -79,7 +79,7 @@ public class ManifestMerger2 {
     private static final String SPLIT_IN_DYNAMIC_FEATURE =
             "https://d.android.com/r/studio-ui/dynamic-delivery/dynamic-feature-manifest";
 
-    private static final List<String> WHITELISTED_NON_UNIQUE_PACKAGE_NAMES =
+    private static final List<String> ALLOWED_NON_UNIQUE_PACKAGE_NAMES =
             ImmutableList.of(
                     "androidx.test" // TODO(b/151171905)
                     );
@@ -180,7 +180,9 @@ public class ManifestMerger2 {
         // first do we have a package declaration in the main manifest ?
         Optional<XmlAttribute> mainPackageAttribute =
                 loadedMainManifestInfo.getXmlDocument().getPackage();
-        if (mDocumentType != XmlDocument.Type.OVERLAY && !mainPackageAttribute.isPresent()) {
+        if (!mPlaceHolderValues.containsKey(PACKAGE_NAME)
+                && mDocumentType != XmlDocument.Type.OVERLAY
+                && !mainPackageAttribute.isPresent()) {
             mergingReportBuilder.addMessage(
                     loadedMainManifestInfo.getXmlDocument().getSourceFile(),
                     MergingReport.Record.Severity.ERROR,
@@ -392,6 +394,34 @@ public class ManifestMerger2 {
                 return mergingReportBuilder.build();
             }
         }
+        // android:exported should have an explicit value for S and above with <intent-filter>,
+        // output an
+        // error message to the user if android:exported is not explicitly specified
+        String targetSdkVersion = finalMergedDocument.getTargetSdkVersion();
+        int targetSdkApi =
+                Character.isDigit(targetSdkVersion.charAt(0))
+                        ? Integer.parseInt(targetSdkVersion)
+                        : SdkVersionInfo.getApiByPreviewName(targetSdkVersion, true);
+        if (targetSdkApi > 30) {
+            NodeList activityList =
+                    finalMergedDocument.getXml().getElementsByTagName(SdkConstants.TAG_ACTIVITY);
+            checkIfExportedIsNeeded(activityList, mergingReportBuilder, loadedMainManifestInfo);
+            if (mergingReportBuilder.hasErrors()) {
+                return mergingReportBuilder.build();
+            }
+            NodeList serviceList =
+                    finalMergedDocument.getXml().getElementsByTagName(SdkConstants.TAG_SERVICE);
+            checkIfExportedIsNeeded(serviceList, mergingReportBuilder, loadedMainManifestInfo);
+            if (mergingReportBuilder.hasErrors()) {
+                return mergingReportBuilder.build();
+            }
+            NodeList receiverList =
+                    finalMergedDocument.getXml().getElementsByTagName(SdkConstants.TAG_RECEIVER);
+            checkIfExportedIsNeeded(receiverList, mergingReportBuilder, loadedMainManifestInfo);
+            if (mergingReportBuilder.hasErrors()) {
+                return mergingReportBuilder.build();
+            }
+        }
 
         if (!mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
             PostValidator.enforceToolsNamespaceDeclaration(finalMergedDocument);
@@ -410,11 +440,6 @@ public class ManifestMerger2 {
         // extract fully qualified class names before handling other optional features.
         if (mOptionalFeatures.contains(Invoker.Feature.EXTRACT_FQCNS)) {
             extractFqcns(finalMergedDocument);
-        }
-
-        String minSdkVersion = finalMergedDocument.getMinSdkVersion();
-        if (mMergeType == MergeType.APPLICATION && parseMinSdkVersion(minSdkVersion) >= M) {
-            maybeAddExtractNativeLibAttribute(finalMergedDocument.getXml());
         }
 
         // handle optional features which don't need access to XmlDocument layer.
@@ -518,14 +543,6 @@ public class ManifestMerger2 {
         return dynamicFeatureManifest;
     }
 
-    private static int parseMinSdkVersion(@NonNull String minSdkVersion) {
-        try {
-            return Integer.parseInt(minSdkVersion);
-        } catch (NumberFormatException ex) {
-            return 1;
-        }
-    }
-
     /**
      * Processes optional features which are not already handled in merge()
      *
@@ -558,6 +575,11 @@ public class ManifestMerger2 {
 
         if (mMergeType == MergeType.APPLICATION) {
             optionalAddApplicationTagIfMissing(document);
+        }
+
+        if (mMergeType == MergeType.APPLICATION
+                && mOptionalFeatures.contains(Invoker.Feature.DO_NOT_EXTRACT_NATIVE_LIBS)) {
+            maybeAddExtractNativeLibAttribute(document);
         }
 
         if (mOptionalFeatures.contains(
@@ -647,7 +669,7 @@ public class ManifestMerger2 {
     }
 
     /**
-     * Set android:extractNativeLibs="false" by default is minSdkVersion is M+
+     * Set android:extractNativeLibs="false" unless it's already explicitly set.
      *
      * @param document the document for which the extractNativeLibs attribute should be set to
      *     false.
@@ -1268,8 +1290,8 @@ public class ManifestMerger2 {
     /** Returns the correct logging severity for a clashing package name. */
     private static MergingReport.Record.Severity getNonUniquePackageSeverity(
             String packageName, boolean strictMode) {
-        // If we've whitelisted a library package only report in info.
-        if (WHITELISTED_NON_UNIQUE_PACKAGE_NAMES.contains(packageName))
+        // If we've allowed a library package to be non-unique, only report in info.
+        if (ALLOWED_NON_UNIQUE_PACKAGE_NAMES.contains(packageName))
             return MergingReport.Record.Severity.INFO;
 
         return strictMode
@@ -1364,6 +1386,29 @@ public class ManifestMerger2 {
          */
         protected InputStream getInputStream(@NonNull File file) throws IOException {
             return new BufferedInputStream(new FileInputStream(file));
+        }
+    }
+
+    private void checkIfExportedIsNeeded(
+            NodeList list,
+            MergingReport.Builder mergingReportBuilder,
+            LoadedManifestInfo loadedMainManifestInfo) {
+        for (int i = 0; i < list.getLength(); i++) {
+            Element element = (Element) list.item(i);
+
+            if (element.getElementsByTagName(SdkConstants.TAG_INTENT_FILTER).getLength() > 0
+                    && element.getAttributes()
+                                    .getNamedItemNS(
+                                            SdkConstants.ANDROID_URI, SdkConstants.ATTR_EXPORTED)
+                            == null) {
+                mergingReportBuilder.addMessage(
+                        loadedMainManifestInfo.getXmlDocument().getSourceFile(),
+                        MergingReport.Record.Severity.ERROR,
+                        String.format(
+                                "Apps targeting Android 12 and higher are required to specify an explicit value "
+                                        + "for `android:exported` when the corresponding component has an intent filter defined. "
+                                        + "See https://developer.android.com/guide/topics/manifest/activity-element#exported for details."));
+            }
         }
     }
 
@@ -1567,6 +1612,12 @@ public class ManifestMerger2 {
 
             /** Enforce that dependencies manifests don't have duplicated package names. */
             ENFORCE_UNIQUE_PACKAGE_NAME,
+
+            /**
+             * Sets the application's android:extractNativeLibs attribute to false, unless it's
+             * already explicitly set to true.
+             */
+            DO_NOT_EXTRACT_NATIVE_LIBS,
         }
 
         /**

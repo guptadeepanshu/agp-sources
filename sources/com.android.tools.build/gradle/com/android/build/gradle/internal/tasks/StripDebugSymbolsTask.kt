@@ -16,25 +16,26 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.NdkHandlerInput
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.stripping.SymbolStripExecutableFinder
+import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.process.GradleProcessExecutor
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.common.process.LoggedProcessOutputHandler
-import com.android.ide.common.process.ProcessExecutor
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.ide.common.resources.FileStatus
 import com.android.ide.common.resources.FileStatus.CHANGED
 import com.android.ide.common.resources.FileStatus.NEW
 import com.android.ide.common.resources.FileStatus.REMOVED
-import com.android.ide.common.workers.WorkerExecutorFacade
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.DirectoryProperty
@@ -42,10 +43,12 @@ import org.gradle.api.file.FileTree
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
@@ -53,8 +56,8 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.process.ExecOperations
+import org.gradle.workers.WorkerExecutor
 import java.io.File
-import java.io.Serializable
 import java.nio.file.FileSystems
 import java.nio.file.PathMatcher
 import java.nio.file.Paths
@@ -62,10 +65,6 @@ import javax.inject.Inject
 
 /**
  * Task to remove debug symbols from native libraries.
- *
- * TODO(https://issuetracker.google.com/129217943)
- * <p>We can not use gradle worker in this task as we use [GradleProcessExecutor], which should
- * not be serialized.
  */
 @CacheableTask
 abstract class StripDebugSymbolsTask : IncrementalTask() {
@@ -78,30 +77,21 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
     abstract val outputDir: DirectoryProperty
 
     @get:Input
-    lateinit var excludePatterns: List<String>
-        private set
+    abstract val keepDebugSymbols: SetProperty<String>
 
     @get:Inject
     abstract val execOperations: ExecOperations
 
-    @Input
-    @Optional
-    fun getStripExecutablesMap(): Map<Abi, File>? {
-        // if no input files, return null, because no need for executable(s), and we don't want to
-        // spend the extra time or print out NDK-related spam if not necessary.
-        return if (FileUtils.getAllFiles(inputDir.get().asFile).isEmpty) {
-            null
-        } else {
-            sdkBuildService.get().stripExecutableFinderProvider.get().stripExecutables.toSortedMap()
-        }
-    }
+    @get:Nested
+    abstract val ndkHandlerInput: NdkHandlerInput
 
     // We need inputFiles in addition to inputDir because SkipWhenEmpty doesn't work for inputDir
     // because it's a DirectoryProperty
     @get:InputFiles
     @get:SkipWhenEmpty
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val inputFiles: Property<FileTree>
+    val inputFiles: FileTree
+        get() = inputDir.asFileTree
 
     @get:Internal
     abstract val sdkBuildService: Property<SdkComponentsBuildService>
@@ -110,37 +100,33 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
         get() = true
 
     override fun doFullTaskAction() {
-        getWorkerFacadeWithThreads(useGradleExecutor = false).use { workers ->
             StripDebugSymbolsDelegate(
-                workers,
+                workerExecutor,
                 inputDir.get().asFile,
                 outputDir.get().asFile,
-                excludePatterns,
-                sdkBuildService.get().stripExecutableFinderProvider,
-                GradleProcessExecutor(execOperations::exec),
-                null
+                keepDebugSymbols.get(),
+                sdkBuildService.get().versionedNdkHandler(ndkHandlerInput).stripExecutableFinderProvider,
+                null,
+                this
             ).run()
-        }
     }
 
     override fun doIncrementalTaskAction(changedInputs: Map<File, FileStatus>) {
-        getWorkerFacadeWithThreads(useGradleExecutor = false).use { workers ->
-            StripDebugSymbolsDelegate(
-                workers,
-                inputDir.get().asFile,
-                outputDir.get().asFile,
-                excludePatterns,
-                sdkBuildService.get().stripExecutableFinderProvider,
-                GradleProcessExecutor(execOperations::exec),
-                changedInputs
-            ).run()
-        }
+        StripDebugSymbolsDelegate(
+            workerExecutor,
+            inputDir.get().asFile,
+            outputDir.get().asFile,
+            keepDebugSymbols.get(),
+            sdkBuildService.get().versionedNdkHandler(ndkHandlerInput).stripExecutableFinderProvider,
+            changedInputs,
+            this
+        ).run()
     }
 
     class CreationAction(
-        componentProperties: ComponentPropertiesImpl
-    ) : VariantTaskCreationAction<StripDebugSymbolsTask, ComponentPropertiesImpl>(
-        componentProperties
+        creationConfig: VariantCreationConfig
+    ) : VariantTaskCreationAction<StripDebugSymbolsTask, VariantCreationConfig>(
+        creationConfig
     ) {
 
         override val name: String
@@ -166,16 +152,13 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
             super.configure(task)
 
             creationConfig.artifacts.setTaskInputToFinalProduct(MERGED_NATIVE_LIBS, task.inputDir)
-            task.excludePatterns =
-                creationConfig.globalScope.extension.packagingOptions.doNotStrip.sorted()
+            task.keepDebugSymbols.setDisallowChanges(
+                creationConfig.packagingOptions.jniLibs.keepDebugSymbols
+            )
             task.sdkBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
             )
-            task.inputFiles.setDisallowChanges(
-                creationConfig.globalScope.project.provider {
-                    creationConfig.globalScope.project.layout.files(task.inputDir).asFileTree
-                }
-            )
+            task.ndkHandlerInput.initialize(creationConfig)
         }
     }
 }
@@ -185,13 +168,13 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
  */
 @VisibleForTesting
 class StripDebugSymbolsDelegate(
-    val workers: WorkerExecutorFacade,
+    val workers: WorkerExecutor,
     val inputDir: File,
     val outputDir: File,
-    val excludePatterns: List<String>,
+    val keepDebugSymbols: Set<String>,
     val stripToolFinderProvider: Provider<SymbolStripExecutableFinder>,
-    val processExecutor: ProcessExecutor,
-    val changedInputs: Map<File, FileStatus>?
+    val changedInputs: Map<File, FileStatus>?,
+    private val instantiator: AndroidVariantTask
 ) {
 
     fun run() {
@@ -199,7 +182,7 @@ class StripDebugSymbolsDelegate(
             FileUtils.cleanOutputDir(outputDir)
         }
 
-        val excludeMatchers = excludePatterns.map { compileGlob(it) }
+        val keepDebugSymbolsMatchers = keepDebugSymbols.map { compileGlob(it) }
 
         // by lazy, because we don't want to spend the extra time or print out NDK-related spam if
         // there are no .so files to strip
@@ -218,18 +201,17 @@ class StripDebugSymbolsDelegate(
                 when (changedInputs[input]) {
                     NEW, CHANGED -> {
                         val justCopyInput =
-                            excludeMatchers.any { matcher -> matcher.matches(Paths.get(path)) }
-                        workers.submit(
-                            StripDebugSymbolsRunnable::class.java,
-                            StripDebugSymbolsRunnable.Params(
-                                input,
-                                output,
-                                Abi.getByName(input.parentFile.name),
-                                justCopyInput,
-                                stripToolFinder,
-                                processExecutor
-                            )
-                        )
+                            keepDebugSymbolsMatchers.any { matcher ->
+                                matcher.matches(Paths.get(path))
+                            }
+                        workers.noIsolation().submit(StripDebugSymbolsRunnable::class.java) {
+                            it.initializeFromAndroidVariantTask(instantiator)
+                            it.input.set(input)
+                            it.output.set(output)
+                            it.abi.set(Abi.getByName(input.parentFile.name))
+                            it.justCopyInput.set(justCopyInput)
+                            it.stripToolFinder.set(stripToolFinder)
+                        }
                     }
                     REMOVED -> FileUtils.deletePath(output)
                 }
@@ -242,19 +224,16 @@ class StripDebugSymbolsDelegate(
                 val path = FileUtils.relativePath(input, inputDir)
                 val output = File(outputDir, path)
                 val justCopyInput =
-                    excludeMatchers.any { matcher -> matcher.matches(Paths.get(path)) }
+                    keepDebugSymbolsMatchers.any { matcher -> matcher.matches(Paths.get(path)) }
 
-                workers.submit(
-                    StripDebugSymbolsRunnable::class.java,
-                    StripDebugSymbolsRunnable.Params(
-                        input,
-                        output,
-                        Abi.getByName(input.parentFile.name),
-                        justCopyInput,
-                        stripToolFinder,
-                        processExecutor
-                    )
-                )
+                workers.noIsolation().submit(StripDebugSymbolsRunnable::class.java) {
+                    it.initializeFromAndroidVariantTask(instantiator)
+                    it.input.set(input)
+                    it.output.set(output)
+                    it.abi.set(Abi.getByName(input.parentFile.name))
+                    it.justCopyInput.set(justCopyInput)
+                    it.stripToolFinder.set(stripToolFinder)
+                }
             }
         }
 
@@ -272,25 +251,28 @@ class StripDebugSymbolsDelegate(
 /**
  * Runnable to strip debug symbols from a native library
  */
-private class StripDebugSymbolsRunnable @Inject constructor(val params: Params): Runnable {
+abstract class StripDebugSymbolsRunnable : ProfileAwareWorkAction<StripDebugSymbolsRunnable.Params>() {
+
+    @get:Inject
+    abstract val execOperations: ExecOperations
 
     override fun run() {
         val logger = LoggerWrapper(Logging.getLogger(StripDebugSymbolsTask::class.java))
 
-        FileUtils.mkdirs(params.output.parentFile)
+        FileUtils.mkdirs(parameters.output.get().parentFile)
 
         val exe =
-            params.stripToolFinder.stripToolExecutableFile(params.input, params.abi) {
-                UnstrippedLibs.add(params.input.name)
+            parameters.stripToolFinder.get().stripToolExecutableFile(parameters.input.get(), parameters.abi.orNull) {
+                UnstrippedLibs.add(parameters.input.get().name)
                 logger.verbose("$it Packaging it as is.")
                 return@stripToolExecutableFile null
             }
 
-        if (exe == null || params.justCopyInput) {
+        if (exe == null || parameters.justCopyInput.get()) {
             // If exe == null, the strip executable couldn't be found and a message about the
             // failure was reported in getPathToStripExecutable, so we fall back to copying the file
             // to the output location.
-            FileUtils.copyFile(params.input, params.output)
+            FileUtils.copyFile(parameters.input.get(), parameters.output.get())
             return
         }
 
@@ -298,30 +280,29 @@ private class StripDebugSymbolsRunnable @Inject constructor(val params: Params):
         builder.setExecutable(exe)
         builder.addArgs("--strip-unneeded")
         builder.addArgs("-o")
-        builder.addArgs(params.output.toString())
-        builder.addArgs(params.input.toString())
+        builder.addArgs(parameters.output.get().toString())
+        builder.addArgs(parameters.input.get().toString())
         val result =
-            params.processExecutor.execute(
+            GradleProcessExecutor(execOperations::exec).execute(
                 builder.createProcess(), LoggedProcessOutputHandler(logger)
             )
         if (result.exitValue != 0) {
-            UnstrippedLibs.add(params.input.name)
+            UnstrippedLibs.add(parameters.input.get().name)
             logger.verbose(
-                "Unable to strip library ${params.input.absolutePath} due to error "
+                "Unable to strip library ${parameters.input.get().absolutePath} due to error "
                         + "${result.exitValue} returned from $exe, packaging it as is."
             )
-            FileUtils.copyFile(params.input, params.output)
+            FileUtils.copyFile(parameters.input.get(), parameters.output.get())
         }
     }
 
-    data class Params(
-        val input: File,
-        val output: File,
-        val abi: Abi?,
-        val justCopyInput: Boolean,
-        val stripToolFinder: SymbolStripExecutableFinder,
-        val processExecutor: ProcessExecutor
-    ): Serializable
+    abstract class Params: ProfileAwareWorkAction.Parameters() {
+        abstract val input: Property<File>
+        abstract val output: Property<File>
+        abstract val abi: Property<Abi>
+        abstract val justCopyInput: Property<Boolean>
+        abstract val stripToolFinder: Property<SymbolStripExecutableFinder>
+    }
 }
 
 object UnstrippedLibs {

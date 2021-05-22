@@ -16,22 +16,22 @@
 
 package com.android.build.gradle.internal.feature
 
-import com.android.build.api.component.impl.ComponentPropertiesImpl
+import com.android.build.api.instrumentation.FramesComputationMode
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
-import com.android.build.gradle.internal.res.namespaced.JarRequest
-import com.android.build.gradle.internal.res.namespaced.JarWorkerRunnable
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.file.ReproducibleFileVisitor
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
@@ -52,19 +52,10 @@ abstract class BundleAllClasses : NonIncrementalTask() {
     abstract val outputJar: RegularFileProperty
 
     @get:Classpath
-    abstract val javacClasses: DirectoryProperty
+    abstract val inputDirs: ConfigurableFileCollection
 
     @get:Classpath
-    lateinit var preJavacClasses: FileCollection
-        private set
-
-    @get:Classpath
-    lateinit var postJavacClasses: FileCollection
-        private set
-
-    @get:Classpath
-    @get:Optional
-    abstract val rClassesJar: RegularFileProperty
+    abstract val inputJars: ConfigurableFileCollection
 
     @get:Input
     lateinit var modulePath: String
@@ -75,42 +66,60 @@ abstract class BundleAllClasses : NonIncrementalTask() {
         private set
 
     public override fun doTaskAction() {
-        val files = HashMap<String, File>()
-        val collector = object : ReproducibleFileVisitor {
-            override fun isReproducibleFileOrder() = true
-            override fun visitFile(fileVisitDetails: FileVisitDetails) {
-                addFile(fileVisitDetails.relativePath.pathString, fileVisitDetails.file)
-            }
-
-            override fun visitDir(fileVisitDetails: FileVisitDetails) {
-            }
-
-            fun addFile(path: String, file: File) {
-                files[path] = file
-            }
-        }
-        javacClasses.get().asFileTree.visit(collector)
-        preJavacClasses.asFileTree.visit(collector)
-        postJavacClasses.asFileTree.visit(collector)
-
-        getWorkerFacadeWithWorkers().use {
-            it.submit(
-                // Don't compress because compressing takes extra time, and this jar doesn't go
-                // into any APKs or AARs.
-                JarWorkerRunnable::class.java, JarRequest(
-                    toFile = outputJar.get().asFile,
-                    jarCreatorType = jarCreatorType,
-                    fromJars = listOfNotNull(rClassesJar.orNull?.asFile),
-                    fromFiles = files,
-                    compressionLevel = Deflater.NO_COMPRESSION
-                )
-            )
+        workerExecutor.noIsolation().submit(BundleAllClassesWorkAction::class.java) {
+            it.initializeFromAndroidVariantTask(this)
+            it.inputDirs.from(inputDirs)
+            it.inputJars.from(inputJars)
+            it.jarCreatorType.set(jarCreatorType)
+            it.outputJar.set(outputJar)
         }
     }
 
-    class CreationAction(componentProperties: ComponentPropertiesImpl) :
-        VariantTaskCreationAction<BundleAllClasses, ComponentPropertiesImpl>(
-            componentProperties
+    abstract class BundleAllClassesWorkAction :
+        ProfileAwareWorkAction<BundleAllClassesWorkAction.Parameters>() {
+        abstract class Parameters : ProfileAwareWorkAction.Parameters() {
+            abstract val inputDirs: ConfigurableFileCollection
+            abstract val inputJars: ConfigurableFileCollection
+            abstract val jarCreatorType: Property<JarCreatorType>
+            abstract val outputJar: RegularFileProperty
+        }
+
+        override fun run() {
+            val files = HashMap<String, File>()
+            val collector = object : ReproducibleFileVisitor {
+                override fun isReproducibleFileOrder() = true
+                override fun visitFile(fileVisitDetails: FileVisitDetails) {
+                    addFile(fileVisitDetails.relativePath.pathString, fileVisitDetails.file)
+                }
+
+                override fun visitDir(fileVisitDetails: FileVisitDetails) {
+                }
+
+                fun addFile(path: String, file: File) {
+                    files[path] = file
+                }
+            }
+            parameters.inputDirs.asFileTree.visit(collector)
+
+            JarCreatorFactory.make(
+                parameters.outputJar.asFile.get().toPath(),
+                null,
+                parameters.jarCreatorType.get()
+            ).use { out ->
+                // Don't compress because compressing takes extra time, and this jar doesn't go
+                // into any APKs or AARs.
+                out.setCompressionLevel(Deflater.NO_COMPRESSION)
+                files.forEach { (path, file) -> out.addFile(path, file.toPath()) }
+                parameters.inputJars.forEach {
+                    out.addJar(it.toPath())
+                }
+            }
+        }
+    }
+
+    class CreationAction(creationConfig: ComponentCreationConfig) :
+        VariantTaskCreationAction<BundleAllClasses, ComponentCreationConfig>(
+            creationConfig
         ) {
 
         override val name: String
@@ -128,26 +137,56 @@ abstract class BundleAllClasses : NonIncrementalTask() {
 
         override fun configure(task: BundleAllClasses) {
             super.configure(task)
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.JAVAC,
-                task.javacClasses
-            )
-            task.preJavacClasses = creationConfig.variantData.allPreJavacGeneratedBytecode
-            task.postJavacClasses = creationConfig.variantData.allPostJavacGeneratedBytecode
-            val globalScope = creationConfig.globalScope
-            task.modulePath = globalScope.project.path
-            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
-            if (globalScope.extension.aaptOptions.namespaced) {
-                creationConfig.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.COMPILE_R_CLASS_JAR,
-                    task.rClassesJar
-                )
+            if (creationConfig.registeredProjectClassesVisitors.isNotEmpty()) {
+                if (creationConfig.asmFramesComputationMode == FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES) {
+                    task.inputDirs.from(
+                        creationConfig.artifacts.get(
+                            InternalArtifactType.FIXED_STACK_FRAMES_ASM_INSTRUMENTED_PROJECT_CLASSES
+                        )
+                    )
+                    task.inputJars.from(
+                        creationConfig.services.fileCollection(
+                            creationConfig.artifacts.get(
+                                InternalArtifactType.FIXED_STACK_FRAMES_ASM_INSTRUMENTED_PROJECT_JARS
+                            )
+                        ).asFileTree
+                    )
+                } else {
+                    task.inputDirs.from(
+                        creationConfig.artifacts.get(
+                            InternalArtifactType.ASM_INSTRUMENTED_PROJECT_CLASSES
+                        )
+                    )
+                    task.inputJars.from(
+                        creationConfig.services.fileCollection(
+                            creationConfig.artifacts.get(
+                                InternalArtifactType.ASM_INSTRUMENTED_PROJECT_JARS
+                            )
+                        ).asFileTree
+                    )
+                }
             } else {
-                creationConfig.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR,
-                    task.rClassesJar
+                task.inputDirs.from(
+                    creationConfig.artifacts.get(InternalArtifactType.JAVAC),
+                    creationConfig.variantData.allPreJavacGeneratedBytecode,
+                    creationConfig.variantData.allPostJavacGeneratedBytecode
                 )
+                if (creationConfig.globalScope.extension.aaptOptions.namespaced) {
+                    task.inputJars.from(
+                        creationConfig.artifacts.get(
+                            InternalArtifactType.COMPILE_R_CLASS_JAR
+                        )
+                    )
+                } else {
+                    task.inputJars.from(
+                        creationConfig.artifacts.get(
+                            InternalArtifactType.COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR
+                        )
+                    )
+                }
             }
+            task.modulePath = task.project.path
+            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
         }
     }
 }

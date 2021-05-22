@@ -18,7 +18,6 @@ package com.android.build.gradle.internal;
 
 import static com.android.SdkConstants.FN_PUBLIC_TXT;
 import static com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES;
-import static com.android.build.gradle.internal.pipeline.ExtendedContentType.NATIVE_LIBS;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_API_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_RUNTIME_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_PUBLICATION;
@@ -26,25 +25,27 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.ComponentPropertiesImpl;
+import com.android.build.api.artifact.ArtifactType;
+import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestComponentPropertiesImpl;
 import com.android.build.api.dsl.PrefabPackagingOptions;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.QualifiedContent.Scope;
 import com.android.build.api.transform.QualifiedContent.ScopeType;
 import com.android.build.api.transform.Transform;
+import com.android.build.api.variant.impl.LibraryVariantBuilderImpl;
 import com.android.build.api.variant.impl.LibraryVariantImpl;
-import com.android.build.api.variant.impl.LibraryVariantPropertiesImpl;
-import com.android.build.api.variant.impl.VariantPropertiesImpl;
+import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.LibraryExtension;
-import com.android.build.gradle.internal.cxx.gradle.generator.ExternalNativeJsonGenerator;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel;
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.pipeline.OriginalStream;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
+import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask;
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.GlobalScope;
@@ -79,7 +80,6 @@ import com.android.build.gradle.tasks.VerifyLibraryResourcesTask;
 import com.android.build.gradle.tasks.ZipMergingTask;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.errors.IssueReporter.Type;
-import com.android.builder.profile.Recorder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
@@ -87,54 +87,46 @@ import com.google.common.collect.Sets;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.component.AdhocComponentWithVariants;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
+import org.jetbrains.annotations.NotNull;
 
 /** TaskManager for creating tasks in an Android library project. */
-public class LibraryTaskManager
-        extends TaskManager<LibraryVariantImpl, LibraryVariantPropertiesImpl> {
+public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, LibraryVariantImpl> {
 
     public LibraryTaskManager(
-            @NonNull List<ComponentInfo<LibraryVariantImpl, LibraryVariantPropertiesImpl>> variants,
+            @NonNull List<ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
             @NonNull
-                    List<
-                                    ComponentInfo<
-                                            TestComponentImpl<
-                                                    ? extends TestComponentPropertiesImpl>,
-                                            TestComponentPropertiesImpl>>
-                            testComponents,
+                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
             boolean hasFlavors,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension,
-            @NonNull Recorder recorder) {
-        super(variants, testComponents, hasFlavors, globalScope, extension, recorder);
+            @NonNull BaseExtension extension) {
+        super(variants, testComponents, hasFlavors, globalScope, extension);
     }
 
     @Override
     protected void doCreateTasksForVariant(
-            @NonNull ComponentInfo<LibraryVariantImpl, LibraryVariantPropertiesImpl> variant,
-            @NonNull
-                    List<ComponentInfo<LibraryVariantImpl, LibraryVariantPropertiesImpl>>
+            @NotNull ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl> variantInfo,
+            @NotNull
+                    List<? extends ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>>
                             allVariants) {
 
-        LibraryVariantPropertiesImpl libVariantProperties = variant.getProperties();
-        BuildFeatureValues buildFeatures = libVariantProperties.getBuildFeatures();
+        LibraryVariantImpl libraryVariant = variantInfo.getVariant();
+        BuildFeatureValues buildFeatures = libraryVariant.getBuildFeatures();
 
-        createAnchorTasks(libVariantProperties);
+        createAnchorTasks(libraryVariant);
 
-        taskFactory.register(new ExtractDeepLinksTask.CreationAction(libVariantProperties));
+        taskFactory.register(new ExtractDeepLinksTask.CreationAction(libraryVariant));
 
         // Create all current streams (dependencies mostly at this point)
-        createDependencyStreams(libVariantProperties);
+        createDependencyStreams(libraryVariant);
 
         if (buildFeatures.getAndroidResources()) {
-            createGenerateResValuesTask(libVariantProperties);
+            createGenerateResValuesTask(libraryVariant);
         } else { // Resource processing is disabled.
             // TODO(b/147579629): add a warning for manifests containing resource references.
             if (globalScope.getExtension().getAaptOptions().getNamespaced()) {
@@ -145,37 +137,36 @@ public class LibraryTaskManager
             }
 
             // Create a task to generate empty/mock required resource artifacts.
-            taskFactory.register(
-                    new GenerateEmptyResourceFilesTask.CreateAction(libVariantProperties));
+            taskFactory.register(new GenerateEmptyResourceFilesTask.CreateAction(libraryVariant));
         }
 
         // Add a task to check the manifest
-        taskFactory.register(new CheckManifest.CreationAction(libVariantProperties));
+        taskFactory.register(new CheckManifest.CreationAction(libraryVariant));
 
-        taskFactory.register(new ProcessLibraryManifest.CreationAction(libVariantProperties));
+        taskFactory.register(new ProcessLibraryManifest.CreationAction(libraryVariant));
 
-        createRenderscriptTask(libVariantProperties);
+        createRenderscriptTask(libraryVariant);
 
         if (buildFeatures.getAndroidResources()) {
-            createMergeResourcesTasks(libVariantProperties);
+            createMergeResourcesTasks(libraryVariant);
 
-            createCompileLibraryResourcesTask(libVariantProperties);
+            createCompileLibraryResourcesTask(libraryVariant);
         }
 
-        createShaderTask(libVariantProperties);
+        createShaderTask(libraryVariant);
 
         // Add tasks to merge the assets folders
-        createMergeAssetsTask(libVariantProperties);
-        createLibraryAssetsTask(libVariantProperties);
+        createMergeAssetsTask(libraryVariant);
+        createLibraryAssetsTask(libraryVariant);
 
         // Add a task to create the BuildConfig class
-        createBuildConfigTask(libVariantProperties);
+        createBuildConfigTask(libraryVariant);
 
         if (buildFeatures.getAndroidResources()) {
             // Add a task to generate resource source files, directing the location
             // of the r.txt file to be directly in the bundle.
             createProcessResTask(
-                    libVariantProperties,
+                    libraryVariant,
                     null,
                     // Switch to package where possible so we stop merging resources in
                     // libraries
@@ -183,78 +174,76 @@ public class LibraryTaskManager
                     globalScope.getProjectBaseName());
 
             // Only verify resources if in Release and not namespaced.
-            if (!libVariantProperties.getVariantDslInfo().isDebuggable()
+            if (!libraryVariant.getDebuggable()
                     && !globalScope.getExtension().getAaptOptions().getNamespaced()) {
-                createVerifyLibraryResTask(libVariantProperties);
+                createVerifyLibraryResTask(libraryVariant);
             }
 
-            registerLibraryRClassTransformStream(libVariantProperties);
+            registerLibraryRClassTransformStream(libraryVariant);
         }
 
         // process java resources only, the merge is setup after
         // the task to generate intermediate jars for project to project publishing.
-        createProcessJavaResTask(libVariantProperties);
+        createProcessJavaResTask(libraryVariant);
 
-        createAidlTask(libVariantProperties);
+        createAidlTask(libraryVariant);
 
         // Add data binding tasks if enabled
-        createDataBindingTasksIfNecessary(libVariantProperties);
+        createDataBindingTasksIfNecessary(libraryVariant);
 
         // Add a task to auto-generate classes for ML model files.
-        createMlkitTask(libVariantProperties);
+        createMlkitTask(libraryVariant);
 
         // Add a compile task
-        TaskProvider<? extends JavaCompile> javacTask = createJavacTask(libVariantProperties);
-        addJavacClassesStream(libVariantProperties);
-        TaskManager.setJavaCompilerTask(javacTask, libVariantProperties);
+        TaskProvider<? extends JavaCompile> javacTask = createJavacTask(libraryVariant);
+        addJavacClassesStream(libraryVariant);
+        TaskManager.setJavaCompilerTask(javacTask, libraryVariant);
 
-        taskFactory.register(new MergeGeneratedProguardFilesCreationAction(libVariantProperties));
+        taskFactory.register(new MergeGeneratedProguardFilesCreationAction(libraryVariant));
 
         // External native build
-        createExternalNativeBuildJsonGenerators(libVariantProperties);
-        createExternalNativeBuildTasks(libVariantProperties);
+        createExternalNativeBuildTasks(libraryVariant);
 
-        createMergeJniLibFoldersTasks(libVariantProperties);
+        createMergeJniLibFoldersTasks(libraryVariant);
 
-        taskFactory.register(new StripDebugSymbolsTask.CreationAction(libVariantProperties));
+        taskFactory.register(new StripDebugSymbolsTask.CreationAction(libraryVariant));
 
-        taskFactory.register(new PackageRenderscriptTask.CreationAction(libVariantProperties));
+        taskFactory.register(new PackageRenderscriptTask.CreationAction(libraryVariant));
 
         // merge consumer proguard files from different build types and flavors
-        taskFactory.register(
-                new MergeConsumerProguardFilesTask.CreationAction(libVariantProperties));
+        taskFactory.register(new MergeConsumerProguardFilesTask.CreationAction(libraryVariant));
 
-        taskFactory.register(
-                new ExportConsumerProguardFilesTask.CreationAction(libVariantProperties));
+        taskFactory.register(new ExportConsumerProguardFilesTask.CreationAction(libraryVariant));
 
-        createPrefabTasks(libVariantProperties);
+        createPrefabTasks(libraryVariant);
 
         // Some versions of retrolambda remove the actions from the extract annotations task.
         // TODO: remove this hack once tests are moved to a version that doesn't do this
         // b/37564303
-        if (libVariantProperties
+        if (libraryVariant
                 .getServices()
                 .getProjectOptions()
                 .get(BooleanOption.ENABLE_EXTRACT_ANNOTATIONS)) {
-            taskFactory.register(new ExtractAnnotations.CreationAction(libVariantProperties));
+            taskFactory.register(new ExtractAnnotations.CreationAction(libraryVariant));
         }
 
-        final boolean instrumented =
-                libVariantProperties.getVariantDslInfo().isTestCoverageEnabled();
+        final boolean instrumented = libraryVariant.getVariantDslInfo().isTestCoverageEnabled();
 
-        TransformManager transformManager = libVariantProperties.getTransformManager();
+        TransformManager transformManager = libraryVariant.getTransformManager();
 
         // ----- Code Coverage first -----
         if (instrumented) {
-            createJacocoTask(libVariantProperties);
+            createJacocoTask(libraryVariant);
         }
+
+        maybeCreateTransformClassesWithAsmTask(libraryVariant, instrumented);
 
         // ----- External Transforms -----
         // apply all the external transforms.
         List<Transform> customTransforms = extension.getTransforms();
         List<List<Object>> customTransformsDependencies = extension.getTransformsDependencies();
 
-        final IssueReporter issueReporter = libVariantProperties.getServices().getIssueReporter();
+        final IssueReporter issueReporter = libraryVariant.getServices().getIssueReporter();
 
         for (int i = 0, count = customTransforms.size(); i < count; i++) {
             Transform transform = customTransforms.get(i);
@@ -276,7 +265,7 @@ public class LibraryTaskManager
             List<Object> deps = customTransformsDependencies.get(i);
             transformManager.addTransform(
                     taskFactory,
-                    libVariantProperties,
+                    libraryVariant,
                     transform,
                     null,
                     task -> {
@@ -289,7 +278,7 @@ public class LibraryTaskManager
                         // depend on it.
                         if (transform.getScopes().isEmpty()) {
                             TaskFactoryUtils.dependsOn(
-                                    libVariantProperties.getTaskContainer().getAssembleTask(),
+                                    libraryVariant.getTaskContainer().getAssembleTask(),
                                     taskProvider);
                         }
                     });
@@ -298,99 +287,87 @@ public class LibraryTaskManager
         // Create jar with library classes used for publishing to runtime elements.
         taskFactory.register(
                 new BundleLibraryClassesJar.CreationAction(
-                        libVariantProperties,
-                        AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS));
+                        libraryVariant, AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS));
 
         // Also create a directory containing the same classes for incremental dexing
-        taskFactory.register(new BundleLibraryClassesDir.CreationAction(libVariantProperties));
+        taskFactory.register(new BundleLibraryClassesDir.CreationAction(libraryVariant));
 
-        taskFactory.register(new BundleLibraryJavaRes.CreationAction(libVariantProperties));
+        taskFactory.register(new BundleLibraryJavaRes.CreationAction(libraryVariant));
 
         // Create a jar with both classes and java resources.  This artifact is not
         // used by the Android application plugin and the task usually don't need to
         // be executed.  The artifact is useful for other Gradle users who needs the
         // 'jar' artifact as API dependency.
-        taskFactory.register(new ZipMergingTask.CreationAction(libVariantProperties));
+        taskFactory.register(new ZipMergingTask.CreationAction(libraryVariant));
 
         // now add a task that will take all the native libs and package
         // them into an intermediary folder. This processes only the PROJECT
         // scope.
         taskFactory.register(
                 new LibraryJniLibsTask.ProjectOnlyCreationAction(
-                        libVariantProperties, InternalArtifactType.LIBRARY_JNI.INSTANCE));
+                        libraryVariant, InternalArtifactType.LIBRARY_JNI.INSTANCE));
 
         // Now go back to fill the pipeline with transforms used when
         // publishing the AAR
 
         // first merge the java resources.
-        createMergeJavaResTask(libVariantProperties);
+        createMergeJavaResTask(libraryVariant);
 
         // ----- Minify next -----
-        maybeCreateJavaCodeShrinkerTask(libVariantProperties);
+        maybeCreateJavaCodeShrinkerTask(libraryVariant);
 
         // now add a task that will take all the classes and java resources and package them
         // into the main and secondary jar files that goes in the AAR.
         // This is used for building the AAR.
 
-        taskFactory.register(new LibraryAarJarsTask.CreationAction(libVariantProperties));
+        taskFactory.register(new LibraryAarJarsTask.CreationAction(libraryVariant));
 
         // now add a task that will take all the native libs and package
         // them into the libs folder of the bundle. This processes both the PROJECT
         // and the LOCAL_PROJECT scopes
         taskFactory.register(
                 new LibraryJniLibsTask.ProjectAndLocalJarsCreationAction(
-                        libVariantProperties,
-                        InternalArtifactType.LIBRARY_AND_LOCAL_JARS_JNI.INSTANCE));
+                        libraryVariant, InternalArtifactType.LIBRARY_AND_LOCAL_JARS_JNI.INSTANCE));
 
         // Add a task to create the AAR metadata file
-        taskFactory.register(new AarMetadataTask.CreationAction(libVariantProperties));
+        taskFactory.register(new AarMetadataTask.CreationAction(libraryVariant));
 
-        createLintTasks(libVariantProperties, allVariants);
-        createBundleTask(libVariantProperties);
+        createLintTasks(libraryVariant, allVariants);
+        createBundleTask(libraryVariant);
     }
 
-    private void registerLibraryRClassTransformStream(
-            @NonNull VariantPropertiesImpl variantProperties) {
-
-        if (!variantProperties.getBuildFeatures().getAndroidResources()) {
+    private void registerLibraryRClassTransformStream(@NonNull VariantImpl variant) {
+        if (!variant.getBuildFeatures().getAndroidResources()) {
             return;
         }
-
-        QualifiedContent.ScopeType scopeType;
-        if (variantProperties.getVariantScope().getCodeShrinker() != null) {
-            // Add the R class classes as production classes. They are then removed by the library
-            // jar transform.
-            // TODO(b/115974418): Can we stop adding the compilation-only R class as a local classes?
-            scopeType = Scope.PROJECT;
-        } else {
-            scopeType = Scope.PROVIDED_ONLY;
-        }
-
         FileCollection compileRClass =
                 project.files(
-                        variantProperties
-                                .getArtifacts()
+                        variant.getArtifacts()
                                 .get(InternalArtifactType.COMPILE_R_CLASS_JAR.INSTANCE));
-        variantProperties
-                .getTransformManager()
+        variant.getTransformManager()
                 .addStream(
-                        OriginalStream.builder(project, "compile-only-r-class")
+                        OriginalStream.builder("compile-only-r-class")
                                 .addContentTypes(TransformManager.CONTENT_CLASS)
-                                .addScope(scopeType)
+                                .addScope(Scope.PROVIDED_ONLY)
                                 .setFileCollection(compileRClass)
                                 .build());
     }
 
-    private void createBundleTask(@NonNull VariantPropertiesImpl variantProperties) {
+    private void createBundleTask(@NonNull VariantImpl variant) {
         TaskProvider<BundleAar> bundle =
-                taskFactory.register(new BundleAar.CreationAction(variantProperties));
+                taskFactory.register(new BundleAar.CreationAction(variant));
 
-        TaskFactoryUtils.dependsOn(variantProperties.getTaskContainer().getAssembleTask(), bundle);
+        variant.getTaskContainer()
+                .getAssembleTask()
+                .configure(
+                        task -> {
+                            task.dependsOn(variant.getArtifacts().get(ArtifactType.AAR.INSTANCE));
+                        });
 
-        final VariantDependencies variantDependencies = variantProperties.getVariantDependencies();
+        final VariantDependencies variantDependencies = variant.getVariantDependencies();
 
         AdhocComponentWithVariants component =
-                globalScope.getComponentFactory().adhoc(variantProperties.getName());
+                globalScope.getComponentFactory().adhoc(variant.getName());
 
         final Configuration apiPub = variantDependencies.getElements(API_PUBLICATION);
         final Configuration runtimePub = variantDependencies.getElements(RUNTIME_PUBLICATION);
@@ -416,7 +393,7 @@ public class LibraryTaskManager
                 allRuntimePub, new ConfigurationVariantMapping("runtime", true));
 
         // Old style publishing. This is likely to go away at some point.
-        if (extension.getDefaultPublishConfig().equals(variantProperties.getName())) {
+        if (extension.getDefaultPublishConfig().equals(variant.getName())) {
             VariantHelper.setupArchivesConfig(project, variantDependencies.getRuntimeClasspath());
 
             // add the artifact that will be published.
@@ -429,44 +406,41 @@ public class LibraryTaskManager
     }
 
     @Override
-    protected void createDependencyStreams(@NonNull ComponentPropertiesImpl componentProperties) {
-        super.createDependencyStreams(componentProperties);
+    protected void createDependencyStreams(@NonNull ComponentCreationConfig creationConfig) {
+        super.createDependencyStreams(creationConfig);
 
         // add the same jars twice in the same stream as the EXTERNAL_LIB in the task manager
         // so that filtering of duplicates in proguard can work.
-        componentProperties
+        creationConfig
                 .getTransformManager()
                 .addStream(
-                        OriginalStream.builder(project, "local-deps-classes")
+                        OriginalStream.builder("local-deps-classes")
                                 .addContentTypes(TransformManager.CONTENT_CLASS)
                                 .addScope(InternalScope.LOCAL_DEPS)
                                 .setFileCollection(
-                                        componentProperties
-                                                .getVariantScope()
-                                                .getLocalPackagedJars())
+                                        creationConfig.getVariantScope().getLocalPackagedJars())
                                 .build());
     }
 
     private static class MergeResourceCallback implements TaskProviderCallback<MergeResources> {
-        @NonNull private final VariantPropertiesImpl variantProperties;
+        @NonNull private final VariantImpl variant;
 
-        private MergeResourceCallback(@NonNull VariantPropertiesImpl variantProperties) {
-            this.variantProperties = variantProperties;
+        private MergeResourceCallback(@NonNull VariantImpl variant) {
+            this.variant = variant;
         }
 
         @Override
         public void handleProvider(@NonNull TaskProvider<MergeResources> taskProvider) {
-            variantProperties
-                    .getArtifacts()
+            variant.getArtifacts()
                     .setInitialProvider(taskProvider, MergeResources::getPublicFile)
                     .withName(FN_PUBLIC_TXT)
                     .on(InternalArtifactType.PUBLIC_RES.INSTANCE);
         }
     }
 
-    private void createMergeResourcesTasks(@NonNull VariantPropertiesImpl variantProperties) {
+    private void createMergeResourcesTasks(@NonNull VariantImpl variant) {
         ImmutableSet<MergeResources.Flag> flags;
-        if (variantProperties.getGlobalScope().getExtension().getAaptOptions().getNamespaced()) {
+        if (variant.getGlobalScope().getExtension().getAaptOptions().getNamespaced()) {
             flags =
                     Sets.immutableEnumSet(
                             MergeResources.Flag.REMOVE_RESOURCE_NAMESPACES,
@@ -475,16 +449,14 @@ public class LibraryTaskManager
             flags = Sets.immutableEnumSet(MergeResources.Flag.PROCESS_VECTOR_DRAWABLES);
         }
 
-        MergeResourceCallback callback = new MergeResourceCallback(variantProperties);
+        MergeResourceCallback callback = new MergeResourceCallback(variant);
 
         // Create a merge task to only merge the resources from this library and not
         // the dependencies. This is what gets packaged in the aar.
         basicCreateMergeResourcesTask(
-                variantProperties,
+                variant,
                 MergeType.PACKAGE,
-                variantProperties
-                        .getPaths()
-                        .getIntermediateDir(InternalArtifactType.PACKAGED_RES.INSTANCE),
+                variant.getPaths().getIntermediateDir(InternalArtifactType.PACKAGED_RES.INSTANCE),
                 false,
                 false,
                 false,
@@ -494,51 +466,50 @@ public class LibraryTaskManager
         // This task merges all the resources, including the dependencies of this library.
         // This should be unused, except that external libraries might consume it.
         // Also used by the VerifyLibraryResourcesTask (only ran in release builds).
-        createMergeResourcesTask(variantProperties, false /*processResources*/, ImmutableSet.of());
+        createMergeResourcesTask(variant, false /*processResources*/, ImmutableSet.of());
+
+        // Task to generate the public.txt for the API that always exists
+        // Unlike the internal one which is packaged in the AAR which only exists if the
+        // developer has explicitly marked resources as public.
+        taskFactory.register(new GenerateApiPublicTxtTask.CreationAction(variant));
     }
 
-    private void createCompileLibraryResourcesTask(
-            @NonNull VariantPropertiesImpl variantProperties) {
-        if (variantProperties.getVariantScope().isPrecompileDependenciesResourcesEnabled()) {
-            taskFactory.register(new CompileLibraryResourcesTask.CreationAction(variantProperties));
+    private void createCompileLibraryResourcesTask(@NonNull VariantImpl variant) {
+        if (variant.isPrecompileDependenciesResourcesEnabled()) {
+            taskFactory.register(new CompileLibraryResourcesTask.CreationAction(variant));
         }
     }
 
     @Override
-    protected void postJavacCreation(@NonNull ComponentPropertiesImpl componentProperties) {
+    protected void postJavacCreation(@NonNull ComponentCreationConfig creationConfig) {
         // create an anchor collection for usage inside the same module (unit tests basically)
         ConfigurableFileCollection files =
-                componentProperties
+                creationConfig
                         .getServices()
                         .fileCollection(
-                                componentProperties.getArtifacts().get(JAVAC.INSTANCE),
-                                componentProperties
-                                        .getVariantData()
-                                        .getAllPreJavacGeneratedBytecode(),
-                                componentProperties
-                                        .getVariantData()
-                                        .getAllPostJavacGeneratedBytecode());
-        componentProperties.getArtifacts().appendToAllClasses(files);
+                                creationConfig.getArtifacts().get(JAVAC.INSTANCE),
+                                creationConfig.getVariantData().getAllPreJavacGeneratedBytecode(),
+                                creationConfig.getVariantData().getAllPostJavacGeneratedBytecode());
+        creationConfig.getArtifacts().appendToAllClasses(files);
 
         // Create jar used for publishing to API elements (for other projects to compile against).
         taskFactory.register(
                 new BundleLibraryClassesJar.CreationAction(
-                        componentProperties, AndroidArtifacts.PublishedConfigType.API_ELEMENTS));
+                        creationConfig, AndroidArtifacts.PublishedConfigType.API_ELEMENTS));
     }
 
-    public void createLibraryAssetsTask(@NonNull VariantPropertiesImpl variantProperties) {
-        taskFactory.register(
-                new MergeSourceSetFolders.LibraryAssetCreationAction(variantProperties));
+    public void createLibraryAssetsTask(@NonNull VariantImpl variant) {
+        taskFactory.register(new MergeSourceSetFolders.LibraryAssetCreationAction(variant));
     }
 
-    public void createPrefabTasks(@NonNull LibraryVariantPropertiesImpl variantProperties) {
-        if (!variantProperties.getBuildFeatures().getPrefabPublishing()) {
+    public void createPrefabTasks(@NonNull LibraryVariantImpl libraryVariant) {
+        if (!libraryVariant.getBuildFeatures().getPrefabPublishing()) {
             return;
         }
 
-        Provider<ExternalNativeJsonGenerator> generator =
-                variantProperties.getTaskContainer().getExternalNativeJsonGenerator();
-        if (generator == null) {
+        CxxConfigurationModel configurationModel =
+                libraryVariant.getTaskContainer().getCxxConfigurationModel();
+        if (configurationModel == null) {
             // No external native build, so definitely no prefab tasks.
             return;
         }
@@ -546,10 +517,6 @@ public class LibraryTaskManager
         LibraryExtension extension = (LibraryExtension) globalScope.getExtension();
         List<PrefabModuleTaskData> modules = Lists.newArrayList();
         for (PrefabPackagingOptions options : extension.getPrefab()) {
-            String name = options.getName();
-            if (name == null) {
-                throw new InvalidUserDataException("prefab modules must specify a name");
-            }
             File headers = null;
             if (options.getHeaders() != null) {
                 headers =
@@ -558,7 +525,7 @@ public class LibraryTaskManager
                                 .dir(options.getHeaders())
                                 .getAsFile();
             }
-            modules.add(new PrefabModuleTaskData(name, headers, options.getLibraryName()));
+            modules.add(new PrefabModuleTaskData(options.getName(), headers, options.getLibraryName()));
         }
 
         if (!modules.isEmpty()) {
@@ -566,35 +533,25 @@ public class LibraryTaskManager
                     taskFactory.register(
                             new PrefabPackageTask.CreationAction(
                                     modules,
-                                    generator.get().getVariant(),
-                                    generator.get().getAbis(),
-                                    variantProperties));
+                                    libraryVariant.getGlobalScope().getSdkComponents().get(),
+                                    libraryVariant.getTaskContainer().getCxxConfigurationModel(),
+                                    libraryVariant));
             packageTask
                     .get()
-                    .dependsOn(variantProperties.getTaskContainer().getExternalNativeBuildTask());
+                    .dependsOn(libraryVariant.getTaskContainer().getExternalNativeBuildTask());
         }
     }
 
     @NonNull
     @Override
     protected Set<ScopeType> getJavaResMergingScopes(
-            @NonNull ComponentPropertiesImpl componentProperties,
+            @NonNull ComponentCreationConfig creationConfig,
             @NonNull QualifiedContent.ContentType contentType) {
-        Preconditions.checkArgument(
-                contentType == RESOURCES || contentType == NATIVE_LIBS,
-                "contentType must be RESOURCES or NATIVE_LIBS");
-        if (componentProperties.getVariantType().isTestComponent()) {
-            if (contentType == RESOURCES) {
-                return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS;
-            }
-            // contentType is NATIVE_LIBS
-            return TransformManager.SCOPE_FULL_PROJECT;
+        Preconditions.checkArgument(contentType == RESOURCES, "contentType must be RESOURCES");
+        if (creationConfig.getVariantType().isTestComponent()) {
+            return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS;
         }
-        if (contentType == RESOURCES) {
-            return TransformManager.SCOPE_FULL_LIBRARY_WITH_LOCAL_JARS;
-        }
-        // contentType is NATIVE_LIBS
-        return TransformManager.PROJECT_ONLY;
+        return TransformManager.SCOPE_FULL_LIBRARY_WITH_LOCAL_JARS;
     }
 
     @Override
@@ -602,13 +559,20 @@ public class LibraryTaskManager
         return true;
     }
 
-    public void createVerifyLibraryResTask(@NonNull VariantPropertiesImpl variantProperties) {
+    public void createVerifyLibraryResTask(@NonNull VariantImpl variant) {
         TaskProvider<VerifyLibraryResourcesTask> verifyLibraryResources =
-                taskFactory.register(
-                        new VerifyLibraryResourcesTask.CreationAction(variantProperties));
+                taskFactory.register(new VerifyLibraryResourcesTask.CreationAction(variant));
 
-        TaskFactoryUtils.dependsOn(
-                variantProperties.getTaskContainer().getAssembleTask(), verifyLibraryResources);
+        variant.getTaskContainer()
+                .getAssembleTask()
+                .configure(
+                        task -> {
+                            task.dependsOn(
+                                    variant.getArtifacts()
+                                            .get(
+                                                    InternalArtifactType.VERIFIED_LIBRARY_RESOURCES
+                                                            .INSTANCE));
+                        });
     }
 
     @Override
@@ -618,7 +582,7 @@ public class LibraryTaskManager
         // publish the local lint.jar to all the variants.
         // This takes the global jar (output of PrepareLintJar) and publishes to each variants
         // as we don't have variant-free publishing at the moment.
-        for (LibraryVariantPropertiesImpl variant : variantPropertiesList) {
+        for (LibraryVariantImpl variant : variantPropertiesList) {
             variant.getArtifacts()
                     .copy(
                             InternalArtifactType.LINT_PUBLISH_JAR.INSTANCE,
