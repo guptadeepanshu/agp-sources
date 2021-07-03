@@ -34,7 +34,7 @@ import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_SYSTE
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_SYSTEM_VERSION
 import com.android.build.gradle.internal.cxx.configure.NdkMetaPlatforms
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
-import com.android.build.gradle.internal.cxx.model.shouldGeneratePrefabPackages
+import com.android.build.gradle.internal.cxx.model.buildIsPrefabCapable
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK
 import com.android.build.gradle.internal.cxx.settings.Macro.*
 import com.android.build.gradle.internal.cxx.settings.PropertyValue.LookupPropertyValue
@@ -70,7 +70,7 @@ fun CxxAbiModel.getCmakeServerDefaultEnvironment(): CMakeSettings {
         CMakeSettingsVariable(CMAKE_SYSTEM_VERSION.name, NDK_SYSTEM_VERSION.ref)
     )
 
-    if (shouldGeneratePrefabPackages()) {
+    if (buildIsPrefabCapable()) {
         variables.add(CMakeSettingsVariable(CMAKE_FIND_ROOT_PATH.name, NDK_PREFAB_PATH.ref))
     }
 

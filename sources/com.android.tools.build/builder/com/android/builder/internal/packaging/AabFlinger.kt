@@ -72,6 +72,7 @@ class AabFlinger(
     /** forkJoinPool used so that compression can occur in parallel */
     private val forkJoinPool = ForkJoinPool.commonPool()
     private val subTasks = mutableListOf<ForkJoinTask<Unit>>()
+    private val openZipFiles = mutableListOf<ZipFile>()
 
     /**
      * Writes the content of a Jar/Zip archive to the receiver archive.
@@ -83,28 +84,31 @@ class AabFlinger(
     fun writeZip(zip: File, compressionLevel: Int) {
         Preconditions.checkArgument(zip.isFile, "!zip.isFile()")
 
-        ZipFile(zip).use { zipFile ->
-            val entries = zipFile.entries()
-            while (entries.hasMoreElements()) {
-                val entry = entries.nextElement()
-                if (entry.isDirectory) {
-                    continue
-                }
-                if (entry.name.contains("../")) {
-                    throw InvalidPathException(entry.name, "Entry name contains invalid characters")
-                }
-                zipFile.getInputStream(entry).use {
-                    val bytes = it.readBytes()
-                    subTasks.add(forkJoinPool.submit(Callable {
-                        archive.add(BytesSource(bytes, entry.name, compressionLevel))
-                    }))
-                }
+        val zipFile = ZipFile(zip)
+        openZipFiles.add(zipFile)
+        val entries = zipFile.entries()
+        while (entries.hasMoreElements()) {
+            val entry = entries.nextElement()
+            if (entry.isDirectory) {
+                continue
             }
+            if (entry.name.contains("../")) {
+                throw InvalidPathException(entry.name, "Entry name contains invalid characters")
+            }
+            subTasks.add(
+                forkJoinPool.submit(Callable {
+                    zipFile.getInputStream(entry).use {
+                        val bytes = it.readBytes()
+                        archive.add(BytesSource(bytes, entry.name, compressionLevel))
+                    }
+                })
+            )
         }
     }
 
     override fun close() {
         subTasks.forEach { it.join() }
         archive.close()
+        openZipFiles.forEach(Closeable::close)
     }
 }
