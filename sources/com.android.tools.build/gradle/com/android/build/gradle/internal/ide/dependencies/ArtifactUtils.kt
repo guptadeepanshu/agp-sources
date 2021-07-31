@@ -61,7 +61,7 @@ class ArtifactCollectionsInputs constructor(
         buildMapping: ImmutableMap<String, String>
     ) : this(
         componentImpl.variantDependencies,
-        componentImpl.globalScope.project.path,
+        componentImpl.services.projectInfo.getProject().path,
         componentImpl.name,
         runtimeType,
         getBuildService(componentImpl.services.buildServiceRegistry),
@@ -89,10 +89,10 @@ class ArtifactCollectionsInputs constructor(
     val level1RuntimeArtifactCollections: Level1RuntimeArtifactCollections = Level1RuntimeArtifactCollections(variantDependencies)
 
     @get:Internal
-    // This contains the list of all the lint jar provided by the dependencies.
+    // This contains the list of all the lint jar provided by the runtime dependencies.
     // We'll match this to the component identifier of each artifact to find the lint.jar
-    // that is coming via AARs. (Always is runtime classpath scoped)
-    val lintJars: ArtifactCollection =
+    // that is coming via AARs.
+    val runtimeLintJars: ArtifactCollection =
         variantDependencies.getArtifactCollectionForToolingModel(
             AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
             AndroidArtifacts.ArtifactScope.ALL,
@@ -101,8 +101,23 @@ class ArtifactCollectionsInputs constructor(
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    val dependenciesLintJarsFileCollection: FileCollection
-        get() = lintJars.artifactFiles
+    val runtimeLintJarsFileCollection: FileCollection
+        get() = runtimeLintJars.artifactFiles
+
+    @get:Internal
+    // Similar to runtimeLintJars, but for compile dependencies; there will be overlap between the
+    // two in most cases, but we need compileLintJars to support compileOnly dependencies.
+    val compileLintJars: ArtifactCollection =
+        variantDependencies.getArtifactCollectionForToolingModel(
+            AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+            AndroidArtifacts.ArtifactScope.ALL,
+            AndroidArtifacts.ArtifactType.LINT
+        )
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    val compileLintJarsFileCollection: FileCollection
+        get() = compileLintJars.artifactFiles
 }
 
 // This is the partial set of file collections used by the Level1 model builder
@@ -119,8 +134,7 @@ class Level1RuntimeArtifactCollections(variantDependencies: VariantDependencies)
     val runtimeArtifactsFileCollection: FileCollection
         get() = runtimeArtifacts.artifactFiles
 
-    // Don't query jetified jars on project classes as for java libraries the artifact
-    // might not exist yet.
+    /** See [ArtifactCollections.projectJars]. */
     @get:Internal
     val runtimeProjectJars = variantDependencies.getArtifactCollectionForToolingModel(
         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -220,8 +234,13 @@ class ArtifactCollections(
     val explodedAarFileCollection: FileCollection
         get() = explodedAars.artifactFiles
 
-    // Note: Query for JAR instead of PROCESSED_JAR for project dependencies due to b/110054209
-    // With a solution to that projectJars and externalJars could be merged.
+    /**
+     * For project jars, query for JAR instead of PROCESSED_JAR for two reasons:
+     *  - Performance: Project jars are currently considered already processed (unlike external
+     *    jars).
+     *  - Workaround for a Gradle issue: Gradle may throw FileNotFoundException if a project jar has
+     *    not been built yet; this issue does not affect external jars (see bug 110054209).
+     */
     @get:Internal
     val projectJars: ArtifactCollection = variantDependencies.getArtifactCollectionForToolingModel(
         consumedConfigType,
@@ -268,7 +287,7 @@ fun getAllArtifacts(
         collections,
         dependencyFailureHandler,
         buildMapping,
-        componentImpl.globalScope.project.path,
+        componentImpl.services.projectInfo.getProject().path,
         componentImpl.name,
         mavenCoordinatesCache
     )
@@ -318,8 +337,7 @@ fun getAllArtifacts(
 
     val explodedAars = collections.explodedAars.asMultiMap()
 
-    // Note: Query for JAR instead of PROCESSED_JAR for project dependencies due to b/110054209
-    // With a solution to that projectJars and externalJars could be merged.
+    /** See [ArtifactCollections.projectJars]. */
     val projectJars = collections.projectJars.asMultiMap()
 
     // collect dependency resolution failures

@@ -27,11 +27,11 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getErrorFormatMode
 import com.android.build.gradle.internal.services.registerAaptService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.options.BooleanOption
@@ -39,11 +39,13 @@ import com.android.build.gradle.options.StringOption
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
+import com.android.ide.common.resources.mergeIdentifiedSourceSetFiles
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.artifacts.ArtifactCollection
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
@@ -107,6 +109,10 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
     @get:Nested
     abstract val androidJarInput: AndroidJarInput
 
+    // No effect on task output, used for generating absolute paths for error messaging.
+    @get:Internal
+    abstract val sourceSetMaps: ConfigurableFileCollection
+
     private var compiledDependenciesResources: ArtifactCollection? = null
 
     override fun doTaskAction() {
@@ -129,6 +135,9 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
         val compiledDependenciesResourcesDirs =
             getCompiledDependenciesResources()?.reversed()?.toImmutableList() ?: emptyList<File>()
 
+        val identifiedSourceSetMap =
+                mergeIdentifiedSourceSetFiles(sourceSetMaps.files.filterNotNull())
+
         val config = AaptPackageConfig(
             androidJarPath = androidJarInput.getAndroidJar().get().absolutePath,
             generateProtos = true,
@@ -148,7 +157,8 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             // This will result in smaller release bundles
             excludeSources = excludeResSourcesForReleaseBundles.get() && debuggable.get().not(),
             mergeBlameDirectory = mergeBlameLogFolder.get().asFile,
-            manifestMergeBlameFile = manifestMergeBlameFile.orNull?.asFile
+            manifestMergeBlameFile = manifestMergeBlameFile.orNull?.asFile,
+            identifiedSourceSetMap = identifiedSourceSetMap
         )
         if (logger.isInfoEnabled) {
             logger.info("Aapt output file {}", outputFile.absolutePath)
@@ -247,7 +257,7 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
 
             task.noCompress.setDisallowChanges(creationConfig.globalScope.extension.aaptOptions.noCompress)
             task.aaptAdditionalParameters.setDisallowChanges(
-                creationConfig.aaptOptions.additionalParameters
+                creationConfig.androidResources.aaptAdditionalParameters
             )
 
             task.excludeResSourcesForReleaseBundles
@@ -277,6 +287,17 @@ abstract class LinkAndroidResForBundleTask : NonIncrementalTask() {
             }
             creationConfig.services.initializeAapt2Input(task.aapt2)
             task.androidJarInput.initialize(creationConfig)
+
+            if (projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]) {
+                val sourceSetMap =
+                        creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
+                task.sourceSetMaps.fromDisallowChanges(
+                        creationConfig.services.fileCollection(sourceSetMap)
+                )
+                task.dependsOn(sourceSetMap)
+            } else {
+                task.sourceSetMaps.disallowChanges()
+            }
         }
     }
 }

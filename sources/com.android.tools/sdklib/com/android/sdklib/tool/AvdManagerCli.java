@@ -21,18 +21,19 @@ import static com.google.common.base.Verify.verifyNotNull;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.prefs.AndroidLocation;
+import com.android.prefs.AndroidLocationsException;
+import com.android.prefs.AndroidLocationsSingleton;
 import com.android.repository.api.ConsoleProgressIndicator;
 import com.android.repository.api.LocalPackage;
 import com.android.repository.api.ProgressIndicator;
 import com.android.repository.api.ProgressIndicatorAdapter;
-import com.android.repository.io.FileOp;
+import com.android.repository.io.FileOpUtils;
 import com.android.resources.Density;
 import com.android.resources.ScreenSize;
-import com.android.sdklib.FileOpFileWrapper;
 import com.android.sdklib.IAndroidTarget;
 import com.android.sdklib.ISystemImage;
 import com.android.sdklib.OptionalLibrary;
+import com.android.sdklib.PathFileWrapper;
 import com.android.sdklib.SdkVersionInfo;
 import com.android.sdklib.devices.Device;
 import com.android.sdklib.devices.DeviceManager;
@@ -51,6 +52,8 @@ import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -143,7 +146,7 @@ class AvdManagerCli extends CommandLineParser {
     private AndroidSdkHandler mSdkHandler;
 
     private AvdManager mAvdManager;
-    private String mAvdFolder;
+    private File mAvdFolder;
 
     /**
      * Action definitions for AvdManager command line.
@@ -190,7 +193,9 @@ class AvdManagerCli extends CommandLineParser {
         init();
         parseArgs(args);
         if (mSdkHandler == null) {
-            mSdkHandler = AndroidSdkHandler.getInstance(new File(mOsSdkFolder));
+            mSdkHandler =
+                    AndroidSdkHandler.getInstance(
+                            AndroidLocationsSingleton.INSTANCE, Paths.get(mOsSdkFolder));
         }
         doAction();
     }
@@ -255,8 +260,8 @@ class AvdManagerCli extends CommandLineParser {
     private void init() {
         if (mAvdFolder == null) {
             try {
-                mAvdFolder = AndroidLocation.getAvdFolder();
-            } catch (AndroidLocation.AndroidLocationException e) {
+                mAvdFolder = AndroidLocationsSingleton.INSTANCE.getAvdLocation().toFile();
+            } catch (Throwable e) {
                 // We'll print an error out later since the folder isn't defined.
             }
         }
@@ -294,7 +299,7 @@ class AvdManagerCli extends CommandLineParser {
             }
 
             if (mOsSdkFolder == null) {
-                String cmdName = "avdmanager" + (mSdkHandler.getFileOp().isWindows() ? ".bat" : "");
+                String cmdName = "avdmanager" + (FileOpUtils.isWindows() ? ".bat" : "");
 
                 errorAndExit(
                         "The tools directory property is not set, please make sure you are "
@@ -329,17 +334,14 @@ class AvdManagerCli extends CommandLineParser {
     }
 
     /**
-     * Lazily creates and returns an instance of the AVD Manager. The same instance is reused
-     * later.
+     * Lazily creates and returns an instance of the AVD Manager. The same instance is reused later.
      *
      * @return A non-null AVD Manager instance.
      */
     @NonNull
-    private AvdManager getAvdManager() throws AndroidLocation.AndroidLocationException {
+    private AvdManager getAvdManager() throws AndroidLocationsException {
         if (mAvdManager == null) {
-            mAvdManager =
-                    verifyNotNull(
-                            AvdManager.getInstance(mSdkHandler, new File(mAvdFolder), mSdkLog));
+            mAvdManager = verifyNotNull(AvdManager.getInstance(mSdkHandler, mAvdFolder, mSdkLog));
         }
         return mAvdManager;
     }
@@ -515,7 +517,7 @@ class AvdManagerCli extends CommandLineParser {
         try {
             AvdManager avdManager = getAvdManager();
             displayAvdList(avdManager);
-        } catch (AndroidLocation.AndroidLocationException e) {
+        } catch (AndroidLocationsException e) {
             errorAndExit(e.getMessage());
         }
     }
@@ -563,14 +565,15 @@ class AvdManagerCli extends CommandLineParser {
                 if (!libraries.isEmpty()) {
                     mSdkLog.info("     Libraries:\n");
                     for (OptionalLibrary library : libraries) {
-                        mSdkLog.info("      * %1$s (%2$s)\n",
-                                library.getName(), library.getJar().getName());
+                        mSdkLog.info(
+                                "      * %1$s (%2$s)\n",
+                                library.getName(), library.getJar().getFileName().toString());
                         mSdkLog.info("          %1$s\n", library.getDescription());
                     }
                 }
             }
             // get the target tags & ABIs
-            File targetLocation = new File(target.getLocation());
+            Path targetLocation = mSdkHandler.getFileOp().toPath(target.getLocation());
             ISystemImage image =
                     mSdkHandler.getSystemImageManager(progress).getImageAt(targetLocation);
             if (image != null) {
@@ -621,8 +624,8 @@ class AvdManagerCli extends CommandLineParser {
     private DeviceManager createDeviceManager() {
         File androidFolder;
         try {
-            androidFolder = new File(AndroidLocation.getFolder());
-        } catch (AndroidLocation.AndroidLocationException e) {
+            androidFolder = AndroidLocationsSingleton.INSTANCE.getPrefsLocation().toFile();
+        } catch (Throwable e) {
             mSdkLog.warning(e.getMessage());
             androidFolder = null;
         }
@@ -696,13 +699,19 @@ class AvdManagerCli extends CommandLineParser {
             }
 
             String paramFolderPath = getParamLocationPath();
-            File avdFolder;
+            Path avdFolder;
             if (paramFolderPath != null) {
-                avdFolder = new File(paramFolderPath);
+                avdFolder = mSdkHandler.getFileOp().toPath(paramFolderPath);
             } else {
                 avdFolder =
-                        AvdInfo.getDefaultAvdFolder(
-                                avdManager, avdName, mSdkHandler.getFileOp(), false);
+                        mSdkHandler
+                                .getFileOp()
+                                .toPath(
+                                        AvdInfo.getDefaultAvdFolder(
+                                                avdManager,
+                                                avdName,
+                                                mSdkHandler.getFileOp(),
+                                                false));
             }
 
             IdDisplay tag = SystemImage.DEFAULT_TAG;
@@ -711,7 +720,9 @@ class AvdManagerCli extends CommandLineParser {
             if (cmdTag == null) {
                 DetailsTypes.SysImgDetailsType details =
                         (DetailsTypes.SysImgDetailsType) imagePkg.getTypeDetails();
-                tag = details.getTag();
+                // TODO: support multi-tag
+                List<IdDisplay> tags = details.getTags();
+                tag = tags.isEmpty() ? null : tags.get(0);
             }
 
             if (abiType != null && abiType.indexOf('/') != -1) {
@@ -852,7 +863,7 @@ class AvdManagerCli extends CommandLineParser {
                 errorAndExit("AVD not created.");
             }
 
-        } catch (AndroidLocation.AndroidLocationException e) {
+        } catch (AndroidLocationsException e) {
             errorAndExit(e.getMessage());
         }
     }
@@ -873,8 +884,8 @@ class AvdManagerCli extends CommandLineParser {
         map.put(EmulatedProperties.HOST_GPU_MODE_KEY, GpuMode.AUTO.getGpuSetting());
         map.put(HardwareProperties.HW_INITIAL_ORIENTATION, "Portrait");
         map.put(EmulatedProperties.INTERNAL_STORAGE_KEY, EmulatedProperties.DEFAULT_INTERNAL_STORAGE.toString());
-        map.put(EmulatedProperties.NETWORK_LATENCY_KEY, "None");
-        map.put(EmulatedProperties.NETWORK_SPEED_KEY, "Full");
+        map.put(EmulatedProperties.NETWORK_LATENCY_KEY, AvdNetworkLatency.NONE.getAsParameter());
+        map.put(EmulatedProperties.NETWORK_SPEED_KEY, AvdNetworkSpeed.FULL.getAsParameter());
         map.put(EmulatedProperties.SDCARD_SIZE, EmulatedProperties.DEFAULT_SDCARD_SIZE.toString());
         map.put(EmulatedProperties.USE_CHOSEN_SNAPSHOT_BOOT, HardwareProperties.BOOLEAN_NO);
         map.put(EmulatedProperties.USE_COLD_BOOT, HardwareProperties.BOOLEAN_NO);
@@ -901,7 +912,7 @@ class AvdManagerCli extends CommandLineParser {
             }
 
             avdManager.deleteAvd(info, mSdkLog);
-        } catch (AndroidLocation.AndroidLocationException e) {
+        } catch (AndroidLocationsException e) {
             errorAndExit(e.getMessage());
         }
     }
@@ -956,17 +967,20 @@ class AvdManagerCli extends CommandLineParser {
             // to rename that folder too.
             if (newName != null && paramFolderPath == null) {
                 // Compute the original data path
-                File originalFolder = new File(
-                        AndroidLocation.getFolder() + AndroidLocation.FOLDER_AVD,
-                        info.getName() + AvdManager.AVD_FOLDER_EXTENSION);
-                if (originalFolder.equals(new File(info.getDataFolderPath()))) {
+                Path originalFolder =
+                        AndroidLocationsSingleton.INSTANCE
+                                .getAvdLocation()
+                                .resolve(info.getName() + AvdManager.AVD_FOLDER_EXTENSION);
+                if (originalFolder.equals(Paths.get(info.getDataFolderPath()))) {
                     try {
                         // The AVD is using the default data folder path based on the AVD name.
                         // That folder needs to be adjusted to use the new name.
-                        File f = new File(AndroidLocation.getFolder() + AndroidLocation.FOLDER_AVD,
-                                newName + AvdManager.AVD_FOLDER_EXTENSION);
-                        paramFolderPath = f.getCanonicalPath();
-                    } catch (IOException e) {
+                        paramFolderPath =
+                                AndroidLocationsSingleton.INSTANCE
+                                        .getAvdLocation()
+                                        .resolve(newName + AvdManager.AVD_FOLDER_EXTENSION)
+                                        .toString();
+                    } catch (Throwable e) {
                         // Fail to resolve canonical path. Fail now rather than later.
                         errorAndExit(e.getMessage());
                     }
@@ -999,7 +1013,7 @@ class AvdManagerCli extends CommandLineParser {
                 avdManager.updateAvd(info, properties);
             }
             avdManager.moveAvd(info, newName, paramFolderPath, mSdkLog);
-        } catch (AndroidLocation.AndroidLocationException | IOException e) {
+        } catch (AndroidLocationsException | IOException e) {
             errorAndExit(e.getMessage());
         }
     }
@@ -1016,12 +1030,11 @@ class AvdManagerCli extends CommandLineParser {
         if (emulatorPackage == null) {
             errorAndExit("\"emulator\" package must be installed!");
         }
-        File libDir = new File(emulatorPackage.getLocation(), SdkConstants.FD_LIB);
-        File hardwareDefs = new File(libDir, SdkConstants.FN_HARDWARE_INI);
-        FileOp fop = mSdkHandler.getFileOp();
-        Map<String, HardwareProperties.HardwareProperty> hwMap = HardwareProperties
-          .parseHardwareDefinitions(
-            new FileOpFileWrapper(hardwareDefs, fop, false), mSdkLog);
+        Path libDir = emulatorPackage.getLocation().resolve(SdkConstants.FD_LIB);
+        Path hardwareDefs = libDir.resolve(SdkConstants.FN_HARDWARE_INI);
+        Map<String, HardwareProperties.HardwareProperty> hwMap =
+                HardwareProperties.parseHardwareDefinitions(
+                        new PathFileWrapper(hardwareDefs), mSdkLog);
 
         // Get the generic default values
         Map<String, String> hwConfigMap = defaultEmulatorPropertiesMap();
@@ -1046,7 +1059,6 @@ class AvdManagerCli extends CommandLineParser {
      * value for each parameter.
      *
      * @return The resulting config
-     * @throws IOException
      */
     @NonNull
     private Map<String, String> promptForHardware() throws IOException {
@@ -1082,12 +1094,11 @@ class AvdManagerCli extends CommandLineParser {
         if (emulatorPackage == null) {
             errorAndExit("\"emulator\" package must be installed!");
         }
-        File libDir = new File(emulatorPackage.getLocation(), SdkConstants.FD_LIB);
-        File hardwareDefs = new File(libDir, SdkConstants.FN_HARDWARE_INI);
-        FileOp fop = mSdkHandler.getFileOp();
-        Map<String, HardwareProperties.HardwareProperty> hwMap = HardwareProperties
-                .parseHardwareDefinitions(
-                        new FileOpFileWrapper(hardwareDefs, fop, false), mSdkLog);
+        Path libDir = emulatorPackage.getLocation().resolve(SdkConstants.FD_LIB);
+        Path hardwareDefs = libDir.resolve(SdkConstants.FN_HARDWARE_INI);
+        Map<String, HardwareProperties.HardwareProperty> hwMap =
+                HardwareProperties.parseHardwareDefinitions(
+                        new PathFileWrapper(hardwareDefs), mSdkLog);
 
         HashMap<String, String> map = new HashMap<>();
 
@@ -1142,7 +1153,6 @@ class AvdManagerCli extends CommandLineParser {
      * Validate the user's input against the property that is being set.
      * @param userInput What the user typed
      * @param property The property that is being set
-     * @param logger
      * @return The property value string corresponding to the user's valid input. Null if the input is invalid.
      */
     @VisibleForTesting
@@ -1415,7 +1425,7 @@ class AvdManagerCli extends CommandLineParser {
         mSdkHandler = sdkHandler;
         mOsSdkFolder = sdkRoot;
         mInput = input;
-        mAvdFolder = avdRoot;
+        mAvdFolder = new File(avdRoot);
     }
 
     private AvdManagerCli(ILogger logger) {

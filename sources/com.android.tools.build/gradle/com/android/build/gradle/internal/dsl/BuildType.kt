@@ -15,10 +15,12 @@
  */
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.DynamicFeatureBuildType
 import com.android.build.api.dsl.LibraryBuildType
 import com.android.build.api.dsl.Ndk
+import com.android.build.api.dsl.PostProcessing
 import com.android.build.api.dsl.Shaders
 import com.android.build.api.dsl.TestBuildType
 import com.android.build.gradle.internal.errors.DeprecationReporter
@@ -28,7 +30,6 @@ import com.android.builder.core.BuilderConstants
 import com.android.builder.errors.IssueReporter
 import com.android.builder.internal.ClassFieldImpl
 import com.android.builder.model.BaseConfig
-import com.android.builder.model.CodeShrinker
 import com.google.common.collect.Iterables
 import org.gradle.api.Action
 import org.gradle.api.Incubating
@@ -44,10 +45,12 @@ abstract class BuildType @Inject constructor(
     private val dslServices: DslServices
 ) :
     AbstractBuildType(), CoreBuildType, Serializable,
-    ApplicationBuildType<SigningConfig>,
-    LibraryBuildType<SigningConfig>,
+    VariantDimensionBinaryCompatibilityFix,
+    ApplicationBuildType,
+    LibraryBuildType,
     DynamicFeatureBuildType,
-    TestBuildType<SigningConfig> {
+    TestBuildType,
+    InternalBuildType {
 
     /**
      * Name of this build type.
@@ -120,13 +123,13 @@ abstract class BuildType @Inject constructor(
 
     override val matchingFallbacks: MutableList<String> = mutableListOf()
 
-    fun setMatchingFallbacks(fallbacks: List<String>) {
+    override fun setMatchingFallbacks(fallbacks: List<String>) {
         val newFallbacks = ArrayList(fallbacks)
         matchingFallbacks.clear()
         matchingFallbacks.addAll(newFallbacks)
     }
 
-    fun setMatchingFallbacks(vararg fallbacks: String) {
+    override fun setMatchingFallbacks(vararg fallbacks: String) {
         matchingFallbacks.clear()
         for (fallback in fallbacks) {
             matchingFallbacks.add(fallback)
@@ -178,15 +181,27 @@ abstract class BuildType @Inject constructor(
     }
 
     /** The signing configuration. e.g.: `signingConfig signingConfigs.myConfig`  */
-    override var signingConfig: SigningConfig? = null
+    override var signingConfig: ApkSigningConfig? = null
 
     override fun setSigningConfig(signingConfig: com.android.builder.model.SigningConfig?): com.android.builder.model.BuildType {
         this.signingConfig = signingConfig as SigningConfig?
         return this
     }
 
+    fun setSigningConfig(signingConfig: SigningConfig?) {
+        this.signingConfig = signingConfig
+    }
+
+    fun setSigningConfig(signingConfig: InternalSigningConfig?) {
+        this.signingConfig = signingConfig
+    }
+
     fun setSigningConfig(signingConfig: Any?) {
         this.signingConfig = signingConfig as SigningConfig?
+    }
+
+    override fun _internal_getSigingConfig(): ApkSigningConfig? {
+        return signingConfig
     }
 
     override var isEmbedMicroApp: Boolean = true
@@ -308,14 +323,12 @@ abstract class BuildType @Inject constructor(
      * They are located in the SDK. Using `getDefaultProguardFile(String filename)` will return the
      * full path to the files. They are identical except for enabling optimizations.
      */
-    fun setProguardFiles(proguardFileIterable: Iterable<*>): BuildType {
+    override fun setProguardFiles(proguardFileIterable: Iterable<*>): BuildType {
         checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "setProguardFiles")
+        val replacementFiles = Iterables.toArray(proguardFileIterable, Any::class.java)
         proguardFiles.clear()
         proguardFiles(
-            *Iterables.toArray(
-                proguardFileIterable,
-                Any::class.java
-            )
+            *replacementFiles
         )
         return this
     }
@@ -480,41 +493,29 @@ abstract class BuildType @Inject constructor(
         }
 
     /**
-     * Specifies whether to always use ProGuard for code and resource shrinking.
+     * Always returns [false].
      *
-     * By default, when you enable code shrinking by setting
-     * [`minifyEnabled`](com.android.build.gradle.internal.dsl.BuildType.html#com.android.build.gradle.internal.dsl.BuildType:minifyEnabled) to `true`, the Android plugin uses R8. If you set
-     * this property to `true`, the Android plugin uses ProGuard.
+     * When you enable code shrinking by setting
+     * [`minifyEnabled`](com.android.build.gradle.internal.dsl.BuildType.html#com.android.build.gradle.internal.dsl.BuildType:minifyEnabled) to `true`, the Android plugin uses R8.
      *
      * To learn more, read
      * [Shrink, obfuscate, and optimize your app](https://developer.android.com/studio/build/shrink-code.html).
      */
-    override var isUseProguard: Boolean?
-        get() = if (_postProcessingConfiguration != PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
-            false
-        } else {
-            _postProcessing.codeShrinkerEnum == CodeShrinker.PROGUARD
+    override val isUseProguard: Boolean?
+        get() {
+            dslServices.deprecationReporter.reportObsoleteUsage(
+                    "useProguard",
+                    DeprecationReporter.DeprecationTarget.VERSION_8_0
+            )
+            return false
         }
-        set(_: Boolean?) {
-            checkPostProcessingConfiguration(PostProcessingConfiguration.OLD_DSL, "setUseProguard")
-            if (dslChecksEnabled) {
-                dslServices.deprecationReporter
-                    .reportObsoleteUsage(
-                        "useProguard", DeprecationReporter.DeprecationTarget.DSL_USE_PROGUARD
-                    )
-            }
-    }
-
-    fun setUseProguard(useProguard: Boolean) {
-        isUseProguard = useProguard
-    }
 
     override var isCrunchPngs: Boolean? = null
 
     /** This DSL is incubating and subject to change.  */
     @get:Internal
     @get:Incubating
-    val postprocessing: PostProcessingBlock
+    override val postprocessing: PostProcessingBlock
         get() {
             checkPostProcessingConfiguration(
                 PostProcessingConfiguration.POSTPROCESSING_BLOCK, "getPostProcessing"
@@ -530,6 +531,10 @@ abstract class BuildType @Inject constructor(
             PostProcessingConfiguration.POSTPROCESSING_BLOCK, "postProcessing"
         )
         action.execute(_postProcessing)
+    }
+
+    override fun postprocessing(action: PostProcessing.() -> Unit) {
+        postprocessing(Action { action.invoke(it) })
     }
 
     /** Describes how postProcessing was configured. Not to be used from the DSL.  */
@@ -576,6 +581,13 @@ abstract class BuildType @Inject constructor(
         }
     }
 
+    override fun initWith(that: com.android.build.api.dsl.BuildType) {
+        if (that !is BuildType) {
+            throw RuntimeException("Unexpected implementation type")
+        }
+        initWith(that as com.android.builder.model.BuildType)
+    }
+
     override fun initWith(that: com.android.builder.model.BuildType): BuildType {
         // we need to avoid doing this because of Property objects that cannot
         // be set from themselves
@@ -587,7 +599,6 @@ abstract class BuildType @Inject constructor(
             that.dslChecksEnabled = false
         }
         try {
-            this.signingConfig = that.signingConfig as SigningConfig?
             return super.initWith(that) as BuildType
         } finally {
             dslChecksEnabled = true
@@ -595,6 +606,11 @@ abstract class BuildType @Inject constructor(
                 that.dslChecksEnabled = true
             }
         }
+    }
+
+    /** Internal implementation detail, See comment on [InternalBuildType] */
+    fun initWith(that: InternalBuildType) {
+         initWith(that as com.android.builder.model.BuildType)
     }
 
     companion object {

@@ -21,9 +21,7 @@ import com.android.repository.api.LocalPackage;
 import com.android.repository.api.ProgressIndicator;
 import com.android.repository.api.RepoManager;
 import com.android.repository.api.Uninstaller;
-import com.android.repository.io.FileOp;
-
-import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Framework for a basic uninstaller that keeps track of its status and invalidates the list of
@@ -34,9 +32,8 @@ public abstract class AbstractUninstaller extends AbstractPackageOperation
 
     private final LocalPackage mPackage;
 
-    public AbstractUninstaller(@NonNull LocalPackage p, @NonNull RepoManager mgr,
-      @NonNull FileOp fop) {
-        super(mgr, fop);
+    public AbstractUninstaller(@NonNull LocalPackage p, @NonNull RepoManager mgr) {
+        super(mgr);
         mPackage = p;
     }
 
@@ -48,7 +45,7 @@ public abstract class AbstractUninstaller extends AbstractPackageOperation
 
     @NonNull
     @Override
-    public final File getLocation(@NonNull ProgressIndicator progress) {
+    public final Path getLocation(@NonNull ProgressIndicator progress) {
         return mPackage.getLocation();
     }
 

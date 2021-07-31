@@ -17,8 +17,9 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVariantBuilder
-import com.android.build.api.dsl.DependenciesInfo
 import com.android.build.api.variant.ApplicationVariantBuilder
+import com.android.build.api.variant.DependenciesInfo
+import com.android.build.api.variant.DependenciesInfoBuilder
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.services.ProjectServices
@@ -29,7 +30,7 @@ import javax.inject.Inject
 
 open class ApplicationVariantBuilderImpl @Inject constructor(
     variantDslInfo: VariantDslInfo,
-    dslDependencyInfo: DependenciesInfo,
+    dslDependencyInfo: com.android.build.api.dsl.DependenciesInfo,
     variantConfiguration: ComponentIdentity,
     variantApiServices: VariantApiServices
 ) : VariantBuilderImpl(
@@ -41,36 +42,34 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
     override val debuggable: Boolean
         get() = variantDslInfo.isDebuggable
 
-    // only instantiate this if this is needed. This allows non-built variant to not do too much work.
-    override val dependenciesInfo: DependenciesInfo by lazy {
-        if (variantApiServices.isPostVariantApi) {
-            // this is queried after the Variant API, so we can just return the DSL object.
-            dslDependencyInfo
-        } else {
-            variantApiServices.newInstance(
-                MutableDependenciesInfoImpl::class.java,
-                dslDependencyInfo,
-                variantApiServices
-            )
+    override var androidTestEnabled: Boolean
+        get() = enableAndroidTest
+        set(value) {
+            enableAndroidTest = value
         }
-    }
 
-    override fun dependenciesInfo(action: DependenciesInfo.() -> Unit) {
-        action.invoke(dependenciesInfo)
-    }
+    override var enableAndroidTest: Boolean = true
 
-    fun dependenciesInfo(action: Action<DependenciesInfo>) {
-        action.execute(dependenciesInfo)
+    // only instantiate this if this is needed. This allows non-built variant to not do too much work.
+    override val dependenciesInfo: DependenciesInfoBuilder by lazy {
+        variantApiServices.newInstance(
+            DependenciesInfoBuilderImpl::class.java,
+                variantApiServices,
+                dslDependencyInfo
+        )
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T: VariantBuilder> createUserVisibleVariantObject(
             projectServices: ProjectServices,
-            stats: GradleBuildVariant.Builder,): T =
+            stats: GradleBuildVariant.Builder?,): T =
+        if (stats == null) {
+            this as T
+        } else {
             projectServices.objectFactory.newInstance(
-                    AnalyticsEnabledApplicationVariantBuilder::class.java,
-                    this,
-                    stats
+                AnalyticsEnabledApplicationVariantBuilder::class.java,
+                this,
+                stats
             ) as T
-
+        }
 }

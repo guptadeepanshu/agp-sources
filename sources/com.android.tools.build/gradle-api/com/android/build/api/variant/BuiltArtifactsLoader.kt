@@ -16,15 +16,14 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 
 /**
  * Facility to load [BuiltArtifacts] instances from metadata files in the file system.
  *
- * When an artifact can have more than one output file, its [com.android.build.api.artifact.ArtifactType] is annotated with
- * [com.android.build.api.artifact.ArtifactType.ContainsMany]. [com.android.build.api.artifact.ArtifactTypes.APK] is an example
+ * When an artifact can have more than one output file, its [com.android.build.api.artifact.SingleArtifact] is annotated with
+ * [com.android.build.api.artifact.SingleArtifact.ContainsMany]. [com.android.build.api.artifact.ArtifactTypes.APK] is an example
  * of such an artifact: the folder produced can contain multiple APK files when multi-apk build
  * is configured.
  *
@@ -39,7 +38,6 @@ import org.gradle.api.file.FileCollection
  * Implementation of this interface can be obtained from
  * [com.android.build.api.artifact.Artifacts.getBuiltArtifactsLoader]
  */
-@Incubating
 interface BuiltArtifactsLoader {
 
     /**

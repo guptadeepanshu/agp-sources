@@ -21,18 +21,34 @@ import org.gradle.api.Incubating
 /**
  * DSL object for configuring databinding options.
  */
-@Incubating
 interface DataBinding {
     /** The version of data binding to use. */
+    @get:Incubating
+    @set:Incubating
     var version: String?
 
     /** Whether to add the default data binding adapters. */
+    @get:Incubating
+    @set:Incubating
     var addDefaultAdapters: Boolean
 
+    /**
+     * Whether to add the data binding KTX features.
+     * A null value means that the user hasn't specified any value in the DSL.
+     * The default value can be tweaked globally using the
+     * `android.defaults.databinding.addKtx` gradle property.
+     */
+    @get:Incubating
+    @set:Incubating
+    var addKtx: Boolean?
+
     /** Whether to run data binding code generation for test projects. */
+    @get:Incubating
+    @set:Incubating
     var isEnabledForTests: Boolean
 
     /** Whether to enable data binding. */
-    @Deprecated("use android.features.databinding")
+    @get:Incubating
+    @set:Incubating
     var isEnabled: Boolean
 }

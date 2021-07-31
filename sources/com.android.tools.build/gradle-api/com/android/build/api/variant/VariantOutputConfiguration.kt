@@ -16,17 +16,11 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Nested
-
-@Incubating
 interface VariantOutputConfiguration {
     /**
      * Type of package file, either the main APK or a full split APK file containing resources for a
      * particular split dimension.
      */
-    @Incubating
     enum class OutputType {
         SINGLE,
         ONE_OF_MANY,
@@ -38,7 +32,6 @@ interface VariantOutputConfiguration {
      *
      * @return the [OutputType] for this APK
      */
-    @get:Input
     val outputType: OutputType
 
     /**
@@ -47,6 +40,5 @@ interface VariantOutputConfiguration {
      *
      * @return list of [FilterConfiguration] for this output.
      */
-    @get:Nested
     val filters: Collection<FilterConfiguration>
 }

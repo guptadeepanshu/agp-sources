@@ -19,7 +19,6 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.dependency.getClassesDirFormat
@@ -67,7 +66,7 @@ private val META_INF_PATTERN = Pattern.compile("^META-INF/.*$")
 /** Common interface for bundle classes tasks to make configuring them easier. */
 interface BundleLibraryClassesInputs {
     @get:Input
-    val packageName: Property<String>
+    val namespace: Property<String>
 
     @get:Classpath
     val classes: ConfigurableFileCollection
@@ -88,7 +87,7 @@ private fun BundleLibraryClassesInputs.configure(
     inputs: FileCollection,
     packageRClass: Boolean
 ) {
-    packageName.setDisallowChanges(creationConfig.packageName)
+    namespace.setDisallowChanges(creationConfig.namespace)
     classes.from(inputs)
     this.packageRClass.set(packageRClass)
     if (packageRClass) {
@@ -109,9 +108,9 @@ private fun BundleLibraryClassesInputs.configureWorkerActionParams(
     } else {
         emptyList()
     }
-    params.packageName.set(packageName)
+    params.namespace.set(namespace)
     params.toIgnore.set(
-        dataBindingExcludeDelegate.orNull?.getExcludedClassList(packageName.get()) ?: listOf()
+        dataBindingExcludeDelegate.orNull?.getExcludedClassList(namespace.get()) ?: listOf()
     )
     params.output.set(output)
     // Ignore non-existent files (without this, ResourceNamespaceTest would fail).
@@ -143,8 +142,8 @@ abstract class BundleLibraryClassesDir: NewIncrementalTask(), BundleLibraryClass
     }
 
     class CreationAction(
-        creationConfig: VariantCreationConfig
-    ) : VariantTaskCreationAction<BundleLibraryClassesDir, VariantCreationConfig>(
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<BundleLibraryClassesDir, ComponentCreationConfig>(
         creationConfig
     ) {
 
@@ -262,7 +261,7 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
 /** Packages files to jar using the provided filter. */
 abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLibraryClassesWorkAction.Params>() {
     abstract class Params: ProfileAwareWorkAction.Parameters() {
-        abstract val packageName: Property<String>
+        abstract val namespace: Property<String>
         abstract val toIgnore: ListProperty<String>
         abstract val output: Property<File>
         abstract val input: ConfigurableFileCollection
@@ -275,7 +274,7 @@ abstract class BundleLibraryClassesWorkAction : ProfileAwareWorkAction<BundleLib
     override fun run() {
         val ignorePatterns =
             (LibraryAarJarsTask.getDefaultExcludes(
-                packagePath = parameters.packageName.get().replace('.', '/'),
+                packagePath = parameters.namespace.get().replace('.', '/'),
                 packageR = parameters.packageRClass.get()
             ) + parameters.toIgnore.get())
                 .map { Pattern.compile(it) }

@@ -17,24 +17,38 @@
 package com.android.repository.io.impl;
 
 import com.android.annotations.NonNull;
+import com.android.io.CancellableFileIo;
+import com.android.repository.io.FileOp;
 import com.android.repository.io.FileOpUtils;
-
 import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 /**
  * Wraps some common {@link File} operations on files and folders.
- * <p>
- * This makes it possible to override/mock/stub some file operations in unit tests.
- * <p>
- * Instances should be obtained through {@link FileOpUtils#create()}
+ *
+ * <p>This makes it possible to override/mock/stub some file operations in unit tests.
+ *
+ * <p>Instances should be obtained through {@link FileOpUtils#create()}
+ *
+ * @deprecated Use {@link Path}s, {@link CancellableFileIo} and (for testing) {@code
+ *     InMemoryFileSystems} directly.
  */
-public class FileOpImpl extends FileSystemFileOp {
+public class FileOpImpl extends FileOp {
+    private final FileSystem fileSystem;
+
+    public FileOpImpl() {
+        this(FileSystems.getDefault());
+    }
+
+    public FileOpImpl(FileSystem fileSystem) {
+        this.fileSystem = fileSystem;
+    }
 
     @Override
     public FileSystem getFileSystem() {
-        return FileSystems.getDefault();
+        return fileSystem;
     }
 
     @Override
@@ -45,6 +59,12 @@ public class FileOpImpl extends FileSystemFileOp {
     @Override
     public void deleteOnExit(File file) {
         file.deleteOnExit();
+    }
+
+    @NonNull
+    @Override
+    public File toFile(@NonNull Path path) {
+        return path.toFile();
     }
 
     @Override

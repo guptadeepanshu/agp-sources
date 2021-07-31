@@ -18,6 +18,7 @@ package com.android.ddmlib;
 import com.android.annotations.NonNull;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.SettableFuture;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -46,6 +47,11 @@ public final class PropertyFetcher {
 
     /**
      * Shell output parser for a getprop command
+     *
+     * <p>We don't process String[] as they are read from the socket because they can be "cut"
+     * anywhere depending on how the socket is read (e.g: We can receive a multiline property with
+     * three values as String[2] and then String[1]). Instead, we buffer all the lines and parse
+     * them once the full stream has be received.
      */
     @VisibleForTesting
     static class GetPropReceiver extends MultiLineReceiver {
@@ -53,8 +59,18 @@ public final class PropertyFetcher {
         private final Map<String, String> mCollectedProperties =
                 Maps.newHashMapWithExpectedSize(EXPECTED_PROP_COUNT);
 
+        private String[] lines = new String[0];
+
         @Override
-        public void processNewLines(@NonNull String[] lines) {
+        public void processNewLines(@NonNull String[] newLines) {
+            String[] tmp = new String[lines.length + newLines.length];
+            System.arraycopy(lines, 0, tmp, 0, lines.length);
+            System.arraycopy(newLines, 0, tmp, lines.length, newLines.length);
+            lines = tmp;
+        }
+
+        @Override
+        public void done() {
             // We receive an array of lines.
             // Some properties are single line, e.g.
             //   [foo.bar] = [blah]
@@ -154,7 +170,7 @@ public final class PropertyFetcher {
      * @return a {@link Future} that can be used to retrieve the prop value
      */
     @NonNull
-    public synchronized Future<String> getProperty(@NonNull String name) {
+    public synchronized ListenableFuture<String> getProperty(@NonNull String name) {
         SettableFuture<String> result;
         if (mCacheState.equals(CacheState.FETCHING)) {
             result = addPendingRequest(name);
@@ -225,10 +241,11 @@ public final class PropertyFetcher {
 
     private synchronized void handleException(Throwable e) {
         mCacheState = CacheState.UNPOPULATED;
-        Log.w("PropertyFetcher",
-                String.format("%s getting properties for device %s: %s",
-                        e.getClass().getSimpleName(), mDevice.getSerialNumber(),
-                        e.getMessage()));
+        String msg =
+                String.format(
+                        "%s getting properties for device %s",
+                        e.getClass().getSimpleName(), mDevice.getSerialNumber());
+        Log.w("PropertyFetcher", new Throwable(msg, e));
         for (Map.Entry<String, SettableFuture<String>> entry : mPendingRequests.entrySet()) {
             entry.getValue().setException(e);
         }

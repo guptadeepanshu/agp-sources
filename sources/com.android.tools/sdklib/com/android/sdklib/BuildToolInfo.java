@@ -16,15 +16,12 @@
 
 package com.android.sdklib;
 
-import static com.android.SdkConstants.FD_LIB;
 import static com.android.SdkConstants.FN_AAPT;
 import static com.android.SdkConstants.FN_AAPT2;
 import static com.android.SdkConstants.FN_AIDL;
 import static com.android.SdkConstants.FN_BCC_COMPAT;
 import static com.android.SdkConstants.FN_CORE_LAMBDA_STUBS;
 import static com.android.SdkConstants.FN_DEXDUMP;
-import static com.android.SdkConstants.FN_DX;
-import static com.android.SdkConstants.FN_DX_JAR;
 import static com.android.SdkConstants.FN_JACK;
 import static com.android.SdkConstants.FN_JACK_COVERAGE_PLUGIN;
 import static com.android.SdkConstants.FN_JACK_JACOCO_REPORTER;
@@ -49,8 +46,6 @@ import static com.android.sdklib.BuildToolInfo.PathId.BCC_COMPAT;
 import static com.android.sdklib.BuildToolInfo.PathId.CORE_LAMBDA_STUBS;
 import static com.android.sdklib.BuildToolInfo.PathId.DAEMON_AAPT2;
 import static com.android.sdklib.BuildToolInfo.PathId.DEXDUMP;
-import static com.android.sdklib.BuildToolInfo.PathId.DX;
-import static com.android.sdklib.BuildToolInfo.PathId.DX_JAR;
 import static com.android.sdklib.BuildToolInfo.PathId.JACK;
 import static com.android.sdklib.BuildToolInfo.PathId.JACK_COVERAGE_PLUGIN;
 import static com.android.sdklib.BuildToolInfo.PathId.JACK_JACOCO_REPORTER;
@@ -70,6 +65,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.io.CancellableFileIo;
 import com.android.repository.Revision;
 import com.android.repository.api.LocalPackage;
 import com.android.utils.ILogger;
@@ -77,6 +73,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.Maps;
 import java.io.File;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,20 +88,11 @@ import java.util.regex.Pattern;
  */
 public class BuildToolInfo {
 
-    /**
-     * First version with native multi-dex support.
-     */
-    public static final int SDK_LEVEL_FOR_MULTIDEX_NATIVE_SUPPORT = 21;
-
     public enum PathId {
         /** OS Path to the target's version of the aapt tool. */
         AAPT("1.0.0"),
         /** OS Path to the target's version of the aidl tool. */
         AIDL("1.0.0"),
-        /** OS Path to the target's version of the dx tool. */
-        DX("1.0.0"),
-        /** OS Path to the target's version of the dx.jar file. */
-        DX_JAR("1.0.0"),
         /** OS Path to the llvm-rs-cc binary for Renderscript. */
         LLVM_RS_CC("1.0.0"),
         /** OS Path to the Renderscript include folder. */
@@ -201,16 +189,6 @@ public class BuildToolInfo {
             return revision.compareTo(minRevision) >= 0
                     && (removalRevision == null || revision.compareTo(removalRevision) < 0);
         }
-
-        @VisibleForTesting
-        public Revision getMinRevision() {
-            return minRevision;
-        }
-
-        @VisibleForTesting
-        public Revision getRemovalRevision() {
-            return removalRevision;
-        }
     }
 
     /**
@@ -219,14 +197,11 @@ public class BuildToolInfo {
      */
     @NonNull
     public static BuildToolInfo fromStandardDirectoryLayout(
-            @NonNull Revision revision,
-            @NonNull File path) {
+            @NonNull Revision revision, @NonNull Path path) {
         return new BuildToolInfo(revision, path);
     }
 
-    /**
-     * Creates a {@link BuildToolInfo} from a {@link LocalPackage}.
-     */
+    /** Creates a {@link BuildToolInfo} from a {@link LocalPackage}. */
     @NonNull
     public static BuildToolInfo fromLocalPackage(@NonNull LocalPackage localPackage) {
         checkNotNull(localPackage, "localPackage");
@@ -247,29 +222,25 @@ public class BuildToolInfo {
     @NonNull
     public static BuildToolInfo modifiedLayout(
             @NonNull Revision revision,
-            @NonNull File mainPath,
-            @NonNull File aapt,
-            @NonNull File aidl,
-            @NonNull File dx,
-            @NonNull File dxJar,
-            @NonNull File llmvRsCc,
-            @NonNull File androidRs,
-            @NonNull File androidRsClang,
-            @Nullable File bccCompat,
-            @Nullable File ldArm,
-            @Nullable File ldArm64,
-            @Nullable File ldX86,
-            @Nullable File ldX86_64,
-            @Nullable File ldMips,
-            @Nullable File lld,
-            @NonNull File zipAlign,
-            @Nullable File aapt2) {
+            @NonNull Path mainPath,
+            @NonNull Path aapt,
+            @NonNull Path aidl,
+            @NonNull Path llmvRsCc,
+            @NonNull Path androidRs,
+            @NonNull Path androidRsClang,
+            @Nullable Path bccCompat,
+            @Nullable Path ldArm,
+            @Nullable Path ldArm64,
+            @Nullable Path ldX86,
+            @Nullable Path ldX86_64,
+            @Nullable Path ldMips,
+            @Nullable Path lld,
+            @NonNull Path zipAlign,
+            @Nullable Path aapt2) {
         BuildToolInfo result = new BuildToolInfo(revision, mainPath);
 
         result.add(AAPT, aapt);
         result.add(AIDL, aidl);
-        result.add(DX, dx);
-        result.add(DX_JAR, dxJar);
         result.add(LLVM_RS_CC, llmvRsCc);
         result.add(ANDROID_RS, androidRs);
         result.add(ANDROID_RS_CLANG, androidRsClang);
@@ -332,9 +303,7 @@ public class BuildToolInfo {
      */
     @NonNull
     public static BuildToolInfo partial(
-            @NonNull Revision revision,
-            @NonNull File location,
-            @NonNull Map<PathId, File> paths) {
+            @NonNull Revision revision, @NonNull Path location, @NonNull Map<PathId, Path> paths) {
         BuildToolInfo result = new BuildToolInfo(revision, location);
 
         paths.forEach(result::add);
@@ -347,12 +316,11 @@ public class BuildToolInfo {
     private final Revision mRevision;
 
     /** The path to the build-tool folder specific to this revision. */
-    @NonNull
-    private final File mPath;
+    @NonNull private final Path mPath;
 
     private final Map<PathId, String> mPaths = Maps.newEnumMap(PathId.class);
 
-    private BuildToolInfo(@NonNull Revision revision, @NonNull File path) {
+    private BuildToolInfo(@NonNull Revision revision, @NonNull Path path) {
         mRevision = revision;
         mPath = path;
 
@@ -360,8 +328,6 @@ public class BuildToolInfo {
         add(AAPT2, FN_AAPT2);
         add(DAEMON_AAPT2, FN_AAPT2);
         add(AIDL, FN_AIDL);
-        add(DX, FN_DX);
-        add(DX_JAR, FD_LIB + File.separator + FN_DX_JAR);
         add(LLVM_RS_CC, FN_RENDERSCRIPT);
         add(ANDROID_RS, OS_FRAMEWORK_RS);
         add(ANDROID_RS_CLANG, OS_FRAMEWORK_RS_CLANG);
@@ -383,12 +349,13 @@ public class BuildToolInfo {
     }
 
     private void add(PathId id, String leaf) {
-        add(id, new File(mPath, leaf));
+        add(id, mPath.resolve(leaf));
     }
 
-    private void add(PathId id, File path) {
-        String str = path.getAbsolutePath();
-        if (path.isDirectory() && str.charAt(str.length() - 1) != File.separatorChar) {
+    private void add(PathId id, Path path) {
+        String str = path.toAbsolutePath().toString();
+        if (CancellableFileIo.isDirectory(path)
+                && str.charAt(str.length() - 1) != File.separatorChar) {
             str += File.separatorChar;
         }
         mPaths.put(id, str);
@@ -404,12 +371,12 @@ public class BuildToolInfo {
 
     /**
      * Returns the build-tool revision-specific folder.
-     * <p>
-     * For compatibility reasons, use {@link #getPath(PathId)} if you need the path to a
-     * specific tool.
+     *
+     * <p>For compatibility reasons, use {@link #getPath(PathId)} if you need the path to a specific
+     * tool.
      */
     @NonNull
-    public File getLocation() {
+    public Path getLocation() {
         return mPath;
     }
 

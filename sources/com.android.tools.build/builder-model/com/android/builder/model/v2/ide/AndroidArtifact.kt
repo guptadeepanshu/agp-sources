@@ -28,6 +28,22 @@ import java.io.File
  * @since 4.2
  */
 interface AndroidArtifact : BaseArtifact, AndroidModel {
+
+    /**
+     * The min SDK version of this artifact
+     */
+    val minSdkVersion: ApiVersion
+
+    /**
+     * The target SDK version of this artifact
+     */
+    val targetSdkVersion: ApiVersion
+
+    /**
+     * The max SDK version of this artifact, or null if not set
+     */
+    val maxSdkVersion: Int?
+
     /**
      * Returns whether the output file is signed. This can only be true for the main apk of an
      * application project.
@@ -68,21 +84,26 @@ interface AndroidArtifact : BaseArtifact, AndroidModel {
      */
     val abiFilters: Set<String>?
 
-
     /**
      * Returns the absolute path for the listing file that will get updated after each build. The
      * model file will contain deployment related information like applicationId, list of APKs.
      *
+     * This is null for variants that do not generate APKs (libraries).
+     *
      * @return the path to a json file.
      */
-    val assembleTaskOutputListingFile: File
+    val assembleTaskOutputListingFile: File?
 
     /**
      * The test info, if applicable, otherwise null
      */
     val testInfo: TestInfo?
+
     /**
      * The bundle info if applicable, otherwise null.
+     *
+     * This is only applicable to the main artifact of the APPLICATION modules. All other cases
+     * this should be null.
      */
     val bundleInfo: BundleInfo?
 

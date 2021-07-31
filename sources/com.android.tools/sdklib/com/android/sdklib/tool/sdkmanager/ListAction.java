@@ -16,6 +16,7 @@
 package com.android.sdklib.tool.sdkmanager;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.concurrency.Slow;
 import com.android.repository.api.Dependency;
 import com.android.repository.api.LocalPackage;
 import com.android.repository.api.ProgressIndicator;
@@ -24,7 +25,9 @@ import com.android.repository.api.RepoPackage;
 import com.android.repository.api.UpdatablePackage;
 import com.android.repository.impl.meta.RepositoryPackages;
 import com.android.repository.impl.meta.RevisionType;
+import com.android.repository.io.FileOpUtils;
 import com.android.utils.FileUtils;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -41,6 +44,7 @@ class ListAction extends SdkAction {
         super(settings);
     }
 
+    @Slow
     @Override
     public void execute(@NonNull ProgressIndicator progress) {
         progress.setText("Loading package information...");
@@ -182,9 +186,11 @@ class ListAction extends SdkAction {
         localTable.addColumn("Description", RepoPackage::getDisplayName, 100, 0);
         localTable.addColumn(
                 "Location",
-                p ->
-                        FileUtils.relativePossiblyNonExistingPath(
-                                p.getLocation(), getRepoManager().getLocalPath()),
+                p -> {
+                    Path path = getRepoManager().getLocalPath();
+                    return FileUtils.relativePossiblyNonExistingPath(
+                            FileOpUtils.toFile(p.getLocation()), FileOpUtils.toFile(path));
+                },
                 9999,
                 0);
 

@@ -17,6 +17,8 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.TransformException
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.LoggerWrapper
@@ -34,7 +36,6 @@ import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_EXTERNAL_L
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_LIBRARY_PROJECTS
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_PROJECT
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.transforms.DexMergerTransformCallable
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
@@ -42,11 +43,9 @@ import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.dexing.DexArchiveEntry
+import com.android.builder.dexing.DexArchiveMerger
 import com.android.builder.dexing.DexEntry
 import com.android.builder.dexing.DexEntryBucket
-import com.android.builder.dexing.DexMergerTool
-import com.android.builder.dexing.DexMergerTool.D8
-import com.android.builder.dexing.DexMergerTool.DX
 import com.android.builder.dexing.DexingType
 import com.android.builder.dexing.DexingType.LEGACY_MULTIDEX
 import com.android.builder.dexing.DexingType.NATIVE_MULTIDEX
@@ -54,29 +53,29 @@ import com.android.builder.dexing.getSortedFilesInDir
 import com.android.builder.dexing.getSortedRelativePathsInJar
 import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableFileChanges
-import com.android.ide.common.blame.Message
-import com.android.ide.common.blame.ParsingProcessOutputHandler
-import com.android.ide.common.blame.parser.DexParser
-import com.android.ide.common.blame.parser.ToolOutputParser
-import com.android.ide.common.process.ProcessException
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Throwables
 import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -84,6 +83,7 @@ import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import org.gradle.workers.WorkerExecutor
 import java.io.File
+import java.nio.file.Path
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -116,9 +116,6 @@ abstract class DexMergingTask : NewIncrementalTask() {
         abstract val dexingType: Property<DexingType>
 
         @get:Input
-        abstract val dexMerger: Property<DexMergerTool>
-
-        @get:Input
         abstract val minSdkVersion: Property<Int>
 
         @get:Input
@@ -127,10 +124,37 @@ abstract class DexMergingTask : NewIncrementalTask() {
         @get:Internal
         abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
 
-        @get:Optional
-        @get:InputFiles
-        @get:PathSensitive(PathSensitivity.NONE)
-        abstract val mainDexListFile: RegularFileProperty
+        @get:Nested
+        abstract val mainDexListConfig: MainDexListConfig
+
+        /**
+         * Parameters for generating main dex list and merging dex files in [LEGACY_MULTIDEX] mode.
+         */
+        abstract class MainDexListConfig {
+
+            @get:Optional
+            @get:InputFile
+            @get:PathSensitive(PathSensitivity.NONE)
+            abstract val aaptGeneratedRules: RegularFileProperty
+
+            @get:Optional
+            @get:InputFiles
+            @get:PathSensitive(PathSensitivity.NONE)
+            abstract val userMultidexProguardRules: ListProperty<RegularFile>
+
+            @get:Optional
+            @get:Input
+            abstract val platformMultidexProguardRules: ListProperty<String>
+
+            @get:Optional
+            @get:InputFile
+            @get:PathSensitive(PathSensitivity.NONE)
+            abstract val userMultidexKeepFile: Property<File>
+
+            @get:Optional
+            @get:Classpath
+            abstract val libraryClasses: ConfigurableFileCollection
+        }
     }
 
     @get:Nested
@@ -160,8 +184,9 @@ abstract class DexMergingTask : NewIncrementalTask() {
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
-    @get:Internal
-    abstract val dxStateBuildService: Property<DxStateBuildService>
+    @get:Optional
+    @get:OutputFile
+    abstract val mainDexListOutput: RegularFileProperty
 
     override fun doTaskAction(inputChanges: InputChanges) {
         // There are two sources of input dex files:
@@ -179,6 +204,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 // order and result in a bug (see
                 // https://issuetracker.google.com/119064593#comment11 and commit
                 // f4db68dccf76c35f5cdbd2cf3be3fb13b8abb767).
+                check(dir.isDirectory) { "Directory does not exist: ${dir.path}" }
                 dir.listFiles()!!.filter { isJarFile(it) }.sorted()
             }
         val dexDirsOrJars = dexDirs + dexJars
@@ -194,12 +220,9 @@ abstract class DexMergingTask : NewIncrementalTask() {
             it.initializeFromAndroidVariantTask(this)
             it.initialize(
                 sharedParams, numberOfBuckets, dexDirsOrJars, outputDir, inputChanges.isIncremental,
-                fileChanges?.toSerializable()
+                fileChanges?.toSerializable(),
+                mainDexListOutput = mainDexListOutput
             )
-        }
-
-        if (sharedParams.dexMerger.get() == DX) {
-            dxStateBuildService.get().clearStateAfterBuild()
         }
     }
 
@@ -228,6 +251,14 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 .use(taskProvider)
                 .wiredWith(DexMergingTask::outputDir)
                 .toAppendTo(outputType)
+
+            if (dexingType === LEGACY_MULTIDEX) {
+                creationConfig
+                    .artifacts
+                    .setInitialProvider(taskProvider, DexMergingTask::mainDexListOutput)
+                    .withName("mainDexList.txt")
+                    .on(InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST)
+            }
         }
 
         override fun configure(task: DexMergingTask) {
@@ -237,7 +268,6 @@ abstract class DexMergingTask : NewIncrementalTask() {
 
             // Shared parameters
             task.sharedParams.dexingType.setDisallowChanges(dexingType)
-            task.sharedParams.dexMerger.setDisallowChanges(creationConfig.variantScope.dexMerger)
             task.sharedParams.minSdkVersion.setDisallowChanges(
                 creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
             )
@@ -245,11 +275,37 @@ abstract class DexMergingTask : NewIncrementalTask() {
             task.sharedParams.errorFormatMode.setDisallowChanges(
                 SyncOptions.getErrorFormatMode(projectOptions)
             )
-            if (MERGE_ALL == action && dexingType === LEGACY_MULTIDEX) {
+            if (dexingType === LEGACY_MULTIDEX) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
-                    InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST,
-                    task.sharedParams.mainDexListFile
+                    InternalArtifactType.LEGACY_MULTIDEX_AAPT_DERIVED_PROGUARD_RULES,
+                    task.sharedParams.mainDexListConfig.aaptGeneratedRules
                 )
+
+                task.sharedParams.mainDexListConfig.userMultidexProguardRules.setDisallowChanges(
+                    creationConfig.artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
+                )
+
+                creationConfig.multiDexKeepFile?.let {
+                    task.sharedParams.mainDexListConfig.userMultidexKeepFile.setDisallowChanges(it)
+                }
+
+                task.sharedParams.mainDexListConfig.platformMultidexProguardRules
+                    .setDisallowChanges(getPlatformRules())
+
+                val libraryScopes = setOf(
+                    QualifiedContent.Scope.PROVIDED_ONLY,
+                    QualifiedContent.Scope.TESTED_CODE
+                )
+                val libraryClasses = creationConfig.transformManager
+                    .getPipelineOutputAsFileCollection { contentTypes, scopes ->
+                        contentTypes.contains(
+                            QualifiedContent.DefaultContentType.CLASSES
+                        ) && libraryScopes.intersect(scopes).isNotEmpty()
+                    }
+
+                val bootClasspath = creationConfig.variantScope.bootClasspath
+                task.sharedParams.mainDexListConfig.libraryClasses
+                    .from(bootClasspath, libraryClasses).disallowChanges()
             }
 
             // Input properties
@@ -271,11 +327,6 @@ abstract class DexMergingTask : NewIncrementalTask() {
                     task.duplicateClassesCheck
                 )
             }
-
-            // Other properties
-            task.dxStateBuildService.setDisallowChanges(
-                DxStateBuildService.RegistrationAction(task.project).execute()
-            )
         }
 
         private fun getDexDirs(
@@ -383,35 +434,30 @@ abstract class DexMergingTask : NewIncrementalTask() {
                 MERGE_ALL, MERGE_EXTERNAL_LIBS -> 1 // No bucketing
                 MERGE_PROJECT, MERGE_LIBRARY_PROJECTS -> {
                     check(dexingType == NATIVE_MULTIDEX)
-                    when (creationConfig.variantScope.dexMerger) {
-                        DX -> 1 // No bucketing
-                        D8 -> {
-                            val customNumberOfBuckets =
-                                projectOptions.getProvider(IntegerOption.DEXING_NUMBER_OF_BUCKETS)
-                                    .orNull
-                            if (customNumberOfBuckets != null) {
-                                check(customNumberOfBuckets >= 1) {
-                                    "The value of ${IntegerOption.DEXING_NUMBER_OF_BUCKETS.propertyName}" +
-                                            " is invalid (must be >= 1): $customNumberOfBuckets"
-                                }
-                                return customNumberOfBuckets
-                            }
 
-                            // If the property is not set, compute its value
-                            val minSdkVersion =
-                                creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
-                            val overrideMinSdkVersion =
-                                if (creationConfig.variantType.isDynamicFeature && minSdkVersion < 21) {
-                                    // Dynamic features can always be built in native multidex mode
-                                    // even with minSdkVersion < 21, so for the following
-                                    // computation, we consider it to be 21.
-                                    21
-                                } else {
-                                    minSdkVersion
-                                }
-                            getNumberOfBuckets(minSdkVersion = overrideMinSdkVersion)
+                    val customNumberOfBuckets =
+                        projectOptions.getProvider(IntegerOption.DEXING_NUMBER_OF_BUCKETS).orNull
+                    if (customNumberOfBuckets != null) {
+                        check(customNumberOfBuckets >= 1) {
+                            "The value of ${IntegerOption.DEXING_NUMBER_OF_BUCKETS.propertyName}" +
+                                    " is invalid (must be >= 1): $customNumberOfBuckets"
                         }
+                        return customNumberOfBuckets
                     }
+
+                    // If the property is not set, compute its value
+                    val minSdkVersion =
+                        creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
+                    val overrideMinSdkVersion =
+                        if (creationConfig.variantType.isDynamicFeature && minSdkVersion < 21) {
+                            // Dynamic features can always be built in native multidex mode
+                            // even with minSdkVersion < 21, so for the following
+                            // computation, we consider it to be 21.
+                            21
+                        } else {
+                            minSdkVersion
+                        }
+                    getNumberOfBuckets(minSdkVersion = overrideMinSdkVersion)
                 }
             }
         }
@@ -514,6 +560,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
         abstract val numberOfBuckets: Property<Int>
         abstract val dexDirsOrJars: ListProperty<File>
         abstract val outputDir: DirectoryProperty
+        abstract val mainDexListOutput: RegularFileProperty
 
         abstract val incremental: Property<Boolean>
         abstract val fileChanges: Property<SerializableFileChanges>
@@ -524,7 +571,8 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
             dexDirsOrJars: List<File>,
             outputDir: DirectoryProperty,
             incremental: Boolean,
-            fileChanges: SerializableFileChanges?
+            fileChanges: SerializableFileChanges?,
+            mainDexListOutput: RegularFileProperty
         ) {
             this.sharedParams.set(sharedParams)
             this.numberOfBuckets.set(numberOfBuckets)
@@ -532,6 +580,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
             this.outputDir.set(outputDir)
             this.incremental.set(incremental)
             this.fileChanges.set(fileChanges)
+            this.mainDexListOutput.set(mainDexListOutput)
         }
     }
 
@@ -571,8 +620,8 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
                         // executor service, but we'll need to monitor the performance impact.
                         useForkJoinPool = numberOfBuckets.get() == 1,
                         dexEntryBucket = bucket,
-                        dexDirsOrJarsUsedOnlyByDx = dexDirsOrJars.get(),
-                        outputDirForBucket = outputDirForBucket
+                        outputDirForBucket = outputDirForBucket,
+                        mainDexListOutput = mainDexListOutput.asFile.orNull
                     )
                 }
             }
@@ -726,21 +775,21 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
         abstract val sharedParams: Property<DexMergingTask.SharedParams>
         abstract val useForkJoinPool: Property<Boolean>
         abstract val dexEntryBucket: Property<DexEntryBucket>
-        abstract val dexDirsOrJarsUsedOnlyByDx: ListProperty<File>
         abstract val outputDirForBucket: DirectoryProperty
+        abstract val mainDexListOutput: RegularFileProperty
 
         fun initialize(
             sharedParams: Property<DexMergingTask.SharedParams>,
             useForkJoinPool: Boolean,
             dexEntryBucket: DexEntryBucket,
-            dexDirsOrJarsUsedOnlyByDx: List<File>,
-            outputDirForBucket: File
+            outputDirForBucket: File,
+            mainDexListOutput: File?
         ) {
             this.sharedParams.set(sharedParams)
             this.useForkJoinPool.set(useForkJoinPool)
             this.dexEntryBucket.set(dexEntryBucket)
-            this.dexDirsOrJarsUsedOnlyByDx.set(dexDirsOrJarsUsedOnlyByDx)
             this.outputDirForBucket.set(outputDirForBucket)
+            this.mainDexListOutput.set(mainDexListOutput)
         }
     }
 
@@ -761,8 +810,8 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
                 parameters.sharedParams.get(),
                 forkJoinPool,
                 dexArchiveEntries,
-                parameters.dexDirsOrJarsUsedOnlyByDx.get(),
-                parameters.outputDirForBucket.get().asFile
+                parameters.outputDirForBucket.get().asFile,
+                parameters.mainDexListOutput.asFile.orNull?.toPath()
             )
         } finally {
             forkJoinPool?.shutdown()
@@ -774,46 +823,57 @@ abstract class DexMergingWorkAction : ProfileAwareWorkAction<DexMergingWorkActio
         sharedParams: DexMergingTask.SharedParams,
         forkJoinPool: ForkJoinPool?,
         dexArchiveEntries: List<DexArchiveEntry>,
-        dexDirsOrJarsUsedOnlyByDx: List<File>,
-        outputDir: File
+        outputDir: File,
+        mainDexListOutput: Path?
     ) {
         val logger = LoggerWrapper.getLogger(DexMergingWorkAction::class.java)
         val messageReceiver = MessageReceiverImpl(
             sharedParams.errorFormatMode.get(),
             Logging.getLogger(DexMergingTask::class.java)
         )
-        val outputHandler = ParsingProcessOutputHandler(
-            ToolOutputParser(DexParser(), Message.Kind.ERROR, logger),
-            ToolOutputParser(DexParser(), logger),
-            messageReceiver
-        )
 
-        outputHandler.createOutput().use { processOutput ->
-            try {
-                DexMergerTransformCallable(
-                    messageReceiver,
-                    sharedParams.dexingType.get(),
-                    processOutput,
-                    outputDir,
-                    dexArchiveEntries,
-                    dexDirsOrJarsUsedOnlyByDx.map(File::toPath),
-                    sharedParams.mainDexListFile.asFile.orNull?.toPath(),
-                    forkJoinPool,
-                    sharedParams.dexMerger.get(),
-                    sharedParams.minSdkVersion.get(),
-                    sharedParams.debuggable.get()
-                ).call()
-            } catch (e: Exception) {
-                PluginCrashReporter.maybeReportException(e)
-                // Print the error always, even without --stacktrace
-                logger.error(null, Throwables.getStackTraceAsString(e))
-                throw TransformException(e)
-            } finally {
-                try {
-                    outputHandler.handleOutput(processOutput)
-                } catch (ignored: ProcessException) {
-                }
+        try {
+            var d8MinSdkVersion: Int = sharedParams.minSdkVersion.get()
+            val dexingType = sharedParams.dexingType.get()
+            if (d8MinSdkVersion < 21 && dexingType === NATIVE_MULTIDEX) {
+                // D8 has baked-in logic that does not allow multiple dex files without
+                // main dex list if min sdk < 21. When we deploy the app to a device with api
+                // level 21+, we will promote legacy multidex to native multidex, but the min
+                // sdk version will be less than 21, which will cause D8 failure as we do not
+                // supply the main dex list. In order to prevent that, it is safe to set min
+                // sdk version to 21.
+                d8MinSdkVersion = 21
             }
+            val merger = DexArchiveMerger.createD8DexMerger(
+                messageReceiver,
+                d8MinSdkVersion,
+                sharedParams.debuggable.get(),
+                forkJoinPool
+            )
+
+            val proguardRules = mutableListOf<Path>()
+            sharedParams.mainDexListConfig.aaptGeneratedRules.asFile.orNull?.let {
+                proguardRules.add(it.toPath())
+            }
+            sharedParams.mainDexListConfig.userMultidexProguardRules.get()
+                    .asSequence()
+                    .map(RegularFile::getAsFile)
+                    .map(File::toPath)
+                    .forEach { proguardRules.add(it) }
+            merger.mergeDexArchives(
+                dexArchiveEntries,
+                outputDir.toPath(),
+                proguardRules,
+                sharedParams.mainDexListConfig.platformMultidexProguardRules.orNull,
+                sharedParams.mainDexListConfig.userMultidexKeepFile.orNull?.toPath(),
+                sharedParams.mainDexListConfig.libraryClasses.map { it.toPath() },
+                mainDexListOutput
+            )
+        } catch (e: Exception) {
+            PluginCrashReporter.maybeReportException(e)
+            // Print the error always, even without --stacktrace
+            logger.error(null, Throwables.getStackTraceAsString(e))
+            throw TransformException(e)
         }
     }
 }

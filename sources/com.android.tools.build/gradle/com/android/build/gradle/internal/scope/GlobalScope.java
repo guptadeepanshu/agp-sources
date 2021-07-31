@@ -34,7 +34,6 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension;
 import com.android.build.gradle.internal.lint.CustomLintCheckUtils;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.services.DslServices;
-import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.builder.model.OptionalCompilationStep;
 import com.android.ide.common.blame.MessageReceiver;
@@ -50,7 +49,6 @@ import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
-import org.gradle.api.plugins.BasePluginConvention;
 import org.gradle.api.provider.Provider;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
@@ -117,11 +115,6 @@ public class GlobalScope {
     }
 
     @NonNull
-    public Project getProject() {
-        return project;
-    }
-
-    @NonNull
     public String getCreatedBy() {
         return createdBy;
     }
@@ -134,14 +127,6 @@ public class GlobalScope {
     @NonNull
     public DataBindingBuilder getDataBindingBuilder() {
         return dataBindingBuilder;
-    }
-
-    @NonNull
-    public String getProjectBaseName() {
-        BasePluginConvention convention =
-                Preconditions.checkNotNull(
-                        project.getConvention().findPlugin(BasePluginConvention.class));
-        return convention.getArchivesBaseName();
     }
 
     @NonNull
@@ -159,56 +144,8 @@ public class GlobalScope {
         return toolingRegistry;
     }
 
-    @NonNull
-    public File getBuildDir() {
-        return project.getBuildDir();
-    }
-
-    @NonNull
-    public File getIntermediatesDir() {
-        return new File(getBuildDir(), FD_INTERMEDIATES);
-    }
-
-    @NonNull
-    public File getReportsDir() {
-        return new File(getBuildDir(), FD_REPORTS);
-    }
-
-    public File getTestResultsFolder() {
-        return new File(getBuildDir(), "test-results");
-    }
-
-    public File getTestReportFolder() {
-        return new File(getBuildDir(), "reports/tests");
-    }
-
-    @NonNull
-    public File getTmpFolder() {
-        return new File(getIntermediatesDir(), "tmp");
-    }
-
-    @NonNull
-    public File getOutputsDir() {
-        return new File(getBuildDir(), FD_OUTPUTS);
-    }
-
     public boolean isActive(OptionalCompilationStep step) {
         return optionalCompilationSteps.contains(step);
-    }
-
-    @NonNull
-    public File getJacocoAgentOutputDirectory() {
-        return new File(getIntermediatesDir(), "jacoco");
-    }
-
-    @NonNull
-    public File getJacocoAgent() {
-        return new File(getJacocoAgentOutputDirectory(), "jacocoagent.jar");
-    }
-
-    @NonNull
-    public ProjectOptions getProjectOptions() {
-        return dslServices.getProjectOptions();
     }
 
     public void setLintChecks(@NonNull Configuration lintChecks) {
@@ -294,7 +231,7 @@ public class GlobalScope {
      */
     @NonNull
     public FileCollection getPublishedCustomLintChecks() {
-        // Query for JAR instead of PROCESSED_JAR as we want to get the original lint.jar
+        // Query for JAR instead of PROCESSED_JAR as lint.jar doesn't need processing
         Action<AttributeContainer> attributes =
                 container ->
                         container.attribute(

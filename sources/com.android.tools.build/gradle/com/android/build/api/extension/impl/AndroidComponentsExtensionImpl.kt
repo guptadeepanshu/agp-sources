@@ -16,25 +16,42 @@
 
 package com.android.build.api.extension.impl
 
-import com.android.build.api.component.AndroidTest
-import com.android.build.api.component.AndroidTestBuilder
-import com.android.build.api.component.ComponentIdentity
-import com.android.build.api.component.UnitTest
-import com.android.build.api.component.UnitTestBuilder
+import com.android.build.api.AndroidPluginVersion
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.SdkComponents
-import com.android.build.api.extension.AndroidComponentsExtension
-import com.android.build.api.extension.VariantSelector
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.DslExtension
+import com.android.build.api.variant.VariantExtensionConfig
+import com.android.build.api.variant.VariantSelector
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.gradle.internal.dsl.SdkComponentsImpl
+import com.android.build.api.variant.VariantExtension
 import com.android.build.gradle.internal.services.DslServices
 import org.gradle.api.Action
 
-abstract class AndroidComponentsExtensionImpl<VariantBuilderT: VariantBuilder, VariantT: Variant>(
+abstract class AndroidComponentsExtensionImpl<
+        DslExtensionT: CommonExtension<*, *, *, *>,
+        VariantBuilderT: VariantBuilder,
+        VariantT: Variant>(
         private val dslServices: DslServices,
         override val sdkComponents: SdkComponents,
-        private val variantApiOperations: VariantApiOperationsRegistrar<VariantBuilderT, VariantT>
-): AndroidComponentsExtension<VariantBuilderT, VariantT> {
+        private val variantApiOperations: VariantApiOperationsRegistrar<DslExtensionT, VariantBuilderT, VariantT>,
+        private val commonExtension: DslExtensionT
+): AndroidComponentsExtension<DslExtensionT, VariantBuilderT, VariantT>,
+    com.android.build.api.extension.AndroidComponentsExtension<DslExtensionT, VariantBuilderT, VariantT> {
+
+    override fun finalizeDsl(callback: (DslExtensionT) -> Unit) {
+        variantApiOperations.dslFinalizationOperations.add {
+            callback.invoke(it)
+        }
+    }
+
+    override fun finalizeDSl(callback: Action<DslExtensionT>) {
+        variantApiOperations.dslFinalizationOperations.add(callback)
+    }
+
+    override val pluginVersion: AndroidPluginVersion
+        get() = CURRENT_AGP_VERSION
 
     override fun beforeVariants(selector: VariantSelector, callback: (VariantBuilderT) -> Unit) {
         variantApiOperations.variantBuilderOperations.addOperation({
@@ -42,8 +59,26 @@ abstract class AndroidComponentsExtensionImpl<VariantBuilderT: VariantBuilder, V
         }, selector)
     }
 
+    @Deprecated(
+        message= "Use the com.android.build.api.variant.Selector version",
+        level = DeprecationLevel.WARNING
+    )
+    override fun beforeVariants(selector: com.android.build.api.extension.VariantSelector, callback: (VariantBuilderT) -> Unit) {
+        variantApiOperations.variantBuilderOperations.addOperation({
+            callback.invoke(it)
+        }, selector as VariantSelector)
+    }
+
     override fun beforeVariants(selector: VariantSelector, callback: Action<VariantBuilderT>) {
         variantApiOperations.variantBuilderOperations.addOperation(callback, selector)
+    }
+
+    @Deprecated(
+        message= "Use the com.android.build.api.variant.Selector version",
+        level = DeprecationLevel.WARNING
+    )
+    override fun beforeVariants(selector: com.android.build.api.extension.VariantSelector, callback: Action<VariantBuilderT>) {
+        variantApiOperations.variantBuilderOperations.addOperation(callback, selector as VariantSelector)
     }
 
     override fun onVariants(selector: VariantSelector, callback: (VariantT) -> Unit) {
@@ -56,85 +91,58 @@ abstract class AndroidComponentsExtensionImpl<VariantBuilderT: VariantBuilder, V
         variantApiOperations.variantOperations.addOperation(callback, selector)
     }
 
+    @Deprecated(
+        message= "Use the com.android.build.api.variant.Selector version",
+        level = DeprecationLevel.WARNING
+    )
+    override fun onVariants(selector: com.android.build.api.extension.VariantSelector, callback: (VariantT) -> Unit) {
+        variantApiOperations.variantOperations.addOperation({
+            callback.invoke(it)
+        }, selector as VariantSelector)
+    }
+
+    @Deprecated(
+        message= "Use the com.android.build.api.variant.Selector version",
+        level = DeprecationLevel.WARNING
+    )
+    override fun onVariants(selector: com.android.build.api.extension.VariantSelector, callback: Action<VariantT>) {
+        variantApiOperations.variantOperations.addOperation(callback, selector as VariantSelector)
+    }
+
     override fun selector(): VariantSelectorImpl =
             dslServices.newInstance(VariantSelectorImpl::class.java) as VariantSelectorImpl
 
-    override fun beforeUnitTests(
-            selector: VariantSelector,
-            callback: Action<UnitTestBuilder>) {
-        variantApiOperations.unitTestBuilderOperations.addOperation(
-                callback,
-                selector)
-    }
+    class RegisteredApiExtension<VariantT: Variant>(
+        val dslExtensionTypes: DslExtension,
+        val configurator: (variantExtensionConfig: VariantExtensionConfig<VariantT>) -> VariantExtension
+    )
 
-    override fun beforeUnitTests(
-            selector: VariantSelector,
-            callback: (UnitTestBuilder) -> Unit) {
-        variantApiOperations.unitTestBuilderOperations.addOperation(
-                {
-                    callback.invoke(it)
-                },
-                selector
-        )
-    }
+    override fun registerExtension(
+        dslExtension: DslExtension,
+        configurator: (variantExtensionConfig: VariantExtensionConfig<VariantT>) -> VariantExtension
+    ) {
+        variantApiOperations.dslExtensions.add(
+            RegisteredApiExtension(
+                dslExtensionTypes = dslExtension,
+                configurator = configurator
+        ))
 
-    override fun beforeAndroidTests(
-            selector: VariantSelector,
-            callback: Action<AndroidTestBuilder>) {
-        variantApiOperations.androidTestBuilderOperations.addOperation(
-                callback,
-                selector
-        )
-    }
-
-    override fun beforeAndroidTests(
-            selector: VariantSelector,
-            callback: (AndroidTestBuilder) -> Unit) {
-        variantApiOperations.androidTestBuilderOperations.addOperation(
-                {
-                    callback.invoke(it)
-                },
-                selector
-        )
-    }
-
-    override fun unitTests(
-            selector: VariantSelector,
-            callback: Action<UnitTest>) {
-        variantApiOperations.unitTestOperations.addOperation(
-                callback,
-                selector
-        )
-    }
-
-    override fun unitTests(
-            selector: VariantSelector,
-            callback: (UnitTest) -> Unit) {
-        variantApiOperations.unitTestOperations.addOperation(
-                {
-                    callback.invoke(it)
-                },
-                selector
-        )
-    }
-
-    override fun androidTests(
-            selector: VariantSelector,
-            callback: Action<AndroidTest>) {
-        variantApiOperations.androidTestOperations.addOperation(
-                callback,
-                selector
-        )
-    }
-
-    override fun androidTests(
-            selector: VariantSelector,
-            callback: (AndroidTest) -> Unit) {
-        variantApiOperations.androidTestOperations.addOperation(
-                {
-                    callback.invoke(it)
-                },
-                selector
-        )
+        dslExtension.buildTypeExtensionType?.let {
+            commonExtension.buildTypes.forEach {
+                    buildType ->
+                buildType.extensions.add(
+                    dslExtension.dslName,
+                    it
+                )
+            }
+        }
+        dslExtension.productFlavorExtensionType?.let {
+            commonExtension.productFlavors.forEach {
+                productFlavor -> productFlavor.extensions.add(
+                    dslExtension.dslName,
+                    it
+                )
+            }
+        }
     }
 }

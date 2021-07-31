@@ -19,12 +19,9 @@ package com.android.repository.impl.meta;
 import com.android.annotations.NonNull;
 import com.android.repository.api.Dependency;
 import com.android.repository.api.LocalPackage;
-import com.android.repository.api.RepoManager;
 import com.android.repository.api.RepoPackage;
 import com.android.repository.api.Repository;
-
-import java.io.File;
-
+import java.nio.file.Path;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -32,17 +29,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlTransient
 public abstract class LocalPackageImpl extends RepoPackageImpl implements LocalPackage {
-    @XmlTransient
-    private File mInstalledPath;
+    @XmlTransient private Path mInstalledPath;
 
     @Override
     @NonNull
-    public File getLocation() {
+    public Path getLocation() {
         return mInstalledPath;
     }
 
     @Override
-    public void setInstalledPath(@NonNull File path) {
+    public void setInstalledPath(@NonNull Path path) {
         mInstalledPath = path;
     }
 
@@ -55,7 +51,7 @@ public abstract class LocalPackageImpl extends RepoPackageImpl implements LocalP
         if (repoPackage instanceof LocalPackageImpl) {
             return (LocalPackageImpl)repoPackage;
         }
-        CommonFactory factory = RepoManager.getCommonModule().createLatestFactory();
+        CommonFactory factory = repoPackage.createFactory();
         LocalPackageImpl result = factory.createLocalPackage();
         result.setVersion(repoPackage.getVersion());
         result.setLicense(repoPackage.getLicense());

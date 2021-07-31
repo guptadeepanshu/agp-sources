@@ -16,7 +16,6 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import java.io.Serializable
 
 /**
@@ -24,8 +23,7 @@ import java.io.Serializable
  *
  * The field is generated as: <type> <name> = <value>;
  */
-@Incubating
-data class BuildConfigField<T: Serializable>(
+class BuildConfigField<T: Serializable>(
     /**
      * Value to be written as BuildConfig field type.
      */

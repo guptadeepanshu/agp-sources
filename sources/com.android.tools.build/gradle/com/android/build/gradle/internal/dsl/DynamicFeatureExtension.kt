@@ -17,9 +17,8 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
-import com.android.build.api.variant.DynamicFeatureVariantBuilder
-import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.gradle.AppExtension
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.api.BaseVariantOutput
 import com.android.build.gradle.api.ViewBindingOptions
 import com.android.build.gradle.internal.ExtraModelInfo
@@ -31,7 +30,7 @@ import com.android.repository.Revision
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 
-internal open class DynamicFeatureExtension(
+abstract class DynamicFeatureExtension(
     dslServices: DslServices,
     globalScope: GlobalScope,
     buildOutputs: NamedDomainObjectContainer<BaseVariantOutput>,
@@ -43,6 +42,17 @@ internal open class DynamicFeatureExtension(
      globalScope,
     buildOutputs, sourceSetManager, extraModelInfo, false
 ), InternalDynamicFeatureExtension by publicExtensionImpl {
+
+    // Overrides to make the parameterized types match, due to BaseExtension being part of
+    // the previous public API and not wanting to paramerterize that.
+    override val buildTypes: NamedDomainObjectContainer<BuildType>
+        get() = publicExtensionImpl.buildTypes as NamedDomainObjectContainer<BuildType>
+    override val defaultConfig: DefaultConfig
+        get() = publicExtensionImpl.defaultConfig as DefaultConfig
+    override val productFlavors: NamedDomainObjectContainer<ProductFlavor>
+        get() = publicExtensionImpl.productFlavors as NamedDomainObjectContainer<ProductFlavor>
+    override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
+        get() = publicExtensionImpl.sourceSets
 
     override val viewBinding: ViewBindingOptions =
         dslServices.newInstance(
@@ -66,10 +76,4 @@ internal open class DynamicFeatureExtension(
 
     override val libraryRequests: MutableCollection<LibraryRequest>
         get() = publicExtensionImpl.libraryRequests
-
-    override var compileSdkVersion: String?
-        get() = publicExtensionImpl.compileSdkPreview
-        set(value) {
-            publicExtensionImpl.compileSdkPreview = value
-        }
 }

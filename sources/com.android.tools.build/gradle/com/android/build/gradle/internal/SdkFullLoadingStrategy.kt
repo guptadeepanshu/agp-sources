@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal
 
-import com.android.SdkConstants
 import com.android.builder.internal.compiler.RenderScriptProcessor
 import com.android.builder.sdk.SdkInfo
 import com.android.builder.sdk.TargetInfo
@@ -62,7 +61,7 @@ class SdkFullLoadingStrategy(
     fun getAdbExecutable() = if (init()) sdkInfo.adb else null
     fun getAnnotationsJar() = if (init()) sdkInfo.annotationsJar else null
 
-    private fun getFileFromTarget(component: Int) = if (init()) targetInfo.target.getFile(component) else null
+    private fun getFileFromTarget(component: Int) = if (init()) targetInfo.target.getPath(component).toFile() else null
     fun getAidlFramework() = getFileFromTarget(IAndroidTarget.ANDROID_AIDL)
     fun getAndroidJar() = getFileFromTarget(IAndroidTarget.ANDROID_JAR)
     fun getAdditionalLibraries(): List<OptionalLibrary>? = if (init()) targetInfo.target.additionalLibraries else null
@@ -82,15 +81,15 @@ class SdkFullLoadingStrategy(
     fun getSplitSelectExecutable() = getFileFromBuildTool(BuildToolInfo.PathId.SPLIT_SELECT)
 
     fun getRenderScriptSupportJar() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportJar(it.location, useAndroidX)
+        RenderScriptProcessor.getSupportJar(it.location.toFile(), useAndroidX)
     }
 
     fun getSupportNativeLibFolder() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportNativeLibFolder(it.location)
+        RenderScriptProcessor.getSupportNativeLibFolder(it.location.toFile())
     }
 
     fun getSupportBlasLibFolder() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportBlasLibFolder(it.location)
+        RenderScriptProcessor.getSupportBlasLibFolder(it.location.toFile())
     }
 
     fun getSystemImageLibFolder(imageHash: String) =
@@ -98,6 +97,8 @@ class SdkFullLoadingStrategy(
 
     fun getEmulatorLibFolder() =
         sdkHandler.localEmulator
+
+    fun getCoreForSystemModulesJar() = getFileFromTarget(IAndroidTarget.CORE_FOR_SYSTEM_MODULES_JAR)
 
     @Synchronized
     fun reset() {

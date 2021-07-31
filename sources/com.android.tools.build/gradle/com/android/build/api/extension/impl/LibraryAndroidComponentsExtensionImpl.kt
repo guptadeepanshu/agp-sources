@@ -16,8 +16,9 @@
 
 package com.android.build.api.extension.impl
 
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.SdkComponents
-import com.android.build.api.extension.LibraryAndroidComponentsExtension
+import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.LibraryVariantBuilder
 import com.android.build.gradle.internal.services.DslServices
@@ -25,11 +26,13 @@ import com.android.build.gradle.internal.services.DslServices
 open class LibraryAndroidComponentsExtensionImpl(
         dslServices: DslServices,
         sdkComponents: SdkComponents,
-        variantApiOperationsRegistrar: VariantApiOperationsRegistrar<LibraryVariantBuilder, LibraryVariant>
+        variantApiOperationsRegistrar: VariantApiOperationsRegistrar<LibraryExtension, LibraryVariantBuilder, LibraryVariant>,
+        libraryExtension: LibraryExtension
 ):
         LibraryAndroidComponentsExtension,
-        AndroidComponentsExtensionImpl<LibraryVariantBuilder, LibraryVariant>(
+        AndroidComponentsExtensionImpl<LibraryExtension, LibraryVariantBuilder, LibraryVariant>(
                 dslServices,
                 sdkComponents,
-                variantApiOperationsRegistrar
+                variantApiOperationsRegistrar,
+                libraryExtension
         )

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.ddmlib;
 
 import com.android.annotations.NonNull;
@@ -62,6 +61,8 @@ public interface IDevice extends IShellEnabledDevice {
     int CHANGE_CLIENT_LIST = 0x0002;
     /** Device change bit mask: build info change. */
     int CHANGE_BUILD_INFO = 0x0004;
+    /** Device change bit mask: {@link ProfileableClient} list change. */
+    int CHANGE_PROFILEABLE_CLIENT_LIST = 0x0008;
 
     /** Device level software features. */
     enum Feature {
@@ -70,6 +71,7 @@ public interface IDevice extends IShellEnabledDevice {
         ABB_EXEC, // Android Binder Bridge available
         REAL_PKG_NAME, // Reports the real package name, instead of inferring from client description
         SKIP_VERIFICATION, // Skips verification on installation.
+        SHELL_V2, // Supports modern `adb shell` features like exit status propagation.
     }
 
     /** Device level hardware features. */
@@ -310,6 +312,11 @@ public interface IDevice extends IShellEnabledDevice {
      */
     Client getClient(String applicationName);
 
+    /** Returns the array of profileable clients. */
+    default ProfileableClient[] getProfileableClients() {
+        return new ProfileableClient[0]; // Returns an empty array by default
+    }
+
     /**
      * Force stop an application by its application name. This removes all pending alarms and queued
      * computation.
@@ -336,6 +343,7 @@ public interface IDevice extends IShellEnabledDevice {
      * @throws AdbCommandRejectedException if adb rejects the command
      * @throws IOException if the connection with adb failed.
      */
+    @Nullable
     SyncService getSyncService() throws TimeoutException, AdbCommandRejectedException, IOException;
 
     /** Returns a {@link FileListingService} for this device. */
@@ -414,7 +422,7 @@ public interface IDevice extends IShellEnabledDevice {
      * <p>This uses exec:cmd <command> call or faster abb_exec:<command> if both device OS and host
      * ADB server support Android Binder Bridge execute feature.
      *
-     * @param command the binder command to execute
+     * @param parameters the binder command to execute
      * @param receiver the {@link IShellOutputReceiver} that will receives the output of the binder
      *     command
      * @param is optional input stream to send through stdin
@@ -526,16 +534,31 @@ public interface IDevice extends IShellEnabledDevice {
     String getClientName(int pid);
 
     /**
-     * Push a single file.
+     * Pushes several files or directories.
+     *
+     * @param local the local files to push
+     * @param remote the remote path representing a directory
+     * @throws IOException in case of I/O error on the connection
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws TimeoutException in case of a timeout reading responses from the device
+     * @throws SyncException if some files could not be pushed
+     */
+    default void push(@NonNull String[] local, @NonNull String remote)
+            throws IOException, AdbCommandRejectedException, TimeoutException, SyncException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Pushes a single file.
      *
      * @param local the local filepath.
-     * @param remote The remote filepath.
-     * @throws IOException in case of I/O error on the connection.
+     * @param remote the remote filepath
+     * @throws IOException in case of I/O error on the connection
      * @throws AdbCommandRejectedException if adb rejects the command
-     * @throws TimeoutException in case of a timeout reading responses from the device.
-     * @throws SyncException if file could not be pushed
+     * @throws TimeoutException in case of a timeout reading responses from the device
+     * @throws SyncException if the file could not be pushed
      */
-    void pushFile(String local, String remote)
+    void pushFile(@NonNull String local, @NonNull String remote)
             throws IOException, AdbCommandRejectedException, TimeoutException, SyncException;
 
     /**
@@ -681,7 +704,7 @@ public interface IDevice extends IShellEnabledDevice {
      * Installs an Android application made of several APK files sitting locally on the device with
      * default timeout
      *
-     * @param apks list of apk file paths on the device to install
+     * @param remoteApks list of apk file paths on the device to install
      * @param reinstall set to <code>true</code> if re-install of app should be performed
      * @param installOptions optional extra arguments to pass. See 'adb shell pm install --help' for
      *     available options.
@@ -774,13 +797,24 @@ public interface IDevice extends IShellEnabledDevice {
     void removeRemotePackage(String remoteFilePath) throws InstallException;
 
     /**
-     * Uninstalls an package from the device.
+     * Uninstalls a package from the device.
      *
-     * @param packageName the Android application package name to uninstall
+     * @param packageName the Android application ID to uninstall
      * @return a {@link String} with an error code, or <code>null</code> if success.
      * @throws InstallException if the uninstallation fails.
      */
     String uninstallPackage(String packageName) throws InstallException;
+
+    /**
+     * Uninstalls an app from the device.
+     *
+     * @param applicationID the Android application ID to uninstall
+     * @param extraArgs optional extra arguments to pass. See 'adb shell pm install --help' for
+     *     available options.
+     * @return a {@link String} with an error code, or <code>null</code> if success.
+     * @throws InstallException if the uninstallation fails.
+     */
+    String uninstallApp(String applicationID, String... extraArgs) throws InstallException;
 
     /**
      * Reboot the device.
@@ -925,6 +959,22 @@ public interface IDevice extends IShellEnabledDevice {
      * @return A SocketChannel connected to the executing process on the device. after use.
      */
     default SocketChannel rawExec(String executable, String[] parameters)
+            throws AdbCommandRejectedException, TimeoutException, IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Invoke the Android Binder Bridge service on a remote device. Return a socket channel that is
+     * connected to the device binder command.
+     *
+     * <p>Ownership of the SocketChannel is relinquished to the caller, it must be explicitly closed
+     * after usage.
+     *
+     * @param service the name of the Android service to connect to
+     * @param parameters the parameters of the binder command
+     * @return A SocketChannel connected to the executing process on the device. after use.
+     */
+    default SocketChannel rawBinder(String service, String[] parameters)
             throws AdbCommandRejectedException, TimeoutException, IOException {
         throw new UnsupportedOperationException();
     }

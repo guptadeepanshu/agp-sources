@@ -98,6 +98,14 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
     var isMinifyEnabled: Boolean
 
     /**
+     * Specifies whether to enable shrinking resources for this build type.
+     *
+     * To learn more, read
+     * [Shrink Your Code and Resources](https://developer.android.com/studio/build/shrink-code.html).
+     */
+    var isShrinkResources: Boolean
+
+    /**
      * Specifies a sorted list of build types that the plugin should try to use when a direct
      * variant match with a local module dependency is not possible.
      *
@@ -152,4 +160,39 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * @return the names of product flavors to use, in descending priority order
      */
     val matchingFallbacks: MutableList<String>
+
+    @get:Incubating
+    val postprocessing: PostProcessing
+    @Incubating
+    fun postprocessing(action: PostProcessing.() -> Unit)
+
+    /**
+     * Copies all properties from the given build type.
+     *
+     * It can be used like this:
+     *
+     * ```
+     * android.buildTypes {
+     *     customBuildType {
+     *         initWith debug
+     *         // customize...
+     *     }
+     * }
+     * ```
+     */
+    @Incubating
+    fun initWith(that: BuildType)
+
+    @Incubating
+    @Deprecated("Replaced with property matchingFallbacks")
+    fun setMatchingFallbacks(vararg fallbacks: String)
+
+    @Incubating
+    @Deprecated("Replaced with property matchingFallbacks")
+    fun setMatchingFallbacks(fallbacks: List<String>)
+
+    @get:Incubating
+    @set:Incubating
+    @Deprecated("Changing the value of isZipAlignEnabled no longer has any effect")
+    var isZipAlignEnabled: Boolean
 }

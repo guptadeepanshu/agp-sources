@@ -24,11 +24,15 @@ import com.android.build.gradle.internal.cxx.logging.PassThroughDeduplicatingLog
 import com.android.build.gradle.internal.cxx.logging.ThreadLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.warnln
+import com.android.prefs.AndroidLocationsProvider
 import com.android.repository.Revision
 import com.android.repository.api.LocalPackage
 import com.android.sdklib.repository.AndroidSdkHandler
 import com.android.sdklib.repository.LoggerProgressIndicatorWrapper
-import com.android.utils.cxx.CxxDiagnosticCode
+import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_IS_MISSING
+import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_PACKAGES_SDK
+import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_VERSION_IS_INVALID
+import com.android.utils.cxx.CxxDiagnosticCode.CMAKE_VERSION_IS_UNSUPPORTED
 import java.io.File
 import java.io.IOException
 import java.util.function.Consumer
@@ -114,8 +118,8 @@ import java.util.function.Consumer
 /**
  * This is the version of fork CMake.
  */
-private const val FORK_CMAKE_SDK_VERSION = "3.6.4111459"
-private val forkCmakeSdkVersionRevision = Revision.parseRevision(FORK_CMAKE_SDK_VERSION)
+internal const val FORK_CMAKE_SDK_VERSION = "3.6.4111459"
+internal val forkCmakeSdkVersionRevision = Revision.parseRevision(FORK_CMAKE_SDK_VERSION)
 
 /**
  *  This is the base version that forked CMake (which has SDK version 3.6.4111459) reports
@@ -126,7 +130,8 @@ private val forkCmakeSdkVersionRevision = Revision.parseRevision(FORK_CMAKE_SDK_
  *  version to avoid giving the impression that fork CMake is not a shipping version in Android
  *  Studio.
  */
-val forkCmakeReportedVersion = Revision.parseRevision("3.6.0")
+internal const val FORK_CMAKE_REPORTED_VERSION = "3.6.0"
+internal val forkCmakeReportedVersion = Revision.parseRevision(FORK_CMAKE_REPORTED_VERSION)
 
 /**
  * This is the default version of CMake to use for this Android Gradle Plugin if there was no
@@ -139,7 +144,7 @@ const val DEFAULT_CMAKE_SDK_DOWNLOAD_VERSION = "$DEFAULT_CMAKE_VERSION.4988404"
 /**
  * This is the probable next CMake to be released. A subset of tests are run against it.
  */
-const val BAKING_CMAKE_VERSION = "3.18.1"
+const val OFF_STAGE_CMAKE_VERSION = "3.18.1"
 
 /**
  * @return list of folders (as Files) retrieved from PATH environment variable and from Sdk
@@ -170,15 +175,13 @@ private fun getSdkCmakeFolders(sdkRoot : File?) : List<File> {
 }
 
 private fun getSdkCmakePackages(
+    androidLocationsProvider: AndroidLocationsProvider,
     sdkFolder: File?
 ): List<LocalPackage> {
-    val androidSdkHandler = AndroidSdkHandler.getInstance(sdkFolder)
+    val androidSdkHandler = AndroidSdkHandler.getInstance(androidLocationsProvider, sdkFolder?.toPath())
     val sdkManager = androidSdkHandler.getSdkManager(
         LoggerProgressIndicatorWrapper(
-            ThreadLoggingEnvironment.getILogger(
-                CxxDiagnosticCode.UNKNOWN,
-                CxxDiagnosticCode.UNKNOWN
-            )
+            ThreadLoggingEnvironment.getILogger(CMAKE_PACKAGES_SDK, CMAKE_PACKAGES_SDK)
         )
     )
     val packages = sdkManager.packages
@@ -233,11 +236,16 @@ data class CmakeVersionRequirements(val cmakeVersionFromDsl : String?) {
      * @return true if [version] satisfies [effectiveRequestVersion].
      */
     fun isSatisfiedBy(version:Revision) : Boolean {
+        val effectiveCompareVersion =
+            if (version.compareTo(
+                        forkCmakeSdkVersionRevision, Revision.PreviewComparison.IGNORE) == 0) {
+                forkCmakeReportedVersion
+            } else version
         return when {
             dslVersionHasPlus ->
-                version.compareTo(effectiveRequestVersion, Revision.PreviewComparison.IGNORE) >= 0
+                effectiveCompareVersion.compareTo(effectiveRequestVersion, Revision.PreviewComparison.IGNORE) >= 0
             else ->
-                version.compareTo(effectiveRequestVersion, Revision.PreviewComparison.IGNORE) == 0
+                effectiveCompareVersion.compareTo(effectiveRequestVersion, Revision.PreviewComparison.IGNORE) == 0
         }
     }
 
@@ -262,17 +270,26 @@ data class CmakeVersionRequirements(val cmakeVersionFromDsl : String?) {
                 val result = Revision.parseRevision(withoutPlus)
                 when {
                     result.major < 3 || (result.major == 3 && result.minor < 6) -> {
-                        errorln("CMake version '$result' is too low. Use 3.7.0 or higher.")
+                        errorln(
+                            CMAKE_VERSION_IS_UNSUPPORTED,
+                            "CMake version '$result' is too low. Use 3.7.0 or higher."
+                        )
                         defaultCmakeVersion
                     }
                     result.toIntArray(true).size < 3 -> {
-                        errorln("CMake version '$result' does not have enough precision. Use major.minor.micro in version.")
+                        errorln(
+                            CMAKE_VERSION_IS_INVALID,
+                            "CMake version '$result' does not have enough precision. Use major.minor.micro in version."
+                        )
                         defaultCmakeVersion
                     }
                     else -> result
                 }
             } catch (e: NumberFormatException) {
-                errorln("CMake version '$cmakeVersionFromDsl' is not formatted correctly.")
+                errorln(
+                    CMAKE_VERSION_IS_INVALID,
+                    "CMake version '$cmakeVersionFromDsl' is not formatted correctly."
+                )
                 defaultCmakeVersion
             }
         }
@@ -310,7 +327,10 @@ fun findCmakePathLogic(
         val version = versionGetter(cmakePathFromLocalProperties.resolve("bin"))
         when {
             version == null ->
-                errorln("Could not get version from cmake.dir path '$cmakePathFromLocalProperties'.")
+                errorln(
+                    CMAKE_VERSION_IS_INVALID,
+                    "Could not get version from cmake.dir path '$cmakePathFromLocalProperties'."
+                )
             cmakeVersionFromDsl == null ->
                 // If there is a valid CMake in cmake.dir then don't enforce the default CMake version
                 return cmakePathFromLocalProperties
@@ -334,24 +354,6 @@ fun findCmakePathLogic(
         cmakePaths.add(environmentPath.path)
     }
 
-    if (cmakePaths.isEmpty()) {
-        // Gather acceptable SDK package paths
-        for (localPackage in repositoryPackages()) {
-            val packagePath = localPackage.location.resolve("bin")
-            if (cmakePaths.contains(packagePath.path)) continue
-            val version = if (localPackage.version == forkCmakeSdkVersionRevision) {
-                forkCmakeReportedVersion
-            } else {
-                localPackage.version
-            }
-            if (!dsl.isSatisfiedBy(version)) {
-                nonsatisfiers += "'$version' found in SDK"
-                continue
-            }
-            cmakePaths.add(packagePath.path)
-        }
-    }
-
     // This is a fallback case for backward compatibility. In the past,
     // we've recommended people manually symlink or copy CMake (and
     // other tools) into SDK folder. Our own integration tests rely on
@@ -373,6 +375,25 @@ fun findCmakePathLogic(
         }
     }
 
+
+    if (cmakePaths.isEmpty()) {
+        // Gather acceptable SDK package paths
+        for (localPackage in repositoryPackages()) {
+            val packagePath = localPackage.location.resolve("bin")
+            if (cmakePaths.contains(packagePath.toString())) continue
+            val version = if (localPackage.version == forkCmakeSdkVersionRevision) {
+                forkCmakeReportedVersion
+            } else {
+                localPackage.version
+            }
+            if (!dsl.isSatisfiedBy(version)) {
+                nonsatisfiers += "'$version' found in SDK"
+                continue
+            }
+            cmakePaths.add(packagePath.toString())
+        }
+    }
+
     // Handle case where there is no match.
     if (cmakePaths.isEmpty()) {
         // If there is a downloader, then try downloading and re-invoke findCmakePathLogic but with
@@ -380,21 +401,29 @@ fun findCmakePathLogic(
         if (downloader != null && dsl.downloadVersion != null) {
             downloader.accept(dsl.downloadVersion)
             return findCmakePathLogic(
-                    cmakeVersionFromDsl,
-                    cmakePathFromLocalProperties,
-                    null,
-                    environmentPaths,
-                    sdkFolders,
-                    cmakeVersionGetter,
-                    repositoryPackages
+                cmakeVersionFromDsl,
+                cmakePathFromLocalProperties,
+                null,
+                environmentPaths,
+                sdkFolders,
+                cmakeVersionGetter,
+                repositoryPackages
             )
         }
 
         // No downloader, so issue error(s)
-        errorln("CMake ${dsl.humanReadableVersionLanguage} was not found in SDK, PATH, or by cmake.dir property.")
+        errorln(
+            CMAKE_IS_MISSING,
+            "CMake ${dsl.humanReadableVersionLanguage} was not found in SDK, PATH, or by cmake.dir property."
+        )
         nonsatisfiers
-                .distinct()
-                .onEach { errorln("- CMake $it did not satisfy requested version.") }
+            .distinct()
+            .onEach {
+                errorln(
+                    CMAKE_VERSION_IS_INVALID,
+                    "- CMake $it did not satisfy requested version."
+                )
+            }
         return null
     }
 
@@ -416,6 +445,7 @@ class CmakeLocator {
     fun findCmakePath(
         cmakeVersionFromDsl: String?,
         cmakeFile: File?,
+        androidLocationsProvider: AndroidLocationsProvider,
         sdkFolder: File?,
         downloader: Consumer<String>): File? {
         PassThroughDeduplicatingLoggingEnvironment().use {
@@ -426,7 +456,7 @@ class CmakeLocator {
                     { getEnvironmentPaths() },
                     { getSdkCmakeFolders(sdkFolder) },
                     { folder -> getCmakeRevisionFromExecutable(folder) },
-                    { getSdkCmakePackages(sdkFolder) })
+                    { getSdkCmakePackages(androidLocationsProvider, sdkFolder) })
         }
     }
 }

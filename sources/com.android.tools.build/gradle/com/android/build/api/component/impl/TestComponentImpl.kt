@@ -17,6 +17,7 @@
 package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.TestComponent
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
@@ -27,15 +28,17 @@ import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 abstract class TestComponentImpl @Inject constructor(
-    componentIdentity: TestComponentBuilderImpl,
+    componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
     variantDslInfo: VariantDslInfo,
     variantDependencies: VariantDependencies,
@@ -44,7 +47,7 @@ abstract class TestComponentImpl @Inject constructor(
     artifacts: ArtifactsImpl,
     variantScope: VariantScope,
     variantData: BaseVariantData,
-    override val testedVariant: VariantImpl,
+    val testedVariant: VariantImpl,
     transformManager: TransformManager,
     variantPropertiesApiServices: VariantPropertiesApiServices,
     taskCreationServices: TaskCreationServices,
@@ -68,6 +71,14 @@ abstract class TestComponentImpl @Inject constructor(
     // map the internal getter to the impl of the external variant object
     override val testedConfig: VariantCreationConfig
         get() = testedVariant
+
+    // Only include the jacoco agent if coverage is enabled in library test components
+    // as in apps it will have already been included in the tested application.
+    override val packageJacocoRuntime: Boolean
+        get() = variantDslInfo.isTestCoverageEnabled && testedVariant.variantType.isAar
+
+    override val namespaceForR: Provider<String> = variantDslInfo.namespaceForR
+
+    override val pseudoLocalesEnabled: Property<Boolean> =
+            internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, variantDslInfo.isPseudoLocalesEnabled)
 }
-
-

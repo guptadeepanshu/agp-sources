@@ -30,6 +30,8 @@ import com.android.annotations.Nullable;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.api.dsl.ApplicationExtension;
+import com.android.build.api.variant.AndroidTest;
+import com.android.build.api.variant.impl.HasAndroidTest;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestAndroidConfig;
 import com.android.build.gradle.internal.BuildTypeData;
@@ -37,7 +39,9 @@ import com.android.build.gradle.internal.DefaultConfigData;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.TaskManager;
+import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.component.ConsumableCreationConfig;
+import com.android.build.gradle.internal.component.TestComponentCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.core.VariantDslInfoImpl;
@@ -63,6 +67,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.MutableTaskContainer;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
@@ -91,6 +96,7 @@ import com.android.builder.model.AndroidProject;
 import com.android.builder.model.ArtifactMetaData;
 import com.android.builder.model.BaseArtifact;
 import com.android.builder.model.BuildTypeContainer;
+import com.android.builder.model.CodeShrinker;
 import com.android.builder.model.Dependencies;
 import com.android.builder.model.DependenciesInfo;
 import com.android.builder.model.InstantRun;
@@ -154,7 +160,9 @@ public class ModelBuilder<Extension extends BaseExtension>
     @NonNull protected final Extension extension;
     @NonNull private final ExtraModelInfo extraModelInfo;
     @NonNull private final VariantModel variantModel;
+    @NonNull private final ProjectOptions projectOptions;
     @NonNull private final SyncIssueReporter syncIssueReporter;
+    @NonNull private final ProjectInfo projectInfo;
     private final int projectType;
     private int modelLevel = AndroidProject.MODEL_LEVEL_0_ORIGINAL;
     private boolean modelWithFullDependency = false;
@@ -170,14 +178,18 @@ public class ModelBuilder<Extension extends BaseExtension>
             @NonNull VariantModel variantModel,
             @NonNull Extension extension,
             @NonNull ExtraModelInfo extraModelInfo,
+            @NonNull ProjectOptions projectOptions,
             @NonNull SyncIssueReporter syncIssueReporter,
-            int projectType) {
+            int projectType,
+            @NonNull ProjectInfo projectInfo) {
         this.globalScope = globalScope;
         this.extension = extension;
         this.extraModelInfo = extraModelInfo;
         this.variantModel = variantModel;
+        this.projectOptions = projectOptions;
         this.syncIssueReporter = syncIssueReporter;
         this.projectType = projectType;
+        this.projectInfo = projectInfo;
     }
 
     @Override
@@ -233,7 +245,7 @@ public class ModelBuilder<Extension extends BaseExtension>
     @NonNull
     private Object buildNonParameterizedModels(@NonNull String modelName) {
         if (modelName.equals(GlobalLibraryMap.class.getName())) {
-            return buildGlobalLibraryMap(globalScope.getProject().getGradle().getSharedServices());
+            return buildGlobalLibraryMap(projectInfo.getProject().getGradle().getSharedServices());
         } else if (modelName.equals(ProjectSyncIssues.class.getName())) {
             return buildProjectSyncIssuesModel();
         }
@@ -263,7 +275,7 @@ public class ModelBuilder<Extension extends BaseExtension>
         allIssues.addAll(syncIssueReporter.getSyncIssues());
         allIssues.addAll(
                 BuildServicesKt.getBuildService(
-                                globalScope.getProject().getGradle().getSharedServices(),
+                                projectInfo.getProject().getGradle().getSharedServices(),
                                 SyncIssueReporterImpl.GlobalSyncIssueService.class)
                         .get()
                         .getAllIssuesAndClear());
@@ -341,7 +353,7 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         List<String> flavorDimensionList =
                 extension.getFlavorDimensionList() != null
-                        ? extension.getFlavorDimensionList()
+                        ? ImmutableList.copyOf(extension.getFlavorDimensionList())
                         : Lists.newArrayList();
 
         final VariantInputModel<
@@ -378,11 +390,32 @@ public class ModelBuilder<Extension extends BaseExtension>
         }
 
         String defaultVariant = variantModel.getDefaultVariant();
+        String namespace = null;
+        String androidTestNamespace = null;
         for (com.android.build.api.variant.impl.VariantImpl variant : variantModel.getVariants()) {
             variantNames.add(variant.getName());
             if (shouldBuildVariant) {
                 variants.add(createVariant(variant));
             }
+
+            // search for the namespace value. We can take the first variant as it's shared across
+            // them. For AndroidTest we take the first non-null variant as well.
+            namespace = variant.getNamespace().get();
+            if (variant instanceof HasAndroidTest) {
+                // TODO(b/176931684) Use AndroidTest.namespace instead after we stop
+                //  supporting using applicationId to namespace the test component R class.
+
+                AndroidTest test = ((HasAndroidTest) variant).getAndroidTest();
+                if (test instanceof TestComponentCreationConfig) {
+                    androidTestNamespace =
+                            ((TestComponentCreationConfig) test).getNamespaceForR().get();
+                }
+            }
+        }
+
+        if (namespace == null) {
+            // this should only happen if we have no variants, which is unlikely.
+            namespace = "";
         }
 
         // get groupId/artifactId for project
@@ -399,6 +432,8 @@ public class ModelBuilder<Extension extends BaseExtension>
         return new DefaultAndroidProject(
                 project.getName(),
                 groupId,
+                namespace,
+                androidTestNamespace,
                 defaultConfig,
                 flavorDimensionList,
                 buildTypes,
@@ -459,8 +494,7 @@ public class ModelBuilder<Extension extends BaseExtension>
     private AndroidGradlePluginProjectFlagsImpl getFlags() {
         ImmutableMap.Builder<AndroidGradlePluginProjectFlags.BooleanFlag, Boolean> flags =
                 ImmutableMap.builder();
-        boolean finalResIds =
-                !globalScope.getProjectOptions().get(BooleanOption.USE_NON_FINAL_RES_IDS);
+        boolean finalResIds = !projectOptions.get(BooleanOption.USE_NON_FINAL_RES_IDS);
         flags.put(
                 AndroidGradlePluginProjectFlags.BooleanFlag.APPLICATION_R_CLASS_CONSTANT_IDS,
                 finalResIds);
@@ -481,8 +515,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                                 variantProperties ->
                                         variantProperties.getBuildFeatures().getMlModelBinding()));
 
-        boolean transitiveRClass =
-                !globalScope.getProjectOptions().get(BooleanOption.NON_TRANSITIVE_R_CLASS);
+        boolean transitiveRClass = !projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS);
         flags.put(AndroidGradlePluginProjectFlags.BooleanFlag.TRANSITIVE_R_CLASS, transitiveRClass);
 
         return new AndroidGradlePluginProjectFlagsImpl(flags.build());
@@ -707,7 +740,7 @@ public class ModelBuilder<Extension extends BaseExtension>
     }
 
     private void checkProguardFiles(@NonNull ComponentImpl component) {
-        final Project project = globalScope.getProject();
+        final Project project = projectInfo.getProject();
 
         // We check for default files unless it's a base module, which can include default files.
         boolean isBaseModule = component.getVariantType().isBaseModule();
@@ -731,14 +764,13 @@ public class ModelBuilder<Extension extends BaseExtension>
         if (extension instanceof TestAndroidConfig) {
             TestAndroidConfig testConfig = (TestAndroidConfig) extension;
 
-            // to get the target variant we need to get the result of the dependency resolution
             ArtifactCollection apkArtifacts =
                     component
                             .getVariantDependencies()
                             .getArtifactCollection(
-                                    AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                                    AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH,
                                     AndroidArtifacts.ArtifactScope.ALL,
-                                    AndroidArtifacts.ArtifactType.MANIFEST_METADATA);
+                                    AndroidArtifacts.ArtifactType.APK);
 
             // while there should be single result, if the variant matching is broken, then
             // we need to support this.
@@ -753,7 +785,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 // probably there was an error...
                 new DependencyFailureHandler()
                         .addErrors(
-                                globalScope.getProject().getPath()
+                                projectInfo.getProject().getPath()
                                         + "@"
                                         + component.getName()
                                         + "/testTarget",
@@ -761,7 +793,6 @@ public class ModelBuilder<Extension extends BaseExtension>
                         .registerIssues(syncIssueReporter);
             }
         }
-
         return ImmutableList.of();
     }
 
@@ -880,7 +911,14 @@ public class ModelBuilder<Extension extends BaseExtension>
         VariantScope variantScope = component.getVariantScope();
         VariantDslInfo variantDslInfo = component.getVariantDslInfo();
 
-        SigningConfig signingConfig = variantDslInfo.getSigningConfig();
+        com.android.build.api.variant.impl.SigningConfigImpl signingConfig = null;
+        boolean isSigningReady = false;
+        if (component instanceof ApkCreationConfig) {
+            signingConfig = ((ApkCreationConfig) component).getSigningConfig();
+            if (signingConfig != null) {
+                isSigningReady = signingConfig.isSigningReady();
+            }
+        }
         String signingConfigName = null;
         if (signingConfig != null) {
             signingConfigName = signingConfig.getName();
@@ -890,7 +928,7 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         InstantRunImpl instantRun =
                 new InstantRunImpl(
-                        globalScope.getProject().file("build_info_removed"),
+                        projectInfo.getProject().file("build_info_removed"),
                         InstantRun.STATUS_REMOVED);
 
         Pair<Dependencies, DependencyGraphs> dependencies =
@@ -911,7 +949,7 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         if (component.getVariantType().isTestComponent()) {
             Configuration testHelpers =
-                    globalScope
+                    projectInfo
                             .getProject()
                             .getConfigurations()
                             .findByName(SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION);
@@ -934,13 +972,20 @@ public class ModelBuilder<Extension extends BaseExtension>
 
         MutableTaskContainer taskContainer = component.getTaskContainer();
         ArtifactsImpl artifacts = component.getArtifacts();
+        final CodeShrinker codeShrinker;
+        if (component instanceof ConsumableCreationConfig
+                && ((ConsumableCreationConfig) component).getMinifiedEnabled()) {
+            codeShrinker = CodeShrinker.R8;
+        } else {
+            codeShrinker = null;
+        }
 
         return new AndroidArtifactImpl(
                 name,
-                globalScope.getProjectBaseName() + "-" + component.getBaseName(),
+                projectInfo.getProjectBaseName() + "-" + component.getBaseName(),
                 taskContainer.getAssembleTask().getName(),
                 artifacts.get(InternalArtifactType.APK_IDE_MODEL.INSTANCE).getOrNull(),
-                variantDslInfo.isSigningReady() || component.getVariantData().outputsAreSigned,
+                isSigningReady || component.getVariantData().outputsAreSigned,
                 signingConfigName,
                 taskContainer.getSourceGenTask().getName(),
                 taskContainer.getCompileTask().getName(),
@@ -966,9 +1011,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 artifacts.get(InternalArtifactType.BUNDLE_IDE_MODEL.INSTANCE).getOrNull(),
                 ExtractApksTask.Companion.getTaskName(component),
                 artifacts.get(InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL.INSTANCE).getOrNull(),
-                component instanceof ConsumableCreationConfig
-                        ? ((ConsumableCreationConfig) component).getCodeShrinker()
-                        : null);
+                codeShrinker);
     }
 
     private void validateMinSdkVersion(@NonNull ManifestAttributeSupplier supplier) {
@@ -1064,8 +1107,14 @@ public class ModelBuilder<Extension extends BaseExtension>
             folders.add(aidlSources.getAsFile());
         }
         if (component.getBuildConfigType() == BuildConfigType.JAVA_CLASS) {
-            folders.add(component.getPaths().getBuildConfigSourceOutputDir());
+            Directory maybeBuildConfig =
+                    component.getPaths().getBuildConfigSourceOutputDir().getOrNull();
+            if (maybeBuildConfig != null) {
+                folders.add(maybeBuildConfig.getAsFile());
+            }
         }
+        // this is incorrect as it cannot get the final value, we should always add the folder
+        // as a potential source origin and let the IDE deal with it.
         boolean ndkMode = component.getVariantDslInfo().getRenderscriptNdkModeEnabled();
         if (!ndkMode) {
             Directory renderscriptSources =
@@ -1100,8 +1149,8 @@ public class ModelBuilder<Extension extends BaseExtension>
             result = Lists.newArrayListWithCapacity(2);
         }
 
-        result.add(component.getPaths().getRenderscriptResOutputDir());
-        result.add(component.getPaths().getGeneratedResOutputDir());
+        result.add(component.getPaths().getRenderscriptResOutputDir().get().getAsFile());
+        result.add(component.getPaths().getGeneratedResOutputDir().get().getAsFile());
         return result;
     }
 
@@ -1136,7 +1185,7 @@ public class ModelBuilder<Extension extends BaseExtension>
     private List<String> getDesugaredMethods(@NonNull VariantCreationConfig creationConfig) {
         List<String> desugaredMethodsFromDesugarLib =
                 DesugarLibUtils.getDesugaredMethods(
-                        creationConfig.getGlobalScope().getProject(),
+                        creationConfig.getServices().getProjectInfo().getProject(),
                         creationConfig.isCoreLibraryDesugaringEnabled(),
                         creationConfig.getMinSdkVersion(),
                         creationConfig.getGlobalScope().getExtension().getCompileSdkVersion());

@@ -62,11 +62,12 @@ import java.nio.file.FileSystems
 import java.nio.file.PathMatcher
 import java.nio.file.Paths
 import javax.inject.Inject
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Task to remove debug symbols from native libraries.
  */
-@CacheableTask
+@DisableCachingByDefault
 abstract class StripDebugSymbolsTask : IncrementalTask() {
 
     @get:InputFiles
@@ -153,7 +154,7 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
 
             creationConfig.artifacts.setTaskInputToFinalProduct(MERGED_NATIVE_LIBS, task.inputDir)
             task.keepDebugSymbols.setDisallowChanges(
-                creationConfig.packagingOptions.jniLibs.keepDebugSymbols
+                creationConfig.packaging.jniLibs.keepDebugSymbols
             )
             task.sdkBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)

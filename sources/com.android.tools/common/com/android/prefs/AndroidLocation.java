@@ -30,7 +30,11 @@ import java.util.function.Function;
  * Manages the location of the android files (including emulator files, ddms config, debug keystore)
  *
  * <p>This does not manages the SDK location. For that see [SdkLocator]
+ *
+ * @deprecated Use {@link AndroidLocationsException} or {@link AndroidLocationsSingleton}. Inside
+ *     Gradle, use the build service instead of the singleton.
  */
+@Deprecated
 public final class AndroidLocation {
 
     /**
@@ -128,6 +132,7 @@ public final class AndroidLocation {
                 // Special Handling:
                 // If the query is ANDROID_PREFS_ROOT, then also query ANDROID_SDK_HOME and compare
                 // the values. If both values are set, they must match
+                // FIXME b/162859043
                 String androidSdkHomePath = queryFunction.apply("ANDROID_SDK_HOME");
 
                 if (path == null) {
@@ -144,7 +149,7 @@ public final class AndroidLocation {
                         if (!path.equals(androidSdkHomePath)) {
                             throw new AndroidLocationException(
                                     "Both ANDROID_PREFS_ROOT and ANDROID_SDK_HOME are set to different values\n"
-                                            + "Please use ANDROID_SDK_HOME only.\n"
+                                            + "Support for ANDROID_SDK_HOME is deprecated. Use ANDROID_PREFS_ROOT only.\n"
                                             + "Current values:\n"
                                             + "ANDROID_SDK_ROOT: "
                                             + path
@@ -186,7 +191,7 @@ public final class AndroidLocation {
                                 "ANDROID_SDK_HOME is set to the root of your SDK: %1$s\n"
                                         + "ANDROID_SDK_HOME is meant to be the path of the preference folder expected by the Android tools.\n"
                                         + "It should NOT be set to the same as the root of your SDK.\n"
-                                        + "To set a custom SDK Location, use ANDROID_HOME.\n"
+                                        + "To set a custom SDK Location, use ANDROID_SDK_ROOT.\n"
                                         + "If this is not set we default to: %2$s",
                                 path,
                                 findValidPath(

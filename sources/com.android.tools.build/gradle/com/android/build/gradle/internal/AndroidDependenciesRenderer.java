@@ -32,10 +32,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Set;
-import org.gradle.api.Project;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier;
+import org.gradle.api.tasks.diagnostics.internal.ProjectDetails;
 import org.gradle.api.tasks.diagnostics.internal.TextReportRenderer;
 import org.gradle.internal.graph.GraphRenderer;
 
@@ -46,14 +46,14 @@ public class AndroidDependenciesRenderer extends TextReportRenderer {
     private GraphRenderer renderer;
 
     @Override
-    public void startProject(Project project) {
+    public void startProject(ProjectDetails project) {
         super.startProject(project);
         hasConfigs = false;
         hasCyclicDependencies = false;
     }
 
     @Override
-    public void completeProject(Project project) {
+    public void completeProject(ProjectDetails project) {
         if (!hasConfigs) {
             getTextOutput().withStyle(Info).println("No dependencies");
         }
@@ -74,7 +74,7 @@ public class AndroidDependenciesRenderer extends TextReportRenderer {
     public void render(@NonNull ComponentImpl component) {
         ImmutableMap<String, String> buildMapping =
                 BuildMappingUtils.computeBuildMapping(
-                        component.getGlobalScope().getProject().getGradle());
+                        component.getServices().getProjectInfo().getProject().getGradle());
 
         Set<ResolvedArtifact> compileArtifacts =
                 ArtifactUtils.getAllArtifacts(

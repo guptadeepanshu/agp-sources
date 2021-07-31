@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.errors.SyncIssueReporter
 import com.android.build.gradle.internal.ide.DefaultAppBundleProjectBuildOutput
@@ -25,7 +25,10 @@ import com.android.build.gradle.internal.ide.ModelBuilder
 import com.android.build.gradle.internal.plugins.AppPlugin
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.ProjectInfo
+import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.internal.variant.VariantModel
+import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.model.AppBundleProjectBuildOutput
 import com.android.builder.model.AppBundleVariantBuildOutput
 import com.google.common.collect.ImmutableList
@@ -40,15 +43,19 @@ class AppModelBuilder(
     private val variantModel: VariantModel,
     config: BaseAppModuleExtension,
     extraModelInfo: ExtraModelInfo,
+    projectOptions: ProjectOptions,
     syncIssueReporter: SyncIssueReporter,
-    projectType: Int
+    projectType: Int,
+    projectInfo: ProjectInfo
 ) : ModelBuilder<BaseAppModuleExtension>(
     globalScope,
     variantModel,
     config,
     extraModelInfo,
+    projectOptions,
     syncIssueReporter,
-    projectType
+    projectType,
+    projectInfo
 ) {
     override fun isBaseSplit(): Boolean {
         return true
@@ -64,8 +71,8 @@ class AppModelBuilder(
         } else super.buildAll(modelName, project)
     }
 
-    override fun getDynamicFeatures(): MutableCollection<String> {
-        return extension.dynamicFeatures
+    override fun getDynamicFeatures(): Collection<String> {
+        return extension.dynamicFeatures.toImmutableSet()
     }
 
     private fun buildMinimalisticModel(): Any {
@@ -76,7 +83,7 @@ class AppModelBuilder(
 
             // TODO(b/111168382): Remove the namespaced check check once bundle pipeline works with namespaces.
             if (component.variantType.isBaseModule && !component.globalScope.extension.aaptOptions.namespaced) {
-                val bundleFile = artifacts.get(ArtifactType.BUNDLE)
+                val bundleFile = artifacts.get(SingleArtifact.BUNDLE)
                 val apkFolder = artifacts.get(InternalArtifactType.EXTRACTED_APKS)
                 variantsOutput.add(
                         DefaultAppBundleVariantBuildOutput(

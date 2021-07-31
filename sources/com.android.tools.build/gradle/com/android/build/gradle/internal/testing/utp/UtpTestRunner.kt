@@ -20,30 +20,20 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.testing.BaseTestRunner
 import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.StaticTestData
-import com.android.build.gradle.internal.testing.utp.UtpDependency.LAUNCHER
-import com.android.build.gradle.internal.testing.utp.RetentionConfig
 import com.android.builder.testing.api.DeviceConnector
-import com.android.ddmlib.testrunner.TestIdentifier
 import com.android.ide.common.process.JavaProcessExecutor
-import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessExecutor
-import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.ide.common.workers.ExecutorServiceAdapter
+import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent
 import com.android.utils.FileUtils
 import com.android.utils.ILogger
 import com.google.common.collect.ImmutableList
 import com.google.common.io.Files
-import com.google.protobuf.TextFormat
 import com.google.testing.platform.proto.api.core.TestStatusProto
-import com.google.testing.platform.proto.api.core.TestSuiteResultProto
+import com.google.testing.platform.proto.api.core.TestSuiteResultProto.TestSuiteResult
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStreamReader
-
-// Unified Test Platform outputs test results with this hardcoded name file.
-const val TEST_RESULT_OUTPUT_FILE_NAME = "test-result.textproto"
 
 /**
  * Runs Android Instrumentation tests using UTP (Unified Test Platform).
@@ -56,8 +46,12 @@ class UtpTestRunner @JvmOverloads constructor(
         private val utpDependencies: UtpDependencies,
         private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
         private val retentionConfig: RetentionConfig,
+        private val useOrchestrator: Boolean,
+        private val utpTestResultListener: UtpTestResultListener?,
         private val configFactory: UtpConfigFactory = UtpConfigFactory())
-    : BaseTestRunner(splitSelectExec, processExecutor, executor) {
+    : BaseTestRunner(splitSelectExec, processExecutor, executor), UtpTestResultListener {
+
+    private val testResultReporters: MutableMap<String, UtpTestResultListener> = mutableMapOf()
 
     override fun scheduleTests(
             projectName: String,
@@ -72,130 +66,102 @@ class UtpTestRunner @JvmOverloads constructor(
             additionalTestOutputDir: File?,
             coverageDir: File,
             logger: ILogger): MutableList<TestResult> {
-        return apksForDevice.map { (deviceConnector, apks) ->
-            val utpOutputDir = resultsDir
-            val utpTmpDir = Files.createTempDir()
-            val utpTestLogDir = Files.createTempDir()
-            val utpTestRunLogDir = Files.createTempDir()
-            val runnerConfigProtoFile = File.createTempFile("runnerConfig", ".pb").also { file ->
-                FileOutputStream(file).use { writer ->
-                    configFactory.createRunnerConfigProto(
-                            deviceConnector,
-                            testData,
-                            apks.union(helperApks) + testData.testApk,
-                            utpDependencies,
-                            versionedSdkLoader,
-                            utpOutputDir,
-                            utpTmpDir,
-                            utpTestLogDir,
-                            utpTestRunLogDir,
-                            retentionConfig).writeTo(writer)
-                }
-            }
-            val serverConfigProtoFile = File.createTempFile("serverConfig", ".pb").also { file ->
-                FileOutputStream(file).use { writer ->
-                    configFactory.createServerConfigProto().writeTo(writer)
-                }
-            }
-            val loggingPropertiesFile = File.createTempFile("logging", "properties").also { file ->
-                Files.asCharSink(file, Charsets.UTF_8).write("""
-                    .level=SEVERE
-                    .handlers=java.util.logging.ConsoleHandler
-                    java.util.logging.ConsoleHandler.level=SEVERE
-                """.trimIndent())
-            }
-            val javaProcessInfo = ProcessInfoBuilder().apply {
-                setClasspath(utpDependencies.launcher.singleFile.absolutePath)
-                setMain(LAUNCHER.mainClass)
-                addArgs(utpDependencies.core.singleFile.absolutePath)
-                addArgs("--proto_config=${runnerConfigProtoFile.absolutePath}")
-                addArgs("--proto_server_config=${serverConfigProtoFile.absolutePath}")
-                addJvmArg("-Djava.util.logging.config.file=${loggingPropertiesFile.absolutePath}")
-            }.createJavaProcess()
-
-            javaProcessExecutor.execute(javaProcessInfo, LoggedProcessOutputHandler(logger))
-            val resultsProto = getResultsProto(utpOutputDir)
-            resultsProto.writeTo(File(utpOutputDir, "test-result.pb").outputStream())
-
-            try {
-                FileUtils.deleteRecursivelyIfExists(utpTestLogDir)
-                FileUtils.deleteRecursivelyIfExists(utpTestRunLogDir)
-                FileUtils.deleteRecursivelyIfExists(utpTmpDir)
-            } catch (e: IOException) {
-                logger.warning("Failed to cleanup temporary directories: $e")
-            }
-
-            createTestReportXml(resultsProto, deviceConnector.name, projectName, variantName, logger, resultsDir)
-            val testFailed = resultsProto.testResultList.any { testCaseResult ->
-                testCaseResult.testStatus == TestStatusProto.TestStatus.FAILED
-                        || testCaseResult.testStatus == TestStatusProto.TestStatus.ERROR
-            }
-            TestResult().apply {
-                testResult = if (testFailed) {
-                    TestResult.Result.FAILED
-                } else {
-                    TestResult.Result.SUCCEEDED
-                }
-            }
-        }.toMutableList()
-    }
-
-    /**
-     * Creates JUnit test report XML file based on information in the results proto.
-     */
-    private fun createTestReportXml(resultsProto: TestSuiteResultProto.TestSuiteResult,
-                                    deviceName: String,
-                                    projectName: String,
-                                    flavorName: String,
-                                    logger: ILogger,
-                                    reportOutputDir: File) {
-        CustomTestRunListener(deviceName, projectName, flavorName, logger).apply {
-            setReportDir(reportOutputDir)
-            var numTestFails = 0
-            var totalElapsedTimeMillis = 0L
-            testRunStarted(deviceName, resultsProto.testResultCount)
-            resultsProto.testResultList.forEach { testResult ->
-                val testId = TestIdentifier(
-                        "${testResult.testCase.testPackage}.${testResult.testCase.testClass}",
-                        testResult.testCase.testMethod)
-                testStarted(testId)
-                when(testResult.testStatus) {
-                    TestStatusProto.TestStatus.FAILED, TestStatusProto.TestStatus.ERROR -> {
-                        testFailed(testId, testResult.error.stackTrace)
-                        ++numTestFails
+        return UtpTestResultListenerServerRunner(this).use { resultListenerServerRunner ->
+            val resultListenerServerMetadata = resultListenerServerRunner.metadata
+            apksForDevice.map { (deviceConnector, apks) ->
+                val utpOutputDir = File(resultsDir, deviceConnector.name).apply {
+                    if (!exists()) {
+                        mkdirs()
                     }
-                    TestStatusProto.TestStatus.IGNORED -> {
-                        testIgnored(testId)
-                    }
-                    else -> {}
                 }
-                testEnded(testId, mapOf())
+                val utpTmpDir = Files.createTempDir()
+                val runnerConfigProtoFile =
+                        File.createTempFile("runnerConfig", ".pb").also { file ->
+                            FileOutputStream(file).use { writer ->
+                                configFactory.createRunnerConfigProtoForLocalDevice(
+                                        deviceConnector,
+                                        testData,
+                                        apks,
+                                        installOptions,
+                                        helperApks,
+                                        utpDependencies,
+                                        versionedSdkLoader,
+                                        utpOutputDir,
+                                        utpTmpDir,
+                                        retentionConfig,
+                                        useOrchestrator,
+                                        resultListenerServerMetadata.serverPort,
+                                        resultListenerServerMetadata.clientCert,
+                                        resultListenerServerMetadata.clientPrivateKey,
+                                        resultListenerServerMetadata.serverCert).writeTo(writer)
+                            }
+                        }
 
-                val startTimeMillis =
-                        testResult.testCase.startTime.seconds * 1000L + testResult.testCase.startTime.nanos / 1000000L
-                val endTimeMillis =
-                        testResult.testCase.endTime.seconds * 1000L + testResult.testCase.endTime.nanos / 1000000L
-                runResult.testResults.getValue(testId).apply {
-                    startTime = startTimeMillis
-                    endTime = endTimeMillis
+                lateinit var resultsProto: TestSuiteResult
+                val ddmlibTestResultAdapter = DdmlibTestResultAdapter(
+                        deviceConnector.name,
+                        CustomTestRunListener(
+                                deviceConnector.name,
+                                projectName,
+                                variantName,
+                                logger).apply {
+                            setReportDir(resultsDir)
+                        }
+                )
+                testResultReporters[deviceConnector.serialNumber] = object: UtpTestResultListener {
+                    override fun onTestResultEvent(testResultEvent: TestResultEvent) {
+                        ddmlibTestResultAdapter.onTestResultEvent(testResultEvent)
+
+                        if (testResultEvent.hasTestSuiteFinished()) {
+                            resultsProto = testResultEvent.testSuiteFinished.testSuiteResult
+                                    .unpack(TestSuiteResult::class.java)
+                        }
+                    }
                 }
-                totalElapsedTimeMillis += endTimeMillis - startTimeMillis
-            }
-            if (numTestFails > 0) {
-                testRunFailed("There was ${numTestFails} failure(s).")
-            }
-            testRunEnded(totalElapsedTimeMillis, mapOf())
+
+                runUtpTestSuite(
+                        runnerConfigProtoFile,
+                        configFactory,
+                        utpDependencies,
+                        javaProcessExecutor,
+                        logger)
+
+                testResultReporters.remove(deviceConnector.serialNumber)
+
+                val testResultPbFile = File(utpOutputDir, "test-result.pb")
+                resultsProto.writeTo(testResultPbFile.outputStream())
+
+                try {
+                    FileUtils.deleteRecursivelyIfExists(utpOutputDir.resolve(TEST_LOG_DIR))
+                    FileUtils.deleteRecursivelyIfExists(utpTmpDir)
+                } catch (e: IOException) {
+                    logger.warning("Failed to cleanup temporary directories: $e")
+                }
+
+                if (resultsProto.hasPlatformError()) {
+                    logger.error(null, "Platform error occurred when running the UTP test suite")
+                }
+                logger.quiet("\nTest results saved as ${testResultPbFile.toURI()}. " +
+                        "Inspect these results in Android Studio by selecting Run > Import Tests " +
+                        "From File from the menu bar and importing test-result.pb.")
+                val testFailed = resultsProto.hasPlatformError() ||
+                        resultsProto.testResultList.any { testCaseResult ->
+                            testCaseResult.testStatus == TestStatusProto.TestStatus.FAILED
+                                    || testCaseResult.testStatus == TestStatusProto.TestStatus.ERROR
+                        }
+                TestResult().apply {
+                    testResult = if (testFailed) {
+                        TestResult.Result.FAILED
+                    } else {
+                        TestResult.Result.SUCCEEDED
+                    }
+                }
+            }.toMutableList()
         }
     }
 
-    /**
-     * Retrieves a test suite result proto from the Unified Test Platform's output directory.
-     */
-    private fun getResultsProto(outputDir: File): TestSuiteResultProto.TestSuiteResult {
-        return TestSuiteResultProto.TestSuiteResult.newBuilder().apply {
-            TextFormat.merge(
-                    InputStreamReader(FileInputStream(File(outputDir, TEST_RESULT_OUTPUT_FILE_NAME))),
-                    this)
-        }.build()
+    override fun onTestResultEvent(testResultEvent: TestResultEvent) {
+        testResultReporters[testResultEvent.deviceId]?.onTestResultEvent(testResultEvent)
+        utpTestResultListener?.onTestResultEvent(testResultEvent)
     }
 }

@@ -17,7 +17,7 @@
 package com.android.build.gradle.internal.services
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.dsl.DslVariableFactory
+import com.android.build.gradle.internal.dsl.decorator.androidPluginDslDecorator
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.ExtensiblePolymorphicDomainObjectContainer
 import org.gradle.api.NamedDomainObjectContainer
@@ -27,11 +27,9 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.File
-import kotlin.properties.ReadWriteProperty
 
 class DslServicesImpl constructor(
     projectServices: ProjectServices,
-    val variableFactory: DslVariableFactory,
     override val sdkComponents: Provider<SdkComponentsBuildService>
 ) : BaseServicesImpl(projectServices), DslServices {
 
@@ -56,10 +54,6 @@ class DslServicesImpl constructor(
             it.set(value)
         }
 
-
-    override fun <T> newVar(initialValue: T): ReadWriteProperty<Any?, T> =
-        variableFactory.newProperty(initialValue)
-
     override val buildDirectory: DirectoryProperty
         get() = projectServices.projectLayout.buildDirectory
 
@@ -67,4 +61,8 @@ class DslServicesImpl constructor(
         get() = projectServices.logger
 
     override fun file(file: Any): File = projectServices.fileResolver(file)
+
+    override fun <T: Any> newDecoratedInstance(dslClass: Class<T>, vararg args: Any) : T {
+        return newInstance(androidPluginDslDecorator.decorate(dslClass), *args)
+    }
 }

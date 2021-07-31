@@ -19,9 +19,11 @@
 package com.android.builder.dexing
 
 import com.android.SdkConstants.DOT_CLASS
+import com.android.SdkConstants.DOT_JAR
 import com.android.SdkConstants.PROGUARD_RULES_FOLDER
 import com.android.SdkConstants.TOOLS_CONFIGURATION_FOLDER
 import com.android.builder.dexing.r8.ClassFileProviderFactory
+import com.android.builder.dexing.r8.R8DiagnosticsHandler
 import com.android.ide.common.blame.MessageReceiver
 import com.android.tools.r8.ArchiveProgramResourceProvider
 import com.android.tools.r8.AssertionsConfiguration
@@ -43,7 +45,6 @@ import com.android.tools.r8.origin.Origin
 import com.android.tools.r8.utils.ArchiveResourceProvider
 import com.google.common.io.ByteStreams
 import java.io.BufferedOutputStream
-import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
@@ -83,8 +84,10 @@ fun runR8(
     mainDexListConfig: MainDexListConfig,
     messageReceiver: MessageReceiver,
     useFullR8: Boolean = false,
-    featureJars: Collection<Path>,
+    featureClassJars: Collection<Path>,
+    featureJavaResourceJars: Collection<Path>,
     featureDexDir: Path?,
+    featureJavaResourceOutputDir: Path?,
     libConfiguration: String? = null,
     outputKeepRules: Path? = null
 ) {
@@ -100,7 +103,12 @@ fun runR8(
         logger.fine("Classpath classes: $classpath")
         outputKeepRules?.let{ logger.fine("Keep rules for shrinking desugar lib: $it") }
     }
-    val r8CommandBuilder = CompatProguardCommandBuilder(!useFullR8, D8DiagnosticsHandler(messageReceiver, "R8"))
+    val r8CommandBuilder =
+            CompatProguardCommandBuilder(!useFullR8,
+                    R8DiagnosticsHandler(
+                            proguardConfig.proguardOutputFiles.missingKeepRules,
+                            messageReceiver,
+                            "R8"))
 
     if (toolConfig.r8OutputType == R8OutputType.DEX) {
         r8CommandBuilder.minApiLevel = toolConfig.minSdkVersion
@@ -144,25 +152,24 @@ fun runR8(
         )
     }
 
-    if (proguardConfig.proguardOutputFiles != null) {
-        val proguardOutputFiles = proguardConfig.proguardOutputFiles
-        Files.deleteIfExists(proguardOutputFiles.proguardMapOutput)
-        Files.deleteIfExists(proguardOutputFiles.proguardSeedsOutput)
-        Files.deleteIfExists(proguardOutputFiles.proguardUsageOutput)
-        Files.deleteIfExists(proguardOutputFiles.proguardConfigurationOutput)
+    val proguardOutputFiles = proguardConfig.proguardOutputFiles
+    Files.deleteIfExists(proguardOutputFiles.proguardMapOutput)
+    Files.deleteIfExists(proguardOutputFiles.proguardSeedsOutput)
+    Files.deleteIfExists(proguardOutputFiles.proguardUsageOutput)
+    Files.deleteIfExists(proguardOutputFiles.proguardConfigurationOutput)
+    Files.deleteIfExists(proguardOutputFiles.missingKeepRules)
 
-        Files.createDirectories(proguardOutputFiles.proguardMapOutput.parent)
-        r8CommandBuilder.setProguardMapOutputPath(proguardOutputFiles.proguardMapOutput)
-        r8CommandBuilder.setProguardSeedsConsumer(
-            StringConsumer.FileConsumer(proguardOutputFiles.proguardSeedsOutput))
-        r8CommandBuilder.setProguardUsageConsumer(
-            StringConsumer.FileConsumer(proguardOutputFiles.proguardUsageOutput))
-        r8CommandBuilder.setProguardConfigurationConsumer(
-            StringConsumer.FileConsumer(
-                proguardOutputFiles.proguardConfigurationOutput
-            )
+    Files.createDirectories(proguardOutputFiles.proguardMapOutput.parent)
+    r8CommandBuilder.setProguardMapOutputPath(proguardOutputFiles.proguardMapOutput)
+    r8CommandBuilder.setProguardSeedsConsumer(
+        StringConsumer.FileConsumer(proguardOutputFiles.proguardSeedsOutput))
+    r8CommandBuilder.setProguardUsageConsumer(
+        StringConsumer.FileConsumer(proguardOutputFiles.proguardUsageOutput))
+    r8CommandBuilder.setProguardConfigurationConsumer(
+        StringConsumer.FileConsumer(
+            proguardOutputFiles.proguardConfigurationOutput
         )
-    }
+    )
 
     val compilationMode =
         if (toolConfig.isDebuggable) CompilationMode.DEBUG else CompilationMode.RELEASE
@@ -234,21 +241,56 @@ fun runR8(
 
     r8CommandBuilder.addProgramResourceProvider(r8ProgramResourceProvider)
 
-    for (featureJar in featureJars) {
-        if (featureDexDir == null){
-            throw RuntimeException("featureDexDir must be non-null if featureJars.isNotEmpty()")
+    val featureClassJarMap =
+        featureClassJars.associateBy({ it.toFile().nameWithoutExtension }, { it })
+    val featureJavaResourceJarMap =
+        featureJavaResourceJars.associateBy({ it.toFile().nameWithoutExtension }, { it })
+    // Check that each feature class jar has a corresponding feature java resources jar, and vice
+    // versa.
+    check(
+        featureClassJarMap.keys.containsAll(featureJavaResourceJarMap.keys)
+            && featureJavaResourceJarMap.keys.containsAll(featureClassJarMap.keys)
+    ) {
+        """
+            featureClassJarMap and featureJavaResourceJarMap must have the same keys.
+
+            featureClassJarMap keys:
+            ${featureClassJarMap.keys.sorted()}
+
+            featureJavaResourceJarMap keys:
+            ${featureJavaResourceJarMap.keys.sorted()}
+            """.trimIndent()
+    }
+    if (featureClassJarMap.isNotEmpty()) {
+        check(featureDexDir != null && featureJavaResourceOutputDir != null) {
+            "featureDexDir == null || featureJavaResourceOutputDir == null."
         }
-        r8CommandBuilder.addFeatureSplit {
-            it.addProgramResourceProvider(ArchiveProgramResourceProvider.fromArchive(featureJar))
-            it.setProgramConsumer(
-                DexIndexedConsumer.DirectoryConsumer(
-                    Files.createDirectories(
-                        File(featureDexDir.toFile(), featureJar.toFile().nameWithoutExtension)
-                            .toPath()
-                    )
+        Files.createDirectories(featureJavaResourceOutputDir)
+        check(toolConfig.r8OutputType == R8OutputType.DEX) {
+            "toolConfig.r8OutputType != R8OutputType.DEX."
+        }
+        for (featureKey in featureClassJarMap.keys) {
+            r8CommandBuilder.addFeatureSplit {
+                it.addProgramResourceProvider(
+                    ArchiveProgramResourceProvider.fromArchive(featureClassJarMap[featureKey])
                 )
-            )
-            return@addFeatureSplit it.build()
+                it.addProgramResourceProvider(
+                    ArchiveResourceProvider.fromArchive(featureJavaResourceJarMap[featureKey], true)
+                )
+                val javaResConsumer = JavaResourcesConsumer(
+                    featureJavaResourceOutputDir.resolve("$featureKey$DOT_JAR")
+                )
+                it.setProgramConsumer(
+                    object : DexIndexedConsumer.DirectoryConsumer(
+                        Files.createDirectories(featureDexDir.resolve(featureKey))
+                    ) {
+                        override fun getDataResourceConsumer(): DataResourceConsumer {
+                            return javaResConsumer
+                        }
+                    }
+                )
+                return@addFeatureSplit it.build()
+            }
         }
     }
 
@@ -260,7 +302,7 @@ fun runR8(
         }
     }
 
-    proguardConfig.proguardOutputFiles?.proguardMapOutput?.let {
+    proguardConfig.proguardOutputFiles.proguardMapOutput.let {
         if (Files.notExists(it)) {
             // R8 might not create a mapping file, so we have to create it, http://b/37053758.
             Files.createFile(it)
@@ -286,14 +328,15 @@ data class ProguardConfig(
     val proguardConfigurationFiles: List<Path>,
     val proguardMapInput: Path?,
     val proguardConfigurations: List<String>,
-    val proguardOutputFiles: ProguardOutputFiles?
+    val proguardOutputFiles: ProguardOutputFiles
 )
 
 data class ProguardOutputFiles(
     val proguardMapOutput: Path,
     val proguardSeedsOutput: Path,
     val proguardUsageOutput: Path,
-    val proguardConfigurationOutput: Path
+    val proguardConfigurationOutput: Path,
+    val missingKeepRules: Path
 )
 
 /** Configuration parameters for the R8 tool. */
@@ -303,7 +346,7 @@ data class ToolConfig(
     val disableTreeShaking: Boolean,
     val disableDesugaring: Boolean,
     val disableMinification: Boolean,
-    val r8OutputType: R8OutputType
+    val r8OutputType: R8OutputType,
 )
 
 private class ProGuardRulesFilteringVisitor(

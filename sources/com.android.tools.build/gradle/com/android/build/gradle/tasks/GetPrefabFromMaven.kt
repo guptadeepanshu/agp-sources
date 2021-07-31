@@ -16,8 +16,9 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.gradle.internal.scope.GlobalScope
+import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.type.ArtifactTypeDefinition
 import org.gradle.api.file.FileCollection
@@ -46,7 +47,7 @@ import org.gradle.api.internal.artifacts.ArtifactAttributes
  * 4. Update the "prebuilts" maven_repo target in
  *    //tools/base/build-system/integration-test/BUILD.bazel with the new version number.
  */
-private const val DEFAULT_PREFAB_VERSION = "1.1.1"
+private const val DEFAULT_PREFAB_VERSION = "1.1.3"
 private const val PREFAB_CONFIG_NAME = "_internal_prefab_binary"
 
 private fun getPrefabArtifact(configuration: Configuration): FileCollection =
@@ -59,10 +60,12 @@ private fun getPrefabArtifact(configuration: Configuration): FileCollection =
         }
     }.artifacts.artifactFiles
 
-fun getPrefabFromMaven(globalScope: GlobalScope): FileCollection {
-    val project = globalScope.project
+fun getPrefabFromMaven(
+    projectOptions: ProjectOptions,
+    project: Project
+): FileCollection {
 
-    globalScope.projectOptions[StringOption.PREFAB_CLASSPATH]?.let {
+    projectOptions[StringOption.PREFAB_CLASSPATH]?.let {
         return project.files(it)
     }
 
@@ -77,7 +80,7 @@ fun getPrefabFromMaven(globalScope: GlobalScope): FileCollection {
         it.description = "The Prefab tool to use for generating native build system bindings."
     }
 
-    val version = globalScope.projectOptions[StringOption.PREFAB_VERSION] ?: DEFAULT_PREFAB_VERSION
+    val version = projectOptions[StringOption.PREFAB_VERSION] ?: DEFAULT_PREFAB_VERSION
     project.dependencies.add(
         config.name,
         mapOf(

@@ -15,60 +15,20 @@
  */
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 
 /**
  * [Variant] for test-only modules.
  */
-@Incubating
-interface TestVariant: Variant {
+interface TestVariant: GeneratesTestApk, Variant {
     /**
      * Variant's application ID as present in the final manifest file of the APK.
      */
     override val applicationId: Property<String>
 
     /**
-     * Variant's aaptOptions, initialized by the corresponding global DSL element.
-     */
-    val aaptOptions: AaptOptions
-
-    /**
-     * Variant's aaptOptions, initialized by the corresponding global DSL element.
-     */
-    fun aaptOptions(action: AaptOptions.() -> Unit)
-
-    /**
      * The application of the app under tests.
      */
     val testedApplicationId: Provider<String>
-
-    /**
-     * The instrumentationRunner to use to run the tests.
-     */
-    val instrumentationRunner: Property<String>
-
-    /**
-     * The handleProfiling value to use to run the tests.
-     */
-    val handleProfiling: Property<Boolean>
-
-    /**
-     * The functionalTest value to use to run the tests.
-     */
-    val functionalTest: Property<Boolean>
-
-    /** the test label  */
-    val testLabel: Property<String?>
-
-    /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
-     */
-    override val packagingOptions: ApkPackagingOptions
-
-    /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
-     */
-    fun packagingOptions(action: ApkPackagingOptions.() -> Unit)
 }

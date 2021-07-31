@@ -25,14 +25,11 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.getDesugarLibJarFromMaven
-import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.dexing.KeepRulesConfig
 import com.android.builder.dexing.runL8
-import com.android.builder.model.CodeShrinker
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -122,8 +119,8 @@ abstract class L8DexDesugarLibTask : NonIncrementalTask() {
             task: L8DexDesugarLibTask
         ) {
             super.configure(task)
-            task.libConfiguration.set(getDesugarLibConfig(creationConfig.globalScope.project))
-            task.desugarLibJar.from(getDesugarLibJarFromMaven(creationConfig.globalScope.project))
+            task.libConfiguration.set(getDesugarLibConfig(creationConfig.services.projectInfo.getProject()))
+            task.desugarLibJar.from(getDesugarLibJarFromMaven(creationConfig.services.projectInfo.getProject()))
             task.androidJarInput.initialize(creationConfig)
             task.minSdkVersion.set(creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel())
 
@@ -152,11 +149,21 @@ fun setDesugarLibKeepRules(
     enableDexingArtifactTransform: Boolean,
     separateFileDependenciesDexingTask: Boolean
 ) {
+    keepRulesFiles.from(
+            creationConfig.artifacts.get(
+                    InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES
+            )
+    )
+    if (creationConfig.minifiedEnabled) {
+        // no additional rules are needed, R8 generates all of them
+        return
+    }
+
     val attributes = getDexingArtifactConfiguration(creationConfig).getAttributes()
     if (enableDexingArtifactTransform) {
         keepRulesFiles.from(
             creationConfig.variantDependencies.getArtifactCollection(
-                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 AndroidArtifacts.ArtifactScope.PROJECT,
                 AndroidArtifacts.ArtifactType.KEEP_RULES,
                 attributes
@@ -171,13 +178,13 @@ fun setDesugarLibKeepRules(
 
         keepRulesFiles.from(
             creationConfig.variantDependencies.getArtifactCollection(
-                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                 artifactScope,
                 AndroidArtifacts.ArtifactType.KEEP_RULES,
                 attributes
             ).artifactFiles
         )
-    } else if (creationConfig.codeShrinker != CodeShrinker.R8) {
+    } else {
         keepRulesFiles.from(
             creationConfig.artifacts.get(
                 InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES
@@ -193,12 +200,6 @@ fun setDesugarLibKeepRules(
             )
         )
     }
-
-    keepRulesFiles.from(
-        creationConfig.artifacts.get(
-            InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES
-        )
-    )
 
     if (separateFileDependenciesDexingTask) {
         keepRulesFiles.from(

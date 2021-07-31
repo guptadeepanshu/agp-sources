@@ -33,10 +33,14 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.util.PatternSet
+import org.gradle.process.CommandLineArgumentProvider
 import java.util.concurrent.Callable
 
 /**
@@ -51,12 +55,10 @@ class JavaCompileCreationAction(
 ) : TaskCreationAction<JavaCompile>() {
 
     private val globalScope = creationConfig.globalScope
+    private val project = creationConfig.services.projectInfo.getProject()
 
-    private val classesOutputDirectory = globalScope.project.objects.directoryProperty()
-    private val annotationProcessorOutputDirectory = globalScope.project.objects.directoryProperty()
-
-    private val dataBindingArtifactDir = globalScope.project.objects.directoryProperty()
-    private val dataBindingExportClassListFile = globalScope.project.objects.fileProperty()
+    private val dataBindingArtifactDir = project.objects.directoryProperty()
+    private val dataBindingExportClassListFile = project.objects.fileProperty()
 
     override val name: String
         get() = creationConfig.computeTaskName("compile", "JavaWithJavac")
@@ -72,19 +74,19 @@ class JavaCompileCreationAction(
         val artifacts = creationConfig.artifacts
 
         artifacts
-            .setInitialProvider(taskProvider) { classesOutputDirectory }
+            .setInitialProvider(taskProvider) { it.destinationDirectory }
             .withName("classes")
             .on(JAVAC)
 
         artifacts
-            .setInitialProvider(taskProvider) { annotationProcessorOutputDirectory }
+            .setInitialProvider(taskProvider) { it.options.generatedSourceOutputDirectory }
             // Setting a name is not required, but a lot of AGP and IDE tests are assuming this name
             // so we leave it here for now.
             .withName(AP_GENERATED_SOURCES_DIR_NAME)
             .on(AP_GENERATED_SOURCES)
 
         if (creationConfig.buildFeatures.dataBinding) {
-            // Register data binding artifacts as outputs. Ihere are 2 ways to do this:
+            // Register data binding artifacts as outputs. There are 2 ways to do this:
             //    (1) Register with JavaCompile when Kapt is not used, and register with Kapt when
             //        Kapt is used.
             //    (2) Always register with JavaCompile, and when Kapt is used, replace them with
@@ -107,7 +109,7 @@ class JavaCompileCreationAction(
         task.dependsOn(creationConfig.taskContainer.preBuildTask)
         task.extensions.add(PROPERTY_VARIANT_NAME_KEY, creationConfig.name)
 
-        task.configureProperties(creationConfig)
+        task.configureProperties(creationConfig, task)
         // Set up the annotation processor classpath even when Kapt is used, because Java compiler
         // plugins like ErrorProne share their classpath with annotation processors (see
         // https://github.com/gradle/gradle/issues/6573), and special annotation processors like
@@ -120,56 +122,25 @@ class JavaCompileCreationAction(
         val javaSourcesFilter = PatternSet().include("**/*.java")
         task.source = task.project.files(sourcesToCompile).asFileTree.matching(javaSourcesFilter)
 
-        // Add javac option `-parameters` to store parameter names of methods in the generated
-        // class files, which Room annotation processor requires in order for it to be incremental
-        // (see bug 159501719).
-        // Note that this option is only available on JDK version 8+ and for target Java version 8+
-        // (see bug 169252018).
-        if (JavaVersion.current().isJava8Compatible
-                && creationConfig.globalScope.extension.compileOptions.targetCompatibility.isJava8Compatible
-        ) {
-            task.options.compilerArgs.add(PARAMETERS)
-        }
-
+        task.options.compilerArgumentProviders.add(
+            JavaCompileOptionsForRoom(
+                creationConfig.artifacts.get(ANNOTATION_PROCESSOR_LIST),
+                creationConfig.globalScope.extension.compileOptions.targetCompatibility.isJava8Compatible
+            )
+        )
         task.options.isIncremental = globalScope.extension.compileOptions.incremental
             ?: DEFAULT_INCREMENTAL_COMPILATION
 
-        // When Kapt is used, it runs annotation processors declared in the `kapt` configurations.
-        // However, we currently collect annotation processors for analytics purposes only from the
-        // `annotationProcessor` configurations, not `kapt` configurations, so the data is only
-        // correct if Kapt is not used.
-        if (!usingKapt) {
-            // Record apList as input. It impacts recordAnnotationProcessors() below.
-            val apList = creationConfig.artifacts.get(ANNOTATION_PROCESSOR_LIST)
-            task.inputs.files(apList).withPathSensitivity(PathSensitivity.NONE)
-                .withPropertyName("annotationProcessorList")
+        // Record apList as input. It impacts recordAnnotationProcessors() below.
+        val apList = creationConfig.artifacts.get(ANNOTATION_PROCESSOR_LIST)
+        task.inputs.files(apList).withPathSensitivity(PathSensitivity.NONE)
+            .withPropertyName("annotationProcessorList")
+        task.recordAnnotationProcessors(
+            apList,
+            creationConfig.name,
+            getBuildService(creationConfig.services.buildServiceRegistry)
+        )
 
-            task.recordAnnotationProcessors(
-                apList,
-                creationConfig.name,
-                getBuildService(creationConfig.services.buildServiceRegistry)
-            )
-        }
-
-        // Set up the outputs
-        task.setDestinationDir(classesOutputDirectory.asFile)
-        // Can't write `task.options.setAnnotationProcessorGeneratedSourcesDirectory(
-        // annotationProcessorOutputDirectory.asFile)` due to a new requirement in Gradle 7.0:
-        // https://docs.gradle.org/current/userguide/upgrading_version_6.html#querying_a_mapped_output_property_of_a_task_before_the_task_has_completed
-        // (currently caught by BasicInstantExecutionTest).
-        task.options.annotationProcessorGeneratedSourcesDirectory =
-            creationConfig.artifacts
-                .getOutputPath(AP_GENERATED_SOURCES, AP_GENERATED_SOURCES_DIR_NAME)
-
-        // The API of JavaCompile to set up outputs only accepts File or Provider<File> (see above).
-        // However, for task wiring to work correctly, we will need to register the corresponding
-        // DirectoryProperty / RegularFileProperty as outputs too (they are not yet annotated as
-        // outputs).
-        task.outputs.dir(classesOutputDirectory).withPropertyName("classesOutputDirectory")
-        task.outputs.dir(annotationProcessorOutputDirectory)
-            .withPropertyName("annotationProcessorOutputDirectory")
-
-        // Also do that for data binding artifacts
         if (creationConfig.buildFeatures.dataBinding) {
             // Data binding artifacts are part of the annotation processing outputs of JavaCompile
             // if Kapt is not used; otherwise, they are the outputs of Kapt.
@@ -221,6 +192,33 @@ fun registerDataBindingOutputs(
     }
 }
 
+private class JavaCompileOptionsForRoom(
+
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    val annotationProcessorListFile: Provider<RegularFile>,
+
+    @get:Input
+    val isTargetJava8Compatible: Boolean
+) : CommandLineArgumentProvider {
+
+    override fun asArguments(): Iterable<String> {
+        val annotationProcessors =
+            readAnnotationProcessorsFromJsonFile(annotationProcessorListFile.get().asFile).keys
+        if (annotationProcessors.any { it.contains(ANDROIDX_ROOM_ROOM_COMPILER) }) {
+            // Add javac option `-parameters` to store parameter names of methods in the generated
+            // class files, which Room annotation processor requires in order for it to be
+            // incremental (see bugs 189326895, 159501719).
+            // Note that this option is only available on JDK version 8+ and for target Java version
+            // 8+ (see bug 169252018).
+            if (JavaVersion.current().isJava8Compatible && isTargetJava8Compatible) {
+                return listOf(PARAMETERS)
+            }
+        }
+        return emptyList()
+    }
+}
+
 private fun JavaCompile.recordAnnotationProcessors(
     processorListFile: Provider<RegularFile>,
     variantName: String,
@@ -255,4 +253,5 @@ private fun JavaCompile.recordAnnotationProcessors(
 }
 
 private const val AP_GENERATED_SOURCES_DIR_NAME = "out"
+private const val ANDROIDX_ROOM_ROOM_COMPILER = "androidx.room:room-compiler"
 private const val PARAMETERS = "-parameters"

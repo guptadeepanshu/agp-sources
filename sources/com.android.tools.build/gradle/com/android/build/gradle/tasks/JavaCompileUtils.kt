@@ -19,12 +19,19 @@
 package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
+import com.android.build.gradle.internal.dependency.JDK_IMAGE_OUTPUT_DIR
+import com.android.build.gradle.internal.dependency.getJdkImageFromTransform
 import com.android.build.gradle.internal.profile.AnalyticsService
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PROCESSED_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.ANNOTATION_PROCESSOR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
+import com.android.builder.errors.IssueReporter
+import com.android.sdklib.AndroidTargetHash
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import com.google.gson.GsonBuilder
@@ -32,7 +39,12 @@ import com.google.gson.reflect.TypeToken
 import com.google.wireless.android.sdk.stats.AnnotationProcessorInfo
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.process.CommandLineArgumentProvider
 import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
@@ -40,8 +52,6 @@ import java.io.IOException
 import java.io.Serializable
 import java.io.UncheckedIOException
 import java.util.jar.JarFile
-
-const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 
 const val ANNOTATION_PROCESSORS_INDICATOR_FILE =
     "META-INF/services/javax.annotation.processing.Processor"
@@ -57,11 +67,30 @@ const val DEFAULT_INCREMENTAL_COMPILATION = true
  *
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
-fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig) {
-    val compileOptions = creationConfig.globalScope.extension.compileOptions
+fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, task: JavaCompile) {
+    val globalScope = creationConfig.globalScope
+    val compileOptions = globalScope.extension.compileOptions
 
-    this.options.bootstrapClasspath = creationConfig.variantScope.bootClasspath
-    this.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
+    if (compileOptions.sourceCompatibility.isJava9Compatible) {
+        checkSdkCompatibility(globalScope.extension.compileSdkVersion!!, creationConfig.services.issueReporter)
+        checkNotNull(task.project.configurations.findByName(CONFIG_NAME_ANDROID_JDK_IMAGE)) {
+            "The $CONFIG_NAME_ANDROID_JDK_IMAGE configuration must exist for Java 9+ sources."
+        }
+        val jdkImage = getJdkImageFromTransform(creationConfig.services.projectInfo.getProject())
+
+        this.options.compilerArgumentProviders.add(JdkImageInput(jdkImage))
+        // Make Javac generate legacy bytecode for string concatenation, see b/65004097
+        this.options.compilerArgs.add("-XDstringConcat=inline")
+        this.classpath = project.files(
+            // classes(e.g. android.jar) that were previously passed through bootstrapClasspath need to be provided
+            // through classpath
+            creationConfig.variantScope.bootClasspath,
+            creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
+        )
+    } else {
+        this.options.bootstrapClasspath = creationConfig.variantScope.bootClasspath
+        this.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
+    }
 
     this.sourceCompatibility = compileOptions.sourceCompatibility.toString()
     this.targetCompatibility = compileOptions.targetCompatibility.toString()
@@ -101,11 +130,13 @@ fun JavaCompile.configurePropertiesForAnnotationProcessing(
  * @see [JavaCompile.configurePropertiesForAnnotationProcessing]
  */
 fun JavaCompile.configureAnnotationProcessorPath(creationConfig: ComponentCreationConfig) {
-    options.annotationProcessorPath = creationConfig.variantDependencies.getArtifactFileCollection(
-        ANNOTATION_PROCESSOR,
-        ALL,
-        PROCESSED_JAR
-    )
+    // Optimization: For project jars, query for JAR instead of PROCESSED_JAR as project jars are
+    // currently considered already processed (unlike external jars).
+    val projectJars = creationConfig.variantDependencies
+            .getArtifactFileCollection(ANNOTATION_PROCESSOR, PROJECT, JAR)
+    val externalJars = creationConfig.variantDependencies
+            .getArtifactFileCollection(ANNOTATION_PROCESSOR, EXTERNAL, PROCESSED_JAR)
+    options.annotationProcessorPath = projectJars.plus(externalJars)
 }
 
 data class SerializableArtifact(
@@ -253,7 +284,23 @@ fun recordAnnotationProcessorsForAnalytics(
         val builder = AnnotationProcessorInfo.newBuilder()
         builder.spec = processor.key
         builder.isIncremental = processor.value
-        variant.addAnnotationProcessors(builder)
+        variant?.addAnnotationProcessors(builder)
     }
-    variant.isAnnotationProcessingIncremental = !processors.values.contains(false)
+    variant?.isAnnotationProcessingIncremental = !processors.values.contains(false)
+}
+
+private fun checkSdkCompatibility(compileSdkVersion: String, issueReporter: IssueReporter) {
+    compileSdkVersion.let {
+        if (AndroidTargetHash.getVersionFromHash(it)!!.featureLevel < 30) {
+            issueReporter
+                .reportError(
+                    IssueReporter.Type.GENERIC, "In order to compile Java 9+ source, " +
+                    "please set compileSdkVersion to 30 or above"
+                )
+        }
+    }
+}
+
+class JdkImageInput(@get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) val jdkImage: FileCollection) : CommandLineArgumentProvider {
+    override fun asArguments() = listOf("--system", jdkImage.singleFile.resolve(JDK_IMAGE_OUTPUT_DIR).absolutePath)
 }

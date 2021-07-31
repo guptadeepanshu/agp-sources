@@ -26,13 +26,10 @@ import com.android.repository.api.RepoManager;
 import com.android.repository.api.RepoPackage;
 import com.android.repository.api.Repository;
 import com.android.repository.api.RepositorySource;
-import com.android.repository.util.InstallerUtil;
 import com.google.common.annotations.VisibleForTesting;
-
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -90,15 +87,17 @@ public abstract class RemotePackageImpl extends RepoPackageImpl implements Remot
     @NonNull
     @Override
     public Channel getChannel() {
-        return getChannelRef() == null ? Channel.DEFAULT : getChannelRef().getRef();
+        return getChannelRef() == null
+                ? createFactory().createChannelType(Channel.DEFAULT_ID)
+                : getChannelRef().getRef();
     }
 
     @NonNull
     @Override
-    public File getInstallDir(@NonNull RepoManager manager, @NonNull ProgressIndicator progress) {
+    public Path getInstallDir(@NonNull RepoManager manager, @NonNull ProgressIndicator progress) {
         assert manager.getLocalPath() != null;
         String path = getPath().replace(RepoPackage.PATH_SEPARATOR, File.separatorChar);
-        return new File(manager.getLocalPath(), path);
+        return manager.getLocalPath().resolve(path);
     }
 
     /**
@@ -125,7 +124,10 @@ public abstract class RemotePackageImpl extends RepoPackageImpl implements Remot
      */
     @NonNull
     public static RemotePackageImpl create(@NonNull RemotePackage remotePackage) {
-        CommonFactory factory = RepoManager.getCommonModule().createLatestFactory();
+        if (remotePackage instanceof RemotePackageImpl) {
+            return (RemotePackageImpl) remotePackage;
+        }
+        CommonFactory factory = remotePackage.createFactory();
         RemotePackageImpl result = factory.createRemotePackage();
         result.setVersion(remotePackage.getVersion());
         result.setLicense(remotePackage.getLicense());

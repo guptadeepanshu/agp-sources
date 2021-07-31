@@ -18,8 +18,10 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.Component
+import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.UnitTest
 import com.android.build.api.component.analytics.AnalyticsEnabledUnitTest
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Variant
@@ -27,6 +29,7 @@ import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
+import com.android.build.gradle.internal.core.VariantDslInfoImpl
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
@@ -42,11 +45,12 @@ import com.google.common.collect.ImmutableList
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 open class UnitTestImpl @Inject constructor(
-    componentIdentity: UnitTestBuilderImpl,
+    componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
     variantDslInfo: VariantDslInfo,
     variantDependencies: VariantDependencies,
@@ -81,11 +85,24 @@ open class UnitTestImpl @Inject constructor(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
+    override val minSdkVersion: AndroidVersion
+        get() = testedVariant.minSdkVersion
+
+    override val targetSdkVersion: AndroidVersion
+        get() = testedVariant.targetSdkVersion
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
     override val applicationId: Provider<String> =
         internalServices.providerOf(String::class.java, variantDslInfo.applicationId)
+
+    /**
+     * Return the default runner as with unit tests, there is no dexing. However aapt2 requires
+     * the instrumentation tag to be present in the merged manifest to process android resources.
+     */
+    override val instrumentationRunner: Provider<out String>
+        get() = services.provider { VariantDslInfoImpl.DEFAULT_TEST_RUNNER }
 
     override val testedApplicationId: Provider<String>
         get() = testedConfig.applicationId
@@ -95,39 +112,35 @@ open class UnitTestImpl @Inject constructor(
 
     // these would normally be public but not for unit-test. They are there to feed the
     // manifest but aren't actually used.
-    override val instrumentationRunner: Provider<String>
-        get() = variantDslInfo.getInstrumentationRunner(testedVariant.dexingType)
-    override val handleProfiling: Provider<Boolean>
-        get() = variantDslInfo.handleProfiling
-    override val functionalTest: Provider<Boolean>
-        get() = variantDslInfo.functionalTest
-    override val testLabel: Provider<String?>
-        get() = variantDslInfo.testLabel
-    override val instrumentationRunnerArguments: Map<String, String>
-        get() = variantDslInfo.instrumentationRunnerArguments
     override val isTestCoverageEnabled: Boolean
         get() = variantDslInfo.isTestCoverageEnabled
 
     override fun addDataBindingSources(
         sourceSets: ImmutableList.Builder<ConfigurableFileTree>) {}
 
-    override val minSdkVersion: AndroidVersion
-        get() = testedVariant.variantBuilder.minSdkVersion
-
     override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<VariantBuilder, Variant>,
-            stats: GradleBuildVariant.Builder
+            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
+            stats: GradleBuildVariant.Builder?
     ): T =
+        if (stats == null) {
+             this as T
+        } else {
             projectServices.objectFactory.newInstance(
-                    AnalyticsEnabledUnitTest::class.java,
-                    this,
-                    stats
+                AnalyticsEnabledUnitTest::class.java,
+                this,
+                stats
             ) as T
+        }
 
     /**
-     * for unit tests, the placeholders are always empty.
+     * for unit tests, the placeholders are from the tested variant.
      */
-    override val manifestPlaceholders: MapProperty<String, String> =
-            internalServices.mapPropertyOf(String::class.java, String::class.java, mapOf())
+    override val manifestPlaceholders: MapProperty<String, String> by lazy {
+        internalServices.mapPropertyOf(
+                String::class.java,
+                String::class.java,
+                variantDslInfo.manifestPlaceholders
+        )
+    }
 }

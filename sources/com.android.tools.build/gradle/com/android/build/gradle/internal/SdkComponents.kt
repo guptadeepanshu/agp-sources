@@ -23,12 +23,14 @@ import com.android.build.gradle.internal.cxx.stripping.SymbolStripExecutableFind
 import com.android.build.gradle.internal.cxx.stripping.createSymbolStripExecutableFinder
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.ndk.NdkHandler
+import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.options.StringOption
 import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
 import com.android.sdklib.AndroidVersion
@@ -71,10 +73,12 @@ abstract class SdkComponentsBuildService @Inject constructor(
         val projectRootDir: RegularFileProperty
         val offlineMode: Property<Boolean>
         val issueReporter: Property<SyncIssueReporterImpl.GlobalSyncIssueService>
+        val androidLocationsServices: Property<AndroidLocationsBuildService>
 
         val enableSdkDownload: Property<Boolean>
         val androidSdkChannel: Property<Int>
         val useAndroidX: Property<Boolean>
+        val suppressWarningUnsupportedCompileSdk: Property<String>
     }
 
     private val sdkSourceSet: SdkLocationSourceSet by lazy {
@@ -84,7 +88,12 @@ abstract class SdkComponentsBuildService @Inject constructor(
     // Trick to not initialize the sdkHandler just to call unload() on it. Using the Delegate
     // allows to test wether or not the [SdkHandler] has been initialized.
     private val sdkHandlerDelegate = lazy {
-        SdkHandler(sdkSourceSet, parameters.issueReporter.get()).also {
+        SdkHandler(
+            parameters.androidLocationsServices.get(),
+            sdkSourceSet,
+            parameters.issueReporter.get(),
+            parameters.suppressWarningUnsupportedCompileSdk.orNull,
+        ).also {
             it.setSdkLibData(
                 SdkLibDataFactory(
                     !parameters.offlineMode.get() && parameters.enableSdkDownload.get(),
@@ -112,6 +121,11 @@ abstract class SdkComponentsBuildService @Inject constructor(
      *
      * So creating as many instances of VersionedSdkLoader as necessary is fine but instances
      * of [SdkLoadingStrategy] should be allocated wisely and closed once finished.
+     *
+     * Do not create instances of [VersionedSdkLoader] to store in [org.gradle.api.Task]'s input
+     * parameters or [org.gradle.workers.WorkParameters] as it is not serializable. Instead
+     * inject the [SdkComponentsBuildService] along with compileSdkVersion and buildToolsRevision
+     * for the module and call [SdkComponentsBuildService.sdkLoader] at execution time.
      */
     class VersionedSdkLoader(
         private val providerFactory: ProviderFactory,
@@ -138,7 +152,8 @@ abstract class SdkComponentsBuildService @Inject constructor(
                         compileSdkVersion.orNull,
                         buildToolsRevision.orNull,
                         parameters.useAndroidX.get(),
-                        parameters.issueReporter.get()
+                        parameters.issueReporter.get(),
+                        parameters.suppressWarningUnsupportedCompileSdk.orNull
                     )
 
                     SdkLoadingStrategy(
@@ -215,6 +230,10 @@ abstract class SdkComponentsBuildService @Inject constructor(
             objectFactory.directoryProperty().fileProvider(providerFactory.provider {
                 sdkLoadStrategy.getEmulatorLibFolder()
             })
+
+        val coreForSystemModulesProvider: Provider<File> = providerFactory.provider {
+            sdkLoadStrategy.getCoreForSystemModulesJar()
+        }
     }
 
     class VersionedNdkHandler(
@@ -330,10 +349,12 @@ abstract class SdkComponentsBuildService @Inject constructor(
             parameters.projectRootDir.set(project.rootDir)
             parameters.offlineMode.set(project.gradle.startParameter.isOffline)
             parameters.issueReporter.set(getBuildService(project.gradle.sharedServices))
+            parameters.androidLocationsServices.set(getBuildService(project.gradle.sharedServices))
 
             parameters.enableSdkDownload.set(projectOptions.get(BooleanOption.ENABLE_SDK_DOWNLOAD))
             parameters.androidSdkChannel.set(projectOptions.get(IntegerOption.ANDROID_SDK_CHANNEL))
             parameters.useAndroidX.set(projectOptions.get(BooleanOption.USE_ANDROID_X))
+            parameters.suppressWarningUnsupportedCompileSdk.set(projectOptions.get(StringOption.SUPPRESS_UNSUPPORTED_COMPILE_SDK))
         }
     }
 }

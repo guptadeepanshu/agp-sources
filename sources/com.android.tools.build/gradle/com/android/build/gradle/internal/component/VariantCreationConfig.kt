@@ -18,8 +18,10 @@ package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.api.variant.PackagingOptions
-import com.android.build.api.variant.impl.ResValue
+import com.android.build.api.variant.Packaging
+import com.android.build.api.variant.ResValue
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 
 interface VariantCreationConfig: ComponentCreationConfig {
@@ -28,7 +30,7 @@ interface VariantCreationConfig: ComponentCreationConfig {
 
     val resValues: MapProperty<ResValue.Key, ResValue>
 
-    val packagingOptions: PackagingOptions
+    val packaging: Packaging
 
     override val needsMainDexListForBundle: Boolean
 
@@ -37,7 +39,13 @@ interface VariantCreationConfig: ComponentCreationConfig {
 
     val maxSdkVersion: Int?
 
+    val targetSdkVersion: AndroidVersion
+
     val isMultiDexEnabled: Boolean
 
     val isCoreLibraryDesugaringEnabled: Boolean
+
+    val proguardFiles: ListProperty<RegularFile>
+
+    val experimentalProperties: MapProperty<String, Any>
 }

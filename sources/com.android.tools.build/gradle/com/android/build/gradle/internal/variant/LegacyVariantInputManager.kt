@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.variant
 
 import com.android.SdkConstants
 import com.android.build.gradle.internal.DefaultConfigData
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.dependency.SourceSetManager
 import com.android.build.gradle.internal.dsl.BuildType
@@ -29,7 +28,10 @@ import com.android.build.gradle.internal.dsl.ProductFlavorFactory
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.SigningConfigFactory
 import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreLocation
+import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.VariantType
 import org.gradle.api.NamedDomainObjectContainer
@@ -43,6 +45,7 @@ class LegacyVariantInputManager(
     variantType: VariantType,
     sourceSetManager: SourceSetManager
 ) : AbstractVariantInputManager<DefaultConfig, BuildType, ProductFlavor, SigningConfig>(
+    dslServices,
     variantType,
     sourceSetManager
 ) {
@@ -61,17 +64,22 @@ class LegacyVariantInputManager(
             SigningConfig::class.java,
             SigningConfigFactory(
                 dslServices,
-                getDefaultDebugKeystoreLocation(
-                    dslServices.gradleEnvironmentProvider,
-                    LoggerWrapper(dslServices.logger)
-                )
+                getBuildService(
+                    dslServices.buildServiceRegistry,
+                    AndroidLocationsBuildService::class.java
+                ).get().getDefaultDebugKeystoreLocation()
             )
         )
 
-    override val defaultConfig: DefaultConfig = dslServices.newInstance(DefaultConfig::class.java, BuilderConstants.MAIN, dslServices)
+    override val defaultConfig: DefaultConfig = dslServices.newInstance(
+        DefaultConfig::class.java,
+        BuilderConstants.MAIN,
+        dslServices
+    )
     override val defaultConfigData: DefaultConfigData<DefaultConfig>
 
     init {
+        var testFixturesSourceSet: DefaultAndroidSourceSet? = null
         var androidTestSourceSet: DefaultAndroidSourceSet? = null
         var unitTestSourceSet: DefaultAndroidSourceSet? = null
         if (variantType.hasTestComponents) {
@@ -81,11 +89,18 @@ class LegacyVariantInputManager(
                 sourceSetManager.setUpTestSourceSet(VariantType.UNIT_TEST_PREFIX) as DefaultAndroidSourceSet
         }
 
+        if (dslServices.projectOptions[BooleanOption.ENABLE_TEST_FIXTURES]) {
+            testFixturesSourceSet =
+                sourceSetManager.setUpSourceSet(VariantType.TEST_FIXTURES_PREFIX)
+                        as DefaultAndroidSourceSet
+        }
+
         defaultConfigData = DefaultConfigData(
-            defaultConfig,
-            sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN) as DefaultAndroidSourceSet,
-            androidTestSourceSet,
-            unitTestSourceSet
+            defaultConfig = defaultConfig,
+            sourceSet = sourceSetManager.setUpSourceSet(SdkConstants.FD_MAIN) as DefaultAndroidSourceSet,
+            testFixturesSourceSet = testFixturesSourceSet,
+            androidTestSourceSet = androidTestSourceSet,
+            unitTestSourceSet = unitTestSourceSet
         )
 
         // map the whenObjectAdded/whenObjectRemoved callbacks on the containers.

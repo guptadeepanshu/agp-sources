@@ -16,8 +16,10 @@
 package com.android.sdklib.repository.legacy;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.android.repository.Revision;
 import com.android.repository.api.Channel;
+import com.android.repository.api.Checksum;
 import com.android.repository.api.ConsoleProgressIndicator;
 import com.android.repository.api.Dependency;
 import com.android.repository.api.Downloader;
@@ -52,7 +54,8 @@ import com.android.sdklib.repository.targets.OptionalLibraryImpl;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,13 +65,13 @@ import java.util.List;
  */
 public class LegacyRemoteRepoLoader implements FallbackRemoteRepoLoader {
 
-    /**
-     * Parses xml files using the {@link SdkSource} mechanism into {@link LegacyRemotePackage}s.
-     */
+    /** Parses xml files using the {@link SdkSource} mechanism into {@link LegacyRemotePackage}s. */
     @NonNull
     @Override
-    public Collection<RemotePackage> parseLegacyXml(@NonNull RepositorySource source,
-            @NonNull Downloader downloader, @NonNull SettingsController settings,
+    public Collection<RemotePackage> parseLegacyXml(
+            @NonNull RepositorySource source,
+            @NonNull Downloader downloader,
+            @Nullable SettingsController settings,
             @NonNull ProgressIndicator progress) {
         SdkSource legacySource;
         RemotePkgInfo[] packages = null;
@@ -145,14 +148,22 @@ public class LegacyRemoteRepoLoader implements FallbackRemoteRepoLoader {
                 if (mWrapped instanceof RemoteAddonPkgInfo) {
                     for (RemoteAddonPkgInfo.Lib wrappedLib : ((RemoteAddonPkgInfo) mWrapped)
                             .getLibs()) {
-                        libs.add(new OptionalLibraryImpl(wrappedLib.getName(), new File(""),
-                                wrappedLib.getDescription(), false));
+                        libs.add(
+                                new OptionalLibraryImpl(
+                                        wrappedLib.getName(),
+                                        Paths.get(""),
+                                        wrappedLib.getDescription(),
+                                        false));
                     }
                 }
                 ProgressIndicator progress = new ConsoleProgressIndicator();
-                mDetails = LegacyRepoUtils
-                        .createTypeDetails(mWrapped.getPkgDesc(), layoutlibApi, libs, null,
-                                progress, FileOpUtils.create());
+                mDetails =
+                        LegacyRepoUtils.createTypeDetails(
+                                mWrapped.getPkgDesc(),
+                                layoutlibApi,
+                                libs,
+                                null,
+                                FileOpUtils.create());
             }
             return mDetails;
         }
@@ -242,13 +253,13 @@ public class LegacyRemoteRepoLoader implements FallbackRemoteRepoLoader {
 
         @Override
         public Archive getArchive() {
-            for (com.android.sdklib.repository.legacy.remote.internal.archives.Archive archive : mWrapped
-                    .getArchives()) {
+            for (com.android.sdklib.repository.legacy.remote.internal.archives.Archive archive :
+                    mWrapped.getArchives()) {
                 if (archive.isCompatible()) {
                     CommonFactory f = RepoManager.getCommonModule().createLatestFactory();
                     Archive arch = f.createArchiveType();
                     Archive.CompleteType complete = f.createCompleteType();
-                    complete.setChecksum(archive.getChecksum());
+                    complete.setTypedChecksum(Checksum.create(archive.getChecksum(), "sha1"));
                     complete.setSize(archive.getSize());
                     complete.setUrl(archive.getUrl());
                     arch.setComplete(complete);
@@ -283,11 +294,10 @@ public class LegacyRemoteRepoLoader implements FallbackRemoteRepoLoader {
 
         @NonNull
         @Override
-        public File getInstallDir(@NonNull RepoManager manager,
-                @NonNull ProgressIndicator progress) {
-            File localPath = manager.getLocalPath();
-            assert localPath != null;
-            return mWrapped.getPkgDesc().getCanonicalInstallFolder(localPath);
+        public Path getInstallDir(
+                @NonNull RepoManager manager, @NonNull ProgressIndicator progress) {
+            Path path = manager.getLocalPath();
+            return mWrapped.getPkgDesc().getCanonicalInstallFolder(path);
         }
 
         @Override

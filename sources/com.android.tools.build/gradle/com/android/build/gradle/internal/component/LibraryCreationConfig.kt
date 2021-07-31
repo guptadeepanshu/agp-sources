@@ -18,6 +18,6 @@ package com.android.build.gradle.internal.component
 
 import org.gradle.api.provider.MapProperty
 
-interface LibraryCreationConfig: VariantCreationConfig {
+interface LibraryCreationConfig: VariantCreationConfig, AarCreationConfig {
     val manifestPlaceholders: MapProperty<String, String>
 }

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.cxx.configure
 
+import com.android.build.api.variant.Variant
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.tasks.NativeBuildSystem
 
@@ -33,6 +34,7 @@ data class NativeBuildSystemVariantConfig(
 
 fun createNativeBuildSystemVariantConfig(
     buildSystem: NativeBuildSystem,
+    variant: Variant,
     variantDslInfo: VariantDslInfo) : NativeBuildSystemVariantConfig {
 
     /**
@@ -48,12 +50,9 @@ fun createNativeBuildSystemVariantConfig(
      *     }
      * </pre>
      */
-    val externalNativeBuildAbiFilters: Set<String> = when (buildSystem) {
-        NativeBuildSystem.CMAKE ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.abiFilters ?: setOf()
-        NativeBuildSystem.NDK_BUILD ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.abiFilters ?: setOf()
-    }
+    val externalNativeBuildAbiFilters: Set<String> =
+            variant.externalNativeBuild?.abiFilters?.get() ?: setOf()
+
 
     /**
      * Get the set of abiFilters from the ndk part of the DSL. For example,
@@ -82,12 +81,8 @@ fun createNativeBuildSystemVariantConfig(
      *     }
      * </pre>
      */
-    val arguments: List<String> = when (buildSystem) {
-        NativeBuildSystem.CMAKE ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.arguments ?: listOf()
-        NativeBuildSystem.NDK_BUILD ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.arguments ?: listOf()
-    }
+    val arguments: List<String> =
+            variant.externalNativeBuild?.arguments?.get() ?: listOf()
 
     /**
      * The set of build system c flags from the externalNativeBuild part of the DSL. For example,
@@ -102,12 +97,8 @@ fun createNativeBuildSystemVariantConfig(
      *     }
      * </pre>
      */
-    val cFlags: List<String> = when (buildSystem) {
-        NativeBuildSystem.CMAKE ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.getcFlags() ?: listOf()
-        NativeBuildSystem.NDK_BUILD ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.getcFlags() ?: listOf()
-    }
+    val cFlags: List<String> =
+            variant.externalNativeBuild?.cFlags?.get() ?: listOf()
 
     /**
      * The set of build system c++ flags from the externalNativeBuild part of the DSL. For example,
@@ -122,12 +113,8 @@ fun createNativeBuildSystemVariantConfig(
      *     }
      * </pre>
      */
-    val cppFlags: List<String> = when (buildSystem) {
-        NativeBuildSystem.CMAKE ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.cppFlags ?: listOf()
-        NativeBuildSystem.NDK_BUILD ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.cppFlags ?: listOf()
-    }
+    val cppFlags: List<String> =
+            variant.externalNativeBuild?.cppFlags?.get() ?: listOf()
 
     /**
      * The set of build system c++ targets from the externalNativeBuild part of the DSL. For example,
@@ -142,12 +129,8 @@ fun createNativeBuildSystemVariantConfig(
      *     }
      * </pre>
      */
-    val targets: Set<String> = when (buildSystem) {
-        NativeBuildSystem.CMAKE ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.targets ?: setOf()
-        NativeBuildSystem.NDK_BUILD ->
-            variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.targets ?: setOf()
-    }
+    val targets: Set<String> =
+            variant.externalNativeBuild?.targets?.get() ?: setOf()
 
     return NativeBuildSystemVariantConfig(
         externalNativeBuildAbiFilters,

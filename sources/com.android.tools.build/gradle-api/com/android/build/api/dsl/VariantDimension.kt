@@ -44,6 +44,7 @@ interface VariantDimension {
      * If set, the file should contain one class per line, in the following format:
      * `com/example/MyClass.class`
      */
+    @Deprecated("This property is deprecated. Migrate to multiDexKeepProguard.")
     var multiDexKeepFile: File?
 
     /** Encapsulates per-variant configurations for the NDK, such as ABI filters.  */
@@ -107,6 +108,14 @@ interface VariantDimension {
     fun proguardFiles(vararg files: Any): Any
 
     /**
+     * Replaces the ProGuard configuration files.
+     *
+     * This method has a return value for legacy reasons.
+     */
+    @Incubating
+    fun setProguardFiles(proguardFileIterable: Iterable<*>): Any
+
+        /**
      * The collection of proguard rule files to be used when processing test code.
      *
      * Test code needs to be processed to apply the same obfuscation as was done to main code.
@@ -146,6 +155,9 @@ interface VariantDimension {
      * [Inject Build Variables into the Manifest](https://developer.android.com/studio/build/manifest-build-variables.html).
      */
     fun addManifestPlaceholders(manifestPlaceholders: Map<String, Any>)
+
+    @Deprecated("Use manifestPlaceholders property instead")
+    fun setManifestPlaceholders(manifestPlaceholders: Map<String, Any>): Void?
 
     /** Options for configuring Java compilation. */
     val javaCompileOptions: JavaCompileOptions

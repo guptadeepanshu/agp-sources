@@ -15,27 +15,18 @@
  */
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
-import org.gradle.api.provider.Provider
-
 /** [Variant] for Library projects */
-@Incubating
-interface LibraryVariant : Variant {
+interface LibraryVariant : Variant, GeneratesAar {
 
     /**
-     * Variant's application ID as present in the final manifest file of the APK.
-     *
-     * This is a read-ony value based on the package entry in the manifest
+     * Variant's [AndroidTest] configuration, or null if android tests are disabled for this
+     * variant.
      */
-    override val applicationId: Provider<String>
+    val androidTest: com.android.build.api.component.AndroidTest??
 
     /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
+     * Variant specific settings for the renderscript compiler. This will return null when
+     * [com.android.build.api.dsl.BuildFeatures.renderScript] is false.
      */
-    override val packagingOptions: LibraryPackagingOptions
-
-    /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
-     */
-    fun packagingOptions(action: LibraryPackagingOptions.() -> Unit)
+    val renderscript: Renderscript?
 }

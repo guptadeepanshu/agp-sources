@@ -29,11 +29,13 @@ import com.android.SdkConstants.FN_CLASSES_JAR
 import com.android.SdkConstants.FN_LINT_JAR
 import com.android.SdkConstants.FN_PROGUARD_TXT
 import com.android.SdkConstants.FN_PUBLIC_TXT
+import com.android.SdkConstants.FN_RESOURCE_STATIC_LIBRARY
 import com.android.SdkConstants.FN_RESOURCE_TEXT
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.build.gradle.internal.ide.dependencies.ResolvedArtifact
 import com.android.builder.model.MavenCoordinates
 import com.android.builder.model.v2.ide.Library
+import com.android.builder.model.v2.ide.LibraryType
 import com.android.ide.common.caching.CreatingCache
 import com.android.utils.FileUtils
 import java.io.File
@@ -52,16 +54,17 @@ class ArtifactHandlerImpl(
         coordinatesSupplier: () -> MavenCoordinates,
         addressSupplier: () -> String
     ): Library {
-        val apiJar = FileUtils.join(folder, FD_JARS, FN_API_JAR)
+        val apiJar = FileUtils.join(folder, FN_API_JAR)
         val runtimeJar = FileUtils.join(folder, FD_JARS, FN_CLASSES_JAR)
+        val runtimeJarFiles = listOf(runtimeJar) + localJavaLibraries
         return LibraryImpl(
-            type = Library.LIBRARY_ANDROID,
+            type = LibraryType.ANDROID_LIBRARY,
             artifactAddress = addressSupplier(),
             manifest = File(folder, FN_ANDROID_MANIFEST_XML),
-            compileJarFiles = listOf(if (apiJar.isFile) apiJar else runtimeJar) + localJavaLibraries,
-            runtimeJarFiles = listOf(runtimeJar) + localJavaLibraries,
+            compileJarFiles = if (apiJar.isFile) listOf(apiJar) else runtimeJarFiles,
+            runtimeJarFiles = runtimeJarFiles,
             resFolder = File(folder, FD_RES),
-            resStaticLibrary = null, //FIXME
+            resStaticLibrary = File(folder, FN_RESOURCE_STATIC_LIBRARY),
             assetsFolder = File(folder, FD_ASSETS),
             jniFolder = File(folder, FD_JNI),
             aidlFolder = File(folder, FD_AIDL),
@@ -91,7 +94,7 @@ class ArtifactHandlerImpl(
         addressSupplier: () -> String
     ): Library {
         return LibraryImpl(
-            type = Library.LIBRARY_MODULE,
+            type = LibraryType.PROJECT,
             artifactAddress = addressSupplier(),
             buildId = buildId,
             projectPath = projectPath,
@@ -123,7 +126,7 @@ class ArtifactHandlerImpl(
         addressSupplier: () -> String
     ): Library {
         return LibraryImpl(
-            type = Library.LIBRARY_JAVA,
+            type = LibraryType.JAVA_LIBRARY,
             artifactAddress = addressSupplier(),
             artifact = jarFile,
 
@@ -155,7 +158,7 @@ class ArtifactHandlerImpl(
         addressSupplier: () -> String
     ): Library {
         return LibraryImpl(
-            type = Library.LIBRARY_MODULE,
+            type = LibraryType.PROJECT,
             artifactAddress = addressSupplier(),
             buildId = buildId,
             projectPath = projectPath,

@@ -18,8 +18,10 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.artifact.ArtifactType;
+import com.android.build.api.artifact.SingleArtifact;
 import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.variant.ResValue;
+import com.android.build.api.variant.impl.ResValueKeyImpl;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
@@ -45,6 +47,7 @@ import com.android.builder.model.ProductFlavor;
 import com.android.builder.model.SourceProvider;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -147,14 +150,17 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         // this is to be removed when we can get rid of the old API.
         final VariantDslInfoImpl variantDslInfo =
                 (VariantDslInfoImpl) component.getVariantDslInfo();
-        return readOnlyObjectProvider.getBuildType(variantDslInfo.getBuildTypeObj());
+        return readOnlyObjectProvider.getBuildType((BuildType) variantDslInfo.getBuildTypeObj());
     }
 
     @Override
     @NonNull
     public List<ProductFlavor> getProductFlavors() {
-        return new ImmutableFlavorList(
-                component.getVariantDslInfo().getProductFlavorList(), readOnlyObjectProvider);
+        List<ProductFlavor> flavors =
+                component.getVariantDslInfo().getProductFlavorList().stream()
+                        .map(it -> (ProductFlavor) it)
+                        .collect(Collectors.toList());
+        return new ImmutableFlavorList(flavors, readOnlyObjectProvider);
     }
 
     @Override
@@ -232,6 +238,12 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     @NonNull
     public TextResource getApplicationIdTextResource() {
+        services.getDeprecationReporter()
+                .reportDeprecatedApi(
+                        "VariantProperties.applicationId",
+                        "BaseVariant.getApplicationIdTextResource",
+                        "TBD",
+                        DeprecationReporter.DeprecationTarget.VERSION_7_0);
         return getVariantData().applicationIdTextResource;
     }
 
@@ -485,7 +497,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
         RegularFile mappingFile =
                 component
                         .getArtifacts()
-                        .get(ArtifactType.OBFUSCATION_MAPPING_FILE.INSTANCE)
+                        .get(SingleArtifact.OBFUSCATION_MAPPING_FILE.INSTANCE)
                         .getOrNull();
         return mappingFile != null ? mappingFile.getAsFile() : null;
     }
@@ -494,9 +506,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     public Provider<FileCollection> getMappingFileProvider() {
         return component
-                .getGlobalScope()
-                .getProject()
-                .getProviders()
+                .getServices()
                 .provider(
                         () ->
                                 component
@@ -505,7 +515,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                                                 component
                                                         .getArtifacts()
                                                         .get(
-                                                                ArtifactType
+                                                                SingleArtifact
                                                                         .OBFUSCATION_MAPPING_FILE
                                                                         .INSTANCE)));
     }
@@ -562,12 +572,25 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
 
     @Override
     public void registerJavaGeneratingTask(@NonNull Task task, @NonNull File... sourceFolders) {
-        getVariantData().registerJavaGeneratingTask(task, sourceFolders);
+        getVariantData().registerJavaGeneratingTask(task, Arrays.asList(sourceFolders));
     }
 
     @Override
     public void registerJavaGeneratingTask(@NonNull Task task, @NonNull Collection<File> sourceFolders) {
         getVariantData().registerJavaGeneratingTask(task, sourceFolders);
+    }
+
+    @Override
+    public void registerJavaGeneratingTask(
+            @NonNull TaskProvider<? extends Task> taskProvider, @NonNull File... sourceFolders) {
+        getVariantData().registerJavaGeneratingTask(taskProvider, Arrays.asList(sourceFolders));
+    }
+
+    @Override
+    public void registerJavaGeneratingTask(
+            @NonNull TaskProvider<? extends Task> taskProvider,
+            @NonNull Collection<File> sourceFolders) {
+        getVariantData().registerJavaGeneratingTask(taskProvider, sourceFolders);
     }
 
     @Override
@@ -643,7 +666,9 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     public void resValue(@NonNull String type, @NonNull String name, @NonNull String value) {
         if (component instanceof VariantImpl) {
-            ((VariantImpl) component).addResValue(name, type, value, "Value from the variant");
+            ((VariantImpl) component).getResValues().put(
+                    new ResValueKeyImpl(type, name),
+                    new ResValue(value,  "Value from the variant"));
         } else {
             throw new RuntimeException(
                     "Variant "

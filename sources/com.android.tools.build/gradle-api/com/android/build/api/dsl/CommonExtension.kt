@@ -16,11 +16,9 @@
 
 package com.android.build.api.dsl
 
-import com.android.build.api.variant.VariantBuilder
-import com.android.build.api.variant.Variant
-import org.gradle.api.Action
 import org.gradle.api.Incubating
 import org.gradle.api.NamedDomainObjectContainer
+import java.io.File
 
 /**
  * Common extension properties for the Android Application. Library and Dynamic Feature Plugins.
@@ -28,23 +26,19 @@ import org.gradle.api.NamedDomainObjectContainer
  *
  * Only the Android Gradle Plugin should create instances of this interface.
  */
-@Incubating
 interface CommonExtension<
-        AndroidSourceSetT : AndroidSourceSet,
         BuildFeaturesT : BuildFeatures,
         BuildTypeT : BuildType,
         DefaultConfigT : DefaultConfig,
-        ProductFlavorT : ProductFlavor,
-        SigningConfigT : SigningConfig,
-        VariantBuilderT : VariantBuilder,
-        VariantT : Variant> {
-    // TODO(b/140406102)
+        ProductFlavorT : ProductFlavor> {
 
     /**
      * Specifies options for the Android Asset Packaging Tool (AAPT).
      *
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
+    @get:Incubating
+    @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     val aaptOptions: AaptOptions
 
     /**
@@ -52,7 +46,23 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
+    @Incubating
+    @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     fun aaptOptions(action: AaptOptions.() -> Unit)
+
+    /**
+     * Specifies options related to the processing of Android Resources.
+     *
+     * For more information about the properties you can configure in this block, see [AndroidResources].
+     */
+    val androidResources: AndroidResources
+
+    /**
+     * Specifies options related to the processing of Android Resources.
+     *
+     * For more information about the properties you can configure in this block, see [AndroidResources].
+     */
+    fun androidResources(action: AndroidResources.() -> Unit)
 
     /**
      * Specifies options for the
@@ -61,6 +71,8 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
+    @get:Incubating
+    @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     val adbOptions: AdbOptions
 
     /**
@@ -70,7 +82,29 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
+    @Incubating
+    @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     fun adbOptions(action: AdbOptions.() -> Unit)
+
+    /**
+     * Specifies options for the
+     * [Android Debug Bridge (ADB)](https://developer.android.com/studio/command-line/adb.html),
+     * such as APK installation options.
+     *
+     * For more information about the properties you can configure in this block, see [AdbOptions].
+     */
+    @get:Incubating
+    val installation: Installation
+
+    /**
+     * Specifies options for the
+     * [Android Debug Bridge (ADB)](https://developer.android.com/studio/command-line/adb.html),
+     * such as APK installation options.
+     *
+     * For more information about the properties you can configure in this block, see [AdbOptions].
+     */
+    @Incubating
+    fun installation(action: Installation.() -> Unit)
 
     /**
      * Specifies Java compiler options, such as the language level of the Java source code and
@@ -91,11 +125,13 @@ interface CommonExtension<
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
+    @get:Incubating
     val buildFeatures: BuildFeaturesT
 
     /**
      * A list of build features that can be enabled or disabled on the Android Project.
      */
+    @Incubating
     fun buildFeatures(action: BuildFeaturesT.() -> Unit)
 
     /**
@@ -115,14 +151,49 @@ interface CommonExtension<
      *
      * @see [BuildType
      */
-    val buildTypes: NamedDomainObjectContainer<BuildTypeT>
+    @get:Incubating
+    val buildTypes: NamedDomainObjectContainer<out BuildTypeT>
 
     /**
      * Encapsulates all build type configurations for this project.
      *
      * For more information about the properties you can configure in this block, see [BuildType]
      */
-    fun buildTypes(action: Action<in NamedDomainObjectContainer<BuildTypeT>>)
+    @Incubating
+    fun buildTypes(action: NamedDomainObjectContainer<BuildTypeT>.() -> Unit)
+
+    /**
+     * Shortcut extension method to allow easy access to the predefined `debug` [BuildType]
+     *
+     * For example:
+     * ```
+     *  android {
+     *      buildTypes {
+     *          debug {
+     *              // ...
+     *          }
+     *      }
+     * }
+     * ```
+     */
+    @Incubating
+    fun NamedDomainObjectContainer<BuildTypeT>.debug(action: BuildTypeT.() -> Unit)
+    /**
+     * Shortcut extension method to allow easy access to the predefined `release` [BuildType]
+     *
+     * For example:
+     * ```
+     *  android {
+     *      buildTypes {
+     *          release {
+     *              // ...
+     *          }
+     *      }
+     * }
+     * ```
+     */
+    @Incubating
+    fun NamedDomainObjectContainer<BuildTypeT>.release(action: BuildTypeT.() -> Unit)
 
     /**
      * Specifies options for the
@@ -141,41 +212,80 @@ interface CommonExtension<
     fun dataBinding(action: DataBinding.() -> Unit)
 
     /**
-     * Configure JaCoCo version that is used for offline instrumentation and coverage report.
+     * Configure the gathering of code-coverage from tests.
      *
-     * To specify the version of JaCoCo you want to use, add the following to `build.gradle
-     * ` file:
-     *
-     * ```
-     * android {
-     *     jacoco {
-     *         version "<jacoco-version>"
-     *     }
-     * }
-     * ```
+     * This is replaced by [testCoverage].
      */
+    @get:Incubating
+    @Deprecated("Renamed to testCoverage", replaceWith = ReplaceWith("testCoverage"))
     val jacoco: JacocoOptions
+
     /**
-     * Configure JaCoCo version that is used for offline instrumentation and coverage report.
+     * Configure the gathering of code-coverage from tests.
      *
-     * To specify the version of JaCoCo you want to use, add the following to `build.gradle
-     * ` file:
+     * This is replaced by [testCoverage].
+     */
+    @Incubating
+    @Deprecated("Renamed to testCoverage", replaceWith = ReplaceWith("testCoverage"))
+    fun jacoco(action: JacocoOptions.() -> Unit)
+
+    /**
+     * Configure the gathering of code-coverage from tests.
+     *
+     * To override the JaCoCo version that is used for offline instrumentation and coverage report,
+     * add the following to `build.gradle` file:
      *
      * ```
      * android {
-     *     jacoco {
-     *         version "<jacoco-version>"
+     *     testCoverage {
+     *         jacocoVersion "<jacoco-version>"
      *     }
      * }
      * ```
+     *
+     * For more information about the properties you can configure in this block, see [TestCoverage].
      */
-    fun jacoco(action: JacocoOptions.() -> Unit)
+    val testCoverage: TestCoverage
+
+    /**
+     * Configure the gathering of code-coverage from tests.
+     *
+     * To override the JaCoCo version that is used for offline instrumentation and coverage report,
+     * add the following to `build.gradle` file:
+     *
+     * ```
+     * android {
+     *     testCoverage {
+     *         jacocoVersion "<jacoco-version>"
+     *     }
+     * }
+     * ```
+     *
+     * For more information about the properties you can configure in this block, see [TestCoverage].
+     */
+    fun testCoverage(action: TestCoverage.() -> Unit)
+
+    /**
+     * Specifies options for the lint tool.
+     *
+     * For more information about the properties you can configure in this block, see [Lint].
+     */
+    val lint: Lint
+
+    /**
+     * Specifies options for the lint tool.
+     *
+     * For more information about the properties you can configure in this block, see [Lint].
+     */
+    fun lint(action: Lint.() -> Unit)
 
     /**
      * Specifies options for the lint tool.
      *
      * For more information about the properties you can configure in this block, see [LintOptions].
      */
+    @get:Incubating
+    @Deprecated("Renamed to lint", replaceWith = ReplaceWith("lint"))
     val lintOptions: LintOptions
 
     /**
@@ -183,6 +293,8 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [LintOptions].
      */
+    @Incubating
+    @Deprecated("Renamed to lint", replaceWith = ReplaceWith("lint"))
     fun lintOptions(action: LintOptions.() -> Unit)
 
     /**
@@ -191,6 +303,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [PackagingOptions].
      */
+    @get:Incubating
     val packagingOptions: PackagingOptions
 
     /**
@@ -199,6 +312,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [PackagingOptions].
      */
+    @Incubating
     fun packagingOptions(action: PackagingOptions.() -> Unit)
 
     /**
@@ -241,7 +355,8 @@ interface CommonExtension<
      *
      * @see [ProductFlavor]
      */
-    val productFlavors: NamedDomainObjectContainer<ProductFlavorT>
+    @get:Incubating
+    val productFlavors: NamedDomainObjectContainer<out ProductFlavorT>
 
     /**
      * Encapsulates all product flavors configurations for this project.
@@ -249,7 +364,8 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block,
      * see [ProductFlavor]
      */
-    fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavorT>>)
+    @Incubating
+    fun productFlavors(action: NamedDomainObjectContainer<ProductFlavorT>.() -> Unit)
 
 
     /**
@@ -261,6 +377,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DefaultConfig].
      */
+    @get:Incubating
     val defaultConfig: DefaultConfigT
 
     /**
@@ -272,7 +389,8 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DefaultConfig].
      */
-    fun defaultConfig(action: Action<DefaultConfigT>)
+    @Incubating
+    fun defaultConfig(action: DefaultConfigT.() -> Unit)
 
 
     /**
@@ -290,19 +408,20 @@ interface CommonExtension<
      * or manually
      * [configuring your `build.gradle` file](https://developer.android.com/studio/publish/app-signing.html#gradle-sign).
      *
-     * @see [SigningConfig]
+     * @see [ApkSigningConfig]
      */
-    val signingConfigs: NamedDomainObjectContainer<SigningConfigT>
+    @get:Incubating
+    val signingConfigs: NamedDomainObjectContainer<out ApkSigningConfig>
 
     /**
      * Encapsulates signing configurations that you can apply to
      * [BuildType] and [ProductFlavor] configurations.
      *
      * For more information about the properties you can configure in this block,
-     * see [SigningConfig].
+     * see [ApkSigningConfig].
      */
-    fun signingConfigs(action: Action<NamedDomainObjectContainer<SigningConfigT>>)
-
+    @Incubating
+    fun signingConfigs(action: NamedDomainObjectContainer<out ApkSigningConfig>.() -> Unit)
 
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -323,6 +442,7 @@ interface CommonExtension<
      * @since 2.2.0
      */
 
+    @get:Incubating
     val externalNativeBuild: ExternalNativeBuild
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -342,6 +462,7 @@ interface CommonExtension<
      *
      * @since 2.2.0
      */
+    @Incubating
     fun externalNativeBuild(action: ExternalNativeBuild.()->Unit)
 
     /**
@@ -349,6 +470,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [TestOptions].
      */
+    @get:Incubating
     val testOptions: TestOptions
 
     /**
@@ -356,6 +478,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [TestOptions].
      */
+    @Incubating
     fun testOptions(action: TestOptions.() -> Unit)
 
     /**
@@ -365,6 +488,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
+    @get:Incubating
     val splits: Splits
 
     /**
@@ -374,10 +498,13 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [Splits].
      */
+    @Incubating
     fun splits(action: Splits.() -> Unit)
 
+    @get:Incubating
     val composeOptions: ComposeOptions
 
+    @Incubating
     fun composeOptions(action: ComposeOptions.() -> Unit)
 
     /**
@@ -386,7 +513,8 @@ interface CommonExtension<
      * Note that the Android plugin uses its own implementation of source sets. For more
      * information about the properties you can configure in this block, see [AndroidSourceSet].
      */
-    val sourceSets: NamedDomainObjectContainer<AndroidSourceSetT>
+    @get:Incubating
+    val sourceSets: NamedDomainObjectContainer<out AndroidSourceSet>
 
     /**
      * Encapsulates source set configurations for all variants.
@@ -394,7 +522,8 @@ interface CommonExtension<
      * Note that the Android plugin uses its own implementation of source sets. For more
      * information about the properties you can configure in this block, see [AndroidSourceSet].
      */
-    fun sourceSets(action: NamedDomainObjectContainer<AndroidSourceSetT>.() -> Unit)
+    @Incubating
+    fun sourceSets(action: NamedDomainObjectContainer<out AndroidSourceSet>.() -> Unit)
 
     /**
      * Specifies the names of product flavor dimensions for this project.
@@ -463,7 +592,12 @@ interface CommonExtension<
      * To learn more, read
      * [Combine multiple flavors](https://developer.android.com/studio/build/build-variants.html#flavor-dimensions).
      */
+    @get:Incubating
     val flavorDimensions: MutableList<String>
+
+    @Incubating
+    @Deprecated("Replaced by flavorDimensions property")
+    fun flavorDimensions(vararg dimensions: String)
 
     /**
      * Specifies this project's resource prefix to Android Studio for editor features, such as Lint
@@ -484,6 +618,8 @@ interface CommonExtension<
      * resourcePrefix 'mylib_'
      * ```
      */
+    @get:Incubating
+    @set:Incubating
     var resourcePrefix: String?
 
     /**
@@ -517,6 +653,8 @@ interface CommonExtension<
      * For additional information about NDK installation see
      * [Install and configure the NDK](https://developer.android.com/studio/projects/install-ndk).
      */
+    @get:Incubating
+    @set:Incubating
     var ndkVersion: String?
 
     /**
@@ -536,6 +674,8 @@ interface CommonExtension<
      * For additional information about NDK installation see
      * [Install and configure the NDK](https://developer.android.com/studio/projects/install-ndk).
      */
+    @get:Incubating
+    @set:Incubating
     var ndkPath: String?
 
     /**
@@ -563,7 +703,13 @@ interface CommonExtension<
      * Note that the value assigned to this property is parsed and stored in a normalized form,
      * so reading it back may give a slightly different result.
      */
+    @get:Incubating
+    @set:Incubating
     var buildToolsVersion: String
+
+    @Incubating
+    @Deprecated("Replaced by buildToolsVersion property")
+    fun buildToolsVersion(buildToolsVersion: String)
 
     /**
      * Includes the specified library to the classpath.
@@ -588,6 +734,7 @@ interface CommonExtension<
      *
      * @param name the name of the library.
      */
+    @Incubating
     fun useLibrary(name: String)
     /**
      * Includes the specified library to the classpath.
@@ -614,8 +761,10 @@ interface CommonExtension<
      * @param required if using the library requires a manifest entry, the entry will indicate that
      *     the library is not required.
      */
+    @Incubating
     fun useLibrary(name: String, required: Boolean)
 
+    @get:Incubating
     @Deprecated(
         message = "This API will be removed in AGP 7.0, replaced with AndroidComponents::sdkComponents")
     val sdkComponents: SdkComponents
@@ -626,7 +775,7 @@ interface CommonExtension<
      *
      * This means your code can use only the Android APIs included in that API level and lower.
      * You can configure the compile sdk version by adding the following to the `android`
-     * block: `compileSdk 26`.
+     * block: `compileSdk = 26`.
      *
      * You should generally
      * [use the most up-to-date API level](https://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels)
@@ -640,9 +789,25 @@ interface CommonExtension<
      */
     var compileSdk: Int?
 
+    /**
+     * Specify a preview API to compile your project against.
+     *
+     * For example, to try out the Android S preview,
+     * rather than `compileSdk = 30` you can use `compileSdkPreview = "S"`
+     *
+     * Once the preview APIs are finalized, they will be allocated a stable integer value.
+     */
     var compileSdkPreview: String?
 
     fun compileSdkAddon(vendor: String, name: String, version: Int)
+
+    @Incubating
+    @Deprecated("Replaced by compileSdk")
+    fun compileSdkVersion(apiLevel: Int)
+
+    @Incubating
+    @Deprecated("Replaced by compileSdk")
+    fun compileSdkVersion(version: String)
 
     /**
      * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
@@ -653,4 +818,13 @@ interface CommonExtension<
      * in the AndroidManifest.xml.
      */
     var namespace: String?
+
+    @Incubating
+    fun getDefaultProguardFile(name: String): File
+
+    /**
+     * Additional per module experimental properties.
+     */
+    @get:Incubating
+    val experimentalProperties: MutableMap<String, Any>
 }

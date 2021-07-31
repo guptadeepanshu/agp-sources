@@ -19,6 +19,42 @@ package com.android.build.api.dsl
 import org.gradle.api.Incubating
 
 @Incubating
-interface LibraryBaseFlavor<SigningConfigT : SigningConfig> :
+interface LibraryBaseFlavor :
     BaseFlavor,
-    LibraryVariantDimension<SigningConfigT>
+    LibraryVariantDimension {
+
+    /**
+     * The target SDK version used for building the test APK.
+     *
+     * This is propagated in the library manifest, but that is only advisory for libraries that
+     * depend on this library.
+     *
+     * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
+     * Only one of [targetSdk] and [targetSdkPreview] should be set.
+     *
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
+     */
+    var targetSdk: Int?
+
+    @Deprecated("Replaced by targetSdk property")
+    fun targetSdkVersion(targetSdkVersion: Int)
+
+    /**
+     * The target SDK version used for building the test APK.
+     *
+     * This is propagated in the library manifest, but that is only advisory for libraries that
+     * depend on this library.
+     *
+     * Setting this it will override previous calls of [targetSdk] and [targetSdkPreview] setters.
+     * Only one of [targetSdk] and [targetSdkPreview] should be set.
+     *
+     * See [uses-sdk element documentation](http://developer.android.com/guide/topics/manifest/uses-sdk-element.html).
+     */
+    var targetSdkPreview: String?
+
+    @Deprecated("Replaced by targetSdkPreview property")
+    fun setTargetSdkVersion(targetSdkVersion: String?)
+
+    @Deprecated("Replaced by targetSdkPreview property")
+    fun targetSdkVersion(targetSdkVersion: String?)
+}

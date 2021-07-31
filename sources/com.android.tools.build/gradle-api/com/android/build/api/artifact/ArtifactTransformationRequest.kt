@@ -18,7 +18,6 @@ package com.android.build.api.artifact
 
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.BuiltArtifacts
-import org.gradle.api.Incubating
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.workers.WorkAction
@@ -28,7 +27,7 @@ import java.io.File
 import java.util.function.Supplier
 
 /**
- * When a [Directory] contains more than one artifact (for example, consider [ArtifactType.APK] with multiple
+ * When a [Directory] contains more than one artifact (for example, consider [SingleArtifact.APK] with multiple
  * APKs for different screen densities), this object will abstract away having to deal with
  * [BuiltArtifacts] and manually load and write the metadata files.
  *
@@ -97,7 +96,6 @@ import java.util.function.Supplier
  * ```
  *
  */
-@Incubating
 interface ArtifactTransformationRequest<TaskT: Task> {
 
     /**

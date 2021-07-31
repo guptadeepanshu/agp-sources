@@ -16,12 +16,13 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.transform.Format
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.DUPLICATE_CLASSES_CHECK
@@ -30,6 +31,7 @@ import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.SyncOptions
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
 import com.android.builder.dexing.MainDexListConfig
@@ -41,15 +43,21 @@ import com.android.builder.dexing.getR8Version
 import com.android.builder.dexing.runR8
 import com.android.ide.common.blame.MessageReceiver
 import com.android.utils.FileUtils
+import com.android.zipflinger.ZipArchive
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -58,6 +66,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.nio.file.Path
+import javax.inject.Inject
 
 /**
  * Task that uses R8 to convert class files to dex. In case of a library variant, this
@@ -71,14 +80,22 @@ import java.nio.file.Path
 
 // TODO(b/139181913): add workers
 @CacheableTask
-abstract class R8Task: ProguardConfigurableTask() {
+abstract class R8Task @Inject constructor(
+    projectLayout: ProjectLayout
+): ProguardConfigurableTask(projectLayout) {
 
     @get:Input
     abstract val enableDesugaring: Property<Boolean>
 
-    @get:InputFiles
+    @get:InputFile
     @get:PathSensitive(PathSensitivity.NONE)
-    abstract val mainDexListFiles: ConfigurableFileCollection
+    @get:Optional
+    abstract val multiDexKeepFile: Property<File>
+
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    abstract val multiDexKeepProguard: RegularFileProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.NONE)
@@ -87,7 +104,8 @@ abstract class R8Task: ProguardConfigurableTask() {
     @get:Classpath
     abstract val bootClasspath: ConfigurableFileCollection
 
-    private lateinit var messageReceiver: MessageReceiver
+    @get:Internal
+    abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
 
     @get:Input
     abstract val minSdkVersion: Property<Int>
@@ -118,7 +136,11 @@ abstract class R8Task: ProguardConfigurableTask() {
 
     @get:Optional
     @get:Classpath
-    abstract val featureJars: ConfigurableFileCollection
+    abstract val featureClassJars: ConfigurableFileCollection
+
+    @get:Optional
+    @get:Classpath
+    abstract val featureJavaResourceJars: ConfigurableFileCollection
 
     @get:Optional
     @get:Classpath
@@ -149,27 +171,43 @@ abstract class R8Task: ProguardConfigurableTask() {
     @get:OutputDirectory
     abstract val featureDexDir: DirectoryProperty
 
+    @get:Optional
+    @get:OutputDirectory
+    abstract val featureJavaResourceOutputDir: DirectoryProperty
+
     @get:OutputFile
     abstract val outputResources: RegularFileProperty
 
-    @Optional
     @OutputFile
-    fun getProguardSeedsOutput(): File? =
-        mappingFile.orNull?.asFile?.resolveSibling("seeds.txt")
+    fun getProguardSeedsOutput(): Provider<File> =
+            mappingFile.flatMap {
+                providerFactory.provider { it.asFile.resolveSibling("seeds.txt") }
+            }
 
-    @Optional
     @OutputFile
-    fun getProguardUsageOutput(): File? =
-        mappingFile.orNull?.asFile?.resolveSibling("usage.txt")
+    fun getProguardUsageOutput(): Provider<File> =
+            mappingFile.flatMap {
+                providerFactory.provider { it.asFile.resolveSibling("usage.txt") }
+            }
 
-    @Optional
     @OutputFile
-    fun getProguardConfigurationOutput(): File? =
-        mappingFile.orNull?.asFile?.resolveSibling("configuration.txt")
+    fun getProguardConfigurationOutput(): Provider<File> =
+            mappingFile.flatMap {
+                providerFactory.provider { it.asFile.resolveSibling("configuration.txt") }
+            }
+
+    @OutputFile
+    fun getMissingKeepRulesOutput(): Provider<File> =
+            mappingFile.flatMap {
+                providerFactory.provider { it.asFile.resolveSibling("missing_rules.txt") }
+            }
 
     @get:Optional
     @get:OutputFile
     abstract val mainDexListOutput: RegularFileProperty
+
+    @get:Inject
+    abstract val providerFactory: ProviderFactory
 
     class CreationAction(
             creationConfig: ConsumableCreationConfig,
@@ -183,8 +221,7 @@ abstract class R8Task: ProguardConfigurableTask() {
         private var disableTreeShaking: Boolean = false
         private var disableMinification: Boolean = false
 
-        // This is a huge sledgehammer, but it is necessary until http://b/72683872 is fixed.
-        private val proguardConfigurations: MutableList<String> = mutableListOf("-ignorewarnings")
+        private val proguardConfigurations: MutableList<String> = mutableListOf()
 
         override fun handleProvider(
             taskProvider: TaskProvider<R8Task>
@@ -201,13 +238,18 @@ abstract class R8Task: ProguardConfigurableTask() {
                 creationConfig.variantScope.consumesFeatureJars() -> {
                     creationConfig.artifacts.setInitialProvider(
                         taskProvider,
+                        R8Task::baseDexDir
+                    ).on(InternalArtifactType.BASE_DEX)
+
+                    creationConfig.artifacts.setInitialProvider(
+                        taskProvider,
                         R8Task::featureDexDir
                     ).on(InternalArtifactType.FEATURE_DEX)
 
                     creationConfig.artifacts.setInitialProvider(
                         taskProvider,
-                        R8Task::baseDexDir
-                    ).on(InternalArtifactType.BASE_DEX)
+                        R8Task::featureJavaResourceOutputDir
+                    ).on(InternalArtifactType.FEATURE_SHRUNK_JAVA_RES)
 
                     if (creationConfig.needsShrinkDesugarLibrary) {
                         creationConfig.artifacts
@@ -232,11 +274,23 @@ abstract class R8Task: ProguardConfigurableTask() {
                 R8Task::outputResources
             ).withName("shrunkJavaRes.jar").on(InternalArtifactType.SHRUNK_JAVA_RES)
 
-            if (creationConfig is ApkCreationConfig && creationConfig.needsMainDexListForBundle) {
-                creationConfig.artifacts.setInitialProvider(
-                        taskProvider,
-                        R8Task::mainDexListOutput
-                ).withName("mainDexList.txt").on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
+            if (creationConfig is ApkCreationConfig) {
+                when {
+                    creationConfig.needsMainDexListForBundle -> {
+                        creationConfig.artifacts.setInitialProvider(
+                            taskProvider,
+                            R8Task::mainDexListOutput
+                        ).withName("mainDexList.txt")
+                            .on(InternalArtifactType.MAIN_DEX_LIST_FOR_BUNDLE)
+                    }
+                    creationConfig.dexingType.needsMainDexList -> {
+                        creationConfig.artifacts.setInitialProvider(
+                            taskProvider,
+                            R8Task::mainDexListOutput
+                        ).withName("mainDexList.txt")
+                            .on(InternalArtifactType.LEGACY_MULTIDEX_MAIN_DEX_LIST)
+                    }
+                }
             }
         }
 
@@ -251,16 +305,21 @@ abstract class R8Task: ProguardConfigurableTask() {
                 creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.R8
                         && !variantType.isAar)
 
-            task.bootClasspath.from(creationConfig.globalScope.fullBootClasspath)
+            setBootClasspathForCodeShrinker(task)
             task.minSdkVersion
                 .set(creationConfig.minSdkVersionWithTargetDeviceApi.apiLevel)
             task.debuggable
                 .setDisallowChanges(creationConfig.debuggable)
             task.disableTreeShaking.set(disableTreeShaking)
             task.disableMinification.set(disableMinification)
-            task.messageReceiver = creationConfig.globalScope.messageReceiver
+            task.errorFormatMode.set(SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions))
             task.dexingType = creationConfig.dexingType
-            task.useFullR8.set(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
+            task.useFullR8.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.FULL_R8])
+
+            if (!creationConfig.services.projectOptions[BooleanOption.R8_FAIL_ON_MISSING_CLASSES]) {
+                // Keep until AGP 8.0. It used to be necessary because of http://b/72683872.
+                proguardConfigurations.add("-ignorewarnings")
+            }
 
             task.proguardConfigurations = proguardConfigurations
 
@@ -268,9 +327,9 @@ abstract class R8Task: ProguardConfigurableTask() {
                 // options applicable only when building APKs, do not apply with AARs
                 task.duplicateClassesCheck.from(artifacts.get(DUPLICATE_CLASSES_CHECK))
 
-                creationConfig.variantDslInfo.multiDexKeepProguard?.let { multiDexKeepProguard ->
-                    task.mainDexRulesFiles.from(multiDexKeepProguard)
-                }
+                task.mainDexRulesFiles.from(
+                        artifacts.getAll(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
+                )
 
                 if (creationConfig.dexingType.needsMainDexList
                     && !creationConfig.globalScope.extension.aaptOptions.namespaced
@@ -281,9 +340,8 @@ abstract class R8Task: ProguardConfigurableTask() {
                         )
                     )
                 }
-
-                creationConfig.variantDslInfo.multiDexKeepFile?.let { multiDexKeepFile ->
-                    task.mainDexListFiles.from(multiDexKeepFile)
+                if (creationConfig is ApkCreationConfig) {
+                    task.multiDexKeepFile.setDisallowChanges(creationConfig.multiDexKeepFile)
                 }
 
                 if (creationConfig.variantScope.consumesFeatureJars()) {
@@ -291,20 +349,28 @@ abstract class R8Task: ProguardConfigurableTask() {
                         InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES,
                         task.baseJar
                     )
-                    task.featureJars.from(
+                    task.featureClassJars.from(
                         creationConfig.variantDependencies.getArtifactFileCollection(
                             AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
                             AndroidArtifacts.ArtifactScope.PROJECT,
                             AndroidArtifacts.ArtifactType.REVERSE_METADATA_CLASSES
                         )
                     )
+                    task.featureJavaResourceJars.from(
+                        creationConfig.variantDependencies.getArtifactFileCollection(
+                            AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES,
+                            AndroidArtifacts.ArtifactScope.PROJECT,
+                            AndroidArtifacts.ArtifactType.REVERSE_METADATA_JAVA_RES
+                        )
+                    )
                 }
                 if (creationConfig.isCoreLibraryDesugaringEnabled) {
-                    task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.globalScope.project))
+                    task.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.services.projectInfo.getProject()))
                 }
             }
             task.baseJar.disallowChanges()
-            task.featureJars.disallowChanges()
+            task.featureClassJars.disallowChanges()
+            task.featureJavaResourceJars.disallowChanges()
         }
 
         override fun keep(keep: String) {
@@ -327,6 +393,19 @@ abstract class R8Task: ProguardConfigurableTask() {
             }
         }
 
+        private fun setBootClasspathForCodeShrinker(task: R8Task) {
+            val javaTarget = creationConfig.globalScope.extension.compileOptions.targetCompatibility
+
+            task.bootClasspath.from(creationConfig.globalScope.fullBootClasspath)
+            when {
+                javaTarget.isJava9Compatible ->
+                    task.bootClasspath.from(creationConfig.globalScope.versionedSdkLoader.flatMap {
+                        it.coreForSystemModulesProvider })
+                javaTarget.isJava8Compatible ->
+                    task.bootClasspath.from(creationConfig.globalScope.versionedSdkLoader.flatMap {
+                        it.coreLambdaStubsProvider })
+            }
+        }
     }
 
     override fun doTaskAction() {
@@ -338,6 +417,29 @@ abstract class R8Task: ProguardConfigurableTask() {
                 else -> outputDex
             }
 
+        // Check for duplicate java resources if there are dynamic features. We allow duplicate
+        // META-INF/services/** entries.
+        val featureJavaResourceJarsList = featureJavaResourceJars.toList()
+        if (featureJavaResourceJarsList.isNotEmpty()) {
+            val paths: MutableSet<String> = mutableSetOf()
+            resources.toList().plus(featureJavaResourceJarsList).forEach { file ->
+                ZipArchive(file.toPath()).use { jar ->
+                    jar.listEntries().forEach { path ->
+                        if (!path.startsWith("META-INF/services/") && !paths.add(path)) {
+                            throw RuntimeException(
+                                "Multiple dynamic-feature and/or base APKs will contain entries "
+                                        + "with the same path, '$path', which can cause unexpected "
+                                        + "behavior or errors at runtime. Please consider using "
+                                        + "android.packagingOptions in the dynamic-feature and/or "
+                                        + "application modules to ensure that only one of the APKs "
+                                        + "contains this path."
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         shrink(
             bootClasspath = bootClasspath.toList(),
             minSdkVersion = minSdkVersion.get(),
@@ -345,18 +447,27 @@ abstract class R8Task: ProguardConfigurableTask() {
             enableDesugaring = enableDesugaring.get(),
             disableTreeShaking = disableTreeShaking.get(),
             disableMinification = disableMinification.get(),
-            mainDexListFiles = mainDexListFiles.toList(),
-            mainDexRulesFiles = mainDexRulesFiles.toList(),
+            mainDexListFiles = mutableListOf<File>().also {
+                if (multiDexKeepFile.isPresent) {
+                    it.add(multiDexKeepFile.get())
+                }
+            },
+            mainDexRulesFiles = mutableListOf<File>().also {
+                it.addAll(mainDexRulesFiles.toList())
+                if (multiDexKeepProguard.isPresent) {
+                    it.add(multiDexKeepProguard.get().asFile)
+                }
+            },
             inputProguardMapping =
                 if (testedMappingFile.isEmpty) {
                     null
                 } else {
                     testedMappingFile.singleFile
                 },
-            proguardConfigurationFiles = configurationFiles.toList(),
+            proguardConfigurationFiles =  reconcileDefaultProguardFile(configurationFiles, extractedDefaultProguardFile),
             proguardConfigurations = proguardConfigurations,
             variantType = variantType.orNull,
-            messageReceiver = messageReceiver,
+            messageReceiver = MessageReceiverImpl(errorFormatMode.get(), logger),
             dexingType = dexingType,
             useFullR8 = useFullR8.get(),
             referencedInputs = (referencedClasses + referencedResources).toList(),
@@ -368,22 +479,21 @@ abstract class R8Task: ProguardConfigurableTask() {
                 },
             resources = resources.toList(),
             proguardOutputFiles =
-                if (mappingFile.isPresent) {
-                    ProguardOutputFiles(
-                        mappingFile.get().asFile.toPath(),
-                        getProguardSeedsOutput()!!.toPath(),
-                        getProguardUsageOutput()!!.toPath(),
-                        getProguardConfigurationOutput()!!.toPath())
-                } else {
-                    null
-                },
+                ProguardOutputFiles(
+                    mappingFile.get().asFile.toPath(),
+                    getProguardSeedsOutput().get().toPath(),
+                    getProguardUsageOutput().get().toPath(),
+                    getProguardConfigurationOutput().get().toPath(),
+                    getMissingKeepRulesOutput().get().toPath()),
             output = output.get().asFile,
             outputResources = outputResources.get().asFile,
             mainDexListOutput = mainDexListOutput.orNull?.asFile,
-            featureJars = featureJars.toList(),
+            featureClassJars = featureClassJars.toList(),
+            featureJavaResourceJars = featureJavaResourceJarsList,
             featureDexDir = featureDexDir.asFile.orNull,
+            featureJavaResourceOutputDir = featureJavaResourceOutputDir.asFile.orNull,
             libConfiguration = coreLibDesugarConfig.orNull,
-            outputKeepRulesDir = projectOutputKeepRules.asFile.orNull
+            outputKeepRulesDir = projectOutputKeepRules.asFile.orNull,
         )
     }
 
@@ -398,7 +508,7 @@ abstract class R8Task: ProguardConfigurableTask() {
             mainDexListFiles: List<File>,
             mainDexRulesFiles: List<File>,
             inputProguardMapping: File?,
-            proguardConfigurationFiles: List<File>,
+            proguardConfigurationFiles: Collection<File>,
             proguardConfigurations: MutableList<String>,
             variantType: VariantType?,
             messageReceiver: MessageReceiver,
@@ -407,22 +517,23 @@ abstract class R8Task: ProguardConfigurableTask() {
             referencedInputs: List<File>,
             classes: List<File>,
             resources: List<File>,
-            proguardOutputFiles: ProguardOutputFiles?,
+            proguardOutputFiles: ProguardOutputFiles,
             output: File,
             outputResources: File,
             mainDexListOutput: File?,
-            featureJars: List<File>,
+            featureClassJars: List<File>,
+            featureJavaResourceJars: List<File>,
             featureDexDir: File?,
+            featureJavaResourceOutputDir: File?,
             libConfiguration: String?,
-            outputKeepRulesDir: File?
+            outputKeepRulesDir: File?,
         ) {
             val logger = LoggerWrapper.getLogger(R8Task::class.java)
             logger
                 .info(
                     """
                 |R8 is a new Android code shrinker. If you experience any issues, please file a bug at
-                |https://issuetracker.google.com, using 'Shrinker (R8)' as component name. You can
-                |disable R8 by updating gradle.properties with 'android.enableR8=false'.
+                |https://issuetracker.google.com, using 'Shrinker (R8)' as component name.
                 |Current version is: ${getR8Version()}.
                 |""".trimMargin()
                 )
@@ -442,6 +553,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                 Format.DIRECTORY -> {
                     FileUtils.cleanOutputDir(output)
                     featureDexDir?.let { FileUtils.cleanOutputDir(it) }
+                    featureJavaResourceOutputDir?.let { FileUtils.cleanOutputDir(it) }
                     outputKeepRulesDir?.let { FileUtils.cleanOutputDir(it) }
                 }
                 Format.JAR -> FileUtils.deleteIfExists(output)
@@ -453,7 +565,7 @@ abstract class R8Task: ProguardConfigurableTask() {
                 disableTreeShaking = disableTreeShaking,
                 disableDesugaring = !enableDesugaring,
                 disableMinification = disableMinification,
-                r8OutputType = r8OutputType
+                r8OutputType = r8OutputType,
             )
 
             val proguardConfig = ProguardConfig(
@@ -489,8 +601,10 @@ abstract class R8Task: ProguardConfigurableTask() {
                 mainDexListConfig,
                 messageReceiver,
                 useFullR8,
-                featureJars.map { it.toPath() },
+                featureClassJars.map { it.toPath() },
+                featureJavaResourceJars.map { it.toPath() },
                 featureDexDir?.toPath(),
+                featureJavaResourceOutputDir?.toPath(),
                 libConfiguration,
                 outputKeepRulesFile?.toPath()
             )

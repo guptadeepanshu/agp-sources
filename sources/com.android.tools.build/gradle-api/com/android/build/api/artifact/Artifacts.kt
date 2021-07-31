@@ -17,7 +17,6 @@
 package com.android.build.api.artifact
 
 import com.android.build.api.variant.BuiltArtifactsLoader
-import org.gradle.api.Incubating
 import org.gradle.api.Task
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
@@ -35,20 +34,9 @@ import org.gradle.api.tasks.TaskProvider
  * are not transformed further.
  *
  * Artifacts are uniquely defined by their [Artifact] type and public artifact types that can be
- * accessed from third-party plugins or build script are defined in [ArtifactType]
- *
- * @since 4.1
+ * accessed from third-party plugins or build script are defined in [SingleArtifact]
  */
-@Incubating
 interface Artifacts {
-
-    /**
-     * Provides an implementation of [BuiltArtifactsLoader] that can be used to load built artifacts
-     * metadata.
-     *
-     * @return A thread safe implementation of [BuiltArtifactsLoader] that can be reused.
-     */
-    fun getBuiltArtifactsLoader(): BuiltArtifactsLoader
 
     /**
      * Get the [Provider] of [FileTypeT] for the passed [Artifact].
@@ -56,7 +44,7 @@ interface Artifacts {
      * @param type Type of the single artifact.
      */
     fun <FileTypeT: FileSystemLocation> get(
-        type: ArtifactType<FileTypeT>
+        type: SingleArtifact<FileTypeT>
     ): Provider<FileTypeT>
 
     /**
@@ -65,7 +53,7 @@ interface Artifacts {
      * @param type Type of the multiple artifact.
      */
     fun <FileTypeT: FileSystemLocation> getAll(
-        type: MultipleArtifactType<FileTypeT>
+        type: MultipleArtifact<FileTypeT>
     ): Provider<List<FileTypeT>>
 
     /**
@@ -76,4 +64,12 @@ interface Artifacts {
      * @return A [TaskBasedOperation] object using the passed [TaskProvider] for all its operations.
      */
     fun <TaskT: Task> use(taskProvider: TaskProvider<TaskT>): TaskBasedOperation<TaskT>
+
+    /**
+     * Provides an implementation of [BuiltArtifactsLoader] that can be used to load built artifacts
+     * metadata.
+     *
+     * @return A thread safe implementation of [BuiltArtifactsLoader] that can be reused.
+     */
+    fun getBuiltArtifactsLoader(): BuiltArtifactsLoader
 }

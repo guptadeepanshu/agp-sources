@@ -16,13 +16,18 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.SdkConstants
+import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.variant.impl.ApplicationVariantImpl
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -59,7 +64,18 @@ import java.nio.file.Path
  */
 abstract class PackageBundleTask : NonIncrementalTask() {
 
+    // Android Gradle plugin supports two kinds of bundle:
+    // * Regular App Bundle. This bundle contains all configured modules and is built by application
+    //   plugin. Regular bundles are used for local development and to upload a new version of the
+    //   app to distribution channel.
+    // * Asset-pack (Asset-only) App Bundle. This bundle contains only subset of asset-packs and is
+    //   built by asset-pack-bundle plugin. This is special kind of bundle which can be used only
+    //   with Google Play to update assets independently from the application code.
+    @get:Input
+    abstract val bundleType: Property<Config.BundleConfig.BundleType>
+
     @get:InputFiles
+    @get:Optional
     @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val baseModuleZip: DirectoryProperty
 
@@ -111,9 +127,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     lateinit var bundleOptions: BundleOptions
         private set
 
+    @get:Input
+    abstract val compressNativeLibs: Property<Boolean>
+
     @get:Nested
-    lateinit var bundleFlags: BundleFlags
-        private set
+    @get:Optional
+    abstract val assetPackOptionsForAssetPackBundle: Property<AssetPackOptionsForAssetPackBundle>
 
     @get:OutputFile
     abstract val bundleFile: RegularFileProperty
@@ -125,6 +144,11 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:Input
     abstract val bundleNeedsFusedStandaloneConfig: Property<Boolean>
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    abstract val binaryArtProfile: RegularFileProperty
+
     companion object {
         const val MIN_SDK_FOR_SPLITS = 21
     }
@@ -132,7 +156,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
-            it.baseModuleFile.set(baseModuleZip.get().asFileTree.singleFile)
+            it.bundleType.set(bundleType)
+            if (baseModuleZip.isPresent) {
+                it.baseModuleFile.set(baseModuleZip.get().asFileTree.singleFile)
+            }
             it.featureFiles.from(featureZips)
             if (assetPackZips.isPresent) {
                 it.assetPackFiles.from(assetPackZips.get().asFileTree.files)
@@ -143,16 +170,19 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             it.nativeDebugMetadataFiles.from(nativeDebugMetadataFiles)
             it.aaptOptionsNoCompress.set(aaptOptionsNoCompress)
             it.bundleOptions.set(bundleOptions)
-            it.bundleFlags.set(bundleFlags)
+            it.compressNativeLibs.set(compressNativeLibs)
+            it.assetPackOptionsForAssetPackBundle.set(assetPackOptionsForAssetPackBundle)
             it.bundleFile.set(bundleFile)
             it.bundleDeps.set(bundleDeps)
             it.bundleNeedsFusedStandaloneConfig.set(bundleNeedsFusedStandaloneConfig)
             it.appMetadata.set(appMetadata)
             it.abiFilters.set(abiFilters)
+            it.binaryArtProfiler.set(binaryArtProfile)
         }
     }
 
     abstract class Params: ProfileAwareWorkAction.Parameters() {
+        abstract val bundleType: Property<Config.BundleConfig.BundleType>
         abstract val baseModuleFile: RegularFileProperty
         abstract val featureFiles: ConfigurableFileCollection
         abstract val assetPackFiles: ConfigurableFileCollection
@@ -162,12 +192,14 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         abstract val nativeDebugMetadataFiles: ConfigurableFileCollection
         abstract val aaptOptionsNoCompress: ListProperty<String>
         abstract val bundleOptions: Property<BundleOptions>
-        abstract val bundleFlags: Property<BundleFlags>
+        abstract val compressNativeLibs: Property<Boolean>
+        abstract val assetPackOptionsForAssetPackBundle: Property<AssetPackOptionsForAssetPackBundle>
         abstract val bundleFile: RegularFileProperty
         abstract val bundleDeps: RegularFileProperty
         abstract val bundleNeedsFusedStandaloneConfig: Property<Boolean>
         abstract val appMetadata: RegularFileProperty
         abstract val abiFilters: SetProperty<String>
+        abstract val binaryArtProfiler: RegularFileProperty
     }
 
     abstract class BundleToolWorkAction : ProfileAwareWorkAction<Params>() {
@@ -178,7 +210,9 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             FileUtils.cleanOutputDir(bundleFile.parentFile)
 
             val builder = ImmutableList.builder<Path>()
-            builder.add(parameters.baseModuleFile.asFile.get().toPath())
+            if (parameters.baseModuleFile.isPresent) {
+                builder.add(parameters.baseModuleFile.asFile.get().toPath())
+            }
             parameters.featureFiles.forEach { builder.add(getBundlePath(it)) }
             // BundleTool needs directories, not zips.
             parameters.assetPackFiles.files.forEach { builder.add(getBundlePath(it.parentFile)) }
@@ -220,7 +254,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             }
 
             val uncompressNativeLibrariesConfig = Config.UncompressNativeLibraries.newBuilder()
-                .setEnabled(parameters.bundleFlags.get().enableUncompressedNativeLibs)
+                .setEnabled(!parameters.compressNativeLibs.get())
 
             val bundleOptimizations = Config.Optimizations.newBuilder()
                 .setSplitsConfig(splitsConfig)
@@ -255,11 +289,23 @@ abstract class PackageBundleTask : NonIncrementalTask() {
 
             val bundleConfig =
                 Config.BundleConfig.newBuilder()
+                    .setType(parameters.bundleType.get())
                     .setCompression(
                         Config.Compression.newBuilder()
                             .addAllUncompressedGlob(noCompressGlobsForBundle)
                     )
                     .setOptimizations(bundleOptimizations)
+
+            if (parameters.assetPackOptionsForAssetPackBundle.isPresent) {
+                bundleConfig.assetModulesConfigBuilder
+                    .setAssetVersionTag(
+                        parameters.assetPackOptionsForAssetPackBundle.get().versionTag
+                    )
+                    .addAllAppVersion(
+                        parameters.assetPackOptionsForAssetPackBundle.get().versionCodes
+                            .map { it.toLong() }
+                    )
+            }
 
             val command = BuildBundleCommand.builder()
                 // The bundle will be compressed if needed by FinalizeBundleTask
@@ -267,6 +313,15 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 .setBundleConfig(bundleConfig.build())
                 .setOutputPath(bundleFile.toPath())
                 .setModulesPaths(builder.build())
+
+            if (parameters.binaryArtProfiler.isPresent
+                && parameters.binaryArtProfiler.get().asFile.exists()) {
+                command.addMetadataFile(
+                        SdkConstants.FN_BINART_ART_PROFILE_FOLDER_IN_APK.replace('/', '.'),
+                        SdkConstants.FN_BINARY_ART_PROFILE,
+                        parameters.binaryArtProfiler.get().asFile.toPath(),
+                )
+            }
 
             parameters.bundleDeps.asFile.orNull?.let {
                 command.addMetadataFile(
@@ -352,18 +407,69 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         val defaultDeviceTier: String?
     ) : Serializable
 
-    data class BundleFlags(
+    data class AssetPackOptionsForAssetPackBundle(
         @get:Input
-        val enableUncompressedNativeLibs: Boolean
+        val versionCodes: List<Int>,
+        @get:Input
+        var versionTag: String?
     ) : Serializable
 
     /**
      * CreateAction for a Task that will pack the bundle artifact.
      */
-    class CreationAction(componentProperties: ApplicationVariantImpl) :
+    class CreationForAssetPackBundleAction(
+        private val projectServices: ProjectServices,
+        private val artifacts: ArtifactsImpl,
+        private val assetPackBundle: AssetPackBundleExtension
+    ) : TaskCreationAction<PackageBundleTask>() {
+
+        override val type = PackageBundleTask::class.java
+        override val name = "packageBundle"
+
+        override fun handleProvider(
+            taskProvider: TaskProvider<PackageBundleTask>
+        ) {
+            super.handleProvider(taskProvider)
+            artifacts.setInitialProvider(
+                taskProvider,
+                PackageBundleTask::bundleFile
+            ).on(InternalArtifactType.INTERMEDIARY_BUNDLE)
+        }
+
+        override fun configure(
+            task: PackageBundleTask
+        ) {
+            task.configureVariantProperties(variantName = "", task.project)
+            task.bundleType.set(Config.BundleConfig.BundleType.ASSET_ONLY)
+            task.featureZips = projectServices.objectFactory.fileCollection()
+            artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.ASSET_PACK_BUNDLE, task.assetPackZips
+            )
+            task.appMetadata
+            task.bundleOptions = assetPackBundle.convert();
+            task.compressNativeLibs.setDisallowChanges(true)
+            task.assetPackOptionsForAssetPackBundle.set(
+                AssetPackOptionsForAssetPackBundle(
+                    versionCodes = assetPackBundle.versionCodes.toList(),
+                    versionTag = assetPackBundle.versionTag
+                )
+            )
+            task.bundleNeedsFusedStandaloneConfig.set(false)
+            artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.APP_METADATA,
+                task.appMetadata
+            )
+        }
+    }
+
+    /**
+     * CreateAction for a Task that will pack the bundle artifact.
+     */
+    class CreationAction(private val componentProperties: ApplicationVariantImpl) :
         VariantTaskCreationAction<PackageBundleTask, ApplicationVariantImpl>(
             componentProperties
         ) {
+
         override val name: String
             get() = computeTaskName("package", "Bundle")
 
@@ -386,6 +492,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         ) {
             super.configure(task)
 
+            task.bundleType.set(Config.BundleConfig.BundleType.REGULAR)
+
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.MODULE_BUNDLE, task.baseModuleZip
             )
@@ -396,7 +504,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 AndroidArtifacts.ArtifactType.MODULE_BUNDLE
             )
 
-            if (creationConfig.needAssetPackTasks.get()) {
+            if (creationConfig.needAssetPackTasks) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.ASSET_PACK_BUNDLE, task.assetPackZips
                 )
@@ -423,9 +531,15 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             task.bundleOptions =
                 ((creationConfig.globalScope.extension as BaseAppModuleExtension).bundle).convert()
 
-            task.bundleFlags = BundleFlags(
-                enableUncompressedNativeLibs = creationConfig.services.projectOptions[BooleanOption.ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE]
+            task.compressNativeLibs.set(
+                componentProperties.packaging.jniLibs.useLegacyPackagingFromBundle
             )
+            // TODO(b/132103049, b/174695257) Deprecate the BooleanOption with instructions to use
+            //  the DSL instead.
+            if (!creationConfig.services.projectOptions[BooleanOption.ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE]) {
+                task.compressNativeLibs.set(true)
+            }
+            task.compressNativeLibs.disallowChanges()
 
             if (creationConfig.needsMainDexListForBundle) {
                 creationConfig.artifacts.setTaskInputToFinalProduct(
@@ -438,7 +552,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             }
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
-                ArtifactType.OBFUSCATION_MAPPING_FILE,
+                SingleArtifact.OBFUSCATION_MAPPING_FILE,
                 task.obsfuscationMappingFile
             )
 
@@ -453,6 +567,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 InternalArtifactType.APP_METADATA,
                 task.appMetadata
             )
+
+            creationConfig.artifacts.setTaskInputToFinalProduct(
+                InternalArtifactType.BINARY_ART_PROFILE,
+                task.binaryArtProfile)
         }
     }
 }
@@ -462,6 +580,17 @@ private fun com.android.build.gradle.internal.dsl.BundleOptions.convert() =
         enableAbi = abi.enableSplit,
         enableDensity = density.enableSplit,
         enableLanguage = language.enableSplit,
+        enableTexture = texture.enableSplit,
+        textureDefaultFormat = texture.defaultFormat,
+        enableDeviceTier = deviceTier.enableSplit,
+        defaultDeviceTier = deviceTier.defaultTier
+    )
+
+private fun AssetPackBundleExtension.convert() =
+    PackageBundleTask.BundleOptions(
+        enableAbi = null,
+        enableDensity = null,
+        enableLanguage = null,
         enableTexture = texture.enableSplit,
         textureDefaultFormat = texture.defaultFormat,
         enableDeviceTier = deviceTier.enableSplit,

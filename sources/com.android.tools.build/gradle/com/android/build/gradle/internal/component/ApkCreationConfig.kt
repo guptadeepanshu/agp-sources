@@ -16,17 +16,18 @@
 
 package com.android.build.gradle.internal.component
 
-import com.android.build.api.variant.AaptOptions
-import com.android.build.api.variant.ApkPackagingOptions
-import com.android.build.api.variant.SigningConfig
+import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.impl.SigningConfigImpl
 import org.gradle.api.provider.MapProperty
+import java.io.File
 
 /**
  * Interface for properties common to all variant generating APKs
  */
 interface ApkCreationConfig: ConsumableCreationConfig {
 
-    val aaptOptions: AaptOptions
+    val androidResources: AndroidResources
 
     val manifestPlaceholders: MapProperty<String, String>
 
@@ -34,8 +35,6 @@ interface ApkCreationConfig: ConsumableCreationConfig {
 
     // TODO: move to a non variant object (GlobalTaskScope?)
     val testOnlyApk: Boolean
-
-    val minifiedEnabled: Boolean
 
     /** If this variant should package desugar_lib DEX in the final APK. */
     val shouldPackageDesugarLibDex: Boolean
@@ -49,7 +48,17 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     /** List of transforms for profilers support in the IDE. */
     val advancedProfilingTransforms: List<String>
 
-    override val packagingOptions: ApkPackagingOptions
+    override val packaging: ApkPackaging
 
-    val signingConfig: SigningConfig?
+    /**
+     * Variant's signing information of null if signing is not configured for this variant.
+     */
+    val signingConfig: SigningConfigImpl?
+
+    /**
+     * DO NOT USE, only present for old variant API.
+     */
+    val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig?
+
+    val multiDexKeepFile: File?
 }

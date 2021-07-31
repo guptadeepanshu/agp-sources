@@ -16,6 +16,7 @@
 
 package com.android.build.api.dsl
 
+import org.gradle.api.Action
 import org.gradle.api.Incubating
 import org.gradle.api.Named
 
@@ -33,6 +34,11 @@ interface AndroidSourceSet : Named {
     val java: AndroidSourceDirectorySet
     /** The Java source for this source-set */
     fun java(action: AndroidSourceDirectorySet.() -> Unit)
+
+    /** The Kotlin source for this source-set */
+    val kotlin: AndroidSourceDirectorySet
+    /** The Java source for this source-set */
+    fun kotlin(action: Action<AndroidSourceDirectorySet>)
 
     /** The Java-style resources for this source-set */
     val resources: AndroidSourceDirectorySet
@@ -64,9 +70,17 @@ interface AndroidSourceSet : Named {
     /** The Android RenderScript source directory for this source set. */
     fun renderscript(action: AndroidSourceDirectorySet.() -> Unit)
 
-    /** The Android JNI source directory for this source set. */
+    /**
+     * The Android JNI source directory for this source set.
+     * @deprecated This is unused and will be removed in AGP 8.0
+     */
+    @Deprecated("Unused")
     val jni: AndroidSourceDirectorySet
-    /** The Android JNI source directory for this source set. */
+    /**
+     * The Android JNI source directory for this source set.
+     * @deprecated This is unused and will be removed in AGP 8.0
+     */
+    @Deprecated("Unused")
     fun jni(action: AndroidSourceDirectorySet.() -> Unit)
 
     /** The Android JNI libs directory for this source-set */

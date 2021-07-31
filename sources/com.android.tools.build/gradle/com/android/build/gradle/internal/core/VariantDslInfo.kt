@@ -17,12 +17,13 @@ package com.android.build.gradle.internal.core
 
 import com.android.SdkConstants
 import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.api.variant.impl.ResValue
+import com.android.build.api.variant.ResValue
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.ProguardFileType
+import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
-import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.AbstractProductFlavor
@@ -33,6 +34,8 @@ import com.android.builder.model.VectorDrawablesOptions
 import com.android.sdklib.AndroidVersion
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.File
@@ -146,15 +149,26 @@ interface VariantDslInfo {
     fun hasFlavors(): Boolean
 
     /**
-     * The Package Name of the variant.
+     * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
+     * any relative class names that are declared in the AndroidManifest.xml.
      *
-     * This is the package name original present in the manifest (for non-test variants).
+     * For test components, this is set to the tested variant's [testNamespace] value or to the
+     * tested variant's [namespace] + ".test"
      *
-     * This is not impacted by (test)ApplicationId values coming from the manifest.
-     *
-     * For test components, this is the package name of the tested variant + '.test'
+     * Otherwise, this value comes from the namespace DSL element, if present, or from the `package`
+     * attribute in the source AndroidManifest.xml if not specified in the DSL.
      */
-    val packageName: Provider<String>
+    val namespace: Provider<String>
+
+    /**
+     * The namespace for the R class for AndroidTest.
+     *
+     * This is a special case due to legacy reasons.
+     *
+     *  TODO(b/176931684) Remove and use [namespace] after we stop supporting using applicationId
+     *   to namespace the test component R class.
+     */
+    val namespaceForR: Provider<String>
 
     /**
      * Returns the application ID for this variant. This could be coming from the manifest or could
@@ -180,40 +194,6 @@ interface VariantDslInfo {
      * @return the version code or -1 if there was none defined.
      */
     val versionCode: Provider<Int?>
-
-    /**
-     * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
-     * the one to use to test the tested variant.
-     *
-     * @param dexingType the selected dexing type for this variant.
-     * @return the instrumentation test runner name
-     */
-    fun getInstrumentationRunner(dexingType: DexingType): Provider<String>
-
-    /**
-     * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
-     * a test, the ones to use to test the tested variant
-     */
-    val instrumentationRunnerArguments: Map<String, String>
-
-    /**
-     * Returns handleProfiling value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the handleProfiling value
-     */
-    val handleProfiling: Provider<Boolean>
-
-    /**
-     * Returns functionalTest value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the functionalTest value
-     */
-    val functionalTest: Provider<Boolean>
-
-    /** Gets the test label for this variant  */
-    val testLabel: Provider<String?>
 
     /**
      * Return the minSdkVersion for this variant.
@@ -271,11 +251,6 @@ interface VariantDslInfo {
      */
     fun getResValues(): Map<ResValue.Key, ResValue>
 
-    /** Holds all SigningConfig information from the DSL and/or [ProjectOptions].  */
-    val signingConfig: SigningConfig?
-
-    val isSigningReady: Boolean
-
     val isTestCoverageEnabled: Boolean
 
     /**
@@ -289,21 +264,8 @@ interface VariantDslInfo {
     // Only require specific multidex opt-in for legacy multidex.
     val isMultiDexEnabled: Boolean?
 
-    val multiDexKeepFile: File?
-
-    val multiDexKeepProguard: File?
-
     // dynamic features can always be build in native multidex mode
     val dexingType: DexingType?
-
-    /** Returns the renderscript support mode.  */
-    val renderscriptSupportModeEnabled: Boolean
-
-    /** Returns the renderscript BLAS support mode.  */
-    val renderscriptSupportModeBlasEnabled: Boolean
-
-    /** Returns the renderscript NDK mode.  */
-    val renderscriptNdkModeEnabled: Boolean
 
     /** Returns true if the variant output is a bundle.  */
     val isBundled: Boolean
@@ -313,6 +275,8 @@ interface VariantDslInfo {
      * null if not.
      */
     val minSdkVersionFromIDE: Int?
+
+    val nativeBuildSystem: VariantManager.NativeBuiltType?
 
     val ndkConfig: MergedNdkConfig
 
@@ -326,8 +290,9 @@ interface VariantDslInfo {
      */
     val supportedAbis: Set<String>
 
+    fun getProguardFiles(into: ListProperty<RegularFile>)
 
-    fun gatherProguardFiles(type: ProguardFileType): List<File>
+    fun gatherProguardFiles(type: ProguardFileType, into: ListProperty<RegularFile>)
 
     val javaCompileOptions: JavaCompileOptions
 
@@ -348,13 +313,83 @@ interface VariantDslInfo {
     @Deprecated("Can be removed once the AaptOptions crunch method is removed.")
     val isCrunchPngsDefault: Boolean
 
-    val isMinifyEnabled: Boolean
-
     val isRenderscriptDebuggable: Boolean
-
-    val renderscriptOptimLevel: Int
 
     val isJniDebuggable: Boolean
 
     val aarMetadata: MergedAarMetadata
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //  APIs below should only be used at CreationConfig/Variant instantiation time       //
+    //  DO NOT USE THOSE IN TASKS                                                         //
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val multiDexKeepFile: File?
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val multiDexKeepProguard: File?
+
+    /**
+     * Returns handleProfiling value to use to test this variant, or if the variant is a test, the
+     * one to use to test the tested variant.
+     *
+     * @return the handleProfiling value
+     */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val handleProfiling: Provider<Boolean>
+
+    /**
+     * Returns functionalTest value to use to test this variant, or if the variant is a test, the
+     * one to use to test the tested variant.
+     *
+     * @return the functionalTest value
+     */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val functionalTest: Provider<Boolean>
+
+    /** Gets the test label for this variant  */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val testLabel: Provider<String?>
+
+    /**
+     * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
+     * the one to use to test the tested variant.
+     *
+     * @param dexingType the selected dexing type for this variant.
+     * @return the instrumentation test runner name
+     */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    fun getInstrumentationRunner(dexingType: DexingType): Provider<String>
+
+    /**
+     * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
+     * a test, the ones to use to test the tested variant
+     */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val instrumentationRunnerArguments: Map<String, String>
+
+    /** Holds all SigningConfig information from the DSL and/or [ProjectOptions].  */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val signingConfig: SigningConfig?
+
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val isSigningReady: Boolean
+
+    /** Returns the renderscript support mode.  */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val renderscriptSupportModeEnabled: Boolean
+
+    /** Returns the renderscript BLAS support mode.  */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val renderscriptSupportModeBlasEnabled: Boolean
+
+    /** Returns the renderscript NDK mode.  */
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val renderscriptNdkModeEnabled: Boolean
+
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val renderscriptOptimLevel: Int
+
+    // DO NOT USE, Use CreationConfig and subtypes methods.
+    val experimentalProperties: Map<String, Any>
 }

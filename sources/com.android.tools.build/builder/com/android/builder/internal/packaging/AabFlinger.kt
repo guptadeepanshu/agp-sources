@@ -18,7 +18,7 @@ package com.android.builder.internal.packaging
 
 import com.android.signflinger.SignedApk
 import com.android.signflinger.SignedApkOptions
-import com.android.zipflinger.BytesSource
+import com.android.zipflinger.Sources
 import com.android.zipflinger.StableArchive
 import com.android.zipflinger.SynchronizedArchive
 import com.android.zipflinger.Zip64
@@ -97,10 +97,14 @@ class AabFlinger(
             }
             subTasks.add(
                 forkJoinPool.submit(Callable {
-                    zipFile.getInputStream(entry).use {
-                        val bytes = it.readBytes()
-                        archive.add(BytesSource(bytes, entry.name, compressionLevel))
-                    }
+                    archive.add(
+                        Sources.from(
+                            // the input stream will be closed in StreamSource
+                            zipFile.getInputStream(entry),
+                            entry.name,
+                            compressionLevel
+                        )
+                    )
                 })
             )
         }

@@ -23,6 +23,11 @@ enum class StringOption(
     override val propertyName: String,
     stage: ApiStage
 ) : Option<String> {
+
+    /* -----------
+     * STABLE APIs
+     */
+
     IDE_BUILD_TARGET_DENSITY(AndroidProject.PROPERTY_BUILD_DENSITY, ApiStage.Stable),
     IDE_BUILD_TARGET_ABI(AndroidProject.PROPERTY_BUILD_ABI, ApiStage.Stable),
 
@@ -41,9 +46,6 @@ enum class StringOption(
     // location where to write the APK/BUNDLE
     IDE_APK_LOCATION(AndroidProject.PROPERTY_APK_LOCATION, ApiStage.Stable),
 
-    // Installation related options
-    IDE_INSTALL_DYNAMIC_MODULES_LIST(AndroidProject.PROPERTY_INJECTED_DYNAMIC_MODULES_LIST, ApiStage.Experimental),
-
     // Instant run
     IDE_OPTIONAL_COMPILATION_STEPS(AndroidProject.PROPERTY_OPTIONAL_COMPILATION_STEPS, ApiStage.Stable),
     IDE_COLD_SWAP_MODE(AndroidProject.PROPERTY_SIGNING_COLDSWAP_MODE, ApiStage.Stable),
@@ -54,6 +56,24 @@ enum class StringOption(
     // Profiler plugin
     IDE_ANDROID_CUSTOM_CLASS_TRANSFORMS("android.advanced.profiling.transforms", ApiStage.Stable),
 
+    // The exact version of Android Support plugin used, e.g. 2.4.0.6
+    IDE_ANDROID_STUDIO_VERSION(AndroidProject.PROPERTY_ANDROID_SUPPORT_VERSION, ApiStage.Stable),
+
+    // Native
+    NATIVE_BUILD_OUTPUT_LEVEL(AndroidProject.PROPERTY_NATIVE_BUILD_OUTPUT_LEVEL, ApiStage.Stable),
+
+    // AGP suggests it should be upgraded if the compile sdk is newer than the version it was tested
+    // with. This option allows developers to suppress that warning.
+    // e.g. android.suppressUnsupportedCompileSdk=S,31,32
+    SUPPRESS_UNSUPPORTED_COMPILE_SDK("android.suppressUnsupportedCompileSdk", ApiStage.Stable),
+
+    /* -----------------
+     * EXPERIMENTAL APIs
+     */
+
+    // Installation related options
+    IDE_INSTALL_DYNAMIC_MODULES_LIST(AndroidProject.PROPERTY_INJECTED_DYNAMIC_MODULES_LIST, ApiStage.Experimental),
+
     // Testing
     DEVICE_POOL_SERIAL("com.android.test.devicepool.serial", ApiStage.Experimental),
     PROFILE_OUTPUT_DIR("android.advanced.profileOutputDir", ApiStage.Experimental),
@@ -62,13 +82,9 @@ enum class StringOption(
 
     AAPT2_FROM_MAVEN_OVERRIDE("android.aapt2FromMavenOverride", ApiStage.Experimental),
 
+    AAPT2_FROM_MAVEN_VERSION_OVERRIDE("android.aapt2Version", ApiStage.Experimental),
+
     SUPPRESS_UNSUPPORTED_OPTION_WARNINGS("android.suppressUnsupportedOptionWarnings", ApiStage.Experimental),
-
-    // The exact version of Android Support plugin used, e.g. 2.4.0.6
-    IDE_ANDROID_STUDIO_VERSION(AndroidProject.PROPERTY_ANDROID_SUPPORT_VERSION, ApiStage.Stable),
-
-    // Native
-    NATIVE_BUILD_OUTPUT_LEVEL(AndroidProject.PROPERTY_NATIVE_BUILD_OUTPUT_LEVEL, ApiStage.Stable),
 
     // User-specified path to Prefab jar to return from getPrefabFromMaven.
     PREFAB_CLASSPATH("android.prefabClassPath", ApiStage.Experimental),
@@ -77,17 +93,26 @@ enum class StringOption(
     PREFAB_VERSION("android.prefabVersion", ApiStage.Experimental),
 
     // Jetifier: List of regular expressions for libraries that should not be jetified
-    @Suppress("WrongTerminology")
-    @Deprecated(message = "Use JETIFIER_IGNORE_LIST instead", replaceWith = ReplaceWith("JETIFIER_IGNORE_LIST"))
-    JETIFIER_BLACKLIST("android.jetifier.blacklist", ApiStage.Deprecated(DeprecationReporter.DeprecationTarget.JETIFIER_IGNORE_LIST)),
-
-    // Jetifier: List of regular expressions for libraries that should not be jetified
     JETIFIER_IGNORE_LIST("android.jetifier.ignorelist", ApiStage.Experimental),
+
+    // Lint: Allow customization of the heap size of the process started to run lint
+    LINT_HEAP_SIZE("android.experimental.lint.heapSize", ApiStage.Experimental),
+
+    // Lint: Allow override of the version
+    LINT_VERSION_OVERRIDE("android.experimental.lint.version", ApiStage.Experimental),
+
+    /* ---------------
+     * DEPRECATED APIs
+     */
+
+    /* ------------
+     * REMOVED APIs
+     */
 
     @Suppress("unused")
     BUILD_CACHE_DIR(
         "android.buildCacheDir",
-        ApiStage.Deprecated(DeprecationReporter.DeprecationTarget.AGP_BUILD_CACHE)
+        ApiStage.Removed(Version.VERSION_7_0, "The Android-specific build caches were superseded by the Gradle build cache (https://docs.gradle.org/current/userguide/build_cache.html).")
     ),
 
     ;

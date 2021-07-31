@@ -23,11 +23,8 @@ import com.android.build.gradle.internal.tasks.DexArchiveBuilderTaskDelegate
 import com.android.builder.dexing.ClassBucket
 import com.android.builder.dexing.DependencyGraphUpdater
 import com.android.builder.dexing.DexArchiveBuilder
-import com.android.builder.dexing.DexArchiveBuilderConfig
 import com.android.builder.dexing.DexArchiveBuilderException
-import com.android.builder.dexing.DexerTool
 import com.android.builder.dexing.MutableDependencyGraph
-import com.android.dx.command.dexer.DxContext
 import com.android.ide.common.blame.MessageReceiver
 import com.android.utils.FileUtils
 import com.google.common.io.Closer
@@ -39,7 +36,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.io.OutputStream
 
 /** Work action to process a bucket of class files. */
 abstract class DexWorkAction : ProfileAwareWorkAction<DexWorkActionParams>() {
@@ -48,8 +44,6 @@ abstract class DexWorkAction : ProfileAwareWorkAction<DexWorkActionParams>() {
         try {
             launchProcessing(
                 parameters,
-                System.out,
-                System.err,
                 MessageReceiverImpl(
                     parameters.dexSpec.get().dexParams.errorFormatMode,
                     Logging.getLogger(DexArchiveBuilderTaskDelegate::class.java)
@@ -63,22 +57,15 @@ abstract class DexWorkAction : ProfileAwareWorkAction<DexWorkActionParams>() {
 
 /** Parameters for running [DexWorkAction]. */
 abstract class DexWorkActionParams: ProfileAwareWorkAction.Parameters() {
-    abstract val dexer: Property<DexerTool>
     abstract val dexSpec: Property<IncrementalDexSpec>
-    abstract val dxDexParams: Property<DxDexParameters>
 }
 
 fun launchProcessing(
     dexWorkActionParams: DexWorkActionParams,
-    outStream: OutputStream,
-    errStream: OutputStream,
     receiver: MessageReceiver
 ) {
     val dexArchiveBuilder = getDexArchiveBuilder(
-        dexWorkActionParams,
-        outStream,
-        errStream,
-        receiver
+        dexWorkActionParams, receiver
     )
     if (dexWorkActionParams.dexSpec.get().isIncremental) {
         processIncrementally(dexArchiveBuilder, dexWorkActionParams)
@@ -106,10 +93,9 @@ private fun processIncrementally(
             }
         }
 
-        // Compute impacted files based on the changed files and the desugaring graph (if they are
-        // not precomputed)
-        val unchangedButImpactedFiles =
-            impactedFiles ?: desugarGraph!!.getAllDependents(changedFiles)
+        // Compute impacted files based on the changed files and the desugaring graph (if
+        // desugaring is enabled)
+        val unchangedButImpactedFiles = desugarGraph?.getAllDependents(changedFiles) ?: emptySet()
         val changedOrImpactedFiles = changedFiles + unchangedButImpactedFiles
 
         // Remove stale nodes in the desugaring graph (stale dex outputs have been removed earlier
@@ -199,46 +185,27 @@ private fun process(
 
 private fun getDexArchiveBuilder(
     dexWorkActionParams: DexWorkActionParams,
-    outStream: OutputStream,
-    errStream: OutputStream,
     messageReceiver: MessageReceiver
 ): DexArchiveBuilder {
     val dexArchiveBuilder: DexArchiveBuilder
     with(dexWorkActionParams) {
         val dexSpec = dexSpec.get()
-        when (dexer.get()) {
-            DexerTool.DX -> {
-                val dxDexParams = dxDexParams.get()
-                val config = DexArchiveBuilderConfig(
-                    DxContext(outStream, errStream),
-                    !dxDexParams.dxNoOptimizeFlagPresent, // optimizedDex
-                    dxDexParams.inBufferSize,
-                    dexSpec.dexParams.minSdkVersion,
-                    DexerTool.DX,
-                    dxDexParams.outBufferSize,
-                    dxDexParams.jumboMode
-                )
-
-                dexArchiveBuilder = DexArchiveBuilder.createDxDexBuilder(config)
-            }
-            DexerTool.D8 -> dexArchiveBuilder = DexArchiveBuilder.createD8DexBuilder(
-                com.android.builder.dexing.DexParameters(
-                    minSdkVersion = dexSpec.dexParams.minSdkVersion,
-                    debuggable = dexSpec.dexParams.debuggable,
-                    dexPerClass = dexSpec.dexParams.dexPerClass,
-                    withDesugaring = dexSpec.dexParams.withDesugaring,
-                    desugarBootclasspath =
-                    DexArchiveBuilderTaskDelegate.sharedState.getService(dexSpec.dexParams.desugarBootclasspath).service,
-                    desugarClasspath =
-                    DexArchiveBuilderTaskDelegate.sharedState.getService(dexSpec.dexParams.desugarClasspath).service,
-                    coreLibDesugarConfig = dexSpec.dexParams.coreLibDesugarConfig,
-                    coreLibDesugarOutputKeepRuleFile =
-                    dexSpec.dexParams.coreLibDesugarOutputKeepRuleFile,
-                    messageReceiver = messageReceiver
-                )
+        dexArchiveBuilder = DexArchiveBuilder.createD8DexBuilder(
+            com.android.builder.dexing.DexParameters(
+                minSdkVersion = dexSpec.dexParams.minSdkVersion,
+                debuggable = dexSpec.dexParams.debuggable,
+                dexPerClass = dexSpec.dexParams.dexPerClass,
+                withDesugaring = dexSpec.dexParams.withDesugaring,
+                desugarBootclasspath =
+                DexArchiveBuilderTaskDelegate.sharedState.getService(dexSpec.dexParams.desugarBootclasspath).service,
+                desugarClasspath =
+                DexArchiveBuilderTaskDelegate.sharedState.getService(dexSpec.dexParams.desugarClasspath).service,
+                coreLibDesugarConfig = dexSpec.dexParams.coreLibDesugarConfig,
+                coreLibDesugarOutputKeepRuleFile =
+                dexSpec.dexParams.coreLibDesugarOutputKeepRuleFile,
+                messageReceiver = messageReceiver
             )
-            else -> throw AssertionError("Unknown dexer type: " + dexer.get().name)
-        }
+        )
     }
     return dexArchiveBuilder
 }

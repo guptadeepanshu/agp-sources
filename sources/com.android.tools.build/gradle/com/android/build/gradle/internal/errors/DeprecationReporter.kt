@@ -52,50 +52,21 @@ interface DeprecationReporter {
          */
         private val additionalMessage: String? = null
     ) {
-        VERSION_4_2(Version.VERSION_4_2),
         VERSION_7_0(Version.VERSION_7_0),
+        VERSION_8_0(Version.VERSION_8_0),
 
-        // deprecation of compile in favor of api/implementation
-        CONFIG_NAME(
-            Version.VERSION_7_0,
-            "For more information, see http://d.android.com/r/tools/update-dependency-configurations.html."
-        ),
-
-        // When legacy dexer will be removed and fully replaced by D8.
-        LEGACY_DEXER(
-            Version.VERSION_7_0,
-            "For more details, see https://d.android.com/r/studio-ui/d8-overview.html"
-        ),
-
-        // Obsolete Dex Options
-        DEX_OPTIONS(LEGACY_DEXER.removalTarget),
+        // Obsolete dx Dex Options
+        DEX_OPTIONS(Version.VERSION_8_0, "Using it has no effect, and the Android" +
+                "Gradle plugin optimizes dexing automatically."),
 
         // Deprecation of Task Access in the variant API
         TASK_ACCESS_VIA_VARIANT(Version.VERSION_7_0),
 
-        DSL_USE_PROGUARD(
-            Version.VERSION_7_0,
-            "Use 'android.enableR8' in gradle.properties to switch between R8 and Proguard."
-        ),
-
         ENABLE_R8(Version.VERSION_7_0, "You will no longer be able to disable R8"),
-
-        // Deprecation of disabling Desugar
-        DESUGAR_TOOL(ENABLE_R8.removalTarget),
 
         USE_PROPERTIES(
             Version.VERSION_7_0,
             "Gradle Properties must be used to change Variant information."
-        ),
-
-        INCLUDE_COMPILE_CLASSPATH(
-            Version.VERSION_7_0,
-            "It does not do anything and AGP no longer includes annotation processors added on your project's compile classpath"
-        ),
-
-        AGP_BUILD_CACHE(
-            Version.VERSION_7_0,
-            "It does not do anything and AGP is now using Gradle caching."
         ),
 
         LINT_CHECK_ONLY(
@@ -103,11 +74,6 @@ interface DeprecationReporter {
             "`check` has been renamed to `checkOnly` to make it clear that it " +
                     "will turn off all other checks than those explicitly listed. If that is " +
                     "what you actually intended, use `checkOnly`; otherwise switch to `enable`."
-        ),
-
-        JETIFIER_IGNORE_LIST(
-            Version.VERSION_7_0,
-            "Use android.jetifier.ignorelist instead."
         ),
 
         ;

@@ -32,10 +32,10 @@ import org.gradle.api.artifacts.component.ComponentIdentifier
 import java.io.File
 
 class LintDependencyModelBuilder(
-    private val artifactHandler: ArtifactHandler<LintModelLibrary>
+    private val artifactHandler: ArtifactHandler<LintModelLibrary>,
+    private val libraryMap: MutableMap<String, LintModelLibrary> = mutableMapOf()
 ) : DependencyModelBuilder<LintModelDependencies> {
 
-    private val libraryMap = mutableMapOf<String, LintModelLibrary>()
     private val libraryResolver = DefaultLintModelLibraryResolver(libraryMap)
 
     private val compileRoots = mutableListOf<LintModelDependency>()

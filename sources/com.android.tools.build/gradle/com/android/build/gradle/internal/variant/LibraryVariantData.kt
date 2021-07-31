@@ -27,6 +27,7 @@ import com.android.builder.core.VariantType
 import com.android.utils.appendCapitalized
 import com.android.utils.capitalizeAndAppend
 import org.gradle.api.Task
+import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
 /** Data about a variant that produce a Library bundle (.aar)  */
@@ -54,14 +55,14 @@ class LibraryVariantData(
     private val testVariants: MutableMap<VariantType, TestVariantData> = mutableMapOf()
 
     override val description: String
-        get() = if (variantDslInfo.hasFlavors()) {
+        get() = if (componentIdentity.productFlavors.isNotEmpty()) {
             val sb = StringBuilder(50)
-            variantDslInfo.componentIdentity.buildType?.let { sb.appendCapitalized(it) }
+            componentIdentity.buildType?.let { sb.appendCapitalized(it) }
             sb.append(" build for flavor ")
-            sb.appendCapitalized(variantDslInfo.componentIdentity.flavorName)
+            componentIdentity.flavorName?.let { sb.appendCapitalized(it) }
             sb.toString()
         } else {
-            variantDslInfo.componentIdentity.buildType!!.capitalizeAndAppend(" build")
+            componentIdentity.buildType!!.capitalizeAndAppend(" build")
         }
 
     override fun getTestVariantData(type: VariantType): TestVariantData? {
@@ -74,29 +75,26 @@ class LibraryVariantData(
 
     // Overridden to add source folders to a generateAnnotationsTask, if it exists.
     override fun registerJavaGeneratingTask(
-        task: Task, vararg generatedSourceFolders: File
-    ) {
-        super.registerJavaGeneratingTask(task, *generatedSourceFolders)
-
-        taskContainer.generateAnnotationsTask?.let { taskProvider ->
-            taskProvider.configure { task ->
-                for (f in generatedSourceFolders) {
-                    task.source(f)
-                }
-            }
-        }
-    }
-
-    // Overridden to add source folders to a generateAnnotationsTask, if it exists.
-    override fun registerJavaGeneratingTask(
         task: Task,
         generatedSourceFolders: Collection<File>
     ) {
         super.registerJavaGeneratingTask(task, generatedSourceFolders)
+        addSourcesToGenerateAnnotationsTask(generatedSourceFolders)
+    }
 
+    // Overridden to add source folders to a generateAnnotationsTask, if it exists.
+    override fun registerJavaGeneratingTask(
+        taskProvider: TaskProvider<out Task>,
+        generatedSourceFolders: Collection<File>
+    ) {
+        super.registerJavaGeneratingTask(taskProvider, generatedSourceFolders)
+        addSourcesToGenerateAnnotationsTask(generatedSourceFolders)
+    }
+
+    private fun addSourcesToGenerateAnnotationsTask(sourceFolders: Collection<File>) {
         taskContainer.generateAnnotationsTask?.let { taskProvider ->
             taskProvider.configure { task ->
-                for (f in generatedSourceFolders) {
+                for (f in sourceFolders) {
                     task.source(f)
                 }
             }

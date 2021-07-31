@@ -19,8 +19,7 @@ package com.android.build.gradle.tasks
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.aapt.WorkerExecutorResourceCompilationService
-import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.profile.AnalyticsService
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.processResources
@@ -32,6 +31,7 @@ import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.files.SerializableInputChanges
 import com.android.builder.internal.aapt.AaptException
@@ -41,6 +41,7 @@ import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
 import com.android.ide.common.resources.CompileResourceRequest
 import com.android.ide.common.resources.FileStatus
 import com.android.ide.common.resources.ResourceCompilationService
+import com.android.ide.common.resources.mergeIdentifiedSourceSetFiles
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.ImmutableSet
@@ -95,6 +96,9 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
     @get:Internal
     abstract val mergeBlameFolder: DirectoryProperty
 
+    @get:Internal
+    abstract val sourceSetMaps: ConfigurableFileCollection
+
     @get:Nested
     abstract val androidJarInput: AndroidJarInput
 
@@ -128,6 +132,7 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
         abstract val manifestMergeBlameFile: RegularFileProperty
         abstract val compiledDirectory: DirectoryProperty
         abstract val mergeBlameFolder: DirectoryProperty
+        abstract val sourceSetMaps: ConfigurableFileCollection
     }
 
     /**
@@ -157,6 +162,8 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
 
             val compiledDependenciesResourcesDirs =
                 parameters.compiledDependenciesResources.reversed()
+            val identifiedSourceSetMap =
+                    mergeIdentifiedSourceSetFiles(parameters.sourceSetMaps.files.filterNotNull())
             val config = AaptPackageConfig.Builder()
                 .setManifestFile(manifestFile = parameters.manifestFile.get().asFile)
                 .addResourceDirectories(compiledDependenciesResourcesDirs)
@@ -167,6 +174,7 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                 .setAndroidTarget(androidJar = parameters.androidJar.get().asFile)
                 .setMergeBlameDirectory(parameters.mergeBlameFolder.get().asFile)
                 .setManifestMergeBlameFile(parameters.manifestMergeBlameFile.get().asFile)
+                .setIdentifiedSourceSetMap(identifiedSourceSetMap)
                 .build()
 
             workerExecutor.await() // All compilation must be done before linking.
@@ -181,8 +189,8 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
     }
 
     class CreationAction(
-        creationConfig: VariantCreationConfig
-    ) : VariantTaskCreationAction<VerifyLibraryResourcesTask, VariantCreationConfig>(
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<VerifyLibraryResourcesTask, ComponentCreationConfig>(
         creationConfig
     ) {
 
@@ -237,6 +245,17 @@ abstract class VerifyLibraryResourcesTask : NewIncrementalTask() {
                 creationConfig.globalScope.extension.compileSdkVersion)
             task.androidJarInput.buildToolsRevision.setDisallowChanges(
                 creationConfig.globalScope.extension.buildToolsRevision)
+            if (creationConfig.services
+                            .projectOptions[BooleanOption.ENABLE_SOURCE_SET_PATHS_MAP]) {
+                val sourceSetMap =
+                        creationConfig.artifacts.get(InternalArtifactType.SOURCE_SET_PATH_MAP)
+                task.sourceSetMaps.fromDisallowChanges(
+                        creationConfig.services.fileCollection(sourceSetMap)
+                )
+                task.dependsOn(sourceSetMap)
+            } else {
+                task.sourceSetMaps.disallowChanges()
+            }
         }
     }
 

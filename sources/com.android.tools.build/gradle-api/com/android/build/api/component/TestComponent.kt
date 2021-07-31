@@ -16,11 +16,14 @@
 
 package com.android.build.api.component
 
-import com.android.build.api.variant.Variant
-import org.gradle.api.Incubating
-
-@Incubating
-interface TestComponent : Component {
-
-    val testedVariant: Variant
-}
+@Deprecated(
+    message= "Use the com.android.build.api.variant package",
+    replaceWith = ReplaceWith(
+        "TestComponent",
+        "com.android.build.api.variant.TestComponent"
+    ),
+    level = DeprecationLevel.WARNING
+)
+interface TestComponent :
+    Component,
+    com.android.build.api.variant.TestComponent

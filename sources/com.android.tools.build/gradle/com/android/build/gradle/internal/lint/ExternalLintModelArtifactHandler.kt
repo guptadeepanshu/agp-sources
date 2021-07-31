@@ -17,23 +17,26 @@
 package com.android.build.gradle.internal.lint
 
 import com.android.SdkConstants
+import com.android.SdkConstants.MAVEN_ARTIFACT_ID_PROPERTY
+import com.android.SdkConstants.MAVEN_GROUP_ID_PROPERTY
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.build.gradle.internal.ide.dependencies.BuildMapping
 import com.android.build.gradle.internal.ide.dependencies.ResolvedArtifact
-import com.android.build.gradle.internal.ide.dependencies.getBuildId
-import com.android.build.gradle.internal.ide.dependencies.getVariantName
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask.Companion.LINT_MODEL_METADATA_ENTRY_PATH
 import com.android.builder.model.MavenCoordinates
 import com.android.ide.common.caching.CreatingCache
 import com.android.tools.lint.model.DefaultLintModelAndroidLibrary
 import com.android.tools.lint.model.DefaultLintModelJavaLibrary
 import com.android.tools.lint.model.DefaultLintModelMavenName
+import com.android.tools.lint.model.DefaultLintModelModuleLibrary
+import com.android.tools.lint.model.LintModelExternalLibrary
 import com.android.tools.lint.model.LintModelLibrary
 import com.android.tools.lint.model.LintModelMavenName
 import com.android.utils.FileUtils
 import org.gradle.api.artifacts.ArtifactCollection
-import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import java.io.File
 import java.util.Collections
+import java.util.Properties
 
 /**
  * An artifact handler that makes project dependencies into [LintModelExternalLibrary]
@@ -41,15 +44,18 @@ import java.util.Collections
  * This means that lint does not need to parse dependency sources when checkLibrary is disabled,
  * and the lint integration need not handle local projects that are not analyzed but are needed
  * to resolve symbols.
+ *
+ * Note: If [baseModuleModelFileMap] contains the appropriate entry, any corresponding base module
+ * project dependency will be handled as a [DefaultLintModelModuleLibrary] instead of a
+ * [LintModelExternalLibrary]
  */
 class ExternalLintModelArtifactHandler private constructor(
     private val localJarCache: CreatingCache<File, List<File>>,
     mavenCoordinatesCache: CreatingCache<ResolvedArtifact, MavenCoordinates>,
     private val projectExplodedAarsMap: Map<ProjectKey, File>,
-    private val projectJarsMap: Map<ProjectKey, File>
+    private val projectJarsMap: Map<ProjectKey, File>,
+    private val baseModuleModelFileMap: Map<ProjectKey, File>
 ) : ArtifactHandler<LintModelLibrary>(localJarCache, mavenCoordinatesCache) {
-
-    private data class ProjectKey(val buildId: String, val projectPath: String, val variantName: String?)
 
     override fun handleAndroidLibrary(
         aarFile: File,
@@ -93,7 +99,7 @@ class ExternalLintModelArtifactHandler private constructor(
         addressSupplier: () -> String
     ): LintModelLibrary {
         val key = ProjectKey( buildId = buildId, projectPath = projectPath, variantName = variantName)
-        val folder = projectExplodedAarsMap[key] ?: throw IllegalStateException("unable to find project exploded aar for $buildId $projectPath")
+        val folder = projectExplodedAarsMap[key] ?: throw IllegalStateException("unable to find project exploded aar for $key")
         return DefaultLintModelAndroidLibrary(
             jarFiles = listOf(
                 FileUtils.join(
@@ -113,7 +119,20 @@ class ExternalLintModelArtifactHandler private constructor(
             externalAnnotations = File(folder, SdkConstants.FN_ANNOTATIONS_ZIP),
             proguardRules = File(folder, SdkConstants.FN_PROGUARD_TXT),
             provided = isProvided,
-            resolvedCoordinates = coordinatesSupplier().toMavenName()
+            resolvedCoordinates =
+                if (File(folder, LINT_MODEL_METADATA_ENTRY_PATH).isFile) {
+                    val properties = Properties()
+                    File(folder, LINT_MODEL_METADATA_ENTRY_PATH).inputStream().use {
+                        properties.load(it)
+                    }
+                    DefaultLintModelMavenName(
+                        groupId = properties.getProperty(MAVEN_GROUP_ID_PROPERTY),
+                        artifactId = properties.getProperty(MAVEN_ARTIFACT_ID_PROPERTY),
+                        version = "unspecified"
+                    )
+                } else {
+                    coordinatesSupplier().toMavenName()
+                }
         )
     }
 
@@ -138,7 +157,15 @@ class ExternalLintModelArtifactHandler private constructor(
     ): LintModelLibrary {
         val artifactAddress = addressSupplier()
         val key = ProjectKey(buildId, projectPath, variantName)
-        val jar = projectJarsMap[key] ?: error("Could not find jar for project $key")
+        if (key in baseModuleModelFileMap) {
+            return DefaultLintModelModuleLibrary(
+                artifactAddress = addressSupplier(),
+                projectPath = projectPath,
+                lintJar = null,
+                provided = false
+            )
+        }
+        val jar = getProjectJar(key)
         return DefaultLintModelJavaLibrary(
             artifactAddress = artifactAddress,
             jarFiles = listOf(jar),
@@ -153,34 +180,44 @@ class ExternalLintModelArtifactHandler private constructor(
         version
     )
 
+    private fun getProjectJar(key: ProjectKey): File {
+        return projectJarsMap[key] ?: error("Could not find jar for project $key\n" +
+                "${projectJarsMap.keys.size} known projects: \n" +
+                projectJarsMap.entries.joinToString("\n") { "  ${it.key}=${it.value}\n" })
+    }
+
     companion object {
-        fun create(
-            localJarCache: CreatingCache<File, List<File>>,
-            mavenCoordinatesCache: CreatingCache<ResolvedArtifact, MavenCoordinates>,
-            projectExplodedAars: ArtifactCollection?,
+
+        internal fun create(
+            dependencyCaches: DependencyCaches,
+            projectRuntimeExplodedAars: ArtifactCollection?,
+            projectCompileExplodedAars: ArtifactCollection?,
             testedProjectExplodedAars: ArtifactCollection?,
-            projectJars: ArtifactCollection,
+            compileProjectJars: ArtifactCollection,
+            runtimeProjectJars: ArtifactCollection,
+            baseModuleModelFile: ArtifactCollection?,
             buildMapping: BuildMapping
-        ) : ExternalLintModelArtifactHandler {
+        ): ExternalLintModelArtifactHandler {
             var projectExplodedAarsMap =
-                projectExplodedAars?.asProjectKeyedMap(buildMapping) ?: emptyMap()
+                projectCompileExplodedAars?.asProjectKeyedMap(buildMapping) ?: emptyMap()
+            projectRuntimeExplodedAars?.let {
+                projectExplodedAarsMap = projectExplodedAarsMap + it.asProjectKeyedMap(buildMapping)
+            }
             testedProjectExplodedAars?.let {
                 projectExplodedAarsMap = projectExplodedAarsMap + it.asProjectKeyedMap(buildMapping)
             }
+            val projectJarsMap =
+                compileProjectJars.asProjectKeyedMap(buildMapping) + runtimeProjectJars.asProjectKeyedMap(buildMapping)
+            val baseModuleModelFileMap =
+                baseModuleModelFile?.asProjectKeyedMap(buildMapping) ?: emptyMap()
             return ExternalLintModelArtifactHandler(
-                localJarCache,
-                mavenCoordinatesCache,
+                dependencyCaches.localJarCache,
+                dependencyCaches.mavenCoordinatesCache,
                 Collections.unmodifiableMap(projectExplodedAarsMap),
-                Collections.unmodifiableMap(projectJars.asProjectKeyedMap(buildMapping))
+                Collections.unmodifiableMap(projectJarsMap),
+                Collections.unmodifiableMap(baseModuleModelFileMap)
             )
 
-        }
-
-        private fun ArtifactCollection.asProjectKeyedMap(buildMapping: BuildMapping): Map<ProjectKey, File> {
-            return artifacts.asSequence().map { artifact ->
-                val id = artifact.id.componentIdentifier as ProjectComponentIdentifier
-                ProjectKey(id.getBuildId(buildMapping)!!, id.projectPath, artifact.getVariantName()) to artifact.file
-            }.toMap()
         }
     }
 }

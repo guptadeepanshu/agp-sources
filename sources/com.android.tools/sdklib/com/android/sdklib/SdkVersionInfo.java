@@ -28,7 +28,7 @@ public class SdkVersionInfo {
      * updated for a new release. This number is used as a baseline and any more recent platforms
      * found can be used to increase the highest known number.
      */
-    public static final int HIGHEST_KNOWN_API = 30;
+    public static final int HIGHEST_KNOWN_API = 31;
 
     /**
      * Like {@link #HIGHEST_KNOWN_API} but does not include preview platforms.
@@ -42,6 +42,14 @@ public class SdkVersionInfo {
      * distribution of older platforms decreases.
      */
     public static final int LOWEST_ACTIVE_API = 16;
+
+    /**
+     * The default minSdkVersion to use for new projects and modules.
+     * This number is going to be at least {@link #LOWEST_ACTIVE_API}, but can
+     * often be higher; {@link #LOWEST_ACTIVE_API} is the minimum <b>supported</b>
+     * API level, whereas this constant is the <b>recommended</b> minSdkVersion.
+     */
+    public static final int RECOMMENDED_MIN_SDK_VERSION = 21;
 
     /**
      * The highest known API level for Wearables. Note the tools at the
@@ -74,6 +82,12 @@ public class SdkVersionInfo {
      * for a new project. Make sure design and appcompat is supported.
      */
     public static final int LOWEST_COMPILE_SDK_VERSION = 22;
+
+    /**
+     * Build.VERSION_CODES.CUR_DEVELOPMENT; set for platforms in
+     * development before preview
+     */
+    public static final int CUR_DEVELOPMENT = 10000;
 
     /**
      * Returns the Android version and code name of the given API level
@@ -137,6 +151,7 @@ public class SdkVersionInfo {
             case 28: return "9.0";
             case 29: return "10.0";
             case 30: return "11.0";
+            case 31: return "12 Preview";
             // If you add more versions here, also update #getBuildCodes and
             // #HIGHEST_KNOWN_API
 
@@ -195,6 +210,8 @@ public class SdkVersionInfo {
                 return "Q";
             case 30:
                 return "R";
+            case 31:
+                return "S";
             // If you add more versions here, also update #getBuildCodes and
             // #HIGHEST_KNOWN_API
 
@@ -245,6 +262,7 @@ public class SdkVersionInfo {
             case 28: return "P";
             case 29: return "Q";
             case 30: return "R";
+            case 31: return "S";
             // If you add more versions here, also update #getCodeName and
             // #HIGHEST_KNOWN_API
         }

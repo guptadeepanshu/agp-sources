@@ -20,19 +20,21 @@ import com.google.common.base.Strings;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 /**
  * JsonSerializer and Deserializer for {@link SourceFile}.
  *
- * The JsonDeserialiser accepts either a string of the file path or a json object of the form
+ * <p>The JsonDeserialiser accepts either a string of the file path or a json object of the form
+ *
  * <pre>{
  *     "path":"/path/to/file.java",
- *     "description": "short human-readable description"
- * }</pre> where both
- * properties are optionally present, so unknown is represented by the empty object.
+ *     "description": "short `human-readable description"
+ * }</pre>
+ *
+ * where both properties are optionally present, so unknown is represented by the empty object.
  */
 public class SourceFileJsonTypeAdapter extends TypeAdapter<SourceFile> {
 
@@ -42,20 +44,19 @@ public class SourceFileJsonTypeAdapter extends TypeAdapter<SourceFile> {
 
     @Override
     public void write(JsonWriter out, SourceFile src) throws IOException {
-        File file = src.getSourceFile();
+        String path = src.getSourcePath();
         String description = src.getDescription();
 
-        if (description == null && file != null) {
-            out.value(file.getAbsolutePath());
+        if (description == null && path != null) {
+            out.value(path);
             return;
         }
-
         out.beginObject();
         if (description != null) {
             out.name(DESCRIPTION).value(description);
         }
-        if (file != null) {
-            out.name(PATH).value(file.getAbsolutePath());
+        if (path != null) {
+            out.name(PATH).value(path);
         }
         out.endObject();
     }
@@ -80,11 +81,16 @@ public class SourceFileJsonTypeAdapter extends TypeAdapter<SourceFile> {
                 in.endObject();
                 if (!Strings.isNullOrEmpty(filePath)) {
                     File file = new File(filePath);
+                    SourceFile sf;
                     if (!Strings.isNullOrEmpty(description)) {
-                        return new SourceFile(file, description);
+                        sf = new SourceFile(file, description);
                     } else {
-                        return new SourceFile(file);
+                        sf = new SourceFile(file);
                     }
+                    if (filePath.contains(":")) {
+                        sf.setOverrideSourcePath(filePath);
+                    }
+                    return sf;
                 } else {
                     if (!Strings.isNullOrEmpty(description)) {
                         return new SourceFile(description);
@@ -97,7 +103,11 @@ public class SourceFileJsonTypeAdapter extends TypeAdapter<SourceFile> {
                 if (Strings.isNullOrEmpty(fileName)) {
                     return SourceFile.UNKNOWN;
                 }
-                return new SourceFile(new File(fileName));
+                SourceFile sf = new SourceFile(new File(fileName));
+                if (fileName.contains(":")) {
+                    sf.setOverrideSourcePath(fileName);
+                }
+                return sf;
             default:
                 return SourceFile.UNKNOWN;
         }

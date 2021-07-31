@@ -53,7 +53,8 @@ import java.io.Serializable
  * ```
  */
 @Incubating
-interface InstrumentationParameters : Serializable {
+interface InstrumentationParameters : Serializable
+{
 
     @Incubating
     class None : InstrumentationParameters

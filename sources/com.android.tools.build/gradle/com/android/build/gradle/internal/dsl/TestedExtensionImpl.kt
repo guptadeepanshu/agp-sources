@@ -28,20 +28,17 @@ abstract class TestedExtensionImpl<
         BuildFeaturesT : BuildFeatures,
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
-        ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        VariantBuilderT : VariantBuilder,
-        VariantT : Variant>(
+        ProductFlavorT : com.android.build.api.dsl.ProductFlavor>(
             dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : CommonExtensionImpl<
         BuildFeaturesT,
         BuildTypeT,
         DefaultConfigT,
-        ProductFlavorT,
-        VariantBuilderT,
-        VariantT>(
+        ProductFlavorT>(
     dslServices,
     dslContainers
 ), com.android.build.api.dsl.TestedExtension {
     override var testBuildType = "debug"
+    override var testNamespace: String? = null
 }

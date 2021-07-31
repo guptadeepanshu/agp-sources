@@ -19,18 +19,52 @@
 package com.android.build.gradle.internal.utils
 
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.utils.appendCapitalized
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.SourceDirectorySet
+import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.ClasspathNormalizer
+import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskProvider
+import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
+const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+private val KOTLIN_MPP_PLUGIN_IDS = listOf("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform")
+
+/**
+ * Returns `true` if any of the Kotlin plugins is applied (there are many Kotlin plugins). If we
+ * want to check a specific Kotlin plugin, use another method (e.g.,
+ * [isKotlinAndroidPluginApplied]).
+ */
+fun isKotlinPluginApplied(project: Project): Boolean {
+    return try {
+        project.plugins.any { it is KotlinBasePluginWrapper }
+    } catch (ignored: Throwable) {
+        // This may fail if Kotlin plugin is not applied, as KotlinBasePluginWrapper
+        // will not be present at runtime. This means that the Kotlin plugin is not applied.
+        false
+    }
+}
+
+fun isKotlinAndroidPluginApplied(project: Project) =
+        project.pluginManager.hasPlugin(KOTLIN_ANDROID_PLUGIN_ID)
+
+fun isKotlinKaptPluginApplied(project: Project) =
+        project.pluginManager.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
 
 fun getKotlinCompile(project: Project, creationConfig: ComponentCreationConfig): TaskProvider<Task> =
         project.tasks.named(creationConfig.computeTaskName("compile", "Kotlin"))
@@ -79,21 +113,25 @@ private fun setIrUsedInAnalytics(creationConfig: ComponentCreationConfig, projec
                     .get()
 
     buildService.getVariantBuilder(project.path, creationConfig.name)
-            .setKotlinOptions(GradleBuildVariant.KotlinOptions.newBuilder().setUseIr(true))
+            ?.setKotlinOptions(GradleBuildVariant.KotlinOptions.newBuilder().setUseIr(true))
 }
 
 /** Add compose compiler extension args to Kotlin compile task. */
 fun addComposeArgsToKotlinCompile(
         task: Task,
         creationConfig: ComponentCreationConfig,
-        compilerExtension: FileCollection) {
+        compilerExtension: FileCollection,
+        useLiveLiterals: Boolean) {
     task as KotlinCompile
     // Add as input
     task.inputs.files(compilerExtension)
             .withPropertyName("composeCompilerExtension")
             .withNormalizer(ClasspathNormalizer::class.java)
 
-    val debuggable = if (creationConfig is ApkCreationConfig) {
+    // Add useLiveLiterals as an input
+    task.inputs.property("useLiveLiterals", useLiveLiterals)
+
+    val debuggable = if (creationConfig is ApkCreationConfig || creationConfig is LibraryCreationConfig) {
         creationConfig.debuggable
     } else {
         false
@@ -102,21 +140,61 @@ fun addComposeArgsToKotlinCompile(
     task.doFirst {
         it as KotlinCompile
         it.kotlinOptions.useIR = true
-        it.kotlinOptions.freeCompilerArgs +=
-                listOf(
-                        "-Xplugin=${compilerExtension.files.first().absolutePath}",
-                        "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
-                        "-P", "plugin:androidx.compose.plugins.idea:enabled=true",
-                        "-Xallow-jvm-ir-dependencies"
-                ) + if (debuggable) {
-                    listOf(
-                            "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:liveLiterals=true",
-                            "-P",
-                            "plugin:androidx.compose.compiler.plugins.kotlin:sourceInformation=true"
-                    )
-                } else {
-                    listOf()
-                }
+        val extraFreeCompilerArgs = mutableListOf(
+                "-Xplugin=${compilerExtension.files.first().absolutePath}",
+                "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
+                "-P", "plugin:androidx.compose.plugins.idea:enabled=true",
+                "-Xallow-unstable-dependencies"
+        )
+        if (debuggable) {
+            extraFreeCompilerArgs += listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:sourceInformation=true")
+
+            if (useLiveLiterals) {
+                extraFreeCompilerArgs += listOf(
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:liveLiterals=true")
+            }
+        }
+        it.kotlinOptions.freeCompilerArgs += extraFreeCompilerArgs
+    }
+}
+
+/**
+ * Get information about Kotlin sources from KGP, until there is a KGP version that can work
+ * with AGP which supports Kotlin source directories.
+ */
+fun syncAgpAndKgpSources(project: Project, sourceSets: NamedDomainObjectContainer<com.android.build.gradle.api.AndroidSourceSet>) {
+    val hasMpp = KOTLIN_MPP_PLUGIN_IDS.any { project.pluginManager.hasPlugin(it) }
+    sourceSets.all {
+        val kotlinConvention = (it as HasConvention).convention.plugins["kotlin"]
+        if (kotlinConvention!=null) {
+            val sourceDir =
+                    kotlinConvention::class.java.getMethod("getKotlin")
+                            .invoke(kotlinConvention) as SourceDirectorySet
+
+            if (!hasMpp) {
+                sourceDir.srcDirs((it.kotlin as DefaultAndroidSourceDirectorySet).srcDirs)
+            }
+            it.kotlin.setSrcDirs(listOf(sourceDir.sourceDirectories))
+        }
+    }
+}
+
+/**
+ * Attempts to find the corresponding `kapt` configurations for the source sets of the given
+ * variant. The returned list may be incomplete or empty if unsuccessful.
+ */
+fun findKaptConfigurationsForVariant(
+    project: Project,
+    creationConfig: ComponentCreationConfig
+): List<Configuration> {
+    return creationConfig.variantSources.sortedSourceProviders.mapNotNull { sourceSet ->
+        val kaptConfigurationName = if (sourceSet.name != SourceSet.MAIN_SOURCE_SET_NAME)
+            "kapt".appendCapitalized(sourceSet.name)
+        else
+            "kapt"
+        project.configurations.findByName(kaptConfigurationName)
     }
 }

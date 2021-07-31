@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.services
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.errors.SyncIssueReporter
 import com.android.build.gradle.internal.res.Aapt2FromMaven
+import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
@@ -51,7 +52,8 @@ class ProjectServices constructor(
     val buildServiceRegistry: BuildServiceRegistry,
     private val aapt2FromMaven: Aapt2FromMaven? = null,
     private val maxWorkerCount: Int,
-    val fileResolver: (Any) -> File
+    val projectInfo: ProjectInfo,
+    val fileResolver: (Any) -> File,
 ) {
     fun initializeAapt2Input(aapt2Input: Aapt2Input) {
         aapt2Input.buildService.setDisallowChanges(getBuildService(buildServiceRegistry))
@@ -59,7 +61,6 @@ class ProjectServices constructor(
         aapt2Input.binaryDirectory.from(aapt2FromMaven?.aapt2Directory)
         aapt2Input.binaryDirectory.disallowChanges()
         aapt2Input.version.setDisallowChanges(aapt2FromMaven?.version)
-        aapt2Input.useJvmResourceCompiler.setDisallowChanges(projectOptions[BooleanOption.ENABLE_JVM_RESOURCE_COMPILER])
         aapt2Input.maxWorkerCount.setDisallowChanges(maxWorkerCount)
         aapt2Input.maxAapt2Daemons.setDisallowChanges(computeMaxAapt2Daemons(projectOptions))
     }

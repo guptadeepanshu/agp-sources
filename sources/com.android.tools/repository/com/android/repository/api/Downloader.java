@@ -20,7 +20,6 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -70,8 +69,8 @@ public interface Downloader {
      */
     void downloadFully(
             @NonNull URL url,
-            @NonNull File target,
-            @Nullable String checksum,
+            @NonNull Path target,
+            @Nullable Checksum checksum,
             @NonNull ProgressIndicator indicator)
             throws IOException;
 
@@ -98,8 +97,8 @@ public interface Downloader {
      */
     default void downloadFullyWithCaching(
             @NonNull URL url,
-            @NonNull File target,
-            @Nullable String checksum,
+            @NonNull Path target,
+            @Nullable Checksum checksum,
             @NonNull ProgressIndicator indicator)
             throws IOException {
         downloadFully(url, target, checksum, indicator);
@@ -119,10 +118,11 @@ public interface Downloader {
      *
      * @param intermediatesLocation the path to use for download intermediates
      */
-    default void setDownloadIntermediatesLocation(@NonNull File intermediatesLocation) {}
+    default void setDownloadIntermediatesLocation(@NonNull Path intermediatesLocation) {}
 
     /**
      * Hash the given input stream.
+     *
      * @param in The stream to hash. It will be fully consumed but not closed.
      * @param fileSize The expected length of the stream, for progress display purposes.
      * @param progress The indicator will be updated with the expected completion fraction.
@@ -130,17 +130,23 @@ public interface Downloader {
      * @throws IOException IF there's a problem reading from the stream.
      */
     @NonNull
-    static String hash(@NonNull InputStream in, long fileSize, @NonNull ProgressIndicator progress)
+    static String hash(
+            @NonNull InputStream in,
+            long fileSize,
+            @NonNull String algorithm,
+            @NonNull ProgressIndicator progress)
             throws IOException {
         progress.setText("Checking existing file...");
-        Hasher sha1 = Hashing.sha1().newHasher();
+        Hasher hasher =
+                (algorithm.equalsIgnoreCase("sha-256") ? Hashing.sha256() : Hashing.sha1())
+                        .newHasher();
         byte[] buf = new byte[5120];
         long totalRead = 0;
         int bytesRead;
         while ((bytesRead = in.read(buf)) > 0) {
-            sha1.putBytes(buf, 0, bytesRead);
+            hasher.putBytes(buf, 0, bytesRead);
             progress.setFraction((double) totalRead / (double) fileSize);
         }
-        return sha1.hash().toString();
+        return hasher.hash().toString();
     }
 }

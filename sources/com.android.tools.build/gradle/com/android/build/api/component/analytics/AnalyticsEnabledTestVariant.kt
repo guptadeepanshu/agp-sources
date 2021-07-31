@@ -16,8 +16,11 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.AaptOptions
-import com.android.build.api.variant.ApkPackagingOptions
+import com.android.build.api.component.UnitTest
+import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.GeneratesApk
+import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -31,25 +34,13 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
     stats: GradleBuildVariant.Builder,
     objectFactory: ObjectFactory
 ): AnalyticsEnabledVariant(delegate, stats, objectFactory), TestVariant {
+
     override val applicationId: Property<String>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.APPLICATION_ID_VALUE
             return delegate.applicationId
         }
-
-    override val aaptOptions: AaptOptions
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.AAPT_OPTIONS_VALUE
-            return delegate.aaptOptions
-        }
-
-    override fun aaptOptions(action: AaptOptions.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.AAPT_OPTIONS_ACTION_VALUE
-        delegate.aaptOptions(action)
-    }
 
     override val testedApplicationId: Provider<String>
         get() {
@@ -86,24 +77,22 @@ open class AnalyticsEnabledTestVariant @Inject constructor(
             return delegate.testLabel
         }
 
-    private val userVisiblePackagingOptions: ApkPackagingOptions by lazy {
-        objectFactory.newInstance(
-            AnalyticsEnabledApkPackagingOptions::class.java,
-            delegate.packagingOptions,
-            stats
+    override val unitTest: UnitTest? = null
+
+    private val generatesApk: GeneratesApk by lazy {
+        AnalyticsEnabledGeneratesApk(
+                delegate,
+                stats,
+                objectFactory
         )
     }
 
-    override val packagingOptions: ApkPackagingOptions
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
-            return userVisiblePackagingOptions
-        }
+    override val androidResources: AndroidResources
+        get() = generatesApk.androidResources
 
-    override fun packagingOptions(action: ApkPackagingOptions.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.PACKAGING_OPTIONS_ACTION_VALUE
-        action.invoke(userVisiblePackagingOptions)
-    }
+    override val renderscript: Renderscript?
+        get() = generatesApk.renderscript
+
+    override val packaging: ApkPackaging
+        get() = generatesApk.packaging
 }

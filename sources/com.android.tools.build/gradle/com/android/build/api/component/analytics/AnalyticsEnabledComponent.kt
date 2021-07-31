@@ -17,7 +17,7 @@
 package com.android.build.api.component.analytics
 
 import com.android.build.api.artifact.Artifacts
-import com.android.build.api.component.Component
+import com.android.build.api.variant.Component
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
@@ -33,6 +33,7 @@ abstract class AnalyticsEnabledComponent(
     val stats: GradleBuildVariant.Builder,
     val objectFactory: ObjectFactory
 ) : Component {
+
     override val artifacts: Artifacts
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -96,12 +97,13 @@ abstract class AnalyticsEnabledComponent(
             return delegate.productFlavors
         }
 
-    override val flavorName: String
+    override val flavorName: String?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.FLAVOR_NAME_VALUE
             return delegate.flavorName
         }
 
-    override fun getName(): String = delegate.name
+    override val name: String
+        get() = delegate.name
 }

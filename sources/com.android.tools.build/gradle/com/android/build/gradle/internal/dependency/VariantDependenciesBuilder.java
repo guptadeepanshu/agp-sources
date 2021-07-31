@@ -30,19 +30,21 @@ import static org.gradle.api.attributes.Bundling.BUNDLING_ATTRIBUTE;
 import static org.gradle.api.attributes.Bundling.EXTERNAL;
 import static org.gradle.api.attributes.Category.CATEGORY_ATTRIBUTE;
 import static org.gradle.api.attributes.LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE;
+import static org.gradle.api.attributes.java.TargetJvmEnvironment.TARGET_JVM_ENVIRONMENT_ATTRIBUTE;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.attributes.BuildTypeAttr;
 import com.android.build.api.attributes.ProductFlavorAttr;
-import com.android.build.api.attributes.VariantAttr;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet;
+import com.android.build.gradle.internal.attributes.VariantAttr;
 import com.android.build.gradle.internal.core.VariantDslInfo;
-import com.android.build.gradle.internal.dsl.ProductFlavor;
+import com.android.build.gradle.internal.dsl.ModulePropertyKeys;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType;
 import com.android.build.gradle.internal.services.StringCachingBuildService;
+import com.android.build.gradle.internal.testFixtures.TestFixturesUtil;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.builder.core.VariantType;
@@ -68,6 +70,8 @@ import org.gradle.api.attributes.Bundling;
 import org.gradle.api.attributes.Category;
 import org.gradle.api.attributes.LibraryElements;
 import org.gradle.api.attributes.Usage;
+import org.gradle.api.attributes.java.TargetJvmEnvironment;
+import org.gradle.api.capabilities.Capability;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 
@@ -108,6 +112,8 @@ public class VariantDependenciesBuilder {
     private final Set<Configuration> annotationConfigs = Sets.newLinkedHashSet();
     private final Set<Configuration> wearAppConfigs = Sets.newLinkedHashSet();
     private VariantImpl testedVariant;
+    private String overrideVariantNameAttribute = null;
+    private boolean testFixturesEnabled;
 
     @Nullable private Set<String> featureList;
 
@@ -138,6 +144,16 @@ public class VariantDependenciesBuilder {
         return this;
     }
 
+    public VariantDependenciesBuilder setTestFixturesEnabled(boolean testFixturesEnabled) {
+        this.testFixturesEnabled = testFixturesEnabled;
+        return this;
+    }
+
+    public VariantDependenciesBuilder overrideVariantNameAttribute(String name) {
+        this.overrideVariantNameAttribute = name;
+        return this;
+    }
+
     public VariantDependenciesBuilder setTestedVariant(@NonNull VariantImpl testedVariant) {
         this.testedVariant = testedVariant;
         return this;
@@ -162,9 +178,9 @@ public class VariantDependenciesBuilder {
             runtimeClasspaths.add(implementationConfig);
             implementationConfigurations.add(implementationConfig);
 
-            String apiConfigName = sourceSet.getApiConfigurationName();
-            if (apiConfigName != null) {
-                apiClasspaths.add(configs.getByName(apiConfigName));
+            Configuration apiConfig = configs.findByName(sourceSet.getApiConfigurationName());
+            if (apiConfig != null) {
+                apiClasspaths.add(apiConfig);
             }
 
             annotationConfigs.add(
@@ -187,6 +203,8 @@ public class VariantDependenciesBuilder {
         final Usage apiUsage = factory.named(Usage.class, Usage.JAVA_API);
         final Usage runtimeUsage = factory.named(Usage.class, Usage.JAVA_RUNTIME);
         final Usage reverseMetadataUsage = factory.named(Usage.class, "android-reverse-meta-data");
+        final TargetJvmEnvironment jvmEnvironment =
+                factory.named(TargetJvmEnvironment.class, TargetJvmEnvironment.ANDROID);
 
         String variantName = variantDslInfo.getComponentIdentity().getName();
         VariantType variantType = variantDslInfo.getVariantType();
@@ -195,6 +213,7 @@ public class VariantDependenciesBuilder {
                 getFlavorAttributes(flavorSelection);
 
         final ConfigurationContainer configurations = project.getConfigurations();
+        final DependencyHandler dependencies = project.getDependencies();
 
         final String compileClasspathName = variantName + "CompileClasspath";
         Configuration compileClasspath = configurations.maybeCreate(compileClasspathName);
@@ -210,7 +229,18 @@ public class VariantDependenciesBuilder {
                 compileClasspath.extendsFrom(configuration);
             }
 
-            compileClasspath.getDependencies().add(project.getDependencies().create(project));
+            if (testFixturesEnabled) {
+                dependencies.add(compileClasspath.getName(), dependencies.testFixtures(project));
+            }
+
+            compileClasspath.getDependencies().add(dependencies.create(project));
+        }
+
+        if (variantType.isTestFixturesComponent()) {
+            // equivalent to dependencies { testFixturesApi project("$currentProject") }
+            apiClasspaths.forEach(
+                    apiConfiguration ->
+                            apiConfiguration.getDependencies().add(dependencies.create(project)));
         }
         compileClasspath.setCanBeConsumed(false);
         compileClasspath
@@ -219,6 +249,7 @@ public class VariantDependenciesBuilder {
         final AttributeContainer compileAttributes = compileClasspath.getAttributes();
         applyVariantAttributes(compileAttributes, buildType, consumptionFlavorMap);
         compileAttributes.attribute(Usage.USAGE_ATTRIBUTE, apiUsage);
+        compileAttributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, jvmEnvironment);
 
         Configuration annotationProcessor =
                 configurations.maybeCreate(variantName + "AnnotationProcessorClasspath");
@@ -240,9 +271,12 @@ public class VariantDependenciesBuilder {
                 "Resolved configuration for runtime for variant: " + variantName);
         runtimeClasspath.setExtendsFrom(runtimeClasspaths);
         if (testedVariant != null) {
+            if (testFixturesEnabled) {
+                dependencies.add(runtimeClasspath.getName(), dependencies.testFixtures(project));
+            }
             if (testedVariant.getVariantDslInfo().getVariantType().isAar()
                     || !variantDslInfo.getVariantType().isApk()) {
-                runtimeClasspath.getDependencies().add(project.getDependencies().create(project));
+                runtimeClasspath.getDependencies().add(dependencies.create(project));
             }
         }
         runtimeClasspath.setCanBeConsumed(false);
@@ -252,6 +286,7 @@ public class VariantDependenciesBuilder {
         final AttributeContainer runtimeAttributes = runtimeClasspath.getAttributes();
         applyVariantAttributes(runtimeAttributes, buildType, consumptionFlavorMap);
         runtimeAttributes.attribute(Usage.USAGE_ATTRIBUTE, runtimeUsage);
+        runtimeAttributes.attribute(TARGET_JVM_ENVIRONMENT_ATTRIBUTE, jvmEnvironment);
 
         if (projectOptions.get(BooleanOption.USE_DEPENDENCY_CONSTRAINTS)) {
             Provider<StringCachingBuildService> stringCachingService =
@@ -261,10 +296,7 @@ public class VariantDependenciesBuilder {
                     .getIncoming()
                     .beforeResolve(
                             new ConstraintHandler(
-                                    runtimeClasspath,
-                                    project.getDependencies(),
-                                    false,
-                                    stringCachingService));
+                                    runtimeClasspath, dependencies, false, stringCachingService));
 
             // if this is a test App, then also synchronize the 2 runtime classpaths
             if (variantType.isApk() && testedVariant != null) {
@@ -275,17 +307,10 @@ public class VariantDependenciesBuilder {
                         .beforeResolve(
                                 new ConstraintHandler(
                                         testedRuntimeClasspath,
-                                        project.getDependencies(),
+                                        dependencies,
                                         true,
                                         stringCachingService));
             }
-        }
-
-        if (!projectOptions.get(BooleanOption.USE_ANDROID_X)) {
-            AndroidXDependencyCheck androidXDependencyCheck =
-                    new AndroidXDependencyCheck(issueReporter);
-            compileClasspath.getIncoming().afterResolve(androidXDependencyCheck);
-            runtimeClasspath.getIncoming().afterResolve(androidXDependencyCheck);
         }
 
         Configuration globalTestedApks =
@@ -328,7 +353,12 @@ public class VariantDependenciesBuilder {
             wearAttributes.attribute(Usage.USAGE_ATTRIBUTE, runtimeUsage);
         }
 
-        VariantAttr variantNameAttr = factory.named(VariantAttr.class, variantName);
+        VariantAttr variantNameAttr =
+                factory.named(
+                        VariantAttr.class,
+                        overrideVariantNameAttribute != null
+                                ? overrideVariantNameAttribute
+                                : variantName);
 
         Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> publicationFlavorMap =
                 getFlavorAttributes(null);
@@ -485,13 +515,12 @@ public class VariantDependenciesBuilder {
             reverseMetadataValues = configurations.maybeCreate(reverseMetadataValuesName);
 
             if (featureList != null) {
-                DependencyHandler depHandler = project.getDependencies();
                 List<String> notFound = new ArrayList<>();
 
                 for (String feature : featureList) {
                     Project p = project.findProject(feature);
                     if (p != null) {
-                        depHandler.add(reverseMetadataValuesName, p);
+                        dependencies.add(reverseMetadataValuesName, p);
                     } else {
                         notFound.add(feature);
                     }
@@ -521,6 +550,16 @@ public class VariantDependenciesBuilder {
         checkOldConfigurations(configurations, "_" + variantName + "Apk", runtimeClasspathName);
         checkOldConfigurations(configurations, "_" + variantName + "Publish", runtimeClasspathName);
 
+        if (variantType.isTestFixturesComponent()) {
+            Capability capability = TestFixturesUtil.getTestFixturesCapabilityForProject(project);
+            elements.forEach(
+                    (publishedConfigType, configuration) ->
+                            configuration.getOutgoing().capability(capability));
+        }
+
+        boolean isSelfInstrumenting =
+                ModulePropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(
+                        variantDslInfo.getExperimentalProperties());
         return new VariantDependencies(
                 variantName,
                 variantDslInfo.getVariantType(),
@@ -535,7 +574,8 @@ public class VariantDependenciesBuilder {
                 wearApp,
                 testedVariant,
                 project,
-                projectOptions);
+                projectOptions,
+                isSelfInstrumenting);
     }
 
     @NonNull
@@ -619,7 +659,8 @@ public class VariantDependenciesBuilder {
     @NonNull
     private Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> getFlavorAttributes(
             @Nullable Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> flavorSelection) {
-        List<ProductFlavor> productFlavors = variantDslInfo.getProductFlavorList();
+        List<com.android.build.api.dsl.ProductFlavor> productFlavors =
+                variantDslInfo.getProductFlavorList();
         Map<Attribute<ProductFlavorAttr>, ProductFlavorAttr> map =
                 Maps.newHashMapWithExpectedSize(productFlavors.size());
 
@@ -634,7 +675,7 @@ public class VariantDependenciesBuilder {
         final ObjectFactory objectFactory = project.getObjects();
 
         // first go through the product flavors and add matching attributes
-        for (ProductFlavor f : productFlavors) {
+        for (com.android.build.api.dsl.ProductFlavor f : productFlavors) {
             assert f.getDimension() != null;
 
             map.put(

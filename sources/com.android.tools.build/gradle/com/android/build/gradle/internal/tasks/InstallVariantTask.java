@@ -16,8 +16,8 @@
 package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.artifact.ArtifactType;
-import com.android.build.api.variant.BuiltArtifacts;
+import com.android.build.api.artifact.SingleArtifact;
+import com.android.build.api.variant.impl.BuiltArtifactsImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
 import com.android.build.api.variant.impl.VariantApiExtensionsKt;
 import com.android.build.gradle.internal.BuildToolsExecutableInput;
@@ -84,10 +84,13 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         final ILogger iLogger = new LoggerWrapper(getLogger());
         DeviceProvider deviceProvider =
                 new ConnectedDeviceProvider(
-                        getBuildTools().adbExecutable(), getTimeOutInMs(), iLogger);
+                        getBuildTools().adbExecutable(),
+                        getTimeOutInMs(),
+                        iLogger,
+                        System.getenv("ANDROID_SERIAL"));
         deviceProvider.use(
                 () -> {
-                    BuiltArtifacts builtArtifacts =
+                    BuiltArtifactsImpl builtArtifacts =
                             new BuiltArtifactsLoaderImpl().load(getApkDirectory().get());
 
                     install(
@@ -110,7 +113,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             @NonNull String variantName,
             @NonNull DeviceProvider deviceProvider,
             @NonNull AndroidVersion minSkdVersion,
-            @NonNull BuiltArtifacts builtArtifacts,
+            @NonNull BuiltArtifactsImpl builtArtifacts,
             @NonNull Set<String> supportedAbis,
             @NonNull Collection<String> installOptions,
             int timeOutInMs,
@@ -229,7 +232,8 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
             task.setGroup(TaskManager.INSTALL_GROUP);
             creationConfig
                     .getArtifacts()
-                    .setTaskInputToFinalProduct(ArtifactType.APK.INSTANCE, task.getApkDirectory());
+                    .setTaskInputToFinalProduct(
+                            SingleArtifact.APK.INSTANCE, task.getApkDirectory());
             task.setTimeOutInMs(
                     creationConfig
                             .getGlobalScope()

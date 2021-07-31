@@ -16,9 +16,6 @@
 
 package com.android.build.api.variant
 
-import com.android.build.api.dsl.DependenciesInfo
-import org.gradle.api.Incubating
-
 /**
  * Application specific variant object that contains properties that will determine the variant's
  * build flow.
@@ -29,14 +26,10 @@ import org.gradle.api.Incubating
  * All these properties must be resolved during configuration time as [org.gradle.api.Task]
  * representing the variant build flows must be created.
  */
-@Incubating
-interface ApplicationVariantBuilder : VariantBuilder {
+interface ApplicationVariantBuilder : VariantBuilder, HasAndroidTestBuilder {
 
     val debuggable: Boolean
 
     /** Specify whether to include SDK dependency information in APKs and Bundles. */
-    val dependenciesInfo: DependenciesInfo
-
-    /** Specify whether to include SDK dependency information in APKs and Bundles. */
-    fun dependenciesInfo(action: DependenciesInfo.() -> Unit)
+    val dependenciesInfo: DependenciesInfoBuilder
 }

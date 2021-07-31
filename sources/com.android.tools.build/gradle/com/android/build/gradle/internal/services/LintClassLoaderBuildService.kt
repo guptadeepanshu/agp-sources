@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2019 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,46 +16,40 @@
 
 package com.android.build.gradle.internal.services
 
-import com.android.tools.lint.gradle.api.LintClassLoaderProvider
+import com.android.build.gradle.internal.lint.AndroidLintWorkAction
+import java.net.URLClassLoader
 import org.gradle.api.Project
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
-import java.io.File
 
-// Cache class loader across builds. Recreating it on every build introduces huge performance
-// regression. See http://b/159760367 for details. Tracked in http://b/159781509.
-// It is enough to synchronize on build service methods when accessing this field, as there is
-// a single build service in the same class loader as this property during the build.
-private var cachedClassLoader: ClassLoader? = null
 
 /**
- * A build service that extends [LintClassLoaderProvider] so that a single class loaders is shared
- * between all tasks in the build.
+ * Build service used to remove locks from jar files from lint's [URLClassLoader] after all lint
+ * tasks have finished executing.
  */
-abstract class LintClassLoaderBuildService : LintClassLoaderProvider(),
-    BuildService<BuildServiceParameters.None>, AutoCloseable {
+abstract class LintClassLoaderBuildService :
+    BuildService<BuildServiceParameters.None>, AutoCloseable
+{
 
-    @Synchronized
-    override fun getClassLoader(lintClassPath: Set<File>): ClassLoader {
-        return cachedClassLoader ?: super.getClassLoader(lintClassPath).also {
-            cachedClassLoader = it
-        }
-    }
+    // Whether or not to call AndroidLintWorkAction.dispose() in close() method.
+    @get:Synchronized
+    @set:Synchronized
+    var shouldDispose: Boolean = false
 
-    @Synchronized
     override fun close() {
-        cachedClassLoader?.let {
-            disposeApplicationEnvironment(it)
+        if (shouldDispose) {
+            AndroidLintWorkAction.dispose()
         }
     }
 
-    class RegistrationAction(project: Project) :
-        ServiceRegistrationAction<LintClassLoaderBuildService, BuildServiceParameters.None>(
+    class RegistrationAction(
+        project: Project
+    ) : ServiceRegistrationAction<LintClassLoaderBuildService, BuildServiceParameters.None>(
             project,
             LintClassLoaderBuildService::class.java
         ) {
+
         override fun configure(parameters: BuildServiceParameters.None) {
-            // do nothing
         }
     }
 }

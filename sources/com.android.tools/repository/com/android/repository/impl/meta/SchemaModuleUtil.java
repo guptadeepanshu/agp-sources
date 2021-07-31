@@ -123,23 +123,26 @@ public class SchemaModuleUtil {
         if (resourceResolver != null) {
             sf.setResourceResolver(resourceResolver);
         }
-        sf.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void warning(SAXParseException exception) throws SAXException {
-                progress.logWarning("Warning while creating schema:", exception);
-            }
+        sf.setErrorHandler(
+                new ErrorHandler() {
+                    @Override
+                    public void warning(SAXParseException exception) throws SAXException {
+                        progress.logWarning("Warning while creating schema:", exception);
+                        throw exception;
+                    }
 
-            @Override
-            public void error(SAXParseException exception) throws SAXException {
-                progress.logWarning("Error creating schema:", exception);
+                    @Override
+                    public void error(SAXParseException exception) throws SAXException {
+                        progress.logWarning("Error creating schema:", exception);
+                        throw exception;
+                    }
 
-            }
-
-            @Override
-            public void fatalError(SAXParseException exception) throws SAXException {
-                progress.logWarning("Fatal error creating schema:", exception);
-            }
-        });
+                    @Override
+                    public void fatalError(SAXParseException exception) throws SAXException {
+                        progress.logWarning("Fatal error creating schema:", exception);
+                        throw exception;
+                    }
+                });
 
         List<StreamSource> sources = Lists.newArrayList();
         List<SchemaModule<?>.SchemaModuleVersion<?>> key = Lists.newArrayList();
@@ -352,6 +355,7 @@ public class SchemaModuleUtil {
         private ProgressIndicator mProgress;
         private boolean mStrict;
         private Map<String, String> mNewToOldMap = Maps.newHashMap();
+        private static boolean mDidShowWarning = false;
 
         public NamespaceFallbackFilter(
                 @NonNull Collection<SchemaModule<?>> possibleModules, boolean strict,
@@ -374,8 +378,20 @@ public class SchemaModuleUtil {
                         int version = Integer.parseInt(uri.substring(lastSlash));
                         SchemaModule<?> module = mPrefixMap.get(namespacePrefix);
                         if (module != null && module.getNamespaceVersionMap().size() < version) {
+                            // jaxb asserts that the uri is interned.
+                            @SuppressWarnings("NoInterning")
                             String oldUri = module.getLatestNamespace().intern();
-                            mProgress.logWarning("Mapping new ns " + uri + " to old ns " + oldUri);
+                            if (!mDidShowWarning) {
+                                mDidShowWarning = true;
+                                mProgress.logWarning(
+                                        "This version only understands SDK XML versions up to "
+                                                + module.getNamespaceVersionMap().size()
+                                                + " but an SDK XML file of version "
+                                                + version
+                                                + " was encountered. This can happen if you use "
+                                                + "versions of Android Studio and the command-line "
+                                                + "tools that were released at different times.");
+                            }
                             mNewToOldMap.put(uri, oldUri);
                             uri = oldUri;
                         }

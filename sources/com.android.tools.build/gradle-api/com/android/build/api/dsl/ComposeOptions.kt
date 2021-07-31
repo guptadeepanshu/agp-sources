@@ -27,6 +27,7 @@ interface ComposeOptions {
      * Sets the version of the Kotlin Compiler used to compile the project or null if using
      * the default one.
      */
+    @Deprecated("")
     var kotlinCompilerVersion: String?
 
     /**
@@ -34,4 +35,9 @@ interface ComposeOptions {
      * the default one.
      */
     var kotlinCompilerExtensionVersion: String?
+
+    /**
+     * Enables live literals in Compose
+     */
+    var useLiveLiterals: Boolean
 }

@@ -35,21 +35,13 @@ abstract class AnalyticsEnabledComponentBuilder(
             delegate.enabled = value
         }
 
-    override var enable: Boolean
-        get() = delegate.enabled
-        set(value) {
-            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.ENABLED_VALUE
-            delegate.enabled = value
-        }
-
-    override fun getName(): String =
-        delegate.name
-
+    override val name: String
+        get() = delegate.name
 
     override val buildType: String?
         get() = delegate.buildType
     override val productFlavors: List<Pair<String, String>>
         get() = delegate.productFlavors
-    override val flavorName: String
+    override val flavorName: String?
         get() = delegate.flavorName
 }

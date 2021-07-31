@@ -64,7 +64,7 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
     @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) @get:Optional abstract val tested: RegularFileProperty
 
     @get:Input
-    abstract val packageForR: Property<String>
+    abstract val namespace: Property<String>
 
     @get:OutputDirectory lateinit var aaptIntermediateDir: File private set
     @get:OutputFile abstract val staticLibApk: RegularFileProperty
@@ -92,7 +92,7 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
                 imports = imports.build(),
                 resourceOutputApk = staticLibApk.get().asFile,
                 variantType = VariantTypeImpl.LIBRARY,
-                customPackageForR = packageForR.get(),
+                customPackageForR = namespace.get(),
                 intermediateDir = aaptIntermediateDir)
 
         val aapt2ServiceKey = aapt2.registerAaptService()
@@ -158,9 +158,9 @@ abstract class LinkLibraryAndroidResourcesTask : NonIncrementalTask() {
 
             task.aaptIntermediateDir =
                     FileUtils.join(
-                            creationConfig.globalScope.intermediatesDir, "res-link-intermediate", creationConfig.variantDslInfo.dirName)
+                            creationConfig.services.projectInfo.getIntermediatesDir(), "res-link-intermediate", creationConfig.variantDslInfo.dirName)
 
-            task.packageForR.setDisallowChanges(creationConfig.packageName)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
 
             creationConfig.services.initializeAapt2Input(task.aapt2)
 

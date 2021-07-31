@@ -17,22 +17,28 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
+import com.android.build.api.dsl.DynamicFeatureBuildType
+import com.android.build.api.dsl.DynamicFeatureDefaultConfig
+import com.android.build.api.dsl.DynamicFeatureProductFlavor
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.DynamicFeatureVariant
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.plugins.DslContainerProvider
+import javax.inject.Inject
 
-class DynamicFeatureExtensionImpl(
+abstract class DynamicFeatureExtensionImpl @Inject constructor(
     dslServices: DslServices,
-    dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    dslContainers: DslContainerProvider<
+            DynamicFeatureDefaultConfig,
+            DynamicFeatureBuildType,
+            DynamicFeatureProductFlavor,
+            SigningConfig>
 )  :
     TestedExtensionImpl<
             DynamicFeatureBuildFeatures,
-            BuildType,
-            DefaultConfig,
-            ProductFlavor,
-            DynamicFeatureVariantBuilder,
-            DynamicFeatureVariant>(
+            DynamicFeatureBuildType,
+            DynamicFeatureDefaultConfig,
+            DynamicFeatureProductFlavor>(
         dslServices,
         dslContainers
     ),

@@ -25,6 +25,8 @@ import com.android.build.gradle.internal.InternalScope.FEATURES
 import com.android.build.gradle.internal.InternalScope.LOCAL_DEPS
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.pipeline.StreamFilter.PROJECT_RESOURCES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -55,11 +57,12 @@ import java.io.File
 import java.util.concurrent.Callable
 import java.util.function.Predicate
 import javax.inject.Inject
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Task to merge java resources from multiple modules
  */
-@CacheableTask
+@DisableCachingByDefault
 abstract class MergeJavaResourceTask
 @Inject constructor(objects: ObjectFactory) : IncrementalTask() {
 
@@ -138,7 +141,6 @@ abstract class MergeJavaResourceTask
             it.incrementalStateFile.set(incrementalStateFile)
             it.incremental.set(false)
             it.cacheDir.set(cacheDir)
-            it.contentType.set(RESOURCES)
             it.noCompress.set(noCompress)
             it.excludes.set(excludes)
             it.pickFirsts.set(pickFirsts)
@@ -162,7 +164,6 @@ abstract class MergeJavaResourceTask
             it.incremental.set(true)
             it.cacheDir.set(cacheDir)
             it.changedInputs.set(changedInputs)
-            it.contentType.set(RESOURCES)
             it.noCompress.set(noCompress)
             it.excludes.set(excludes)
             it.pickFirsts.set(pickFirsts)
@@ -205,10 +206,18 @@ abstract class MergeJavaResourceTask
             taskProvider: TaskProvider<MergeJavaResourceTask>
         ) {
             super.handleProvider(taskProvider)
+            val fileName = if (creationConfig.variantType.isBaseModule) {
+                "base.jar"
+            } else {
+                TaskManager.getFeatureFileName(
+                    creationConfig.services.projectInfo.getProject().path,
+                    SdkConstants.DOT_JAR
+                )
+            }
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 MergeJavaResourceTask::outputFile
-            ).withName("out.jar").on(InternalArtifactType.MERGED_JAVA_RES)
+            ).withName(fileName).on(InternalArtifactType.MERGED_JAVA_RES)
         }
 
         override fun configure(
@@ -250,9 +259,9 @@ abstract class MergeJavaResourceTask
             }
 
             task.mergeScopes = mergeScopes
-            task.excludes.setDisallowChanges(creationConfig.packagingOptions.resources.excludes)
-            task.pickFirsts.setDisallowChanges(creationConfig.packagingOptions.resources.pickFirsts)
-            task.merges.setDisallowChanges(creationConfig.packagingOptions.resources.merges)
+            task.excludes.setDisallowChanges(creationConfig.packaging.resources.excludes)
+            task.pickFirsts.setDisallowChanges(creationConfig.packaging.resources.pickFirsts)
+            task.merges.setDisallowChanges(creationConfig.packaging.resources.merges)
             task.intermediateDir =
                 creationConfig.paths.getIncrementalDir("${creationConfig.name}-mergeJavaRes")
             task.cacheDir = File(task.intermediateDir, "zip-cache")
@@ -285,7 +294,7 @@ abstract class MergeJavaResourceTask
 }
 
 fun getProjectJavaRes(
-    creationConfig: VariantCreationConfig
+    creationConfig: ComponentCreationConfig
 ): FileCollection {
     val javaRes = creationConfig.services.fileCollection()
     javaRes.from(creationConfig.artifacts.get(JAVA_RES))
@@ -304,6 +313,9 @@ fun getProjectJavaRes(
     javaRes.from(creationConfig.variantData.allPostJavacGeneratedBytecode)
     if (creationConfig.globalScope.extension.aaptOptions.namespaced) {
         javaRes.from(creationConfig.artifacts.get(RUNTIME_R_CLASS_CLASSES))
+    }
+    if (creationConfig.packageJacocoRuntime) {
+        javaRes.from(creationConfig.artifacts.get(InternalArtifactType.JACOCO_CONFIG_RESOURCES_JAR))
     }
     return javaRes
 }
@@ -329,7 +341,7 @@ private fun getExternalLibJavaRes(
 }
 
 /** Returns true if anything's been added to the annotation processor configuration. */
-fun projectHasAnnotationProcessors(creationConfig: VariantCreationConfig): Boolean {
+fun projectHasAnnotationProcessors(creationConfig: ComponentCreationConfig): Boolean {
     val config = creationConfig.variantDependencies.annotationProcessorConfiguration
     return config.incoming.dependencies.isNotEmpty()
 }

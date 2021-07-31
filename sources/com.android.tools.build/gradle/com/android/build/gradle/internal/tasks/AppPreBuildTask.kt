@@ -66,7 +66,7 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
                 truncated = "... (Total: ${compileDeps.size})"
             )
             throw RuntimeException(
-                "The following Android dependencies are set to compileOnly/provided which is not supported:\n$formattedDependencies"
+                "The following Android dependencies are set to compileOnly which is not supported:\n$formattedDependencies"
             )
         }
     }
@@ -95,7 +95,7 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
                 creationConfig.variantDependencies.getArtifactCollection(RUNTIME_CLASSPATH, ALL, MANIFEST)
 
             task.fakeOutputDirectory = File(
-                creationConfig.globalScope.intermediatesDir,
+                creationConfig.services.projectInfo.getIntermediatesDir(),
                 "prebuild/${creationConfig.dirName}"
             )
         }

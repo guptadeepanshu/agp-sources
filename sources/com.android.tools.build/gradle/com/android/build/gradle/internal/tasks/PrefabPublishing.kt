@@ -18,22 +18,19 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.build.api.variant.impl.LibraryVariantImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
-import com.android.build.gradle.internal.cxx.gradle.generator.createCxxMetadataGenerator
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValueMini
 import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.warnln
-import com.android.build.gradle.internal.cxx.model.DetermineUsedStlResult
-import com.android.build.gradle.internal.cxx.model.determineUsedStl
+import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.jsonFile
+import com.android.build.gradle.internal.cxx.model.minSdkVersion
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.sdklib.AndroidVersion
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import org.gradle.api.file.DirectoryProperty
@@ -50,7 +47,6 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.io.StringWriter
-import kotlin.math.max
 
 // TODO: Automatic importing of CMake/ndk-build modules?
 // CMake doesn't appear to expose the data we need from CMake server (though that could be a
@@ -166,14 +162,6 @@ data class PrefabModuleTaskData(
     val libraryName: String?
 )
 
-data class PrefabAbiData(
-    val abi: Abi,
-    val minSdkVersion: Int,
-    val ndkMajorVersion: Int,
-    val stl: String,
-    val nativeBuildJson: File
-)
-
 abstract class PrefabPackageTask : NonIncrementalTask() {
     @get:Internal
     abstract val sdkComponents: Property<SdkComponentsBuildService>
@@ -205,49 +193,8 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
     override fun doTaskAction() {
         val installDir = outputDirectory.get().asFile.apply { mkdirs() }
         createPackageMetadata(installDir)
-        val abis = createAbiData()
         for (module in modules) {
-            createModule(module, abis, installDir)
-        }
-    }
-
-    private fun createAbiData() : List<PrefabAbiData> {
-        val generator = createCxxMetadataGenerator(configurationModel, analyticsService.get())
-        val variantModel = generator.variant
-        val abiModels = generator.abis
-
-        val stl = when (val result = variantModel.determineUsedStl()) {
-            is DetermineUsedStlResult.Success -> result.stl
-            is DetermineUsedStlResult.Failure -> {
-                errorln(result.error)
-                return listOf()
-            }
-        }
-
-        return abiModels.map {
-            // Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
-            val ndkVersion = it.variant.module.ndkVersion.major
-            val metaPlatforms = it.variant.module.ndkMetaPlatforms
-            val minVersionForAbi = when {
-                it.abi.supports64Bits() -> AndroidVersion.SUPPORTS_64_BIT.apiLevel
-                else -> 1
-            }
-            val minVersionForNdk = when {
-                // Newer NDKs expose the minimum supported version via meta/platforms.json
-                metaPlatforms != null -> metaPlatforms.min
-                // Older NDKs did not expose this, but the information is in the change logs
-                ndkVersion < 12 -> 1
-                ndkVersion < 15 -> 9
-                ndkVersion < 18 -> 14
-                else -> 16
-            }
-            PrefabAbiData(
-                    it.abi,
-                    max(it.abiPlatformVersion, max(minVersionForAbi, minVersionForNdk)),
-                    ndkVersion,
-                    stl.argumentName,
-                    it.jsonFile
-            )
+            createModule(module, installDir)
         }
     }
 
@@ -264,11 +211,11 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
         )
     }
 
-    private fun createModule(module: PrefabModuleTaskData, abis : List<PrefabAbiData>, packageDir: File) {
+    private fun createModule(module: PrefabModuleTaskData, packageDir: File) {
         val installDir = packageDir.resolve("modules/${module.name}").apply { mkdirs() }
         createModuleMetadata(module, installDir)
         installHeaders(module, installDir)
-        installLibs(module, abis, installDir)
+        installLibs(module, installDir)
     }
 
     private fun createModuleMetadata(module: PrefabModuleTaskData, installDir: File) {
@@ -290,31 +237,20 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
         }
     }
 
-    private fun findLibraryForAbi(moduleName: String, abi: PrefabAbiData): NativeLibraryValueMini {
+    private fun findLibraryForAbi(moduleName: String, abi: CxxAbiModel): NativeLibraryValueMini {
         val config =
-            AndroidBuildGradleJsons.getNativeBuildMiniConfig(abi.nativeBuildJson, null)
+            AndroidBuildGradleJsons.getNativeBuildMiniConfig(abi, null)
 
-        // The libraries are keyed by $name-$config-$abi. For example, the debug, arm64 variant
-        // of gtestjni would be gtestjni-Debug-arm64-v8a. The config here is the CMake build
-        // variant of the library, not the name of the gradle build variant. Fortunately the
-        // JSON file here only exposes the variant we're building, so we don't need to determine
-        // what CMake build variant is used here. We also want to copy the libraries for every
-        // ABI that's supported by this library, so no need to filter by ABI.
-        val matchingLibs = config
-                .libraries
-                .filterKeys {
-                    it.startsWith("$moduleName-") ||
-                    it.startsWith("$moduleName::")
-                }.values
+        val matchingLibs = config.libraries.filterValues { it.artifactName == moduleName }.values
         if (matchingLibs.isEmpty()) {
             errorln("No libraries found for $moduleName")
         }
         return matchingLibs.single()
     }
 
-    private fun installLibs(module: PrefabModuleTaskData, abis : List<PrefabAbiData>, installDir: File) {
+    private fun installLibs(module: PrefabModuleTaskData, installDir: File) {
         val libsDir = installDir.resolve("libs").apply { deleteRecursively() }
-        for (abiData in abis) {
+        for (abiData in configurationModel.activeAbis) {
             val srcLibrary = findLibraryForAbi(module.name, abiData).output
             if (srcLibrary != null) {
                 val libDir = libsDir.resolve("android.${abiData.abi.tag}")
@@ -328,14 +264,14 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
         }
     }
 
-    private fun createLibraryMetadata(libDir: File, abi: PrefabAbiData) {
+    private fun createLibraryMetadata(libDir: File, abi: CxxAbiModel) {
         libDir.resolve("abi.json").writeText(
             JsonSerializer().toJson(
                 AndroidAbiMetadata(
                     abi = abi.abi.tag,
                     api = abi.minSdkVersion,
-                    ndk = abi.ndkMajorVersion,
-                    stl = abi.stl
+                    ndk = abi.variant.module.ndkVersion.major,
+                    stl = abi.variant.stlType
                 )
             )
         )
@@ -368,7 +304,7 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
             super.configure(task)
             task.description = "Creates a Prefab package for inclusion in an AAR"
 
-            val project = creationConfig.globalScope.project
+            val project = creationConfig.services.projectInfo.getProject()
             task.packageName = project.name
             task.packageVersion = project.version.toString()
             task.modules = modules

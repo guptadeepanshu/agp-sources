@@ -16,42 +16,42 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.Installation
+import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.SdkComponents
-import com.android.build.api.variant.VariantBuilder
-import com.android.build.api.variant.Variant
+import com.android.build.api.dsl.TestCoverage
+import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
+import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
 import java.util.function.Supplier
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
+import java.io.File
 
 /** Internal implementation of the 'new' DSL interface */
 abstract class CommonExtensionImpl<
         BuildFeaturesT : BuildFeatures,
         BuildTypeT : com.android.build.api.dsl.BuildType,
         DefaultConfigT : DefaultConfig,
-        ProductFlavorT : com.android.build.api.dsl.ProductFlavor,
-        VariantBuilderT : VariantBuilder,
-        VariantT : Variant>(
+        ProductFlavorT : com.android.build.api.dsl.ProductFlavor>(
             protected val dslServices: DslServices,
             dslContainers: DslContainerProvider<DefaultConfigT, BuildTypeT, ProductFlavorT, SigningConfig>
         ) : InternalCommonExtension<
         BuildFeaturesT,
         BuildTypeT,
         DefaultConfigT,
-        ProductFlavorT,
-        VariantBuilderT,
-        VariantT> {
+        ProductFlavorT> {
 
     private val sourceSetManager = dslContainers.sourceSetManager
 
@@ -59,13 +59,13 @@ abstract class CommonExtensionImpl<
 
     // This is exposed only to support AndroidConfig.libraryRequests
     // TODO: Make private when AndroidConfig is removed
-    val libraryRequests: MutableList<LibraryRequest> = mutableListOf()
+    abstract val libraryRequests: MutableList<LibraryRequest>
 
     override val sdkComponents: SdkComponents by lazy {
         dslServices.newInstance(
             SdkComponentsImpl::class.java,
             dslServices,
-            dslServices.provider(String::class.java, _compileSdkVersion),
+            dslServices.provider(String::class.java, compileSdkVersion),
             dslServices.provider(Revision::class.java, buildToolsRevision),
             dslServices.provider(String::class.java, ndkVersion),
             dslServices.provider(String::class.java, ndkPath)
@@ -83,17 +83,19 @@ abstract class CommonExtensionImpl<
     override val signingConfigs: NamedDomainObjectContainer<SigningConfig> =
         dslContainers.signingConfigContainer
 
-    override val aaptOptions: AaptOptions =
-        dslServices.newInstance(
-            AaptOptions::class.java,
-            dslServices.projectOptions[BooleanOption.ENABLE_RESOURCE_NAMESPACING_DEFAULT]
-        )
+    override val aaptOptions: AaptOptions get() = androidResources as AaptOptions
 
     override fun aaptOptions(action: com.android.build.api.dsl.AaptOptions.() -> Unit) {
         action.invoke(aaptOptions)
     }
 
-    override val adbOptions: AdbOptions = dslServices.newInstance(AdbOptions::class.java)
+    override val installation: Installation = dslServices.newInstance(AdbOptions::class.java)
+
+    override fun installation(action: Installation.() -> Unit) {
+        action.invoke(installation)
+    }
+
+    override val adbOptions: AdbOptions get() = installation as AdbOptions
 
     override fun adbOptions(action: com.android.build.api.dsl.AdbOptions.() -> Unit) {
         action.invoke(adbOptions)
@@ -114,16 +116,16 @@ abstract class CommonExtensionImpl<
         action.invoke(compileOptions)
     }
 
-    private var _compileSdkVersion: String? by dslServices.newVar(null)
+    override abstract var compileSdkVersion: String?
 
     override var compileSdk: Int?
         get() {
-            if (_compileSdkVersion == null) {
+            if (compileSdkVersion == null) {
                 return null
             }
-            if (_compileSdkVersion!!.startsWith("android-")) {
+            if (compileSdkVersion!!.startsWith("android-")) {
                 return try {
-                    Integer.valueOf(_compileSdkVersion!!.substring(8))
+                    Integer.valueOf(compileSdkVersion!!.substring(8))
                 } catch (e: Exception) {
                     null
                 }
@@ -131,28 +133,48 @@ abstract class CommonExtensionImpl<
             return null
         }
         set(value) {
-            _compileSdkVersion = if (value == null) null
+            compileSdkVersion = if (value == null) null
             else "android-$value"
         }
     override var compileSdkPreview: String?
-        get() = _compileSdkVersion
+        get() = compileSdkVersion?.let { if(it.startsWith("android-")) it.removePrefix("android-") else null }
         set(value) {
-            _compileSdkVersion = value
+            compileSdkVersion = value?.removePrefix("android-")?.let { "android-$it" }
         }
 
     override fun compileSdkAddon(vendor: String, name: String, version: Int) {
-        _compileSdkVersion = "$vendor:$name:$version"
+        compileSdkVersion = "$vendor:$name:$version"
+    }
+
+    override fun compileSdkVersion(apiLevel: Int) {
+        compileSdk = apiLevel
+    }
+
+    override fun compileSdkVersion(version: String) {
+        compileSdkVersion = version
     }
 
     override val composeOptions: ComposeOptionsImpl =
-        dslServices.newInstance(ComposeOptionsImpl::class.java)
+        dslServices.newInstance(ComposeOptionsImpl::class.java, dslServices)
 
     override fun composeOptions(action: ComposeOptions.() -> Unit) {
         action.invoke(composeOptions)
     }
 
-    override fun buildTypes(action: Action<in NamedDomainObjectContainer<BuildTypeT>>) {
-        action.execute(buildTypes)
+    override fun buildTypes(action: Action<in NamedDomainObjectContainer<BuildType>>) {
+        action.execute(buildTypes as NamedDomainObjectContainer<BuildType>)
+    }
+
+    override fun buildTypes(action: NamedDomainObjectContainer<BuildTypeT>.() -> Unit) {
+        action.invoke(buildTypes)
+    }
+
+    override fun NamedDomainObjectContainer<BuildTypeT>.debug(action: BuildTypeT.() -> Unit) {
+        getByName("debug", action)
+    }
+
+    override fun NamedDomainObjectContainer<BuildTypeT>.release(action: BuildTypeT.() -> Unit)  {
+        getByName("release", action)
     }
 
     override val dataBinding: DataBindingOptions =
@@ -166,8 +188,12 @@ abstract class CommonExtensionImpl<
         action.invoke(dataBinding)
     }
 
-    override fun defaultConfig(action: Action<DefaultConfigT>) {
-        action.execute(defaultConfig)
+    override fun defaultConfig(action: Action<com.android.build.gradle.internal.dsl.DefaultConfig>) {
+        action.execute(defaultConfig as com.android.build.gradle.internal.dsl.DefaultConfig)
+    }
+
+    override fun defaultConfig(action: DefaultConfigT.() -> Unit) {
+        action.invoke(defaultConfig)
     }
 
     override val externalNativeBuild: ExternalNativeBuild =
@@ -177,14 +203,27 @@ abstract class CommonExtensionImpl<
         action.invoke(externalNativeBuild)
     }
 
-    override val jacoco: JacocoOptions = dslServices.newInstance(JacocoOptions::class.java)
+    override val testCoverage: TestCoverage  = dslServices.newInstance(JacocoOptions::class.java)
+
+    override fun testCoverage(action: TestCoverage.() -> Unit) {
+        action.invoke(testCoverage)
+    }
+
+    override val jacoco: JacocoOptions
+        get() = testCoverage as JacocoOptions
 
     override fun jacoco(action: com.android.build.api.dsl.JacocoOptions.() -> Unit) {
         action.invoke(jacoco)
     }
 
-    override val lintOptions: LintOptions =
-        dslServices.newInstance(LintOptions::class.java, dslServices)
+    override val lint: Lint = dslServices.newInstance(LintOptions::class.java, dslServices)
+
+    override fun lint(action: Lint.() -> Unit) {
+        action.invoke(lint)
+    }
+
+    override val lintOptions: LintOptions
+        get() = lint as LintOptions
 
     override fun lintOptions(action: com.android.build.api.dsl.LintOptions.() -> Unit) {
         action.invoke(lintOptions)
@@ -197,18 +236,26 @@ abstract class CommonExtensionImpl<
         action.invoke(packagingOptions)
     }
 
-    override fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavorT>>) {
-        action.execute(productFlavors)
+    override fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavor>>) {
+        action.execute(productFlavors as NamedDomainObjectContainer<ProductFlavor>)
+    }
+
+    override fun productFlavors(action: NamedDomainObjectContainer<ProductFlavorT>.() -> Unit) {
+        action.invoke(productFlavors)
     }
 
     override fun signingConfigs(action: Action<NamedDomainObjectContainer<SigningConfig>>) {
         action.execute(signingConfigs)
     }
 
+    override fun signingConfigs(action: NamedDomainObjectContainer<out ApkSigningConfig>.() -> Unit) {
+        action.invoke(signingConfigs)
+    }
+
     override val sourceSets: NamedDomainObjectContainer<AndroidSourceSet>
         get() = sourceSetManager.sourceSetsContainer
 
-    override fun sourceSets(action: NamedDomainObjectContainer<AndroidSourceSet>.() -> Unit) {
+    override fun sourceSets(action: NamedDomainObjectContainer<out com.android.build.api.dsl.AndroidSourceSet>.() -> Unit) {
         sourceSetManager.executeAction(action)
     }
 
@@ -226,14 +273,6 @@ abstract class CommonExtensionImpl<
         action.invoke(testOptions)
     }
 
-    override val flavorDimensions: MutableList<String> = mutableListOf()
-
-    override var resourcePrefix: String? = null
-
-    override var ndkVersion: String? = null
-
-    override var ndkPath: String? = null
-
     override var buildToolsVersion: String
         get() = buildToolsRevision.toString()
         set(version) {
@@ -243,6 +282,15 @@ abstract class CommonExtensionImpl<
             buildToolsRevision = Revision.parseRevision(version, Revision.Precision.MICRO)
         }
 
+    override fun buildToolsVersion(buildToolsVersion: String) {
+        this.buildToolsVersion = buildToolsVersion
+    }
+
+    override fun flavorDimensions(vararg dimensions: String) {
+        flavorDimensions.clear()
+        flavorDimensions.addAll(dimensions)
+    }
+
     override fun useLibrary(name: String) {
         useLibrary(name, true)
     }
@@ -251,5 +299,16 @@ abstract class CommonExtensionImpl<
         libraryRequests.add(LibraryRequest(name, required))
     }
 
-    override var namespace: String? = null
+    override fun getDefaultProguardFile(name: String): File {
+        if (!ProguardFiles.KNOWN_FILE_NAMES.contains(name)) {
+            dslServices
+                .issueReporter
+                .reportError(
+                    IssueReporter.Type.GENERIC, ProguardFiles.UNKNOWN_FILENAME_MESSAGE
+                )
+        }
+        return ProguardFiles.getDefaultProguardFile(name, dslServices.buildDirectory)
+    }
+
+    override val experimentalProperties: MutableMap<String, Any> = mutableMapOf()
 }

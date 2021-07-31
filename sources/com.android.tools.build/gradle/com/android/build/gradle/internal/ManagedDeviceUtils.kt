@@ -16,8 +16,10 @@
 
 package com.android.build.gradle.internal
 
+import com.android.build.api.dsl.DeviceGroup
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
-import com.android.prefs.AndroidLocation
+import com.android.prefs.AndroidLocationsProvider
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ProviderFactory
@@ -29,10 +31,12 @@ private const val GRADLE_AVD_DIRECTORY_PATH = "gradle/avd"
  * Gets the provider of the avd folder for managed devices across all projects.
  */
 fun getManagedDeviceAvdFolder(
-    objectFactory: ObjectFactory, providerFactory: ProviderFactory
+    objectFactory: ObjectFactory,
+    providerFactory: ProviderFactory,
+    androidLocationsProvider: AndroidLocationsProvider
 ): DirectoryProperty =
     objectFactory.directoryProperty().fileProvider(providerFactory.provider {
-        File(AndroidLocation.getFolder(), GRADLE_AVD_DIRECTORY_PATH)
+        androidLocationsProvider.gradleAvdLocation.toFile()
     })
 
 fun computeAvdName(device: ManagedVirtualDevice): String =
@@ -48,3 +52,14 @@ fun computeAvdName(
     abi: String,
     hardwareProfile: String) =
     "dev${apiLevel}_${vendor}_${abi}_${hardwareProfile.replace(' ', '_')}"
+
+fun setupTaskName(device: ManagedVirtualDevice): String = "${device.name}Setup"
+
+fun managedDeviceAllVariantsTaskName(device: ManagedVirtualDevice): String = "${device.name}Check"
+
+fun managedDeviceGroupAllVariantsTaskName(deviceGroup: DeviceGroup): String =
+    "${deviceGroup.name}GroupCheck"
+
+fun managedDeviceGroupSingleVariantTaskName(
+    creationConfig: VariantCreationConfig, deviceGroup: DeviceGroup): String =
+    creationConfig.computeTaskName("${deviceGroup.name}Group")

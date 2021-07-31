@@ -19,8 +19,7 @@ package com.android.build.gradle.internal.tasks
 import com.android.SdkConstants
 import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.transform.QualifiedContent.Scope
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
@@ -29,7 +28,6 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.builder.model.CodeShrinker
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarMerger
 import com.android.builder.packaging.TypedefRemover
@@ -74,7 +72,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     abstract val dataBindingExcludeDelegate: Property<DataBindingExcludeDelegate>
 
     @get:Input
-    abstract val packageName: Property<String>
+    abstract val namespace: Property<String>
 
     @get:Optional
     @get:InputFile
@@ -139,12 +137,12 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     }
 
     private fun computeExcludeList(): List<Pattern> {
-        val packageNameValue = packageName.get()
+        val namespaceValue = namespace.get()
 
-        val excludes = getDefaultExcludes(packageNameValue.replace(".", "/"))
+        val excludes = getDefaultExcludes(namespaceValue.replace(".", "/"))
 
         dataBindingExcludeDelegate.orNull?.let {
-            excludes.addAll(it.getExcludedClassList(packageNameValue))
+            excludes.addAll(it.getExcludedClassList(namespaceValue))
         }
 
         // create Pattern Objects.
@@ -288,8 +286,9 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        creationConfig: ConsumableCreationConfig
-    ) : VariantTaskCreationAction<LibraryAarJarsTask, ConsumableCreationConfig>(
+        creationConfig: ComponentCreationConfig,
+        private val minifyEnabled: Boolean
+    ) : VariantTaskCreationAction<LibraryAarJarsTask, ComponentCreationConfig>(
         creationConfig
     ) {
         override val type = LibraryAarJarsTask::class.java
@@ -326,7 +325,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                 task.typedefRecipe
             )
 
-            task.packageName.setDisallowChanges(creationConfig.packageName)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
             task.jarCreatorType.setDisallowChanges(creationConfig.variantScope.jarCreatorType)
             task.debugBuild.setDisallowChanges(creationConfig.debuggable)
 
@@ -340,7 +339,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
              * which means gradle will have to deal with possibly non-existent files in the cache
              */
             task.mainScopeClassFiles.from(
-                if (creationConfig.codeShrinker == CodeShrinker.R8) {
+                if (minifyEnabled) {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_CLASSES)
                 } else {
@@ -361,7 +360,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             task.mainScopeClassFiles.disallowChanges()
 
             task.mainScopeResourceFiles.from(
-                if (creationConfig.codeShrinker == CodeShrinker.R8) {
+                if (minifyEnabled) {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_JAVA_RES)
                 } else {

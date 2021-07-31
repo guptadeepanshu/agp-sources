@@ -16,8 +16,8 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.TestComponentBuilderImpl
 import com.android.build.api.component.impl.TestComponentImpl
+import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.variant.impl.ApplicationVariantBuilderImpl
 import com.android.build.api.variant.impl.ApplicationVariantImpl
 import com.android.build.gradle.BaseExtension
@@ -29,40 +29,45 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.databinding.DataBindingExportFeatureApplicationIdsTask
+import com.android.build.gradle.internal.scope.ProjectInfo
+import com.android.build.gradle.internal.tasks.databinding.DataBindingExportFeatureNamespacesTask
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.options.BooleanOption
-import com.android.builder.errors.IssueReporter
-import com.google.common.collect.ImmutableMap
+import com.android.build.gradle.options.ProjectOptions
 import org.gradle.api.Action
 import org.gradle.api.artifacts.ArtifactView
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.FileCollection
 import java.io.File
-import java.util.ArrayList
 import java.util.stream.Collectors
 
 class ApplicationTaskManager(
-    variants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>,
-    testComponents: List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>>,
-    hasFlavors: Boolean,
-    globalScope: GlobalScope,
-    extension: BaseExtension
+        variants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>,
+        testComponents: List<TestComponentImpl>,
+        testFixturesComponents: List<TestFixturesImpl>,
+        hasFlavors: Boolean,
+        projectOptions: ProjectOptions,
+        globalScope: GlobalScope,
+        extension: BaseExtension,
+        projectInfo: ProjectInfo
 ) : AbstractAppTaskManager<ApplicationVariantBuilderImpl, ApplicationVariantImpl>(
     variants,
     testComponents,
+    testFixturesComponents,
     hasFlavors,
+    projectOptions,
     globalScope,
-    extension
+    extension,
+    projectInfo
 ) {
 
     override fun doCreateTasksForVariant(
-            variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>,
-            allVariants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>)
-    {
+        variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>,
+        allVariants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>
+    ) {
         createCommonTasks(variantInfo, allVariants)
 
         val variant = variantInfo.variant
@@ -77,20 +82,28 @@ class ApplicationTaskManager(
 
         // Add a task to produce the app-metadata.properties file
         taskFactory.register(AppMetadataTask.CreationAction(variant))
+            .dependsOn(variant.taskContainer.preBuildTask)
 
         if ((extension as BaseAppModuleExtension).assetPacks.isNotEmpty()) {
             createAssetPackTasks(variant)
         }
 
+        // only run art profile generation for non debuggable builds.
+        if (variant.services.projectOptions[BooleanOption.ENABLE_ART_PROFILES]
+                && !variant.debuggable) {
+            taskFactory.register(MergeArtProfileTask.CreationAction(variant))
+            taskFactory.register(CompileArtProfileTask.CreationAction(variant))
+        }
+
         if (variant.buildFeatures.dataBinding
                 && variant.globalScope.hasDynamicFeatures()) {
-            // Create a task that will package the manifest ids(the R file packages) of all
-            // features into a file. This file's path is passed into the Data Binding annotation
-            // processor which uses it to known about all available features.
+            // Create a task that will write the namespaces of all features into a file. This file's
+            // path is passed into the Data Binding annotation processor which uses it to know about
+            // all available features.
             //
-            // <p>see: {@link TaskManager#setDataBindingAnnotationProcessorParams(VariantScope)}
+            // <p>see: {@link TaskManager#setDataBindingAnnotationProcessorParams(ComponentCreationConfig)}
             taskFactory.register(
-                DataBindingExportFeatureApplicationIdsTask.CreationAction(variant)
+                DataBindingExportFeatureNamespacesTask.CreationAction(variant)
             )
         }
 
@@ -152,7 +165,7 @@ class ApplicationTaskManager(
      * but we still have an XML resource packaged, and a custom entry in the manifest. This is
      * triggered by passing a null [Configuration] object.
      *
-     * @param variantProperties the variant scope
+     * @param appVariant the variant scope
      * @param config an optional Configuration object. if non null, this will embed the micro apk,
      * if null this will trigger the unbundled mode.
      */
@@ -171,42 +184,24 @@ class ApplicationTaskManager(
     }
 
     private fun createAssetPackTasks(appVariant: ApplicationVariantImpl) {
-        val depHandler = project.dependencies
-        val notFound: MutableList<String> =
-            ArrayList()
         val assetPackFilesConfiguration =
             project.configurations.maybeCreate("assetPackFiles")
         val assetPackManifestConfiguration =
             project.configurations.maybeCreate("assetPackManifest")
-        val assetPacks: Set<String> =
-            (extension as BaseAppModuleExtension).assetPacks
-        for (assetPack in assetPacks) {
-            if (project.findProject(assetPack) != null) {
-                val filesDependency: Map<String, String?> =
-                    ImmutableMap.of<String, String?>(
-                        "path",
-                        assetPack,
-                        "configuration",
-                        "packElements"
-                    )
-                depHandler.add("assetPackFiles", depHandler.project(filesDependency))
-                val manifestDependency: Map<String, String?> =
-                    ImmutableMap.of<String, String?>(
-                        "path",
-                        assetPack,
-                        "configuration",
-                        "manifestElements"
-                    )
-                depHandler.add("assetPackManifest", depHandler.project(manifestDependency))
-                appVariant.needAssetPackTasks.set(true)
-            } else {
-                notFound.add(assetPack)
-            }
-        }
-        if (appVariant.needAssetPackTasks.get()) {
+        val assetPacks = (extension as BaseAppModuleExtension).assetPacks
+        populateAssetPacksConfigurations(
+            project,
+            appVariant.services.issueReporter,
+            assetPacks,
+            assetPackFilesConfiguration,
+            assetPackManifestConfiguration
+        )
+
+        if (assetPacks.isNotEmpty()) {
             val assetPackManifest =
                 assetPackManifestConfiguration.incoming.files
             val assetFiles = assetPackFilesConfiguration.incoming.files
+
             taskFactory.register(
                 ProcessAssetPackManifestTask.CreationAction(
                         appVariant,
@@ -234,12 +229,6 @@ class ApplicationTaskManager(
                 )
             )
         }
-        if (!notFound.isEmpty()) {
-            appVariant.services.issueReporter.reportError(
-                IssueReporter.Type.GENERIC,
-                "Unable to find matching projects for Asset Packs: $notFound"
-            )
-        }
     }
 
     private fun createDynamicBundleTask(variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>) {
@@ -255,8 +244,8 @@ class ApplicationTaskManager(
         taskFactory.register(PerModuleBundleTask.CreationAction(variant))
 
         val debuggable = variantInfo.variantBuilder.debuggable
-        val includeSdkInfoInApk = variantInfo.variantBuilder.dependenciesInfo.includeInApk
-        val includeSdkInfoInBundle = variantInfo.variantBuilder.dependenciesInfo.includeInBundle
+        val includeSdkInfoInApk = variantInfo.variantBuilder.dependenciesInfo.includedInApk
+        val includeSdkInfoInBundle = variantInfo.variantBuilder.dependenciesInfo.includedInBundle
         if (!debuggable) {
             taskFactory.register(PerModuleReportDependenciesTask.CreationAction(variant))
         }

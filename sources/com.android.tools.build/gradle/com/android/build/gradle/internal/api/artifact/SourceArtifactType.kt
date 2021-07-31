@@ -23,11 +23,12 @@ import org.gradle.api.file.Directory
 
 /** [Artifact] for source set. */
 @Incubating
-sealed class SourceArtifactType: Artifact.SingleArtifact<Directory>(
+sealed class SourceArtifactType: Artifact.Single<Directory>(
     ArtifactKind.DIRECTORY,
     Category.SOURCES
 ) {
     object JAVA_SOURCES : SourceArtifactType()
+    object KOTLIN_SOURCES : SourceArtifactType()
     object JAVA_RESOURCES : SourceArtifactType()
     object ASSETS : SourceArtifactType()
     object ANDROID_RESOURCES : SourceArtifactType()

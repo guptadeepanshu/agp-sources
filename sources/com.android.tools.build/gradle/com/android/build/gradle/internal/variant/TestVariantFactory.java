@@ -22,21 +22,20 @@ import static com.android.build.gradle.internal.dependency.VariantDependencies.C
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.ComponentIdentity;
-import com.android.build.api.component.impl.AndroidTestBuilderImpl;
 import com.android.build.api.component.impl.AndroidTestImpl;
-import com.android.build.api.component.impl.UnitTestBuilderImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.BuildFeatures;
 import com.android.build.api.dsl.TestBuildFeatures;
+import com.android.build.api.dsl.TestExtension;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
-import com.android.build.gradle.TestAndroidConfig;
 import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.core.VariantSources;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.DataBindingOptions;
+import com.android.build.gradle.internal.dsl.ModulePropertyKeys;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.plugins.DslContainerProvider;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
@@ -81,24 +80,6 @@ public class TestVariantFactory
                         variantDslInfo,
                         componentIdentity,
                         variantApiServices);
-    }
-
-    @NonNull
-    @Override
-    public UnitTestBuilderImpl createUnitTestBuilder(
-            @NonNull ComponentIdentity componentIdentity,
-            @NonNull VariantDslInfo variantDslInfo,
-            @NonNull VariantApiServices variantApiServices) {
-        throw new RuntimeException("cannot instantiate unit-test in test plugin");
-    }
-
-    @NonNull
-    @Override
-    public AndroidTestBuilderImpl createAndroidTestBuilder(
-            @NonNull ComponentIdentity componentIdentity,
-            @NonNull VariantDslInfo variantDslInfo,
-            @NonNull VariantApiServices variantApiServices) {
-        throw new RuntimeException("cannot instantiate android-test in test plugin");
     }
 
     @NonNull
@@ -170,7 +151,7 @@ public class TestVariantFactory
     @NonNull
     @Override
     public UnitTestImpl createUnitTest(
-            @NonNull UnitTestBuilderImpl unitTestBuilder,
+            @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull VariantDslInfo variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
@@ -189,7 +170,7 @@ public class TestVariantFactory
     @NonNull
     @Override
     public AndroidTestImpl createAndroidTest(
-            @NonNull AndroidTestBuilderImpl androidTestBuilder,
+            @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
             @NonNull VariantDslInfo variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
@@ -209,7 +190,7 @@ public class TestVariantFactory
     public void preVariantWork(final Project project) {
         super.preVariantWork(project);
 
-        TestAndroidConfig testExtension = (TestAndroidConfig) globalScope.getExtension();
+        TestExtension testExtension = (TestExtension) globalScope.getExtension();
 
         String path = testExtension.getTargetProjectPath();
         if (path == null) {
@@ -225,7 +206,12 @@ public class TestVariantFactory
         // The tested project itself only publishes to api, however its transitive library module
         // dependencies are published to both api and runtime elements and would be seen in our
         // RuntimeClasspath here otherwise.
-        handler.add(CONFIG_NAME_COMPILE_ONLY, handler.project(projectNotation));
+
+        // TODO, we should do this after we created the variant object, not before.
+        if (!ModulePropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(
+                testExtension.getExperimentalProperties())) {
+            handler.add(CONFIG_NAME_COMPILE_ONLY, handler.project(projectNotation));
+        }
 
         // Create a custom configuration that will be used to consume only the APK from the
         // tested project's RuntimeElements published configuration.

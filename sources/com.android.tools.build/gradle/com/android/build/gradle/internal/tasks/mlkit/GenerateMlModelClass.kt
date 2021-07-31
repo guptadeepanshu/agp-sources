@@ -16,7 +16,7 @@
 package com.android.build.gradle.internal.tasks.mlkit
 
 import com.android.SdkConstants.DOT_TFLITE
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_ML_MODELS
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
@@ -49,7 +49,7 @@ abstract class GenerateMlModelClass : NonIncrementalTask() {
     abstract val sourceOutDir: DirectoryProperty
 
     @get:Input
-    abstract val packageName: Property<String>
+    abstract val namespace: Property<String>
 
     override fun doTaskAction() {
         modelFileDir.asFileTree.visit(
@@ -66,7 +66,7 @@ abstract class GenerateMlModelClass : NonIncrementalTask() {
                         try {
                             val modelGenerator = TfliteModelGenerator(
                                 modelFile,
-                                packageName.get() + MlNames.PACKAGE_SUFFIX,
+                                namespace.get() + MlNames.PACKAGE_SUFFIX,
                                 fileVisitDetails.relativePath.pathString
                             )
                             modelGenerator.generateBuildClass(sourceOutDir)
@@ -78,8 +78,8 @@ abstract class GenerateMlModelClass : NonIncrementalTask() {
             })
     }
 
-    class CreationAction(creationConfig: VariantCreationConfig) :
-        VariantTaskCreationAction<GenerateMlModelClass, VariantCreationConfig>(
+    class CreationAction(creationConfig: ComponentCreationConfig) :
+        VariantTaskCreationAction<GenerateMlModelClass, ComponentCreationConfig>(
             creationConfig
         ) {
 
@@ -101,7 +101,7 @@ abstract class GenerateMlModelClass : NonIncrementalTask() {
                 .setTaskInputToFinalProduct(
                     MERGED_ML_MODELS, task.modelFileDir
                 )
-            task.packageName.setDisallowChanges(creationConfig.packageName)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
         }
     }
 }

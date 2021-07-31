@@ -16,6 +16,7 @@
 package com.android.sdklib.tool.sdkmanager;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.concurrency.Slow;
 import com.android.repository.api.Installer;
 import com.android.repository.api.License;
 import com.android.repository.api.ProgressIndicator;
@@ -46,6 +47,7 @@ class InstallAction extends SdkPackagesAction {
         argToFactory.put(ACTION_ARG, InstallAction::new);
     }
 
+    @Slow
     @Override
     public void execute(@NonNull ProgressIndicator progress)
             throws SdkManagerCli.CommandFailedException {
@@ -89,11 +91,7 @@ class InstallAction extends SdkPackagesAction {
                 progress.setText("Installing " + p.getDisplayName());
                 Installer installer =
                         SdkInstallerUtil.findBestInstallerFactory(p, getSdkHandler())
-                                .createInstaller(
-                                        p,
-                                        getRepoManager(),
-                                        getDownloader(),
-                                        getSdkHandler().getFileOp());
+                                .createInstaller(p, getRepoManager(), getDownloader());
                 progressMax += progressIncrement;
                 if (!applyPackageOperation(installer, progress.createSubProgress(progressMax))) {
                     // there was an error, abort.
@@ -123,16 +121,14 @@ class InstallAction extends SdkPackagesAction {
         remotes.forEach(
                 remote -> {
                     License l = remote.getLicense();
-                    if (l != null
-                            && !l.checkAccepted(
-                                    getSdkHandler().getLocation(), getSdkHandler().getFileOp())) {
+                    if (l != null && !l.checkAccepted(getSdkHandler().getLocation())) {
                         unacceptedLicenses.put(l, remote);
                     }
                 });
         for (License l : new TreeSet<>(unacceptedLicenses.keySet())) {
             if (SdkManagerCli.askForLicense(l, getOutputStream(), getInputReader())) {
                 unacceptedLicenses.removeAll(l);
-                l.setAccepted(getRepoManager().getLocalPath(), getSdkHandler().getFileOp());
+                l.setAccepted(getRepoManager().getLocalPath());
             }
         }
         if (!unacceptedLicenses.isEmpty()) {

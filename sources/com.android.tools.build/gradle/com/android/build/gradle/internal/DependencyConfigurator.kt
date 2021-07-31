@@ -18,17 +18,18 @@ package com.android.build.gradle.internal
 
 import com.android.build.api.attributes.BuildTypeAttr.Companion.ATTRIBUTE
 import com.android.build.api.attributes.ProductFlavorAttr
-import com.android.build.api.component.impl.TestComponentBuilderImpl
 import com.android.build.api.component.impl.TestComponentImpl
 import com.android.build.api.variant.impl.VariantBuilderImpl
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.dependency.ANDROID_JDK_IMAGE
 import com.android.build.gradle.internal.dependency.AarResourcesCompilerTransform
 import com.android.build.gradle.internal.dependency.AarToClassTransform
 import com.android.build.gradle.internal.dependency.AarTransform
 import com.android.build.gradle.internal.dependency.AlternateCompatibilityRule
 import com.android.build.gradle.internal.dependency.AlternateDisambiguationRule
+import com.android.build.gradle.internal.dependency.AndroidXDependencyCheck
 import com.android.build.gradle.internal.dependency.AndroidXDependencySubstitution.replaceOldSupportLibraries
 import com.android.build.gradle.internal.dependency.AsmClassesTransform.Companion.registerAsmTransformForComponent
 import com.android.build.gradle.internal.dependency.ClassesDirToClassesTransform
@@ -38,17 +39,21 @@ import com.android.build.gradle.internal.dependency.ExtractProGuardRulesTransfor
 import com.android.build.gradle.internal.dependency.FilterShrinkerRulesTransform
 import com.android.build.gradle.internal.dependency.GenericTransformParameters
 import com.android.build.gradle.internal.dependency.IdentityTransform
-import com.android.build.gradle.internal.dependency.JetifyTransform
+import com.android.build.gradle.internal.dependency.JdkImageTransform
 import com.android.build.gradle.internal.dependency.CollectResourceSymbolsTransform
 import com.android.build.gradle.internal.dependency.CollectClassesTransform
+import com.android.build.gradle.internal.dependency.ExtractJniTransform
+import com.android.build.gradle.internal.dependency.JetifyTransform
 import com.android.build.gradle.internal.dependency.LibrarySymbolTableTransform
 import com.android.build.gradle.internal.dependency.MockableJarTransform
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule.Companion.setUp
 import com.android.build.gradle.internal.dependency.PlatformAttrTransform
 import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerGlobalRecalculateStackFramesTransform
 import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform.Companion.registerRecalculateStackFramesTransformForComponent
-import com.android.build.gradle.internal.dependency.VersionedCodeShrinker.Companion.of
+import com.android.build.gradle.internal.dependency.VersionedCodeShrinker
 import com.android.build.gradle.internal.dependency.getDexingArtifactConfigurations
+import com.android.build.gradle.internal.dependency.getJavaHome
+import com.android.build.gradle.internal.dependency.getJdkId
 import com.android.build.gradle.internal.dependency.registerDexingOutputSplitTransform
 import com.android.build.gradle.internal.dsl.BaseFlavor
 import com.android.build.gradle.internal.dsl.BuildType
@@ -65,9 +70,9 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.VariantInputModel
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.SyncOptions
-import com.android.builder.model.CodeShrinker
 import com.google.common.collect.Maps
 import org.gradle.api.ActionConfiguration
 import org.gradle.api.Project
@@ -87,13 +92,14 @@ import org.gradle.api.internal.artifacts.ArtifactAttributes
 class DependencyConfigurator(
     private val project: Project,
     private val projectName: String,
+    private val projectOptions: ProjectOptions,
     private val globalScope: GlobalScope,
     private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
     private val projectServices: ProjectServices
 ) {
     fun configureDependencySubstitutions(): DependencyConfigurator {
         // If Jetifier is enabled, replace old support libraries with AndroidX.
-        if (globalScope.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
+        if (projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
             replaceOldSupportLibraries(
                 project,
                 // Inline the property name for a slight memory improvement (so that the JVM doesn't
@@ -104,36 +110,59 @@ class DependencyConfigurator(
         return this
     }
 
+    fun configureDependencyChecks(): DependencyConfigurator {
+        val useAndroidX = projectServices.projectOptions.get(BooleanOption.USE_ANDROID_X)
+        val enableJetifier = projectServices.projectOptions.get(BooleanOption.ENABLE_JETIFIER)
+
+        when {
+            !useAndroidX && !enableJetifier -> {
+                project.configurations.all { configuration ->
+                    if (configuration.isCanBeResolved) {
+                        configuration.incoming.afterResolve(
+                                AndroidXDependencyCheck.AndroidXDisabledJetifierDisabled(
+                                        project, configuration.name, projectServices.issueReporter
+                                )
+                        )
+                    }
+                }
+            }
+            useAndroidX && !enableJetifier -> {
+                project.configurations.all { configuration ->
+                    if (configuration.isCanBeResolved) {
+                        configuration.incoming.afterResolve(
+                                AndroidXDependencyCheck.AndroidXEnabledJetifierDisabled(
+                                        project, configuration.name, projectServices.issueReporter
+                                )
+                        )
+                    }
+                }
+            }
+        }
+
+        return this
+    }
+
     fun configureGeneralTransforms(): DependencyConfigurator {
         val dependencies: DependencyHandler = project.dependencies
 
         // The aars/jars may need to be processed (e.g., jetified to AndroidX) before they can be
         // used
-        // Arguments passed to an ArtifactTransform must not be null
-        val jetifierSkipIfPossible =
-            globalScope.projectOptions[BooleanOption.JETIFIER_SKIP_IF_POSSIBLE]
-
-        @Suppress("DEPRECATION")
-        val jetifierIgnoreList =
-            globalScope.projectOptions[StringOption.JETIFIER_IGNORE_LIST]
-                ?: globalScope.projectOptions[StringOption.JETIFIER_BLACKLIST]
-                ?: ""
-
         val autoNamespaceDependencies =
             globalScope.extension.aaptOptions.namespaced &&
-                    globalScope.projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]
+                    projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]
         val jetifiedAarOutputType = if (autoNamespaceDependencies) {
             AndroidArtifacts.ArtifactType.MAYBE_NON_NAMESPACED_PROCESSED_AAR
         } else {
             AndroidArtifacts.ArtifactType.PROCESSED_AAR
         }
-        if (globalScope.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
+        // Arguments passed to an ArtifactTransform must not be null
+        val jetifierIgnoreList = projectOptions[StringOption.JETIFIER_IGNORE_LIST] ?: ""
+        if (projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
             registerTransform(
                 JetifyTransform::class.java,
                 AndroidArtifacts.ArtifactType.AAR,
                 jetifiedAarOutputType
             ) { params ->
-                params.skipIfPossible.setDisallowChanges(jetifierSkipIfPossible)
                 params.ignoreListOption.setDisallowChanges(jetifierIgnoreList)
             }
             registerTransform(
@@ -141,7 +170,6 @@ class DependencyConfigurator(
                 AndroidArtifacts.ArtifactType.JAR,
                 AndroidArtifacts.ArtifactType.PROCESSED_JAR
             ) { params ->
-                params.skipIfPossible.setDisallowChanges(jetifierSkipIfPossible)
                 params.ignoreListOption.setDisallowChanges(jetifierIgnoreList)
             }
         } else {
@@ -219,8 +247,19 @@ class DependencyConfigurator(
             AndroidArtifacts.ArtifactType.JAR.type,
             AndroidArtifacts.TYPE_PLATFORM_ATTR
         )
-        val sharedLibSupport = globalScope
-            .projectOptions[BooleanOption.CONSUME_DEPENDENCIES_AS_SHARED_LIBRARIES]
+
+        // transform to create the JDK image from core-for-system-modules.jar
+        registerTransform(
+            JdkImageTransform::class.java,
+            // Query for JAR instead of PROCESSED_JAR as core-for-system-modules.jar doesn't need processing
+            AndroidArtifacts.ArtifactType.JAR.type,
+            ANDROID_JDK_IMAGE
+        ) { params ->
+            params.jdkId.setDisallowChanges(getJdkId(project))
+            params.javaHome.setDisallowChanges(getJavaHome(project))
+        }
+
+        val sharedLibSupport = projectOptions[BooleanOption.CONSUME_DEPENDENCIES_AS_SHARED_LIBRARIES]
 
         for (transformTarget in AarTransform.getTransformTargets()) {
             registerTransform(
@@ -232,7 +271,7 @@ class DependencyConfigurator(
                 params.sharedLibSupport.setDisallowChanges(sharedLibSupport)
             }
         }
-        if (globalScope.projectOptions[BooleanOption.PRECOMPILE_DEPENDENCIES_RESOURCES]) {
+        if (projectOptions[BooleanOption.PRECOMPILE_DEPENDENCIES_RESOURCES]) {
             registerTransform(
                 AarResourcesCompilerTransform::class.java,
                 AndroidArtifacts.ArtifactType.EXPLODED_AAR,
@@ -267,7 +306,7 @@ class DependencyConfigurator(
                 params.forCompileUse.set(true)
                 params.generateRClassJar
                     .set(
-                        globalScope.projectOptions.get(
+                        projectOptions.get(
                             BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES
                         )
                     )
@@ -301,7 +340,7 @@ class DependencyConfigurator(
                 params.generateRClassJar.set(false)
             }
         }
-        if (globalScope.projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
+        if (projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
             registerTransform(
                 ExtractProGuardRulesTransform::class.java,
                 AndroidArtifacts.ArtifactType.PROCESSED_JAR,
@@ -349,6 +388,11 @@ class DependencyConfigurator(
                 classesOrResources
             )
         }
+        registerTransform(
+            ExtractJniTransform::class.java,
+            AndroidArtifacts.ArtifactType.PROCESSED_JAR,
+            AndroidArtifacts.ArtifactType.JNI
+        )
         // The Kotlin Kapt plugin should query for PROCESSED_JAR, but it is currently querying for
         // JAR, so we need to have the workaround below to make it get PROCESSED_JAR. See
         // http://issuetracker.google.com/111009645.
@@ -541,80 +585,63 @@ class DependencyConfigurator(
     fun <VariantBuilderT : VariantBuilderImpl, VariantT : VariantImpl>
             configureVariantTransforms(
         variants: List<ComponentInfo<VariantBuilderT, VariantT>>,
-        testComponents: List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>>
+        testComponents: List<TestComponentImpl>
     ): DependencyConfigurator {
         val allComponents: List<ComponentCreationConfig> =
-            (variants + testComponents).map { it.variant as ComponentCreationConfig }
+            variants.map { it.variant as ComponentCreationConfig }.plus(testComponents)
 
         val dependencies = project.dependencies
 
         for (component in allComponents) {
             registerAsmTransformForComponent(
-                globalScope.project.name,
+                projectServices.projectInfo.getProject().name,
                 dependencies,
                 component
             )
 
             registerRecalculateStackFramesTransformForComponent(
-                globalScope.project.name,
+                projectServices.projectInfo.getProject().name,
                 dependencies,
                 component
             )
         }
 
-        if (globalScope.projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
+        if (projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
             for (artifactConfiguration in getDexingArtifactConfigurations(
                 allComponents
             )) {
                 artifactConfiguration.registerTransform(
-                    globalScope.project.name,
+                    projectServices.projectInfo.getProject().name,
                     dependencies,
                     project.files(globalScope.bootClasspath),
-                    getDesugarLibConfig(globalScope.project),
-                    SyncOptions.getErrorFormatMode(globalScope.projectOptions),
-                    globalScope.projectOptions.get(BooleanOption.ENABLE_INCREMENTAL_DEXING_TRANSFORM)
+                    getDesugarLibConfig(projectServices.projectInfo.getProject()),
+                    SyncOptions.getErrorFormatMode(projectOptions),
                 )
             }
         }
-        if (globalScope.projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
-            val shrinkers: Set<CodeShrinker> = allComponents
-                .asSequence()
-                .filterIsInstance(ConsumableCreationConfig::class.java)
-                .map { it.codeShrinker }
-                .filterNotNull()
-                .toSet()
-            for (shrinker in shrinkers) {
-                dependencies.registerTransform(
+        if (projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]
+                && allComponents.any { it is ConsumableCreationConfig && it.minifiedEnabled }) {
+            dependencies.registerTransform(
                     FilterShrinkerRulesTransform::class.java
-                ) { reg: TransformSpec<FilterShrinkerRulesTransform.Parameters> ->
-                    reg.from
+            ) { reg: TransformSpec<FilterShrinkerRulesTransform.Parameters> ->
+                reg.from
                         .attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
-                            AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES.type
+                                ArtifactAttributes.ARTIFACT_FORMAT,
+                                AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES.type
                         )
-                    reg.to
+                reg.to
                         .attribute(
-                            ArtifactAttributes.ARTIFACT_FORMAT,
-                            AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES.type
+                                ArtifactAttributes.ARTIFACT_FORMAT,
+                                AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES.type
                         )
-                    reg.from.attribute(
-                        VariantManager.SHRINKER_ATTR,
-                        shrinker.toString()
-                    )
-                    reg.to.attribute(
-                        VariantManager.SHRINKER_ATTR,
-                        shrinker.toString()
-                    )
-                    reg.parameters { params: FilterShrinkerRulesTransform.Parameters ->
-                        params.shrinker
-                            .set(of(shrinker))
-                        params.projectName.set(project.name)
-                    }
+                reg.parameters { params: FilterShrinkerRulesTransform.Parameters ->
+                    params.shrinker.set(VersionedCodeShrinker.create())
+                    params.projectName.set(project.name)
                 }
             }
         }
 
-        if (globalScope.projectOptions[BooleanOption.ENABLE_DUPLICATE_CLASSES_CHECK]) {
+        if (projectOptions[BooleanOption.ENABLE_DUPLICATE_CLASSES_CHECK]) {
             registerTransform(
                 EnumerateClassesTransform::class.java,
                 AndroidArtifacts.ArtifactType.CLASSES_JAR,

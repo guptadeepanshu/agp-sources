@@ -21,12 +21,14 @@ import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.options.ProjectOptions
 
 open class ApkCreationConfigImpl(
     override val config: ApkCreationConfig,
+    projectOptions: ProjectOptions,
     globalScope: GlobalScope,
     dslInfo: VariantDslInfo
-): ConsumableCreationConfigImpl(config, globalScope, dslInfo) {
+): ConsumableCreationConfigImpl(config, projectOptions, globalScope, dslInfo) {
 
     val isDebuggable = variantDslInfo.isDebuggable
 
@@ -53,8 +55,8 @@ open class ApkCreationConfigImpl(
                 // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is
                 // debuggable.
                 val minVersion: Int =
-                        if (variantDslInfo.targetSdkVersion.apiLevel > 1) Integer.min(
-                                variantDslInfo.targetSdkVersion.apiLevel,
+                        if (config.targetSdkVersion.apiLevel > 1) Integer.min(
+                                config.targetSdkVersion.apiLevel,
                                 targetApiLevel
                         ) else targetApiLevel
                 AndroidVersionImpl(minVersion)

@@ -22,6 +22,7 @@ import com.android.builder.errors.IssueReporter
 import com.android.ide.common.repository.GradleVersion
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.Project
+import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.result.ResolutionResult
 import org.gradle.api.initialization.dsl.ScriptHandler.CLASSPATH_CONFIGURATION
 import java.net.JarURLConnection
@@ -55,12 +56,12 @@ private val pluginList = listOf(
         GradleVersion.parse("0.8.6")
     ),
 
-    // https://youtrack.jetbrains.net/issue/KT-27160 (b/118644940)
+    // https://youtrack.jetbrains.com/issue/KT-30344 (b/152898926)
     DependencyInfo(
         "Kotlin",
         "org.jetbrains.kotlin",
         "kotlin-gradle-plugin",
-        GradleVersion.parse("1.3.10")
+        GradleVersion.parse("1.3.40")
     )
 )
 
@@ -137,11 +138,13 @@ private fun enforceMinimumVersionOfPlugin(
     }
 }
 
+@VisibleForTesting
 internal class ViolatingPluginDetector(
         private val buildscriptClasspath: ResolutionResult,
         private val pluginToSearch: DependencyInfo,
         private val projectDisplayName: String
 ) {
+
     /** Returns the paths to violating plugins. */
     fun detect(): List<String> {
         val violatingPlugins = buildscriptClasspath.getModuleComponents { moduleComponentId ->
@@ -156,8 +159,20 @@ internal class ViolatingPluginDetector(
                 false
             }
         }
-        return violatingPlugins.map { it.getPathFromRoot(projectDisplayName) }
+        return violatingPlugins.mapNotNull { component ->
+            component.getPathFromRoot().getPathString(projectDisplayName).takeIf {
+                // Ignore Safe-args plugin for now (bug 175379963).
+                !it.contains("androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1")
+            }
+        }
     }
+}
+
+/** Lists all module dependencies resolved for buildscript classpath. */
+fun getBuildscriptDependencies(project: Project): List<ModuleComponentIdentifier> {
+    val buildScriptClasspath = project.buildscript.configurations.getByName(CLASSPATH_CONFIGURATION)
+    return buildScriptClasspath.incoming.resolutionResult.getModuleComponents()
+            .map { it.id as ModuleComponentIdentifier }
 }
 
 /**

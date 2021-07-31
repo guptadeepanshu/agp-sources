@@ -16,54 +16,26 @@
 
 package com.android.build.gradle.internal.component
 
-import org.gradle.api.Named
+import com.android.build.api.variant.AndroidVersion
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
 
 /**
  * Interface for properties common to all test components.
  */
-interface TestCreationConfig: ComponentCreationConfig, Named {
+interface TestCreationConfig: ComponentCreationConfig {
+
+    val instrumentationRunner: Provider<out String>
 
     /**
      * The application of the app under tests
      */
     val testedApplicationId: Provider<String>
 
-    /**
-     * Returns the instrumentationRunner to use to test this variant, or if the variant is a test,
-     * the one to use to test the tested variant.
-     *
-     * @return the instrumentation test runner name
-     */
-    val instrumentationRunner: Provider<String>
-
-    /**
-     * Returns the instrumentationRunner arguments to use to test this variant, or if the variant is
-     * a test, the ones to use to test the tested variant
-     */
-    val instrumentationRunnerArguments: Map<String, String>
-
-    /**
-     * Returns handleProfiling value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the handleProfiling value
-     */
-    val handleProfiling: Provider<Boolean>
-
-    /**
-     * Returns functionalTest value to use to test this variant, or if the variant is a test, the
-     * one to use to test the tested variant.
-     *
-     * @return the functionalTest value
-     */
-    val functionalTest: Provider<Boolean>
-
-    /** Gets the test label for this variant  */
-    val testLabel: Provider<String?>
-
     val isTestCoverageEnabled: Boolean
 
     val manifestPlaceholders: MapProperty<String, String>
+
+    val targetSdkVersion: AndroidVersion
+
 }

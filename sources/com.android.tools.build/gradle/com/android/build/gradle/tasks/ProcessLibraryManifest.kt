@@ -16,14 +16,15 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuiltArtifacts
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.dirName
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.LibraryCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MERGE_REPORT
@@ -34,6 +35,7 @@ import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.MergingReport
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
+import com.google.common.base.Preconditions
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -113,7 +115,13 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.variantName.set(variantName)
             it.aaptFriendlyManifestOutputFile.set(aaptFriendlyManifestOutputFile)
             it.namespaced.set(isNamespaced)
-            it.mainManifest.set(mainManifest.get())
+            it.mainManifest.set(
+                    if (mainManifest.isPresent()) {
+                        mainManifest.get()
+                    } else {
+                        createTempLibraryManifest()
+                    }
+            )
             it.manifestOverlays.set(manifestOverlays)
             it.packageOverride.set(packageOverride)
             it.minSdkVersion.set(minSdkVersion)
@@ -126,7 +134,22 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.manifestOutputDirectory.set(packagedManifestOutputDirectory)
             it.aaptFriendlyManifestOutputDirectory.set(aaptFriendlyManifestOutputDirectory)
             it.mainSplit.set(mainSplit.get().toSerializedForm())
+            it.tmpDir.set(tmpDir.get())
         }
+    }
+
+    private fun createTempLibraryManifest(): File {
+        Preconditions.checkNotNull(
+                namespace.get(),
+                "namespace cannot be null."
+        )
+        val manifestFile = File.createTempFile("tempAndroidManifest", ".xml", FileUtils.mkdirs(tmpDir.get().asFile))
+        val content = """<?xml version="1.0" encoding="utf-8"?>
+            <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+               package="${namespace.get()}" />
+            """.trimIndent()
+        manifestFile.writeText(content)
+        return manifestFile
     }
 
     abstract class ProcessLibParams: ProfileAwareWorkAction.Parameters() {
@@ -146,6 +169,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         abstract val manifestOutputDirectory: DirectoryProperty
         abstract val aaptFriendlyManifestOutputDirectory: DirectoryProperty
         abstract val mainSplit: Property<VariantOutputImpl.SerializedForm>
+        abstract val tmpDir: DirectoryProperty
 }
 
     abstract class ProcessLibWorkAction : ProfileAwareWorkAction<ProcessLibParams>() {
@@ -179,6 +203,9 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                     mergingReport,
                     parameters.mergeBlameFile.asFile.get()
                 )
+                if (FileUtils.isFileInDirectory(parameters.mainManifest.get().asFile, parameters.tmpDir.get().asFile)) {
+                    FileUtils.deleteIfExists(parameters.mainManifest.get().asFile)
+                }
             } catch (e: IOException) {
                 throw UncheckedIOException(e)
             }
@@ -233,11 +260,24 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
 
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFile
+    @get:Optional
     abstract val mainManifest: Property<File>
 
-    class CreationAction
-    /** `EagerTaskCreationAction` for the library process manifest task.  */(creationConfig: LibraryCreationConfig) :
-        VariantTaskCreationAction<ProcessLibraryManifest, LibraryCreationConfig>(creationConfig) {
+    @get:Optional
+    @get:Input
+    abstract val namespace: Property<String?>
+
+    @get:Internal
+    abstract val tmpDir: DirectoryProperty
+
+    class CreationAction(
+        creationConfig: ComponentCreationConfig,
+        private val targetSdkVersion: AndroidVersion?,
+        private val maxSdkVersion: Int?,
+        private val manifestPlaceholders: MapProperty<String, String>?
+    ) : VariantTaskCreationAction<ProcessLibraryManifest, ComponentCreationConfig>(
+        creationConfig
+    ) {
         override val name: String
             get() = computeTaskName("process", "Manifest")
 
@@ -263,7 +303,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             artifacts.setInitialProvider(
                 taskProvider
             ) { task: ProcessLibraryManifest -> task.manifestOutputFile }
-                .on(ArtifactType.MERGED_MANIFEST)
+                .on(SingleArtifact.MERGED_MANIFEST)
 
             artifacts.setInitialProvider(
                 taskProvider,
@@ -276,7 +316,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 ProcessLibraryManifest::reportFile
             )
                 .atLocation(
-                    FileUtils.join(creationConfig.globalScope.outputsDir, "logs")
+                    FileUtils.join(creationConfig.services.projectInfo.getOutputsDir(), "logs")
                         .absolutePath
                 )
                 .withName("manifest-merger-" + creationConfig.baseName + "-report.txt")
@@ -288,36 +328,35 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val variantSources = creationConfig.variantSources
-            val project = creationConfig.globalScope.project
-            task.minSdkVersion
-                .set(project.provider { creationConfig.minSdkVersion.getApiString() })
-            task.minSdkVersion.disallowChanges()
+            val project = creationConfig.services.projectInfo.getProject()
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
             task.targetSdkVersion
-                .set(
-                    project.provider {
-                        val targetSdkVersion =
-                            creationConfig.targetSdkVersion
-                        if (targetSdkVersion.apiLevel < 0) {
-                            return@provider null
-                        }
-                        targetSdkVersion.apiString
-                    }
+                .setDisallowChanges(
+                    if (targetSdkVersion == null || targetSdkVersion.apiLevel < 1) null
+                    else targetSdkVersion.getApiString()
                 )
-            task.targetSdkVersion.disallowChanges()
-            task.maxSdkVersion.setDisallowChanges(creationConfig.maxSdkVersion)
+            task.maxSdkVersion.setDisallowChanges(maxSdkVersion)
             task.mainSplit.set(project.provider { creationConfig.outputs.getMainSplit() })
             task.mainSplit.disallowChanges()
             task.isNamespaced =
                 creationConfig.globalScope.extension.aaptOptions.namespaced
             task.packageOverride.setDisallowChanges(creationConfig.applicationId)
-            task.manifestPlaceholders.setDisallowChanges(creationConfig.manifestPlaceholders)
+            manifestPlaceholders?.let {
+                task.manifestPlaceholders.setDisallowChanges(it)
+            }
             task.mainManifest
-                .set(project.provider(variantSources::mainManifestFilePath))
+                .set(project.provider(variantSources::mainManifestIfExists))
             task.mainManifest.disallowChanges()
             task.manifestOverlays.set(
                 task.project.provider(variantSources::manifestOverlays)
             )
             task.manifestOverlays.disallowChanges()
+            task.namespace.setDisallowChanges(creationConfig.namespace)
+            task.tmpDir.setDisallowChanges(creationConfig.paths.intermediatesDir(
+                    "tmp",
+                    "ProcessLibraryManifest",
+                    creationConfig.dirName
+            ))
         }
     }
 }

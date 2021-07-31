@@ -34,14 +34,17 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.CopyOption;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import kotlin.io.FilesKt;
 
 @SuppressWarnings("WeakerAccess") // These are utility methods, meant to be public.
 public final class FileUtils {
@@ -105,14 +108,74 @@ public final class FileUtils {
 
     /**
      * Copies a regular file from one path to another, preserving file attributes. If the
-     * destination file exists, it gets overwritten.
+     * destination file exists, it gets overwritten. If the [from] file is read-only on windows, the
+     * [to] file will be left read-write so that it can be overwritten the next time this function
+     * is called.
      */
     public static void copyFile(@NonNull File from, @NonNull File to) throws IOException {
-        java.nio.file.Files.copy(
-                from.toPath(),
-                to.toPath(),
-                StandardCopyOption.COPY_ATTRIBUTES,
-                StandardCopyOption.REPLACE_EXISTING);
+        copyFile(from.toPath(), to.toPath());
+    }
+
+    /**
+     * Copies a regular file from one path to another. This function uses two standard copy options:
+     * - COPY_ATTRIBUTES copies platform-dependent attributes like file timestamp (only used for
+     * non-Windows OSes because performance is worse for Windows and better for non-Windows OSes).
+     * - REPLACE_EXISTING will try to delete the target file before the copy. If you want other
+     * options, there is an overload which lets you set a custom set.
+     *
+     * <p>Lastly, if the [from] file is read-only on windows, the [to] file will be left read-write
+     * so that it can be overwritten the next time this function is called.
+     */
+    public static void copyFile(@NonNull Path from, @NonNull Path to) throws IOException {
+        if (System.getProperty("os.name").toLowerCase(Locale.US).contains("windows")) {
+            copyFile(from, to, StandardCopyOption.REPLACE_EXISTING);
+        } else {
+            copyFile(
+                    from,
+                    to,
+                    StandardCopyOption.COPY_ATTRIBUTES,
+                    StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /**
+     * Copies a regular file from one path to another. If the [from] file is read-only on windows,
+     * the [to] file will be left read-write so that it can be overwritten the next time this
+     * function is called.
+     */
+    // Suppress because this is the sanctioned use of Files.copy.
+    // See https://issuetracker.google.com/182063560
+    @SuppressWarnings("NoNioFilesCopy")
+    public static void copyFile(@NonNull Path from, @NonNull Path to, CopyOption... options)
+            throws IOException {
+        java.nio.file.Files.copy(from, to, options);
+        /*
+         * Some source-control systems on Windows use the read-only bit to signify that the
+         * file has not been checked out. If we're copying one of these files then we don't
+         * want to propagate that bit because a followup call to [copyFile] would not be
+         * able to overwrite the file a second time.
+         */
+        setWritable(to);
+    }
+
+    /**
+     * Set the destination file to writeable.
+     *
+     * <p>Special note: JimFS doesn't support converting to File from Path and Path doesn't support
+     * checking or setting the Windows readonly bit. We have to catch this case and skip the setting
+     * writable=true.
+     */
+    private static void setWritable(Path path) {
+
+        File fileOrNull;
+        try {
+            fileOrNull = path.toFile();
+        } catch (UnsupportedOperationException e) {
+            fileOrNull = null;
+        }
+        if (fileOrNull != null && !fileOrNull.canWrite()) {
+            fileOrNull.setWritable(true);
+        }
     }
 
     /**
@@ -320,9 +383,7 @@ public final class FileUtils {
      *
      * @param file the file or directory, which must exist in the filesystem
      * @param dir the directory to compute the path relative to
-     * @return the relative path from {@code dir} to {@code file}; if {@code file} is a directory
-     * the path comes appended with the file separator (see documentation on {@code relativize}
-     * on java's {@code URI} class)
+     * @return the relative path from {@code dir} to {@code file}
      */
     @NonNull
     public static String relativePath(@NonNull File file, @NonNull File dir) {
@@ -333,20 +394,17 @@ public final class FileUtils {
     }
 
     /**
-     * Computes the relative of a file or directory with respect to a directory.
-     * For example, if the file's absolute path is {@code /a/b/c} and the directory
-     * is {@code /a}, this method returns {@code b/c}.
+     * Computes the relative of a file or directory with respect to a directory. For example, if the
+     * file's absolute path is {@code /a/b/c} and the directory is {@code /a}, this method returns
+     * {@code b/c}.
      *
      * @param file the path that may not correspond to any existing path in the filesystem
      * @param dir the directory to compute the path relative to
-     * @return the relative path from {@code dir} to {@code file}; if {@code file} is a directory
-     * the path comes appended with the file separator (see documentation on {@code relativize}
-     * on java's {@code URI} class)
+     * @return the relative path from {@code dir} to {@code file}
      */
     @NonNull
     public static String relativePossiblyNonExistingPath(@NonNull File file, @NonNull File dir) {
-        String path = dir.toURI().relativize(file.toURI()).getPath();
-        return toSystemDependentPath(path);
+        return FilesKt.toRelativeString(file, dir);
     }
 
     /**
@@ -529,45 +587,48 @@ public final class FileUtils {
     }
 
     /**
-     * Returns {@code true} if a file/directory is in a given directory or in a subdirectory of the
-     * given directory, and {@code false} otherwise. Note that this method resolves the real paths
-     * of the given file/directory first via {@link File#getCanonicalFile()}.
+     * Returns {@code true} if a file/directory is located directly or indirectly inside a base
+     * directory.
+     *
+     * <p>The given file/directories may or may not exist.
+     *
+     * <p>Note on corner cases:
+     *
+     * <ul>
+     *   <li>Case sensitivity: Internally, this method uses the {@link Path} API, so it is able to
+     *       take the case sensitivity of the filesystem into account (e.g., file `/a/b` is inside
+     *       directory `/A` in case-insensitive filesystem).
+     *   <li>For other corner cases (e.g., hard/symbolic links), please refer to the javadoc of
+     *       {@link Path#relativize(Path)} which this method uses.
+     * </ul>
      */
-    public static boolean isFileInDirectory(@NonNull File file, @NonNull File directory) {
-        File parentFile;
+    public static boolean isFileInDirectory(@NonNull File fileOrDir, @NonNull File baseDir) {
+        String relativePath;
         try {
-            parentFile = file.getCanonicalFile().getParentFile();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            relativePath = baseDir.toPath().relativize(fileOrDir.toPath()).toString();
+        } catch (IllegalArgumentException e) {
+            // This exception is thrown from Path.relativize() (e.g., when one path is absolute and
+            // the other is relative), so we return `false` in that case.
+            return false;
         }
-
-        while (parentFile != null) {
-            if (isSameFile(parentFile, directory)) {
-                return true;
-            }
-            parentFile = parentFile.getParentFile();
-        }
-        return false;
+        return !relativePath.isEmpty() && !relativePath.startsWith("..");
     }
 
     /**
-     * Returns {@code true} if the two files refer to the same physical file, and {@code false}
-     * otherwise. This is the correct way to compare physical files, instead of comparing using
-     * {@link File#equals(Object)} directly.
+     * Returns {@code true} if the two files refer to the same physical file (or potentially the
+     * same physically file when created in the case that the given files do not exist yet).
      *
-     * <p>Unlike {@link java.nio.file.Files#isSameFile(Path, Path)}, this method does not require
-     * the files to exist.
-     *
-     * <p>Internally, this method delegates to {@link java.nio.file.Files#isSameFile(Path, Path)} if
-     * the files exist.
-     *
-     * <p>If either of the files does not exist, this method instead compares the canonical files of
-     * the two files, since {@link java.nio.file.Files#isSameFile(Path, Path)} in some cases require
-     * that the files exist and therefore cannot be used. The downside of using {@link
-     * File#getCanonicalFile()} is that it may not handle hard links and symbolic links correctly as
-     * with {@link java.nio.file.Files#isSameFile(Path, Path)}.
+     * <p>This is the correct way to compare physical files, instead of using {@link
+     * File#equals(Object)} or similar variants.
      */
     public static boolean isSameFile(@NonNull File file1, @NonNull File file2) {
+        // The best ways to compare physical files are:
+        //   1. java.nio.file.Files.isSameFile(file1.toPath(), file2.toPath())
+        //   2. file1.getCanonicalFile().equals(file2.getCanonicalFile())
+        // If the files exist, method 1 should be preferred (e.g., it compares hard links better).
+        // If the files don't exist, method 1 may throw an exception, so method 2 should be used
+        // instead. Caveat: In the rare cases that the non-existent files are later created as
+        // hard/symbolic links to somewhere else, it may invalidate the result returned here.
         try {
             if (file1.exists() && file2.exists()) {
                 return java.nio.file.Files.isSameFile(file1.toPath(), file2.toPath());

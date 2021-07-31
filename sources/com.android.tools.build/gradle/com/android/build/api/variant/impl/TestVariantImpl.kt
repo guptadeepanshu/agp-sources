@@ -16,22 +16,26 @@
 
 package com.android.build.api.variant.impl
 
+import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.Component
 import com.android.build.api.component.analytics.AnalyticsEnabledTestVariant
 import com.android.build.api.component.impl.TestVariantCreationConfigImpl
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
-import com.android.build.api.variant.AaptOptions
+import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.ApkPackagingOptions
-import com.android.build.api.variant.SigningConfig
+import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.TestVariant
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
+import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.component.TestVariantCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.dsl.ModulePropertyKeys
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BuildFeatureValues
@@ -44,8 +48,9 @@ import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.IntegerOption
 import com.android.builder.dexing.DexingType
-import com.android.builder.model.CodeShrinker
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
@@ -80,7 +85,19 @@ open class TestVariantImpl @Inject constructor(
     globalScope
 ), TestVariant, TestVariantCreationConfig {
 
-    private val delegate by lazy { TestVariantCreationConfigImpl(this, globalScope, variantDslInfo) }
+    init {
+        variantDslInfo.multiDexKeepProguard?.let {
+            artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
+                    .addInitialProvider(
+                            taskCreationServices.regularFile(internalServices.provider { it })
+                    )
+        }
+    }
+    private val delegate by lazy { TestVariantCreationConfigImpl(
+        this,
+        internalServices.projectOptions,
+        globalScope,
+        variantDslInfo) }
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -89,21 +106,27 @@ open class TestVariantImpl @Inject constructor(
     override val applicationId: Property<String> =
         internalServices.propertyOf(String::class.java, variantDslInfo.applicationId)
 
-    override val aaptOptions: AaptOptions by lazy {
+    override val androidResources: AndroidResources by lazy {
         initializeAaptOptionsFromDsl(
             globalScope.extension.aaptOptions,
             internalServices
         )
     }
 
-    override fun aaptOptions(action: AaptOptions.() -> Unit) {
-        action.invoke(aaptOptions)
+    // TODO: We should keep this (for the manifest) but just fix the test runner to get the
+    //         tested application id from the APK metadata file for uninstalling.
+    override val testedApplicationId: Provider<String> by lazy {
+        experimentalProperties.flatMap {
+            if (ModulePropertyKeys.SELF_INSTRUMENTING.getValueAsBoolean(it)) {
+                applicationId
+            } else {
+                calculateTestedApplicationId(variantDependencies)
+            }
+        }
     }
 
-    override val testedApplicationId: Provider<String> = calculateTestedApplicationId(variantDependencies)
-
     override val minifiedEnabled: Boolean
-        get() = variantDslInfo.isMinifyEnabled
+        get() = variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()
 
     override val instrumentationRunner: Property<String> =
         internalServices.propertyOf(String::class.java, variantDslInfo.getInstrumentationRunner(dexingType))
@@ -117,16 +140,24 @@ open class TestVariantImpl @Inject constructor(
     override val testLabel: Property<String?> =
         internalServices.nullablePropertyOf(String::class.java, variantDslInfo.testLabel)
 
-    override val packagingOptions: ApkPackagingOptions by lazy {
-        ApkPackagingOptionsImpl(
+    override val packaging: ApkPackaging by lazy {
+        ApkPackagingImpl(
             globalScope.extension.packagingOptions,
             internalServices,
             minSdkVersion.apiLevel
         )
     }
 
-    override fun packagingOptions(action: ApkPackagingOptions.() -> Unit) {
-        action.invoke(packagingOptions)
+    override val renderscript: Renderscript? by lazy {
+        delegate.renderscript(internalServices)
+    }
+
+    override val proguardFiles: ListProperty<RegularFile> by lazy {
+        internalServices.projectInfo.getProject().objects
+            .listProperty(RegularFile::class.java).also {
+                variantDslInfo.gatherProguardFiles(ProguardFileType.TEST, it)
+                it.finalizeValueOnRead()
+            }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -154,14 +185,27 @@ open class TestVariantImpl @Inject constructor(
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()
 
-    override val signingConfig: SigningConfig by lazy {
-        SigningConfigImpl(
-            variantDslInfo.signingConfig,
-            internalServices,
-            minSdkVersion.apiLevel,
-            globalScope.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
-        )
+    override val signingConfig: SigningConfigImpl? by lazy {
+        variantDslInfo.signingConfig?.let {
+            SigningConfigImpl(
+                it,
+                internalServices,
+                minSdkVersion.apiLevel,
+                services.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
+            )
+        }
     }
+
+    // ---------------------------------------------------------------------------------------------
+    // DO NOT USE, only present for old variant API.
+    // ---------------------------------------------------------------------------------------------
+    override val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig? =
+        variantDslInfo.signingConfig
+
+    // ---------------------------------------------------------------------------------------------
+    // DO NOT USE, Deprecated DSL APIs.
+    // ---------------------------------------------------------------------------------------------
+    override val multiDexKeepFile = variantDslInfo.multiDexKeepFile
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
@@ -190,20 +234,21 @@ open class TestVariantImpl @Inject constructor(
 
     override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<VariantBuilder, Variant>,
-            stats: GradleBuildVariant.Builder
+            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
+            stats: GradleBuildVariant.Builder?
     ): T =
+        if (stats == null) {
+            this as T
+        } else {
             projectServices.objectFactory.newInstance(
-                    AnalyticsEnabledTestVariant::class.java,
-                    this,
-                    stats
+                AnalyticsEnabledTestVariant::class.java,
+                this,
+                stats
             ) as T
+        }
 
     override val minSdkVersionWithTargetDeviceApi: AndroidVersion
         get() = delegate.minSdkVersionWithTargetDeviceApi
-
-    override val codeShrinker: CodeShrinker?
-        get() = delegate.getCodeShrinker()
 
     override fun getNeedsMergedJavaResStream(): Boolean = delegate.getNeedsMergedJavaResStream()
 

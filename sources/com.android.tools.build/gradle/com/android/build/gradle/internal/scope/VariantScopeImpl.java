@@ -49,25 +49,22 @@ import com.android.build.gradle.internal.packaging.JarCreatorType;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType;
 import com.android.build.gradle.internal.publishing.PublishingSpecs;
+import com.android.build.gradle.internal.services.BaseServices;
+import com.android.build.gradle.internal.testFixtures.TestFixturesUtil;
 import com.android.build.gradle.internal.variant.VariantPathHelper;
-import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.OptionalBooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.StringOption;
 import com.android.builder.core.VariantType;
-import com.android.builder.dexing.DexMergerTool;
-import com.android.builder.dexing.DexerTool;
 import com.android.builder.errors.IssueReporter.Type;
 import com.android.builder.internal.packaging.ApkCreatorType;
 import com.android.builder.model.OptionalCompilationStep;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
-import com.android.utils.FileUtils;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import java.io.File;
@@ -77,24 +74,19 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import org.gradle.api.Project;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.artifacts.SelfResolvingDependency;
 import org.gradle.api.attributes.LibraryElements;
-import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
 
 /** A scope containing data for a specific variant. */
 public class VariantScopeImpl implements VariantScope {
-
-    private static final String PUBLISH_ERROR_MSG =
-            "Publishing to %1$s with no %1$s configuration object. VariantType: %2$s";
 
     // Variant specific Data
     @NonNull private final ComponentIdentity componentIdentity;
@@ -113,9 +105,8 @@ public class VariantScopeImpl implements VariantScope {
 
     @NonNull private final Map<Abi, File> ndkDebuggableLibraryFolders = Maps.newHashMap();
 
-    private final Supplier<ConfigurableFileCollection> desugarTryWithResourcesRuntimeJar;
-
     @NonNull private final PostProcessingOptions postProcessingOptions;
+    @NonNull private final BaseServices baseServices;
 
     public VariantScopeImpl(
             @NonNull ComponentIdentity componentIdentity,
@@ -123,6 +114,7 @@ public class VariantScopeImpl implements VariantScope {
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantPathHelper pathHelper,
             @NonNull ArtifactsImpl artifacts,
+            @NonNull BaseServices baseServices,
             @NonNull GlobalScope globalScope,
             @Nullable VariantImpl testedVariantProperties) {
         this.componentIdentity = componentIdentity;
@@ -130,6 +122,7 @@ public class VariantScopeImpl implements VariantScope {
         this.variantDependencies = variantDependencies;
         this.pathHelper = pathHelper;
         this.artifacts = artifacts;
+        this.baseServices = baseServices;
         this.globalScope = globalScope;
         this.variantPublishingSpec =
                 PublishingSpecs.getVariantSpec(variantDslInfo.getVariantType());
@@ -138,18 +131,6 @@ public class VariantScopeImpl implements VariantScope {
         if (globalScope.isActive(OptionalCompilationStep.INSTANT_DEV)) {
             throw new RuntimeException("InstantRun mode is not supported");
         }
-        Project project = globalScope.getProject();
-
-        this.desugarTryWithResourcesRuntimeJar =
-                Suppliers.memoize(
-                        () ->
-                                project.files(
-                                        FileUtils.join(
-                                                pathHelper.getIntermediatesDir(),
-                                                "processing-tools",
-                                                "runtime-deps",
-                                                variantDslInfo.getDirName(),
-                                                "desugar_try_with_resources.jar")));
         this.postProcessingOptions = variantDslInfo.getPostProcessingOptions();
 
         configureNdk();
@@ -157,9 +138,11 @@ public class VariantScopeImpl implements VariantScope {
 
     private void configureNdk() {
         File objFolder =
-                new File(
-                        pathHelper.getIntermediatesDir(),
-                        "ndk/" + variantDslInfo.getDirName() + "/obj");
+                pathHelper
+                        .intermediatesDir("ndk", variantDslInfo.getDirName(), "obj")
+                        .get()
+                        .getAsFile();
+
         for (Abi abi : Abi.values()) {
             addNdkDebuggableLibraryFolders(abi, new File(objFolder, "local/" + abi.getTag()));
         }
@@ -178,27 +161,36 @@ public class VariantScopeImpl implements VariantScope {
      * @param artifactType the artifact type.
      * @param configTypes the PublishedConfigType. (e.g. api, runtime, etc)
      * @param libraryElements the artifact's library elements
+     * @param isTestFixturesArtifact whether the artifact is from a test fixtures component
      */
     @Override
     public void publishIntermediateArtifact(
             @NonNull Provider<?> artifact,
             @NonNull ArtifactType artifactType,
             @NonNull Collection<PublishedConfigType> configTypes,
-            @Nullable LibraryElements libraryElements) {
+            @Nullable LibraryElements libraryElements,
+            boolean isTestFixturesArtifact) {
 
         Preconditions.checkState(!configTypes.isEmpty());
 
         for (PublishedConfigType configType : PublishedConfigType.values()) {
             if (configTypes.contains(configType)) {
                 Configuration config = variantDependencies.getElements(configType);
-                Preconditions.checkNotNull(
-                        config,
-                        String.format(
-                                PUBLISH_ERROR_MSG, configType, variantDslInfo.getVariantType()));
+                if (config == null) {
+                    throw new NullPointerException(
+                            "Publishing to "
+                                    + configType
+                                    + " with no "
+                                    + configType
+                                    + " configuration object. VariantType: "
+                                    + variantDslInfo.getVariantType());
+                }
                 if (configType.isPublicationConfig()) {
                     String classifier = null;
                     if (configType.isClassifierRequired()) {
                         classifier = componentIdentity.getName();
+                    } else if (isTestFixturesArtifact) {
+                        classifier = TestFixturesUtil.testFixturesClassifier;
                     }
                     publishArtifactToDefaultVariant(config, artifact, artifactType, classifier);
                 } else {
@@ -229,7 +221,7 @@ public class VariantScopeImpl implements VariantScope {
     @Override
     public boolean consumesFeatureJars() {
         return variantDslInfo.getVariantType().isBaseModule()
-                && variantDslInfo.isMinifyEnabled()
+                && variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()
                 && globalScope.hasDynamicFeatures();
     }
 
@@ -239,32 +231,6 @@ public class VariantScopeImpl implements VariantScope {
         // custom transforms.
         return variantDslInfo.getVariantType().isAar()
                 && !globalScope.getExtension().getTransforms().isEmpty();
-    }
-
-    @NonNull
-    @Override
-    public List<File> getProguardFiles() {
-        List<File> result = getExplicitProguardFiles();
-
-        // For backwards compatibility, we keep the old behavior: if there are no files
-        // specified, use a default one.
-        if (result.isEmpty()) {
-            return postProcessingOptions.getDefaultProguardFiles();
-        }
-
-        return result;
-    }
-
-    @NonNull
-    @Override
-    public List<File> getExplicitProguardFiles() {
-        return gatherProguardFiles(ProguardFileType.EXPLICIT);
-    }
-
-    @NonNull
-    @Override
-    public List<File> getTestProguardFiles() {
-        return gatherProguardFiles(ProguardFileType.TEST);
     }
 
     @NonNull
@@ -280,7 +246,7 @@ public class VariantScopeImpl implements VariantScope {
         final boolean includeProguardFiles = variantDslInfo.getVariantType().isDynamicFeature();
         final Collection<File> consumerProguardFiles = getConsumerProguardFiles();
         if (includeProguardFiles) {
-            consumerProguardFiles.addAll(getExplicitProguardFiles());
+            consumerProguardFiles.addAll(gatherProguardFiles(ProguardFileType.EXPLICIT));
         }
 
         return ImmutableList.copyOf(consumerProguardFiles);
@@ -288,10 +254,14 @@ public class VariantScopeImpl implements VariantScope {
 
     @NonNull
     private List<File> gatherProguardFiles(ProguardFileType type) {
-        List<File> result = variantDslInfo.gatherProguardFiles(type);
-        result.addAll(postProcessingOptions.getProguardFiles(type));
-
-        return result;
+        ListProperty<RegularFile> regularFiles =
+                baseServices
+                        .getProjectInfo()
+                        .getProject()
+                        .getObjects()
+                        .listProperty(RegularFile.class);
+        variantDslInfo.gatherProguardFiles(type, regularFiles);
+        return regularFiles.get().stream().map(RegularFile::getAsFile).collect(Collectors.toList());
     }
 
     @Override
@@ -317,7 +287,7 @@ public class VariantScopeImpl implements VariantScope {
      */
     @Override
     public boolean isTestOnly(VariantImpl variant) {
-        ProjectOptions projectOptions = globalScope.getProjectOptions();
+        ProjectOptions projectOptions = baseServices.getProjectOptions();
         Boolean isTestOnlyOverride = projectOptions.get(OptionalBooleanOption.IDE_TEST_ONLY);
 
         if (isTestOnlyOverride != null) {
@@ -328,8 +298,8 @@ public class VariantScopeImpl implements VariantScope {
                 || !Strings.isNullOrEmpty(projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY))
                 || projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null
                 || isPreviewTargetPlatform()
-                || variant.getVariantBuilder().getMinSdkVersion().getCodename() != null
-                || variantDslInfo.getTargetSdkVersion().getCodename() != null;
+                || variant.getMinSdkVersion().getCodename() != null
+                || variant.getTargetSdkVersion().getCodename() != null;
     }
 
     private boolean isPreviewTargetPlatform() {
@@ -427,14 +397,13 @@ public class VariantScopeImpl implements VariantScope {
                                 .collect(ImmutableList.toImmutableList());
 
         // Create a file collection builtBy the dependencies.  The files are resolved later.
-        return globalScope
+        return baseServices
+                .getProjectInfo()
                 .getProject()
                 .files(
                         (Callable<Collection<File>>)
                                 () ->
-                                        dependencies
-                                                .call()
-                                                .stream()
+                                        dependencies.call().stream()
                                                 .flatMap((it) -> it.resolve().stream())
                                                 .filter(filePredicate)
                                                 .collect(Collectors.toList()))
@@ -473,12 +442,6 @@ public class VariantScopeImpl implements VariantScope {
         }
     }
 
-    @NonNull
-    @Override
-    public ConfigurableFileCollection getTryWithResourceRuntimeSupportJar() {
-        return desugarTryWithResourcesRuntimeJar.get();
-    }
-
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).addValue(componentIdentity.getName()).toString();
@@ -486,34 +449,14 @@ public class VariantScopeImpl implements VariantScope {
 
     @NonNull
     @Override
-    public DexerTool getDexer() {
-        if (globalScope.getProjectOptions().get(BooleanOption.ENABLE_D8)) {
-            return DexerTool.D8;
-        } else {
-            return DexerTool.DX;
-        }
-    }
-
-    @NonNull
-    @Override
-    public DexMergerTool getDexMerger() {
-        if (globalScope.getProjectOptions().get(BooleanOption.ENABLE_D8)) {
-            return DexMergerTool.D8;
-        } else {
-            return DexMergerTool.DX;
-        }
-    }
-
-    @NonNull
-    @Override
     public FileCollection getBootClasspath() {
-        return globalScope.getProject().files(globalScope.getBootClasspath());
+        return baseServices.getProjectInfo().getProject().files(globalScope.getBootClasspath());
     }
 
     @NonNull
     @Override
     public JarCreatorType getJarCreatorType() {
-        if (globalScope.getProjectOptions().get(USE_NEW_JAR_CREATOR)) {
+        if (baseServices.getProjectOptions().get(USE_NEW_JAR_CREATOR)) {
             return JarCreatorType.JAR_FLINGER;
         } else {
             return JarCreatorType.JAR_MERGER;
@@ -523,7 +466,7 @@ public class VariantScopeImpl implements VariantScope {
     @NonNull
     @Override
     public ApkCreatorType getApkCreatorType() {
-        if (globalScope.getProjectOptions().get(USE_NEW_APK_CREATOR)) {
+        if (baseServices.getProjectOptions().get(USE_NEW_APK_CREATOR)) {
             return ApkCreatorType.APK_FLINGER;
         } else {
             return ApkCreatorType.APK_Z_FILE_CREATOR;

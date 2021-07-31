@@ -18,41 +18,41 @@ package com.android.repository.impl.installer;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.io.CancellableFileIo;
 import com.android.repository.api.LocalPackage;
 import com.android.repository.api.ProgressIndicator;
 import com.android.repository.api.RepoManager;
 import com.android.repository.api.Uninstaller;
-import com.android.repository.io.FileOp;
-import java.io.File;
+import com.android.repository.io.FileOpUtils;
+import java.nio.file.Path;
 
 /**
  * A basic {@link Uninstaller} that just deletes the package.
  */
 class BasicUninstaller extends AbstractUninstaller {
 
-    public BasicUninstaller(@NonNull LocalPackage p, @NonNull RepoManager mgr,
-            @NonNull FileOp fop) {
-        super(p, mgr, fop);
+    public BasicUninstaller(@NonNull LocalPackage p, @NonNull RepoManager mgr) {
+        super(p, mgr);
     }
 
     @Override
-    protected boolean doPrepare(@NonNull File tempPath, @NonNull ProgressIndicator progress) {
+    protected boolean doPrepare(@NonNull Path tempPath, @NonNull ProgressIndicator progress) {
         return true;
     }
 
     /**
      * Just deletes the package.
      *
-     * {@inheritDoc}
+     * <p>{@inheritDoc}
      */
     @Override
-    protected boolean doComplete(@Nullable File tempPath, @NonNull ProgressIndicator progress) {
-        File location = getPackage().getLocation();
+    protected boolean doComplete(@Nullable Path tempPath, @NonNull ProgressIndicator progress) {
+        Path location = getPackage().getLocation();
 
-        mFop.deleteFileOrFolder(location);
-        getRepoManager().markLocalCacheInvalid();;
+        FileOpUtils.deleteFileOrFolder(location);
+        getRepoManager().markLocalCacheInvalid();
 
-        boolean successfullyDeleted = !mFop.exists(location);
+        boolean successfullyDeleted = CancellableFileIo.notExists(location);
         if (!successfullyDeleted) {
             progress.logWarning(String.format("Failed to delete package location: %1$s", location));
         }

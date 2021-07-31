@@ -17,6 +17,9 @@
 package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ApplicationBuildFeatures
+import com.android.build.api.dsl.ApplicationBuildType
+import com.android.build.api.dsl.ApplicationDefaultConfig
+import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.Bundle
 import com.android.build.api.dsl.DependenciesInfo
 import com.android.build.api.variant.ApplicationVariantBuilder
@@ -24,19 +27,22 @@ import com.android.build.api.variant.ApplicationVariant
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
 import org.gradle.api.Action
+import javax.inject.Inject
 
 /** Internal implementation of the 'new' DSL interface */
-class ApplicationExtensionImpl(
+abstract class ApplicationExtensionImpl @Inject constructor(
     dslServices: DslServices,
-    dslContainers: DslContainerProvider<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    dslContainers: DslContainerProvider<
+            ApplicationDefaultConfig,
+            ApplicationBuildType,
+            ApplicationProductFlavor,
+            SigningConfig>
 ) :
     TestedExtensionImpl<
             ApplicationBuildFeatures,
-            BuildType,
-            DefaultConfig,
-            ProductFlavor,
-            ApplicationVariantBuilder,
-            ApplicationVariant>(
+            ApplicationBuildType,
+            ApplicationDefaultConfig,
+            ApplicationProductFlavor>(
         dslServices,
         dslContainers
     ),
@@ -44,9 +50,6 @@ class ApplicationExtensionImpl(
 
     override val buildFeatures: ApplicationBuildFeatures =
         dslServices.newInstance(ApplicationBuildFeaturesImpl::class.java)
-
-    override var dynamicFeatures: MutableSet<String> = mutableSetOf()
-    override var assetPacks: MutableSet<String> = mutableSetOf()
 
     override val dependenciesInfo: DependenciesInfo =
         dslServices.newInstance(DependenciesInfoImpl::class.java)

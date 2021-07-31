@@ -17,11 +17,16 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.core.Abi
+import com.android.build.gradle.internal.cxx.cmake.cmakeBoolean
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.ndk.AbiInfo
-import com.android.build.gradle.tasks.NativeBuildSystem
-import com.android.utils.FileUtils
+import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
+import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
+import com.android.sdklib.AndroidVersion
+import com.android.utils.FileUtils.join
+import com.android.utils.tokenizeCommandLineToEscaped
 import java.io.File
+import kotlin.math.max
 
 /**
  * Holds immutable ABI-level information for C/C++ build and sync, see README.md
@@ -38,18 +43,23 @@ data class CxxAbiModel(
     val info: AbiInfo,
 
     /**
-     * The gradle-controlled .cxx build folder. By default, the same as [cxxBuildFolder] but this
-     * can be overridden by CMakeSettings.json.
-     *
-     *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a
-     */
-    val originalCxxBuildFolder: File,
-
-    /**
      * The .cxx build folder
-     *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a
+     *   ex, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64
      */
     val cxxBuildFolder: File,
+
+    /**
+     * Folder for .so files
+     *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/obj/x86_64
+     */
+    val soFolder: File,
+
+    /**
+     * An extra .cxx folder where build outputs are copied or symlinked too. This is also the
+     * old location where actual builds happened before configuration folding was implemented.
+     *   ex, $moduleRootFolder/build/intermediates/cmake/debug/obj/x86_64
+     */
+    val soRepublishFolder: File,
 
     /**
      * The final platform version for this ABI (ex 28)
@@ -75,140 +85,292 @@ data class CxxAbiModel(
     /**
      * The directory containing generated Prefab imports, if any.
      */
-    val prefabFolder: File
-)
+    val prefabFolder: File,
+
+    /**
+     * Whether or not this abi is active in the build or not.
+     */
+    val isActiveAbi: Boolean,
+
+    /**
+     * A SHA-256 of the configuration parameters for CMake or ndk-build.
+     * This value is invariant of ABI, variant name, and output locations.
+     * The purpose is to allow coalescing of multiple variants.
+     */
+    val fullConfigurationHash: String,
+
+    /**
+     * The inputs used to compute [fullConfigurationHash]
+     */
+    val configurationArguments: List<String>,
+
+    /**
+     * If present, the STL .so file that needs to be distributed with the libraries built.
+     */
+    val stlLibraryFile: File?,
+) {
+    override fun toString() = "${abi.tag}:${variant.variantName}${variant.module.gradleModulePathName}"
+}
 
 /**
  * The model json
  *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/android_gradle_build.json
  */
 val CxxAbiModel.jsonFile: File
-    get() = FileUtils.join(cxxBuildFolder, "android_gradle_build.json")
+    get() = join(cxxBuildFolder, "android_gradle_build.json")
+
+/**
+ * The json mini-config file contains a subset of the regular json file that is much smaller and
+ * less memory-intensive to read.
+ */
+val CxxAbiModel.miniConfigFile: File
+    get() = join(modelMetadataFolder, "android_gradle_build_mini.json")
+
+/**
+ * Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
+ */
+val CxxAbiModel.minSdkVersion : Int get() {
+    val ndkVersion = variant.module.ndkVersion.major
+    val metaPlatforms = variant.module.ndkMetaPlatforms
+    val minVersionForAbi = when {
+        abi.supports64Bits() -> AndroidVersion.SUPPORTS_64_BIT.apiLevel
+        else -> 1
+    }
+    val minVersionForNdk = when {
+        // Newer NDKs expose the minimum supported version via meta/platforms.json
+        metaPlatforms != null -> metaPlatforms.min
+        // Older NDKs did not expose this, but the information is in the change logs
+        ndkVersion < 12 -> 1
+        ndkVersion < 15 -> 9
+        ndkVersion < 18 -> 14
+        else -> 16
+    }
+    return max(abiPlatformVersion, max(minVersionForAbi, minVersionForNdk))
+}
 
 /**
  * The ninja log file
  *   ex, $moduleRootFolder/.cxx/cmake/debug/x86/.ninja_log
  */
 val CxxAbiModel.ninjaLogFile: File
-    get() = FileUtils.join(cxxBuildFolder, ".ninja_log")
+    get() = join(cxxBuildFolder, ".ninja_log")
+
+
+/**
+ * .ninja_deps file for this ABI. Only applies to CMake builds.
+ * This file contains the source -> header dependencies discovered during the last build.
+ * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/.ninja_deps
+ */
+val CxxAbiModel.ninjaDepsFile: File
+    get() = join(cxxBuildFolder, ".ninja_deps")
 
 /**
  * Folder for .o files
- *   ex, $moduleRootFolder/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a
+ *   ex, $moduleRootFolder/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/objs-debug
  */
 val CxxAbiModel.objFolder: File
     get() = when(variant.module.buildSystem) {
-        NativeBuildSystem.CMAKE -> FileUtils.join(cxxBuildFolder, "CMakeFiles")
-        NativeBuildSystem.NDK_BUILD -> FileUtils.join(variant.objFolder, abi.tag)
+        CMAKE -> join(cxxBuildFolder, "CMakeFiles")
+        NDK_BUILD -> join(variant.soFolder, abi.tag)
     }
 
 /**
- * Folder for .so files
- *   ex, $moduleRootFolder/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a
+ * Location of model generation metadata
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta
  */
-val CxxAbiModel.soFolder: File
-    get() = FileUtils.join(variant.objFolder, abi.tag)
-
-/**
- * The command that is executed to build or generate projects
- *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/build_command.txt
- */
-val CxxAbiModel.buildCommandFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "build_command.txt")
-
-val CxxAbiModel.androidGradleBuildVersion: File
-    get() = FileUtils.join(originalCxxBuildFolder, "android_gradle_build_version.txt")
-
-/**
- * Output of the build
- *   ex $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/build_output.txt
- */
-val CxxAbiModel.buildOutputFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "build_output.txt")
+private val CxxAbiModel.modelMetadataFolder: File
+    get() = join(variant.intermediatesFolder, "meta", abi.tag)
 
 /**
  * Output file of the Cxx*Model structure
- *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/build_model.json
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/build_model.json
  */
 val CxxAbiModel.modelOutputFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "build_model.json")
+    get() = join(modelMetadataFolder, "build_model.json")
 
 /**
  * Json Generation logging record
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_record.json
  */
 val CxxAbiModel.jsonGenerationLoggingRecordFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "json_generation_record.json")
+    get() = join(modelMetadataFolder, "metadata_generation_record.json")
+
+/**
+ * Text file containing command run to generate C/C++ metadata.
+ *   needs to have the same clean semantics as compile_commands.json, so place in that folder.
+ */
+val CxxAbiModel.metadataGenerationCommandFile: File
+    get() = compileCommandsJsonFile.resolveSibling("metadata_generation_command.txt")
+
+/**
+ * Text file containing STDOUT for the process run to generate C/C++ metadata.
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_stdout.txt
+ */
+val CxxAbiModel.metadataGenerationStdoutFile: File
+    get() = join(modelMetadataFolder, "metadata_generation_stdout.txt")
+
+/**
+ * Text file containing STDERR for the process run to generate C/C++ metadata.
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_stderr.txt
+ */
+val CxxAbiModel.metadataGenerationStderrFile: File
+    get() = join(modelMetadataFolder, "metadata_generation_stderr.txt")
+
+/**
+ * Folder used to hold metadata generation performance timings.
+ */
+val CxxAbiModel.metadataGenerationTimingFolder: File
+    get() = modelMetadataFolder
+
+/**
+ * When CMake server is used, this is the log of the interaction with it.
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/cmake_server_log.txt
+ */
+val CxxAbiModel.cmakeServerLogFile: File
+    get() = join(modelMetadataFolder, "cmake_server_log.txt")
 
 /**
  * The prefab configuration used when building this project
  *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/prefab_config.json
  */
 val CxxAbiModel.prefabConfigFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "prefab_config.json")
+    get() = join(cxxBuildFolder, "prefab_config.json")
 
 /**
  * compile_commands.json file for this ABI.
  * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/compile_commands.json
  */
 val CxxAbiModel.compileCommandsJsonFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "compile_commands.json")
+    get() = join(cxxBuildFolder, "compile_commands.json")
 
 /**
  * compile_commands.json.bin file for this ABI. This is equivalent to a compile_commands.json file
  * but more compact.
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/compile_commands.json.bin
+ * Note: Should be in the same folder as compile_commands.json because it is derived from that file.
  */
 val CxxAbiModel.compileCommandsJsonBinFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "compile_commands.json.bin")
+    get() = compileCommandsJsonFile.resolveSibling("compile_commands.json.bin")
+
+/**
+ * additional_project_files.txt file for this ABI. This file contains a newline separated list of
+ * filenames that are known by the build system and considered to be part of the project.
+ */
+val CxxAbiModel.additionalProjectFilesIndexFile: File
+    get() = join(modelMetadataFolder, "additional_project_files.txt")
 
 /**
  * Text file containing absolute paths to folders containing the generated symbols, one per line.
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/symbol_folder_index.txt
+ * For example, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/armeabi-v7a/symbol_folder_index.txt
  */
 val CxxAbiModel.symbolFolderIndexFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "symbol_folder_index.txt")
+    get() = join(modelMetadataFolder, "symbol_folder_index.txt")
 
 /**
  * Text file containing absolute paths to native build files (For example, CMakeLists.txt for
  * CMake). One per line.
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/build_file_index.txt
+ * For example, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/armeabi-v7a/build_file_index.txt
  */
 val CxxAbiModel.buildFileIndexFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "build_file_index.txt")
+    get() = join(modelMetadataFolder, "build_file_index.txt")
 
 /**
- * Text file containing command run to generate C/C++ metadata.
- *
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/metadata_generation_command.txt
+ * The CMake file API query folder.
+ *   ex, $moduleRootFolder/.cxx/cmake/debug/armeabi-v7a/.cmake/api/v1/query/client-agp
  */
-val CxxAbiModel.metadataGenerationCommandFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "metadata_generation_command.txt")
+val CxxAbiModel.clientQueryFolder: File
+    get() = join(cxxBuildFolder, ".cmake/api/v1/query/client-agp")
 
 /**
- * Text file containing STDOUT for the process run to generate C/C++ metadata.
- *
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/metadata_generation_stdout.txt
+ * The CMake file API reply folder.
+ *   ex, $moduleRootFolder/.cxx/cmake/debug/armeabi-v7a/.cmake/api/v1/reply
  */
-val CxxAbiModel.metadataGenerationStdoutFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "metadata_generation_stdout.txt")
+val CxxAbiModel.clientReplyFolder: File
+    get() = join(cxxBuildFolder, ".cmake/api/v1/reply")
+
+fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean {
+    // Prefab will fail if we try to create ARMv5/MIPS/MIPS64 modules. r17 was the first NDK version
+    // that we can guarantee will not be used to use those ABIs.
+    return (variant.module.project.isPrefabEnabled
+            && (variant.prefabPackageDirectoryListFileCollection != null)
+            && variant.module.ndkVersion.major >= 17)
+}
 
 /**
- * Text file containing STDERR for the process run to generate C/C++ metadata.
- *
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/metadata_generation_stderr.txt
+ * Call [compute] if this is a CMake build.
  */
-val CxxAbiModel.metadataGenerationStderrFile: File
-    get() = FileUtils.join(originalCxxBuildFolder, "metadata_generation_stderr.txt")
+fun <T> CxxAbiModel.ifCMake(compute : () -> T?) =
+    if (variant.module.buildSystem == CMAKE) compute() else null
 
-// True if the build is capable of handling prefab packages. Does not indicate that prefab will
-// actually run. Separate from shouldGeneratePrefabPackages because whether or not prefab actually
-// runs depends on whether or not prefab has any inputs, which cannot be known during configuration
-// time.
-fun CxxAbiModel.buildIsPrefabCapable(): Boolean = variant.module.project.isPrefabEnabled
-        // Prefab will fail if we try to create ARMv5/MIPS/MIPS64 modules. r17 was the first NDK
-        // version that we can guarantee will not be used to use those ABIs.
-        && variant.module.ndkVersion.major >= 17
+/**
+ * Call [compute] if this is an nndk-build build.
+ */
+fun <T> CxxAbiModel.ifNdkBuild(compute : () -> T?) =
+        if (variant.module.buildSystem == NDK_BUILD) compute() else null
 
-fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean = buildIsPrefabCapable()
-        && variant.prefabPackageDirectoryListFileCollection != null
-        && !variant.prefabPackageDirectoryListFileCollection.isEmpty
+/**
+ * Returns the Ninja build commands from CMakeSettings.json.
+ * Returns an empty string if it does not exist.
+ */
+fun CxxAbiModel.getBuildCommandArguments(): List<String> {
+    val fromBuildCommandArgs = cmake?.buildCommandArgs?.tokenizeCommandLineToEscaped() ?: emptyList()
+    if (variant.verboseMakefile == true) {
+        return listOf("-v") + fromBuildCommandArgs
+    }
+    return fromBuildCommandArgs
+}
+
+/**
+ * 32 or 64 bits
+ */
+val CxxAbiModel.bitness
+    get() = info.bitness
+
+/**
+ * Short form of the full configuration hash.
+ */
+val CxxAbiModel.configurationHash
+    get() = fullConfigurationHash.substring(0, 8)
+
+/**
+ * Lowercase string form of ABI name (like "x86").
+ */
+val CxxAbiModel.tag
+    get() = abi.tag
+
+/**
+ * True if this ABI is 64 bits.
+ */
+val CxxAbiModel.is64Bits
+    get() = cmakeBoolean(bitness == 64)
+
+/**
+ * True if this ABI is a default ABI.
+ */
+val CxxAbiModel.isDefault
+    get() = cmakeBoolean(info.isDefault)
+
+/**
+ * True if this ABI is deprecated.
+ */
+val CxxAbiModel.isDeprecated
+    get() = cmakeBoolean(info.isDeprecated)
+
+/**
+ * A platform tag for Android (ex android-19)
+ */
+val CxxAbiModel.platform
+    get() = "android-$abiPlatformVersion"
+
+/**
+ * Get the platform codename (like 'Q')
+ */
+val CxxAbiModel.platformCode
+    get() = variant.module.ndkMetaPlatforms?.let {
+        it.aliases
+                .toList()
+                .filter { (_, code) -> code == abiPlatformVersion }
+                .minBy { (alias, _) -> alias.length }
+                ?.first
+    } ?: ""
+
+

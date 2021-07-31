@@ -23,8 +23,8 @@ import com.android.tools.build.apkzlib.sign.SigningOptions
 import com.android.tools.build.apkzlib.zfile.ApkCreator
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode
-import com.android.zipflinger.BytesSource
 import com.android.zipflinger.Source
+import com.android.zipflinger.Sources
 import com.android.zipflinger.StableArchive
 import com.android.zipflinger.SynchronizedArchive
 import com.android.zipflinger.Zip64
@@ -99,7 +99,7 @@ class ApkFlinger(
         val signingOptions: SigningOptions? = creationData.signingOptions.orNull()
         val innerArchive =
             if (signingOptions == null) {
-                ZipArchive(creationData.apkPath, Zip64.Policy.FORBID)
+                ZipArchive(creationData.apkPath.toPath(), Zip64.Policy.FORBID)
             } else {
                 SignedApk(
                     creationData.apkPath,
@@ -157,7 +157,7 @@ class ApkFlinger(
 
         val ignorePredicate : Predicate<String> = isIgnored ?: Predicate { false }
 
-        val zipSource = ZipSource(zip)
+        val zipSource = ZipSource(zip.toPath())
         val entries = zipSource.entries().values
         for (entry in entries) {
             if (entry.isDirectory || ignorePredicate.apply(entry.name)) {
@@ -195,20 +195,16 @@ class ApkFlinger(
             forkJoinPool.submit(
                 Callable<Unit> {
                     val mayCompress = !noCompressPredicate.apply(apkPath)
-                    val bytesSource = BytesSource(
-                        Files.readAllBytes(inputFile.toPath()),
-                        apkPath,
-                        if (mayCompress) compressionLevel else Deflater.NO_COMPRESSION
-                    )
+                    val source = Sources.from(inputFile, apkPath, if (mayCompress) compressionLevel else Deflater.NO_COMPRESSION)
                     if (!mayCompress) {
                         if (pageAlignPredicate.apply(apkPath)) {
-                            bytesSource.align(PAGE_ALIGNMENT)
+                            source.align(PAGE_ALIGNMENT)
                         } else {
                             // by default all uncompressed entries are aligned at 4 byte boundaries.
-                            bytesSource.align(DEFAULT_ALIGNMENT)
+                            source.align(DEFAULT_ALIGNMENT)
                         }
                     }
-                    archive.add(bytesSource)
+                    archive.add(source)
                 }
             )
         )

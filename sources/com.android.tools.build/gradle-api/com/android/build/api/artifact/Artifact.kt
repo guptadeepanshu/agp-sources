@@ -16,11 +16,9 @@
 
 package com.android.build.api.artifact
 
-import org.gradle.api.Incubating
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.RegularFile
-import java.io.File
 import java.util.Locale
 import java.io.Serializable
 
@@ -32,12 +30,11 @@ import java.io.Serializable
  *
  * An artifact can potentially be produced by more than one task (each task acting in an additive
  * behavior), but consumers must be aware when more than one artifact can be present,
- * implementing the [MultipleArtifact] interface will indicate such requirement.
+ * implementing the [Multiple] interface will indicate such requirement.
  *
  * An artifact must be one of the supported [ArtifactKind] and must be provided when the constructor is called.
  * ArtifactKind also defines the specific [FileSystemLocation] subclass used.
  */
-@Incubating
 abstract class Artifact<T: FileSystemLocation>(
     val kind: ArtifactKind<T>,
     val category: Category
@@ -63,7 +60,6 @@ abstract class Artifact<T: FileSystemLocation>(
     /**
      * Supported [ArtifactKind]
      */
-    @Incubating
     companion object {
         /**
          * [ArtifactKind] for [RegularFile]
@@ -82,7 +78,6 @@ abstract class Artifact<T: FileSystemLocation>(
      * Defines the kind of artifact type. this will be used to determine the output file location
      * for instance.
      */
-    @Incubating
     enum class Category {
         /* Source artifacts */
         SOURCES,
@@ -91,7 +86,10 @@ abstract class Artifact<T: FileSystemLocation>(
         /* Intermediates files produced by tasks. */
         INTERMEDIATES,
         /* output files going into the outputs folder. This is the result of the build. */
-        OUTPUTS;
+        OUTPUTS,
+        /* Report files for tests and lint. */
+        REPORTS,
+        ;
     }
 
     /**
@@ -99,8 +97,7 @@ abstract class Artifact<T: FileSystemLocation>(
      * Consumers of artifact types with multiple instances must consume a collection of
      * [FileSystemLocation].
      */
-    @Incubating
-    abstract class MultipleArtifact<FileTypeT: FileSystemLocation>(
+    abstract class Multiple<FileTypeT: FileSystemLocation>(
         kind: ArtifactKind<FileTypeT>,
         category: Category
     ) : Artifact<FileTypeT>(kind, category)
@@ -110,8 +107,7 @@ abstract class Artifact<T: FileSystemLocation>(
      * Denotes a single [FileSystemLocation] instance of this artifact type at a given time.
      * Single artifact types can be transformed or replaced but never appended.
      */
-    @Incubating
-    abstract class SingleArtifact<FileTypeT: FileSystemLocation>(
+    abstract class Single<FileTypeT: FileSystemLocation>(
         kind: ArtifactKind<FileTypeT>,
         category: Category
     ) : Artifact<FileTypeT>(kind, category)
@@ -126,7 +122,6 @@ abstract class Artifact<T: FileSystemLocation>(
      * If producing an artifact type annotated with this marker interface, content should be
      * written using the [com.android.build.api.variant.BuiltArtifacts.save] methods.
      */
-    @Incubating
     interface ContainsMany
 
     /**
@@ -135,26 +130,23 @@ abstract class Artifact<T: FileSystemLocation>(
      * new task producing the artifact type will have its output appended to the list of artifacts.
      *
      * Due to the additive behavior of the append scenario, an [Appendable] must be a
-     * [MultipleArtifact].
+     * [Multiple].
      */
-    @Incubating
     interface Appendable
 
     /**
      * Denotes an artifact type that can transformed.
      *
-     * Either a [SingleArtifact] or [MultipleArtifact] artifact type can be transformed.
+     * Either a [Single] or [Multiple] artifact type can be transformed.
      */
-    @Incubating
     interface Transformable
 
     /**
      * Denotes an artifact type that can be replaced.
-     * Only [SingleArtifact] artifacts can be replaced, if you want to replace a [MultipleArtifact]
+     * Only [Single] artifacts can be replaced, if you want to replace a [Multiple]
      * artifact type, you will need to transform it by combining all the inputs into a single output
      * instance.
      */
-    @Incubating
     interface Replaceable
 }
 

@@ -21,8 +21,8 @@ import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 
 import com.android.annotations.NonNull;
 import com.android.build.api.component.impl.ComponentImpl;
-import com.android.build.api.component.impl.TestComponentBuilderImpl;
 import com.android.build.api.component.impl.TestComponentImpl;
+import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.QualifiedContent.ScopeType;
 import com.android.build.api.variant.impl.VariantBuilderImpl;
@@ -31,10 +31,11 @@ import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.feature.BundleAllClasses;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.tasks.AnalyticsRecordingTask;
 import com.android.build.gradle.internal.tasks.ApkZipPackagingTask;
 import com.android.build.gradle.internal.tasks.AppClasspathCheckTask;
@@ -76,12 +77,22 @@ public abstract class AbstractAppTaskManager<
 
     protected AbstractAppTaskManager(
             @NonNull List<ComponentInfo<VariantBuilderT, VariantT>> variants,
-            @NonNull
-                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
+            @NonNull List<TestComponentImpl> testComponents,
+            @NonNull List<TestFixturesImpl> testFixturesComponents,
             boolean hasFlavors,
+            @NonNull ProjectOptions projectOptions,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension) {
-        super(variants, testComponents, hasFlavors, globalScope, extension);
+            @NonNull BaseExtension extension,
+            @NonNull ProjectInfo projectInfo) {
+        super(
+                variants,
+                testComponents,
+                testFixturesComponents,
+                hasFlavors,
+                projectOptions,
+                globalScope,
+                extension,
+                projectInfo);
     }
 
     protected void createCommonTasks(
@@ -139,9 +150,6 @@ public abstract class AbstractAppTaskManager<
 
         createAidlTask(appVariantProperties);
 
-        // Add external native build tasks
-        createExternalNativeBuildTasks(appVariantProperties);
-
         maybeExtractProfilerDependencies(apkCreationConfig);
 
         // Add a task to merge the jni libs folders
@@ -164,11 +172,6 @@ public abstract class AbstractAppTaskManager<
                 new ExtractNativeDebugMetadataTask.SymbolTableCreationAction(appVariantProperties));
 
         createPackagingTask(apkCreationConfig);
-
-        maybeCreateLintVitalTask(appVariantProperties, allComponentsWithLint);
-
-        // Create the lint tasks, if enabled
-        createLintTasks(appVariantProperties, allComponentsWithLint);
 
         taskFactory.register(
                 new PackagedDependenciesWriterTask.CreationAction(appVariantProperties));
@@ -230,7 +233,9 @@ public abstract class AbstractAppTaskManager<
                 task = taskFactory.register(AppPreBuildTask.getCreationAction(creationConfig));
                 ApkCreationConfig config = (ApkCreationConfig) creationConfig;
                 // Only record application ids for release artifacts
-                if (!config.getDebuggable()) {
+                boolean analyticsEnabled =
+                        creationConfig.getServices().getProjectOptions().isAnalyticsEnabled();
+                if (!config.getDebuggable() && analyticsEnabled) {
                     TaskProvider<AnalyticsRecordingTask> recordTask =
                             taskFactory.register(new AnalyticsRecordingTask.CreationAction(config));
                     task.configure(it -> it.finalizedBy(recordTask));
@@ -262,7 +267,9 @@ public abstract class AbstractAppTaskManager<
     protected Set<ScopeType> getJavaResMergingScopes(
             @NonNull ComponentCreationConfig creationConfig,
             @NonNull QualifiedContent.ContentType contentType) {
-        if (creationConfig.getVariantScope().consumesFeatureJars() && contentType == RESOURCES) {
+        if (creationConfig.getVariantScope().consumesFeatureJars()
+                && contentType == RESOURCES
+                && !(creationConfig instanceof ConsumableCreationConfig)) {
             return TransformManager.SCOPE_FULL_WITH_FEATURES;
         }
         return TransformManager.SCOPE_FULL_PROJECT;
@@ -294,10 +301,7 @@ public abstract class AbstractAppTaskManager<
                 variant, true, Sets.immutableEnumSet(MergeResources.Flag.PROCESS_VECTOR_DRAWABLES));
 
         ProjectOptions projectOptions = variant.getServices().getProjectOptions();
-        // TODO: get rid of separate flag for app modules.
-        boolean nonTransitiveR =
-                projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS)
-                        && projectOptions.get(BooleanOption.NON_TRANSITIVE_APP_R_CLASS);
+        boolean nonTransitiveR = projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS);
         boolean namespaced =
                 variant.getGlobalScope().getExtension().getAaptOptions().getNamespaced();
 
@@ -311,8 +315,6 @@ public abstract class AbstractAppTaskManager<
             basicCreateMergeResourcesTask(
                     variant,
                     MergeType.PACKAGE,
-                    variant.getPaths()
-                            .getIntermediateDir(InternalArtifactType.PACKAGED_RES.INSTANCE),
                     false,
                     false,
                     false,

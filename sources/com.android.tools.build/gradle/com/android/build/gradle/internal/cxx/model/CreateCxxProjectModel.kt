@@ -17,13 +17,8 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.cxx.configure.CXX_DEFAULT_CONFIGURATION_SUBFOLDER
-import com.android.build.gradle.internal.cxx.configure.CXX_LOCAL_PROPERTIES_CACHE_DIR
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
-
-import com.android.utils.FileUtils.join
 import java.io.File
 
 /**
@@ -43,17 +38,12 @@ fun createCxxProjectModel(
         return File(path)
     }
     return CxxProjectModel(
-        rootBuildGradleFolder = configurationParameters.rootDir,
-        cxxFolder = join(configurationParameters.rootDir, ".cxx"),
-        sdkFolder = sdkComponents.sdkDirectoryProvider.get().asFile,
-        isNativeCompilerSettingsCacheEnabled = configurationParameters.isNativeCompilerSettingsCacheEnabled,
-        isBuildOnlyTargetAbiEnabled = configurationParameters.isBuildOnlyTargetAbiEnabled,
-        ideBuildTargetAbi = configurationParameters.ideBuildTargetAbi,
-        isCmakeBuildCohabitationEnabled = configurationParameters.isCmakeBuildCohabitationEnabled,
-        compilerSettingsCacheFolder = localPropertyFile(CXX_LOCAL_PROPERTIES_CACHE_DIR) ?:
-            join(configurationParameters.rootDir, CXX_DEFAULT_CONFIGURATION_SUBFOLDER),
-        chromeTraceJsonFolder = configurationParameters.chromeTraceJsonFolder,
-        isPrefabEnabled = configurationParameters.isPrefabEnabled,
-        isV2NativeModelEnabled = configurationParameters.isV2NativeModelEnabled
+      rootBuildGradleFolder = configurationParameters.rootDir,
+      sdkFolder = sdkComponents.sdkDirectoryProvider.get().asFile,
+      isBuildOnlyTargetAbiEnabled = configurationParameters.isBuildOnlyTargetAbiEnabled,
+      ideBuildTargetAbi = configurationParameters.ideBuildTargetAbi,
+      isCmakeBuildCohabitationEnabled = configurationParameters.isCmakeBuildCohabitationEnabled,
+      chromeTraceJsonFolder = configurationParameters.chromeTraceJsonFolder,
+      isPrefabEnabled = configurationParameters.isPrefabEnabled
     )
 }

@@ -69,6 +69,18 @@ public class AdbInitOptions {
     /** Environment variables specifically for the ADB server process. */
     public final ImmutableMap<String, String> adbEnvVars;
 
+    /**
+     * Enable jdwp proxy service allowing for multiple client support DDMLIB clients to be used at
+     * the same time.
+     */
+    public final boolean useJdwpProxyService;
+
+    /**
+     * Any jdwp packets detected larger than this size will throw a {@link
+     * java.nio.BufferOverflowException}
+     */
+    public final int maxJdwpPacketSize;
+
     /** @return a new builder with default values. */
     public static Builder builder() {
         return new Builder();
@@ -79,11 +91,15 @@ public class AdbInitOptions {
             boolean clientSupport,
             boolean userManagedAdbMode,
             int userManagedAdbPort,
-            ImmutableMap<String, String> adbEnvVars) {
+            ImmutableMap<String, String> adbEnvVars,
+            boolean useJdwpService,
+            int maxJdwpPacketSize) {
         this.clientSupport = clientSupport;
         this.userManagedAdbMode = userManagedAdbMode;
         this.userManagedAdbPort = userManagedAdbPort;
         this.adbEnvVars = adbEnvVars;
+        this.useJdwpProxyService = useJdwpService;
+        this.maxJdwpPacketSize = maxJdwpPacketSize;
     }
 
     /**
@@ -99,12 +115,26 @@ public class AdbInitOptions {
     public static class Builder {
         boolean clientSupport = false;
         boolean userManagedAdbMode = false;
+        // Default to DDMLIB_JDWP_PROXY_ENABLED environment variable.
+        boolean useJdwpProxyService = DdmPreferences.isJdwpProxyEnabled();
+        int jdwpMaxPacketSize = DdmPreferences.getJdwpMaxPacketSize();
         int userManagedAdbPort = 0;
         ImmutableMap.Builder<String, String> envVarBuilder = ImmutableMap.builder();
 
         /** See {@link AdbInitOptions#clientSupport}. */
         public Builder setClientSupportEnabled(boolean enabled) {
             clientSupport = enabled;
+            return this;
+        }
+
+        /** See {@link AdbInitOptions#useJdwpProxyService}. */
+        public Builder useJdwpProxyService(boolean enabled) {
+            useJdwpProxyService = enabled;
+            return this;
+        }
+
+        public Builder setJdwpMaxPacketSize(int size) {
+            jdwpMaxPacketSize = size;
             return this;
         }
 
@@ -140,7 +170,13 @@ public class AdbInitOptions {
 
         public AdbInitOptions build() {
             return new AdbInitOptions(
-                    clientSupport, userManagedAdbMode, userManagedAdbPort, envVarBuilder.build());
+                    clientSupport,
+                    userManagedAdbMode,
+                    userManagedAdbPort,
+                    envVarBuilder.build(),
+                    useJdwpProxyService,
+                    jdwpMaxPacketSize);
         }
+
     }
 }

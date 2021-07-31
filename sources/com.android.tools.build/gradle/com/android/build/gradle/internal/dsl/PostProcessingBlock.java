@@ -19,16 +19,16 @@ package com.android.build.gradle.internal.dsl;
 import static com.android.build.gradle.internal.ProguardFileType.CONSUMER;
 import static com.android.build.gradle.internal.ProguardFileType.EXPLICIT;
 import static com.android.build.gradle.internal.ProguardFileType.TEST;
-import static com.google.common.base.Verify.verifyNotNull;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.dsl.PostProcessing;
 import com.android.build.gradle.ProguardFiles;
 import com.android.build.gradle.internal.ProguardFileType;
 import com.android.build.gradle.internal.ProguardFilesProvider;
+import com.android.build.gradle.internal.errors.DeprecationReporter;
 import com.android.build.gradle.internal.services.DslServices;
 import com.android.builder.model.CodeShrinker;
-import com.android.utils.HelpfulEnumConverter;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -38,6 +38,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.Incubating;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * DSL object for configuring postProcessing: removing dead code, obfuscating etc.
@@ -51,11 +52,7 @@ import org.gradle.api.Incubating;
  * Resources</a>.
  */
 @Incubating
-public class PostProcessingBlock implements ProguardFilesProvider {
-    private static final String AUTO = "auto";
-    private static final HelpfulEnumConverter<CodeShrinker> SHRINKER_CONVERTER =
-            new HelpfulEnumConverter<>(CodeShrinker.class);
-
+public class PostProcessingBlock implements ProguardFilesProvider, PostProcessing {
     @NonNull private final DslServices dslServices;
 
     private boolean removeUnusedCode = true;
@@ -66,8 +63,6 @@ public class PostProcessingBlock implements ProguardFilesProvider {
     private List<File> proguardFiles;
     private List<File> testProguardFiles;
     private List<File> consumerProguardFiles;
-
-    @Nullable private CodeShrinker codeShrinker;
 
     @Inject
     public PostProcessingBlock(@NonNull DslServices dslServices) {
@@ -95,13 +90,19 @@ public class PostProcessingBlock implements ProguardFilesProvider {
         this.proguardFiles = Lists.newArrayList(that.getProguardFiles(EXPLICIT));
         this.testProguardFiles = Lists.newArrayList(that.getProguardFiles(TEST));
         this.consumerProguardFiles = Lists.newArrayList(that.getProguardFiles(CONSUMER));
-        this.codeShrinker = that.getCodeShrinkerEnum();
     }
 
+    @Override
+    public void initWith(@NotNull PostProcessing that) {
+        initWith((PostProcessingBlock) that);
+    }
+
+    @Override
     public boolean isRemoveUnusedCode() {
         return removeUnusedCode;
     }
 
+    @Override
     public void setRemoveUnusedCode(boolean removeUnusedCode) {
         this.removeUnusedCode = removeUnusedCode;
     }
@@ -130,7 +131,7 @@ public class PostProcessingBlock implements ProguardFilesProvider {
         this.optimizeCode = optimizeCode;
     }
 
-    public void setProguardFiles(List<Object> proguardFiles) {
+    public void setProguardFiles(List<?> proguardFiles) {
         this.proguardFiles = new ArrayList<>();
         for (Object file : proguardFiles) {
             this.proguardFiles.add(dslServices.file(file));
@@ -147,7 +148,7 @@ public class PostProcessingBlock implements ProguardFilesProvider {
         }
     }
 
-    public void setTestProguardFiles(List<Object> testProguardFiles) {
+    public void setTestProguardFiles(List<?> testProguardFiles) {
         this.testProguardFiles = new ArrayList<>();
         for (Object file : testProguardFiles) {
             this.testProguardFiles.add(dslServices.file(file));
@@ -164,7 +165,7 @@ public class PostProcessingBlock implements ProguardFilesProvider {
         }
     }
 
-    public void setConsumerProguardFiles(List<Object> consumerProguardFiles) {
+    public void setConsumerProguardFiles(List<?> consumerProguardFiles) {
         this.consumerProguardFiles = new ArrayList<>();
         for (Object file : consumerProguardFiles) {
             this.consumerProguardFiles.add(dslServices.file(file));
@@ -183,25 +184,24 @@ public class PostProcessingBlock implements ProguardFilesProvider {
 
     @NonNull
     public String getCodeShrinker() {
-        if (codeShrinker == null) {
-            return AUTO;
-        } else {
-            return verifyNotNull(SHRINKER_CONVERTER.reverse().convert(codeShrinker));
-        }
+        dslServices
+                .getDeprecationReporter()
+                .reportObsoleteUsage(
+                        "codeShrinker", DeprecationReporter.DeprecationTarget.VERSION_8_0);
+        return CodeShrinker.R8.name();
     }
 
     public void setCodeShrinker(@NonNull String name) {
-        if (name.equals(AUTO)) {
-            codeShrinker = null;
-        } else {
-            codeShrinker = SHRINKER_CONVERTER.convert(name);
-        }
+        dslServices
+                .getDeprecationReporter()
+                .reportObsoleteUsage(
+                        "codeShrinker", DeprecationReporter.DeprecationTarget.VERSION_8_0);
     }
 
     /** For Gradle code, not to be used in the DSL. */
     @Nullable
     public CodeShrinker getCodeShrinkerEnum() {
-        return codeShrinker;
+        return CodeShrinker.R8;
     }
 
     @NonNull

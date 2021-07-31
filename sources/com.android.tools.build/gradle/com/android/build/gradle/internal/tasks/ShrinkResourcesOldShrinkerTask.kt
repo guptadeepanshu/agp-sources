@@ -16,13 +16,12 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactTransformationRequestImpl
 import com.android.build.api.variant.BuiltArtifact
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.res.shrinker.LinkedResourcesFormat
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
@@ -32,7 +31,6 @@ import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
 import com.android.build.gradle.internal.workeractions.WorkActionAdapter
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ResourceUsageAnalyzer
-import com.android.builder.model.CodeShrinker
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
@@ -178,7 +176,7 @@ abstract class ShrinkResourcesOldShrinkerTask : NonIncrementalTask() {
             val artifacts = creationConfig.artifacts
 
             if (creationConfig
-                    .globalScope.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING]) {
+                    .services.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING]) {
                 artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.RUNTIME_SYMBOL_LIST,
                     task.rTxtFile
@@ -196,7 +194,7 @@ abstract class ShrinkResourcesOldShrinkerTask : NonIncrementalTask() {
             )
 
             artifacts.setTaskInputToFinalProduct(
-                ArtifactType.OBFUSCATION_MAPPING_FILE,
+                SingleArtifact.OBFUSCATION_MAPPING_FILE,
                 task.mappingFileSrc)
 
             artifacts.setTaskInputToFinalProduct(
@@ -204,32 +202,26 @@ abstract class ShrinkResourcesOldShrinkerTask : NonIncrementalTask() {
                 task.mergedManifests
             )
 
-            task.buildTypeName = creationConfig.variantDslInfo.componentIdentity.buildType
+            task.buildTypeName = creationConfig.buildType
 
             task.debuggableBuildType.setDisallowChanges(creationConfig.debuggable)
 
             task.artifactTransformationRequest.setDisallowChanges(artifactTransformationRequest)
 
             task.enableRTxtResourceShrinking.set(creationConfig
-                .globalScope.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING])
+                .services.projectOptions[BooleanOption.ENABLE_R_TXT_RESOURCE_SHRINKING])
 
             creationConfig.outputs.getEnabledVariantOutputs().forEach(task.variantOutputs::add)
             task.variantOutputs.disallowChanges()
 
-            // When R8 produces dex files, this task analyzes them. If R8 or Proguard produce
+            // When R8 produces dex files, this task analyzes them. If R8 produces
             // class files, this task will analyze those. That is why both types are specified.
             task.classes.from(
-                if (creationConfig.codeShrinker == CodeShrinker.PROGUARD) {
-                    creationConfig.artifacts.get(InternalArtifactType.SHRUNK_JAR)
-                } else {
-                    check(creationConfig.codeShrinker == CodeShrinker.R8)
-                    { "Unexpected shrinker type: ${creationConfig.codeShrinker}" }
                     if (creationConfig.variantType.isAar) {
                         creationConfig.artifacts.get(InternalArtifactType.SHRUNK_CLASSES)
                     } else {
                         artifacts.getAll(InternalMultipleArtifactType.DEX)
                     }
-                }
             )
         }
     }

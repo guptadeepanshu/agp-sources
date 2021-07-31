@@ -83,6 +83,34 @@ public final class AdbHelper {
     public static SocketChannel rawExec(
             InetSocketAddress socketAddress, IDevice device, String executable, String[] parameters)
             throws IOException, TimeoutException, AdbCommandRejectedException {
+        final StringBuilder command = new StringBuilder(executable);
+        for (String parameter : parameters) {
+            command.append(" ");
+            command.append(parameter);
+        }
+        return rawAdbService(socketAddress, device, command.toString(), AdbService.EXEC);
+    }
+
+    /**
+     * Invoke the service on a remote device. Return a socket channel that is connected to the
+     * executing process.
+     *
+     * <p>ddlmib relinquishes ownership of the returned SocketChannel and must be explicitly closed
+     * after use.
+     *
+     * @param socketAddress
+     * @param device the device to connect to. Can be null in which case the connection will be to
+     *     the first available device.
+     * @param command the command to execute
+     * @param service the {@link AdbHelper.AdbService} to use to run the command.
+     * @return
+     * @throws IOException
+     * @throws TimeoutException
+     * @throws AdbCommandRejectedException
+     */
+    public static SocketChannel rawAdbService(
+            InetSocketAddress socketAddress, IDevice device, String command, AdbService service)
+            throws IOException, TimeoutException, AdbCommandRejectedException {
         SocketChannel adbChan = SocketChannel.open(socketAddress);
         try {
             adbChan.socket().setTcpNoDelay(true);
@@ -90,19 +118,20 @@ public final class AdbHelper {
             adbChan.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
             setDevice(adbChan, device);
 
-            StringBuilder command = new StringBuilder(executable);
-            for (String parameter : parameters) {
-                command.append(" ");
-                command.append(parameter);
-            }
-
-            String serviceName = AdbService.EXEC.name().toLowerCase(Locale.US);
+            String serviceName = service.name().toLowerCase(Locale.US);
             byte[] request = formAdbRequest(serviceName + ":" + command);
             write(adbChan, request);
 
             AdbResponse resp = readAdbResponse(adbChan, false);
             if (!resp.okay) {
-                Log.e("ddms", "ADB rejected exec command (" + command + "): " + resp.message);
+                Log.e(
+                        "ddms",
+                        "ADB rejected "
+                                + serviceName
+                                + "command ("
+                                + command
+                                + "): "
+                                + resp.message);
                 throw new AdbCommandRejectedException(resp.message);
             }
         } catch (Exception e) {
@@ -879,28 +908,21 @@ public final class AdbHelper {
     }
 
     /**
-     * Queries a set of supported features from the device.
+     * Queries a set of supported features from the host or from a device.
      *
-     * @param adbSockAddr the socket address to connect to adb
-     * @param device the device on which to do the port forwarding
      * @throws TimeoutException in case of timeout on the connection.
      * @throws AdbCommandRejectedException if adb rejects the command
      * @throws IOException in case of I/O error on the connection.
      */
     @Slow
-    static String queryFeatures(InetSocketAddress adbSockAddr, IDevice device, String adbCommand)
+    @NonNull
+    static String queryFeatures(@NonNull String adbFeaturesRequest)
             throws TimeoutException, AdbCommandRejectedException, IOException {
 
-        SocketChannel adbChan = null;
-        try {
-            adbChan = SocketChannel.open(adbSockAddr);
+        try (SocketChannel adbChan = AndroidDebugBridge.openConnection()) {
             adbChan.configureBlocking(false);
 
-            byte[] request =
-                    formAdbRequest(
-                            String.format(
-                                    "host-serial:%1$s:%2$s", //$NON-NLS-1$
-                                    device.getSerialNumber(), adbCommand));
+            byte[] request = formAdbRequest(adbFeaturesRequest);
 
             write(adbChan, request);
 
@@ -911,39 +933,36 @@ public final class AdbHelper {
             }
 
             return resp.message;
-        } finally {
-            if (adbChan != null) {
-                adbChan.close();
-            }
         }
     }
 
     /**
      * Queries a set of supported features from the device.
      *
-     * @param adbSockAddr the socket address to connect to adb
      * @param device the device on which to do the port forwarding
      * @throws TimeoutException in case of timeout on the connection.
      * @throws AdbCommandRejectedException if adb rejects the command
      * @throws IOException in case of I/O error on the connection.
      */
-    public static String getFeatures(InetSocketAddress adbSockAddr, IDevice device)
+    @Slow
+    @NonNull
+    public static String getFeatures(@NonNull IDevice device)
             throws TimeoutException, AdbCommandRejectedException, IOException {
-        return queryFeatures(adbSockAddr, device, "features");
+        return queryFeatures(String.format("host-serial:%1$s:features", device.getSerialNumber()));
     }
 
     /**
      * Queries a set of supported features from the ADB host.
      *
-     * @param adbSockAddr the socket address to connect to adb
-     * @param device the device on which to do the port forwarding
      * @throws TimeoutException in case of timeout on the connection.
      * @throws AdbCommandRejectedException if adb rejects the command
      * @throws IOException in case of I/O error on the connection.
      */
-    public static String getHostFeatures(InetSocketAddress adbSockAddr, IDevice device)
+    @Slow
+    @NonNull
+    public static String getHostFeatures()
             throws TimeoutException, AdbCommandRejectedException, IOException {
-        return queryFeatures(adbSockAddr, device, "host-features");
+        return queryFeatures("host:host-features");
     }
 
     /**

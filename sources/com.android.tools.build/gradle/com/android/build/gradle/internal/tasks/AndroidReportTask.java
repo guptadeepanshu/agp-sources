@@ -24,7 +24,9 @@ import static com.android.builder.core.BuilderConstants.FD_FLAVORS_ALL;
 
 import com.android.annotations.NonNull;
 import com.android.build.gradle.internal.scope.GlobalScope;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction;
+import com.android.build.gradle.internal.test.report.CompositeTestResults;
 import com.android.build.gradle.internal.test.report.ReportType;
 import com.android.build.gradle.internal.test.report.TestReport;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
@@ -34,7 +36,6 @@ import com.google.common.collect.Lists;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.file.DirectoryProperty;
@@ -51,7 +52,9 @@ import org.gradle.internal.logging.ConsoleRenderer;
 /** Task doing test report aggregation. */
 public abstract class AndroidReportTask extends DefaultTask implements AndroidTestTask {
 
-    private final List<AndroidTestTask> subTasks = Lists.newArrayList();
+    private final transient List<AndroidTestTask> subTasks = Lists.newArrayList();
+
+    private final List<File> resultsDirectories = Lists.newArrayList();
 
     private ReportType reportType;
 
@@ -93,15 +96,14 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
 
     public void addTask(AndroidTestTask task) {
         subTasks.add(task);
+        resultsDirectories.add(task.getResultsDir().get().getAsFile());
         this.dependsOn(task);
     }
 
     @InputFiles
     @PathSensitive(PathSensitivity.RELATIVE)
     public List<File> getResultsDirectories() {
-        return subTasks.stream()
-                .map(t -> t.getResultsDir().get().getAsFile())
-                .collect(Collectors.toList());
+        return resultsDirectories;
     }
 
     /**
@@ -128,23 +130,18 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
 
         // create the report.
         TestReport report = new TestReport(reportType, resultsOutDir, reportOutDir);
-        report.generateReport();
+        CompositeTestResults compositeTestResults = report.generateReport();
 
-        // fail if any of the tasks failed.
-        for (AndroidTestTask task : subTasks) {
-            if (task.getTestFailed()) {
-                testFailed = true;
-                String reportUrl = new ConsoleRenderer().asClickableFileUrl(
-                        new File(reportOutDir, "index.html"));
-                String message = "There were failing tests. See the report at: " + reportUrl;
+        if (!compositeTestResults.getFailures().isEmpty()) {
+            testFailed = true;
+            String reportUrl =
+                    new ConsoleRenderer().asClickableFileUrl(new File(reportOutDir, "index.html"));
+            String message = "There were failing tests. See the report at: " + reportUrl;
 
-                if (getIgnoreFailures()) {
-                    getLogger().warn(message);
-                } else {
-                    throw new GradleException(message);
-                }
-
-                break;
+            if (getIgnoreFailures()) {
+                getLogger().warn(message);
+            } else {
+                throw new GradleException(message);
             }
         }
     }
@@ -165,9 +162,15 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
 
         private final TaskKind taskKind;
 
-        public CreationAction(@NonNull GlobalScope scope, @NonNull TaskKind taskKind) {
+        private final ProjectInfo projectInfo;
+
+        public CreationAction(
+                @NonNull GlobalScope scope,
+                @NonNull TaskKind taskKind,
+                @NonNull ProjectInfo projectInfo) {
             this.scope = scope;
             this.taskKind = taskKind;
+            this.projectInfo = projectInfo;
         }
 
         @NonNull
@@ -192,11 +195,10 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
                     "Installs and runs instrumentation tests using all Device Providers.");
             task.setReportType(ReportType.MULTI_FLAVOR);
 
-
-            final String defaultReportsDir = scope.getReportsDir().getAbsolutePath()
-                    + "/" + FD_ANDROID_TESTS;
-            final String defaultResultsDir = scope.getOutputsDir().getAbsolutePath()
-                    + "/" + FD_ANDROID_RESULTS;
+            final String defaultReportsDir =
+                    projectInfo.getReportsDir().getAbsolutePath() + "/" + FD_ANDROID_TESTS;
+            final String defaultResultsDir =
+                    projectInfo.getOutputsDir().getAbsolutePath() + "/" + FD_ANDROID_RESULTS;
 
             final String subfolderName =
                     taskKind == TaskKind.CONNECTED ? "/connected/" : "/devices/";
@@ -214,7 +216,8 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
                                                 dir != null && !dir.isEmpty()
                                                         ? dir
                                                         : defaultResultsDir;
-                                        return scope.getProject()
+                                        return projectInfo
+                                                .getProject()
                                                 .getLayout()
                                                 .getProjectDirectory()
                                                 .dir(rootLocation + subfolderName + FD_FLAVORS_ALL);
@@ -233,7 +236,8 @@ public abstract class AndroidReportTask extends DefaultTask implements AndroidTe
                                                 dir != null && !dir.isEmpty()
                                                         ? dir
                                                         : defaultReportsDir;
-                                        return scope.getProject()
+                                        return projectInfo
+                                                .getProject()
                                                 .getLayout()
                                                 .getProjectDirectory()
                                                 .dir(rootLocation + subfolderName + FD_FLAVORS_ALL);

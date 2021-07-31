@@ -17,12 +17,12 @@
 package com.android.build.gradle.api;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import org.gradle.process.CommandLineArgumentProvider;
 
 /** Options for configuring Java annotation processor. */
+@Deprecated
 public interface AnnotationProcessorOptions {
 
     /**
@@ -48,10 +48,4 @@ public interface AnnotationProcessorOptions {
      */
     @NonNull
     List<CommandLineArgumentProvider> getCompilerArgumentProviders();
-
-    /**
-     * Whether to include compile classpath in the processors path.
-     */
-    @Nullable
-    Boolean getIncludeCompileClasspath();
 }

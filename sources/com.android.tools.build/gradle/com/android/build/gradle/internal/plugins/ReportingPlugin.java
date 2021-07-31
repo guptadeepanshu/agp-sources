@@ -20,10 +20,10 @@ import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
 import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
 import static com.android.builder.core.BuilderConstants.FD_REPORTS;
 
-import com.android.build.gradle.internal.dsl.DslVariableFactory;
 import com.android.build.gradle.internal.dsl.TestOptions;
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl;
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.services.DslServicesImpl;
 import com.android.build.gradle.internal.services.ProjectServices;
@@ -83,12 +83,12 @@ class ReportingPlugin implements org.gradle.api.Plugin<Project> {
                         project.getGradle().getSharedServices(),
                         null,
                         project.getGradle().getStartParameter().getMaxWorkerCount(),
+                        new ProjectInfo(project),
                         project::file);
 
         DslServices dslServices =
                 new DslServicesImpl(
                         projectServices,
-                        new DslVariableFactory(syncIssueHandler),
                         project.getProviders().provider(() -> null));
 
         extension = project.getExtensions().create("android", TestOptions.class, dslServices);

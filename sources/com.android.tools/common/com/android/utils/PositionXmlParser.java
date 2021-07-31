@@ -15,26 +15,10 @@
  */
 package com.android.utils;
 
-import static com.android.SdkConstants.UTF_8;
-
 import com.android.ProgressManagerAdapter;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.blame.SourcePosition;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -51,6 +35,23 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.android.SdkConstants.UTF_8;
+
 /**
  * A simple DOM XML parser which can retrieve exact beginning and end offsets
  * (and line and column numbers) for element nodes as well as attribute nodes.
@@ -58,11 +59,25 @@ import org.xml.sax.helpers.DefaultHandler;
 public class PositionXmlParser {
     private static final String UTF_16 = "UTF_16";
     private static final String UTF_16LE = "UTF_16LE";
-    private static final String CONTENT_KEY = "contents";
+    public static final String CONTENT_KEY = "contents";
     private static final String POS_KEY = "offsets";
     /** See http://www.w3.org/TR/REC-xml/#NT-EncodingDecl */
     private static final Pattern ENCODING_PATTERN =
             Pattern.compile("encoding=['\"](\\S*)['\"]");
+
+    private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY;
+    private static final SAXParserFactory SAX_PARSER_FACTORY;
+    private static final SAXParserFactory NAMESPACE_AWARE_SAX_PARSER_FACTORY;
+
+    static {
+        DOCUMENT_BUILDER_FACTORY = DocumentBuilderFactory.newInstance();
+        DOCUMENT_BUILDER_FACTORY.setNamespaceAware(true);
+        DOCUMENT_BUILDER_FACTORY.setValidating(false);
+        SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+        XmlUtils.configureSaxFactory(SAX_PARSER_FACTORY, false, false);
+        NAMESPACE_AWARE_SAX_PARSER_FACTORY = SAXParserFactory.newInstance();
+        XmlUtils.configureSaxFactory(NAMESPACE_AWARE_SAX_PARSER_FACTORY, true, false);
+    }
 
     /**
      * Parses the XML content from the given input stream and closes the stream.
@@ -245,8 +260,8 @@ public class PositionXmlParser {
     private static void parseInternal(
             @NonNull String xml, boolean namespaceAware, @NonNull DefaultHandler handler)
             throws ParserConfigurationException, IOException, SAXException {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        XmlUtils.configureSaxFactory(factory, namespaceAware, false);
+        SAXParserFactory factory =
+                namespaceAware ? NAMESPACE_AWARE_SAX_PARSER_FACTORY : SAX_PARSER_FACTORY;
         SAXParser parser = XmlUtils.createSaxParser(factory, true);
         XMLReader xmlReader = parser.getXMLReader();
         xmlReader.setProperty("http://xml.org/sax/properties/lexical-handler", handler);
@@ -704,8 +719,31 @@ public class PositionXmlParser {
                         if (end != -1) {
                             attributePosition.setEnd(new Position(line, column, offset + end));
                         } else {
+                            // Search backwards for the last non-space character
+                            for (int i = textLength - 1; i >= 0; i--) {
+                                if (!Character.isWhitespace(text.charAt(i))) {
+                                    textLength = i + 1;
+                                    break;
+                                }
+                            }
+
+                            // Search for the end
+                            endOffset = offset + textIndex;
+                            int endLine = line;
+                            int endColumn = column;
+                            for (; textIndex < textLength; textIndex++) {
+                                char t = text.charAt(textIndex);
+                                if (t == '\n') {
+                                    endLine++;
+                                    endColumn = 0;
+                                } else {
+                                    endColumn++;
+                                }
+                                endOffset++;
+                            }
+
                             attributePosition.setEnd(
-                                    new Position(line, column, offset + textLength));
+                                    new Position(endLine, endColumn, endOffset));
                         }
                         return attributePosition;
                     } else if (c == '"') {
@@ -745,10 +783,7 @@ public class PositionXmlParser {
         DomBuilder(String xml) throws ParserConfigurationException {
             mXml = xml;
 
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setNamespaceAware(true);
-            factory.setValidating(false);
-            DocumentBuilder docBuilder = factory.newDocumentBuilder();
+            DocumentBuilder docBuilder = DOCUMENT_BUILDER_FACTORY.newDocumentBuilder();
             mDocument = docBuilder.newDocument();
             mDocument.setUserData(CONTENT_KEY, xml, null);
         }

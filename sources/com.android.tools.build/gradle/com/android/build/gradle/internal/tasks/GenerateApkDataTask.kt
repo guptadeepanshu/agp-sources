@@ -228,10 +228,11 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
         ) {
             super.handleProvider(taskProvider)
 
-            val manifestLocation = FileUtils.join(creationConfig.paths.generatedDir,
+            val manifestLocation = creationConfig.paths.generatedDir(
                 "manifests",
                 "microapk",
-                creationConfig.variantDslInfo.dirName)
+                creationConfig.variantDslInfo.dirName
+            ).get().asFile
 
             creationConfig.artifacts
                     .setInitialProvider(taskProvider, GenerateApkDataTask::manifestFile)
@@ -240,10 +241,10 @@ abstract class GenerateApkDataTask : NonIncrementalTask() {
                     .on(InternalArtifactType.MICRO_APK_MANIFEST_FILE)
 
             val microApkResDirectory =
-                    FileUtils.join(creationConfig.paths.generatedDir,
+                creationConfig.paths.generatedDir(
                             "res",
                             "microapk",
-                            creationConfig.variantDslInfo.dirName)
+                            creationConfig.variantDslInfo.dirName).get().asFile
             creationConfig.artifacts
                     .setInitialProvider(taskProvider, GenerateApkDataTask::resOutputDir)
                     .atLocation(microApkResDirectory.absolutePath)

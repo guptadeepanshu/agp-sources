@@ -164,11 +164,11 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
             mergedAssets = testedVariant.artifacts.get(MERGED_ASSETS)
             mergedManifest = testedVariant.artifacts.get(PACKAGED_MANIFESTS)
             mainVariantOutput = testedVariant.outputs.getMainSplit()
-            packageNameOfFinalRClass = testedVariant.packageName
+            packageNameOfFinalRClass = testedVariant.namespace
             buildDirectoryPath = FileUtils.toSystemIndependentPath(
                 FileUtils.relativePossiblyNonExistingPath(
-                    creationConfig.globalScope.project.buildDir,
-                    creationConfig.globalScope.project.projectDir)
+                    creationConfig.services.projectInfo.getProject().buildDir,
+                        creationConfig.services.projectInfo.getProject().projectDir)
             )
         }
 

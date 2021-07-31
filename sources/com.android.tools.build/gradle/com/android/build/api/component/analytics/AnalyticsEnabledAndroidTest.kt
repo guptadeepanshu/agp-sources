@@ -16,14 +16,19 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.component.AndroidTest
-import com.android.build.api.variant.AaptOptions
+import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.api.variant.ApkPackagingOptions
+import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.Renderscript
+import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.SigningConfig
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.RegularFile
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -36,7 +41,7 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
     objectFactory: ObjectFactory
 ) : AnalyticsEnabledTestComponent(
     delegate, stats, objectFactory
-), AndroidTest {
+), com.android.build.api.component.AndroidTest {
     override val applicationId: Property<String>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
@@ -44,24 +49,11 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             return delegate.applicationId
         }
 
-    override val aaptOptions: AaptOptions
+    override val namespace: Provider<String>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.AAPT_OPTIONS_VALUE
-            return delegate.aaptOptions
-        }
-
-    override fun aaptOptions(action: AaptOptions.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.AAPT_OPTIONS_ACTION_VALUE
-        delegate.aaptOptions(action)
-    }
-
-    override val packageName: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.PACKAGE_NAME_VALUE
-            return delegate.packageName
+                VariantPropertiesMethodType.NAMESPACE_VALUE
+            return delegate.namespace
         }
 
     override val instrumentationRunner: Property<String>
@@ -97,22 +89,25 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             return delegate.buildConfigFields
         }
 
-    override fun addResValue(name: String, type: String, value: String, comment: String?) {
+    override val resValues: MapProperty<ResValue.Key, ResValue>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.RES_VALUE_VALUE
+            return delegate.resValues
+        }
+
+    override fun makeResValueKey(type: String, name: String): ResValue.Key {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.ADD_RES_VALUE_VALUE
-        delegate.addResValue(name, type, value, comment)
+                VariantPropertiesMethodType.MAKE_RES_VALUE_KEY_VALUE
+        return delegate.makeResValueKey(type, name)
     }
 
-    override fun addResValue(
-        name: String,
-        type: String,
-        value: Provider<String>,
-        comment: String?
-    ) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.ADD_RES_VALUE_VALUE
-        delegate.addResValue(name, type, value, comment)
-    }
+    override val pseudoLocalesEnabled: Property<Boolean>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.VARIANT_PSEUDOLOCALES_ENABLED_VALUE
+            return delegate.pseudoLocalesEnabled
+        }
 
     override val manifestPlaceholders: MapProperty<String, String>
         get() {
@@ -121,37 +116,34 @@ open class AnalyticsEnabledAndroidTest @Inject constructor(
             return delegate.manifestPlaceholders
         }
 
-    override val signingConfig: SigningConfig
+    override val signingConfig: SigningConfig?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SIGNING_CONFIG_VALUE
             return delegate.signingConfig
         }
 
-    override fun signingConfig(action: SigningConfig.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.SIGNING_CONFIG_ACTION_VALUE
-        delegate.signingConfig(action)
-    }
+    override val proguardFiles: ListProperty<RegularFile>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.PROGUARD_FILES_VALUE
+            return delegate.proguardFiles
+        }
 
-    private val userVisiblePackagingOptions: ApkPackagingOptions by lazy {
-        objectFactory.newInstance(
-            AnalyticsEnabledApkPackagingOptions::class.java,
-            delegate.packagingOptions,
-            stats
+    private val generatesApk: GeneratesApk by lazy {
+        AnalyticsEnabledGeneratesApk(
+                delegate,
+                stats,
+                objectFactory
         )
     }
 
-    override val packagingOptions: ApkPackagingOptions
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
-            return userVisiblePackagingOptions
-        }
+    override val androidResources: AndroidResources
+        get() = generatesApk.androidResources
 
-    override fun packagingOptions(action: ApkPackagingOptions.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.PACKAGING_OPTIONS_ACTION_VALUE
-        action.invoke(userVisiblePackagingOptions)
-    }
+    override val renderscript: Renderscript?
+        get() = generatesApk.renderscript
+
+    override val packaging: ApkPackaging
+        get() = generatesApk.packaging
 }

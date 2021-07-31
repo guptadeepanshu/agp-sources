@@ -8505,6 +8505,18 @@ public final class Resources {
      */
     com.google.protobuf.ByteString
         getCommentBytes();
+
+    /**
+     * <pre>
+     * Indicates that the resource id may change across builds and that the public R.java identifier
+     * for this resource should not be final. This is set to `true` for resources in `staging-group`
+     * tags.
+     * </pre>
+     *
+     * <code>bool staged_api = 4;</code>
+     * @return The stagedApi.
+     */
+    boolean getStagedApi();
   }
   /**
    * <pre>
@@ -8580,6 +8592,11 @@ public final class Resources {
               java.lang.String s = input.readStringRequireUtf8();
 
               comment_ = s;
+              break;
+            }
+            case 32: {
+
+              stagedApi_ = input.readBool();
               break;
             }
             default: {
@@ -8867,6 +8884,22 @@ public final class Resources {
       }
     }
 
+    public static final int STAGED_API_FIELD_NUMBER = 4;
+    private boolean stagedApi_;
+    /**
+     * <pre>
+     * Indicates that the resource id may change across builds and that the public R.java identifier
+     * for this resource should not be final. This is set to `true` for resources in `staging-group`
+     * tags.
+     * </pre>
+     *
+     * <code>bool staged_api = 4;</code>
+     * @return The stagedApi.
+     */
+    public boolean getStagedApi() {
+      return stagedApi_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -8890,6 +8923,9 @@ public final class Resources {
       if (!getCommentBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 3, comment_);
       }
+      if (stagedApi_ != false) {
+        output.writeBool(4, stagedApi_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -8909,6 +8945,10 @@ public final class Resources {
       }
       if (!getCommentBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, comment_);
+      }
+      if (stagedApi_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, stagedApi_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -8933,6 +8973,8 @@ public final class Resources {
       }
       if (!getComment()
           .equals(other.getComment())) return false;
+      if (getStagedApi()
+          != other.getStagedApi()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -8952,6 +8994,9 @@ public final class Resources {
       }
       hash = (37 * hash) + COMMENT_FIELD_NUMBER;
       hash = (53 * hash) + getComment().hashCode();
+      hash = (37 * hash) + STAGED_API_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getStagedApi());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -9099,6 +9144,8 @@ public final class Resources {
         }
         comment_ = "";
 
+        stagedApi_ = false;
+
         return this;
       }
 
@@ -9132,6 +9179,7 @@ public final class Resources {
           result.source_ = sourceBuilder_.build();
         }
         result.comment_ = comment_;
+        result.stagedApi_ = stagedApi_;
         onBuilt();
         return result;
       }
@@ -9189,6 +9237,9 @@ public final class Resources {
         if (!other.getComment().isEmpty()) {
           comment_ = other.comment_;
           onChanged();
+        }
+        if (other.getStagedApi() != false) {
+          setStagedApi(other.getStagedApi());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -9518,6 +9569,54 @@ public final class Resources {
   checkByteStringIsUtf8(value);
         
         comment_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean stagedApi_ ;
+      /**
+       * <pre>
+       * Indicates that the resource id may change across builds and that the public R.java identifier
+       * for this resource should not be final. This is set to `true` for resources in `staging-group`
+       * tags.
+       * </pre>
+       *
+       * <code>bool staged_api = 4;</code>
+       * @return The stagedApi.
+       */
+      public boolean getStagedApi() {
+        return stagedApi_;
+      }
+      /**
+       * <pre>
+       * Indicates that the resource id may change across builds and that the public R.java identifier
+       * for this resource should not be final. This is set to `true` for resources in `staging-group`
+       * tags.
+       * </pre>
+       *
+       * <code>bool staged_api = 4;</code>
+       * @param value The stagedApi to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStagedApi(boolean value) {
+        
+        stagedApi_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Indicates that the resource id may change across builds and that the public R.java identifier
+       * for this resource should not be final. This is set to `true` for resources in `staging-group`
+       * tags.
+       * </pre>
+       *
+       * <code>bool staged_api = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStagedApi() {
+        
+        stagedApi_ = false;
         onChanged();
         return this;
       }
@@ -13021,6 +13120,700 @@ public final class Resources {
 
   }
 
+  public interface StagedIdOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:aapt.pb.StagedId)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     * @return Whether the source field is set.
+     */
+    boolean hasSource();
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     * @return The source.
+     */
+    com.android.aapt.Resources.Source getSource();
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     */
+    com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder();
+
+    /**
+     * <code>uint32 staged_id = 2;</code>
+     * @return The stagedId.
+     */
+    int getStagedId();
+  }
+  /**
+   * <pre>
+   * The staged resource ID definition of a finalized resource.
+   * </pre>
+   *
+   * Protobuf type {@code aapt.pb.StagedId}
+   */
+  public  static final class StagedId extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:aapt.pb.StagedId)
+      StagedIdOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use StagedId.newBuilder() to construct.
+    private StagedId(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private StagedId() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new StagedId();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private StagedId(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              com.android.aapt.Resources.Source.Builder subBuilder = null;
+              if (source_ != null) {
+                subBuilder = source_.toBuilder();
+              }
+              source_ = input.readMessage(com.android.aapt.Resources.Source.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(source_);
+                source_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 16: {
+
+              stagedId_ = input.readUInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_StagedId_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_StagedId_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.android.aapt.Resources.StagedId.class, com.android.aapt.Resources.StagedId.Builder.class);
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 1;
+    private com.android.aapt.Resources.Source source_;
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     * @return Whether the source field is set.
+     */
+    public boolean hasSource() {
+      return source_ != null;
+    }
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     * @return The source.
+     */
+    public com.android.aapt.Resources.Source getSource() {
+      return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
+    }
+    /**
+     * <code>.aapt.pb.Source source = 1;</code>
+     */
+    public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
+      return getSource();
+    }
+
+    public static final int STAGED_ID_FIELD_NUMBER = 2;
+    private int stagedId_;
+    /**
+     * <code>uint32 staged_id = 2;</code>
+     * @return The stagedId.
+     */
+    public int getStagedId() {
+      return stagedId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (source_ != null) {
+        output.writeMessage(1, getSource());
+      }
+      if (stagedId_ != 0) {
+        output.writeUInt32(2, stagedId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (source_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getSource());
+      }
+      if (stagedId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(2, stagedId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.android.aapt.Resources.StagedId)) {
+        return super.equals(obj);
+      }
+      com.android.aapt.Resources.StagedId other = (com.android.aapt.Resources.StagedId) obj;
+
+      if (hasSource() != other.hasSource()) return false;
+      if (hasSource()) {
+        if (!getSource()
+            .equals(other.getSource())) return false;
+      }
+      if (getStagedId()
+          != other.getStagedId()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasSource()) {
+        hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+        hash = (53 * hash) + getSource().hashCode();
+      }
+      hash = (37 * hash) + STAGED_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getStagedId();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StagedId parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StagedId parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StagedId parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.android.aapt.Resources.StagedId prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * The staged resource ID definition of a finalized resource.
+     * </pre>
+     *
+     * Protobuf type {@code aapt.pb.StagedId}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:aapt.pb.StagedId)
+        com.android.aapt.Resources.StagedIdOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StagedId_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StagedId_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.StagedId.class, com.android.aapt.Resources.StagedId.Builder.class);
+      }
+
+      // Construct using com.android.aapt.Resources.StagedId.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (sourceBuilder_ == null) {
+          source_ = null;
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+        stagedId_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StagedId_descriptor;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StagedId getDefaultInstanceForType() {
+        return com.android.aapt.Resources.StagedId.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StagedId build() {
+        com.android.aapt.Resources.StagedId result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StagedId buildPartial() {
+        com.android.aapt.Resources.StagedId result = new com.android.aapt.Resources.StagedId(this);
+        if (sourceBuilder_ == null) {
+          result.source_ = source_;
+        } else {
+          result.source_ = sourceBuilder_.build();
+        }
+        result.stagedId_ = stagedId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.android.aapt.Resources.StagedId) {
+          return mergeFrom((com.android.aapt.Resources.StagedId)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.android.aapt.Resources.StagedId other) {
+        if (other == com.android.aapt.Resources.StagedId.getDefaultInstance()) return this;
+        if (other.hasSource()) {
+          mergeSource(other.getSource());
+        }
+        if (other.getStagedId() != 0) {
+          setStagedId(other.getStagedId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.android.aapt.Resources.StagedId parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.android.aapt.Resources.StagedId) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.android.aapt.Resources.Source source_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.Source, com.android.aapt.Resources.Source.Builder, com.android.aapt.Resources.SourceOrBuilder> sourceBuilder_;
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       * @return Whether the source field is set.
+       */
+      public boolean hasSource() {
+        return sourceBuilder_ != null || source_ != null;
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       * @return The source.
+       */
+      public com.android.aapt.Resources.Source getSource() {
+        if (sourceBuilder_ == null) {
+          return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
+        } else {
+          return sourceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public Builder setSource(com.android.aapt.Resources.Source value) {
+        if (sourceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          source_ = value;
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public Builder setSource(
+          com.android.aapt.Resources.Source.Builder builderForValue) {
+        if (sourceBuilder_ == null) {
+          source_ = builderForValue.build();
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public Builder mergeSource(com.android.aapt.Resources.Source value) {
+        if (sourceBuilder_ == null) {
+          if (source_ != null) {
+            source_ =
+              com.android.aapt.Resources.Source.newBuilder(source_).mergeFrom(value).buildPartial();
+          } else {
+            source_ = value;
+          }
+          onChanged();
+        } else {
+          sourceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public Builder clearSource() {
+        if (sourceBuilder_ == null) {
+          source_ = null;
+          onChanged();
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public com.android.aapt.Resources.Source.Builder getSourceBuilder() {
+        
+        onChanged();
+        return getSourceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
+        if (sourceBuilder_ != null) {
+          return sourceBuilder_.getMessageOrBuilder();
+        } else {
+          return source_ == null ?
+              com.android.aapt.Resources.Source.getDefaultInstance() : source_;
+        }
+      }
+      /**
+       * <code>.aapt.pb.Source source = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.Source, com.android.aapt.Resources.Source.Builder, com.android.aapt.Resources.SourceOrBuilder> 
+          getSourceFieldBuilder() {
+        if (sourceBuilder_ == null) {
+          sourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.android.aapt.Resources.Source, com.android.aapt.Resources.Source.Builder, com.android.aapt.Resources.SourceOrBuilder>(
+                  getSource(),
+                  getParentForChildren(),
+                  isClean());
+          source_ = null;
+        }
+        return sourceBuilder_;
+      }
+
+      private int stagedId_ ;
+      /**
+       * <code>uint32 staged_id = 2;</code>
+       * @return The stagedId.
+       */
+      public int getStagedId() {
+        return stagedId_;
+      }
+      /**
+       * <code>uint32 staged_id = 2;</code>
+       * @param value The stagedId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStagedId(int value) {
+        
+        stagedId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint32 staged_id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStagedId() {
+        
+        stagedId_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:aapt.pb.StagedId)
+    }
+
+    // @@protoc_insertion_point(class_scope:aapt.pb.StagedId)
+    private static final com.android.aapt.Resources.StagedId DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.android.aapt.Resources.StagedId();
+    }
+
+    public static com.android.aapt.Resources.StagedId getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<StagedId>
+        PARSER = new com.google.protobuf.AbstractParser<StagedId>() {
+      @java.lang.Override
+      public StagedId parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new StagedId(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<StagedId> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<StagedId> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.android.aapt.Resources.StagedId getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface EntryIdOrBuilder extends
       // @@protoc_insertion_point(interface_extends:aapt.pb.EntryId)
       com.google.protobuf.MessageOrBuilder {
@@ -13709,6 +14502,33 @@ public final class Resources {
      */
     com.android.aapt.Resources.ConfigValueOrBuilder getConfigValueOrBuilder(
         int index);
+
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     * @return Whether the stagedId field is set.
+     */
+    boolean hasStagedId();
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     * @return The stagedId.
+     */
+    com.android.aapt.Resources.StagedId getStagedId();
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     */
+    com.android.aapt.Resources.StagedIdOrBuilder getStagedIdOrBuilder();
   }
   /**
    * <pre>
@@ -13829,6 +14649,19 @@ public final class Resources {
               }
               configValue_.add(
                   input.readMessage(com.android.aapt.Resources.ConfigValue.parser(), extensionRegistry));
+              break;
+            }
+            case 58: {
+              com.android.aapt.Resources.StagedId.Builder subBuilder = null;
+              if (stagedId_ != null) {
+                subBuilder = stagedId_.toBuilder();
+              }
+              stagedId_ = input.readMessage(com.android.aapt.Resources.StagedId.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(stagedId_);
+                stagedId_ = subBuilder.buildPartial();
+              }
+
               break;
             }
             default: {
@@ -14124,6 +14957,41 @@ public final class Resources {
       return configValue_.get(index);
     }
 
+    public static final int STAGED_ID_FIELD_NUMBER = 7;
+    private com.android.aapt.Resources.StagedId stagedId_;
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     * @return Whether the stagedId field is set.
+     */
+    public boolean hasStagedId() {
+      return stagedId_ != null;
+    }
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     * @return The stagedId.
+     */
+    public com.android.aapt.Resources.StagedId getStagedId() {
+      return stagedId_ == null ? com.android.aapt.Resources.StagedId.getDefaultInstance() : stagedId_;
+    }
+    /**
+     * <pre>
+     * The staged resource ID of this finalized resource.
+     * </pre>
+     *
+     * <code>.aapt.pb.StagedId staged_id = 7;</code>
+     */
+    public com.android.aapt.Resources.StagedIdOrBuilder getStagedIdOrBuilder() {
+      return getStagedId();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -14156,6 +15024,9 @@ public final class Resources {
       for (int i = 0; i < configValue_.size(); i++) {
         output.writeMessage(6, configValue_.get(i));
       }
+      if (stagedId_ != null) {
+        output.writeMessage(7, getStagedId());
+      }
       unknownFields.writeTo(output);
     }
 
@@ -14187,6 +15058,10 @@ public final class Resources {
       for (int i = 0; i < configValue_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(6, configValue_.get(i));
+      }
+      if (stagedId_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(7, getStagedId());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -14227,6 +15102,11 @@ public final class Resources {
       }
       if (!getConfigValueList()
           .equals(other.getConfigValueList())) return false;
+      if (hasStagedId() != other.hasStagedId()) return false;
+      if (hasStagedId()) {
+        if (!getStagedId()
+            .equals(other.getStagedId())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -14259,6 +15139,10 @@ public final class Resources {
       if (getConfigValueCount() > 0) {
         hash = (37 * hash) + CONFIG_VALUE_FIELD_NUMBER;
         hash = (53 * hash) + getConfigValueList().hashCode();
+      }
+      if (hasStagedId()) {
+        hash = (37 * hash) + STAGED_ID_FIELD_NUMBER;
+        hash = (53 * hash) + getStagedId().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -14432,6 +15316,12 @@ public final class Resources {
         } else {
           configValueBuilder_.clear();
         }
+        if (stagedIdBuilder_ == null) {
+          stagedId_ = null;
+        } else {
+          stagedId_ = null;
+          stagedIdBuilder_ = null;
+        }
         return this;
       }
 
@@ -14488,6 +15378,11 @@ public final class Resources {
           result.configValue_ = configValue_;
         } else {
           result.configValue_ = configValueBuilder_.build();
+        }
+        if (stagedIdBuilder_ == null) {
+          result.stagedId_ = stagedId_;
+        } else {
+          result.stagedId_ = stagedIdBuilder_.build();
         }
         onBuilt();
         return result;
@@ -14578,6 +15473,9 @@ public final class Resources {
               configValueBuilder_.addAllMessages(other.configValue_);
             }
           }
+        }
+        if (other.hasStagedId()) {
+          mergeStagedId(other.getStagedId());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -15694,6 +16592,161 @@ public final class Resources {
           configValue_ = null;
         }
         return configValueBuilder_;
+      }
+
+      private com.android.aapt.Resources.StagedId stagedId_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.StagedId, com.android.aapt.Resources.StagedId.Builder, com.android.aapt.Resources.StagedIdOrBuilder> stagedIdBuilder_;
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       * @return Whether the stagedId field is set.
+       */
+      public boolean hasStagedId() {
+        return stagedIdBuilder_ != null || stagedId_ != null;
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       * @return The stagedId.
+       */
+      public com.android.aapt.Resources.StagedId getStagedId() {
+        if (stagedIdBuilder_ == null) {
+          return stagedId_ == null ? com.android.aapt.Resources.StagedId.getDefaultInstance() : stagedId_;
+        } else {
+          return stagedIdBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public Builder setStagedId(com.android.aapt.Resources.StagedId value) {
+        if (stagedIdBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          stagedId_ = value;
+          onChanged();
+        } else {
+          stagedIdBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public Builder setStagedId(
+          com.android.aapt.Resources.StagedId.Builder builderForValue) {
+        if (stagedIdBuilder_ == null) {
+          stagedId_ = builderForValue.build();
+          onChanged();
+        } else {
+          stagedIdBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public Builder mergeStagedId(com.android.aapt.Resources.StagedId value) {
+        if (stagedIdBuilder_ == null) {
+          if (stagedId_ != null) {
+            stagedId_ =
+              com.android.aapt.Resources.StagedId.newBuilder(stagedId_).mergeFrom(value).buildPartial();
+          } else {
+            stagedId_ = value;
+          }
+          onChanged();
+        } else {
+          stagedIdBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public Builder clearStagedId() {
+        if (stagedIdBuilder_ == null) {
+          stagedId_ = null;
+          onChanged();
+        } else {
+          stagedId_ = null;
+          stagedIdBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public com.android.aapt.Resources.StagedId.Builder getStagedIdBuilder() {
+        
+        onChanged();
+        return getStagedIdFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      public com.android.aapt.Resources.StagedIdOrBuilder getStagedIdOrBuilder() {
+        if (stagedIdBuilder_ != null) {
+          return stagedIdBuilder_.getMessageOrBuilder();
+        } else {
+          return stagedId_ == null ?
+              com.android.aapt.Resources.StagedId.getDefaultInstance() : stagedId_;
+        }
+      }
+      /**
+       * <pre>
+       * The staged resource ID of this finalized resource.
+       * </pre>
+       *
+       * <code>.aapt.pb.StagedId staged_id = 7;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.StagedId, com.android.aapt.Resources.StagedId.Builder, com.android.aapt.Resources.StagedIdOrBuilder> 
+          getStagedIdFieldBuilder() {
+        if (stagedIdBuilder_ == null) {
+          stagedIdBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.android.aapt.Resources.StagedId, com.android.aapt.Resources.StagedId.Builder, com.android.aapt.Resources.StagedIdOrBuilder>(
+                  getStagedId(),
+                  getParentForChildren(),
+                  isClean());
+          stagedId_ = null;
+        }
+        return stagedIdBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -20191,6 +21244,21 @@ public final class Resources {
      */
     com.android.aapt.Resources.PluralOrBuilder getPluralOrBuilder();
 
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     * @return Whether the macro field is set.
+     */
+    boolean hasMacro();
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     * @return The macro.
+     */
+    com.android.aapt.Resources.MacroBody getMacro();
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     */
+    com.android.aapt.Resources.MacroBodyOrBuilder getMacroOrBuilder();
+
     public com.android.aapt.Resources.CompoundValue.ValueCase getValueCase();
   }
   /**
@@ -20314,6 +21382,20 @@ public final class Resources {
               valueCase_ = 5;
               break;
             }
+            case 50: {
+              com.android.aapt.Resources.MacroBody.Builder subBuilder = null;
+              if (valueCase_ == 6) {
+                subBuilder = ((com.android.aapt.Resources.MacroBody) value_).toBuilder();
+              }
+              value_ =
+                  input.readMessage(com.android.aapt.Resources.MacroBody.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom((com.android.aapt.Resources.MacroBody) value_);
+                value_ = subBuilder.buildPartial();
+              }
+              valueCase_ = 6;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -20356,6 +21438,7 @@ public final class Resources {
       STYLEABLE(3),
       ARRAY(4),
       PLURAL(5),
+      MACRO(6),
       VALUE_NOT_SET(0);
       private final int value;
       private ValueCase(int value) {
@@ -20378,6 +21461,7 @@ public final class Resources {
           case 3: return STYLEABLE;
           case 4: return ARRAY;
           case 5: return PLURAL;
+          case 6: return MACRO;
           case 0: return VALUE_NOT_SET;
           default: return null;
         }
@@ -20533,6 +21617,34 @@ public final class Resources {
       return com.android.aapt.Resources.Plural.getDefaultInstance();
     }
 
+    public static final int MACRO_FIELD_NUMBER = 6;
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     * @return Whether the macro field is set.
+     */
+    public boolean hasMacro() {
+      return valueCase_ == 6;
+    }
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     * @return The macro.
+     */
+    public com.android.aapt.Resources.MacroBody getMacro() {
+      if (valueCase_ == 6) {
+         return (com.android.aapt.Resources.MacroBody) value_;
+      }
+      return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+    }
+    /**
+     * <code>.aapt.pb.MacroBody macro = 6;</code>
+     */
+    public com.android.aapt.Resources.MacroBodyOrBuilder getMacroOrBuilder() {
+      if (valueCase_ == 6) {
+         return (com.android.aapt.Resources.MacroBody) value_;
+      }
+      return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -20562,6 +21674,9 @@ public final class Resources {
       if (valueCase_ == 5) {
         output.writeMessage(5, (com.android.aapt.Resources.Plural) value_);
       }
+      if (valueCase_ == 6) {
+        output.writeMessage(6, (com.android.aapt.Resources.MacroBody) value_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -20590,6 +21705,10 @@ public final class Resources {
       if (valueCase_ == 5) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, (com.android.aapt.Resources.Plural) value_);
+      }
+      if (valueCase_ == 6) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, (com.android.aapt.Resources.MacroBody) value_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -20628,6 +21747,10 @@ public final class Resources {
           if (!getPlural()
               .equals(other.getPlural())) return false;
           break;
+        case 6:
+          if (!getMacro()
+              .equals(other.getMacro())) return false;
+          break;
         case 0:
         default:
       }
@@ -20662,6 +21785,10 @@ public final class Resources {
         case 5:
           hash = (37 * hash) + PLURAL_FIELD_NUMBER;
           hash = (53 * hash) + getPlural().hashCode();
+          break;
+        case 6:
+          hash = (37 * hash) + MACRO_FIELD_NUMBER;
+          hash = (53 * hash) + getMacro().hashCode();
           break;
         case 0:
         default:
@@ -20868,6 +21995,13 @@ public final class Resources {
             result.value_ = pluralBuilder_.build();
           }
         }
+        if (valueCase_ == 6) {
+          if (macroBuilder_ == null) {
+            result.value_ = value_;
+          } else {
+            result.value_ = macroBuilder_.build();
+          }
+        }
         result.valueCase_ = valueCase_;
         onBuilt();
         return result;
@@ -20936,6 +22070,10 @@ public final class Resources {
           }
           case PLURAL: {
             mergePlural(other.getPlural());
+            break;
+          }
+          case MACRO: {
+            mergeMacro(other.getMacro());
             break;
           }
           case VALUE_NOT_SET: {
@@ -21675,6 +22813,144 @@ public final class Resources {
         onChanged();;
         return pluralBuilder_;
       }
+
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.MacroBody, com.android.aapt.Resources.MacroBody.Builder, com.android.aapt.Resources.MacroBodyOrBuilder> macroBuilder_;
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       * @return Whether the macro field is set.
+       */
+      public boolean hasMacro() {
+        return valueCase_ == 6;
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       * @return The macro.
+       */
+      public com.android.aapt.Resources.MacroBody getMacro() {
+        if (macroBuilder_ == null) {
+          if (valueCase_ == 6) {
+            return (com.android.aapt.Resources.MacroBody) value_;
+          }
+          return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+        } else {
+          if (valueCase_ == 6) {
+            return macroBuilder_.getMessage();
+          }
+          return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public Builder setMacro(com.android.aapt.Resources.MacroBody value) {
+        if (macroBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          value_ = value;
+          onChanged();
+        } else {
+          macroBuilder_.setMessage(value);
+        }
+        valueCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public Builder setMacro(
+          com.android.aapt.Resources.MacroBody.Builder builderForValue) {
+        if (macroBuilder_ == null) {
+          value_ = builderForValue.build();
+          onChanged();
+        } else {
+          macroBuilder_.setMessage(builderForValue.build());
+        }
+        valueCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public Builder mergeMacro(com.android.aapt.Resources.MacroBody value) {
+        if (macroBuilder_ == null) {
+          if (valueCase_ == 6 &&
+              value_ != com.android.aapt.Resources.MacroBody.getDefaultInstance()) {
+            value_ = com.android.aapt.Resources.MacroBody.newBuilder((com.android.aapt.Resources.MacroBody) value_)
+                .mergeFrom(value).buildPartial();
+          } else {
+            value_ = value;
+          }
+          onChanged();
+        } else {
+          if (valueCase_ == 6) {
+            macroBuilder_.mergeFrom(value);
+          }
+          macroBuilder_.setMessage(value);
+        }
+        valueCase_ = 6;
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public Builder clearMacro() {
+        if (macroBuilder_ == null) {
+          if (valueCase_ == 6) {
+            valueCase_ = 0;
+            value_ = null;
+            onChanged();
+          }
+        } else {
+          if (valueCase_ == 6) {
+            valueCase_ = 0;
+            value_ = null;
+          }
+          macroBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public com.android.aapt.Resources.MacroBody.Builder getMacroBuilder() {
+        return getMacroFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      public com.android.aapt.Resources.MacroBodyOrBuilder getMacroOrBuilder() {
+        if ((valueCase_ == 6) && (macroBuilder_ != null)) {
+          return macroBuilder_.getMessageOrBuilder();
+        } else {
+          if (valueCase_ == 6) {
+            return (com.android.aapt.Resources.MacroBody) value_;
+          }
+          return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+        }
+      }
+      /**
+       * <code>.aapt.pb.MacroBody macro = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.MacroBody, com.android.aapt.Resources.MacroBody.Builder, com.android.aapt.Resources.MacroBodyOrBuilder> 
+          getMacroFieldBuilder() {
+        if (macroBuilder_ == null) {
+          if (!(valueCase_ == 6)) {
+            value_ = com.android.aapt.Resources.MacroBody.getDefaultInstance();
+          }
+          macroBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.android.aapt.Resources.MacroBody, com.android.aapt.Resources.MacroBody.Builder, com.android.aapt.Resources.MacroBodyOrBuilder>(
+                  (com.android.aapt.Resources.MacroBody) value_,
+                  getParentForChildren(),
+                  isClean());
+          value_ = null;
+        }
+        valueCase_ = 6;
+        onChanged();;
+        return macroBuilder_;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -22304,6 +23580,27 @@ public final class Resources {
      * <code>.aapt.pb.Boolean is_dynamic = 5;</code>
      */
     com.android.aapt.Resources.BooleanOrBuilder getIsDynamicOrBuilder();
+
+    /**
+     * <pre>
+     * The type flags used when compiling the reference. Used for substituting the contents of macros.
+     * </pre>
+     *
+     * <code>uint32 type_flags = 6;</code>
+     * @return The typeFlags.
+     */
+    int getTypeFlags();
+
+    /**
+     * <pre>
+     * Whether raw string values would have been accepted in place of this reference definition. Used
+     * for substituting the contents of macros.
+     * </pre>
+     *
+     * <code>bool allow_raw = 7;</code>
+     * @return The allowRaw.
+     */
+    boolean getAllowRaw();
   }
   /**
    * <pre>
@@ -22389,6 +23686,16 @@ public final class Resources {
                 isDynamic_ = subBuilder.buildPartial();
               }
 
+              break;
+            }
+            case 48: {
+
+              typeFlags_ = input.readUInt32();
+              break;
+            }
+            case 56: {
+
+              allowRaw_ = input.readBool();
               break;
             }
             default: {
@@ -22669,6 +23976,35 @@ public final class Resources {
       return getIsDynamic();
     }
 
+    public static final int TYPE_FLAGS_FIELD_NUMBER = 6;
+    private int typeFlags_;
+    /**
+     * <pre>
+     * The type flags used when compiling the reference. Used for substituting the contents of macros.
+     * </pre>
+     *
+     * <code>uint32 type_flags = 6;</code>
+     * @return The typeFlags.
+     */
+    public int getTypeFlags() {
+      return typeFlags_;
+    }
+
+    public static final int ALLOW_RAW_FIELD_NUMBER = 7;
+    private boolean allowRaw_;
+    /**
+     * <pre>
+     * Whether raw string values would have been accepted in place of this reference definition. Used
+     * for substituting the contents of macros.
+     * </pre>
+     *
+     * <code>bool allow_raw = 7;</code>
+     * @return The allowRaw.
+     */
+    public boolean getAllowRaw() {
+      return allowRaw_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -22698,6 +24034,12 @@ public final class Resources {
       if (isDynamic_ != null) {
         output.writeMessage(5, getIsDynamic());
       }
+      if (typeFlags_ != 0) {
+        output.writeUInt32(6, typeFlags_);
+      }
+      if (allowRaw_ != false) {
+        output.writeBool(7, allowRaw_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -22726,6 +24068,14 @@ public final class Resources {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(5, getIsDynamic());
       }
+      if (typeFlags_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, typeFlags_);
+      }
+      if (allowRaw_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, allowRaw_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -22753,6 +24103,10 @@ public final class Resources {
         if (!getIsDynamic()
             .equals(other.getIsDynamic())) return false;
       }
+      if (getTypeFlags()
+          != other.getTypeFlags()) return false;
+      if (getAllowRaw()
+          != other.getAllowRaw()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -22777,6 +24131,11 @@ public final class Resources {
         hash = (37 * hash) + IS_DYNAMIC_FIELD_NUMBER;
         hash = (53 * hash) + getIsDynamic().hashCode();
       }
+      hash = (37 * hash) + TYPE_FLAGS_FIELD_NUMBER;
+      hash = (53 * hash) + getTypeFlags();
+      hash = (37 * hash) + ALLOW_RAW_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAllowRaw());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -22928,6 +24287,10 @@ public final class Resources {
           isDynamic_ = null;
           isDynamicBuilder_ = null;
         }
+        typeFlags_ = 0;
+
+        allowRaw_ = false;
+
         return this;
       }
 
@@ -22963,6 +24326,8 @@ public final class Resources {
         } else {
           result.isDynamic_ = isDynamicBuilder_.build();
         }
+        result.typeFlags_ = typeFlags_;
+        result.allowRaw_ = allowRaw_;
         onBuilt();
         return result;
       }
@@ -23026,6 +24391,12 @@ public final class Resources {
         }
         if (other.hasIsDynamic()) {
           mergeIsDynamic(other.getIsDynamic());
+        }
+        if (other.getTypeFlags() != 0) {
+          setTypeFlags(other.getTypeFlags());
+        }
+        if (other.getAllowRaw() != false) {
+          setAllowRaw(other.getAllowRaw());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -23441,6 +24812,93 @@ public final class Resources {
           isDynamic_ = null;
         }
         return isDynamicBuilder_;
+      }
+
+      private int typeFlags_ ;
+      /**
+       * <pre>
+       * The type flags used when compiling the reference. Used for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>uint32 type_flags = 6;</code>
+       * @return The typeFlags.
+       */
+      public int getTypeFlags() {
+        return typeFlags_;
+      }
+      /**
+       * <pre>
+       * The type flags used when compiling the reference. Used for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>uint32 type_flags = 6;</code>
+       * @param value The typeFlags to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeFlags(int value) {
+        
+        typeFlags_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The type flags used when compiling the reference. Used for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>uint32 type_flags = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTypeFlags() {
+        
+        typeFlags_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean allowRaw_ ;
+      /**
+       * <pre>
+       * Whether raw string values would have been accepted in place of this reference definition. Used
+       * for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>bool allow_raw = 7;</code>
+       * @return The allowRaw.
+       */
+      public boolean getAllowRaw() {
+        return allowRaw_;
+      }
+      /**
+       * <pre>
+       * Whether raw string values would have been accepted in place of this reference definition. Used
+       * for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>bool allow_raw = 7;</code>
+       * @param value The allowRaw to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAllowRaw(boolean value) {
+        
+        allowRaw_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Whether raw string values would have been accepted in place of this reference definition. Used
+       * for substituting the contents of macros.
+       * </pre>
+       *
+       * <code>bool allow_raw = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAllowRaw() {
+        
+        allowRaw_ = false;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -48416,6 +49874,4686 @@ public final class Resources {
 
   }
 
+  public interface MacroBodyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:aapt.pb.MacroBody)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string raw_string = 1;</code>
+     * @return The rawString.
+     */
+    java.lang.String getRawString();
+    /**
+     * <code>string raw_string = 1;</code>
+     * @return The bytes for rawString.
+     */
+    com.google.protobuf.ByteString
+        getRawStringBytes();
+
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     * @return Whether the styleString field is set.
+     */
+    boolean hasStyleString();
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     * @return The styleString.
+     */
+    com.android.aapt.Resources.StyleString getStyleString();
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     */
+    com.android.aapt.Resources.StyleStringOrBuilder getStyleStringOrBuilder();
+
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    java.util.List<com.android.aapt.Resources.UntranslatableSection> 
+        getUntranslatableSectionsList();
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    com.android.aapt.Resources.UntranslatableSection getUntranslatableSections(int index);
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    int getUntranslatableSectionsCount();
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    java.util.List<? extends com.android.aapt.Resources.UntranslatableSectionOrBuilder> 
+        getUntranslatableSectionsOrBuilderList();
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    com.android.aapt.Resources.UntranslatableSectionOrBuilder getUntranslatableSectionsOrBuilder(
+        int index);
+
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    java.util.List<com.android.aapt.Resources.NamespaceAlias> 
+        getNamespaceStackList();
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    com.android.aapt.Resources.NamespaceAlias getNamespaceStack(int index);
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    int getNamespaceStackCount();
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    java.util.List<? extends com.android.aapt.Resources.NamespaceAliasOrBuilder> 
+        getNamespaceStackOrBuilderList();
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    com.android.aapt.Resources.NamespaceAliasOrBuilder getNamespaceStackOrBuilder(
+        int index);
+
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     * @return Whether the source field is set.
+     */
+    boolean hasSource();
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     * @return The source.
+     */
+    com.android.aapt.Resources.SourcePosition getSource();
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     */
+    com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder();
+  }
+  /**
+   * Protobuf type {@code aapt.pb.MacroBody}
+   */
+  public  static final class MacroBody extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:aapt.pb.MacroBody)
+      MacroBodyOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use MacroBody.newBuilder() to construct.
+    private MacroBody(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private MacroBody() {
+      rawString_ = "";
+      untranslatableSections_ = java.util.Collections.emptyList();
+      namespaceStack_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new MacroBody();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private MacroBody(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              rawString_ = s;
+              break;
+            }
+            case 18: {
+              com.android.aapt.Resources.StyleString.Builder subBuilder = null;
+              if (styleString_ != null) {
+                subBuilder = styleString_.toBuilder();
+              }
+              styleString_ = input.readMessage(com.android.aapt.Resources.StyleString.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(styleString_);
+                styleString_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                untranslatableSections_ = new java.util.ArrayList<com.android.aapt.Resources.UntranslatableSection>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              untranslatableSections_.add(
+                  input.readMessage(com.android.aapt.Resources.UntranslatableSection.parser(), extensionRegistry));
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                namespaceStack_ = new java.util.ArrayList<com.android.aapt.Resources.NamespaceAlias>();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              namespaceStack_.add(
+                  input.readMessage(com.android.aapt.Resources.NamespaceAlias.parser(), extensionRegistry));
+              break;
+            }
+            case 42: {
+              com.android.aapt.Resources.SourcePosition.Builder subBuilder = null;
+              if (source_ != null) {
+                subBuilder = source_.toBuilder();
+              }
+              source_ = input.readMessage(com.android.aapt.Resources.SourcePosition.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(source_);
+                source_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          untranslatableSections_ = java.util.Collections.unmodifiableList(untranslatableSections_);
+        }
+        if (((mutable_bitField0_ & 0x00000002) != 0)) {
+          namespaceStack_ = java.util.Collections.unmodifiableList(namespaceStack_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_MacroBody_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_MacroBody_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.android.aapt.Resources.MacroBody.class, com.android.aapt.Resources.MacroBody.Builder.class);
+    }
+
+    public static final int RAW_STRING_FIELD_NUMBER = 1;
+    private volatile java.lang.Object rawString_;
+    /**
+     * <code>string raw_string = 1;</code>
+     * @return The rawString.
+     */
+    public java.lang.String getRawString() {
+      java.lang.Object ref = rawString_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        rawString_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string raw_string = 1;</code>
+     * @return The bytes for rawString.
+     */
+    public com.google.protobuf.ByteString
+        getRawStringBytes() {
+      java.lang.Object ref = rawString_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        rawString_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int STYLE_STRING_FIELD_NUMBER = 2;
+    private com.android.aapt.Resources.StyleString styleString_;
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     * @return Whether the styleString field is set.
+     */
+    public boolean hasStyleString() {
+      return styleString_ != null;
+    }
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     * @return The styleString.
+     */
+    public com.android.aapt.Resources.StyleString getStyleString() {
+      return styleString_ == null ? com.android.aapt.Resources.StyleString.getDefaultInstance() : styleString_;
+    }
+    /**
+     * <code>.aapt.pb.StyleString style_string = 2;</code>
+     */
+    public com.android.aapt.Resources.StyleStringOrBuilder getStyleStringOrBuilder() {
+      return getStyleString();
+    }
+
+    public static final int UNTRANSLATABLE_SECTIONS_FIELD_NUMBER = 3;
+    private java.util.List<com.android.aapt.Resources.UntranslatableSection> untranslatableSections_;
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    public java.util.List<com.android.aapt.Resources.UntranslatableSection> getUntranslatableSectionsList() {
+      return untranslatableSections_;
+    }
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    public java.util.List<? extends com.android.aapt.Resources.UntranslatableSectionOrBuilder> 
+        getUntranslatableSectionsOrBuilderList() {
+      return untranslatableSections_;
+    }
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    public int getUntranslatableSectionsCount() {
+      return untranslatableSections_.size();
+    }
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    public com.android.aapt.Resources.UntranslatableSection getUntranslatableSections(int index) {
+      return untranslatableSections_.get(index);
+    }
+    /**
+     * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+     */
+    public com.android.aapt.Resources.UntranslatableSectionOrBuilder getUntranslatableSectionsOrBuilder(
+        int index) {
+      return untranslatableSections_.get(index);
+    }
+
+    public static final int NAMESPACE_STACK_FIELD_NUMBER = 4;
+    private java.util.List<com.android.aapt.Resources.NamespaceAlias> namespaceStack_;
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    public java.util.List<com.android.aapt.Resources.NamespaceAlias> getNamespaceStackList() {
+      return namespaceStack_;
+    }
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    public java.util.List<? extends com.android.aapt.Resources.NamespaceAliasOrBuilder> 
+        getNamespaceStackOrBuilderList() {
+      return namespaceStack_;
+    }
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    public int getNamespaceStackCount() {
+      return namespaceStack_.size();
+    }
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    public com.android.aapt.Resources.NamespaceAlias getNamespaceStack(int index) {
+      return namespaceStack_.get(index);
+    }
+    /**
+     * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+     */
+    public com.android.aapt.Resources.NamespaceAliasOrBuilder getNamespaceStackOrBuilder(
+        int index) {
+      return namespaceStack_.get(index);
+    }
+
+    public static final int SOURCE_FIELD_NUMBER = 5;
+    private com.android.aapt.Resources.SourcePosition source_;
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     * @return Whether the source field is set.
+     */
+    public boolean hasSource() {
+      return source_ != null;
+    }
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     * @return The source.
+     */
+    public com.android.aapt.Resources.SourcePosition getSource() {
+      return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
+    }
+    /**
+     * <code>.aapt.pb.SourcePosition source = 5;</code>
+     */
+    public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
+      return getSource();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getRawStringBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, rawString_);
+      }
+      if (styleString_ != null) {
+        output.writeMessage(2, getStyleString());
+      }
+      for (int i = 0; i < untranslatableSections_.size(); i++) {
+        output.writeMessage(3, untranslatableSections_.get(i));
+      }
+      for (int i = 0; i < namespaceStack_.size(); i++) {
+        output.writeMessage(4, namespaceStack_.get(i));
+      }
+      if (source_ != null) {
+        output.writeMessage(5, getSource());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getRawStringBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, rawString_);
+      }
+      if (styleString_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, getStyleString());
+      }
+      for (int i = 0; i < untranslatableSections_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, untranslatableSections_.get(i));
+      }
+      for (int i = 0; i < namespaceStack_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, namespaceStack_.get(i));
+      }
+      if (source_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(5, getSource());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.android.aapt.Resources.MacroBody)) {
+        return super.equals(obj);
+      }
+      com.android.aapt.Resources.MacroBody other = (com.android.aapt.Resources.MacroBody) obj;
+
+      if (!getRawString()
+          .equals(other.getRawString())) return false;
+      if (hasStyleString() != other.hasStyleString()) return false;
+      if (hasStyleString()) {
+        if (!getStyleString()
+            .equals(other.getStyleString())) return false;
+      }
+      if (!getUntranslatableSectionsList()
+          .equals(other.getUntranslatableSectionsList())) return false;
+      if (!getNamespaceStackList()
+          .equals(other.getNamespaceStackList())) return false;
+      if (hasSource() != other.hasSource()) return false;
+      if (hasSource()) {
+        if (!getSource()
+            .equals(other.getSource())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + RAW_STRING_FIELD_NUMBER;
+      hash = (53 * hash) + getRawString().hashCode();
+      if (hasStyleString()) {
+        hash = (37 * hash) + STYLE_STRING_FIELD_NUMBER;
+        hash = (53 * hash) + getStyleString().hashCode();
+      }
+      if (getUntranslatableSectionsCount() > 0) {
+        hash = (37 * hash) + UNTRANSLATABLE_SECTIONS_FIELD_NUMBER;
+        hash = (53 * hash) + getUntranslatableSectionsList().hashCode();
+      }
+      if (getNamespaceStackCount() > 0) {
+        hash = (37 * hash) + NAMESPACE_STACK_FIELD_NUMBER;
+        hash = (53 * hash) + getNamespaceStackList().hashCode();
+      }
+      if (hasSource()) {
+        hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+        hash = (53 * hash) + getSource().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.MacroBody parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.MacroBody parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.MacroBody parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.android.aapt.Resources.MacroBody prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code aapt.pb.MacroBody}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:aapt.pb.MacroBody)
+        com.android.aapt.Resources.MacroBodyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_MacroBody_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_MacroBody_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.MacroBody.class, com.android.aapt.Resources.MacroBody.Builder.class);
+      }
+
+      // Construct using com.android.aapt.Resources.MacroBody.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getUntranslatableSectionsFieldBuilder();
+          getNamespaceStackFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        rawString_ = "";
+
+        if (styleStringBuilder_ == null) {
+          styleString_ = null;
+        } else {
+          styleString_ = null;
+          styleStringBuilder_ = null;
+        }
+        if (untranslatableSectionsBuilder_ == null) {
+          untranslatableSections_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          untranslatableSectionsBuilder_.clear();
+        }
+        if (namespaceStackBuilder_ == null) {
+          namespaceStack_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+        } else {
+          namespaceStackBuilder_.clear();
+        }
+        if (sourceBuilder_ == null) {
+          source_ = null;
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_MacroBody_descriptor;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.MacroBody getDefaultInstanceForType() {
+        return com.android.aapt.Resources.MacroBody.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.MacroBody build() {
+        com.android.aapt.Resources.MacroBody result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.MacroBody buildPartial() {
+        com.android.aapt.Resources.MacroBody result = new com.android.aapt.Resources.MacroBody(this);
+        int from_bitField0_ = bitField0_;
+        result.rawString_ = rawString_;
+        if (styleStringBuilder_ == null) {
+          result.styleString_ = styleString_;
+        } else {
+          result.styleString_ = styleStringBuilder_.build();
+        }
+        if (untranslatableSectionsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            untranslatableSections_ = java.util.Collections.unmodifiableList(untranslatableSections_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.untranslatableSections_ = untranslatableSections_;
+        } else {
+          result.untranslatableSections_ = untranslatableSectionsBuilder_.build();
+        }
+        if (namespaceStackBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0)) {
+            namespaceStack_ = java.util.Collections.unmodifiableList(namespaceStack_);
+            bitField0_ = (bitField0_ & ~0x00000002);
+          }
+          result.namespaceStack_ = namespaceStack_;
+        } else {
+          result.namespaceStack_ = namespaceStackBuilder_.build();
+        }
+        if (sourceBuilder_ == null) {
+          result.source_ = source_;
+        } else {
+          result.source_ = sourceBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.android.aapt.Resources.MacroBody) {
+          return mergeFrom((com.android.aapt.Resources.MacroBody)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.android.aapt.Resources.MacroBody other) {
+        if (other == com.android.aapt.Resources.MacroBody.getDefaultInstance()) return this;
+        if (!other.getRawString().isEmpty()) {
+          rawString_ = other.rawString_;
+          onChanged();
+        }
+        if (other.hasStyleString()) {
+          mergeStyleString(other.getStyleString());
+        }
+        if (untranslatableSectionsBuilder_ == null) {
+          if (!other.untranslatableSections_.isEmpty()) {
+            if (untranslatableSections_.isEmpty()) {
+              untranslatableSections_ = other.untranslatableSections_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureUntranslatableSectionsIsMutable();
+              untranslatableSections_.addAll(other.untranslatableSections_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.untranslatableSections_.isEmpty()) {
+            if (untranslatableSectionsBuilder_.isEmpty()) {
+              untranslatableSectionsBuilder_.dispose();
+              untranslatableSectionsBuilder_ = null;
+              untranslatableSections_ = other.untranslatableSections_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              untranslatableSectionsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getUntranslatableSectionsFieldBuilder() : null;
+            } else {
+              untranslatableSectionsBuilder_.addAllMessages(other.untranslatableSections_);
+            }
+          }
+        }
+        if (namespaceStackBuilder_ == null) {
+          if (!other.namespaceStack_.isEmpty()) {
+            if (namespaceStack_.isEmpty()) {
+              namespaceStack_ = other.namespaceStack_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+            } else {
+              ensureNamespaceStackIsMutable();
+              namespaceStack_.addAll(other.namespaceStack_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.namespaceStack_.isEmpty()) {
+            if (namespaceStackBuilder_.isEmpty()) {
+              namespaceStackBuilder_.dispose();
+              namespaceStackBuilder_ = null;
+              namespaceStack_ = other.namespaceStack_;
+              bitField0_ = (bitField0_ & ~0x00000002);
+              namespaceStackBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getNamespaceStackFieldBuilder() : null;
+            } else {
+              namespaceStackBuilder_.addAllMessages(other.namespaceStack_);
+            }
+          }
+        }
+        if (other.hasSource()) {
+          mergeSource(other.getSource());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.android.aapt.Resources.MacroBody parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.android.aapt.Resources.MacroBody) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object rawString_ = "";
+      /**
+       * <code>string raw_string = 1;</code>
+       * @return The rawString.
+       */
+      public java.lang.String getRawString() {
+        java.lang.Object ref = rawString_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          rawString_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string raw_string = 1;</code>
+       * @return The bytes for rawString.
+       */
+      public com.google.protobuf.ByteString
+          getRawStringBytes() {
+        java.lang.Object ref = rawString_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          rawString_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string raw_string = 1;</code>
+       * @param value The rawString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRawString(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        rawString_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string raw_string = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearRawString() {
+        
+        rawString_ = getDefaultInstance().getRawString();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string raw_string = 1;</code>
+       * @param value The bytes for rawString to set.
+       * @return This builder for chaining.
+       */
+      public Builder setRawStringBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        rawString_ = value;
+        onChanged();
+        return this;
+      }
+
+      private com.android.aapt.Resources.StyleString styleString_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.StyleString, com.android.aapt.Resources.StyleString.Builder, com.android.aapt.Resources.StyleStringOrBuilder> styleStringBuilder_;
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       * @return Whether the styleString field is set.
+       */
+      public boolean hasStyleString() {
+        return styleStringBuilder_ != null || styleString_ != null;
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       * @return The styleString.
+       */
+      public com.android.aapt.Resources.StyleString getStyleString() {
+        if (styleStringBuilder_ == null) {
+          return styleString_ == null ? com.android.aapt.Resources.StyleString.getDefaultInstance() : styleString_;
+        } else {
+          return styleStringBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public Builder setStyleString(com.android.aapt.Resources.StyleString value) {
+        if (styleStringBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          styleString_ = value;
+          onChanged();
+        } else {
+          styleStringBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public Builder setStyleString(
+          com.android.aapt.Resources.StyleString.Builder builderForValue) {
+        if (styleStringBuilder_ == null) {
+          styleString_ = builderForValue.build();
+          onChanged();
+        } else {
+          styleStringBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public Builder mergeStyleString(com.android.aapt.Resources.StyleString value) {
+        if (styleStringBuilder_ == null) {
+          if (styleString_ != null) {
+            styleString_ =
+              com.android.aapt.Resources.StyleString.newBuilder(styleString_).mergeFrom(value).buildPartial();
+          } else {
+            styleString_ = value;
+          }
+          onChanged();
+        } else {
+          styleStringBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public Builder clearStyleString() {
+        if (styleStringBuilder_ == null) {
+          styleString_ = null;
+          onChanged();
+        } else {
+          styleString_ = null;
+          styleStringBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.Builder getStyleStringBuilder() {
+        
+        onChanged();
+        return getStyleStringFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleStringOrBuilder getStyleStringOrBuilder() {
+        if (styleStringBuilder_ != null) {
+          return styleStringBuilder_.getMessageOrBuilder();
+        } else {
+          return styleString_ == null ?
+              com.android.aapt.Resources.StyleString.getDefaultInstance() : styleString_;
+        }
+      }
+      /**
+       * <code>.aapt.pb.StyleString style_string = 2;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.StyleString, com.android.aapt.Resources.StyleString.Builder, com.android.aapt.Resources.StyleStringOrBuilder> 
+          getStyleStringFieldBuilder() {
+        if (styleStringBuilder_ == null) {
+          styleStringBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.android.aapt.Resources.StyleString, com.android.aapt.Resources.StyleString.Builder, com.android.aapt.Resources.StyleStringOrBuilder>(
+                  getStyleString(),
+                  getParentForChildren(),
+                  isClean());
+          styleString_ = null;
+        }
+        return styleStringBuilder_;
+      }
+
+      private java.util.List<com.android.aapt.Resources.UntranslatableSection> untranslatableSections_ =
+        java.util.Collections.emptyList();
+      private void ensureUntranslatableSectionsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          untranslatableSections_ = new java.util.ArrayList<com.android.aapt.Resources.UntranslatableSection>(untranslatableSections_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.UntranslatableSection, com.android.aapt.Resources.UntranslatableSection.Builder, com.android.aapt.Resources.UntranslatableSectionOrBuilder> untranslatableSectionsBuilder_;
+
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.UntranslatableSection> getUntranslatableSectionsList() {
+        if (untranslatableSectionsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(untranslatableSections_);
+        } else {
+          return untranslatableSectionsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public int getUntranslatableSectionsCount() {
+        if (untranslatableSectionsBuilder_ == null) {
+          return untranslatableSections_.size();
+        } else {
+          return untranslatableSectionsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public com.android.aapt.Resources.UntranslatableSection getUntranslatableSections(int index) {
+        if (untranslatableSectionsBuilder_ == null) {
+          return untranslatableSections_.get(index);
+        } else {
+          return untranslatableSectionsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder setUntranslatableSections(
+          int index, com.android.aapt.Resources.UntranslatableSection value) {
+        if (untranslatableSectionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.set(index, value);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder setUntranslatableSections(
+          int index, com.android.aapt.Resources.UntranslatableSection.Builder builderForValue) {
+        if (untranslatableSectionsBuilder_ == null) {
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder addUntranslatableSections(com.android.aapt.Resources.UntranslatableSection value) {
+        if (untranslatableSectionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.add(value);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder addUntranslatableSections(
+          int index, com.android.aapt.Resources.UntranslatableSection value) {
+        if (untranslatableSectionsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.add(index, value);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder addUntranslatableSections(
+          com.android.aapt.Resources.UntranslatableSection.Builder builderForValue) {
+        if (untranslatableSectionsBuilder_ == null) {
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.add(builderForValue.build());
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder addUntranslatableSections(
+          int index, com.android.aapt.Resources.UntranslatableSection.Builder builderForValue) {
+        if (untranslatableSectionsBuilder_ == null) {
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder addAllUntranslatableSections(
+          java.lang.Iterable<? extends com.android.aapt.Resources.UntranslatableSection> values) {
+        if (untranslatableSectionsBuilder_ == null) {
+          ensureUntranslatableSectionsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, untranslatableSections_);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder clearUntranslatableSections() {
+        if (untranslatableSectionsBuilder_ == null) {
+          untranslatableSections_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public Builder removeUntranslatableSections(int index) {
+        if (untranslatableSectionsBuilder_ == null) {
+          ensureUntranslatableSectionsIsMutable();
+          untranslatableSections_.remove(index);
+          onChanged();
+        } else {
+          untranslatableSectionsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public com.android.aapt.Resources.UntranslatableSection.Builder getUntranslatableSectionsBuilder(
+          int index) {
+        return getUntranslatableSectionsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public com.android.aapt.Resources.UntranslatableSectionOrBuilder getUntranslatableSectionsOrBuilder(
+          int index) {
+        if (untranslatableSectionsBuilder_ == null) {
+          return untranslatableSections_.get(index);  } else {
+          return untranslatableSectionsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public java.util.List<? extends com.android.aapt.Resources.UntranslatableSectionOrBuilder> 
+           getUntranslatableSectionsOrBuilderList() {
+        if (untranslatableSectionsBuilder_ != null) {
+          return untranslatableSectionsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(untranslatableSections_);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public com.android.aapt.Resources.UntranslatableSection.Builder addUntranslatableSectionsBuilder() {
+        return getUntranslatableSectionsFieldBuilder().addBuilder(
+            com.android.aapt.Resources.UntranslatableSection.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public com.android.aapt.Resources.UntranslatableSection.Builder addUntranslatableSectionsBuilder(
+          int index) {
+        return getUntranslatableSectionsFieldBuilder().addBuilder(
+            index, com.android.aapt.Resources.UntranslatableSection.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.UntranslatableSection.Builder> 
+           getUntranslatableSectionsBuilderList() {
+        return getUntranslatableSectionsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.UntranslatableSection, com.android.aapt.Resources.UntranslatableSection.Builder, com.android.aapt.Resources.UntranslatableSectionOrBuilder> 
+          getUntranslatableSectionsFieldBuilder() {
+        if (untranslatableSectionsBuilder_ == null) {
+          untranslatableSectionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.android.aapt.Resources.UntranslatableSection, com.android.aapt.Resources.UntranslatableSection.Builder, com.android.aapt.Resources.UntranslatableSectionOrBuilder>(
+                  untranslatableSections_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          untranslatableSections_ = null;
+        }
+        return untranslatableSectionsBuilder_;
+      }
+
+      private java.util.List<com.android.aapt.Resources.NamespaceAlias> namespaceStack_ =
+        java.util.Collections.emptyList();
+      private void ensureNamespaceStackIsMutable() {
+        if (!((bitField0_ & 0x00000002) != 0)) {
+          namespaceStack_ = new java.util.ArrayList<com.android.aapt.Resources.NamespaceAlias>(namespaceStack_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.NamespaceAlias, com.android.aapt.Resources.NamespaceAlias.Builder, com.android.aapt.Resources.NamespaceAliasOrBuilder> namespaceStackBuilder_;
+
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.NamespaceAlias> getNamespaceStackList() {
+        if (namespaceStackBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(namespaceStack_);
+        } else {
+          return namespaceStackBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public int getNamespaceStackCount() {
+        if (namespaceStackBuilder_ == null) {
+          return namespaceStack_.size();
+        } else {
+          return namespaceStackBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public com.android.aapt.Resources.NamespaceAlias getNamespaceStack(int index) {
+        if (namespaceStackBuilder_ == null) {
+          return namespaceStack_.get(index);
+        } else {
+          return namespaceStackBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder setNamespaceStack(
+          int index, com.android.aapt.Resources.NamespaceAlias value) {
+        if (namespaceStackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.set(index, value);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder setNamespaceStack(
+          int index, com.android.aapt.Resources.NamespaceAlias.Builder builderForValue) {
+        if (namespaceStackBuilder_ == null) {
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          namespaceStackBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder addNamespaceStack(com.android.aapt.Resources.NamespaceAlias value) {
+        if (namespaceStackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.add(value);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder addNamespaceStack(
+          int index, com.android.aapt.Resources.NamespaceAlias value) {
+        if (namespaceStackBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.add(index, value);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder addNamespaceStack(
+          com.android.aapt.Resources.NamespaceAlias.Builder builderForValue) {
+        if (namespaceStackBuilder_ == null) {
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.add(builderForValue.build());
+          onChanged();
+        } else {
+          namespaceStackBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder addNamespaceStack(
+          int index, com.android.aapt.Resources.NamespaceAlias.Builder builderForValue) {
+        if (namespaceStackBuilder_ == null) {
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          namespaceStackBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder addAllNamespaceStack(
+          java.lang.Iterable<? extends com.android.aapt.Resources.NamespaceAlias> values) {
+        if (namespaceStackBuilder_ == null) {
+          ensureNamespaceStackIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, namespaceStack_);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder clearNamespaceStack() {
+        if (namespaceStackBuilder_ == null) {
+          namespaceStack_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000002);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public Builder removeNamespaceStack(int index) {
+        if (namespaceStackBuilder_ == null) {
+          ensureNamespaceStackIsMutable();
+          namespaceStack_.remove(index);
+          onChanged();
+        } else {
+          namespaceStackBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public com.android.aapt.Resources.NamespaceAlias.Builder getNamespaceStackBuilder(
+          int index) {
+        return getNamespaceStackFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public com.android.aapt.Resources.NamespaceAliasOrBuilder getNamespaceStackOrBuilder(
+          int index) {
+        if (namespaceStackBuilder_ == null) {
+          return namespaceStack_.get(index);  } else {
+          return namespaceStackBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public java.util.List<? extends com.android.aapt.Resources.NamespaceAliasOrBuilder> 
+           getNamespaceStackOrBuilderList() {
+        if (namespaceStackBuilder_ != null) {
+          return namespaceStackBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(namespaceStack_);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public com.android.aapt.Resources.NamespaceAlias.Builder addNamespaceStackBuilder() {
+        return getNamespaceStackFieldBuilder().addBuilder(
+            com.android.aapt.Resources.NamespaceAlias.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public com.android.aapt.Resources.NamespaceAlias.Builder addNamespaceStackBuilder(
+          int index) {
+        return getNamespaceStackFieldBuilder().addBuilder(
+            index, com.android.aapt.Resources.NamespaceAlias.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.NamespaceAlias.Builder> 
+           getNamespaceStackBuilderList() {
+        return getNamespaceStackFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.NamespaceAlias, com.android.aapt.Resources.NamespaceAlias.Builder, com.android.aapt.Resources.NamespaceAliasOrBuilder> 
+          getNamespaceStackFieldBuilder() {
+        if (namespaceStackBuilder_ == null) {
+          namespaceStackBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.android.aapt.Resources.NamespaceAlias, com.android.aapt.Resources.NamespaceAlias.Builder, com.android.aapt.Resources.NamespaceAliasOrBuilder>(
+                  namespaceStack_,
+                  ((bitField0_ & 0x00000002) != 0),
+                  getParentForChildren(),
+                  isClean());
+          namespaceStack_ = null;
+        }
+        return namespaceStackBuilder_;
+      }
+
+      private com.android.aapt.Resources.SourcePosition source_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.SourcePosition, com.android.aapt.Resources.SourcePosition.Builder, com.android.aapt.Resources.SourcePositionOrBuilder> sourceBuilder_;
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       * @return Whether the source field is set.
+       */
+      public boolean hasSource() {
+        return sourceBuilder_ != null || source_ != null;
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       * @return The source.
+       */
+      public com.android.aapt.Resources.SourcePosition getSource() {
+        if (sourceBuilder_ == null) {
+          return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
+        } else {
+          return sourceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public Builder setSource(com.android.aapt.Resources.SourcePosition value) {
+        if (sourceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          source_ = value;
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public Builder setSource(
+          com.android.aapt.Resources.SourcePosition.Builder builderForValue) {
+        if (sourceBuilder_ == null) {
+          source_ = builderForValue.build();
+          onChanged();
+        } else {
+          sourceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public Builder mergeSource(com.android.aapt.Resources.SourcePosition value) {
+        if (sourceBuilder_ == null) {
+          if (source_ != null) {
+            source_ =
+              com.android.aapt.Resources.SourcePosition.newBuilder(source_).mergeFrom(value).buildPartial();
+          } else {
+            source_ = value;
+          }
+          onChanged();
+        } else {
+          sourceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public Builder clearSource() {
+        if (sourceBuilder_ == null) {
+          source_ = null;
+          onChanged();
+        } else {
+          source_ = null;
+          sourceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public com.android.aapt.Resources.SourcePosition.Builder getSourceBuilder() {
+        
+        onChanged();
+        return getSourceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
+        if (sourceBuilder_ != null) {
+          return sourceBuilder_.getMessageOrBuilder();
+        } else {
+          return source_ == null ?
+              com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
+        }
+      }
+      /**
+       * <code>.aapt.pb.SourcePosition source = 5;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.android.aapt.Resources.SourcePosition, com.android.aapt.Resources.SourcePosition.Builder, com.android.aapt.Resources.SourcePositionOrBuilder> 
+          getSourceFieldBuilder() {
+        if (sourceBuilder_ == null) {
+          sourceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.android.aapt.Resources.SourcePosition, com.android.aapt.Resources.SourcePosition.Builder, com.android.aapt.Resources.SourcePositionOrBuilder>(
+                  getSource(),
+                  getParentForChildren(),
+                  isClean());
+          source_ = null;
+        }
+        return sourceBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:aapt.pb.MacroBody)
+    }
+
+    // @@protoc_insertion_point(class_scope:aapt.pb.MacroBody)
+    private static final com.android.aapt.Resources.MacroBody DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.android.aapt.Resources.MacroBody();
+    }
+
+    public static com.android.aapt.Resources.MacroBody getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<MacroBody>
+        PARSER = new com.google.protobuf.AbstractParser<MacroBody>() {
+      @java.lang.Override
+      public MacroBody parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new MacroBody(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<MacroBody> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MacroBody> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.android.aapt.Resources.MacroBody getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface NamespaceAliasOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:aapt.pb.NamespaceAlias)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string prefix = 1;</code>
+     * @return The prefix.
+     */
+    java.lang.String getPrefix();
+    /**
+     * <code>string prefix = 1;</code>
+     * @return The bytes for prefix.
+     */
+    com.google.protobuf.ByteString
+        getPrefixBytes();
+
+    /**
+     * <code>string package_name = 2;</code>
+     * @return The packageName.
+     */
+    java.lang.String getPackageName();
+    /**
+     * <code>string package_name = 2;</code>
+     * @return The bytes for packageName.
+     */
+    com.google.protobuf.ByteString
+        getPackageNameBytes();
+
+    /**
+     * <code>bool is_private = 3;</code>
+     * @return The isPrivate.
+     */
+    boolean getIsPrivate();
+  }
+  /**
+   * Protobuf type {@code aapt.pb.NamespaceAlias}
+   */
+  public  static final class NamespaceAlias extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:aapt.pb.NamespaceAlias)
+      NamespaceAliasOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NamespaceAlias.newBuilder() to construct.
+    private NamespaceAlias(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NamespaceAlias() {
+      prefix_ = "";
+      packageName_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new NamespaceAlias();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NamespaceAlias(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              prefix_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              packageName_ = s;
+              break;
+            }
+            case 24: {
+
+              isPrivate_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_NamespaceAlias_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_NamespaceAlias_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.android.aapt.Resources.NamespaceAlias.class, com.android.aapt.Resources.NamespaceAlias.Builder.class);
+    }
+
+    public static final int PREFIX_FIELD_NUMBER = 1;
+    private volatile java.lang.Object prefix_;
+    /**
+     * <code>string prefix = 1;</code>
+     * @return The prefix.
+     */
+    public java.lang.String getPrefix() {
+      java.lang.Object ref = prefix_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        prefix_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string prefix = 1;</code>
+     * @return The bytes for prefix.
+     */
+    public com.google.protobuf.ByteString
+        getPrefixBytes() {
+      java.lang.Object ref = prefix_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        prefix_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PACKAGE_NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object packageName_;
+    /**
+     * <code>string package_name = 2;</code>
+     * @return The packageName.
+     */
+    public java.lang.String getPackageName() {
+      java.lang.Object ref = packageName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        packageName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string package_name = 2;</code>
+     * @return The bytes for packageName.
+     */
+    public com.google.protobuf.ByteString
+        getPackageNameBytes() {
+      java.lang.Object ref = packageName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        packageName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IS_PRIVATE_FIELD_NUMBER = 3;
+    private boolean isPrivate_;
+    /**
+     * <code>bool is_private = 3;</code>
+     * @return The isPrivate.
+     */
+    public boolean getIsPrivate() {
+      return isPrivate_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPrefixBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, prefix_);
+      }
+      if (!getPackageNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, packageName_);
+      }
+      if (isPrivate_ != false) {
+        output.writeBool(3, isPrivate_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPrefixBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, prefix_);
+      }
+      if (!getPackageNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, packageName_);
+      }
+      if (isPrivate_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, isPrivate_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.android.aapt.Resources.NamespaceAlias)) {
+        return super.equals(obj);
+      }
+      com.android.aapt.Resources.NamespaceAlias other = (com.android.aapt.Resources.NamespaceAlias) obj;
+
+      if (!getPrefix()
+          .equals(other.getPrefix())) return false;
+      if (!getPackageName()
+          .equals(other.getPackageName())) return false;
+      if (getIsPrivate()
+          != other.getIsPrivate()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PREFIX_FIELD_NUMBER;
+      hash = (53 * hash) + getPrefix().hashCode();
+      hash = (37 * hash) + PACKAGE_NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getPackageName().hashCode();
+      hash = (37 * hash) + IS_PRIVATE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getIsPrivate());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.NamespaceAlias parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.android.aapt.Resources.NamespaceAlias prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code aapt.pb.NamespaceAlias}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:aapt.pb.NamespaceAlias)
+        com.android.aapt.Resources.NamespaceAliasOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_NamespaceAlias_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_NamespaceAlias_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.NamespaceAlias.class, com.android.aapt.Resources.NamespaceAlias.Builder.class);
+      }
+
+      // Construct using com.android.aapt.Resources.NamespaceAlias.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        prefix_ = "";
+
+        packageName_ = "";
+
+        isPrivate_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_NamespaceAlias_descriptor;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.NamespaceAlias getDefaultInstanceForType() {
+        return com.android.aapt.Resources.NamespaceAlias.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.NamespaceAlias build() {
+        com.android.aapt.Resources.NamespaceAlias result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.NamespaceAlias buildPartial() {
+        com.android.aapt.Resources.NamespaceAlias result = new com.android.aapt.Resources.NamespaceAlias(this);
+        result.prefix_ = prefix_;
+        result.packageName_ = packageName_;
+        result.isPrivate_ = isPrivate_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.android.aapt.Resources.NamespaceAlias) {
+          return mergeFrom((com.android.aapt.Resources.NamespaceAlias)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.android.aapt.Resources.NamespaceAlias other) {
+        if (other == com.android.aapt.Resources.NamespaceAlias.getDefaultInstance()) return this;
+        if (!other.getPrefix().isEmpty()) {
+          prefix_ = other.prefix_;
+          onChanged();
+        }
+        if (!other.getPackageName().isEmpty()) {
+          packageName_ = other.packageName_;
+          onChanged();
+        }
+        if (other.getIsPrivate() != false) {
+          setIsPrivate(other.getIsPrivate());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.android.aapt.Resources.NamespaceAlias parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.android.aapt.Resources.NamespaceAlias) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object prefix_ = "";
+      /**
+       * <code>string prefix = 1;</code>
+       * @return The prefix.
+       */
+      public java.lang.String getPrefix() {
+        java.lang.Object ref = prefix_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          prefix_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string prefix = 1;</code>
+       * @return The bytes for prefix.
+       */
+      public com.google.protobuf.ByteString
+          getPrefixBytes() {
+        java.lang.Object ref = prefix_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          prefix_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string prefix = 1;</code>
+       * @param value The prefix to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPrefix(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        prefix_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefix = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPrefix() {
+        
+        prefix_ = getDefaultInstance().getPrefix();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string prefix = 1;</code>
+       * @param value The bytes for prefix to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPrefixBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        prefix_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object packageName_ = "";
+      /**
+       * <code>string package_name = 2;</code>
+       * @return The packageName.
+       */
+      public java.lang.String getPackageName() {
+        java.lang.Object ref = packageName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          packageName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string package_name = 2;</code>
+       * @return The bytes for packageName.
+       */
+      public com.google.protobuf.ByteString
+          getPackageNameBytes() {
+        java.lang.Object ref = packageName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          packageName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string package_name = 2;</code>
+       * @param value The packageName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPackageName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        packageName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string package_name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPackageName() {
+        
+        packageName_ = getDefaultInstance().getPackageName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string package_name = 2;</code>
+       * @param value The bytes for packageName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPackageNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        packageName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean isPrivate_ ;
+      /**
+       * <code>bool is_private = 3;</code>
+       * @return The isPrivate.
+       */
+      public boolean getIsPrivate() {
+        return isPrivate_;
+      }
+      /**
+       * <code>bool is_private = 3;</code>
+       * @param value The isPrivate to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsPrivate(boolean value) {
+        
+        isPrivate_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool is_private = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsPrivate() {
+        
+        isPrivate_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:aapt.pb.NamespaceAlias)
+    }
+
+    // @@protoc_insertion_point(class_scope:aapt.pb.NamespaceAlias)
+    private static final com.android.aapt.Resources.NamespaceAlias DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.android.aapt.Resources.NamespaceAlias();
+    }
+
+    public static com.android.aapt.Resources.NamespaceAlias getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<NamespaceAlias>
+        PARSER = new com.google.protobuf.AbstractParser<NamespaceAlias>() {
+      @java.lang.Override
+      public NamespaceAlias parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NamespaceAlias(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NamespaceAlias> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NamespaceAlias> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.android.aapt.Resources.NamespaceAlias getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface StyleStringOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:aapt.pb.StyleString)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string str = 1;</code>
+     * @return The str.
+     */
+    java.lang.String getStr();
+    /**
+     * <code>string str = 1;</code>
+     * @return The bytes for str.
+     */
+    com.google.protobuf.ByteString
+        getStrBytes();
+
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    java.util.List<com.android.aapt.Resources.StyleString.Span> 
+        getSpansList();
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    com.android.aapt.Resources.StyleString.Span getSpans(int index);
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    int getSpansCount();
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    java.util.List<? extends com.android.aapt.Resources.StyleString.SpanOrBuilder> 
+        getSpansOrBuilderList();
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    com.android.aapt.Resources.StyleString.SpanOrBuilder getSpansOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code aapt.pb.StyleString}
+   */
+  public  static final class StyleString extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:aapt.pb.StyleString)
+      StyleStringOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use StyleString.newBuilder() to construct.
+    private StyleString(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private StyleString() {
+      str_ = "";
+      spans_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new StyleString();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private StyleString(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              str_ = s;
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                spans_ = new java.util.ArrayList<com.android.aapt.Resources.StyleString.Span>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              spans_.add(
+                  input.readMessage(com.android.aapt.Resources.StyleString.Span.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          spans_ = java.util.Collections.unmodifiableList(spans_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.android.aapt.Resources.StyleString.class, com.android.aapt.Resources.StyleString.Builder.class);
+    }
+
+    public interface SpanOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:aapt.pb.StyleString.Span)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>string name = 1;</code>
+       * @return The name.
+       */
+      java.lang.String getName();
+      /**
+       * <code>string name = 1;</code>
+       * @return The bytes for name.
+       */
+      com.google.protobuf.ByteString
+          getNameBytes();
+
+      /**
+       * <code>uint32 start_index = 2;</code>
+       * @return The startIndex.
+       */
+      int getStartIndex();
+
+      /**
+       * <code>uint32 end_index = 3;</code>
+       * @return The endIndex.
+       */
+      int getEndIndex();
+    }
+    /**
+     * Protobuf type {@code aapt.pb.StyleString.Span}
+     */
+    public  static final class Span extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:aapt.pb.StyleString.Span)
+        SpanOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Span.newBuilder() to construct.
+      private Span(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Span() {
+        name_ = "";
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new Span();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Span(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 10: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                name_ = s;
+                break;
+              }
+              case 16: {
+
+                startIndex_ = input.readUInt32();
+                break;
+              }
+              case 24: {
+
+                endIndex_ = input.readUInt32();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_Span_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_Span_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.StyleString.Span.class, com.android.aapt.Resources.StyleString.Span.Builder.class);
+      }
+
+      public static final int NAME_FIELD_NUMBER = 1;
+      private volatile java.lang.Object name_;
+      /**
+       * <code>string name = 1;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int START_INDEX_FIELD_NUMBER = 2;
+      private int startIndex_;
+      /**
+       * <code>uint32 start_index = 2;</code>
+       * @return The startIndex.
+       */
+      public int getStartIndex() {
+        return startIndex_;
+      }
+
+      public static final int END_INDEX_FIELD_NUMBER = 3;
+      private int endIndex_;
+      /**
+       * <code>uint32 end_index = 3;</code>
+       * @return The endIndex.
+       */
+      public int getEndIndex() {
+        return endIndex_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (!getNameBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+        }
+        if (startIndex_ != 0) {
+          output.writeUInt32(2, startIndex_);
+        }
+        if (endIndex_ != 0) {
+          output.writeUInt32(3, endIndex_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (!getNameBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+        }
+        if (startIndex_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt32Size(2, startIndex_);
+        }
+        if (endIndex_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeUInt32Size(3, endIndex_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof com.android.aapt.Resources.StyleString.Span)) {
+          return super.equals(obj);
+        }
+        com.android.aapt.Resources.StyleString.Span other = (com.android.aapt.Resources.StyleString.Span) obj;
+
+        if (!getName()
+            .equals(other.getName())) return false;
+        if (getStartIndex()
+            != other.getStartIndex()) return false;
+        if (getEndIndex()
+            != other.getEndIndex()) return false;
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        hash = (37 * hash) + START_INDEX_FIELD_NUMBER;
+        hash = (53 * hash) + getStartIndex();
+        hash = (37 * hash) + END_INDEX_FIELD_NUMBER;
+        hash = (53 * hash) + getEndIndex();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.android.aapt.Resources.StyleString.Span parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(com.android.aapt.Resources.StyleString.Span prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code aapt.pb.StyleString.Span}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:aapt.pb.StyleString.Span)
+          com.android.aapt.Resources.StyleString.SpanOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_Span_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_Span_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.android.aapt.Resources.StyleString.Span.class, com.android.aapt.Resources.StyleString.Span.Builder.class);
+        }
+
+        // Construct using com.android.aapt.Resources.StyleString.Span.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          name_ = "";
+
+          startIndex_ = 0;
+
+          endIndex_ = 0;
+
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_Span_descriptor;
+        }
+
+        @java.lang.Override
+        public com.android.aapt.Resources.StyleString.Span getDefaultInstanceForType() {
+          return com.android.aapt.Resources.StyleString.Span.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.android.aapt.Resources.StyleString.Span build() {
+          com.android.aapt.Resources.StyleString.Span result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public com.android.aapt.Resources.StyleString.Span buildPartial() {
+          com.android.aapt.Resources.StyleString.Span result = new com.android.aapt.Resources.StyleString.Span(this);
+          result.name_ = name_;
+          result.startIndex_ = startIndex_;
+          result.endIndex_ = endIndex_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.android.aapt.Resources.StyleString.Span) {
+            return mergeFrom((com.android.aapt.Resources.StyleString.Span)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.android.aapt.Resources.StyleString.Span other) {
+          if (other == com.android.aapt.Resources.StyleString.Span.getDefaultInstance()) return this;
+          if (!other.getName().isEmpty()) {
+            name_ = other.name_;
+            onChanged();
+          }
+          if (other.getStartIndex() != 0) {
+            setStartIndex(other.getStartIndex());
+          }
+          if (other.getEndIndex() != 0) {
+            setEndIndex(other.getEndIndex());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.android.aapt.Resources.StyleString.Span parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.android.aapt.Resources.StyleString.Span) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private java.lang.Object name_ = "";
+        /**
+         * <code>string name = 1;</code>
+         * @return The name.
+         */
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string name = 1;</code>
+         * @return The bytes for name.
+         */
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string name = 1;</code>
+         * @param value The name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setName(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          name_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearName() {
+          
+          name_ = getDefaultInstance().getName();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 1;</code>
+         * @param value The bytes for name to set.
+         * @return This builder for chaining.
+         */
+        public Builder setNameBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          name_ = value;
+          onChanged();
+          return this;
+        }
+
+        private int startIndex_ ;
+        /**
+         * <code>uint32 start_index = 2;</code>
+         * @return The startIndex.
+         */
+        public int getStartIndex() {
+          return startIndex_;
+        }
+        /**
+         * <code>uint32 start_index = 2;</code>
+         * @param value The startIndex to set.
+         * @return This builder for chaining.
+         */
+        public Builder setStartIndex(int value) {
+          
+          startIndex_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>uint32 start_index = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearStartIndex() {
+          
+          startIndex_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int endIndex_ ;
+        /**
+         * <code>uint32 end_index = 3;</code>
+         * @return The endIndex.
+         */
+        public int getEndIndex() {
+          return endIndex_;
+        }
+        /**
+         * <code>uint32 end_index = 3;</code>
+         * @param value The endIndex to set.
+         * @return This builder for chaining.
+         */
+        public Builder setEndIndex(int value) {
+          
+          endIndex_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>uint32 end_index = 3;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearEndIndex() {
+          
+          endIndex_ = 0;
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:aapt.pb.StyleString.Span)
+      }
+
+      // @@protoc_insertion_point(class_scope:aapt.pb.StyleString.Span)
+      private static final com.android.aapt.Resources.StyleString.Span DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new com.android.aapt.Resources.StyleString.Span();
+      }
+
+      public static com.android.aapt.Resources.StyleString.Span getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<Span>
+          PARSER = new com.google.protobuf.AbstractParser<Span>() {
+        @java.lang.Override
+        public Span parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Span(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<Span> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Span> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StyleString.Span getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public static final int STR_FIELD_NUMBER = 1;
+    private volatile java.lang.Object str_;
+    /**
+     * <code>string str = 1;</code>
+     * @return The str.
+     */
+    public java.lang.String getStr() {
+      java.lang.Object ref = str_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        str_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string str = 1;</code>
+     * @return The bytes for str.
+     */
+    public com.google.protobuf.ByteString
+        getStrBytes() {
+      java.lang.Object ref = str_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        str_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SPANS_FIELD_NUMBER = 2;
+    private java.util.List<com.android.aapt.Resources.StyleString.Span> spans_;
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    public java.util.List<com.android.aapt.Resources.StyleString.Span> getSpansList() {
+      return spans_;
+    }
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    public java.util.List<? extends com.android.aapt.Resources.StyleString.SpanOrBuilder> 
+        getSpansOrBuilderList() {
+      return spans_;
+    }
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    public int getSpansCount() {
+      return spans_.size();
+    }
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    public com.android.aapt.Resources.StyleString.Span getSpans(int index) {
+      return spans_.get(index);
+    }
+    /**
+     * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+     */
+    public com.android.aapt.Resources.StyleString.SpanOrBuilder getSpansOrBuilder(
+        int index) {
+      return spans_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getStrBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, str_);
+      }
+      for (int i = 0; i < spans_.size(); i++) {
+        output.writeMessage(2, spans_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getStrBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, str_);
+      }
+      for (int i = 0; i < spans_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, spans_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.android.aapt.Resources.StyleString)) {
+        return super.equals(obj);
+      }
+      com.android.aapt.Resources.StyleString other = (com.android.aapt.Resources.StyleString) obj;
+
+      if (!getStr()
+          .equals(other.getStr())) return false;
+      if (!getSpansList()
+          .equals(other.getSpansList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + STR_FIELD_NUMBER;
+      hash = (53 * hash) + getStr().hashCode();
+      if (getSpansCount() > 0) {
+        hash = (37 * hash) + SPANS_FIELD_NUMBER;
+        hash = (53 * hash) + getSpansList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StyleString parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StyleString parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.StyleString parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.android.aapt.Resources.StyleString prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code aapt.pb.StyleString}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:aapt.pb.StyleString)
+        com.android.aapt.Resources.StyleStringOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.StyleString.class, com.android.aapt.Resources.StyleString.Builder.class);
+      }
+
+      // Construct using com.android.aapt.Resources.StyleString.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getSpansFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        str_ = "";
+
+        if (spansBuilder_ == null) {
+          spans_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          spansBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_StyleString_descriptor;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StyleString getDefaultInstanceForType() {
+        return com.android.aapt.Resources.StyleString.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StyleString build() {
+        com.android.aapt.Resources.StyleString result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.StyleString buildPartial() {
+        com.android.aapt.Resources.StyleString result = new com.android.aapt.Resources.StyleString(this);
+        int from_bitField0_ = bitField0_;
+        result.str_ = str_;
+        if (spansBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            spans_ = java.util.Collections.unmodifiableList(spans_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.spans_ = spans_;
+        } else {
+          result.spans_ = spansBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.android.aapt.Resources.StyleString) {
+          return mergeFrom((com.android.aapt.Resources.StyleString)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.android.aapt.Resources.StyleString other) {
+        if (other == com.android.aapt.Resources.StyleString.getDefaultInstance()) return this;
+        if (!other.getStr().isEmpty()) {
+          str_ = other.str_;
+          onChanged();
+        }
+        if (spansBuilder_ == null) {
+          if (!other.spans_.isEmpty()) {
+            if (spans_.isEmpty()) {
+              spans_ = other.spans_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureSpansIsMutable();
+              spans_.addAll(other.spans_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.spans_.isEmpty()) {
+            if (spansBuilder_.isEmpty()) {
+              spansBuilder_.dispose();
+              spansBuilder_ = null;
+              spans_ = other.spans_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              spansBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getSpansFieldBuilder() : null;
+            } else {
+              spansBuilder_.addAllMessages(other.spans_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.android.aapt.Resources.StyleString parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.android.aapt.Resources.StyleString) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object str_ = "";
+      /**
+       * <code>string str = 1;</code>
+       * @return The str.
+       */
+      public java.lang.String getStr() {
+        java.lang.Object ref = str_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          str_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string str = 1;</code>
+       * @return The bytes for str.
+       */
+      public com.google.protobuf.ByteString
+          getStrBytes() {
+        java.lang.Object ref = str_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          str_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string str = 1;</code>
+       * @param value The str to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStr(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        str_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string str = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStr() {
+        
+        str_ = getDefaultInstance().getStr();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string str = 1;</code>
+       * @param value The bytes for str to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStrBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        str_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<com.android.aapt.Resources.StyleString.Span> spans_ =
+        java.util.Collections.emptyList();
+      private void ensureSpansIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          spans_ = new java.util.ArrayList<com.android.aapt.Resources.StyleString.Span>(spans_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.StyleString.Span, com.android.aapt.Resources.StyleString.Span.Builder, com.android.aapt.Resources.StyleString.SpanOrBuilder> spansBuilder_;
+
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.StyleString.Span> getSpansList() {
+        if (spansBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(spans_);
+        } else {
+          return spansBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public int getSpansCount() {
+        if (spansBuilder_ == null) {
+          return spans_.size();
+        } else {
+          return spansBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.Span getSpans(int index) {
+        if (spansBuilder_ == null) {
+          return spans_.get(index);
+        } else {
+          return spansBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder setSpans(
+          int index, com.android.aapt.Resources.StyleString.Span value) {
+        if (spansBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSpansIsMutable();
+          spans_.set(index, value);
+          onChanged();
+        } else {
+          spansBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder setSpans(
+          int index, com.android.aapt.Resources.StyleString.Span.Builder builderForValue) {
+        if (spansBuilder_ == null) {
+          ensureSpansIsMutable();
+          spans_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          spansBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder addSpans(com.android.aapt.Resources.StyleString.Span value) {
+        if (spansBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSpansIsMutable();
+          spans_.add(value);
+          onChanged();
+        } else {
+          spansBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder addSpans(
+          int index, com.android.aapt.Resources.StyleString.Span value) {
+        if (spansBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSpansIsMutable();
+          spans_.add(index, value);
+          onChanged();
+        } else {
+          spansBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder addSpans(
+          com.android.aapt.Resources.StyleString.Span.Builder builderForValue) {
+        if (spansBuilder_ == null) {
+          ensureSpansIsMutable();
+          spans_.add(builderForValue.build());
+          onChanged();
+        } else {
+          spansBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder addSpans(
+          int index, com.android.aapt.Resources.StyleString.Span.Builder builderForValue) {
+        if (spansBuilder_ == null) {
+          ensureSpansIsMutable();
+          spans_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          spansBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder addAllSpans(
+          java.lang.Iterable<? extends com.android.aapt.Resources.StyleString.Span> values) {
+        if (spansBuilder_ == null) {
+          ensureSpansIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, spans_);
+          onChanged();
+        } else {
+          spansBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder clearSpans() {
+        if (spansBuilder_ == null) {
+          spans_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          spansBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public Builder removeSpans(int index) {
+        if (spansBuilder_ == null) {
+          ensureSpansIsMutable();
+          spans_.remove(index);
+          onChanged();
+        } else {
+          spansBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.Span.Builder getSpansBuilder(
+          int index) {
+        return getSpansFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.SpanOrBuilder getSpansOrBuilder(
+          int index) {
+        if (spansBuilder_ == null) {
+          return spans_.get(index);  } else {
+          return spansBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public java.util.List<? extends com.android.aapt.Resources.StyleString.SpanOrBuilder> 
+           getSpansOrBuilderList() {
+        if (spansBuilder_ != null) {
+          return spansBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(spans_);
+        }
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.Span.Builder addSpansBuilder() {
+        return getSpansFieldBuilder().addBuilder(
+            com.android.aapt.Resources.StyleString.Span.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public com.android.aapt.Resources.StyleString.Span.Builder addSpansBuilder(
+          int index) {
+        return getSpansFieldBuilder().addBuilder(
+            index, com.android.aapt.Resources.StyleString.Span.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
+       */
+      public java.util.List<com.android.aapt.Resources.StyleString.Span.Builder> 
+           getSpansBuilderList() {
+        return getSpansFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          com.android.aapt.Resources.StyleString.Span, com.android.aapt.Resources.StyleString.Span.Builder, com.android.aapt.Resources.StyleString.SpanOrBuilder> 
+          getSpansFieldBuilder() {
+        if (spansBuilder_ == null) {
+          spansBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              com.android.aapt.Resources.StyleString.Span, com.android.aapt.Resources.StyleString.Span.Builder, com.android.aapt.Resources.StyleString.SpanOrBuilder>(
+                  spans_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          spans_ = null;
+        }
+        return spansBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:aapt.pb.StyleString)
+    }
+
+    // @@protoc_insertion_point(class_scope:aapt.pb.StyleString)
+    private static final com.android.aapt.Resources.StyleString DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.android.aapt.Resources.StyleString();
+    }
+
+    public static com.android.aapt.Resources.StyleString getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<StyleString>
+        PARSER = new com.google.protobuf.AbstractParser<StyleString>() {
+      @java.lang.Override
+      public StyleString parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new StyleString(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<StyleString> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<StyleString> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.android.aapt.Resources.StyleString getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface UntranslatableSectionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:aapt.pb.UntranslatableSection)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>uint64 start_index = 1;</code>
+     * @return The startIndex.
+     */
+    long getStartIndex();
+
+    /**
+     * <code>uint64 end_index = 2;</code>
+     * @return The endIndex.
+     */
+    long getEndIndex();
+  }
+  /**
+   * Protobuf type {@code aapt.pb.UntranslatableSection}
+   */
+  public  static final class UntranslatableSection extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:aapt.pb.UntranslatableSection)
+      UntranslatableSectionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use UntranslatableSection.newBuilder() to construct.
+    private UntranslatableSection(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private UntranslatableSection() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new UntranslatableSection();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private UntranslatableSection(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              startIndex_ = input.readUInt64();
+              break;
+            }
+            case 16: {
+
+              endIndex_ = input.readUInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_UntranslatableSection_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.android.aapt.Resources.internal_static_aapt_pb_UntranslatableSection_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.android.aapt.Resources.UntranslatableSection.class, com.android.aapt.Resources.UntranslatableSection.Builder.class);
+    }
+
+    public static final int START_INDEX_FIELD_NUMBER = 1;
+    private long startIndex_;
+    /**
+     * <code>uint64 start_index = 1;</code>
+     * @return The startIndex.
+     */
+    public long getStartIndex() {
+      return startIndex_;
+    }
+
+    public static final int END_INDEX_FIELD_NUMBER = 2;
+    private long endIndex_;
+    /**
+     * <code>uint64 end_index = 2;</code>
+     * @return The endIndex.
+     */
+    public long getEndIndex() {
+      return endIndex_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (startIndex_ != 0L) {
+        output.writeUInt64(1, startIndex_);
+      }
+      if (endIndex_ != 0L) {
+        output.writeUInt64(2, endIndex_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (startIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(1, startIndex_);
+      }
+      if (endIndex_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(2, endIndex_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.android.aapt.Resources.UntranslatableSection)) {
+        return super.equals(obj);
+      }
+      com.android.aapt.Resources.UntranslatableSection other = (com.android.aapt.Resources.UntranslatableSection) obj;
+
+      if (getStartIndex()
+          != other.getStartIndex()) return false;
+      if (getEndIndex()
+          != other.getEndIndex()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + START_INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getStartIndex());
+      hash = (37 * hash) + END_INDEX_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getEndIndex());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.android.aapt.Resources.UntranslatableSection parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.android.aapt.Resources.UntranslatableSection prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code aapt.pb.UntranslatableSection}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:aapt.pb.UntranslatableSection)
+        com.android.aapt.Resources.UntranslatableSectionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_UntranslatableSection_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_UntranslatableSection_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.android.aapt.Resources.UntranslatableSection.class, com.android.aapt.Resources.UntranslatableSection.Builder.class);
+      }
+
+      // Construct using com.android.aapt.Resources.UntranslatableSection.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        startIndex_ = 0L;
+
+        endIndex_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.android.aapt.Resources.internal_static_aapt_pb_UntranslatableSection_descriptor;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.UntranslatableSection getDefaultInstanceForType() {
+        return com.android.aapt.Resources.UntranslatableSection.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.UntranslatableSection build() {
+        com.android.aapt.Resources.UntranslatableSection result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.android.aapt.Resources.UntranslatableSection buildPartial() {
+        com.android.aapt.Resources.UntranslatableSection result = new com.android.aapt.Resources.UntranslatableSection(this);
+        result.startIndex_ = startIndex_;
+        result.endIndex_ = endIndex_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.android.aapt.Resources.UntranslatableSection) {
+          return mergeFrom((com.android.aapt.Resources.UntranslatableSection)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.android.aapt.Resources.UntranslatableSection other) {
+        if (other == com.android.aapt.Resources.UntranslatableSection.getDefaultInstance()) return this;
+        if (other.getStartIndex() != 0L) {
+          setStartIndex(other.getStartIndex());
+        }
+        if (other.getEndIndex() != 0L) {
+          setEndIndex(other.getEndIndex());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.android.aapt.Resources.UntranslatableSection parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.android.aapt.Resources.UntranslatableSection) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private long startIndex_ ;
+      /**
+       * <code>uint64 start_index = 1;</code>
+       * @return The startIndex.
+       */
+      public long getStartIndex() {
+        return startIndex_;
+      }
+      /**
+       * <code>uint64 start_index = 1;</code>
+       * @param value The startIndex to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStartIndex(long value) {
+        
+        startIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 start_index = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStartIndex() {
+        
+        startIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private long endIndex_ ;
+      /**
+       * <code>uint64 end_index = 2;</code>
+       * @return The endIndex.
+       */
+      public long getEndIndex() {
+        return endIndex_;
+      }
+      /**
+       * <code>uint64 end_index = 2;</code>
+       * @param value The endIndex to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEndIndex(long value) {
+        
+        endIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>uint64 end_index = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEndIndex() {
+        
+        endIndex_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:aapt.pb.UntranslatableSection)
+    }
+
+    // @@protoc_insertion_point(class_scope:aapt.pb.UntranslatableSection)
+    private static final com.android.aapt.Resources.UntranslatableSection DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.android.aapt.Resources.UntranslatableSection();
+    }
+
+    public static com.android.aapt.Resources.UntranslatableSection getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<UntranslatableSection>
+        PARSER = new com.google.protobuf.AbstractParser<UntranslatableSection>() {
+      @java.lang.Override
+      public UntranslatableSection parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new UntranslatableSection(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<UntranslatableSection> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<UntranslatableSection> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.android.aapt.Resources.UntranslatableSection getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_aapt_pb_StringPool_descriptor;
   private static final 
@@ -48481,6 +54619,11 @@ public final class Resources {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_aapt_pb_OverlayableItem_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_StagedId_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_StagedId_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_aapt_pb_EntryId_descriptor;
   private static final 
@@ -48636,6 +54779,31 @@ public final class Resources {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_aapt_pb_XmlAttribute_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_MacroBody_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_MacroBody_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_NamespaceAlias_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_NamespaceAlias_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_StyleString_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_StyleString_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_StyleString_Span_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_StyleString_Span_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_aapt_pb_UntranslatableSection_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_aapt_pb_UntranslatableSection_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -48662,116 +54830,133 @@ public final class Resources {
       "2\r.aapt.pb.Type\"\024\n\006TypeId\022\n\n\002id\030\001 \001(\r\"U\n" +
       "\004Type\022 \n\007type_id\030\001 \001(\0132\017.aapt.pb.TypeId\022" +
       "\014\n\004name\030\002 \001(\t\022\035\n\005entry\030\003 \003(\0132\016.aapt.pb.E" +
-      "ntry\"\227\001\n\nVisibility\022(\n\005level\030\001 \001(\0162\031.aap" +
+      "ntry\"\253\001\n\nVisibility\022(\n\005level\030\001 \001(\0162\031.aap" +
       "t.pb.Visibility.Level\022\037\n\006source\030\002 \001(\0132\017." +
-      "aapt.pb.Source\022\017\n\007comment\030\003 \001(\t\"-\n\005Level" +
-      "\022\013\n\007UNKNOWN\020\000\022\013\n\007PRIVATE\020\001\022\n\n\006PUBLIC\020\002\"<" +
-      "\n\010AllowNew\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Sou" +
-      "rce\022\017\n\007comment\030\002 \001(\t\"K\n\013Overlayable\022\014\n\004n" +
-      "ame\030\001 \001(\t\022\037\n\006source\030\002 \001(\0132\017.aapt.pb.Sour" +
-      "ce\022\r\n\005actor\030\003 \001(\t\"\225\002\n\017OverlayableItem\022\037\n" +
-      "\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007commen" +
-      "t\030\002 \001(\t\022/\n\006policy\030\003 \003(\0162\037.aapt.pb.Overla" +
-      "yableItem.Policy\022\027\n\017overlayable_idx\030\004 \001(" +
-      "\r\"\205\001\n\006Policy\022\010\n\004NONE\020\000\022\n\n\006PUBLIC\020\001\022\n\n\006SY" +
-      "STEM\020\002\022\n\n\006VENDOR\020\003\022\013\n\007PRODUCT\020\004\022\r\n\tSIGNA" +
-      "TURE\020\005\022\007\n\003ODM\020\006\022\007\n\003OEM\020\007\022\t\n\005ACTOR\020\010\022\024\n\020C" +
-      "ONFIG_SIGNATURE\020\t\"\025\n\007EntryId\022\n\n\002id\030\001 \001(\r" +
-      "\"\350\001\n\005Entry\022\"\n\010entry_id\030\001 \001(\0132\020.aapt.pb.E" +
-      "ntryId\022\014\n\004name\030\002 \001(\t\022\'\n\nvisibility\030\003 \001(\013" +
-      "2\023.aapt.pb.Visibility\022$\n\tallow_new\030\004 \001(\013" +
-      "2\021.aapt.pb.AllowNew\0222\n\020overlayable_item\030" +
-      "\005 \001(\0132\030.aapt.pb.OverlayableItem\022*\n\014confi" +
-      "g_value\030\006 \003(\0132\024.aapt.pb.ConfigValue\"T\n\013C" +
-      "onfigValue\022&\n\006config\030\001 \001(\0132\026.aapt.pb.Con" +
-      "figuration\022\035\n\005value\030\002 \001(\0132\016.aapt.pb.Valu" +
-      "e\"\241\001\n\005Value\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.So" +
-      "urce\022\017\n\007comment\030\002 \001(\t\022\014\n\004weak\030\003 \001(\010\022\035\n\004i" +
-      "tem\030\004 \001(\0132\r.aapt.pb.ItemH\000\0220\n\016compound_v" +
-      "alue\030\005 \001(\0132\026.aapt.pb.CompoundValueH\000B\007\n\005" +
-      "value\"\215\002\n\004Item\022!\n\003ref\030\001 \001(\0132\022.aapt.pb.Re" +
-      "ferenceH\000\022\036\n\003str\030\002 \001(\0132\017.aapt.pb.StringH" +
-      "\000\022%\n\007raw_str\030\003 \001(\0132\022.aapt.pb.RawStringH\000" +
-      "\022+\n\nstyled_str\030\004 \001(\0132\025.aapt.pb.StyledStr" +
-      "ingH\000\022&\n\004file\030\005 \001(\0132\026.aapt.pb.FileRefere" +
-      "nceH\000\022\031\n\002id\030\006 \001(\0132\013.aapt.pb.IdH\000\022\"\n\004prim" +
-      "\030\007 \001(\0132\022.aapt.pb.PrimitiveH\000B\007\n\005value\"\312\001" +
-      "\n\rCompoundValue\022\"\n\004attr\030\001 \001(\0132\022.aapt.pb." +
-      "AttributeH\000\022\037\n\005style\030\002 \001(\0132\016.aapt.pb.Sty" +
-      "leH\000\022\'\n\tstyleable\030\003 \001(\0132\022.aapt.pb.Stylea" +
-      "bleH\000\022\037\n\005array\030\004 \001(\0132\016.aapt.pb.ArrayH\000\022!" +
-      "\n\006plural\030\005 \001(\0132\017.aapt.pb.PluralH\000B\007\n\005val" +
-      "ue\"\030\n\007Boolean\022\r\n\005value\030\001 \001(\010\"\251\001\n\tReferen" +
-      "ce\022%\n\004type\030\001 \001(\0162\027.aapt.pb.Reference.Typ" +
-      "e\022\n\n\002id\030\002 \001(\r\022\014\n\004name\030\003 \001(\t\022\017\n\007private\030\004" +
-      " \001(\010\022$\n\nis_dynamic\030\005 \001(\0132\020.aapt.pb.Boole" +
-      "an\"$\n\004Type\022\r\n\tREFERENCE\020\000\022\r\n\tATTRIBUTE\020\001" +
-      "\"\004\n\002Id\"\027\n\006String\022\r\n\005value\030\001 \001(\t\"\032\n\tRawSt" +
-      "ring\022\r\n\005value\030\001 \001(\t\"\203\001\n\014StyledString\022\r\n\005" +
-      "value\030\001 \001(\t\022(\n\004span\030\002 \003(\0132\032.aapt.pb.Styl" +
-      "edString.Span\032:\n\004Span\022\013\n\003tag\030\001 \001(\t\022\022\n\nfi" +
-      "rst_char\030\002 \001(\r\022\021\n\tlast_char\030\003 \001(\r\"\205\001\n\rFi" +
-      "leReference\022\014\n\004path\030\001 \001(\t\022)\n\004type\030\002 \001(\0162" +
-      "\033.aapt.pb.FileReference.Type\";\n\004Type\022\013\n\007" +
-      "UNKNOWN\020\000\022\007\n\003PNG\020\001\022\016\n\nBINARY_XML\020\002\022\r\n\tPR" +
-      "OTO_XML\020\003\"\203\004\n\tPrimitive\0221\n\nnull_value\030\001 " +
-      "\001(\0132\033.aapt.pb.Primitive.NullTypeH\000\0223\n\013em" +
-      "pty_value\030\002 \001(\0132\034.aapt.pb.Primitive.Empt" +
-      "yTypeH\000\022\025\n\013float_value\030\003 \001(\002H\000\022\031\n\017dimens" +
-      "ion_value\030\r \001(\rH\000\022\030\n\016fraction_value\030\016 \001(" +
-      "\rH\000\022\033\n\021int_decimal_value\030\006 \001(\005H\000\022\037\n\025int_" +
-      "hexadecimal_value\030\007 \001(\rH\000\022\027\n\rboolean_val" +
-      "ue\030\010 \001(\010H\000\022\033\n\021color_argb8_value\030\t \001(\rH\000\022" +
-      "\032\n\020color_rgb8_value\030\n \001(\rH\000\022\033\n\021color_arg" +
-      "b4_value\030\013 \001(\rH\000\022\032\n\020color_rgb4_value\030\014 \001" +
-      "(\rH\000\022(\n\032dimension_value_deprecated\030\004 \001(\002" +
-      "B\002\030\001H\000\022\'\n\031fraction_value_deprecated\030\005 \001(" +
-      "\002B\002\030\001H\000\032\n\n\010NullType\032\013\n\tEmptyTypeB\r\n\013oneo" +
-      "f_value\"\220\003\n\tAttribute\022\024\n\014format_flags\030\001 " +
-      "\001(\r\022\017\n\007min_int\030\002 \001(\005\022\017\n\007max_int\030\003 \001(\005\022)\n" +
-      "\006symbol\030\004 \003(\0132\031.aapt.pb.Attribute.Symbol" +
-      "\032y\n\006Symbol\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Sou" +
-      "rce\022\017\n\007comment\030\002 \001(\t\022 \n\004name\030\003 \001(\0132\022.aap" +
-      "t.pb.Reference\022\r\n\005value\030\004 \001(\r\022\014\n\004type\030\005 " +
-      "\001(\r\"\244\001\n\013FormatFlags\022\010\n\004NONE\020\000\022\t\n\003ANY\020\377\377\003" +
-      "\022\r\n\tREFERENCE\020\001\022\n\n\006STRING\020\002\022\013\n\007INTEGER\020\004" +
-      "\022\013\n\007BOOLEAN\020\010\022\t\n\005COLOR\020\020\022\t\n\005FLOAT\020 \022\r\n\tD" +
-      "IMENSION\020@\022\r\n\010FRACTION\020\200\001\022\n\n\004ENUM\020\200\200\004\022\013\n" +
-      "\005FLAGS\020\200\200\010\"\361\001\n\005Style\022\"\n\006parent\030\001 \001(\0132\022.a" +
-      "apt.pb.Reference\022&\n\rparent_source\030\002 \001(\0132" +
-      "\017.aapt.pb.Source\022#\n\005entry\030\003 \003(\0132\024.aapt.p" +
-      "b.Style.Entry\032w\n\005Entry\022\037\n\006source\030\001 \001(\0132\017" +
-      ".aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\037\n\003key\030" +
-      "\003 \001(\0132\022.aapt.pb.Reference\022\033\n\004item\030\004 \001(\0132" +
-      "\r.aapt.pb.Item\"\221\001\n\tStyleable\022\'\n\005entry\030\001 " +
-      "\003(\0132\030.aapt.pb.Styleable.Entry\032[\n\005Entry\022\037" +
-      "\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comme" +
-      "nt\030\002 \001(\t\022 \n\004attr\030\003 \001(\0132\022.aapt.pb.Referen" +
-      "ce\"\212\001\n\005Array\022\'\n\007element\030\001 \003(\0132\026.aapt.pb." +
-      "Array.Element\032X\n\007Element\022\037\n\006source\030\001 \001(\013" +
-      "2\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\033\n\004it" +
-      "em\030\003 \001(\0132\r.aapt.pb.Item\"\357\001\n\006Plural\022$\n\005en" +
-      "try\030\001 \003(\0132\025.aapt.pb.Plural.Entry\032|\n\005Entr" +
-      "y\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007co" +
-      "mment\030\002 \001(\t\022$\n\005arity\030\003 \001(\0162\025.aapt.pb.Plu" +
-      "ral.Arity\022\033\n\004item\030\004 \001(\0132\r.aapt.pb.Item\"A" +
-      "\n\005Arity\022\010\n\004ZERO\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002\022\007\n\003F" +
-      "EW\020\003\022\010\n\004MANY\020\004\022\t\n\005OTHER\020\005\"r\n\007XmlNode\022&\n\007" +
-      "element\030\001 \001(\0132\023.aapt.pb.XmlElementH\000\022\016\n\004" +
-      "text\030\002 \001(\tH\000\022\'\n\006source\030\003 \001(\0132\027.aapt.pb.S" +
-      "ourcePositionB\006\n\004node\"\262\001\n\nXmlElement\0224\n\025" +
-      "namespace_declaration\030\001 \003(\0132\025.aapt.pb.Xm" +
-      "lNamespace\022\025\n\rnamespace_uri\030\002 \001(\t\022\014\n\004nam" +
-      "e\030\003 \001(\t\022(\n\tattribute\030\004 \003(\0132\025.aapt.pb.Xml" +
-      "Attribute\022\037\n\005child\030\005 \003(\0132\020.aapt.pb.XmlNo" +
-      "de\"T\n\014XmlNamespace\022\016\n\006prefix\030\001 \001(\t\022\013\n\003ur" +
-      "i\030\002 \001(\t\022\'\n\006source\030\003 \001(\0132\027.aapt.pb.Source" +
-      "Position\"\246\001\n\014XmlAttribute\022\025\n\rnamespace_u" +
-      "ri\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\022\'\n" +
-      "\006source\030\004 \001(\0132\027.aapt.pb.SourcePosition\022\023" +
-      "\n\013resource_id\030\005 \001(\r\022$\n\rcompiled_item\030\006 \001" +
-      "(\0132\r.aapt.pb.ItemB\022\n\020com.android.aaptb\006p" +
-      "roto3"
+      "aapt.pb.Source\022\017\n\007comment\030\003 \001(\t\022\022\n\nstage" +
+      "d_api\030\004 \001(\010\"-\n\005Level\022\013\n\007UNKNOWN\020\000\022\013\n\007PRI" +
+      "VATE\020\001\022\n\n\006PUBLIC\020\002\"<\n\010AllowNew\022\037\n\006source" +
+      "\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comment\030\002 \001(\t" +
+      "\"K\n\013Overlayable\022\014\n\004name\030\001 \001(\t\022\037\n\006source\030" +
+      "\002 \001(\0132\017.aapt.pb.Source\022\r\n\005actor\030\003 \001(\t\"\225\002" +
+      "\n\017OverlayableItem\022\037\n\006source\030\001 \001(\0132\017.aapt" +
+      ".pb.Source\022\017\n\007comment\030\002 \001(\t\022/\n\006policy\030\003 " +
+      "\003(\0162\037.aapt.pb.OverlayableItem.Policy\022\027\n\017" +
+      "overlayable_idx\030\004 \001(\r\"\205\001\n\006Policy\022\010\n\004NONE" +
+      "\020\000\022\n\n\006PUBLIC\020\001\022\n\n\006SYSTEM\020\002\022\n\n\006VENDOR\020\003\022\013" +
+      "\n\007PRODUCT\020\004\022\r\n\tSIGNATURE\020\005\022\007\n\003ODM\020\006\022\007\n\003O" +
+      "EM\020\007\022\t\n\005ACTOR\020\010\022\024\n\020CONFIG_SIGNATURE\020\t\">\n" +
+      "\010StagedId\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Sour" +
+      "ce\022\021\n\tstaged_id\030\002 \001(\r\"\025\n\007EntryId\022\n\n\002id\030\001" +
+      " \001(\r\"\216\002\n\005Entry\022\"\n\010entry_id\030\001 \001(\0132\020.aapt." +
+      "pb.EntryId\022\014\n\004name\030\002 \001(\t\022\'\n\nvisibility\030\003" +
+      " \001(\0132\023.aapt.pb.Visibility\022$\n\tallow_new\030\004" +
+      " \001(\0132\021.aapt.pb.AllowNew\0222\n\020overlayable_i" +
+      "tem\030\005 \001(\0132\030.aapt.pb.OverlayableItem\022*\n\014c" +
+      "onfig_value\030\006 \003(\0132\024.aapt.pb.ConfigValue\022" +
+      "$\n\tstaged_id\030\007 \001(\0132\021.aapt.pb.StagedId\"T\n" +
+      "\013ConfigValue\022&\n\006config\030\001 \001(\0132\026.aapt.pb.C" +
+      "onfiguration\022\035\n\005value\030\002 \001(\0132\016.aapt.pb.Va" +
+      "lue\"\241\001\n\005Value\022\037\n\006source\030\001 \001(\0132\017.aapt.pb." +
+      "Source\022\017\n\007comment\030\002 \001(\t\022\014\n\004weak\030\003 \001(\010\022\035\n" +
+      "\004item\030\004 \001(\0132\r.aapt.pb.ItemH\000\0220\n\016compound" +
+      "_value\030\005 \001(\0132\026.aapt.pb.CompoundValueH\000B\007" +
+      "\n\005value\"\215\002\n\004Item\022!\n\003ref\030\001 \001(\0132\022.aapt.pb." +
+      "ReferenceH\000\022\036\n\003str\030\002 \001(\0132\017.aapt.pb.Strin" +
+      "gH\000\022%\n\007raw_str\030\003 \001(\0132\022.aapt.pb.RawString" +
+      "H\000\022+\n\nstyled_str\030\004 \001(\0132\025.aapt.pb.StyledS" +
+      "tringH\000\022&\n\004file\030\005 \001(\0132\026.aapt.pb.FileRefe" +
+      "renceH\000\022\031\n\002id\030\006 \001(\0132\013.aapt.pb.IdH\000\022\"\n\004pr" +
+      "im\030\007 \001(\0132\022.aapt.pb.PrimitiveH\000B\007\n\005value\"" +
+      "\357\001\n\rCompoundValue\022\"\n\004attr\030\001 \001(\0132\022.aapt.p" +
+      "b.AttributeH\000\022\037\n\005style\030\002 \001(\0132\016.aapt.pb.S" +
+      "tyleH\000\022\'\n\tstyleable\030\003 \001(\0132\022.aapt.pb.Styl" +
+      "eableH\000\022\037\n\005array\030\004 \001(\0132\016.aapt.pb.ArrayH\000" +
+      "\022!\n\006plural\030\005 \001(\0132\017.aapt.pb.PluralH\000\022#\n\005m" +
+      "acro\030\006 \001(\0132\022.aapt.pb.MacroBodyH\000B\007\n\005valu" +
+      "e\"\030\n\007Boolean\022\r\n\005value\030\001 \001(\010\"\320\001\n\tReferenc" +
+      "e\022%\n\004type\030\001 \001(\0162\027.aapt.pb.Reference.Type" +
+      "\022\n\n\002id\030\002 \001(\r\022\014\n\004name\030\003 \001(\t\022\017\n\007private\030\004 " +
+      "\001(\010\022$\n\nis_dynamic\030\005 \001(\0132\020.aapt.pb.Boolea" +
+      "n\022\022\n\ntype_flags\030\006 \001(\r\022\021\n\tallow_raw\030\007 \001(\010" +
+      "\"$\n\004Type\022\r\n\tREFERENCE\020\000\022\r\n\tATTRIBUTE\020\001\"\004" +
+      "\n\002Id\"\027\n\006String\022\r\n\005value\030\001 \001(\t\"\032\n\tRawStri" +
+      "ng\022\r\n\005value\030\001 \001(\t\"\203\001\n\014StyledString\022\r\n\005va" +
+      "lue\030\001 \001(\t\022(\n\004span\030\002 \003(\0132\032.aapt.pb.Styled" +
+      "String.Span\032:\n\004Span\022\013\n\003tag\030\001 \001(\t\022\022\n\nfirs" +
+      "t_char\030\002 \001(\r\022\021\n\tlast_char\030\003 \001(\r\"\205\001\n\rFile" +
+      "Reference\022\014\n\004path\030\001 \001(\t\022)\n\004type\030\002 \001(\0162\033." +
+      "aapt.pb.FileReference.Type\";\n\004Type\022\013\n\007UN" +
+      "KNOWN\020\000\022\007\n\003PNG\020\001\022\016\n\nBINARY_XML\020\002\022\r\n\tPROT" +
+      "O_XML\020\003\"\203\004\n\tPrimitive\0221\n\nnull_value\030\001 \001(" +
+      "\0132\033.aapt.pb.Primitive.NullTypeH\000\0223\n\013empt" +
+      "y_value\030\002 \001(\0132\034.aapt.pb.Primitive.EmptyT" +
+      "ypeH\000\022\025\n\013float_value\030\003 \001(\002H\000\022\031\n\017dimensio" +
+      "n_value\030\r \001(\rH\000\022\030\n\016fraction_value\030\016 \001(\rH" +
+      "\000\022\033\n\021int_decimal_value\030\006 \001(\005H\000\022\037\n\025int_he" +
+      "xadecimal_value\030\007 \001(\rH\000\022\027\n\rboolean_value" +
+      "\030\010 \001(\010H\000\022\033\n\021color_argb8_value\030\t \001(\rH\000\022\032\n" +
+      "\020color_rgb8_value\030\n \001(\rH\000\022\033\n\021color_argb4" +
+      "_value\030\013 \001(\rH\000\022\032\n\020color_rgb4_value\030\014 \001(\r" +
+      "H\000\022(\n\032dimension_value_deprecated\030\004 \001(\002B\002" +
+      "\030\001H\000\022\'\n\031fraction_value_deprecated\030\005 \001(\002B" +
+      "\002\030\001H\000\032\n\n\010NullType\032\013\n\tEmptyTypeB\r\n\013oneof_" +
+      "value\"\220\003\n\tAttribute\022\024\n\014format_flags\030\001 \001(" +
+      "\r\022\017\n\007min_int\030\002 \001(\005\022\017\n\007max_int\030\003 \001(\005\022)\n\006s" +
+      "ymbol\030\004 \003(\0132\031.aapt.pb.Attribute.Symbol\032y" +
+      "\n\006Symbol\022\037\n\006source\030\001 \001(\0132\017.aapt.pb.Sourc" +
+      "e\022\017\n\007comment\030\002 \001(\t\022 \n\004name\030\003 \001(\0132\022.aapt." +
+      "pb.Reference\022\r\n\005value\030\004 \001(\r\022\014\n\004type\030\005 \001(" +
+      "\r\"\244\001\n\013FormatFlags\022\010\n\004NONE\020\000\022\t\n\003ANY\020\377\377\003\022\r" +
+      "\n\tREFERENCE\020\001\022\n\n\006STRING\020\002\022\013\n\007INTEGER\020\004\022\013" +
+      "\n\007BOOLEAN\020\010\022\t\n\005COLOR\020\020\022\t\n\005FLOAT\020 \022\r\n\tDIM" +
+      "ENSION\020@\022\r\n\010FRACTION\020\200\001\022\n\n\004ENUM\020\200\200\004\022\013\n\005F" +
+      "LAGS\020\200\200\010\"\361\001\n\005Style\022\"\n\006parent\030\001 \001(\0132\022.aap" +
+      "t.pb.Reference\022&\n\rparent_source\030\002 \001(\0132\017." +
+      "aapt.pb.Source\022#\n\005entry\030\003 \003(\0132\024.aapt.pb." +
+      "Style.Entry\032w\n\005Entry\022\037\n\006source\030\001 \001(\0132\017.a" +
+      "apt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\037\n\003key\030\003 " +
+      "\001(\0132\022.aapt.pb.Reference\022\033\n\004item\030\004 \001(\0132\r." +
+      "aapt.pb.Item\"\221\001\n\tStyleable\022\'\n\005entry\030\001 \003(" +
+      "\0132\030.aapt.pb.Styleable.Entry\032[\n\005Entry\022\037\n\006" +
+      "source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comment" +
+      "\030\002 \001(\t\022 \n\004attr\030\003 \001(\0132\022.aapt.pb.Reference" +
+      "\"\212\001\n\005Array\022\'\n\007element\030\001 \003(\0132\026.aapt.pb.Ar" +
+      "ray.Element\032X\n\007Element\022\037\n\006source\030\001 \001(\0132\017" +
+      ".aapt.pb.Source\022\017\n\007comment\030\002 \001(\t\022\033\n\004item" +
+      "\030\003 \001(\0132\r.aapt.pb.Item\"\357\001\n\006Plural\022$\n\005entr" +
+      "y\030\001 \003(\0132\025.aapt.pb.Plural.Entry\032|\n\005Entry\022" +
+      "\037\n\006source\030\001 \001(\0132\017.aapt.pb.Source\022\017\n\007comm" +
+      "ent\030\002 \001(\t\022$\n\005arity\030\003 \001(\0162\025.aapt.pb.Plura" +
+      "l.Arity\022\033\n\004item\030\004 \001(\0132\r.aapt.pb.Item\"A\n\005" +
+      "Arity\022\010\n\004ZERO\020\000\022\007\n\003ONE\020\001\022\007\n\003TWO\020\002\022\007\n\003FEW" +
+      "\020\003\022\010\n\004MANY\020\004\022\t\n\005OTHER\020\005\"r\n\007XmlNode\022&\n\007el" +
+      "ement\030\001 \001(\0132\023.aapt.pb.XmlElementH\000\022\016\n\004te" +
+      "xt\030\002 \001(\tH\000\022\'\n\006source\030\003 \001(\0132\027.aapt.pb.Sou" +
+      "rcePositionB\006\n\004node\"\262\001\n\nXmlElement\0224\n\025na" +
+      "mespace_declaration\030\001 \003(\0132\025.aapt.pb.XmlN" +
+      "amespace\022\025\n\rnamespace_uri\030\002 \001(\t\022\014\n\004name\030" +
+      "\003 \001(\t\022(\n\tattribute\030\004 \003(\0132\025.aapt.pb.XmlAt" +
+      "tribute\022\037\n\005child\030\005 \003(\0132\020.aapt.pb.XmlNode" +
+      "\"T\n\014XmlNamespace\022\016\n\006prefix\030\001 \001(\t\022\013\n\003uri\030" +
+      "\002 \001(\t\022\'\n\006source\030\003 \001(\0132\027.aapt.pb.SourcePo" +
+      "sition\"\246\001\n\014XmlAttribute\022\025\n\rnamespace_uri" +
+      "\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\r\n\005value\030\003 \001(\t\022\'\n\006s" +
+      "ource\030\004 \001(\0132\027.aapt.pb.SourcePosition\022\023\n\013" +
+      "resource_id\030\005 \001(\r\022$\n\rcompiled_item\030\006 \001(\013" +
+      "2\r.aapt.pb.Item\"\347\001\n\tMacroBody\022\022\n\nraw_str" +
+      "ing\030\001 \001(\t\022*\n\014style_string\030\002 \001(\0132\024.aapt.p" +
+      "b.StyleString\022?\n\027untranslatable_sections" +
+      "\030\003 \003(\0132\036.aapt.pb.UntranslatableSection\0220" +
+      "\n\017namespace_stack\030\004 \003(\0132\027.aapt.pb.Namesp" +
+      "aceAlias\022\'\n\006source\030\005 \001(\0132\027.aapt.pb.Sourc" +
+      "ePosition\"J\n\016NamespaceAlias\022\016\n\006prefix\030\001 " +
+      "\001(\t\022\024\n\014package_name\030\002 \001(\t\022\022\n\nis_private\030" +
+      "\003 \001(\010\"\202\001\n\013StyleString\022\013\n\003str\030\001 \001(\t\022(\n\005sp" +
+      "ans\030\002 \003(\0132\031.aapt.pb.StyleString.Span\032<\n\004" +
+      "Span\022\014\n\004name\030\001 \001(\t\022\023\n\013start_index\030\002 \001(\r\022" +
+      "\021\n\tend_index\030\003 \001(\r\"?\n\025UntranslatableSect" +
+      "ion\022\023\n\013start_index\030\001 \001(\004\022\021\n\tend_index\030\002 " +
+      "\001(\004B\022\n\020com.android.aaptb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -48837,7 +55022,7 @@ public final class Resources {
     internal_static_aapt_pb_Visibility_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Visibility_descriptor,
-        new java.lang.String[] { "Level", "Source", "Comment", });
+        new java.lang.String[] { "Level", "Source", "Comment", "StagedApi", });
     internal_static_aapt_pb_AllowNew_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_aapt_pb_AllowNew_fieldAccessorTable = new
@@ -48856,74 +55041,80 @@ public final class Resources {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_OverlayableItem_descriptor,
         new java.lang.String[] { "Source", "Comment", "Policy", "OverlayableIdx", });
-    internal_static_aapt_pb_EntryId_descriptor =
+    internal_static_aapt_pb_StagedId_descriptor =
       getDescriptor().getMessageTypes().get(13);
+    internal_static_aapt_pb_StagedId_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_StagedId_descriptor,
+        new java.lang.String[] { "Source", "StagedId", });
+    internal_static_aapt_pb_EntryId_descriptor =
+      getDescriptor().getMessageTypes().get(14);
     internal_static_aapt_pb_EntryId_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_EntryId_descriptor,
         new java.lang.String[] { "Id", });
     internal_static_aapt_pb_Entry_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_aapt_pb_Entry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Entry_descriptor,
-        new java.lang.String[] { "EntryId", "Name", "Visibility", "AllowNew", "OverlayableItem", "ConfigValue", });
+        new java.lang.String[] { "EntryId", "Name", "Visibility", "AllowNew", "OverlayableItem", "ConfigValue", "StagedId", });
     internal_static_aapt_pb_ConfigValue_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_aapt_pb_ConfigValue_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_ConfigValue_descriptor,
         new java.lang.String[] { "Config", "Value", });
     internal_static_aapt_pb_Value_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_aapt_pb_Value_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Value_descriptor,
         new java.lang.String[] { "Source", "Comment", "Weak", "Item", "CompoundValue", "Value", });
     internal_static_aapt_pb_Item_descriptor =
-      getDescriptor().getMessageTypes().get(17);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_aapt_pb_Item_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Item_descriptor,
         new java.lang.String[] { "Ref", "Str", "RawStr", "StyledStr", "File", "Id", "Prim", "Value", });
     internal_static_aapt_pb_CompoundValue_descriptor =
-      getDescriptor().getMessageTypes().get(18);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_aapt_pb_CompoundValue_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_CompoundValue_descriptor,
-        new java.lang.String[] { "Attr", "Style", "Styleable", "Array", "Plural", "Value", });
+        new java.lang.String[] { "Attr", "Style", "Styleable", "Array", "Plural", "Macro", "Value", });
     internal_static_aapt_pb_Boolean_descriptor =
-      getDescriptor().getMessageTypes().get(19);
+      getDescriptor().getMessageTypes().get(20);
     internal_static_aapt_pb_Boolean_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Boolean_descriptor,
         new java.lang.String[] { "Value", });
     internal_static_aapt_pb_Reference_descriptor =
-      getDescriptor().getMessageTypes().get(20);
+      getDescriptor().getMessageTypes().get(21);
     internal_static_aapt_pb_Reference_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Reference_descriptor,
-        new java.lang.String[] { "Type", "Id", "Name", "Private", "IsDynamic", });
+        new java.lang.String[] { "Type", "Id", "Name", "Private", "IsDynamic", "TypeFlags", "AllowRaw", });
     internal_static_aapt_pb_Id_descriptor =
-      getDescriptor().getMessageTypes().get(21);
+      getDescriptor().getMessageTypes().get(22);
     internal_static_aapt_pb_Id_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Id_descriptor,
         new java.lang.String[] { });
     internal_static_aapt_pb_String_descriptor =
-      getDescriptor().getMessageTypes().get(22);
+      getDescriptor().getMessageTypes().get(23);
     internal_static_aapt_pb_String_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_String_descriptor,
         new java.lang.String[] { "Value", });
     internal_static_aapt_pb_RawString_descriptor =
-      getDescriptor().getMessageTypes().get(23);
+      getDescriptor().getMessageTypes().get(24);
     internal_static_aapt_pb_RawString_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_RawString_descriptor,
         new java.lang.String[] { "Value", });
     internal_static_aapt_pb_StyledString_descriptor =
-      getDescriptor().getMessageTypes().get(24);
+      getDescriptor().getMessageTypes().get(25);
     internal_static_aapt_pb_StyledString_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_StyledString_descriptor,
@@ -48935,13 +55126,13 @@ public final class Resources {
         internal_static_aapt_pb_StyledString_Span_descriptor,
         new java.lang.String[] { "Tag", "FirstChar", "LastChar", });
     internal_static_aapt_pb_FileReference_descriptor =
-      getDescriptor().getMessageTypes().get(25);
+      getDescriptor().getMessageTypes().get(26);
     internal_static_aapt_pb_FileReference_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_FileReference_descriptor,
         new java.lang.String[] { "Path", "Type", });
     internal_static_aapt_pb_Primitive_descriptor =
-      getDescriptor().getMessageTypes().get(26);
+      getDescriptor().getMessageTypes().get(27);
     internal_static_aapt_pb_Primitive_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Primitive_descriptor,
@@ -48959,7 +55150,7 @@ public final class Resources {
         internal_static_aapt_pb_Primitive_EmptyType_descriptor,
         new java.lang.String[] { });
     internal_static_aapt_pb_Attribute_descriptor =
-      getDescriptor().getMessageTypes().get(27);
+      getDescriptor().getMessageTypes().get(28);
     internal_static_aapt_pb_Attribute_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Attribute_descriptor,
@@ -48971,7 +55162,7 @@ public final class Resources {
         internal_static_aapt_pb_Attribute_Symbol_descriptor,
         new java.lang.String[] { "Source", "Comment", "Name", "Value", "Type", });
     internal_static_aapt_pb_Style_descriptor =
-      getDescriptor().getMessageTypes().get(28);
+      getDescriptor().getMessageTypes().get(29);
     internal_static_aapt_pb_Style_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Style_descriptor,
@@ -48983,7 +55174,7 @@ public final class Resources {
         internal_static_aapt_pb_Style_Entry_descriptor,
         new java.lang.String[] { "Source", "Comment", "Key", "Item", });
     internal_static_aapt_pb_Styleable_descriptor =
-      getDescriptor().getMessageTypes().get(29);
+      getDescriptor().getMessageTypes().get(30);
     internal_static_aapt_pb_Styleable_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Styleable_descriptor,
@@ -48995,7 +55186,7 @@ public final class Resources {
         internal_static_aapt_pb_Styleable_Entry_descriptor,
         new java.lang.String[] { "Source", "Comment", "Attr", });
     internal_static_aapt_pb_Array_descriptor =
-      getDescriptor().getMessageTypes().get(30);
+      getDescriptor().getMessageTypes().get(31);
     internal_static_aapt_pb_Array_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Array_descriptor,
@@ -49007,7 +55198,7 @@ public final class Resources {
         internal_static_aapt_pb_Array_Element_descriptor,
         new java.lang.String[] { "Source", "Comment", "Item", });
     internal_static_aapt_pb_Plural_descriptor =
-      getDescriptor().getMessageTypes().get(31);
+      getDescriptor().getMessageTypes().get(32);
     internal_static_aapt_pb_Plural_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_Plural_descriptor,
@@ -49019,29 +55210,59 @@ public final class Resources {
         internal_static_aapt_pb_Plural_Entry_descriptor,
         new java.lang.String[] { "Source", "Comment", "Arity", "Item", });
     internal_static_aapt_pb_XmlNode_descriptor =
-      getDescriptor().getMessageTypes().get(32);
+      getDescriptor().getMessageTypes().get(33);
     internal_static_aapt_pb_XmlNode_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_XmlNode_descriptor,
         new java.lang.String[] { "Element", "Text", "Source", "Node", });
     internal_static_aapt_pb_XmlElement_descriptor =
-      getDescriptor().getMessageTypes().get(33);
+      getDescriptor().getMessageTypes().get(34);
     internal_static_aapt_pb_XmlElement_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_XmlElement_descriptor,
         new java.lang.String[] { "NamespaceDeclaration", "NamespaceUri", "Name", "Attribute", "Child", });
     internal_static_aapt_pb_XmlNamespace_descriptor =
-      getDescriptor().getMessageTypes().get(34);
+      getDescriptor().getMessageTypes().get(35);
     internal_static_aapt_pb_XmlNamespace_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_XmlNamespace_descriptor,
         new java.lang.String[] { "Prefix", "Uri", "Source", });
     internal_static_aapt_pb_XmlAttribute_descriptor =
-      getDescriptor().getMessageTypes().get(35);
+      getDescriptor().getMessageTypes().get(36);
     internal_static_aapt_pb_XmlAttribute_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_aapt_pb_XmlAttribute_descriptor,
         new java.lang.String[] { "NamespaceUri", "Name", "Value", "Source", "ResourceId", "CompiledItem", });
+    internal_static_aapt_pb_MacroBody_descriptor =
+      getDescriptor().getMessageTypes().get(37);
+    internal_static_aapt_pb_MacroBody_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_MacroBody_descriptor,
+        new java.lang.String[] { "RawString", "StyleString", "UntranslatableSections", "NamespaceStack", "Source", });
+    internal_static_aapt_pb_NamespaceAlias_descriptor =
+      getDescriptor().getMessageTypes().get(38);
+    internal_static_aapt_pb_NamespaceAlias_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_NamespaceAlias_descriptor,
+        new java.lang.String[] { "Prefix", "PackageName", "IsPrivate", });
+    internal_static_aapt_pb_StyleString_descriptor =
+      getDescriptor().getMessageTypes().get(39);
+    internal_static_aapt_pb_StyleString_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_StyleString_descriptor,
+        new java.lang.String[] { "Str", "Spans", });
+    internal_static_aapt_pb_StyleString_Span_descriptor =
+      internal_static_aapt_pb_StyleString_descriptor.getNestedTypes().get(0);
+    internal_static_aapt_pb_StyleString_Span_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_StyleString_Span_descriptor,
+        new java.lang.String[] { "Name", "StartIndex", "EndIndex", });
+    internal_static_aapt_pb_UntranslatableSection_descriptor =
+      getDescriptor().getMessageTypes().get(40);
+    internal_static_aapt_pb_UntranslatableSection_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_aapt_pb_UntranslatableSection_descriptor,
+        new java.lang.String[] { "StartIndex", "EndIndex", });
     com.android.aapt.ConfigurationOuterClass.getDescriptor();
   }
 

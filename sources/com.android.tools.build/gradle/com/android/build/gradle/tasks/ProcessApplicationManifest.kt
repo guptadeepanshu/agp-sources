@@ -15,7 +15,7 @@
  */
 package com.android.build.gradle.tasks
 
-import com.android.build.api.artifact.ArtifactType
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
@@ -310,7 +310,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 taskProvider,
                 ProcessApplicationManifest::mergedManifest
             )
-                .on(ArtifactType.MERGED_MANIFEST)
+                .on(SingleArtifact.MERGED_MANIFEST)
 
             artifacts.setInitialProvider(
                 taskProvider,
@@ -324,7 +324,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             )
                 .atLocation(
                     FileUtils.join(
-                        creationConfig.globalScope.outputsDir,
+                        creationConfig.services.projectInfo.getOutputsDir(),
                         "logs"
                     )
                         .absolutePath
@@ -341,7 +341,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             val globalScope =
                 creationConfig.globalScope
             val variantType = creationConfig.variantType
-            val project = globalScope.project
+            val project = creationConfig.services.projectInfo.getProject()
             // This includes the dependent libraries.
             task.manifests = creationConfig
                 .variantDependencies
@@ -363,23 +363,18 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             task.applicationId.disallowChanges()
             task.variantType.set(creationConfig.variantType.toString())
             task.variantType.disallowChanges()
-            task.minSdkVersion
-                .set(project.provider { creationConfig.minSdkVersion.getApiString() })
-            task.minSdkVersion.disallowChanges()
+            task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
             task.targetSdkVersion
-                .set(
-                    project.provider {
-                        val targetSdk =
-                            creationConfig.targetSdkVersion
-                        if (targetSdk.apiLevel < 1) null else targetSdk.apiString
-                    }
+                .setDisallowChanges(
+                        if (creationConfig.targetSdkVersion.apiLevel < 1)
+                            null
+                        else creationConfig.targetSdkVersion.getApiString()
                 )
-            task.targetSdkVersion.disallowChanges()
             task.maxSdkVersion.setDisallowChanges(creationConfig.maxSdkVersion)
             task.optionalFeatures.set(project.provider { getOptionalFeatures(creationConfig) })
             task.optionalFeatures.disallowChanges()
             task.jniLibsUseLegacyPackaging.setDisallowChanges(
-                creationConfig.packagingOptions.jniLibs.useLegacyPackaging
+                creationConfig.packaging.jniLibs.useLegacyPackaging
             )
             task.variantOutput.setDisallowChanges(
                 creationConfig.outputs.getMainSplit()

@@ -118,7 +118,7 @@ class ProcessOutputJunction(
             logPrefix,
             logStderr,
             logStdout,
-            logFullStdout
+            logFullStdout,
         )
         execute(handler, execOperations)
     }

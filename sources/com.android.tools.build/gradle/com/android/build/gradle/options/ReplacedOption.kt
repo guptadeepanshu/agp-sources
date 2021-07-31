@@ -18,6 +18,7 @@ package com.android.build.gradle.options
 
 import com.android.build.gradle.options.Version.VERSION_4_0
 import com.android.build.gradle.options.Version.VERSION_4_1
+import com.android.build.gradle.options.Version.VERSION_7_0
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
 
 /**
@@ -111,14 +112,14 @@ enum class ReplacedOption(
     @Suppress("unused")
     NAMESPACED_R_CLASS(
         "android.namespacedRClass",
-        Version.VERSION_4_1,
+        VERSION_4_1,
         "This property has been replaced by ${BooleanOption.NON_TRANSITIVE_R_CLASS.propertyName}"
     ),
 
     @Suppress("unused")
     ENABLE_PREFAB(
         "android.enablePrefab",
-        Version.VERSION_4_1,
+        VERSION_4_1,
         "This property has been replaced by android.buildFeatures.prefab (DSL)"
     ),
 
@@ -128,6 +129,35 @@ enum class ReplacedOption(
         "android.experimental.enableStableIds",
         VERSION_4_1,
         "This property has been replaced by ${BooleanOption.ENABLE_STABLE_IDS.propertyName}"
+    ),
+
+    @Suppress("unused")
+    TEST_FAILURE_RETENTION_0(
+        "android.experimental.testOptions.emulatorSnapshots",
+        VERSION_7_0,
+        "This property has been replaced by ${IntegerOption.TEST_FAILURE_RETENTION.propertyName}"
+    ),
+
+    @Suppress("unused")
+    TEST_FAILURE_RETENTION_1(
+        "android.testOptions.failureRetention",
+        VERSION_7_0,
+        "This property has been replaced by ${IntegerOption.TEST_FAILURE_RETENTION.propertyName}"
+    ),
+
+    @Suppress("unused")
+    ENABLE_TEST_FAILURE_RETENTION_COMPRESS_SNAPSHOT(
+        "android.testOptions.failureRetention.compressSnapshots",
+        VERSION_7_0,
+        "This property has been replaced by ${OptionalBooleanOption.ENABLE_TEST_FAILURE_RETENTION_COMPRESS_SNAPSHOT.propertyName}"
+    ),
+
+    // Jetifier: List of regular expressions for libraries that should not be jetified
+    @Suppress("unused", "WrongTerminology")
+    JETIFIER_BLACKLIST(
+        "android.jetifier.blacklist",
+        VERSION_7_0,
+        "This property has been replaced by ${StringOption.JETIFIER_IGNORE_LIST.propertyName}"
     )
 
     ;

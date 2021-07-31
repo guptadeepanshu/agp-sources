@@ -44,6 +44,7 @@ import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 
 /**
@@ -68,7 +69,7 @@ interface ComponentCreationConfig : ComponentIdentity {
 
     // needed by resource compilation/link
     val applicationId: Provider<String>
-    val packageName: Provider<String>
+    val namespace: Provider<String>
     val resourceConfigurations: ImmutableSet<String>
     val isPrecompileDependenciesResourcesEnabled: Boolean
     val asmApiVersion: Int
@@ -76,16 +77,19 @@ interface ComponentCreationConfig : ComponentIdentity {
     val registeredProjectClassesVisitors: List<AsmClassVisitorFactory<*>>
     val registeredDependenciesClassesVisitors: List<AsmClassVisitorFactory<*>>
     val allProjectClassesPostAsmInstrumentation: FileCollection
+    val projectClassesAreInstrumented: Boolean
+    val dependenciesClassesAreInstrumented: Boolean
     val debuggable: Boolean
+    val pseudoLocalesEnabled: Property<Boolean>
 
-
-    // ---------------------------------------------------------------------------------------------
-    // TODO figure out whether these properties are needed by all
-    // ---------------------------------------------------------------------------------------------
-
-    // TODO : remove as it is now in Variant.
     val minSdkVersion: AndroidVersion
-    val targetSdkVersion: ApiVersion
+
+    // ---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
+
+    // TODO figure out whether these properties are needed by all
+    // TODO : remove as it is now in Variant.
+    // ---------------------------------------------------------------------------------------------
     val outputs: VariantOutputList
     val manifestArtifactType: InternalArtifactType<Directory>
 
@@ -156,4 +160,6 @@ interface ComponentCreationConfig : ComponentIdentity {
     fun configureAndLockAsmClassesVisitors(objectFactory: ObjectFactory)
 
     fun getDependenciesClassesJarsPostAsmInstrumentation(scope: AndroidArtifacts.ArtifactScope): FileCollection
+
+    val packageJacocoRuntime: Boolean
 }

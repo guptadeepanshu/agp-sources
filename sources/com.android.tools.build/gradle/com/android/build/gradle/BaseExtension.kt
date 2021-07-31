@@ -41,11 +41,13 @@ import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.DexOptions
 import com.android.build.gradle.internal.dsl.ExternalNativeBuild
 import com.android.build.gradle.internal.dsl.LintOptions
+import com.android.build.gradle.internal.dsl.Lockable
 import com.android.build.gradle.internal.dsl.PackagingOptions
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.dsl.Splits
 import com.android.build.gradle.internal.dsl.TestOptions
+import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.services.DslServices
 import com.android.builder.core.LibraryRequest
@@ -101,14 +103,23 @@ abstract class BaseExtension protected constructor(
     private val sourceSetManager: SourceSetManager,
     private val extraModelInfo: ExtraModelInfo,
     private val isBaseModule: Boolean
-) : AndroidConfig {
+) : AndroidConfig, Lockable {
 
     private val _transforms: MutableList<Transform> = mutableListOf()
     /** Secondary dependencies for the custom transform. */
     private val _transformDependencies: MutableList<List<Any>> = mutableListOf()
 
-    override val dexOptions: DexOptions =
-        dslServices.newInstance(DexOptions::class.java, dslServices.deprecationReporter)
+    private val _dexOptions = dslServices.newInstance(DexOptions::class.java)
+
+    @Deprecated("Using dexOptions is obsolete.")
+    override val dexOptions: DexOptions
+        get() {
+            dslServices.deprecationReporter.reportObsoleteUsage(
+                "dexOptions",
+                DeprecationReporter.DeprecationTarget.DEX_OPTIONS
+            )
+            return _dexOptions
+        }
 
     private val deviceProviderList: MutableList<DeviceProvider> = Lists.newArrayList()
     private val testServerList: MutableList<TestServer> = Lists.newArrayList()
@@ -121,6 +132,12 @@ abstract class BaseExtension protected constructor(
     abstract val viewBinding: ViewBindingOptions
 
     override var defaultPublishConfig: String = "release"
+        set(_) {
+            dslServices.deprecationReporter.reportObsoleteUsage(
+                    "defaultPublishConfig",
+                    DeprecationReporter.DeprecationTarget.VERSION_8_0
+            )
+        }
 
     override var variantFilter: Action<VariantFilter>? = null
 
@@ -133,6 +150,7 @@ abstract class BaseExtension protected constructor(
      */
     fun disableWrite() {
         isWritable = false
+        lock()
     }
 
     protected fun checkWritability() {
@@ -156,7 +174,7 @@ abstract class BaseExtension protected constructor(
         buildToolsVersion = version
     }
 
-    fun flavorDimensions(vararg dimensions: String) {
+    open fun flavorDimensions(vararg dimensions: String) {
         checkWritability()
         flavorDimensionList.clear()
         flavorDimensionList.addAll(dimensions)
@@ -177,6 +195,7 @@ abstract class BaseExtension protected constructor(
      *
      * For more information about the properties you can configure in this block, see [DexOptions].
      */
+    @Deprecated("Setting dexOptions is obsolete.")
     fun dexOptions(action: Action<DexOptions>) {
         checkWritability()
         action.execute(dexOptions)
@@ -411,7 +430,7 @@ abstract class BaseExtension protected constructor(
             return adbExecutable
         }
 
-    fun getDefaultProguardFile(name: String): File {
+    open fun getDefaultProguardFile(name: String): File {
         if (!ProguardFiles.KNOWN_FILE_NAMES.contains(name)) {
             dslServices
                 .issueReporter
@@ -449,13 +468,9 @@ abstract class BaseExtension protected constructor(
         action.execute(composeOptions)
     }
 
-    open fun compileSdkVersion(version: String) {
-        this.compileSdkVersion = version
-    }
+    abstract fun compileSdkVersion(version: String)
 
-    open fun compileSdkVersion(apiLevel: Int) {
-        compileSdkVersion("android-$apiLevel")
-    }
+    abstract fun compileSdkVersion(apiLevel: Int)
 
     // Kept for binary and source compatibility until the old DSL interfaces can go away.
     abstract override val flavorDimensionList: MutableList<String>

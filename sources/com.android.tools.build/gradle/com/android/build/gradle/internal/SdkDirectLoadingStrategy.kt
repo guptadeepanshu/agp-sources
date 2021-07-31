@@ -48,7 +48,9 @@ class SdkDirectLoadingStrategy(
     private val platformTargetHashSupplier: String?,
     private val buildToolRevisionSupplier: Revision?,
     private val useAndroidX: Boolean,
-    private val issueReporter: IssueReporter) {
+    private val issueReporter: IssueReporter,
+    private val suppressWarningIfTooNewForVersions: String?,
+) {
 
     companion object {
         // We use Optional<> wrapper since ConcurrentHashMap don't support null values.
@@ -135,6 +137,8 @@ class SdkDirectLoadingStrategy(
             return null
         }
 
+        warnIfCompileSdkTooNew(platform.targetPlatformVersion, issueReporter, suppressWarningIfTooNewForVersions)
+
         return DirectLoadComponents(
             sdkDirectory,
             platformTools,
@@ -197,15 +201,15 @@ class SdkDirectLoadingStrategy(
     fun getSplitSelectExecutable() = getFileFromBuildTool(BuildToolInfo.PathId.SPLIT_SELECT)
 
     fun getRenderScriptSupportJar() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportJar(it.location, useAndroidX)
+        RenderScriptProcessor.getSupportJar(it.location.toFile(), useAndroidX)
     }
 
     fun getSupportNativeLibFolder() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportNativeLibFolder(it.location)
+        RenderScriptProcessor.getSupportNativeLibFolder(it.location.toFile())
     }
 
     fun getSupportBlasLibFolder() = getBuildToolsInfo()?.let {
-        RenderScriptProcessor.getSupportBlasLibFolder(it.location)
+        RenderScriptProcessor.getSupportBlasLibFolder(it.location.toFile())
     }
 
     fun getSystemImageLibFolder(imageHash: String) =
@@ -219,6 +223,7 @@ class SdkDirectLoadingStrategy(
 
     fun getEmulatorLibFolder() = components?.emulator?.emulatorDir
 
+    fun getCoreForSystemModulesJar() = components?.platform?.coreForSystemModulesJar
 
     fun reset() {
         clearCaches()
@@ -280,7 +285,9 @@ private class PlatformComponents(
     /** This is the additional libraries of this platform. **/
     internal val additionalLibraries: List<OptionalLibrary>,
     /** This is the optional libraries of this platform. **/
-    internal val optionalLibraries: List<OptionalLibrary>) {
+    internal val optionalLibraries: List<OptionalLibrary>,
+    /** This is the System Modules jar included in Sdk 30+, usually $PLATFORM/core-for-system-modules.jar **/
+    internal val coreForSystemModulesJar: File?) {
 
     // TODO: fix documentation.
     companion object {
@@ -317,7 +324,10 @@ private class PlatformComponents(
                 ),
                 parseOptionalLibraries(
                     platformPackage
-                )
+                ),
+                platformBase.resolve(SdkConstants.FN_CORE_FOR_SYSTEM_MODULES).let {
+                    if (it.exists()) it else null
+                }
             )
         }
     }

@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.testing.utp
 
 import com.google.common.annotations.VisibleForTesting
 import org.apache.commons.io.FileUtils
+import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -43,20 +44,25 @@ private fun computeRegistrationDirectoryContainer(): Path? {
     when {
         os.startsWith("mac") -> {
             return Paths.get(
-                System.getProperty("HOME") ?: "/",
+                System.getenv("HOME") ?: "/",
                 "Library",
                 "Caches",
                 "TemporaryItems"
             )
         }
         os.startsWith("win") -> {
-            return Paths.get(System.getProperty("LOCALAPPDATA") ?: "/", "Temp")
+            return Paths.get(System.getenv("LOCALAPPDATA") ?: "/", "Temp")
         }
         else -> { // Linux and Chrome OS.
             for (dirstr in arrayOf(
-                System.getProperty("XDG_RUNTIME_DIR"),
+                System.getenv("XDG_RUNTIME_DIR"),
                 "/run/user/${getUid()}",
-                (System.getProperty("HOME") ?: "/") + ".android"
+                System.getenv("ANDROID_EMULATOR_HOME"),
+                System.getenv("ANDROID_PREFS_ROOT"),
+                System.getenv("ANDROID_SDK_HOME"),
+                (System.getenv("HOME") ?: "/") + ".android",
+                // For integration tests, we use java property.
+                System.getProperty("android.emulator.home")
             )) {
                 if (dirstr == null) {
                     continue
@@ -96,38 +102,51 @@ private fun getUid(): String? {
     }
 }
 
-fun findGrpcPort(deviceSerial: String): Int {
+data class EmulatorGrpcInfo(val port: Int, val token: String?)
+
+fun findGrpcInfo(deviceSerial: String, file: Path): EmulatorGrpcInfo? {
+    var currentGrpcPort = DEFAULT_EMULATOR_GRPC_PORT
+    var currentGrpcToken: String? = null
+    var matchedAvd = false
+    Files.readAllLines(file).forEach { line ->
+        when {
+            line.startsWith("grpc.port=") -> {
+                currentGrpcPort =
+                    Integer.parseInt(line.substring("grpc.port=".length), 10)
+            }
+            line.startsWith("grpc.token=") -> {
+                currentGrpcToken = line.substring("grpc.token=".length)
+            }
+            line.startsWith("port.serial=") -> {
+                val serial = line.substring("port.serial=".length)
+                matchedAvd = ("emulator-" + serial == deviceSerial)
+            }
+        }
+    }
+    if (matchedAvd) {
+        return EmulatorGrpcInfo(currentGrpcPort, currentGrpcToken)
+    } else {
+        return null
+    }
+}
+
+
+fun findGrpcInfo(deviceSerial: String): EmulatorGrpcInfo {
     try {
         val fileNamePattern = Pattern.compile("pid_\\d+.ini")
         val directory = computeRegistrationDirectoryContainer()?.resolve("avd/running")
         return Files.list(directory).asSequence().map { file ->
-            var currentGrpcPort = DEFAULT_EMULATOR_GRPC_PORT
-            var matchedAvd = false
             if (fileNamePattern.matcher(file.fileName.toString()).matches()) {
-                Files.readAllLines(file).forEach { line ->
-                    when {
-                        line.startsWith("grpc.port=") -> {
-                            currentGrpcPort =
-                                Integer.parseInt(line.substring("grpc.port=".length), 10)
-                        }
-                        line.startsWith("port.serial=") -> {
-                            val serial = line.substring("port.serial=".length)
-                            matchedAvd = ("emulator-" + serial == deviceSerial)
-                        }
-                    }
-                }
-            }
-            if (matchedAvd) {
-                currentGrpcPort
+                findGrpcInfo(deviceSerial, file)
             } else {
                 null
             }
-        }.filterNotNull().firstOrNull() ?: DEFAULT_EMULATOR_GRPC_PORT
+        }.filterNotNull().firstOrNull() ?: EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT, null)
     } catch (exception: Throwable) {
         LOG.fine(
             "Failed to parse emulator gRPC port, fallback to default,"
                     + " exception ${exception}"
         )
-        return DEFAULT_EMULATOR_GRPC_PORT
+        return EmulatorGrpcInfo(DEFAULT_EMULATOR_GRPC_PORT, null)
     }
 }

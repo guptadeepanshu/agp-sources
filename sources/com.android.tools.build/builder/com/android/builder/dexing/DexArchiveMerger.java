@@ -2,10 +2,11 @@ package com.android.builder.dexing;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.dx.command.dexer.DxContext;
 import com.android.ide.common.blame.MessageReceiver;
 import com.android.tools.r8.CompilationMode;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
@@ -14,13 +15,6 @@ import java.util.concurrent.ForkJoinPool;
  * files.
  */
 public interface DexArchiveMerger {
-
-    /** Creates an instance of dex archive merger that is using dx to merge dex files. */
-    @NonNull
-    static DexArchiveMerger createDxDexMerger(
-            @NonNull DxContext dxContext, @NonNull ForkJoinPool executor, boolean isDebuggable) {
-        return new DxDexArchiveMerger(dxContext, executor, isDebuggable);
-    }
 
     /** Creates an instance of dex archive merger that is using d8 to merge dex files. */
     @NonNull
@@ -51,19 +45,22 @@ public interface DexArchiveMerger {
      * </ul>
      *
      * @param dexArchiveEntries the dex archive entries to merge
-     * @param dexRootsForDx the dex roots (directories or jars) containing the dex archive entries
-     *     to merge. It is currently used only by the DX tool as we do not support merging a subset
-     *     of dex archive entries inside the dex roots when DX is used.
      * @param outputDir directory where merged dex file(s) will be written, must exist
-     * @param mainDexClasses file containing list of classes to be merged in the main dex file. It
-     *     is {@code null} for native and mono dex, and must be non-null for legacy dex.
-     * @param dexingType specifies how to merge dex files
+     * @param mainDexRulesFiles files containing the Proguard rules
+     * @param mainDexRules Proguard rules written as strings
+     * @param userMultidexKeepFile a user specified file containing classes to be kept in the main
+     *     dex list
+     * @param libraryFiles classes that are used only to resolve types in the program classes, but
+     *     are not packaged in the final binary e.g. android.jar, provided classes etc.
+     * @param mainDexListOutput the output location of classes to be kept in the main dex file
      */
     void mergeDexArchives(
             @NonNull List<DexArchiveEntry> dexArchiveEntries,
-            @NonNull List<Path> dexRootsForDx,
             @NonNull Path outputDir,
-            @Nullable Path mainDexClasses,
-            @NonNull DexingType dexingType)
-            throws DexArchiveMergerException;
+            @Nullable List<Path> mainDexRulesFiles,
+            @Nullable List<String> mainDexRules,
+            @Nullable Path userMultidexKeepFile,
+            @Nullable Collection<Path> libraryFiles,
+            @Nullable Path mainDexListOutput)
+            throws DexArchiveMergerException, IOException;
 }

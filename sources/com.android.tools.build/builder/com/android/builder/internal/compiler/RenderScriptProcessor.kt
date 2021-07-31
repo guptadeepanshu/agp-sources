@@ -15,18 +15,17 @@
  */
 package com.android.builder.internal.compiler
 
+import com.android.SdkConstants
 import com.android.SdkConstants.EXT_BC
 import com.android.SdkConstants.FN_ANDROIDX_RENDERSCRIPT_PACKAGE
 import com.android.SdkConstants.FN_ANDROIDX_RS_JAR
 import com.android.SdkConstants.FN_RENDERSCRIPT_V8_JAR
 import com.android.SdkConstants.FN_RENDERSCRIPT_V8_PACKAGE
-
-import com.android.SdkConstants
 import com.android.ide.common.internal.WaitableExecutor
 import com.android.ide.common.process.ProcessExecutor
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.ide.common.process.ProcessOutputHandler
-import com.android.repository.Revision
+import com.android.io.CancellableFileIo
 import com.android.sdklib.BuildToolInfo
 import com.android.sdklib.BuildToolInfo.PathId
 import com.android.utils.FileUtils
@@ -34,6 +33,8 @@ import com.android.utils.ILogger
 import com.google.common.annotations.VisibleForTesting
 import java.io.File
 import java.io.IOException
+import java.nio.file.Path
+import java.nio.file.Paths
 
 private const val LIBCLCORE_BC = "libclcore.bc"
 
@@ -49,7 +50,6 @@ class RenderScriptProcessor(
     private val libOutputDir: File,
     private val buildToolInfo: BuildToolInfo,
     targetApi: Int,
-    buildToolsRevision: Revision,
     private val optimizationLevel: Int,
     private val ndkMode: Boolean,
     private val supportMode: Boolean,
@@ -61,8 +61,8 @@ class RenderScriptProcessor(
     private val is32Bit: Boolean
     private val is64Bit: Boolean
 
-    private val rsLib: File?
-    private val libClCore = mutableMapOf<String, File>()
+    private val rsLib: Path?
+    private val libClCore = mutableMapOf<String, Path>()
 
     private val abis32: Array<Abi>
     private val abis64: Array<Abi>
@@ -73,23 +73,16 @@ class RenderScriptProcessor(
         get() = File(resOutputDir, SdkConstants.FD_RES_RAW)
 
     @VisibleForTesting
-    // ABI representation with device name, toolchain triple, the path to the old
-    // ABI-specific linker, the linker arguments and whether to use the new universal linker
+    // ABI representation with device name, toolchain triple and the linker arguments
     class Abi constructor(
         val device: String,
         val toolchain: String,
-        private val oldLinker: PathId,
-        private val linkerArgs: Array<String>,
-        private val useNewLinker: Boolean
+        private val linkerArgs: Array<String>
     ) {
-        val newLinker = PathId.LLD
+        val linker: PathId = PathId.LLD
 
-        val linker: PathId
-            get() = if (useNewLinker) newLinker else oldLinker
-
-        fun getLinkerArgs(): Array<String> =
-            if (useNewLinker) { arrayOf("-flavor", "ld") + linkerArgs }
-            else { linkerArgs }
+        // Add the required linker flavor to arguments
+        fun getLinkerArgs(): Array<String> = arrayOf("-flavor", "ld") + linkerArgs
     }
 
     private enum class AbiType {
@@ -99,22 +92,22 @@ class RenderScriptProcessor(
 
     init {
         // Set which linker to use for abis based on target build tools revision
-        abis32 = getAbis(AbiType.BIT_32, buildToolsRevision)
-        abis64 = getAbis(AbiType.BIT_64, buildToolsRevision)
+        abis32 = getAbis(AbiType.BIT_32)
+        abis64 = getAbis(AbiType.BIT_64)
 
         if (supportMode) {
-            val rs = File(buildToolInfo.location, "renderscript")
-            rsLib = File(rs, "lib")
-            val bcFolder = File(rsLib, "bc")
+            val rs = buildToolInfo.location.resolve("renderscript")
+            rsLib = rs.resolve("lib")
+            val bcFolder = rsLib.resolve("bc")
             for (abi in abis32) {
-                val rsClCoreFile = File(bcFolder, abi.device + File.separatorChar + LIBCLCORE_BC)
-                if (rsClCoreFile.exists()) {
+                val rsClCoreFile = bcFolder.resolve(abi.device + '/' + LIBCLCORE_BC)
+                if (CancellableFileIo.exists(rsClCoreFile)) {
                     libClCore[abi.device] = rsClCoreFile
                 }
             }
             for (abi in abis64) {
-                val rsClCoreFile = File(bcFolder, abi.device + File.separatorChar + LIBCLCORE_BC)
-                if (rsClCoreFile.exists()) {
+                val rsClCoreFile = bcFolder.resolve(abi.device + '/' + LIBCLCORE_BC)
+                if (CancellableFileIo.exists(rsClCoreFile)) {
                     libClCore[abi.device] = rsClCoreFile
                 }
             }
@@ -163,9 +156,9 @@ class RenderScriptProcessor(
         // get the env var
         val env = mutableMapOf<String, String>()
         if (SdkConstants.CURRENT_PLATFORM == SdkConstants.PLATFORM_DARWIN) {
-            env["DYLD_LIBRARY_PATH"] = buildToolInfo.location.absolutePath
+            env["DYLD_LIBRARY_PATH"] = buildToolInfo.location.toAbsolutePath().toString()
         } else if (SdkConstants.CURRENT_PLATFORM == SdkConstants.PLATFORM_LINUX) {
-            env["LD_LIBRARY_PATH"] = buildToolInfo.location.absolutePath
+            env["LD_LIBRARY_PATH"] = buildToolInfo.location.toAbsolutePath().toString()
         }
 
         doMainCompilation(renderscriptFiles, processExecutor, processOutputHandler, env)
@@ -412,7 +405,7 @@ class RenderScriptProcessor(
         builder.addArgs("-fPIC")
         builder.addArgs("-shared")
 
-        builder.addArgs("-rt-path", libClCore.getValue(abi.device).absolutePath)
+        builder.addArgs("-rt-path", libClCore.getValue(abi.device).toAbsolutePath().toString())
 
         builder.addArgs("-mtriple", abi.toolchain)
         builder.addArgs(bcFile.absolutePath)
@@ -434,10 +427,11 @@ class RenderScriptProcessor(
         processOutputHandler: ProcessOutputHandler,
         env: Map<String, String>
     ) {
-        val intermediatesFolder = File(rsLib, "intermediates")
-        val intermediatesAbiFolder = File(intermediatesFolder, abi.device)
-        val packagedFolder = File(rsLib, "packaged")
-        val packagedAbiFolder = File(packagedFolder, abi.device)
+        val root = rsLib ?: Paths.get("")
+        val intermediatesFolder = root.resolve("intermediates")
+        val intermediatesAbiFolder = intermediatesFolder.resolve(abi.device)
+        val packagedFolder = root.resolve("packaged")
+        val packagedAbiFolder = packagedFolder.resolve(abi.device)
         val builder = ProcessInfoBuilder()
         builder.setExecutable(buildToolInfo.getPath(abi.linker))
         builder.addEnvironments(env)
@@ -451,12 +445,12 @@ class RenderScriptProcessor(
         builder.addArgs("-o", outFile.absolutePath)
 
         builder.addArgs(
-            "-L${intermediatesAbiFolder.absolutePath}",
-            "-L${packagedAbiFolder.absolutePath}",
+            "-L${intermediatesAbiFolder.toAbsolutePath()}",
+            "-L${packagedAbiFolder.toAbsolutePath()}",
             "-soname",
             soName,
             objFile.absolutePath,
-            File(intermediatesAbiFolder, "libcompiler_rt.a").absolutePath,
+            intermediatesAbiFolder.resolve("libcompiler_rt.a").toAbsolutePath().toString(),
             "-lRSSupport",
             "-lm",
             "-lc"
@@ -492,11 +486,7 @@ class RenderScriptProcessor(
             return File(buildToolsFolder, "renderscript/lib")
         }
 
-        private fun getAbis(type: AbiType, buildToolsRevision: Revision): Array<Abi> {
-            // The revision in which the new universal linker (lld) was added
-            val newLinkerRevision = Revision(29, 0, 3)
-
-            val useNewLinker = buildToolsRevision >= newLinkerRevision
+        private fun getAbis(type: AbiType): Array<Abi> {
 
             return when (type) {
                 AbiType.BIT_32 ->
@@ -504,29 +494,23 @@ class RenderScriptProcessor(
                         Abi(
                             "armeabi-v7a",
                             "armv7-none-linux-gnueabi",
-                            PathId.LD_ARM,
                             arrayOf(
                                 "-dynamic-linker",
                                 "/system/bin/linker",
                                 "-X",
                                 "-m",
                                 "armelf_linux_eabi"
-                            ),
-                            useNewLinker
+                            )
                         ),
                         Abi(
                             "mips",
                             "mipsel-unknown-linux",
-                            PathId.LD_MIPS,
-                            arrayOf("-EL"),
-                            useNewLinker
+                            arrayOf("-EL")
                         ),
                         Abi(
                             "x86",
                             "i686-unknown-linux",
-                            PathId.LD_X86,
-                            arrayOf("-m", "elf_i386"),
-                            useNewLinker
+                            arrayOf("-m", "elf_i386")
                         )
                     )
                 AbiType.BIT_64 ->
@@ -534,16 +518,12 @@ class RenderScriptProcessor(
                         Abi(
                             "arm64-v8a",
                             "aarch64-linux-android",
-                            PathId.LD_ARM64,
-                            arrayOf("-X", "--fix-cortex-a53-843419"),
-                            useNewLinker
+                            arrayOf("-X", "--fix-cortex-a53-843419")
                         ),
                         Abi(
                             "x86_64",
                             "x86_64-unknown-linux",
-                            PathId.LD_X86_64,
-                            arrayOf("-m", "elf_x86_64"),
-                            useNewLinker
+                            arrayOf("-m", "elf_x86_64")
                         )
                     )
             }
@@ -551,10 +531,10 @@ class RenderScriptProcessor(
 
         @JvmStatic
         @VisibleForTesting
-        fun getAbis(abiType: String, buildToolsRevision: String): Array<Abi>? {
+        fun getAbis(abiType: String): Array<Abi>? {
             return when (abiType) {
-                "32" -> getAbis(AbiType.BIT_32, Revision.parseRevision(buildToolsRevision))
-                "64" -> getAbis(AbiType.BIT_64, Revision.parseRevision(buildToolsRevision))
+                "32" -> getAbis(AbiType.BIT_32)
+                "64" -> getAbis(AbiType.BIT_64)
                 else -> null
             }
         }

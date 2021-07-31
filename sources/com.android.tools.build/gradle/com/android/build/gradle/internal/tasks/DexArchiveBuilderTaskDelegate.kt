@@ -21,16 +21,13 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.crash.PluginCrashReporter
 import com.android.build.gradle.internal.dexing.DexParameters
 import com.android.build.gradle.internal.dexing.DexWorkAction
-import com.android.build.gradle.internal.dexing.DxDexParameters
 import com.android.build.gradle.internal.dexing.IncrementalDexSpec
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.workeractions.WorkerActionServiceRegistry
-import com.android.builder.core.DefaultDexOptions
 import com.android.builder.dexing.ClassBucket
 import com.android.builder.dexing.ClassBucketGroup
 import com.android.builder.dexing.ClassFileEntry
 import com.android.builder.dexing.ClassFileInput
-import com.android.builder.dexing.DexerTool
 import com.android.builder.dexing.DirectoryBucketGroup
 import com.android.builder.dexing.JarBucketGroup
 import com.android.builder.dexing.r8.ClassFileProviderFactory
@@ -90,24 +87,19 @@ class DexArchiveBuilderTaskDelegate(
 
     // Dex parameters
     private val dexParams: DexParameters,
-    private val dxDexParams: DxDexParameters,
 
     // Incremental info
     private val desugarClasspathChangedClasses: Set<FileChange> = emptySet(),
 
-    /** Whether incremental desugaring V2 is enabled. */
-    incrementalDexingTaskV2: Boolean,
-
     /**
-     * Directory containing dependency graph(s) for desugaring, not `null` iff
-     * incrementalDexingTaskV2 is enabled.
+     * Directory containing dependency graph(s) for desugaring, not `null` iff desugaring is
+     * enabled.
      */
     private val desugarGraphDir: File?,
 
     // Other info
     projectVariant: String,
     private val inputJarHashesFile: File,
-    private val dexer: DexerTool,
     private val numberOfBuckets: Int,
     private val workerExecutor: WorkerExecutor,
     private val executor: WaitableExecutor = WaitableExecutor.useGlobalSharedThreadPool(),
@@ -142,30 +134,8 @@ class DexArchiveBuilderTaskDelegate(
             this
         }
 
-    // Whether impacted files are computed lazily in the workers instead of being computed up front
-    // before the workers are launched.
-    private val isImpactedFilesComputedLazily: Boolean =
-        dexParams.withDesugaring && dexer == DexerTool.D8 && incrementalDexingTaskV2
-
-    // desugarIncrementalHelper is not null iff
-    // !isImpactedFilesComputedLazily && dexParams.withDesugaring
-    private val desugarIncrementalHelper: DesugarIncrementalHelper? =
-        DesugarIncrementalHelper(
-            projectVariant,
-            isIncremental,
-            Iterables.concat(
-                projectClasses,
-                subProjectClasses,
-                externalLibClasses,
-                mixedScopeClasses,
-                dexParams.desugarClasspath
-            ),
-            Supplier { changedFiles.mapTo(HashSet<Path>(changedFiles.size)) { it.toPath() } },
-            executor
-        ).takeIf { !isImpactedFilesComputedLazily && dexParams.withDesugaring }
-
     init {
-        check(incrementalDexingTaskV2 xor (desugarGraphDir == null))
+        check(dexParams.withDesugaring xor (desugarGraphDir == null))
     }
 
     /**
@@ -184,23 +154,7 @@ class DexArchiveBuilderTaskDelegate(
     }
 
     fun doProcess() {
-        if (dxDexParams.dxNoOptimizeFlagPresent) {
-            loggerWrapper.warning(DefaultDexOptions.OPTIMIZE_WARNING)
-        }
-
         loggerWrapper.verbose("Dex builder is incremental : %b ", isIncremental)
-
-        // impactedFiles is not null iff !isImpactedFilesComputedLazily
-        val impactedFiles: Set<File>? =
-            if (isImpactedFilesComputedLazily) {
-                null
-            } else {
-                if (dexParams.withDesugaring) {
-                    desugarIncrementalHelper!!.additionalPaths.map { it.toFile() }.toSet()
-                } else {
-                    emptySet()
-                }
-            }
 
         try {
             Closer.create().use { closer ->
@@ -224,17 +178,16 @@ class DexArchiveBuilderTaskDelegate(
                 ).also { closer.register(it) }
 
                 val processInputType = { classes: Set<File>,
-                    changedClasses: Set<FileChange>,
-                    outputDir: File,
-                    outputKeepRules: File?,
-                    // Not null iff impactedFiles == null
-                    desugarGraphDir: File? ->
+                                         changedClasses: Set<FileChange>,
+                                         outputDir: File,
+                                         outputKeepRules: File?,
+                                         // Not null iff desugaring is enabled
+                                         desugarGraphDir: File? ->
                     processClassFromInput(
                         inputFiles = classes,
                         inputFileChanges = changedClasses,
                         outputDir = outputDir,
                         outputKeepRules = outputKeepRules,
-                        impactedFiles = impactedFiles,
                         desugarGraphDir = desugarGraphDir,
                         bootClasspathKey = bootclasspathServiceKey,
                         classpathKey = classpathServiceKey
@@ -245,28 +198,28 @@ class DexArchiveBuilderTaskDelegate(
                     projectChangedClasses,
                     projectOutputDex,
                     projectOutputKeepRules,
-                    desugarGraphDir?.resolve("currentProject").takeIf { impactedFiles == null }
+                    desugarGraphDir?.resolve("currentProject")
                 )
                 processInputType(
                     subProjectClasses,
                     subProjectChangedClasses,
                     subProjectOutputDex,
                     subProjectOutputKeepRules,
-                    desugarGraphDir?.resolve("otherProjects").takeIf { impactedFiles == null }
+                    desugarGraphDir?.resolve("otherProjects")
                 )
                 processInputType(
                     mixedScopeClasses,
                     mixedScopeChangedClasses,
                     mixedScopeOutputDex,
                     mixedScopeOutputKeepRules,
-                    desugarGraphDir?.resolve("mixedScopes").takeIf { impactedFiles == null }
+                    desugarGraphDir?.resolve("mixedScopes")
                 )
                 processInputType(
                     externalLibClasses,
                     externalLibChangedClasses,
                     externalLibsOutputDex,
                     externalLibsOutputKeepRules,
-                    desugarGraphDir?.resolve("externalLibs").takeIf { impactedFiles == null }
+                    desugarGraphDir?.resolve("externalLibs")
                 )
 
                 // all work items have been submitted, now wait for completion.
@@ -287,8 +240,7 @@ class DexArchiveBuilderTaskDelegate(
         inputFileChanges: Set<FileChange>,
         outputDir: File,
         outputKeepRules: File?,
-        impactedFiles: Set<File>?,
-        desugarGraphDir: File?, // Not null iff impactedFiles == null
+        desugarGraphDir: File?, // Not null iff desugaring is enabled
         bootClasspathKey: ClasspathServiceKey,
         classpathKey: ClasspathServiceKey
     ) {
@@ -315,7 +267,6 @@ class DexArchiveBuilderTaskDelegate(
                 bootClasspath = bootClasspathKey,
                 classpath = classpathKey,
                 changedFiles = changedFiles,
-                impactedFiles = impactedFiles,
                 desugarGraphDir = desugarGraphDir,
                 outputKeepRulesDir = outputKeepRules
             )
@@ -332,7 +283,6 @@ class DexArchiveBuilderTaskDelegate(
                 bootclasspath = bootClasspathKey,
                 classpath = classpathKey,
                 changedFiles = changedFiles,
-                impactedFiles = impactedFiles,
                 desugarGraphDir = desugarGraphDir,
                 outputKeepRulesDir = outputKeepRules
             )
@@ -373,12 +323,10 @@ class DexArchiveBuilderTaskDelegate(
         bootclasspath: ClasspathServiceKey,
         classpath: ClasspathServiceKey,
         changedFiles: Set<File>,
-        impactedFiles: Set<File>?,
-        desugarGraphDir: File?, // Not null iff impactedFiles == null
+        desugarGraphDir: File?, // Not null iff desugaring is enabled
         outputKeepRulesDir: File?
     ) {
-        if (isImpactedFilesComputedLazily) {
-            check(impactedFiles == null)
+        if (dexParams.withDesugaring) {
             convertToDexArchive(
                 inputs = JarBucketGroup(jarInput, numberOfBuckets),
                 outputDir = outputDir,
@@ -386,13 +334,11 @@ class DexArchiveBuilderTaskDelegate(
                 bootClasspath = bootclasspath,
                 classpath = classpath,
                 changedFiles = changedFiles,
-                impactedFiles = null,
-                desugarGraphDir = desugarGraphDir,
+                desugarGraphDir = desugarGraphDir!!,
                 outputKeepRulesDir = outputKeepRulesDir
             )
         } else {
-            checkNotNull(impactedFiles)
-            if (isIncremental && jarInput !in changedFiles && jarInput !in impactedFiles) {
+            if (isIncremental && jarInput !in changedFiles) {
                 return
             }
 
@@ -403,7 +349,6 @@ class DexArchiveBuilderTaskDelegate(
                 bootClasspath = bootclasspath,
                 classpath = classpath,
                 changedFiles = setOf(),
-                impactedFiles = setOf(),
                 desugarGraphDir = null,
                 outputKeepRulesDir = outputKeepRulesDir
             )
@@ -417,8 +362,7 @@ class DexArchiveBuilderTaskDelegate(
         bootClasspath: ClasspathServiceKey,
         classpath: ClasspathServiceKey,
         changedFiles: Set<File>,
-        impactedFiles: Set<File>?,
-        desugarGraphDir: File?, // Not null iff impactedFiles == null
+        desugarGraphDir: File?, // Not null iff desugaring is enabled
         outputKeepRulesDir: File?
     ) {
         inputs.getRoots().forEach { loggerWrapper.verbose("Dexing ${it.absolutePath}") }
@@ -459,7 +403,6 @@ class DexArchiveBuilderTaskDelegate(
             val classBucket = ClassBucket(inputs, bucketId)
             workerExecutor.noIsolation().submit(DexWorkAction::class.java) { params ->
                 params.initializeWith(projectName, taskPath, analyticsService)
-                params.dexer.set(dexer)
                 params.dexSpec.set(
                         IncrementalDexSpec(
                         inputClassFiles = classBucket,
@@ -472,14 +415,10 @@ class DexArchiveBuilderTaskDelegate(
                         ),
                         isIncremental = isIncremental,
                         changedFiles = changedFiles,
-                        impactedFiles = impactedFiles,
-                        desugarGraphFile = if (impactedFiles == null) {
-                            getDesugarGraphFile(desugarGraphDir!!, classBucket)
-                        } else {
-                            null
+                        desugarGraphFile = desugarGraphDir?.let {
+                            getDesugarGraphFile(it, classBucket)
                         }
                 ))
-                params.dxDexParams.set(dxDexParams)
             }
         }
     }

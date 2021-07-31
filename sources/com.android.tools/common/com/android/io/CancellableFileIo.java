@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
@@ -43,6 +44,9 @@ import java.util.stream.Stream;
  * Wrapper methods around {@link Files} that check for cancellation before read I/O operations.
  * Write operations (such as delete, etc) are not exposed by this class because cancelling them is
  * potentially unsafe. Please invoke write operations through the {@link Files} class directly.
+ *
+ * <p>Please don't add convenience methods to this class. All methods are intended to closely match
+ * {@link Files}.
  *
  * @see Files
  * @see ProgressManagerAdapter
@@ -154,7 +158,12 @@ public class CancellableFileIo {
         return Files.readAttributes(file, type, options);
     }
 
-    /** @see Files#list(Path) */
+    /**
+     * @see Files#list(Path)
+     *
+     * <p>The {@code try}-with-resources construct should be used to ensure that the stream is
+     * closed after the stream operations are completed.
+     */
     @Slow
     @NonNull
     public static Stream<Path> list(@NonNull Path dir) throws IOException {
@@ -162,7 +171,12 @@ public class CancellableFileIo {
         return Files.list(dir);
     }
 
-    /** @see Files#walk(Path, FileVisitOption...) */
+    /**
+     * @see Files#walk(Path, FileVisitOption...)
+     *
+     * <p>The {@code try}-with-resources construct should be used to ensure that the stream is
+     * closed after the stream operations are completed.
+     */
     @Slow
     @NonNull
     public static Stream<Path> walk(@NonNull Path start, @NonNull FileVisitOption... options)
@@ -170,7 +184,12 @@ public class CancellableFileIo {
         return walk(start, Integer.MAX_VALUE, options);
     }
 
-    /** @see Files#walk(Path, int, FileVisitOption...) */
+    /**
+     * @see Files#walk(Path, int, FileVisitOption...)
+     *
+     * <p>The {@code try}-with-resources construct should be used to ensure that the stream is
+     * closed after the stream operations are completed.
+     */
     @Slow
     @NonNull
     public static Stream<Path> walk(
@@ -285,10 +304,18 @@ public class CancellableFileIo {
         return Files.readAllLines(file, StandardCharsets.UTF_8);
     }
 
+    /** @see Files#readAllLines(Path, Charset) */
+    @Slow
+    @NonNull
+    public static List<String> readAllLines(@NonNull Path file, @NonNull Charset cs) throws IOException {
+        ProgressManagerAdapter.checkCanceled();
+        return Files.readAllLines(file, cs);
+    }
+
     /** Reads a text file in UTF-8 encoding. */
     @Slow
     @NonNull
-    public static String readText(@NonNull Path file) throws IOException {
+    public static String readString(@NonNull Path file) throws IOException {
         return new String(readAllBytes(file), StandardCharsets.UTF_8);
     }
 

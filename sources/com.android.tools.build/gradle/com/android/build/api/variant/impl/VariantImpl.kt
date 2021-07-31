@@ -17,9 +17,19 @@ package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.Component
+import com.android.build.api.component.UnitTest
 import com.android.build.api.component.impl.ComponentImpl
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
-import com.android.build.api.variant.*
+import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.ExternalNativeBuild
+import com.android.build.api.variant.ExternalNdkBuildImpl
+import com.android.build.api.variant.Packaging
+import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.Variant
+import com.android.build.api.variant.VariantBuilder
+import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
@@ -27,21 +37,26 @@ import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.GlobalScope
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import com.android.builder.core.DefaultApiVersion
 import com.android.builder.core.VariantType
+import com.google.common.collect.ImmutableList
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.RegularFile
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
-import org.gradle.api.provider.Provider
-import org.objectweb.asm.Type
+import org.gradle.api.provider.Property
 import java.io.Serializable
 
 abstract class VariantImpl(
-    override val variantBuilder: VariantBuilderImpl,
+    open val variantBuilder: VariantBuilderImpl,
     buildFeatureValues: BuildFeatureValues,
     variantDslInfo: VariantDslInfo,
     variantDependencies: VariantDependencies,
@@ -74,6 +89,23 @@ abstract class VariantImpl(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
+    override val minSdkVersion: AndroidVersion  by lazy {
+        val apiVersion = variantBuilder.minSdk?.let { DefaultApiVersion(it)}
+            ?: variantBuilder.minSdkPreview?.let { DefaultApiVersion(it) }
+            ?: DefaultApiVersion(1)
+        AndroidVersionImpl(apiVersion.apiLevel, apiVersion.codename)
+    }
+
+    override val targetSdkVersion: AndroidVersion  by lazy {
+        val apiVersion = variantBuilder.targetSdk?.let { DefaultApiVersion(it)}
+            ?: variantBuilder.targetSdkPreview?.let { DefaultApiVersion(it) }
+            ?: DefaultApiVersion(1)
+        AndroidVersionImpl(apiVersion.apiLevel, apiVersion.codename)
+    }
+
+    override val maxSdkVersion: Int?
+        get() = variantBuilder.maxSdk
+
     override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>> by lazy {
         internalServices.mapPropertyOf(
             String::class.java,
@@ -82,37 +114,9 @@ abstract class VariantImpl(
         )
     }
 
-    override fun addBuildConfigField(key: String, value: Serializable, comment: String?) {
-        val descriptor = Type.getDescriptor(value::class.java)
-                .removeSurrounding("Ljava/lang/", ";")
-        buildConfigFields.put(key, BuildConfigField(descriptor, value, comment))
-    }
-
     // for compatibility with old variant API.
     fun addBuildConfigField(type: String, key: String, value: Serializable, comment: String?) {
         buildConfigFields.put(key, BuildConfigField(type, value, comment))
-    }
-
-    /**
-     * Adds a ResValue element to the generated resources.
-     * @param name the resource name
-     * @param type the resource type like 'string'
-     * @param value the resource value
-     * @param comment optional comment to be added to the generated resource file for the field.
-     */
-    override fun addResValue(name: String, type: String, value: String, comment: String?) {
-        resValues.put(ResValue.Key(type, name), ResValue(value, comment))
-    }
-
-    /**
-     * Adds a ResValue element to the generated resources.
-     * @param name the resource name
-     * @param type the resource type like 'string'
-     * @param value a [Provider] for the value
-     * @param comment optional comment to be added to the generated resource file for the field.
-     */
-    override fun addResValue(name: String, type: String, value: Provider<String>, comment: String?) {
-        resValues.put(ResValue.Key(type, name), value.map { ResValue(it, comment) })
     }
 
     override val manifestPlaceholders: MapProperty<String, String> by lazy {
@@ -124,8 +128,41 @@ abstract class VariantImpl(
         )
     }
 
-    override val packagingOptions: PackagingOptions by lazy {
-        PackagingOptionsImpl(globalScope.extension.packagingOptions, internalServices)
+    override val packaging: Packaging by lazy {
+        PackagingImpl(globalScope.extension.packagingOptions, internalServices)
+    }
+
+
+    override val externalNativeBuild: ExternalNativeBuild? by lazy {
+        variantDslInfo.nativeBuildSystem?.let { nativeBuildType ->
+            when(nativeBuildType) {
+                VariantManager.NativeBuiltType.CMAKE ->
+                    variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.let {
+                        ExternalCmakeImpl(
+                                it,
+                                variantPropertiesApiServices
+                        )
+                    }
+                VariantManager.NativeBuiltType.NDK_BUILD ->
+                    variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.let {
+                        ExternalNdkBuildImpl(
+                                it,
+                                variantPropertiesApiServices
+                        )
+                    }
+            }
+        }
+    }
+
+    override fun <T> getExtension(type: Class<T>): T? =
+        type.cast(externalExtensions?.get(type))
+
+    override val proguardFiles: ListProperty<RegularFile> by lazy {
+        variantPropertiesApiServices.projectInfo.getProject().objects
+            .listProperty(RegularFile::class.java).also {
+                variantDslInfo.getProguardFiles(it)
+                it.finalizeValueOnRead()
+            }
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -133,6 +170,11 @@ abstract class VariantImpl(
     // ---------------------------------------------------------------------------------------------
 
     val testComponents = mutableMapOf<VariantType, ComponentImpl>()
+    var testFixturesComponent: ComponentImpl? = null
+
+    val externalExtensions: Map<Class<*>, Any>? by lazy {
+        variantBuilder.getRegisteredExtensions()
+    }
 
     override val resValues: MapProperty<ResValue.Key, ResValue> by lazy {
         internalServices.mapPropertyOf(
@@ -142,15 +184,10 @@ abstract class VariantImpl(
         )
     }
 
+    override fun makeResValueKey(type: String, name: String): ResValue.Key = ResValueKeyImpl(type, name)
+
     override val renderscriptTargetApi: Int
         get() =  variantBuilder.renderscriptTargetApi
-
-    override val minSdkVersion: AndroidVersion
-        get() = variantBuilder.minSdkVersion
-
-
-    override val maxSdkVersion: Int?
-        get() = variantBuilder.maxSdkVersion
 
     private var _isMultiDexEnabled: Boolean? = variantDslInfo.isMultiDexEnabled
     override val isMultiDexEnabled: Boolean
@@ -171,6 +208,33 @@ abstract class VariantImpl(
 
     abstract override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<VariantBuilder, Variant>,
-            stats: GradleBuildVariant.Builder): T
+            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
+            stats: GradleBuildVariant.Builder?): T
+
+    override var unitTest: UnitTest? = null
+
+    /**
+     * adds renderscript sources if present.
+     */
+    override fun addRenderscriptSources(
+        sourceSets: ImmutableList.Builder<ConfigurableFileTree>
+    ) {
+        renderscript?.let {
+            if (!it.ndkModeEnabled.get()
+                && taskContainer.renderscriptCompileTask != null
+            ) {
+                val rsFC = artifacts.get(InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR)
+                sourceSets.add(internalServices.fileTree(rsFC).builtBy(rsFC))
+            }
+        }
+    }
+
+    override val pseudoLocalesEnabled: Property<Boolean> =
+        internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, variantDslInfo.isPseudoLocalesEnabled)
+
+    override val experimentalProperties: MapProperty<String, Any> =
+            internalServices.mapPropertyOf(
+                    String::class.java,
+                    Any::class.java,
+                    variantDslInfo.experimentalProperties)
 }

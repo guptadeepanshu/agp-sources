@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,15 +16,16 @@
 
 package com.android.build.api.extension
 
+import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.LibraryVariantBuilder
-import org.gradle.api.Incubating
 
-/**
- * Extension for Library module variant.
- *
- * A library module is created when a build script is applying the 'com.android.library' plugin.
- */
-@Incubating
+@Deprecated(
+    message= "Use the com.android.build.api.variant package",
+    replaceWith = ReplaceWith(
+        "LibraryAndroidComponentsExtension",
+        "com.android.build.api.variant.LibraryAndroidComponentsExtension"),
+    level = DeprecationLevel.WARNING
+)
 interface LibraryAndroidComponentsExtension:
-        AndroidComponentsExtension<LibraryVariantBuilder, LibraryVariant>
+        AndroidComponentsExtension<LibraryExtension, LibraryVariantBuilder, LibraryVariant>

@@ -25,10 +25,9 @@ import static com.android.build.gradle.internal.publishing.AndroidArtifacts.Publ
 import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.artifact.ArtifactType;
-import com.android.build.api.component.impl.TestComponentBuilderImpl;
+import com.android.build.api.artifact.SingleArtifact;
 import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.dsl.PrefabPackagingOptions;
+import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.transform.QualifiedContent;
 import com.android.build.api.transform.QualifiedContent.Scope;
 import com.android.build.api.transform.QualifiedContent.ScopeType;
@@ -37,9 +36,7 @@ import com.android.build.api.variant.impl.LibraryVariantBuilderImpl;
 import com.android.build.api.variant.impl.LibraryVariantImpl;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.LibraryExtension;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
-import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel;
 import com.android.build.gradle.internal.dependency.ConfigurationVariantMapping;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.pipeline.OriginalStream;
@@ -50,6 +47,7 @@ import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.tasks.AarMetadataTask;
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesDir;
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesJar;
@@ -58,39 +56,35 @@ import com.android.build.gradle.internal.tasks.CheckManifest;
 import com.android.build.gradle.internal.tasks.ExportConsumerProguardFilesTask;
 import com.android.build.gradle.internal.tasks.LibraryAarJarsTask;
 import com.android.build.gradle.internal.tasks.LibraryJniLibsTask;
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask;
 import com.android.build.gradle.internal.tasks.MergeConsumerProguardFilesTask;
 import com.android.build.gradle.internal.tasks.MergeGeneratedProguardFilesCreationAction;
 import com.android.build.gradle.internal.tasks.PackageRenderscriptTask;
-import com.android.build.gradle.internal.tasks.PrefabModuleTaskData;
-import com.android.build.gradle.internal.tasks.PrefabPackageTask;
 import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask;
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.tasks.factory.TaskProviderCallback;
 import com.android.build.gradle.internal.variant.ComponentInfo;
-import com.android.build.gradle.internal.variant.VariantHelper;
 import com.android.build.gradle.options.BooleanOption;
+import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.BundleAar;
 import com.android.build.gradle.tasks.CompileLibraryResourcesTask;
 import com.android.build.gradle.tasks.ExtractAnnotations;
 import com.android.build.gradle.tasks.ExtractDeepLinksTask;
 import com.android.build.gradle.tasks.MergeResources;
 import com.android.build.gradle.tasks.MergeSourceSetFolders;
+import com.android.build.gradle.tasks.ProcessLibraryArtProfileTask;
 import com.android.build.gradle.tasks.ProcessLibraryManifest;
-import com.android.build.gradle.tasks.VerifyLibraryResourcesTask;
 import com.android.build.gradle.tasks.ZipMergingTask;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.errors.IssueReporter.Type;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.component.AdhocComponentWithVariants;
 import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.FileCollection;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.jetbrains.annotations.NotNull;
@@ -100,12 +94,22 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     public LibraryTaskManager(
             @NonNull List<ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
-            @NonNull
-                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
+            @NonNull List<TestComponentImpl> testComponents,
+            @NonNull List<TestFixturesImpl> testFixturesComponents,
             boolean hasFlavors,
+            @NonNull ProjectOptions projectOptions,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension) {
-        super(variants, testComponents, hasFlavors, globalScope, extension);
+            @NonNull BaseExtension extension,
+            @NonNull ProjectInfo projectInfo) {
+        super(
+                variants,
+                testComponents,
+                testFixturesComponents,
+                hasFlavors,
+                projectOptions,
+                globalScope,
+                extension,
+                projectInfo);
     }
 
     @Override
@@ -143,7 +147,12 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         // Add a task to check the manifest
         taskFactory.register(new CheckManifest.CreationAction(libraryVariant));
 
-        taskFactory.register(new ProcessLibraryManifest.CreationAction(libraryVariant));
+        taskFactory.register(
+                new ProcessLibraryManifest.CreationAction(
+                        libraryVariant,
+                        libraryVariant.getTargetSdkVersion(),
+                        libraryVariant.getMaxSdkVersion(),
+                        libraryVariant.getManifestPlaceholders()));
 
         createRenderscriptTask(libraryVariant);
 
@@ -171,7 +180,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                     // Switch to package where possible so we stop merging resources in
                     // libraries
                     MergeType.PACKAGE,
-                    globalScope.getProjectBaseName());
+                    libraryVariant.getServices().getProjectInfo().getProjectBaseName());
 
             // Only verify resources if in Release and not namespaced.
             if (!libraryVariant.getDebuggable()
@@ -201,9 +210,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
         taskFactory.register(new MergeGeneratedProguardFilesCreationAction(libraryVariant));
 
-        // External native build
-        createExternalNativeBuildTasks(libraryVariant);
-
         createMergeJniLibFoldersTasks(libraryVariant);
 
         taskFactory.register(new StripDebugSymbolsTask.CreationAction(libraryVariant));
@@ -214,8 +220,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         taskFactory.register(new MergeConsumerProguardFilesTask.CreationAction(libraryVariant));
 
         taskFactory.register(new ExportConsumerProguardFilesTask.CreationAction(libraryVariant));
-
-        createPrefabTasks(libraryVariant);
 
         // Some versions of retrolambda remove the actions from the extract annotations task.
         // TODO: remove this hack once tests are moved to a version that doesn't do this
@@ -320,7 +324,9 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         // into the main and secondary jar files that goes in the AAR.
         // This is used for building the AAR.
 
-        taskFactory.register(new LibraryAarJarsTask.CreationAction(libraryVariant));
+        taskFactory.register(
+                new LibraryAarJarsTask.CreationAction(
+                        libraryVariant, libraryVariant.getMinifiedEnabled()));
 
         // now add a task that will take all the native libs and package
         // them into the libs folder of the bundle. This processes both the PROJECT
@@ -332,36 +338,21 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         // Add a task to create the AAR metadata file
         taskFactory.register(new AarMetadataTask.CreationAction(libraryVariant));
 
-        createLintTasks(libraryVariant, allVariants);
+        // Add tasks to write the lint model metadata file and the local lint AAR file
+        taskFactory.register(new LintModelMetadataTask.CreationAction(libraryVariant));
+        taskFactory.register(new BundleAar.LibraryLocalLintCreationAction(libraryVariant));
+
         createBundleTask(libraryVariant);
     }
 
-    private void registerLibraryRClassTransformStream(@NonNull VariantImpl variant) {
-        if (!variant.getBuildFeatures().getAndroidResources()) {
-            return;
-        }
-        FileCollection compileRClass =
-                project.files(
-                        variant.getArtifacts()
-                                .get(InternalArtifactType.COMPILE_R_CLASS_JAR.INSTANCE));
-        variant.getTransformManager()
-                .addStream(
-                        OriginalStream.builder("compile-only-r-class")
-                                .addContentTypes(TransformManager.CONTENT_CLASS)
-                                .addScope(Scope.PROVIDED_ONLY)
-                                .setFileCollection(compileRClass)
-                                .build());
-    }
-
     private void createBundleTask(@NonNull VariantImpl variant) {
-        TaskProvider<BundleAar> bundle =
-                taskFactory.register(new BundleAar.CreationAction(variant));
+        taskFactory.register(new BundleAar.LibraryCreationAction(variant));
 
         variant.getTaskContainer()
                 .getAssembleTask()
                 .configure(
                         task -> {
-                            task.dependsOn(variant.getArtifacts().get(ArtifactType.AAR.INSTANCE));
+                            task.dependsOn(variant.getArtifacts().get(SingleArtifact.AAR.INSTANCE));
                         });
 
         final VariantDependencies variantDependencies = variant.getVariantDependencies();
@@ -391,18 +382,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                 variantDependencies.getElements(ALL_RUNTIME_PUBLICATION);
         allVariants.addVariantsFromConfiguration(
                 allRuntimePub, new ConfigurationVariantMapping("runtime", true));
-
-        // Old style publishing. This is likely to go away at some point.
-        if (extension.getDefaultPublishConfig().equals(variant.getName())) {
-            VariantHelper.setupArchivesConfig(project, variantDependencies.getRuntimeClasspath());
-
-            // add the artifact that will be published.
-            // it must be default so that it can be found by other library modules during
-            // publishing to a maven repo. Adding it to "archives" only allows the current
-            // module to be published by not to be found by consumer who are themselves published
-            // (leading to their pom not containing dependencies).
-            project.getArtifacts().add("default", bundle);
-        }
     }
 
     @Override
@@ -456,7 +435,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         basicCreateMergeResourcesTask(
                 variant,
                 MergeType.PACKAGE,
-                variant.getPaths().getIntermediateDir(InternalArtifactType.PACKAGED_RES.INSTANCE),
                 false,
                 false,
                 false,
@@ -492,6 +470,13 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                                 creationConfig.getVariantData().getAllPostJavacGeneratedBytecode());
         creationConfig.getArtifacts().appendToAllClasses(files);
 
+        if (creationConfig
+                .getServices()
+                .getProjectOptions()
+                .get(BooleanOption.ENABLE_ART_PROFILES)) {
+            taskFactory.register(new ProcessLibraryArtProfileTask.CreationAction(creationConfig));
+        }
+
         // Create jar used for publishing to API elements (for other projects to compile against).
         taskFactory.register(
                 new BundleLibraryClassesJar.CreationAction(
@@ -500,46 +485,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     public void createLibraryAssetsTask(@NonNull VariantImpl variant) {
         taskFactory.register(new MergeSourceSetFolders.LibraryAssetCreationAction(variant));
-    }
-
-    public void createPrefabTasks(@NonNull LibraryVariantImpl libraryVariant) {
-        if (!libraryVariant.getBuildFeatures().getPrefabPublishing()) {
-            return;
-        }
-
-        CxxConfigurationModel configurationModel =
-                libraryVariant.getTaskContainer().getCxxConfigurationModel();
-        if (configurationModel == null) {
-            // No external native build, so definitely no prefab tasks.
-            return;
-        }
-
-        LibraryExtension extension = (LibraryExtension) globalScope.getExtension();
-        List<PrefabModuleTaskData> modules = Lists.newArrayList();
-        for (PrefabPackagingOptions options : extension.getPrefab()) {
-            File headers = null;
-            if (options.getHeaders() != null) {
-                headers =
-                        project.getLayout()
-                                .getProjectDirectory()
-                                .dir(options.getHeaders())
-                                .getAsFile();
-            }
-            modules.add(new PrefabModuleTaskData(options.getName(), headers, options.getLibraryName()));
-        }
-
-        if (!modules.isEmpty()) {
-            TaskProvider<PrefabPackageTask> packageTask =
-                    taskFactory.register(
-                            new PrefabPackageTask.CreationAction(
-                                    modules,
-                                    libraryVariant.getGlobalScope().getSdkComponents().get(),
-                                    libraryVariant.getTaskContainer().getCxxConfigurationModel(),
-                                    libraryVariant));
-            packageTask
-                    .get()
-                    .dependsOn(libraryVariant.getTaskContainer().getExternalNativeBuildTask());
-        }
     }
 
     @NonNull
@@ -559,25 +504,9 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         return true;
     }
 
-    public void createVerifyLibraryResTask(@NonNull VariantImpl variant) {
-        TaskProvider<VerifyLibraryResourcesTask> verifyLibraryResources =
-                taskFactory.register(new VerifyLibraryResourcesTask.CreationAction(variant));
-
-        variant.getTaskContainer()
-                .getAssembleTask()
-                .configure(
-                        task -> {
-                            task.dependsOn(
-                                    variant.getArtifacts()
-                                            .get(
-                                                    InternalArtifactType.VERIFIED_LIBRARY_RESOURCES
-                                                            .INSTANCE));
-                        });
-    }
-
     @Override
-    protected void configureGlobalLintTask() {
-        super.configureGlobalLintTask();
+    protected void createPrepareLintJarForPublishTask() {
+        super.createPrepareLintJarForPublishTask();
 
         // publish the local lint.jar to all the variants.
         // This takes the global jar (output of PrepareLintJar) and publishes to each variants

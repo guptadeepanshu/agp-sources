@@ -16,19 +16,9 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.component.AndroidTestBuilder
-import com.android.build.api.component.AndroidTest
-import com.android.build.api.component.UnitTestBuilder
-import com.android.build.api.component.UnitTest
-import com.android.build.api.component.impl.AndroidTestBuilderImpl
-import com.android.build.api.component.impl.UnitTestBuilderImpl
-import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
-import com.android.build.api.variant.AndroidVersion
-import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.tools.build.gradle.internal.profile.VariantMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import org.gradle.api.Action
 
 abstract class AnalyticsEnabledVariantBuilder(
         override val delegate: VariantBuilder,
@@ -36,20 +26,44 @@ abstract class AnalyticsEnabledVariantBuilder(
 ) : AnalyticsEnabledComponentBuilder(delegate, stats),
     VariantBuilder {
 
-    override var minSdkVersion: AndroidVersion
-        get() = delegate.minSdkVersion
+    override var minSdk: Int?
+        get() = delegate.minSdk
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.MIN_SDK_VERSION_VALUE_VALUE
-            delegate.minSdkVersion = value
+            delegate.minSdk = value
         }
 
-    override var maxSdkVersion: Int?
-        get() = delegate.maxSdkVersion
+    override var minSdkPreview: String?
+        get() = delegate.minSdkPreview
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.MIN_SDK_PREVIEW_VALUE
+            delegate.minSdkPreview = value
+        }
+
+    override var maxSdk: Int?
+        get() = delegate.maxSdk
         set(value) {
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
                 VariantMethodType.MAX_SDK_VERSION_VALUE_VALUE
-            delegate.maxSdkVersion = value
+            delegate.maxSdk = value
+        }
+
+    override var targetSdk: Int?
+        get() = delegate.targetSdk
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                    VariantMethodType.TARGET_SDK_VERSION_VALUE_VALUE
+            delegate.targetSdk = value
+        }
+
+    override var targetSdkPreview: String?
+        get() = delegate.targetSdkPreview
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type =
+                VariantMethodType.TARGET_SDK_PREVIEW_VALUE
+            delegate.targetSdkPreview = value
         }
 
     override var renderscriptTargetApi: Int
@@ -59,4 +73,24 @@ abstract class AnalyticsEnabledVariantBuilder(
                 .type = VariantMethodType.RENDERSCRIPT_TARGET_API_VALUE
             delegate.renderscriptTargetApi = value
         }
+
+    override var unitTestEnabled: Boolean
+        get() = delegate.enableUnitTest
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.UNIT_TEST_ENABLED_VALUE
+            delegate.enableUnitTest = value
+        }
+
+    override var enableUnitTest: Boolean
+        get() = delegate.enableUnitTest
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.UNIT_TEST_ENABLED_VALUE
+            delegate.enableUnitTest = value
+        }
+
+    override fun <T: Any> registerExtension(type: Class<out T>, instance: T) {
+        stats.variantApiAccessBuilder.addVariantAccessBuilder()
+            .type = VariantMethodType.REGISTER_EXTENSION_VALUE
+        delegate.registerExtension(type, instance)
+    }
 }

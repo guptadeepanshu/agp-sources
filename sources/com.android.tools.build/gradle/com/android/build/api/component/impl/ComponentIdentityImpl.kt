@@ -25,11 +25,9 @@ import com.google.common.collect.ImmutableList
  */
 data class ComponentIdentityImpl(
     val variantName: String,
-    override val flavorName: String = "",
+    override val flavorName: String? = null,
     override val buildType: String? = null,
     override val productFlavors: List<Pair<String, String>> = ImmutableList.of()
 ) : ComponentIdentity {
-    override fun getName(): String {
-        return variantName
-    }
+    override val name: String = variantName
 }

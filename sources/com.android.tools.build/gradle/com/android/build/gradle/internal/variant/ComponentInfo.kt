@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.variant
 
 import com.android.build.api.component.impl.ComponentBuilderImpl
 import com.android.build.api.component.impl.ComponentImpl
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.impl.VariantBuilderImpl
 import com.android.build.api.variant.impl.VariantImpl
@@ -28,7 +29,7 @@ open class ComponentInfo<
         ComponentT : ComponentImpl>(
     val variantBuilder: ComponentBuilderT,
     val variant: ComponentT,
-    val stats: GradleBuildVariant.Builder
+    val stats: GradleBuildVariant.Builder?
 )
 
 class VariantComponentInfo<
@@ -37,6 +38,10 @@ class VariantComponentInfo<
 (
         variantBuilder: VariantBuilderT,
         variant: VariantT,
-        stats: GradleBuildVariant.Builder,
-        val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<in VariantBuilderT, in VariantT>
+        stats: GradleBuildVariant.Builder?,
+        val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<
+                in CommonExtension<*, *, *, *>,
+                in VariantBuilderT,
+                in VariantT,
+                >
 ) : ComponentInfo<VariantBuilderT, VariantT>(variantBuilder, variant, stats)

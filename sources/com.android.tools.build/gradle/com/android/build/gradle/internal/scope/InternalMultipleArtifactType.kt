@@ -16,19 +16,15 @@
 
 package com.android.build.gradle.internal.scope
 
-import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.artifact.Artifact
-import com.android.build.api.artifact.ArtifactKind.DIRECTORY
-import com.android.build.api.artifact.ArtifactType
 import org.gradle.api.file.Directory
-import org.gradle.api.file.FileSystemLocation
 
 /**
  * List of internal [Artifact.Multiple] [Artifact]
  */
 sealed class InternalMultipleArtifactType(
     category: Category = Category.INTERMEDIATES
-) : Artifact.MultipleArtifact<Directory>(DIRECTORY, category), Artifact.Appendable {
+) : Artifact.Multiple<Directory>(DIRECTORY, category), Artifact.Appendable {
 
     // The final dex files (if the dex splitter does not run)
     // that will get packaged in the APK or bundle.

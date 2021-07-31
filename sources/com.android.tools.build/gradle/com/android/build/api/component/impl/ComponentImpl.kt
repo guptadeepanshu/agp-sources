@@ -20,6 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.ProductFlavorAttr
 import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.Component
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
@@ -27,6 +28,7 @@ import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
+import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.VariantOutputList
@@ -35,6 +37,7 @@ import com.android.build.api.variant.impl.fullName
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.DependencyConfigurator
 import com.android.build.gradle.internal.VariantManager
+import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
@@ -65,8 +68,6 @@ import com.android.builder.compiling.BuildConfigType
 import com.android.builder.core.VariantType
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.errors.IssueReporter
-import com.android.builder.model.ApiVersion
-import com.android.builder.model.CodeShrinker
 import com.android.utils.FileUtils
 import com.android.utils.appendCapitalized
 import com.google.common.base.Preconditions
@@ -87,7 +88,7 @@ import java.io.File
 import java.util.concurrent.Callable
 
 abstract class ComponentImpl(
-    open val variantBuilder: ComponentBuilderImpl,
+    open val componentIdentity: ComponentIdentity,
     override val buildFeatures: BuildFeatureValues,
     override val variantDslInfo: VariantDslInfo,
     override val variantDependencies: VariantDependencies,
@@ -101,13 +102,17 @@ abstract class ComponentImpl(
     override val services: TaskCreationServices,
     @Deprecated("Do not use if you can avoid it. Check if services has what you need")
     override val globalScope: GlobalScope
-): Component, ComponentCreationConfig, ComponentIdentity by variantBuilder {
+): Component, ComponentCreationConfig, ComponentIdentity by componentIdentity {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
-    override val packageName: Provider<String> =
-        internalServices.providerOf(String::class.java, variantDslInfo.packageName)
+    override val namespace: Provider<String> =
+        internalServices.providerOf(
+            type = String::class.java,
+            value = variantDslInfo.namespace,
+            disallowUnsafeRead = false, // allow unsafe read for KAGP : b/193706116
+        )
 
     override fun <ParamT : InstrumentationParameters> transformClassesWith(
         classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
@@ -140,9 +145,6 @@ abstract class ComponentImpl(
 
     override val variantType: VariantType
         get() = variantDslInfo.variantType
-
-    override val targetSdkVersion: ApiVersion
-        get() = variantDslInfo.targetSdkVersion
 
     override val dirName: String
         get() = variantDslInfo.dirName
@@ -178,7 +180,7 @@ abstract class ComponentImpl(
 
     override val allProjectClassesPostAsmInstrumentation: FileCollection
         get() =
-            if (registeredProjectClassesVisitors.isNotEmpty()) {
+            if (projectClassesAreInstrumented) {
                 if (asmFramesComputationMode == FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES) {
                     services.fileCollection(
                             artifacts.get(
@@ -201,6 +203,14 @@ abstract class ComponentImpl(
             } else {
                 artifacts.getAllClasses()
             }
+
+    override val projectClassesAreInstrumented: Boolean
+        get() = registeredProjectClassesVisitors.isNotEmpty() ||
+                (this is ApkCreationConfig && advancedProfilingTransforms.isNotEmpty())
+
+    override val dependenciesClassesAreInstrumented: Boolean
+        get() = registeredDependenciesClassesVisitors.isNotEmpty() ||
+                (this is ApkCreationConfig && advancedProfilingTransforms.isNotEmpty())
 
     /**
      * Returns the tested variant. This is null for [VariantImpl] instances
@@ -232,7 +242,7 @@ abstract class ComponentImpl(
         if (variantType.isForTesting || !variantDslInfo.getPostProcessingOptions().resourcesShrinkingEnabled()) {
             return false
         }
-        val newResourceShrinker = globalScope.projectOptions[BooleanOption.ENABLE_NEW_RESOURCE_SHRINKER]
+        val newResourceShrinker = services.projectOptions[BooleanOption.ENABLE_NEW_RESOURCE_SHRINKER]
         if (variantType.isDynamicFeature) {
             globalScope
                 .dslServices
@@ -260,7 +270,7 @@ abstract class ComponentImpl(
                 .reportError(IssueReporter.Type.GENERIC, "Resource shrinker cannot be used for libraries.")
             return false
         }
-        if (codeShrinker == null) {
+        if (!variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()) {
             globalScope
                 .dslServices
                 .issueReporter
@@ -273,9 +283,6 @@ abstract class ComponentImpl(
         }
         return true
     }
-
-    open val codeShrinker: CodeShrinker?
-        get() = null
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
@@ -301,7 +308,7 @@ abstract class ComponentImpl(
                 String::class.java,
                 outputFileName
                     ?: variantDslInfo.getOutputFileName(
-                        globalScope.projectBaseName,
+                        internalServices.projectInfo.getProjectBaseName(),
                         variantOutputConfiguration.baseName(variantDslInfo)
                     ),
                 "$name::archivesBaseName")
@@ -341,7 +348,7 @@ abstract class ComponentImpl(
 
     private fun getGeneratedResourcesDir(name: String): File {
         return FileUtils.join(
-            paths.generatedDir,
+            paths.generatedDir().get().asFile,
             listOf("res", name) + variantDslInfo.directorySegments)
     }
 
@@ -389,7 +396,7 @@ abstract class ComponentImpl(
             mainCollection,
             combinedCollection,
             extraArtifact,
-            globalScope.project.path
+            internalServices.projectInfo.getProject().path
         )
 
         return onTestedConfig { testedVariant ->
@@ -417,7 +424,7 @@ abstract class ComponentImpl(
                 extraCollection,
                 combinedCollectionForTest,
                 testedAllClasses,
-                globalScope.project.path,
+                internalServices.projectInfo.getProject().path,
                 null
             )
         } ?: extraCollection
@@ -453,7 +460,8 @@ abstract class ComponentImpl(
                         outputSpec.publishedConfigTypes,
                         outputSpec.libraryElements?.let {
                             internalServices.named(LibraryElements::class.java, it)
-                        }
+                        },
+                        variantType.isTestFixturesComponent
                     )
             }
         }
@@ -534,12 +542,7 @@ abstract class ComponentImpl(
             }
             addDataBindingSources(sourceSets)
         }
-        if (!variantDslInfo.renderscriptNdkModeEnabled
-            && taskContainer.renderscriptCompileTask != null
-        ) {
-            val rsFC = artifacts.get(RENDERSCRIPT_SOURCE_OUTPUT_DIR)
-            sourceSets.add(internalServices.fileTree(rsFC).builtBy(rsFC))
-        }
+        addRenderscriptSources(sourceSets)
         if (buildFeatures.mlModelBinding) {
             val mlModelClassSourceOut: Provider<Directory> =
                 artifacts.get(ML_SOURCE_OUT)
@@ -548,6 +551,15 @@ abstract class ComponentImpl(
             )
         }
         sourceSets.build()
+    }
+
+    /**
+     * adds renderscript sources if present.
+     */
+    open fun addRenderscriptSources(
+        sourceSets: ImmutableList.Builder<ConfigurableFileTree>
+    ) {
+        // not active by default, only sub types will have renderscript enabled.
     }
 
     /**
@@ -636,16 +648,12 @@ abstract class ComponentImpl(
     }
 
     private fun getCompiledManifest(): FileCollection {
-        val isAndroidTest = variantDslInfo.variantType == VariantTypeImpl.ANDROID_TEST
-        val isUnitTest = variantDslInfo.variantType == VariantTypeImpl.UNIT_TEST
-        val isTest = variantDslInfo.variantType.isForTesting || isUnitTest || isAndroidTest
-        val manifestRequired = variantDslInfo.variantType.requiresManifest &&
+        val manifestClassRequired = variantDslInfo.variantType.requiresManifest &&
                 services.projectOptions[BooleanOption.GENERATE_MANIFEST_CLASS]
-        val isLibrary = variantDslInfo.variantType.isAar
-        return if (manifestRequired && !isLibrary && !isTest && testedConfig == null) {
-            internalServices.fileCollection(
-                    artifacts.get(InternalArtifactType.COMPILE_MANIFEST_JAR)
-            )
+        val isTest = variantDslInfo.variantType.isForTesting
+        val isAar = variantDslInfo.variantType.isAar
+        return if (manifestClassRequired && !isAar && !isTest && testedConfig == null) {
+            internalServices.fileCollection(artifacts.get(COMPILE_MANIFEST_JAR))
         } else {
             internalServices.fileCollection()
         }
@@ -674,7 +682,7 @@ abstract class ComponentImpl(
 
         // then add the fallbacks which contain the actual requested value
         DependencyConfigurator.addFlavorStrategy(
-            globalScope.project.dependencies.attributesSchema,
+            services.projectInfo.getProject().dependencies.attributesSchema,
             dimension,
             ImmutableMap.of(requestedValue, alternatedValues)
         )
@@ -698,12 +706,12 @@ abstract class ComponentImpl(
 
     abstract fun <T: Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
-            operationsRegistrar: VariantApiOperationsRegistrar<VariantBuilder, Variant>,
-            stats: GradleBuildVariant.Builder
+            operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
+            stats: GradleBuildVariant.Builder?
     ): T
 
     override fun getDependenciesClassesJarsPostAsmInstrumentation(scope: ArtifactScope): FileCollection {
-        return if (registeredDependenciesClassesVisitors.isNotEmpty()) {
+        return if (dependenciesClassesAreInstrumented) {
             if (asmFramesComputationMode == FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES) {
                 variantDependencies.getArtifactFileCollection(
                         ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -727,6 +735,10 @@ abstract class ComponentImpl(
             )
         }
     }
+
+    override val packageJacocoRuntime: Boolean
+        get() = false
+
     companion object {
         // String to
         final val ENABLE_LEGACY_API: String =

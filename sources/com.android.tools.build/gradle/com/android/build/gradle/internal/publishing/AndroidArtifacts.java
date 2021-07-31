@@ -80,8 +80,15 @@ public class AndroidArtifacts {
     private static final String TYPE_AIDL = "android-aidl";
     private static final String TYPE_RENDERSCRIPT = "android-renderscript";
     private static final String TYPE_LINT_JAR = "android-lint";
-    private static final String TYPE_LINT_PROJECT_GLOBAL_MODEL = "android-lint-project-global-model";
-    private static final String TYPE_LINT_VARIANT_DEPENDENCIES_MODEL = "android-lint-variant-dependencies-model";
+    private static final String TYPE_LINT_MODEL = "android-lint-variant-dependencies-model";
+    private static final String TYPE_BASE_MODULE_LINT_MODEL =
+            "android-base-module-lint-variant-dependencies-model";
+    private static final String TYPE_LINT_VITAL_LINT_MODEL =
+            "android-lint-vital-lint-variant-dependencies-model";
+    private static final String TYPE_LINT_PARTIAL_RESULTS =
+            "android-lint-variant-dependencies-partial-results";
+    private static final String TYPE_LINT_VITAL_PARTIAL_RESULTS =
+            "android-lint-vital-variant-dependencies-partial-results";
     private static final String TYPE_LOCAL_AAR_FOR_LINT = "android-lint-local-aar";
     private static final String TYPE_LOCAL_EXPLODED_AAR_FOR_LINT = "android-lint-exploded-aar";
     private static final String TYPE_EXT_ANNOTATIONS = "android-ext-annot";
@@ -122,6 +129,7 @@ public class AndroidArtifacts {
     private static final String TYPE_FEATURE_SIGNING_CONFIG_VERSIONS =
             "android-feature-signing-config-versions";
     private static final String TYPE_FEATURE_NAME = "android-feature-name";
+    private static final String TYPE_FEATURE_SHRUNK_JAVA_RES = "android-feature-shrunk-java-res";
 
     // types for reverse metadata content.
     private static final String TYPE_REVERSE_METADATA_FEATURE_DECLARATION =
@@ -139,6 +147,10 @@ public class AndroidArtifacts {
     public static final String TYPE_MOCKABLE_JAR = "android-mockable-jar";
     public static final Attribute<Boolean> MOCKABLE_JAR_RETURN_DEFAULT_VALUES =
             Attribute.of("returnDefaultValues", Boolean.class);
+
+    // jetpack compose related types
+    public static final String TYPE_ART_PROFILE = "android-art-profile";
+
     // attr info extracted from the platform android.jar
     public static final String TYPE_PLATFORM_ATTR = "android-platform-attr";
 
@@ -148,6 +160,8 @@ public class AndroidArtifacts {
 
     private static final String TYPE_DESUGAR_LIB_MERGED_KEEP_RULES =
             "android-desugar-lib-merged-keep-rules";
+
+    private static final String TYPE_FEATURE_PUBLISHED_DEX = "android-feature-published-dex";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -280,13 +294,31 @@ public class AndroidArtifacts {
         SHARED_CLASSES(TYPE_SHARED_CLASSES),
         /** A jar containing classes with recalculated stack frames */
         CLASSES_FIXED_FRAMES_JAR(TYPE_CLASSES_FIXED_FRAMES_JAR),
-        // Jar or processed jar, used for purposes such as computing the annotation processor
-        // classpath or building the model.
-        // IMPORTANT: Consumers should generally use PROCESSED_JAR instead of JAR, as the jars may
-        // need to be processed (e.g., jetified to AndroidX) before they can be used. Consuming JAR
-        // should be considered as an exception and the reason should be documented.
+
+        /**
+         * Original (unprocessed) jar.
+         *
+         * <p>JAR vs. {@link #PROCESSED_JAR}: Jars usually need to be processed (e.g., jetified,
+         * namespaced) before they can be used. Therefore, consumers should generally use {@link
+         * #PROCESSED_JAR}.
+         *
+         * <p>In a few cases, consumers may want to use unprocessed jars (be sure to document the
+         * reason in those cases). Common reasons are:
+         *
+         * <ul>
+         *   <li>Correctness: Some tasks want to work with unprocessed jars.
+         *   <li>Performance: Some jars don't need to be processed (e.g., android.jar, lint.jar).
+         * </ul>
+         */
         JAR(TYPE_JAR),
+
+        /**
+         * Processed jar.
+         *
+         * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         */
         PROCESSED_JAR(TYPE_PROCESSED_JAR),
+
         // published dex folder for bundle
         DEX(TYPE_DEX),
         // dex and keep rules(shrinking desugar lib), a folder with a subfolder named dex
@@ -355,8 +387,15 @@ public class AndroidArtifacts {
         AAPT_PROGUARD_RULES(TYPE_AAPT_PROGUARD_RULES),
 
         LINT(TYPE_LINT_JAR),
-        LINT_PROJECT_GLOBAL_MODEL(TYPE_LINT_PROJECT_GLOBAL_MODEL),
-        LINT_VARIANT_DEPENDENCIES_MODEL(TYPE_LINT_VARIANT_DEPENDENCIES_MODEL),
+        LINT_MODEL(AndroidArtifacts.TYPE_LINT_MODEL),
+        // The lint model published by the base module for consumption by dynamic features.
+        BASE_MODULE_LINT_MODEL(AndroidArtifacts.TYPE_BASE_MODULE_LINT_MODEL),
+        // The lint model with partial results set to the location of LINT_VITAL_PARTIAL_RESULTS.
+        LINT_VITAL_LINT_MODEL(AndroidArtifacts.TYPE_LINT_VITAL_LINT_MODEL),
+        // The partial results produced by running lint with --analyze-only
+        LINT_PARTIAL_RESULTS(AndroidArtifacts.TYPE_LINT_PARTIAL_RESULTS),
+        // The partial results produced by running lint with --analyze-only and --fatalOnly
+        LINT_VITAL_PARTIAL_RESULTS(TYPE_LINT_VITAL_PARTIAL_RESULTS),
         // An AAR built from a library project for lint to consume.
         LOCAL_AAR_FOR_LINT(TYPE_LOCAL_AAR_FOR_LINT),
         // Exploded AARs from library projects for lint to consume when not run with check
@@ -403,14 +442,21 @@ public class AndroidArtifacts {
         // by other APKs to avoid repackaging the same thing.
         PACKAGED_DEPENDENCIES(TYPE_PACKAGED_DEPENDENCIES),
 
-        // The feature dex files output by the DexSplitter from the base. The base produces and
-        // publishes these files when there's multi-apk code shrinking.
+        // The feature dex files output by R8 or DexSplitter from the base. The base produces and
+        // publishes these files when the base has dynamic features and code shrinking occurs.
         FEATURE_DEX(TYPE_FEATURE_DEX),
+        // The feature java resources output by R8 from the base. The base produces and publishes
+        // these files when the base has dynamic features and R8 code shrinking occurs.
+        FEATURE_SHRUNK_JAVA_RES(TYPE_FEATURE_SHRUNK_JAVA_RES),
 
         // The name of an instant or dynamic feature module
         // This is published by {@link FeatureNameWriterTask} to be consumed by dependencies
         // of the feature that need to know the name of its feature split
         FEATURE_NAME(TYPE_FEATURE_NAME),
+
+        // The feature dex files published from feature modules to the base for computing main
+        // dex list for bundle.
+        FEATURE_PUBLISHED_DEX(TYPE_FEATURE_PUBLISHED_DEX),
 
         // Reverse Metadata artifacts
         REVERSE_METADATA_FEATURE_DECLARATION(TYPE_REVERSE_METADATA_FEATURE_DECLARATION),
@@ -422,13 +468,38 @@ public class AndroidArtifacts {
         // The .so.sym files containing the symbol tables from the corresponding .so files
         REVERSE_METADATA_NATIVE_SYMBOL_TABLES(TYPE_REVERSE_METADATA_NATIVE_SYMBOL_TABLES),
 
+        // art profile in human readable format
+        ART_PROFILE(TYPE_ART_PROFILE),
+
         // types for querying only. Not publishable.
+
+        /**
+         * Original (unprocessed) aar.
+         *
+         * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         */
         AAR(TYPE_AAR),
-        // Artifact type for processed aars (the aars may need to be processed, e.g. jetified to
-        // AndroidX, before they can be used)
+
+        /**
+         * Processed aar.
+         *
+         * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         */
         PROCESSED_AAR(TYPE_PROCESSED_AAR),
+
+        /**
+         * Directory containing the extracted contents of a <em>processed</em> aar ({@link
+         * #PROCESSED_AAR}).
+         */
         EXPLODED_AAR(TYPE_EXPLODED_AAR),
+
+        /**
+         * Original (unprocessed) aar or jar (i.e., it is either an {@link #AAR} or a {@Link #JAR}).
+         *
+         * <p>See {@link #JAR} for context on processed/unprocessed artifacts.
+         */
         AAR_OR_JAR(TYPE_AAR_OR_JAR), // See ArtifactUtils for how this is used.
+
         // A file containing unique resource symbols from ANDROID_RES.
         ANDROID_RES_SYMBOLS(TYPE_AAR_ClASS_LIST_AND_RES_SYMBOLS),
         // A file containing classpaths from CLASSES_JAR.

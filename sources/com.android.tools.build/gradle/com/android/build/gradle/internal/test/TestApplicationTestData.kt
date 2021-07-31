@@ -32,14 +32,13 @@ import java.util.stream.Collectors
 
 /** Implementation of [TestData] for separate test modules.  */
 class TestApplicationTestData constructor(
-    providerFactory: ProviderFactory,
-    componentImpl: ComponentImpl,
+    namespace: Provider<String>,
     creationConfig: TestVariantCreationConfig,
     testApkDir: Provider<Directory>,
-    testedApksDir: FileCollection?
+    testedApksDir: FileCollection
 ) : AbstractTestDataImpl(
-    providerFactory,
-    componentImpl,
+    namespace,
+    creationConfig,
     creationConfig,
     creationConfig.variantSources,
     testApkDir,
@@ -48,6 +47,8 @@ class TestApplicationTestData constructor(
 
     override val libraryType = creationConfig.services.provider { false }
 
+    override val testedApplicationId: Provider<String> =
+        testedApksDir.elements.map { BuiltArtifactsLoaderImpl().load(it.single())?.applicationId!! }
     override fun findTestedApks(
         deviceConfigProvider: DeviceConfigProvider,
         logger: ILogger

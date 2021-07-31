@@ -16,8 +16,10 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.LibraryPackagingOptions
+import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.LibraryVariant
+import com.android.build.api.variant.Renderscript
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
@@ -31,31 +33,38 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
 ) : AnalyticsEnabledVariant(
     delegate, stats, objectFactory
 ), LibraryVariant {
-    override val applicationId: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.READ_ONLY_APPLICATION_ID_VALUE
-            return delegate.applicationId
-        }
 
-    private val userVisiblePackagingOptions: LibraryPackagingOptions by lazy {
+    override val androidTest: com.android.build.api.component.AndroidTest?
+        get() = delegate.androidTest
+
+    private val userVisibleRenderscript: Renderscript by lazy {
         objectFactory.newInstance(
-            AnalyticsEnabledLibraryPackagingOptions::class.java,
-            delegate.packagingOptions,
+            AnalyticsEnabledRenderscript::class.java,
+            delegate.renderscript,
             stats
         )
     }
 
-    override val packagingOptions: LibraryPackagingOptions
+    override val renderscript: Renderscript?
         get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
-            return userVisiblePackagingOptions
+            return if (delegate.renderscript != null) {
+                stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.RENDERSCRIPT_VALUE
+                userVisibleRenderscript
+            } else null
         }
 
-    override fun packagingOptions(action: LibraryPackagingOptions.() -> Unit) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.PACKAGING_OPTIONS_ACTION_VALUE
-        action.invoke(userVisiblePackagingOptions)
+    private val userVisibleAarMetadata: AarMetadata by lazy {
+        objectFactory.newInstance(
+            AnalyticsEnabledAarMetadata::class.java,
+            delegate.aarMetadata,
+            stats
+        )
     }
+    override val aarMetadata: AarMetadata
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.VARIANT_AAR_METADATA_VALUE
+            return userVisibleAarMetadata
+        }
 }

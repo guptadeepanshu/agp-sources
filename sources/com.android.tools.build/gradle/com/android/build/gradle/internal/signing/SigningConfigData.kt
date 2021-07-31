@@ -16,10 +16,12 @@
 
 package com.android.build.gradle.internal.signing
 
-import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.api.dsl.SigningConfig
+import com.android.build.api.variant.impl.SigningConfigImpl
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.SigningOptions
 import com.google.common.hash.Hashing
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Internal
@@ -83,9 +85,20 @@ data class SigningConfigData(
 
         private const val serialVersionUID = 2L
 
-        fun fromSigningConfig(signingConfig: SigningConfig): SigningConfigData {
+        fun fromSigningConfig(signingConfig: SigningConfigImpl): SigningConfigData {
             return SigningConfigData(
-                name = signingConfig.name,
+                name = signingConfig.name ?: "",
+                storeType = signingConfig.storeType.orNull,
+                storeFile = signingConfig.storeFile.orNull,
+                storePassword = signingConfig.storePassword.orNull,
+                keyAlias = signingConfig.keyAlias.orNull,
+                keyPassword = signingConfig.keyPassword.orNull
+            )
+        }
+
+        fun fromDslSigningConfig(signingConfig: SigningConfig): SigningConfigData {
+            return SigningConfigData(
+                name = signingConfig.name ?: "default",
                 storeType = signingConfig.storeType,
                 storeFile = signingConfig.storeFile,
                 storePassword = signingConfig.storePassword,

@@ -22,9 +22,12 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_RES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APKS_FROM_BUNDLE
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.BASE_MODULE_LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.COMPILED_DEPENDENCIES_RESOURCES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_DEX
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_NAME
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FEATURE_SHRUNK_JAVA_RES
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.LINT_MODEL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
@@ -68,8 +71,12 @@ class VariantDependencies internal constructor(
     val wearAppConfiguration: Configuration?,
     private val testedVariant: VariantImpl?,
     private val project: Project,
-    private val projectOptions: ProjectOptions
+    private val projectOptions: ProjectOptions,
+    isSelfInstrumenting: Boolean,
 ) {
+
+    // Never exclude artifacts for self-instrumenting, test-only modules.
+    private val avoidExcludingArtifacts = variantType.isSeparateTestProject && isSelfInstrumenting
 
     init {
         check(!variantType.isTestComponent || testedVariant != null) {
@@ -206,11 +213,15 @@ class VariantDependencies internal constructor(
 
     private fun isArtifactTypeExcluded(artifactType: AndroidArtifacts.ArtifactType): Boolean {
         return when {
+            avoidExcludingArtifacts -> false
             variantType.isDynamicFeature ->
                 artifactType != PACKAGED_DEPENDENCIES
                         && artifactType != APKS_FROM_BUNDLE
                         && artifactType != FEATURE_DEX
                         && artifactType != FEATURE_NAME
+                        && artifactType != FEATURE_SHRUNK_JAVA_RES
+                        && artifactType != LINT_MODEL
+                        && artifactType != BASE_MODULE_LINT_MODEL
             variantType.isSeparateTestProject ->
                 isArtifactTypeSubtractedForInstrumentationTests(artifactType)
             else -> false

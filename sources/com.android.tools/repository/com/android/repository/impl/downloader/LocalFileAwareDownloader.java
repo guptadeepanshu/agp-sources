@@ -18,15 +18,15 @@ package com.android.repository.impl.downloader;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.repository.api.Checksum;
 import com.android.repository.api.Downloader;
 import com.android.repository.api.ProgressIndicator;
-import com.google.common.io.Files;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Decorator around another {@link Downloader} that handles {@code file:///} URLs. Such URLs can
@@ -56,8 +56,8 @@ public class LocalFileAwareDownloader implements Downloader {
     public Path downloadFully(@NonNull URL url, @NonNull ProgressIndicator indicator)
             throws IOException {
         if ("file".equals(url.getProtocol())) {
-            File tempFile = File.createTempFile(LocalFileAwareDownloader.class.getName(), null);
-            File source = new File(url.getFile());
+            Path tempFile = Files.createTempFile(LocalFileAwareDownloader.class.getName(), null);
+            Path source = Paths.get(url.getFile());
             Files.copy(source, tempFile);
         }
 
@@ -67,14 +67,14 @@ public class LocalFileAwareDownloader implements Downloader {
     @Override
     public void downloadFully(
             @NonNull URL url,
-            @NonNull File target,
-            @Nullable String checksum,
+            @NonNull Path target,
+            @Nullable Checksum checksum,
             @NonNull ProgressIndicator indicator)
             throws IOException {
         if ("file".equals(url.getProtocol())) {
             // Ignore the checksum when just copying locally.
-            File source = new File(url.getFile());
-            Files.createParentDirs(target);
+            Path source = target.getFileSystem().getPath(url.getFile());
+            Files.createDirectories(target.getParent());
             Files.copy(source, target);
             return;
         }

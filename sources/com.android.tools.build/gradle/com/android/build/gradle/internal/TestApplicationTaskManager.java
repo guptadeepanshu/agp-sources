@@ -19,30 +19,33 @@ package com.android.build.gradle.internal;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.artifact.ArtifactType;
-import com.android.build.api.component.impl.TestComponentBuilderImpl;
+import com.android.build.api.artifact.SingleArtifact;
 import com.android.build.api.component.impl.TestComponentImpl;
+import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.gradle.BaseExtension;
-import com.android.build.gradle.internal.component.*;
+import com.android.build.gradle.internal.component.ApkCreationConfig;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.ConsumableCreationConfig;
+import com.android.build.gradle.internal.component.TestCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask;
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.test.TestApplicationTestData;
 import com.android.build.gradle.internal.variant.ComponentInfo;
+import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.CheckTestedAppObfuscation;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.VariantType;
-import com.android.builder.model.CodeShrinker;
 import com.google.common.base.Preconditions;
 import java.util.List;
-import java.util.Objects;
 import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
@@ -59,12 +62,22 @@ public class TestApplicationTaskManager
 
     public TestApplicationTaskManager(
             @NonNull List<ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>> variants,
-            @NonNull
-                    List<ComponentInfo<TestComponentBuilderImpl, TestComponentImpl>> testComponents,
+            @NonNull List<TestComponentImpl> testComponents,
+            @NonNull List<TestFixturesImpl> testFixturesComponents,
             boolean hasFlavors,
+            @NonNull ProjectOptions projectOptions,
             @NonNull GlobalScope globalScope,
-            @NonNull BaseExtension extension) {
-        super(variants, testComponents, hasFlavors, globalScope, extension);
+            @NonNull BaseExtension extension,
+            @NonNull ProjectInfo projectInfo) {
+        super(
+                variants,
+                testComponents,
+                testFixturesComponents,
+                hasFlavors,
+                projectOptions,
+                globalScope,
+                extension,
+                projectInfo);
     }
 
     @Override
@@ -78,7 +91,7 @@ public class TestApplicationTaskManager
         TestVariantImpl testVariantProperties = variantInfo.getVariant();
 
         Provider<Directory> testingApk =
-                testVariantProperties.getArtifacts().get(ArtifactType.APK.INSTANCE);
+                testVariantProperties.getArtifacts().get(SingleArtifact.APK.INSTANCE);
 
         // The APKs to be tested.
         FileCollection testedApks =
@@ -91,8 +104,7 @@ public class TestApplicationTaskManager
 
         TestApplicationTestData testData =
                 new TestApplicationTestData(
-                        project.getProviders(),
-                        testVariantProperties,
+                        testVariantProperties.getNamespace(),
                         testVariantProperties,
                         testingApk,
                         testedApks);
@@ -144,35 +156,10 @@ public class TestApplicationTaskManager
     }
 
     @Override
-    public void createLintTasks(
-            @NotNull TestVariantImpl variantProperties,
-            @NotNull
-                    List<? extends ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>>
-                            allVariants) {
-        // do nothing
-    }
-
-    @Override
-    public void maybeCreateLintVitalTask(
-            @NonNull TestVariantImpl variant,
-            @NonNull
-                    List<? extends ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>>
-                            allVariants) {
-        // do nothing
-    }
-
-    @Override
-    protected void configureGlobalLintTask() {
-        // do nothing
-    }
-
-    @Override
     protected void maybeCreateJavaCodeShrinkerTask(
             @NonNull ConsumableCreationConfig creationConfig) {
-        final CodeShrinker codeShrinker = creationConfig.getCodeShrinker();
-        if (codeShrinker != null) {
-            doCreateJavaCodeShrinkerTask(
-                    creationConfig, Objects.requireNonNull(codeShrinker), true);
+        if (creationConfig.getMinifiedEnabled()) {
+            doCreateJavaCodeShrinkerTask(creationConfig, true);
         } else {
             TaskProvider<CheckTestedAppObfuscation> checkObfuscation =
                     taskFactory.register(

@@ -16,13 +16,21 @@
 
 package com.android.build.api.component.analytics
 
+import com.android.build.api.component.UnitTest
+import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuildConfigField
-import com.android.build.api.variant.PackagingOptions
+import com.android.build.api.variant.ExternalNativeBuild
+import com.android.build.api.variant.ExternalNdkBuildImpl
+import com.android.build.api.variant.Packaging
+import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import org.gradle.api.file.RegularFile
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import java.io.Serializable
 
@@ -31,19 +39,12 @@ abstract class AnalyticsEnabledVariant (
     stats: GradleBuildVariant.Builder,
     objectFactory: ObjectFactory
 ) : AnalyticsEnabledComponent(delegate, stats, objectFactory), Variant {
-    override val applicationId: Provider<String>
-        get() {
-            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.
-                READ_ONLY_APPLICATION_ID_VALUE
-            return delegate.applicationId
-        }
 
-    override val packageName: Provider<String>
+    override val namespace: Provider<String>
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-                VariantPropertiesMethodType.PACKAGE_NAME_VALUE
-            return delegate.packageName
+                VariantPropertiesMethodType.NAMESPACE_VALUE
+            return delegate.namespace
         }
 
     override val buildConfigFields: MapProperty<String, BuildConfigField<out Serializable>>
@@ -53,27 +54,17 @@ abstract class AnalyticsEnabledVariant (
             return delegate.buildConfigFields
         }
 
-    override fun addBuildConfigField(key: String, value: Serializable, comment: String?) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.ADD_BUILD_CONFIG_FIELD_VALUE
-        delegate.addBuildConfigField(key, value, comment)
-    }
+    override val resValues: MapProperty<ResValue.Key, ResValue>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.RES_VALUE_VALUE
+            return delegate.resValues
+        }
 
-    override fun addResValue(name: String, type: String, value: String, comment: String?) {
+    override fun makeResValueKey(type: String, name: String): ResValue.Key {
         stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.ADD_RES_VALUE_VALUE
-        delegate.addResValue(name, type, value, comment)
-    }
-
-    override fun addResValue(
-        name: String,
-        type: String,
-        value: Provider<String>,
-        comment: String?
-    ) {
-        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
-            VariantPropertiesMethodType.ADD_RES_VALUE_VALUE
-        delegate.addResValue(name, type, value, comment)
+            VariantPropertiesMethodType.MAKE_RES_VALUE_KEY_VALUE
+        return delegate.makeResValueKey(type, name)
     }
 
     override val manifestPlaceholders: MapProperty<String, String>
@@ -83,18 +74,97 @@ abstract class AnalyticsEnabledVariant (
             return delegate.manifestPlaceholders
         }
 
-    private val userVisiblePackagingOptions: PackagingOptions by lazy {
+    private val userVisiblePackaging: Packaging by lazy {
         objectFactory.newInstance(
-            AnalyticsEnabledPackagingOptions::class.java,
-            delegate.packagingOptions,
+            AnalyticsEnabledPackaging::class.java,
+            delegate.packaging,
             stats
         )
     }
 
-    override val packagingOptions: PackagingOptions
+    override val packaging: Packaging
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.PACKAGING_OPTIONS_VALUE
-            return userVisiblePackagingOptions
+            return userVisiblePackaging
+        }
+
+    private val userVisibleExternalNativeBuild: ExternalNativeBuild? by lazy {
+        delegate.externalNativeBuild?.let {
+            if (it is ExternalNdkBuildImpl) {
+                objectFactory.newInstance(
+                        AnalyticsEnabledExternalNdkBuild::class.java,
+                        it,
+                        stats
+                )
+            } else {
+                objectFactory.newInstance(
+                        AnalyticsEnabledExternalCmake::class.java,
+                        it,
+                        stats
+                )
+            }
+        }
+    }
+
+    override val externalNativeBuild: ExternalNativeBuild?
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                if (userVisibleExternalNativeBuild is AnalyticsEnabledExternalNdkBuild)
+                    VariantPropertiesMethodType.NDK_BUILD_NATIVE_OPTIONS_VALUE
+                else
+                    VariantPropertiesMethodType.CMAKE_NATIVE_OPTIONS_VALUE
+            return userVisibleExternalNativeBuild
+        }
+
+    override val unitTest: UnitTest?
+        get() = delegate.unitTest
+
+    override fun <T> getExtension(type: Class<T>): T? {
+        stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+            VariantPropertiesMethodType.GET_EXTENSION_VALUE
+        return delegate.getExtension(type)
+    }
+
+    override val pseudoLocalesEnabled: Property<Boolean>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.VARIANT_PSEUDOLOCALES_ENABLED_VALUE
+            return delegate.pseudoLocalesEnabled
+        }
+
+    override val proguardFiles: ListProperty<RegularFile>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.PROGUARD_FILES_VALUE
+            return delegate.proguardFiles
+        }
+
+    override val minSdkVersion: AndroidVersion
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.MIN_SDK_VERSION_VALUE
+            return delegate.minSdkVersion
+        }
+
+    override val maxSdkVersion: Int?
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.MAX_SDK_VERSION_VALUE
+            return delegate.maxSdkVersion
+        }
+
+    override val targetSdkVersion: AndroidVersion
+        get()  {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.TARGET_SDK_VERSION_VALUE
+            return delegate.targetSdkVersion
+        }
+
+    override val experimentalProperties: MapProperty<String, Any>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.VARIANT_PROPERTIES_VALUE
+            return delegate.experimentalProperties
         }
 }

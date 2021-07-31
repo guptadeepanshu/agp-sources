@@ -342,6 +342,10 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
                 delta = mSnapshot == version.mSnapshot ? 0 : (mSnapshot ? -1 : 1);
             } else if (version.mQualifiers == null) {
                 return -1;
+            } else if (mQualifiers.startsWith("dev") && version.mQualifiers.startsWith("dev")) {
+                delta = mQualifiers.compareTo(version.mQualifiers);
+            } else if (mQualifiers.startsWith("dev") || version.mQualifiers.startsWith("dev")) {
+                delta = mQualifiers.startsWith("dev") ? -1 : 1;
             } else {
                 delta = mQualifiers.compareTo(version.mQualifiers);
             }
@@ -540,7 +544,7 @@ public class GradleVersion implements Comparable<GradleVersion>, Serializable {
      */
     @Nullable
     public static GradleVersion tryParseAndroidGradlePluginVersion(@NonNull String value) {
-        if (value.matches("\\d+\\.\\d+\\.\\d+(-(((alpha|beta|rc)\\d+)|dev))?")) {
+        if (value.matches("\\d+\\.\\d+\\.\\d+(-(((alpha|beta|rc)\\d+)|(dev\\d*)))?")) {
             // Any string that matches the above pattern is a valid Android Gradle plugin version
             // and should be parsable by tryParse()
             return Verify.verifyNotNull(tryParse(value));

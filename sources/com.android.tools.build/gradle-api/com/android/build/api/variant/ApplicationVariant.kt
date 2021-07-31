@@ -16,19 +16,23 @@
 
 package com.android.build.api.variant
 
-import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 
 /**
  * Properties for the main Variant of an application.
  */
-@Incubating
-interface ApplicationVariant : Variant {
+interface ApplicationVariant : GeneratesApk, Variant {
 
     /**
      * Variant's application ID as present in the final manifest file of the APK.
      */
     override val applicationId: Property<String>
+
+    /**
+     * Variant's [AndroidTest] configuration, or null if android tests are disabled for this
+     * variant.
+     */
+    val androidTest: com.android.build.api.component.AndroidTest?
 
     /**
      * Returns the final list of variant outputs.
@@ -40,32 +44,8 @@ interface ApplicationVariant : Variant {
     val dependenciesInfo: DependenciesInfo
 
     /**
-     * Variant's aaptOptions, initialized by the corresponding global DSL element.
-     */
-    val aaptOptions: AaptOptions
-
-    /**
-     * Variant's aaptOptions, initialized by the corresponding global DSL element.
-     */
-    fun aaptOptions(action: AaptOptions.() -> Unit)
-
-    /**
      * Variant's signingConfig, initialized by the corresponding DSL element.
+     * @return Variant's config or null if the variant is not configured for signing.
      */
-    val signingConfig: SigningConfig
-
-    /**
-     * Variant's signingConfig, initialized by the corresponding DSL element.
-     */
-    fun signingConfig(action: SigningConfig.() -> Unit)
-
-    /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
-     */
-    override val packagingOptions: ApkPackagingOptions
-
-    /**
-     * Variant's packagingOptions, initialized by the corresponding global DSL element.
-     */
-    fun packagingOptions(action: ApkPackagingOptions.() -> Unit)
+    val signingConfig: SigningConfig?
 }
