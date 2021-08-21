@@ -95,6 +95,10 @@ abstract class CommonExtensionImpl<
         action.invoke(installation)
     }
 
+    override fun installation(action: Action<Installation>) {
+        action.execute(installation)
+    }
+
     override val adbOptions: AdbOptions get() = installation as AdbOptions
 
     override fun adbOptions(action: com.android.build.api.dsl.AdbOptions.() -> Unit) {
@@ -209,6 +213,10 @@ abstract class CommonExtensionImpl<
         action.invoke(testCoverage)
     }
 
+    override fun testCoverage(action: Action<TestCoverage>) {
+        action.execute(testCoverage)
+    }
+
     override val jacoco: JacocoOptions
         get() = testCoverage as JacocoOptions
 
@@ -220,6 +228,10 @@ abstract class CommonExtensionImpl<
 
     override fun lint(action: Lint.() -> Unit) {
         action.invoke(lint)
+    }
+
+    override fun lint(action: Action<Lint>) {
+        action.execute(lint)
     }
 
     override val lintOptions: LintOptions

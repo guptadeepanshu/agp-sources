@@ -16,8 +16,12 @@
 
 package com.android.build.gradle.internal.dsl
 
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.Installation
+import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.TestCoverage
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.Variant
 import com.android.build.gradle.api.AndroidSourceSet
@@ -70,4 +74,8 @@ interface InternalCommonExtension<
     fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavor>>)
     fun defaultConfig(action: Action<DefaultConfig>)
     fun signingConfigs(action: Action<NamedDomainObjectContainer<SigningConfig>>)
+    fun androidResources(action: Action<AndroidResources>)
+    fun installation(action: Action<Installation>)
+    fun testCoverage(action: Action<TestCoverage>)
+    fun lint(action: Action<Lint>)
 }
