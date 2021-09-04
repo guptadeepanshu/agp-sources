@@ -20,6 +20,7 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.dependency.AndroidAttributes
+import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule
 import com.android.build.gradle.internal.dsl.LintOptions
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
@@ -101,6 +102,7 @@ abstract class LintPlugin : Plugin<Project> {
             javaConvention,
             customLintChecks
         )
+        ModelArtifactCompatibilityRule.setUp(project.dependencies.attributesSchema)
     }
 
     private fun registerTasks(
