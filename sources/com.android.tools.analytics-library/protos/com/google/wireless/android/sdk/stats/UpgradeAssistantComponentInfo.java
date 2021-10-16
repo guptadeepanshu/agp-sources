@@ -165,6 +165,22 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_IMPLEMENTATION_PROPERTIES = 11;</code>
      */
     REMOVE_IMPLEMENTATION_PROPERTIES(11),
+    /**
+     * <code>GRADLE_PLUGINS = 12;</code>
+     */
+    GRADLE_PLUGINS(12),
+    /**
+     * <code>MIGRATE_TO_INSTALLATION = 13;</code>
+     */
+    MIGRATE_TO_INSTALLATION(13),
+    /**
+     * <code>MIGRATE_TO_EMULATOR_SNAPSHOTS = 14;</code>
+     */
+    MIGRATE_TO_EMULATOR_SNAPSHOTS(14),
+    /**
+     * <code>MIGRATE_TO_TEST_COVERAGE = 15;</code>
+     */
+    MIGRATE_TO_TEST_COVERAGE(15),
     ;
 
     /**
@@ -215,6 +231,22 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_IMPLEMENTATION_PROPERTIES = 11;</code>
      */
     public static final int REMOVE_IMPLEMENTATION_PROPERTIES_VALUE = 11;
+    /**
+     * <code>GRADLE_PLUGINS = 12;</code>
+     */
+    public static final int GRADLE_PLUGINS_VALUE = 12;
+    /**
+     * <code>MIGRATE_TO_INSTALLATION = 13;</code>
+     */
+    public static final int MIGRATE_TO_INSTALLATION_VALUE = 13;
+    /**
+     * <code>MIGRATE_TO_EMULATOR_SNAPSHOTS = 14;</code>
+     */
+    public static final int MIGRATE_TO_EMULATOR_SNAPSHOTS_VALUE = 14;
+    /**
+     * <code>MIGRATE_TO_TEST_COVERAGE = 15;</code>
+     */
+    public static final int MIGRATE_TO_TEST_COVERAGE_VALUE = 15;
 
 
     public final int getNumber() {
@@ -249,6 +281,10 @@ private static final long serialVersionUID = 0L;
         case 9: return MIGRATE_TO_ANDROID_RESOURCES;
         case 10: return REMOVE_BUILD_TYPE_USE_PROGUARD;
         case 11: return REMOVE_IMPLEMENTATION_PROPERTIES;
+        case 12: return GRADLE_PLUGINS;
+        case 13: return MIGRATE_TO_INSTALLATION;
+        case 14: return MIGRATE_TO_EMULATOR_SNAPSHOTS;
+        case 15: return MIGRATE_TO_TEST_COVERAGE;
         default: return null;
       }
     }

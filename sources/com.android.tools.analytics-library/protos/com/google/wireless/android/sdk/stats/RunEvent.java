@@ -181,6 +181,11 @@ private static final long serialVersionUID = 0L;
             applyCodeChangesFallbackToRun_ = input.readBool();
             break;
           }
+          case 192: {
+            bitField0_ |= 0x00400000;
+            runAlwaysInstallWithPm_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1020,6 +1025,31 @@ private static final long serialVersionUID = 0L;
     return applyCodeChangesFallbackToRun_;
   }
 
+  public static final int RUN_ALWAYS_INSTALL_WITH_PM_FIELD_NUMBER = 24;
+  private boolean runAlwaysInstallWithPm_;
+  /**
+   * <pre>
+   * Whether the user configured Run to disable overlay installs.
+   * </pre>
+   *
+   * <code>optional bool run_always_install_with_pm = 24;</code>
+   * @return Whether the runAlwaysInstallWithPm field is set.
+   */
+  public boolean hasRunAlwaysInstallWithPm() {
+    return ((bitField0_ & 0x00400000) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the user configured Run to disable overlay installs.
+   * </pre>
+   *
+   * <code>optional bool run_always_install_with_pm = 24;</code>
+   * @return The runAlwaysInstallWithPm.
+   */
+  public boolean getRunAlwaysInstallWithPm() {
+    return runAlwaysInstallWithPm_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1102,6 +1132,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00200000) != 0)) {
       output.writeBool(23, applyCodeChangesFallbackToRun_);
+    }
+    if (((bitField0_ & 0x00400000) != 0)) {
+      output.writeBool(24, runAlwaysInstallWithPm_);
     }
     unknownFields.writeTo(output);
   }
@@ -1201,6 +1234,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00200000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(23, applyCodeChangesFallbackToRun_);
+    }
+    if (((bitField0_ & 0x00400000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(24, runAlwaysInstallWithPm_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1328,6 +1365,11 @@ private static final long serialVersionUID = 0L;
       if (getApplyCodeChangesFallbackToRun()
           != other.getApplyCodeChangesFallbackToRun()) return false;
     }
+    if (hasRunAlwaysInstallWithPm() != other.hasRunAlwaysInstallWithPm()) return false;
+    if (hasRunAlwaysInstallWithPm()) {
+      if (getRunAlwaysInstallWithPm()
+          != other.getRunAlwaysInstallWithPm()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1448,6 +1490,11 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + APPLY_CODE_CHANGES_FALLBACK_TO_RUN_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getApplyCodeChangesFallbackToRun());
+    }
+    if (hasRunAlwaysInstallWithPm()) {
+      hash = (37 * hash) + RUN_ALWAYS_INSTALL_WITH_PM_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getRunAlwaysInstallWithPm());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1633,6 +1680,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00200000);
       applyCodeChangesFallbackToRun_ = false;
       bitField0_ = (bitField0_ & ~0x00400000);
+      runAlwaysInstallWithPm_ = false;
+      bitField0_ = (bitField0_ & ~0x00800000);
       return this;
     }
 
@@ -1757,6 +1806,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00400000) != 0)) {
         result.applyCodeChangesFallbackToRun_ = applyCodeChangesFallbackToRun_;
         to_bitField0_ |= 0x00200000;
+      }
+      if (((from_bitField0_ & 0x00800000) != 0)) {
+        result.runAlwaysInstallWithPm_ = runAlwaysInstallWithPm_;
+        to_bitField0_ |= 0x00400000;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1902,6 +1955,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasApplyCodeChangesFallbackToRun()) {
         setApplyCodeChangesFallbackToRun(other.getApplyCodeChangesFallbackToRun());
+      }
+      if (other.hasRunAlwaysInstallWithPm()) {
+        setRunAlwaysInstallWithPm(other.getRunAlwaysInstallWithPm());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3510,6 +3566,59 @@ private static final long serialVersionUID = 0L;
     public Builder clearApplyCodeChangesFallbackToRun() {
       bitField0_ = (bitField0_ & ~0x00400000);
       applyCodeChangesFallbackToRun_ = false;
+      onChanged();
+      return this;
+    }
+
+    private boolean runAlwaysInstallWithPm_ ;
+    /**
+     * <pre>
+     * Whether the user configured Run to disable overlay installs.
+     * </pre>
+     *
+     * <code>optional bool run_always_install_with_pm = 24;</code>
+     * @return Whether the runAlwaysInstallWithPm field is set.
+     */
+    public boolean hasRunAlwaysInstallWithPm() {
+      return ((bitField0_ & 0x00800000) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to disable overlay installs.
+     * </pre>
+     *
+     * <code>optional bool run_always_install_with_pm = 24;</code>
+     * @return The runAlwaysInstallWithPm.
+     */
+    public boolean getRunAlwaysInstallWithPm() {
+      return runAlwaysInstallWithPm_;
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to disable overlay installs.
+     * </pre>
+     *
+     * <code>optional bool run_always_install_with_pm = 24;</code>
+     * @param value The runAlwaysInstallWithPm to set.
+     * @return This builder for chaining.
+     */
+    public Builder setRunAlwaysInstallWithPm(boolean value) {
+      bitField0_ |= 0x00800000;
+      runAlwaysInstallWithPm_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the user configured Run to disable overlay installs.
+     * </pre>
+     *
+     * <code>optional bool run_always_install_with_pm = 24;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearRunAlwaysInstallWithPm() {
+      bitField0_ = (bitField0_ & ~0x00800000);
+      runAlwaysInstallWithPm_ = false;
       onChanged();
       return this;
     }

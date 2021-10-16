@@ -482,4 +482,23 @@ public interface RunEventOrBuilder extends
    * @return The applyCodeChangesFallbackToRun.
    */
   boolean getApplyCodeChangesFallbackToRun();
+
+  /**
+   * <pre>
+   * Whether the user configured Run to disable overlay installs.
+   * </pre>
+   *
+   * <code>optional bool run_always_install_with_pm = 24;</code>
+   * @return Whether the runAlwaysInstallWithPm field is set.
+   */
+  boolean hasRunAlwaysInstallWithPm();
+  /**
+   * <pre>
+   * Whether the user configured Run to disable overlay installs.
+   * </pre>
+   *
+   * <code>optional bool run_always_install_with_pm = 24;</code>
+   * @return The runAlwaysInstallWithPm.
+   */
+  boolean getRunAlwaysInstallWithPm();
 }
