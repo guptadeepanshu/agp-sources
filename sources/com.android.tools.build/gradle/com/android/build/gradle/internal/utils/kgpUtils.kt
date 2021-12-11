@@ -45,6 +45,9 @@ const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
 const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 private val KOTLIN_MPP_PLUGIN_IDS = listOf("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform")
 
+private val irBackendByDefault = KotlinVersion(1, 5)
+private val irBackendIntroduced = KotlinVersion(1, 3, 70)
+
 /**
  * Returns `true` if any of the Kotlin plugins is applied (there are many Kotlin plugins). If we
  * want to check a specific Kotlin plugin, use another method (e.g.,
@@ -57,6 +60,52 @@ fun isKotlinPluginApplied(project: Project): Boolean {
         // This may fail if Kotlin plugin is not applied, as KotlinBasePluginWrapper
         // will not be present at runtime. This means that the Kotlin plugin is not applied.
         false
+    }
+}
+
+/**
+ * returns the kotlin plugin version, or null if plugin is not applied to this project or if plugin
+ * is applied but version can't be determined.
+ */
+fun getProjectKotlinPluginKotlinVersion(project: Project): KotlinVersion? {
+    val currVersion = getKotlinPluginVersion(project)
+    if (currVersion == null || currVersion == "unknown")
+        return null
+    return parseKotlinVersion(currVersion)
+}
+
+private fun parseKotlinVersion(currVersion: String): KotlinVersion? {
+    return try {
+        val parts = currVersion.split(".")
+        val major = parts[0]
+        val minor = parts[1]
+        // We ignore the extensions, eg. "-RC".
+        val patch = parts[2].substringBefore('-')
+        return KotlinVersion(
+                major.toInt(),
+                minor.toInt(),
+                patch.toInt()
+        )
+    } catch (e: Throwable) {
+        null
+    }
+}
+
+/**
+ * returns the kotlin plugin version as string, or null if plugin is not applied to this project, or
+ * "unknown" if plugin is applied but version can't be determined.
+ */
+private fun getKotlinPluginVersion(project: Project): String? {
+    val plugin = project.plugins.findPlugin("kotlin-android") ?: return null
+    return try {
+        // No null checks below because we're catching all exceptions.
+        val method = plugin.javaClass.getMethod("getKotlinPluginVersion")
+        method.isAccessible = true
+        method.invoke(plugin).toString()
+    } catch (e: Throwable) {
+        // Defensively catch all exceptions because we don't want it to crash
+        // if kotlin plugin code changes unexpectedly.
+        "unknown"
     }
 }
 
@@ -82,20 +131,19 @@ fun recordIrBackendForAnalytics(allPropertiesList: List<ComponentCreationConfig>
                         return@configure
                     }
 
-                    // We need reflection because AGP and KGP can be in different class loaders.
-                    val getKotlinOptions = task.javaClass.getMethod("getKotlinOptions")
-                    val taskOptions = getKotlinOptions.invoke(task)
-                    val getUseIR = taskOptions.javaClass.getMethod("getUseIR")
-                    if (getUseIR.invoke(taskOptions) as Boolean) {
-                        setIrUsedInAnalytics(creationConfig, project)
-                        return@configure
+                    val kotlinVersion = getProjectKotlinPluginKotlinVersion(project)
+                    val irBackendEnabled = when {
+                        kotlinVersion == null -> return@configure
+                        kotlinVersion >= irBackendByDefault -> {
+                            !getKotlinOptionsValueIfSet(task, extension, "getUseOldBackend", false)
+                        }
+                        kotlinVersion >= irBackendIntroduced -> {
+                            getKotlinOptionsValueIfSet(task, extension, "getUseIR", false)
+                        }
+                        else -> null
                     }
-
-                    val kotlinDslOptions =
-                            (extension as ExtensionAware).extensions.getByName("kotlinOptions")
-                    if (getUseIR.invoke(kotlinDslOptions) as Boolean) {
+                    irBackendEnabled?.let {
                         setIrUsedInAnalytics(creationConfig, project)
-                        return@configure
                     }
                 } catch (ignored: Throwable) {
                 }
@@ -103,6 +151,22 @@ fun recordIrBackendForAnalytics(allPropertiesList: List<ComponentCreationConfig>
         } catch (ignored: Throwable) {
         }
     }
+}
+
+private fun getKotlinOptionsValueIfSet(task: Task, extension: BaseExtension, methodName: String, defaultValue: Boolean): Boolean {
+    // We need reflection because AGP and KGP can be in different class loaders.
+    val getKotlinOptions = task.javaClass.getMethod("getKotlinOptions")
+    val taskOptions = getKotlinOptions.invoke(task)
+    val method = taskOptions.javaClass.getMethod(methodName)
+    val taskValue = method.invoke(taskOptions) as Boolean
+    if (defaultValue != taskValue) return taskValue
+
+    // If not specified on the task, check global DSL extension
+    val kotlinDslOptions = (extension as ExtensionAware).extensions.getByName("kotlinOptions")
+    val globalValue = method.invoke(kotlinDslOptions) as Boolean
+    if (defaultValue != globalValue) return globalValue
+
+    return defaultValue
 }
 
 private fun setIrUsedInAnalytics(creationConfig: ComponentCreationConfig, project: Project) {
@@ -137,9 +201,15 @@ fun addComposeArgsToKotlinCompile(
         false
     }
 
+    val kotlinVersion = getProjectKotlinPluginKotlinVersion(task.project)
     task.doFirst {
         it as KotlinCompile
-        it.kotlinOptions.useIR = true
+        kotlinVersion?.let { version ->
+            when {
+                version >= irBackendByDefault -> return@let // IR is enabled by default
+                version >= irBackendIntroduced -> it.kotlinOptions.useIR = true
+            }
+        }
         val extraFreeCompilerArgs = mutableListOf(
                 "-Xplugin=${compilerExtension.files.first().absolutePath}",
                 "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
