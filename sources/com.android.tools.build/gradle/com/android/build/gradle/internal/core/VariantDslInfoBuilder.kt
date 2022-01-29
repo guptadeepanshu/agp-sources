@@ -16,20 +16,26 @@
 
 package com.android.build.gradle.internal.core
 
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.impl.ComponentIdentityImpl
 import com.android.build.api.dsl.BuildType
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.dsl.TestedExtension
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.core.VariantDslInfoBuilder.Companion.getBuilder
+import com.android.build.gradle.internal.dsl.ApplicationPublishingImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.gradle.internal.dsl.InternalApplicationExtension
+import com.android.build.gradle.internal.dsl.InternalLibraryExtension
+import com.android.build.gradle.internal.dsl.LibraryPublishingImpl
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.utils.createPublishingInfoForApp
+import com.android.build.gradle.internal.utils.createPublishingInfoForLibrary
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.internal.variant.DimensionCombination
 import com.android.builder.core.VariantType
@@ -45,7 +51,7 @@ import org.gradle.api.file.DirectoryProperty
  *
  * Use [getBuilder] as an entry point.
  */
-class VariantDslInfoBuilder private constructor(
+class VariantDslInfoBuilder<CommonExtensionT: CommonExtension<*, *, *, *>> private constructor(
     private val dimensionCombination: DimensionCombination,
     val variantType: VariantType,
     private val defaultConfig: DefaultConfig,
@@ -57,8 +63,11 @@ class VariantDslInfoBuilder private constructor(
     private val dslServices: DslServices,
     private val variantPropertiesApiServices: VariantPropertiesApiServices,
     private val nativeBuildSystem: VariantManager.NativeBuiltType?,
-    private val extension: BaseExtension,
+    private val extension: CommonExtensionT,
+    private val hasDynamicFeatures: Boolean,
     private val experimentalProperties: Map<String, Any>,
+    private val enableTestFixtures: Boolean,
+    private val testFixtureMainVariantName: String?
 ) {
 
     companion object {
@@ -66,7 +75,7 @@ class VariantDslInfoBuilder private constructor(
          * Returns a new builder
          */
         @JvmStatic
-        fun getBuilder(
+        fun <CommonExtensionT: CommonExtension<*, *, *, *>> getBuilder(
             dimensionCombination: DimensionCombination,
             variantType: VariantType,
             defaultConfig: DefaultConfig,
@@ -78,9 +87,12 @@ class VariantDslInfoBuilder private constructor(
             dslServices: DslServices,
             variantPropertiesApiServices: VariantPropertiesApiServices,
             nativeBuildSystem: VariantManager.NativeBuiltType? = null,
-            extension: BaseExtension,
+            extension: CommonExtensionT,
+            hasDynamicFeatures: Boolean,
             experimentalProperties: Map<String, Any> = mapOf(),
-        ): VariantDslInfoBuilder {
+            enableTestFixtures: Boolean = false,
+            testFixtureMainVariantName: String? = null
+        ): VariantDslInfoBuilder<CommonExtensionT> {
             return VariantDslInfoBuilder(
                 dimensionCombination,
                 variantType,
@@ -94,7 +106,10 @@ class VariantDslInfoBuilder private constructor(
                 variantPropertiesApiServices,
                 nativeBuildSystem,
                 extension,
+                hasDynamicFeatures,
                 experimentalProperties,
+                enableTestFixtures,
+                testFixtureMainVariantName
             )
         }
 
@@ -139,7 +154,7 @@ class VariantDslInfoBuilder private constructor(
                     sb.append(buildType)
                 }
             }
-            if (variantType.isTestComponent || variantType.isTestFixturesComponent) {
+            if (variantType.isNestedComponent) {
                 if (sb.isEmpty()) {
                     // need the lower case version
                     sb.append(variantType.prefix)
@@ -196,7 +211,7 @@ class VariantDslInfoBuilder private constructor(
                 sb.append(it)
             }
 
-            if (variantType.isTestComponent) {
+            if (variantType.isNestedComponent) {
                 if (sb.isNotEmpty()) {
                     sb.append('-')
                 }
@@ -236,14 +251,14 @@ class VariantDslInfoBuilder private constructor(
                 sb.appendCapitalized(it)
             }
 
-            if (variantType.isTestComponent) {
+            if (variantType.isNestedComponent) {
                 sb.append(variantType.suffix)
             }
             return sb.toString()
         }
 
         @JvmStatic
-        private fun BaseExtension.getDslNamespace(variantType: VariantType): String? {
+        private fun CommonExtension<*, *, *, *>.getDslNamespace(variantType: VariantType): String? {
             return if (variantType.isTestComponent) {
                 (this as TestedExtension).testNamespace
             } else if (variantType.isTestFixturesComponent) {
@@ -279,7 +294,7 @@ class VariantDslInfoBuilder private constructor(
 
     var variantSourceProvider: DefaultAndroidSourceSet? = null
     var multiFlavorSourceProvider: DefaultAndroidSourceSet? = null
-    var parentVariant: VariantDslInfoImpl? = null
+    var productionVariant: VariantDslInfoImpl<*>? = null
     var inconsistentTestAppId: Boolean = false
 
     fun addProductFlavor(
@@ -293,8 +308,30 @@ class VariantDslInfoBuilder private constructor(
     }
 
     /** Creates a variant configuration  */
-    fun createVariantDslInfo(buildDirectory: DirectoryProperty): VariantDslInfoImpl {
+    fun createVariantDslInfo(buildDirectory: DirectoryProperty): VariantDslInfoImpl<CommonExtensionT> {
         val flavorList = flavors.map { it.first }
+
+        val publishingInfo = if (extension is InternalLibraryExtension) {
+            createPublishingInfoForLibrary(
+                extension.publishing as LibraryPublishingImpl,
+                dslServices.projectOptions,
+                name,
+                buildType,
+                flavorList,
+                extension.buildTypes,
+                extension.productFlavors,
+                testFixtureMainVariantName,
+                dslServices.issueReporter
+            )
+        } else if (extension is InternalApplicationExtension) {
+            createPublishingInfoForApp(
+                extension.publishing as ApplicationPublishingImpl,
+                dslServices.projectOptions,
+                name,
+                hasDynamicFeatures,
+                dslServices.issueReporter
+            )
+        } else null
 
         return VariantDslInfoImpl(
             ComponentIdentityImpl(
@@ -309,14 +346,16 @@ class VariantDslInfoBuilder private constructor(
             // this could be removed once the product flavor is internal only.
             flavorList.toImmutableList(),
             signingConfigOverride,
-            parentVariant,
+            productionVariant,
             manifestDataProvider,
             dslServices,
             variantPropertiesApiServices,
             buildDirectory,
             extension.getDslNamespace(variantType),
             nativeBuildSystem,
+            publishingInfo,
             experimentalProperties,
+            enableTestFixtures,
             inconsistentTestAppId
         )
     }

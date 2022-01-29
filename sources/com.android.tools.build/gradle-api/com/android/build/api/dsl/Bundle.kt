@@ -18,8 +18,9 @@ package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
 
-@Incubating
+/** Features that apply to distribution by the bundle  */
 interface Bundle {
+
     val abi: BundleAbi
 
     val density: BundleDensity
@@ -28,7 +29,11 @@ interface Bundle {
 
     val texture: BundleTexture
 
+    @get:Incubating
     val deviceTier: BundleDeviceTier
+
+    @get:Incubating
+    val codeTransparency: BundleCodeTransparency
 
     fun abi(action: BundleAbi.() -> Unit)
 
@@ -38,5 +43,9 @@ interface Bundle {
 
     fun texture(action: BundleTexture.() -> Unit)
 
+    @Incubating
     fun deviceTier(action: BundleDeviceTier.() -> Unit)
+
+    @Incubating
+    fun codeTransparency(action: BundleCodeTransparency.() -> Unit)
 }

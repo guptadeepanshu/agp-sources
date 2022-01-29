@@ -17,6 +17,7 @@ package com.android.build.gradle.internal.dsl
 
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationBaseFlavor
+import com.android.build.api.dsl.BaseFlavor
 import com.android.build.api.dsl.DynamicFeatureBaseFlavor
 import com.android.build.api.dsl.LibraryBaseFlavor
 import com.android.build.api.dsl.Ndk
@@ -35,6 +36,7 @@ import com.google.common.base.Strings
 import com.google.common.collect.Iterables
 import java.io.File
 import org.gradle.api.Action
+import org.gradle.api.plugins.ExtensionAware
 
 /** Base DSL object used to configure product flavors.  */
 abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
@@ -495,6 +497,10 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
         action.invoke(aarMetadata)
     }
 
+    override fun aarMetadata(action: Action<com.android.build.api.dsl.AarMetadata>) {
+        action.execute(aarMetadata)
+    }
+
     /**
      * Deprecated equivalent of `vectorDrawablesOptions.generatedDensities`.
      */
@@ -547,11 +553,17 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
         } else null
     }
 
+    override fun initWith(that: BaseFlavor) {
+        if (that !is com.android.build.gradle.internal.dsl.BaseFlavor) {
+            throw RuntimeException("Unexpected implementation type")
+        }
+        _initWith(that)
+    }
+
     override fun _initWith(that: BaseConfig) {
         super._initWith(that)
         if (that is ProductFlavor) {
-            _vectorDrawables =
-                DefaultVectorDrawablesOptions.copyOf(that.vectorDrawables) as VectorDrawablesOptions
+            _vectorDrawables = VectorDrawablesOptions.copyOf(that.vectorDrawables)
         }
     }
 }

@@ -18,6 +18,7 @@
 
 package com.android.utils
 
+import org.w3c.dom.Attr
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 
@@ -55,6 +56,18 @@ operator fun Element.iterator(): Iterator<Element> {
     }
 }
 
+fun Node.childrenIterator(): Iterator<Node> = object : Iterator<Node> {
+    private var current = firstChild
+
+    override fun hasNext() = current != null
+
+    override fun next(): Node {
+        val next = current
+        current = current!!.nextSibling
+        return next
+    }
+}
+
 /** Returns the first sub tag child of this element with the given tag name */
 fun Element.subtag(tag: String): Element? {
     return XmlUtils.getFirstSubTagByName(this, tag)
@@ -83,4 +96,34 @@ fun Element.subtagCount(): Int {
 /** Returns the text content of this element */
 fun Element.text(): String {
     return textContent
+}
+
+/**
+ * Visits all the attributes of the given element transitively. The
+ * [visitor] should return false, or true to abort visiting when it has
+ * found what it was looking for. Returns true if any visited attribute
+ * returned true.
+ */
+fun Element.visitAttributes(visitor: (Attr) -> Boolean): Boolean {
+    val attributes = attributes
+    for (i in 0 until attributes.length) {
+        val attr = attributes.item(i)
+        val done = visitor(attr as Attr)
+        if (done) {
+            return true
+        }
+    }
+
+    var child = firstChild
+    while (child != null) {
+        if (child.nodeType == Node.ELEMENT_NODE) {
+            val done = (child as Element).visitAttributes(visitor)
+            if (done) {
+                return true
+            }
+        }
+        child = child.nextSibling
+    }
+
+    return false
 }

@@ -67,6 +67,11 @@ private static final long serialVersionUID = 0L;
             usages_ = input.readInt32();
             break;
           }
+          case 24: {
+            bitField0_ |= 0x00000004;
+            files_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -282,7 +287,8 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
-   * PREVIEW_REFACTORING or EXECUTE.
+   * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+   * SYNC_SUCCEEDED.
    * </pre>
    *
    * <code>optional int32 usages = 2;</code>
@@ -294,7 +300,8 @@ private static final long serialVersionUID = 0L;
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
-   * PREVIEW_REFACTORING or EXECUTE.
+   * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+   * SYNC_SUCCEEDED.
    * </pre>
    *
    * <code>optional int32 usages = 2;</code>
@@ -302,6 +309,35 @@ private static final long serialVersionUID = 0L;
    */
   public int getUsages() {
     return usages_;
+  }
+
+  public static final int FILES_FIELD_NUMBER = 3;
+  private int files_;
+  /**
+   * <pre>
+   * The number of files involved in the build.  Will be set if
+   * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+   * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+   * </pre>
+   *
+   * <code>optional int32 files = 3;</code>
+   * @return Whether the files field is set.
+   */
+  public boolean hasFiles() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * The number of files involved in the build.  Will be set if
+   * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+   * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+   * </pre>
+   *
+   * <code>optional int32 files = 3;</code>
+   * @return The files.
+   */
+  public int getFiles() {
+    return files_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -324,6 +360,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeInt32(2, usages_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeInt32(3, files_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -340,6 +379,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, usages_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(3, files_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -365,6 +408,11 @@ private static final long serialVersionUID = 0L;
       if (getUsages()
           != other.getUsages()) return false;
     }
+    if (hasFiles() != other.hasFiles()) return false;
+    if (hasFiles()) {
+      if (getFiles()
+          != other.getFiles()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -383,6 +431,10 @@ private static final long serialVersionUID = 0L;
     if (hasUsages()) {
       hash = (37 * hash) + USAGES_FIELD_NUMBER;
       hash = (53 * hash) + getUsages();
+    }
+    if (hasFiles()) {
+      hash = (37 * hash) + FILES_FIELD_NUMBER;
+      hash = (53 * hash) + getFiles();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -521,6 +573,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       usages_ = 0;
       bitField0_ = (bitField0_ & ~0x00000002);
+      files_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -556,6 +610,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.usages_ = usages_;
         to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.files_ = files_;
+        to_bitField0_ |= 0x00000004;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -611,6 +669,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasUsages()) {
         setUsages(other.getUsages());
+      }
+      if (other.hasFiles()) {
+        setFiles(other.getFiles());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -704,7 +765,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The number of usages.  Will be set if kind is FIND_USAGES,
-     * PREVIEW_REFACTORING or EXECUTE.
+     * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+     * SYNC_SUCCEEDED.
      * </pre>
      *
      * <code>optional int32 usages = 2;</code>
@@ -716,7 +778,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The number of usages.  Will be set if kind is FIND_USAGES,
-     * PREVIEW_REFACTORING or EXECUTE.
+     * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+     * SYNC_SUCCEEDED.
      * </pre>
      *
      * <code>optional int32 usages = 2;</code>
@@ -728,7 +791,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The number of usages.  Will be set if kind is FIND_USAGES,
-     * PREVIEW_REFACTORING or EXECUTE.
+     * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+     * SYNC_SUCCEEDED.
      * </pre>
      *
      * <code>optional int32 usages = 2;</code>
@@ -744,7 +808,8 @@ private static final long serialVersionUID = 0L;
     /**
      * <pre>
      * The number of usages.  Will be set if kind is FIND_USAGES,
-     * PREVIEW_REFACTORING or EXECUTE.
+     * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+     * SYNC_SUCCEEDED.
      * </pre>
      *
      * <code>optional int32 usages = 2;</code>
@@ -753,6 +818,67 @@ private static final long serialVersionUID = 0L;
     public Builder clearUsages() {
       bitField0_ = (bitField0_ & ~0x00000002);
       usages_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int files_ ;
+    /**
+     * <pre>
+     * The number of files involved in the build.  Will be set if
+     * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+     * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+     * </pre>
+     *
+     * <code>optional int32 files = 3;</code>
+     * @return Whether the files field is set.
+     */
+    public boolean hasFiles() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * The number of files involved in the build.  Will be set if
+     * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+     * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+     * </pre>
+     *
+     * <code>optional int32 files = 3;</code>
+     * @return The files.
+     */
+    public int getFiles() {
+      return files_;
+    }
+    /**
+     * <pre>
+     * The number of files involved in the build.  Will be set if
+     * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+     * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+     * </pre>
+     *
+     * <code>optional int32 files = 3;</code>
+     * @param value The files to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFiles(int value) {
+      bitField0_ |= 0x00000004;
+      files_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The number of files involved in the build.  Will be set if
+     * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+     * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+     * </pre>
+     *
+     * <code>optional int32 files = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFiles() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      files_ = 0;
       onChanged();
       return this;
     }

@@ -86,8 +86,19 @@ data class CxxConfigurationModel(
     val unusedAbis: List<CxxAbiModel>
 )
 
-enum class NativeBuildOutputLevel {
-    QUIET, VERBOSE
+/**
+ * C/C++ logging options passed via -Pandroid.native.buildOutput gradle flag
+ *
+ * This enum is meant to enable different logging subsystems rather than to
+ * supplement or replace Gradle's existing verbosity levels.
+ *
+ * Default (or 'none' logging) is represented by an empty set.
+ */
+enum class NativeBuildOutputOptions {
+    VERBOSE, // Whether to forward the full native build, configure, and clean output to stdout.
+    CONFIGURE_STDOUT, // Whether to forward the full native configure output to stdout.
+    BUILD_STDOUT, // Whether to forward the full native build output to stdout.
+    CLEAN_STDOUT, // Whether to forward the full native clean output to stdout.
 }
 
 /**
@@ -119,10 +130,11 @@ data class CxxConfigurationParameters(
     val isPrefabEnabled: Boolean,
     val prefabClassPath: FileCollection?,
     val prefabPackageDirectoryList: FileCollection?,
+    val prefabPackageConfigurationList: FileCollection?,
     val implicitBuildTargetSet: Set<String>,
     val variantName: String,
     val nativeVariantConfig: NativeBuildSystemVariantConfig,
-    val nativeBuildOutputLevel: NativeBuildOutputLevel,
+    val outputOptions: Set<NativeBuildOutputOptions>,
 )
 
 /**
@@ -239,6 +251,16 @@ fun tryCreateConfigurationParameters(
         null
     }
 
+    val prefabPackageConfigurationList = if (variant.buildFeatures.prefab) {
+        variant.variantDependencies.getArtifactCollection(
+            AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+            AndroidArtifacts.ArtifactScope.ALL,
+            AndroidArtifacts.ArtifactType.PREFAB_PACKAGE_CONFIGURATION
+        ).artifactFiles
+    } else {
+        null
+    }
+
     val prefabClassPath = if (variant.buildFeatures.prefab) {
         getPrefabFromMaven(
             projectOptions,
@@ -246,6 +268,19 @@ fun tryCreateConfigurationParameters(
     } else {
         null
     }
+    val outputOptions = (option(NATIVE_BUILD_OUTPUT_LEVEL)?:"")
+        .toUpperCase(Locale.US)
+        .split(",")
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
+        .mapNotNull { level ->
+            val result = NativeBuildOutputOptions.values().firstOrNull { "$it" == level }
+            if (result == null) {
+                errorln("$NATIVE_BUILD_OUTPUT_LEVEL contains unrecognized $level")
+            }
+            result
+        }
+        .toSet()
 
     return CxxConfigurationParameters(
         cxxFolder = cxxFolder,
@@ -274,17 +309,15 @@ fun tryCreateConfigurationParameters(
         isPrefabEnabled = variant.buildFeatures.prefab,
         prefabClassPath = prefabClassPath,
         prefabPackageDirectoryList = prefabPackageDirectoryList,
+        prefabPackageConfigurationList = prefabPackageConfigurationList,
         implicitBuildTargetSet = prefabTargets,
         variantName = variant.name,
         nativeVariantConfig = createNativeBuildSystemVariantConfig(
             buildSystem, variant, variant.variantDslInfo
         ),
-        nativeBuildOutputLevel = NativeBuildOutputLevel.values()
-            .firstOrNull { it.toString() == option(NATIVE_BUILD_OUTPUT_LEVEL)?.toUpperCase(Locale.US) }
-            ?: NativeBuildOutputLevel.QUIET
+        outputOptions = outputOptions
     )
 }
-
 
 /**
  * Resolve the CMake or ndk-build path and buildStagingDirectory of native build project.
@@ -320,7 +353,7 @@ private fun getProjectPath(config: ExternalNativeBuild)
  * deserialization.
  */
 fun createCxxMetadataGenerator(
-    configurationModel: CxxConfigurationModel,
+    abi: CxxAbiModel,
     analyticsService: AnalyticsService
 ): CxxMetadataGenerator {
     if(ENABLE_CHECK_CONFIG_TIME_CONSTRUCTION) {
@@ -329,15 +362,14 @@ fun createCxxMetadataGenerator(
         }
     }
 
-    val (variant, abis) = configurationModel
+    val variant = abi.variant
 
     val variantBuilder = analyticsService.getVariantBuilder(
         variant.module.gradleModulePathName, variant.variantName)
 
     return when (variant.module.buildSystem) {
         NativeBuildSystem.NDK_BUILD -> NdkBuildExternalNativeJsonGenerator(
-            variant,
-            abis,
+            abi,
             variantBuilder
         )
         CMAKE -> {
@@ -350,7 +382,7 @@ fun createCxxMetadataGenerator(
             val cmakeRevision = cmake.minimumCmakeVersion
             variantBuilder?.nativeCmakeVersion = cmakeRevision.toString()
             if (cmakeRevision.isCmakeForkVersion()) {
-                return CmakeAndroidNinjaExternalNativeJsonGenerator(variant, abis, variantBuilder)
+                return CmakeAndroidNinjaExternalNativeJsonGenerator(abi, variantBuilder)
             }
             if (cmakeRevision.major < 3
                 || cmakeRevision.major == 3 && cmakeRevision.minor <= 6
@@ -364,9 +396,9 @@ fun createCxxMetadataGenerator(
 
             val isPreCmakeFileApiVersion = cmakeRevision.major == 3 && cmakeRevision.minor < 15
             if (isPreCmakeFileApiVersion) {
-                return CmakeServerExternalNativeJsonGenerator(variant, abis, variantBuilder)
+                return CmakeServerExternalNativeJsonGenerator(abi, variantBuilder)
             }
-            return CmakeQueryMetadataGenerator(variant, abis, variantBuilder)
+            return CmakeQueryMetadataGenerator(abi, variantBuilder)
         }
     }
 }

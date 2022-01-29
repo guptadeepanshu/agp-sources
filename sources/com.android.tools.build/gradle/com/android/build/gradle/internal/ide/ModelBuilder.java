@@ -19,8 +19,10 @@ package com.android.build.gradle.internal.ide;
 import static com.android.AndroidProjectTypes.PROJECT_TYPE_APP;
 import static com.android.AndroidProjectTypes.PROJECT_TYPE_DYNAMIC_FEATURE;
 import static com.android.SdkConstants.DIST_URI;
+import static com.android.build.gradle.internal.scope.InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.DATA_BINDING_BASE_CLASS_SOURCE_OUT;
 import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
+import static com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR;
 import static com.android.builder.model.AndroidProject.ARTIFACT_MAIN;
 
 import com.android.SdkConstants;
@@ -31,7 +33,8 @@ import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.api.dsl.ApplicationExtension;
 import com.android.build.api.variant.AndroidTest;
-import com.android.build.api.variant.impl.HasAndroidTest;
+import com.android.build.api.variant.HasAndroidTest;
+import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestAndroidConfig;
 import com.android.build.gradle.internal.BuildTypeData;
@@ -53,6 +56,7 @@ import com.android.build.gradle.internal.dsl.TestOptions;
 import com.android.build.gradle.internal.errors.SyncIssueReporter;
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl;
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs;
+import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputsImpl;
 import com.android.build.gradle.internal.ide.dependencies.BuildMappingUtils;
 import com.android.build.gradle.internal.ide.dependencies.DependencyGraphBuilder;
 import com.android.build.gradle.internal.ide.dependencies.DependencyGraphBuilderKt;
@@ -70,9 +74,9 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.scope.VariantScope;
 import com.android.build.gradle.internal.services.BuildServicesKt;
+import com.android.build.gradle.internal.tasks.AnchorTaskNames;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.ExportConsumerProguardFilesTask;
-import com.android.build.gradle.internal.tasks.ExtractApksTask;
 import com.android.build.gradle.internal.utils.DesugarLibUtils;
 import com.android.build.gradle.internal.variant.VariantInputModel;
 import com.android.build.gradle.internal.variant.VariantModel;
@@ -80,6 +84,7 @@ import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptionService;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.options.SyncOptions;
+import com.android.build.gradle.tasks.RenderscriptCompile;
 import com.android.builder.compiling.BuildConfigType;
 import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.DefaultManifestParser;
@@ -121,6 +126,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.google.common.collect.Streams;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -130,6 +136,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.xml.namespace.QName;
@@ -142,14 +149,17 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import org.gradle.StartParameter;
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.BuildIdentifier;
 import org.gradle.api.artifacts.result.ResolvedArtifactResult;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
 import org.gradle.api.services.BuildServiceRegistry;
+import org.gradle.api.tasks.TaskProvider;
 import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder;
 
 /** Builder for the custom Android model. */
@@ -329,9 +339,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                     variantType.getArtifactType()));
         }
 
-        LintOptions lintOptions =
-                com.android.build.gradle.internal.dsl.LintOptions.create(
-                        extension.getLintOptions());
+        LintOptions lintOptions = ConvertersKt.convertLintOptions(extension.getLintOptions());
 
         AaptOptions aaptOptions = AaptOptionsImpl.create(extension.getAaptOptions());
 
@@ -473,7 +481,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 toAbsolutePath(
                         component
                                 .getArtifacts()
-                                .get(InternalArtifactType.APK_IDE_MODEL.INSTANCE)
+                                .get(InternalArtifactType.APK_IDE_REDIRECT_FILE.INSTANCE)
                                 .getOrNull()),
                 component.getTaskContainer().getBundleTask() == null
                         ? component.computeTaskName("bundle")
@@ -481,13 +489,15 @@ public class ModelBuilder<Extension extends BaseExtension>
                 toAbsolutePath(
                         component
                                 .getArtifacts()
-                                .get(InternalArtifactType.BUNDLE_IDE_MODEL.INSTANCE)
+                                .get(InternalArtifactType.BUNDLE_IDE_REDIRECT_FILE.INSTANCE)
                                 .getOrNull()),
-                ExtractApksTask.Companion.getTaskName(component),
+                AnchorTaskNames.INSTANCE.getExtractApksAnchorTaskName(component),
                 toAbsolutePath(
                         component
                                 .getArtifacts()
-                                .get(InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL.INSTANCE)
+                                .get(
+                                        InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE
+                                                .INSTANCE)
                                 .getOrNull()));
     }
 
@@ -514,6 +524,10 @@ public class ModelBuilder<Extension extends BaseExtension>
                         .anyMatch(
                                 variantProperties ->
                                         variantProperties.getBuildFeatures().getMlModelBinding()));
+
+        flags.put(
+                AndroidGradlePluginProjectFlags.BooleanFlag.UNIFIED_TEST_PLATFORM,
+                projectOptions.get(BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM));
 
         boolean transitiveRClass = !projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS);
         flags.put(AndroidGradlePluginProjectFlags.BooleanFlag.TRANSITIVE_R_CLASS, transitiveRClass);
@@ -825,7 +839,7 @@ public class ModelBuilder<Extension extends BaseExtension>
         }
 
         // The separately compile R class, if applicable.
-        if (!globalScope.getExtension().getAaptOptions().getNamespaced()
+        if (!extension.getAaptOptions().getNamespaced()
                 && component.getBuildFeatures().getAndroidResources()) {
             additionalTestClasses.add(
                     component.getVariantScope().getRJarForUnitTests().get().getAsFile());
@@ -874,7 +888,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                         new Level2DependencyModelBuilder(
                                 component.getServices().getBuildServiceRegistry());
                 ArtifactCollectionsInputs artifactCollectionsInputs =
-                        new ArtifactCollectionsInputs(
+                        new ArtifactCollectionsInputsImpl(
                                 component,
                                 ArtifactCollectionsInputs.RuntimeType.FULL,
                                 buildMapping);
@@ -889,7 +903,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                         new Level1DependencyModelBuilder(
                                 component.getServices().getBuildServiceRegistry());
                 ArtifactCollectionsInputs artifactCollectionsInputs =
-                        new ArtifactCollectionsInputs(
+                        new ArtifactCollectionsInputsImpl(
                                 component,
                                 ArtifactCollectionsInputs.RuntimeType.PARTIAL,
                                 buildMapping);
@@ -914,9 +928,9 @@ public class ModelBuilder<Extension extends BaseExtension>
         com.android.build.api.variant.impl.SigningConfigImpl signingConfig = null;
         boolean isSigningReady = false;
         if (component instanceof ApkCreationConfig) {
-            signingConfig = ((ApkCreationConfig) component).getSigningConfig();
+            signingConfig = ((ApkCreationConfig) component).getSigningConfigImpl();
             if (signingConfig != null) {
-                isSigningReady = signingConfig.isSigningReady();
+                isSigningReady = signingConfig.hasConfig() && signingConfig.isSigningReady();
             }
         }
         String signingConfigName = null;
@@ -947,7 +961,7 @@ public class ModelBuilder<Extension extends BaseExtension>
         List<File> additionalRuntimeApks = new ArrayList<>();
         TestOptionsImpl testOptions = null;
 
-        if (component.getVariantType().isTestComponent()) {
+        if (component.getVariantType().isTestComponent() || component instanceof TestVariantImpl) {
             Configuration testHelpers =
                     projectInfo
                             .getProject()
@@ -984,7 +998,7 @@ public class ModelBuilder<Extension extends BaseExtension>
                 name,
                 projectInfo.getProjectBaseName() + "-" + component.getBaseName(),
                 taskContainer.getAssembleTask().getName(),
-                artifacts.get(InternalArtifactType.APK_IDE_MODEL.INSTANCE).getOrNull(),
+                artifacts.get(InternalArtifactType.APK_IDE_REDIRECT_FILE.INSTANCE).getOrNull(),
                 isSigningReady || component.getVariantData().outputsAreSigned,
                 signingConfigName,
                 taskContainer.getSourceGenTask().getName(),
@@ -1002,15 +1016,17 @@ public class ModelBuilder<Extension extends BaseExtension>
                 variantDslInfo.getSupportedAbis(),
                 instantRun,
                 testOptions,
-                taskContainer.getConnectedTask() == null
+                taskContainer.getConnectedTestTask() == null
                         ? null
-                        : taskContainer.getConnectedTask().getName(),
+                        : taskContainer.getConnectedTestTask().getName(),
                 taskContainer.getBundleTask() == null
                         ? component.computeTaskName("bundle")
                         : taskContainer.getBundleTask().getName(),
-                artifacts.get(InternalArtifactType.BUNDLE_IDE_MODEL.INSTANCE).getOrNull(),
-                ExtractApksTask.Companion.getTaskName(component),
-                artifacts.get(InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL.INSTANCE).getOrNull(),
+                artifacts.get(InternalArtifactType.BUNDLE_IDE_REDIRECT_FILE.INSTANCE).getOrNull(),
+                AnchorTaskNames.INSTANCE.getExtractApksAnchorTaskName(component),
+                artifacts
+                        .get(InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE.INSTANCE)
+                        .getOrNull(),
                 codeShrinker);
     }
 
@@ -1060,98 +1076,89 @@ public class ModelBuilder<Extension extends BaseExtension>
 
     @NonNull
     public static List<File> getGeneratedSourceFoldersForUnitTests(
-            @Nullable ComponentImpl component) {
-        if (component == null) {
-            return Collections.emptyList();
-        }
-
-        List<File> folders =
-                Lists.newArrayList(component.getVariantData().getExtraGeneratedSourceFolders());
-        folders.add(
-                component
-                        .getArtifacts()
-                        .get(InternalArtifactType.AP_GENERATED_SOURCES.INSTANCE)
-                        .get()
-                        .getAsFile());
-        return folders;
+            @NonNull ComponentImpl component) {
+        return Streams.stream(getGeneratedSourceFoldersFileCollectionForUnitTests(component))
+                .collect(Collectors.toList());
     }
 
     @NonNull
-    public static List<File> getGeneratedSourceFolders(@Nullable ComponentImpl component) {
-        if (component == null) {
-            return Collections.emptyList();
-        }
-        ArtifactsImpl operations = component.getArtifacts();
+    private static FileCollection getGeneratedSourceFoldersFileCollectionForUnitTests(
+            @NonNull ComponentImpl component) {
+        ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
+        fileCollection.from(component.getVariantData().getExtraGeneratedSourceFolders());
+        fileCollection.from(
+                component.getArtifacts().get(InternalArtifactType.AP_GENERATED_SOURCES.INSTANCE));
+        fileCollection.disallowChanges();
+        return fileCollection;
+    }
 
-        boolean isDataBindingEnabled = component.getBuildFeatures().getDataBinding();
-        boolean isViewBindingEnabled = component.getBuildFeatures().getViewBinding();
-        Directory dataBindingSources =
-                operations.get(DATA_BINDING_BASE_CLASS_SOURCE_OUT.INSTANCE).getOrNull();
-        boolean addBindingSources =
-                (isDataBindingEnabled || isViewBindingEnabled) && (dataBindingSources != null);
-        List<File> extraFolders = getGeneratedSourceFoldersForUnitTests(component);
+    @NonNull
+    public static List<File> getGeneratedSourceFolders(@NonNull ComponentImpl component) {
+        return Streams.stream(getGeneratedSourceFoldersFileCollection(component))
+                .collect(Collectors.toList());
+    }
 
-        // Set this to the number of folders you expect to add explicitly in the code below.
-        int additionalFolders = 4;
-        if (addBindingSources) {
-            additionalFolders += 1;
-        }
-        List<File> folders =
-                Lists.newArrayListWithExpectedSize(additionalFolders + extraFolders.size());
-        folders.addAll(extraFolders);
-
-        Directory aidlSources =
-                operations.get(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR.INSTANCE).getOrNull();
-
-        if (aidlSources != null) {
-            folders.add(aidlSources.getAsFile());
-        }
+    @NonNull
+    public static FileCollection getGeneratedSourceFoldersFileCollection(
+            @NonNull ComponentImpl component) {
+        ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
+        ArtifactsImpl artifacts = component.getArtifacts();
+        fileCollection.from(getGeneratedSourceFoldersFileCollectionForUnitTests(component));
+        Callable<Directory> aidlCallable =
+                () -> artifacts.get(AIDL_SOURCE_OUTPUT_DIR.INSTANCE).getOrNull();
+        fileCollection.from(aidlCallable);
         if (component.getBuildConfigType() == BuildConfigType.JAVA_CLASS) {
-            Directory maybeBuildConfig =
-                    component.getPaths().getBuildConfigSourceOutputDir().getOrNull();
-            if (maybeBuildConfig != null) {
-                folders.add(maybeBuildConfig.getAsFile());
-            }
+            Callable<Directory> buildConfigCallable =
+                    () -> component.getPaths().getBuildConfigSourceOutputDir().getOrNull();
+            fileCollection.from(buildConfigCallable);
         }
         // this is incorrect as it cannot get the final value, we should always add the folder
         // as a potential source origin and let the IDE deal with it.
         boolean ndkMode = component.getVariantDslInfo().getRenderscriptNdkModeEnabled();
         if (!ndkMode) {
-            Directory renderscriptSources =
-                    operations
-                            .get(InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE)
-                            .getOrNull();
-            if (renderscriptSources != null) {
-                folders.add(renderscriptSources.getAsFile());
-            }
+            Callable<Directory> renderscriptCallable =
+                    () -> artifacts.get(RENDERSCRIPT_SOURCE_OUTPUT_DIR.INSTANCE).getOrNull();
+            fileCollection.from(renderscriptCallable);
         }
-        if (addBindingSources) {
-            folders.add(dataBindingSources.getAsFile());
+        boolean isDataBindingEnabled = component.getBuildFeatures().getDataBinding();
+        boolean isViewBindingEnabled = component.getBuildFeatures().getViewBinding();
+        if (isDataBindingEnabled || isViewBindingEnabled) {
+            Callable<Directory> dataBindingCallable =
+                    () -> artifacts.get(DATA_BINDING_BASE_CLASS_SOURCE_OUT.INSTANCE).getOrNull();
+            fileCollection.from(dataBindingCallable);
         }
-        return folders;
+        fileCollection.disallowChanges();
+        return fileCollection;
     }
 
     @NonNull
-    public static List<File> getGeneratedResourceFolders(@Nullable ComponentImpl component) {
-        if (component == null) {
-            return Collections.emptyList();
+    public static List<File> getGeneratedResourceFolders(@NonNull ComponentImpl component) {
+        return Streams.stream(getGeneratedResourceFoldersFileCollection(component))
+                .collect(Collectors.toList());
+    }
+    @NonNull
+    public static FileCollection getGeneratedResourceFoldersFileCollection(
+            @NonNull ComponentImpl component) {
+        ConfigurableFileCollection fileCollection = component.getServices().fileCollection();
+        fileCollection.from(component.getVariantData().getExtraGeneratedResFolders());
+        if (component.getBuildFeatures().getRenderScript()) {
+            fileCollection.from(component.getPaths().getRenderscriptResOutputDir());
+            TaskProvider<? extends RenderscriptCompile> renderscriptCompileTask =
+                    component.getTaskContainer().getRenderscriptCompileTask();
+            if (renderscriptCompileTask != null) {
+                fileCollection.builtBy(renderscriptCompileTask);
+            }
         }
-
-        List<File> result;
-
-        final FileCollection extraResFolders =
-                component.getVariantData().getExtraGeneratedResFolders();
-        Set<File> extraFolders = extraResFolders != null ? extraResFolders.getFiles() : null;
-        if (extraFolders != null && !extraFolders.isEmpty()) {
-            result = Lists.newArrayListWithCapacity(extraFolders.size() + 2);
-            result.addAll(extraFolders);
-        } else {
-            result = Lists.newArrayListWithCapacity(2);
+        if (component.getAndroidResourcesEnabled()) {
+            fileCollection.from(component.getPaths().getGeneratedResOutputDir());
+            TaskProvider<? extends Task> generateResValuesTask =
+                    component.getTaskContainer().getGenerateResValuesTask();
+            if (generateResValuesTask != null) {
+                fileCollection.builtBy(generateResValuesTask);
+            }
         }
-
-        result.add(component.getPaths().getRenderscriptResOutputDir().get().getAsFile());
-        result.add(component.getPaths().getGeneratedResOutputDir().get().getAsFile());
-        return result;
+        fileCollection.disallowChanges();
+        return fileCollection;
     }
 
     @NonNull

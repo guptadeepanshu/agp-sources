@@ -15,7 +15,6 @@
  */
 package com.android.build.gradle.internal.coverage
 
-import com.android.SdkConstants
 import com.android.Version
 import com.android.build.api.component.impl.TestComponentImpl
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
@@ -29,11 +28,12 @@ import com.google.common.collect.ImmutableList
 import com.google.common.io.Closeables
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
@@ -46,6 +46,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import org.gradle.workers.ClassLoaderWorkerSpec
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
@@ -70,6 +71,7 @@ import java.util.Locale
  * For generating unit test coverage reports using jacoco. Provides separate CreateActions for
  * generating unit test and connected test reports.
  */
+@DisableCachingByDefault
 abstract class JacocoReportTask : NonIncrementalTask() {
 
     // PathSensitivity.NONE since only the contents of the files under the directory matter as input
@@ -94,7 +96,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val sourceFolders: ConfigurableFileCollection
+    abstract val javaSources: ListProperty<ConfigurableFileTree>
 
     @get:Internal
     abstract val tabWidth: Property<Int>
@@ -116,6 +118,10 @@ abstract class JacocoReportTask : NonIncrementalTask() {
             }
             connectedTestJacocoFiles.toSet()
         }
+
+        // Jacoco requires source set directory roots rather than source files to produce
+        // source code highlighting in reports.
+        val sourceFolders = javaSources.get().map(ConfigurableFileTree::getDir)
 
         workerExecutor
             .classLoaderIsolation { classpath: ClassLoaderWorkerSpec ->
@@ -156,7 +162,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
             task.tabWidth.setDisallowChanges(4)
 
             task.classFileCollection.setFrom(creationConfig.testedConfig.artifacts.getAllClasses())
-            task.sourceFolders.setFrom(creationConfig.services.fileCollection(creationConfig.testedConfig.javaSources))
+            task.javaSources.setDisallowChanges(creationConfig.testedConfig.javaSources)
         }
     }
 
@@ -171,7 +177,8 @@ abstract class JacocoReportTask : NonIncrementalTask() {
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.UNIT_TEST_CODE_COVERAGE, task.jacocoUnitTestCoverageFile)
             /** Jacoco coverage files are generated from [AndroidUnitTest] */
-            task.dependsOn(JavaPlugin.TEST_TASK_NAME)
+            task.dependsOn(
+                "${JavaPlugin.TEST_TASK_NAME}${creationConfig.name.usLocaleCapitalize()}")
         }
     }
 
@@ -188,6 +195,27 @@ abstract class JacocoReportTask : NonIncrementalTask() {
                 .artifacts
                 .setTaskInputToFinalProduct(
                     InternalArtifactType.CODE_COVERAGE,
+                    task.jacocoConnectedTestsCoverageDir
+                )
+        }
+    }
+
+    class CreationActionManagedDeviceTest(
+        testComponentProperties: TestComponentImpl,
+        override val jacocoAntConfiguration: Configuration
+    ) : BaseCreationAction(testComponentProperties, jacocoAntConfiguration) {
+
+        override val name: String
+            get() = computeTaskName("createManagedDevice", "CoverageReport")
+
+        override fun configure(task: JacocoReportTask) {
+            super.configure(task)
+            task.description =
+                "Creates JaCoCo test coverage report from data gathered on the Gradle managed device."
+            creationConfig
+                .artifacts
+                .setTaskInputToFinalProduct(
+                    InternalArtifactType.MANAGED_DEVICE_CODE_COVERAGE,
                     task.jacocoConnectedTestsCoverageDir
                 )
 

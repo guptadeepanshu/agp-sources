@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:JvmName("AndroidLintInputs")
 
 package com.android.build.gradle.internal.lint
 
+import com.android.SdkConstants
 import com.android.Version
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.component.impl.ComponentImpl
@@ -28,15 +30,17 @@ import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.dsl.LintOptions
 import com.android.build.gradle.internal.ide.ModelBuilder
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs
+import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputsImpl
 import com.android.build.gradle.internal.ide.dependencies.ArtifactHandler
 import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import com.android.build.gradle.internal.ide.dependencies.computeBuildMapping
 import com.android.build.gradle.internal.ide.dependencies.currentBuild
 import com.android.build.gradle.internal.ide.dependencies.getDependencyGraphBuilder
-import com.android.build.gradle.internal.lint.AndroidLintTask.Companion.LINT_CLASS_PATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.LintClassLoaderBuildService
+import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -74,6 +78,7 @@ import com.android.tools.lint.model.LintModelSerialization
 import com.android.tools.lint.model.LintModelSeverity
 import com.android.tools.lint.model.LintModelSourceProvider
 import com.android.tools.lint.model.LintModelVariant
+import com.android.utils.PathUtils
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
@@ -86,10 +91,12 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -100,12 +107,25 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.workers.WorkerExecutor
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 
 abstract class LintTool {
 
     /** Lint itself */
     @get:Classpath
     abstract val classpath: ConfigurableFileCollection
+
+    /**
+     * The identity of lint used as keys for caches
+     *
+     * Used both for the [lintCacheDirectory] and for the classloader cache in [AndroidLintWorkAction]
+     *
+     * For published versions it will include the version of lint from maven e.g. `30.2.0-alpha05`
+     * and for -dev versions, also a hash of the jars: `30.2.0-dev_920ff9cabfbb40d0318735f9fe403b9/`
+     */
+    @get:Input
+    abstract val versionKey: Property<String>
 
     @get:Input
     abstract val runInProcess: Property<Boolean>
@@ -114,15 +134,79 @@ abstract class LintTool {
     @get:Optional
     abstract val workerHeapSize: Property<String>
 
-    fun initialize(project: Project, projectOptions: ProjectOptions) {
-        // TODO(b/160392650) Clean this up to use a detached configuration
-        classpath.fromDisallowChanges(project.configurations.getByName(LINT_CLASS_PATH))
-        runInProcess.setDisallowChanges(projectOptions.getProvider(BooleanOption.RUN_LINT_IN_PROCESS))
-        workerHeapSize.setDisallowChanges(projectOptions.getProvider(StringOption.LINT_HEAP_SIZE))
+    /**
+     * The lint cache parent dir for artifacts recomputable by lint that save analysis time
+     */
+    @get:Internal
+    abstract val lintCacheDirectory: DirectoryProperty
+
+    /**
+     * Computes the lint cache dir, cleaning up if lint version has changed
+     *
+     * This is passed to lint invocations using --cache-dir
+     *
+     * The lint cache is neither an input nor an output to the lint tasks, so it needs some manual
+     * handling to avoid lint trying to load cache items written by a different version of lint.
+     *
+     * A marker file of lint-cache-version is used, for published versions it will include the
+     * version of lint, e.g. `30.2.0-alpha05`
+     *
+     * And for -dev versions, also a hash of the jars, the same as the classloader hash
+     * 30.2.0-dev_920ff9cabfbb40d0318735f9fe403b9
+     *
+     * Returns the arguments to add to the lint invocation.
+     */
+    fun initializeLintCacheDir(): List<String> {
+        val directory = lintCacheDirectory.get().asFile.toPath()
+        val lintVersionMarkerFile = directory.resolve("lint-cache-version.txt")
+        val currentVersion = "Cache for Android Lint" + versionKey.get()
+        val previousVersion = lintVersionMarkerFile.takeIf { Files.exists(it) }?.let { Files.readAllLines(it).singleOrNull() }
+        if (previousVersion != currentVersion) {
+            PathUtils.deleteRecursivelyIfExists(directory)
+            Files.createDirectories(directory)
+            Files.write(lintVersionMarkerFile, listOf(currentVersion))
+        }
+        return listOf("--cache-dir", directory.toString())
     }
 
-    fun submit(workerExecutor: WorkerExecutor, mainClass: String, arguments: List<String>
-    ) {
+    @get:Internal
+    abstract val lintClassLoaderBuildService: Property<LintClassLoaderBuildService>
+
+    fun initialize(taskCreationServices: TaskCreationServices) {
+        classpath.fromDisallowChanges(taskCreationServices.lintFromMaven.files)
+        lintClassLoaderBuildService.setDisallowChanges(getBuildService(taskCreationServices.buildServiceRegistry))
+        versionKey.setDisallowChanges(deriveVersionKey(taskCreationServices, lintClassLoaderBuildService))
+        val projectOptions = taskCreationServices.projectOptions
+        runInProcess.setDisallowChanges(projectOptions.getProvider(BooleanOption.RUN_LINT_IN_PROCESS))
+        workerHeapSize.setDisallowChanges(projectOptions.getProvider(StringOption.LINT_HEAP_SIZE))
+        lintCacheDirectory.set(
+            taskCreationServices.projectInfo.getBuildDir().resolve("intermediates/lint-cache")
+        )
+        lintCacheDirectory.disallowChanges()
+    }
+
+    private fun deriveVersionKey(
+        taskCreationServices: TaskCreationServices,
+        lintClassLoaderBuildService: Provider<LintClassLoaderBuildService>
+    ): Provider<String> {
+        val lintVersion =
+            getLintMavenArtifactVersion(
+                taskCreationServices.projectOptions[StringOption.LINT_VERSION_OVERRIDE]?.trim(),
+                null
+            )
+        val versionProvider = taskCreationServices.provider { lintVersion }
+        // When using development versions also hash the jar contents to avoid reusing
+        // the classloader when the jars might change
+        return when {
+            lintVersion.endsWith("-dev") || lintVersion.endsWith("SNAPSHOT") -> {
+                val jarsHash = lintClassLoaderBuildService.zip(classpath.elements, LintClassLoaderBuildService::hashJars)
+                versionProvider.zip(jarsHash) { version, hash -> "${version}_$hash" }
+            }
+            else -> versionProvider
+        }
+    }
+
+    fun submit(workerExecutor: WorkerExecutor, mainClass: String, arguments: List<String>) {
         submit(
             workerExecutor,
             mainClass,
@@ -139,7 +223,9 @@ abstract class LintTool {
         arguments: List<String>,
         android: Boolean,
         fatalOnly: Boolean,
-        await: Boolean) {
+        await: Boolean,
+        returnValueOutputFile: File? = null
+    ) {
         val workQueue = if (runInProcess.get()) {
             workerExecutor.noIsolation()
         } else {
@@ -155,9 +241,11 @@ abstract class LintTool {
             parameters.mainClass.set(mainClass)
             parameters.arguments.set(arguments)
             parameters.classpath.from(classpath)
+            parameters.versionKey.set(versionKey)
             parameters.android.set(android)
             parameters.fatalOnly.set(fatalOnly)
             parameters.runInProcess.set(runInProcess.get())
+            parameters.returnValueOutputFile.set(returnValueOutputFile)
         }
         if (await) {
             workQueue.await()
@@ -168,8 +256,14 @@ abstract class LintTool {
 
 abstract class ProjectInputs {
 
-    @get:Input
+    @get:Internal
     abstract val projectDirectoryPath: Property<String>
+
+    // projectDirectoryPathInput should either be (1) unset if the project directory is not an input
+    // to the associated task, or (2) set to the same value as projectDirectoryPath otherwise.
+    @get:Input
+    @get:Optional
+    abstract val projectDirectoryPathInput: Property<String>
 
     @get:Input
     abstract val projectGradlePath: Property<String>
@@ -183,8 +277,14 @@ abstract class ProjectInputs {
     @get:Input
     abstract val mavenArtifactId: Property<String>
 
-    @get:Input
+    @get:Internal
     abstract val buildDirectoryPath: Property<String>
+
+    // buildDirectoryPathInput should either be (1) unset if the build directory is not an input to
+    // the associated task, or (2) set to the same value as buildDirectoryPath otherwise.
+    @get:Input
+    @get:Optional
+    abstract val buildDirectoryPathInput: Property<String>
 
     @get:Nested
     abstract val lintOptions: LintOptionsInput
@@ -212,11 +312,11 @@ abstract class ProjectInputs {
     @get:Input
     abstract val neverShrinking: Property<Boolean>
 
-    internal fun initialize(variant: VariantWithTests) {
+    internal fun initialize(variant: VariantWithTests, isForAnalysis: Boolean) {
         val creationConfig = variant.main
         val project = creationConfig.services.projectInfo.getProject()
         val extension = creationConfig.globalScope.extension
-        initializeFromProject(project)
+        initializeFromProject(project, isForAnalysis)
         projectType.setDisallowChanges(creationConfig.variantType.toLintModelModuleType())
 
         lintOptions.initialize(extension.lintOptions)
@@ -227,15 +327,20 @@ abstract class ProjectInputs {
         }
         dynamicFeatures.disallowChanges()
 
-        bootClasspath.fromDisallowChanges(creationConfig.globalScope.bootClasspath)
+        bootClasspath.fromDisallowChanges(creationConfig.sdkComponents.bootClasspath)
         javaSourceLevel.setDisallowChanges(extension.compileOptions.sourceCompatibility)
         compileTarget.setDisallowChanges(extension.compileSdkVersion)
         // `neverShrinking` is about all variants, so look back to the DSL
         neverShrinking.setDisallowChanges(extension.buildTypes.none { it.isMinifyEnabled })
     }
 
-    internal fun initializeForStandalone(project: Project, javaConvention: JavaPluginConvention, dslLintOptions: LintOptions) {
-        initializeFromProject(project)
+    internal fun initializeForStandalone(
+        project: Project,
+        javaConvention: JavaPluginConvention,
+        dslLintOptions: LintOptions,
+        isForAnalysis: Boolean
+    ) {
+        initializeFromProject(project, isForAnalysis)
         projectType.setDisallowChanges(LintModelModuleType.JAVA_LIBRARY)
         lintOptions.initialize(dslLintOptions)
         resourcePrefix.setDisallowChanges("")
@@ -251,13 +356,18 @@ abstract class ProjectInputs {
         neverShrinking.setDisallowChanges(true)
     }
 
-    private fun initializeFromProject(project: Project) {
+    private fun initializeFromProject(project: Project, isForAnalysis: Boolean) {
         projectDirectoryPath.setDisallowChanges(project.projectDir.absolutePath)
         projectGradlePath.setDisallowChanges(project.path)
         mavenGroupId.setDisallowChanges(project.group.toString())
         mavenArtifactId.setDisallowChanges(project.name)
         buildDirectoryPath.setDisallowChanges(project.layout.buildDirectory.map { it.asFile.absolutePath })
-
+        if (!isForAnalysis) {
+            projectDirectoryPathInput.set(projectDirectoryPath)
+            buildDirectoryPathInput.set(buildDirectoryPath)
+        }
+        projectDirectoryPathInput.disallowChanges()
+        buildDirectoryPathInput.disallowChanges()
     }
 
     internal fun convertToLintModelModule(): LintModelModule {
@@ -358,20 +468,8 @@ abstract class LintOptionsInput {
         lintConfig.disallowChanges()
         lintOptions.baselineFile?.let { baselineFile.set(it) }
         baselineFile.disallowChanges()
-        severityOverrides.setDisallowChanges(
-            lintOptions.severityOverrides?.mapValues { getSeverity(it.value) } ?: mapOf())
+        severityOverrides.setDisallowChanges(lintOptions.severityOverridesMap)
     }
-
-    private fun getSeverity(severity: Int): LintModelSeverity =
-        when (severity) {
-            com.android.builder.model.LintOptions.SEVERITY_FATAL -> LintModelSeverity.FATAL
-            com.android.builder.model.LintOptions.SEVERITY_ERROR -> LintModelSeverity.ERROR
-            com.android.builder.model.LintOptions.SEVERITY_WARNING -> LintModelSeverity.WARNING
-            com.android.builder.model.LintOptions.SEVERITY_INFORMATIONAL -> LintModelSeverity.INFORMATIONAL
-            com.android.builder.model.LintOptions.SEVERITY_IGNORE -> LintModelSeverity.IGNORE
-            com.android.builder.model.LintOptions.SEVERITY_DEFAULT_ENABLED -> LintModelSeverity.DEFAULT_ENABLED
-            else -> LintModelSeverity.IGNORE
-        }
 
     fun toLintModel(): LintModelLintOptions {
         return DefaultLintModelLintOptions(
@@ -417,17 +515,22 @@ abstract class SystemPropertyInputs {
     @get:Optional
     abstract val androidLintLogJarProblems: Property<String>
 
-    @get:Input
-    @get:Optional
-    abstract val gradleUserHome: Property<String>
-
-    @get:Input
-    @get:Optional
+    // Use @get:Internal because javaVendor and javaVersion act as proxy inputs for javaHome
+    @get:Internal
     abstract val javaHome: Property<String>
 
     @get:Input
     @get:Optional
-    abstract val lintApiDatabase: Property<String>
+    abstract val javaVendor: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val javaVersion: Property<String>
+
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    @get:Optional
+    abstract val lintApiDatabase: RegularFileProperty
 
     @get:Input
     @get:Optional
@@ -437,13 +540,10 @@ abstract class SystemPropertyInputs {
     @get:Optional
     abstract val lintBaselinesContinue: Property<String>
 
-    @get:Input
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val lintBinDir: Property<String>
-
-    @get:Input
-    @get:Optional
-    abstract val lintConfigurationOverride: Property<String>
+    abstract val lintConfigurationOverride: RegularFileProperty
 
     @get:Input
     @get:Optional
@@ -463,10 +563,6 @@ abstract class SystemPropertyInputs {
 
     @get:Input
     @get:Optional
-    abstract val lintWorkDir: Property<String>
-
-    @get:Input
-    @get:Optional
     abstract val userHome: Property<String>
 
     fun initialize(providerFactory: ProviderFactory, isForAnalysis: Boolean) {
@@ -474,25 +570,37 @@ abstract class SystemPropertyInputs {
             lintAutofix.disallowChanges()
             lintBaselinesContinue.disallowChanges()
             lintHtmlPrefs.disallowChanges()
+            userHome.disallowChanges()
         } else {
             lintAutofix.setDisallowChanges(providerFactory.systemProperty("lint.autofix"))
             lintBaselinesContinue.setDisallowChanges(
                 providerFactory.systemProperty("lint.baselines.continue")
             )
             lintHtmlPrefs.setDisallowChanges(providerFactory.systemProperty("lint.html.prefs"))
+            userHome.setDisallowChanges(providerFactory.systemProperty("user.home"))
         }
         androidLintLogJarProblems.setDisallowChanges(
             providerFactory.systemProperty("android.lint.log-jar-problems")
         )
-        gradleUserHome.setDisallowChanges(providerFactory.systemProperty("gradle.user.home"))
         javaHome.setDisallowChanges(providerFactory.systemProperty("java.home"))
-        lintApiDatabase.setDisallowChanges(providerFactory.systemProperty("LINT_API_DATABASE"))
-        lintBinDir.setDisallowChanges(
-            providerFactory.systemProperty("com.android.tools.lint.bindir")
+        javaVendor.setDisallowChanges(providerFactory.systemProperty("java.vendor"))
+        javaVersion.setDisallowChanges(providerFactory.systemProperty("java.version"))
+        lintApiDatabase.fileProvider(
+            providerFactory.systemProperty("LINT_API_DATABASE").map {
+                // Suppress the warning because the Gradle docs say "May return null"
+                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                File(it).takeIf { file -> file.isFile }
+            }
         )
-        lintConfigurationOverride.setDisallowChanges(
-            providerFactory.systemProperty("lint.configuration.override")
+        lintApiDatabase.disallowChanges()
+        lintConfigurationOverride.fileProvider(
+            providerFactory.systemProperty("lint.configuration.override").map {
+                // Suppress the warning because the Gradle docs say "May return null"
+                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                File(it).takeIf { file -> file.isFile }
+            }
         )
+        lintConfigurationOverride.disallowChanges()
         lintNullnessIgnoreDeprecated.setDisallowChanges(
             providerFactory.systemProperty("lint.nullness.ignore-deprecated")
         )
@@ -502,10 +610,6 @@ abstract class SystemPropertyInputs {
         lintUnusedResourcesIncludeTests.setDisallowChanges(
             providerFactory.systemProperty("lint.unused-resources.include-tests")
         )
-        lintWorkDir.setDisallowChanges(
-            providerFactory.systemProperty("com.android.tools.lint.workdir")
-        )
-        userHome.setDisallowChanges(providerFactory.systemProperty("user.home"))
     }
 }
 
@@ -513,10 +617,6 @@ abstract class SystemPropertyInputs {
  * Environment variables which can affect lint's behavior.
  */
 abstract class EnvironmentVariableInputs {
-
-    @get:Input
-    @get:Optional
-    abstract val androidHome: Property<String>
 
     @get:Input
     @get:Optional
@@ -534,17 +634,10 @@ abstract class EnvironmentVariableInputs {
     @get:Optional
     abstract val androidLintNullnessIgnoreDeprecated: Property<String>
 
-    @get:Input
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val androidSdkRoot: Property<String>
-
-    @get:Input
-    @get:Optional
-    abstract val javaHome: Property<String>
-
-    @get:Input
-    @get:Optional
-    abstract val lintApiDatabase: Property<String>
+    abstract val lintApiDatabase: RegularFileProperty
 
     @get:Input
     @get:Optional
@@ -554,17 +647,19 @@ abstract class EnvironmentVariableInputs {
     @get:Optional
     abstract val lintXmlRoot: Property<String>
 
-    @get:Input
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:Optional
-    abstract val lintOverrideConfiguration: Property<String>
+    abstract val lintOverrideConfiguration: RegularFileProperty
 
     fun initialize(providerFactory: ProviderFactory, isForAnalysis: Boolean) {
         if (isForAnalysis) {
             lintHtmlPrefs.disallowChanges()
+            lintXmlRoot.disallowChanges()
         } else {
             lintHtmlPrefs.setDisallowChanges(providerFactory.environmentVariable("LINT_HTML_PREFS"))
+            lintXmlRoot.setDisallowChanges(providerFactory.environmentVariable("LINT_XML_ROOT"))
         }
-        androidHome.setDisallowChanges(providerFactory.environmentVariable("ANDROID_HOME"))
         androidLintIncludeLdpi.setDisallowChanges(
             providerFactory.environmentVariable("ANDROID_LINT_INCLUDE_LDPI")
         )
@@ -577,13 +672,22 @@ abstract class EnvironmentVariableInputs {
         androidLintNullnessIgnoreDeprecated.setDisallowChanges(
             providerFactory.environmentVariable("ANDROID_LINT_NULLNESS_IGNORE_DEPRECATED")
         )
-        androidSdkRoot.setDisallowChanges(providerFactory.environmentVariable("ANDROID_SDK_ROOT"))
-        javaHome.setDisallowChanges(providerFactory.environmentVariable("JAVA_HOME"))
-        lintApiDatabase.setDisallowChanges(providerFactory.environmentVariable("LINT_API_DATABASE"))
-        lintXmlRoot.setDisallowChanges(providerFactory.environmentVariable("LINT_XML_ROOT"))
-        lintOverrideConfiguration.setDisallowChanges(
-            providerFactory.environmentVariable("LINT_OVERRIDE_CONFIGURATION")
+        lintApiDatabase.fileProvider(
+            providerFactory.environmentVariable("LINT_API_DATABASE").map {
+                // Suppress the warning because the Gradle docs say "May return null"
+                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                File(it).takeIf { file -> file.isFile }
+            }
         )
+        lintApiDatabase.disallowChanges()
+        lintOverrideConfiguration.fileProvider(
+            providerFactory.environmentVariable("LINT_OVERRIDE_CONFIGURATION").map {
+                // Suppress the warning because the Gradle docs say "May return null"
+                @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+                File(it).takeIf { file -> file.isFile }
+            }
+        )
+        lintOverrideConfiguration.disallowChanges()
     }
 }
 
@@ -678,29 +782,30 @@ abstract class VariantInputs {
     abstract val mavenCoordinatesCache: Property<MavenCoordinatesCacheBuildService>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val dynamicFeatureLintModels: ConfigurableFileCollection
 
     /**
      * Initializes the variant inputs
      *
      * @param variantWithTests the [VariantWithTests].
-     * @param checkDependencies whether or not the module dependencies should be modeled as module
+     * @param checkDependencies whether the module dependencies should be modeled as module
      *     dependencies (instead of modeled as external libraries).
-     * @param warnIfProjectTreatedAsExternalDependency whether or not to warn the user if the
-     *     standalone plugin is not applied to a java module dependency when checkDependencies is
-     *     true.
-     * @param addBaseModuleLintModel whether or not the base app module should be modeled as a
-     *     module dependency if checkDependencies is false. This Boolean only affects dynamic
-     *     feature modules, and it has no effect if checkDependencies is true.
-     * @param includeDynamicFeatureSourceProviders whether or not to merge any dynamic feature
-     *     source providers with this module's source providers. This Boolean only affects app
-     *     modules.
+     * @param warnIfProjectTreatedAsExternalDependency whether to warn the user if the standalone
+     *     plugin is not applied to a java module dependency when checkDependencies is true.
+     * @param isForAnalysis whether the inputs are for lint analysis (as opposed to lint reporting
+     *     or lint model writing).
+     * @param addBaseModuleLintModel whether the base app module should be modeled as a module
+     *     dependency if checkDependencies is false. This Boolean only affects dynamic feature
+     *     modules, and it has no effect if checkDependencies is true.
+     * @param includeDynamicFeatureSourceProviders whether to merge any dynamic feature source
+     *     providers with this module's source providers. This Boolean only affects app modules.
      */
     fun initialize(
         variantWithTests: VariantWithTests,
         checkDependencies: Boolean,
         warnIfProjectTreatedAsExternalDependency: Boolean,
+        isForAnalysis: Boolean,
         addBaseModuleLintModel: Boolean = false,
         includeDynamicFeatureSourceProviders: Boolean = false
     ) {
@@ -720,7 +825,7 @@ abstract class VariantInputs {
                 creationConfig.services.newInstance(JavaArtifactInput::class.java)
                     .initialize(
                         unitTest as UnitTestImpl,
-                        checkDependencies,
+                        checkDependencies = false,
                         addBaseModuleLintModel,
                         warnIfProjectTreatedAsExternalDependency,
                         // analyzing test bytecode is expensive, without much benefit
@@ -734,19 +839,26 @@ abstract class VariantInputs {
                 creationConfig.services.newInstance(AndroidArtifactInput::class.java)
                     .initialize(
                         androidTest as ComponentImpl,
-                        checkDependencies,
+                        checkDependencies = false,
                         addBaseModuleLintModel,
                         warnIfProjectTreatedAsExternalDependency,
                         // analyzing test bytecode is expensive, without much benefit
-                        includeClassesOutputDirectories = false
+                        includeClassesOutputDirectories = false,
+                        // analyzing test generated sources is expensive, without much benefit
+                        includeGeneratedSourceFolders = false
                     )
         })
         mergedManifest.setDisallowChanges(
             creationConfig.artifacts.get(SingleArtifact.MERGED_MANIFEST)
         )
-        manifestMergeReport.setDisallowChanges(
-            creationConfig.artifacts.get(InternalArtifactType.MANIFEST_MERGE_REPORT)
-        )
+        // The manifest merge report contains absolute paths, so it's not compatible with the lint
+        // analysis task being cacheable.
+        if (!isForAnalysis) {
+            manifestMergeReport.set(
+                creationConfig.artifacts.get(InternalArtifactType.MANIFEST_MERGE_REPORT)
+            )
+        }
+        manifestMergeReport.disallowChanges()
         namespace.setDisallowChanges(creationConfig.namespace)
 
         minSdkVersion.initialize(creationConfig.minSdkVersion)
@@ -764,7 +876,9 @@ abstract class VariantInputs {
         resourceConfigurations.setDisallowChanges(creationConfig.resourceConfigurations)
 
         sourceProviders.setDisallowChanges(creationConfig.variantSources.sortedSourceProviders.map { sourceProvider ->
-            creationConfig.services.newInstance(SourceProviderInput::class.java).initialize(sourceProvider)
+            creationConfig.services
+                .newInstance(SourceProviderInput::class.java)
+                .initialize(sourceProvider, isForAnalysis)
         })
 
         proguardFiles.setDisallowChanges(creationConfig.proguardFiles)
@@ -781,7 +895,7 @@ abstract class VariantInputs {
                 unitTestCreationConfig.variantSources.sortedSourceProviders.map { sourceProvider ->
                     creationConfig.services
                         .newInstance(SourceProviderInput::class.java)
-                        .initialize(sourceProvider, unitTestOnly = true)
+                        .initialize(sourceProvider, isForAnalysis, unitTestOnly = true)
                 }
             )
         }
@@ -790,7 +904,7 @@ abstract class VariantInputs {
                 androidTestCreationConfig.variantSources.sortedSourceProviders.map { sourceProvider ->
                     creationConfig.services
                         .newInstance(SourceProviderInput::class.java)
-                        .initialize(sourceProvider, instrumentationTestOnly = true)
+                        .initialize(sourceProvider, isForAnalysis, instrumentationTestOnly = true)
                 }
             )
         }
@@ -816,7 +930,14 @@ abstract class VariantInputs {
         dynamicFeatureLintModels.disallowChanges()
     }
 
-    internal fun initializeForStandalone(project: Project, javaConvention: JavaPluginConvention, projectOptions: ProjectOptions, checkDependencies: Boolean) {
+    internal fun initializeForStandalone(
+        project: Project,
+        javaConvention: JavaPluginConvention,
+        projectOptions: ProjectOptions,
+        fatalOnly: Boolean,
+        checkDependencies: Boolean,
+        isForAnalysis: Boolean
+    ) {
         val mainSourceSet = javaConvention.sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
         val testSourceSet = javaConvention.sourceSets.getByName(SourceSet.TEST_SOURCE_SET_NAME)
 
@@ -826,7 +947,7 @@ abstract class VariantInputs {
         testArtifact.setDisallowChanges(project.objects.newInstance(JavaArtifactInput::class.java).initializeForStandalone(
             project,
             projectOptions,
-            mainSourceSet,
+            testSourceSet,
             checkDependencies,
             // analyzing test bytecode is expensive, without much benefit
             includeClassesOutputDirectories = false
@@ -843,12 +964,28 @@ abstract class VariantInputs {
         minifiedEnabled.setDisallowChanges(false)
         sourceProviders.setDisallowChanges(listOf(
             project.objects.newInstance(SourceProviderInput::class.java)
-                .initializeForStandalone(project, mainSourceSet, unitTestOnly = false)
+                .initializeForStandalone(
+                    project,
+                    mainSourceSet,
+                    isForAnalysis,
+                    unitTestOnly = false
+                )
         ))
-        testSourceProviders.setDisallowChanges(listOf(
-            project.objects.newInstance(SourceProviderInput::class.java)
-                .initializeForStandalone(project, testSourceSet, unitTestOnly = true)
-        ))
+        if (fatalOnly) {
+            testSourceProviders.setDisallowChanges(listOf())
+        } else {
+            testSourceProviders.setDisallowChanges(
+                listOf(
+                    project.objects.newInstance(SourceProviderInput::class.java)
+                        .initializeForStandalone(
+                            project,
+                            testSourceSet,
+                            isForAnalysis,
+                            unitTestOnly = true
+                        )
+                )
+            )
+        }
         buildFeatures.initializeForStandalone()
         libraryDependencyCacheBuildService.setDisallowChanges(getBuildService(project.gradle.sharedServices))
         mavenCoordinatesCache.setDisallowChanges(getBuildService(project.gradle.sharedServices))
@@ -861,7 +998,7 @@ abstract class VariantInputs {
     fun toLintModel(module: LintModelModule, partialResultsDir: File? = null): LintModelVariant {
         val dependencyCaches = DependencyCaches(
             libraryDependencyCacheBuildService.get().localJarCache,
-            mavenCoordinatesCache.get().cache)
+            mavenCoordinatesCache.get())
 
         val dynamicFeatureSourceProviders: List<LintModelSourceProvider> =
             dynamicFeatureLintModels.files.map {
@@ -918,7 +1055,7 @@ abstract class BuildFeaturesInput {
         viewBinding.setDisallowChanges(creationConfig.buildFeatures.viewBinding)
         coreLibraryDesugaringEnabled.setDisallowChanges(creationConfig.isCoreLibraryDesugaringEnabled)
         namespacingMode.setDisallowChanges(
-            if (creationConfig.globalScope.extension.aaptOptions.namespaced) {
+            if (creationConfig.services.projectInfo.getExtension().aaptOptions.namespaced) {
                 LintModelNamespacingMode.DISABLED
             } else {
                 LintModelNamespacingMode.REQUIRED
@@ -942,20 +1079,56 @@ abstract class BuildFeaturesInput {
 
 abstract class SourceProviderInput {
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     abstract val manifestFile: RegularFileProperty
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val javaDirectories: ConfigurableFileCollection
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val resDirectories: ConfigurableFileCollection
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val assetsDirectories: ConfigurableFileCollection
+
+    // Without javaDirectoriesClasspath, the lint analysis task would be UP-TO-DATE after a change
+    // in the *order* of java source directories, which would be incorrect. We can't get rid of
+    // javaDirectories entirely because without javaDirectories, the lint analysis task would be
+    // UP-TO-DATE after the addition or removal of a non-existent java source directory. We need to
+    // set javaDirectoriesClasspath only for lint analysis tasks because other lint tasks set
+    // javaDirectoryPaths.
+    @get:Classpath
+    @get:Optional
+    abstract val javaDirectoriesClasspath: ConfigurableFileCollection
+
+    // See comment for javaDirectoriesClasspath
+    @get:Classpath
+    @get:Optional
+    abstract val resDirectoriesClasspath: ConfigurableFileCollection
+
+    // See comment for javaDirectoriesClasspath
+    @get:Classpath
+    @get:Optional
+    abstract val assetsDirectoriesClasspath: ConfigurableFileCollection
+
+    @get:Input
+    @get:Optional
+    abstract val manifestFilePath: Property<String>
+
+    @get:Input
+    @get:Optional
+    abstract val javaDirectoryPaths: ListProperty<String>
+
+    @get:Input
+    @get:Optional
+    abstract val resDirectoryPaths: ListProperty<String>
+
+    @get:Input
+    @get:Optional
+    abstract val assetsDirectoryPaths: ListProperty<String>
 
     @get:Input
     abstract val debugOnly: Property<Boolean>
@@ -966,8 +1139,12 @@ abstract class SourceProviderInput {
     @get:Input
     abstract val instrumentationTestOnly: Property<Boolean>
 
+    @get:Input
+    abstract val name: Property<String>
+
     internal fun initialize(
         sourceProvider: SourceProvider,
+        isForAnalysis: Boolean,
         unitTestOnly: Boolean = false,
         instrumentationTestOnly: Boolean = false
     ): SourceProviderInput {
@@ -976,22 +1153,58 @@ abstract class SourceProviderInput {
         this.javaDirectories.fromDisallowChanges(javaDirectories)
         this.resDirectories.fromDisallowChanges(sourceProvider.resDirectories)
         this.assetsDirectories.fromDisallowChanges(sourceProvider.assetsDirectories)
+        if (isForAnalysis) {
+            this.javaDirectoriesClasspath.from(javaDirectories)
+            this.resDirectoriesClasspath.from(sourceProvider.resDirectories)
+            this.assetsDirectoriesClasspath.from(sourceProvider.assetsDirectories)
+        } else {
+            this.manifestFilePath.set(sourceProvider.manifestFile.absolutePath)
+            this.javaDirectoryPaths.set(javaDirectories.map { it.absolutePath })
+            this.resDirectoryPaths.set(sourceProvider.resDirectories.map { it.absolutePath })
+            this.assetsDirectoryPaths.set(sourceProvider.assetsDirectories.map { it.absolutePath })
+        }
+        this.javaDirectoriesClasspath.disallowChanges()
+        this.resDirectoriesClasspath.disallowChanges()
+        this.assetsDirectoriesClasspath.disallowChanges()
+        this.manifestFilePath.disallowChanges()
+        this.javaDirectoryPaths.disallowChanges()
+        this.resDirectoryPaths.disallowChanges()
+        this.assetsDirectoryPaths.disallowChanges()
         this.debugOnly.setDisallowChanges(false) //TODO
         this.unitTestOnly.setDisallowChanges(unitTestOnly)
         this.instrumentationTestOnly.setDisallowChanges(instrumentationTestOnly)
+        this.name.setDisallowChanges(sourceProvider.name)
         return this
     }
 
-    internal fun initializeForStandalone(project: Project, sourceSet: SourceSet, unitTestOnly: Boolean): SourceProviderInput {
+    internal fun initializeForStandalone(
+        project: Project,
+        sourceSet: SourceSet,
+        isForAnalysis: Boolean,
+        unitTestOnly: Boolean
+    ): SourceProviderInput {
         val fakeManifestFile =
             project.layout.buildDirectory.file("fakeAndroidManifest/${sourceSet.name}/AndroidManifest.xml")
         this.manifestFile.setDisallowChanges(fakeManifestFile)
         this.javaDirectories.fromDisallowChanges(project.provider { sourceSet.allSource.srcDirs })
         this.resDirectories.disallowChanges()
         this.assetsDirectories.disallowChanges()
+        if (isForAnalysis) {
+            this.javaDirectoriesClasspath.from(project.provider { sourceSet.allSource.srcDirs })
+        } else {
+            this.javaDirectoryPaths.set(sourceSet.allSource.srcDirs.map { it.absolutePath })
+        }
+        this.javaDirectoriesClasspath.disallowChanges()
+        this.resDirectoriesClasspath.disallowChanges()
+        this.assetsDirectoriesClasspath.disallowChanges()
+        this.manifestFilePath.disallowChanges()
+        this.javaDirectoryPaths.disallowChanges()
+        this.resDirectoryPaths.disallowChanges()
+        this.assetsDirectoryPaths.disallowChanges()
         this.debugOnly.setDisallowChanges(false)
         this.unitTestOnly.setDisallowChanges(unitTestOnly)
         this.instrumentationTestOnly.setDisallowChanges(false)
+        this.name.setDisallowChanges(sourceSet.name)
         return this
     }
 
@@ -1053,11 +1266,13 @@ abstract class AndroidArtifactInput : ArtifactInput() {
     @get:Input
     abstract val applicationId: Property<String>
 
-    @get:Internal
-    abstract val generatedSourceFolders: ListProperty<File>
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val generatedSourceFolders: ConfigurableFileCollection
 
-    @get:Internal
-    abstract val generatedResourceFolders: ListProperty<File>
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val generatedResourceFolders: ConfigurableFileCollection
 
     @get:Input
     abstract val shrinkable: Property<Boolean>
@@ -1070,11 +1285,19 @@ abstract class AndroidArtifactInput : ArtifactInput() {
         checkDependencies: Boolean,
         addBaseModuleLintModel: Boolean,
         warnIfProjectTreatedAsExternalDependency: Boolean,
-        includeClassesOutputDirectories: Boolean = true
+        includeClassesOutputDirectories: Boolean = true,
+        includeGeneratedSourceFolders: Boolean = true
     ): AndroidArtifactInput {
         applicationId.setDisallowChanges(componentImpl.applicationId)
-        generatedSourceFolders.setDisallowChanges(ModelBuilder.getGeneratedSourceFolders(componentImpl))
-        generatedResourceFolders.setDisallowChanges(ModelBuilder.getGeneratedResourceFolders(componentImpl))
+        if (includeGeneratedSourceFolders) {
+            generatedSourceFolders.from(
+                ModelBuilder.getGeneratedSourceFoldersFileCollection(componentImpl)
+            )
+        }
+        generatedSourceFolders.disallowChanges()
+        generatedResourceFolders.fromDisallowChanges(
+            ModelBuilder.getGeneratedResourceFoldersFileCollection(componentImpl)
+        )
         shrinkable.setDisallowChanges(
             componentImpl is ConsumableCreationConfig && componentImpl.minifiedEnabled
         )
@@ -1097,9 +1320,11 @@ abstract class AndroidArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         this.warnIfProjectTreatedAsExternalDependency.setDisallowChanges(warnIfProjectTreatedAsExternalDependency)
-        if (checkDependencies) {
-            initializeProjectDependenciesLintModels(componentImpl.variantDependencies)
-        } else {
+        initializeProjectDependencyLintArtifacts(
+            checkDependencies,
+            componentImpl.variantDependencies
+        )
+        if (!checkDependencies) {
             if (addBaseModuleLintModel) {
                 initializeBaseModuleLintModel(componentImpl.variantDependencies)
             }
@@ -1117,21 +1342,22 @@ abstract class AndroidArtifactInput : ArtifactInput() {
                 )
         }
 
-        artifactCollectionsInputs.setDisallowChanges(ArtifactCollectionsInputs(
-            variantDependencies = componentImpl.variantDependencies,
-            projectPath = componentImpl.services.projectInfo.getProject().path,
-            variantName = componentImpl.name,
-            runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
-            buildMapping = componentImpl.services.projectInfo.getProject().gradle.computeBuildMapping(),
-            mavenCoordinatesCache = getBuildService(componentImpl.services.buildServiceRegistry)
-        ))
+        artifactCollectionsInputs.setDisallowChanges(
+            ArtifactCollectionsInputsImpl(
+                variantDependencies = componentImpl.variantDependencies,
+                projectPath = componentImpl.services.projectInfo.getProject().path,
+                variantName = componentImpl.name,
+                runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
+                buildMapping = componentImpl.services.projectInfo.getProject().gradle.computeBuildMapping(),
+            )
+        )
         return this
     }
 
     fun initializeForStandalone(project: Project, projectOptions: ProjectOptions, sourceSet: SourceSet, checkDependencies: Boolean) {
         applicationId.setDisallowChanges("")
-        generatedSourceFolders.setDisallowChanges(listOf())
-        generatedResourceFolders.setDisallowChanges(listOf())
+        generatedSourceFolders.disallowChanges()
+        generatedResourceFolders.disallowChanges()
         classesOutputDirectories.fromDisallowChanges(sourceSet.output.classesDirs)
         warnIfProjectTreatedAsExternalDependency.setDisallowChanges(false)
         shrinkable.setDisallowChanges(false)
@@ -1153,24 +1379,23 @@ abstract class AndroidArtifactInput : ArtifactInput() {
             projectOptions = projectOptions,
             isSelfInstrumenting = false,
         )
-        artifactCollectionsInputs.setDisallowChanges(ArtifactCollectionsInputs(
-            variantDependencies = variantDependencies,
-            projectPath = project.path,
-            variantName = sourceSet.name,
-            runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
-            buildMapping = project.gradle.computeBuildMapping(),
-            mavenCoordinatesCache = getBuildService(project.gradle.sharedServices)
-        ))
-        if (checkDependencies) {
-            initializeProjectDependenciesLintModels(variantDependencies)
-        }
+        artifactCollectionsInputs.setDisallowChanges(
+            ArtifactCollectionsInputsImpl(
+                variantDependencies = variantDependencies,
+                projectPath = project.path,
+                variantName = sourceSet.name,
+                runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
+                buildMapping = project.gradle.computeBuildMapping(),
+            )
+        )
+        initializeProjectDependencyLintArtifacts(checkDependencies, variantDependencies)
     }
 
     internal fun toLintModel(dependencyCaches: DependencyCaches): LintModelAndroidArtifact {
         return DefaultLintModelAndroidArtifact(
             applicationId.get(),
-            generatedResourceFolders.get(),
-            generatedSourceFolders.get(),
+            generatedResourceFolders.toList(),
+            generatedSourceFolders.toList(),
             classesOutputDirectories.files.toList(),
             computeDependencies(dependencyCaches)
         )
@@ -1206,9 +1431,11 @@ abstract class JavaArtifactInput : ArtifactInput() {
         }
         classesOutputDirectories.disallowChanges()
         this.warnIfProjectTreatedAsExternalDependency.setDisallowChanges(warnIfProjectTreatedAsExternalDependency)
-        if (checkDependencies) {
-            initializeProjectDependenciesLintModels(unitTestImpl.variantDependencies)
-        } else {
+        initializeProjectDependencyLintArtifacts(
+            checkDependencies,
+            unitTestImpl.variantDependencies
+        )
+        if (!checkDependencies) {
             if (addBaseModuleLintModel) {
                 initializeBaseModuleLintModel(unitTestImpl.variantDependencies)
             }
@@ -1225,14 +1452,15 @@ abstract class JavaArtifactInput : ArtifactInput() {
                     AndroidArtifacts.ArtifactType.LOCAL_EXPLODED_AAR_FOR_LINT
                 )
         }
-        artifactCollectionsInputs.setDisallowChanges(ArtifactCollectionsInputs(
-            variantDependencies = unitTestImpl.variantDependencies,
-            projectPath = unitTestImpl.services.projectInfo.getProject().path,
-            variantName = unitTestImpl.name,
-            runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
-            buildMapping = unitTestImpl.services.projectInfo.getProject().gradle.computeBuildMapping(),
-            mavenCoordinatesCache = getBuildService(unitTestImpl.services.buildServiceRegistry)
-        ))
+        artifactCollectionsInputs.setDisallowChanges(
+            ArtifactCollectionsInputsImpl(
+                variantDependencies = unitTestImpl.variantDependencies,
+                projectPath = unitTestImpl.services.projectInfo.getProject().path,
+                variantName = unitTestImpl.name,
+                runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
+                buildMapping = unitTestImpl.services.projectInfo.getProject().gradle.computeBuildMapping(),
+            )
+        )
         return this
     }
 
@@ -1267,18 +1495,15 @@ abstract class JavaArtifactInput : ArtifactInput() {
             isSelfInstrumenting = false,
         )
         artifactCollectionsInputs.setDisallowChanges(
-            ArtifactCollectionsInputs(
+            ArtifactCollectionsInputsImpl(
                 variantDependencies = variantDependencies,
                 projectPath = project.path,
                 variantName = sourceSet.name,
                 runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
                 buildMapping = project.gradle.computeBuildMapping(),
-                mavenCoordinatesCache = getBuildService(project.gradle.sharedServices)
             )
         )
-        if (checkDependencies) {
-            initializeProjectDependenciesLintModels(variantDependencies)
-        }
+        initializeProjectDependencyLintArtifacts(checkDependencies, variantDependencies)
         return this
     }
 
@@ -1303,7 +1528,7 @@ abstract class ArtifactInput {
     abstract val artifactCollectionsInputs: Property<ArtifactCollectionsInputs>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     val projectRuntimeExplodedAarsFileCollection: FileCollection?
         get() = projectRuntimeExplodedAars?.artifactFiles
@@ -1312,7 +1537,7 @@ abstract class ArtifactInput {
     var projectRuntimeExplodedAars: ArtifactCollection? = null
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     val projectCompileExplodedAarsFileCollection: FileCollection?
         get() = projectCompileExplodedAars?.artifactFiles
@@ -1321,7 +1546,7 @@ abstract class ArtifactInput {
     var projectCompileExplodedAars: ArtifactCollection? = null
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     abstract val projectRuntimeLintModelsFileCollection: ConfigurableFileCollection
 
@@ -1329,7 +1554,7 @@ abstract class ArtifactInput {
     abstract val projectRuntimeLintModels: Property<ArtifactCollection>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     abstract val projectCompileLintModelsFileCollection: ConfigurableFileCollection
 
@@ -1337,31 +1562,67 @@ abstract class ArtifactInput {
     abstract val projectCompileLintModels: Property<ArtifactCollection>
 
     @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     abstract val baseModuleLintModelFileCollection: ConfigurableFileCollection
 
     @get:Internal
     abstract val baseModuleLintModel: Property<ArtifactCollection>
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    abstract val runtimeLintModelMetadataFileCollection: ConfigurableFileCollection
+
+    @get:Internal
+    abstract val runtimeLintModelMetadata: Property<ArtifactCollection>
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    abstract val compileLintModelMetadataFileCollection: ConfigurableFileCollection
+
+    @get:Internal
+    abstract val compileLintModelMetadata: Property<ArtifactCollection>
+
     @get:Internal
     abstract val warnIfProjectTreatedAsExternalDependency: Property<Boolean>
 
-    protected fun initializeProjectDependenciesLintModels(variantDependencies: VariantDependencies) {
-        val runtimeArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
-            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
-            AndroidArtifacts.ArtifactScope.PROJECT,
-            AndroidArtifacts.ArtifactType.LINT_MODEL
-        )
-        projectRuntimeLintModels.setDisallowChanges(runtimeArtifacts)
-        projectRuntimeLintModelsFileCollection.fromDisallowChanges(runtimeArtifacts.artifactFiles)
-        val compileArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
-            AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-            AndroidArtifacts.ArtifactScope.PROJECT,
-            AndroidArtifacts.ArtifactType.LINT_MODEL
-        )
-        projectCompileLintModels.setDisallowChanges(compileArtifacts)
-        projectCompileLintModelsFileCollection.fromDisallowChanges(compileArtifacts.artifactFiles)
+    protected fun initializeProjectDependencyLintArtifacts(
+        checkDependencies: Boolean,
+        variantDependencies: VariantDependencies
+    ) {
+        if (checkDependencies) {
+            val runtimeArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.LINT_MODEL
+            )
+            projectRuntimeLintModels.setDisallowChanges(runtimeArtifacts)
+            projectRuntimeLintModelsFileCollection.fromDisallowChanges(runtimeArtifacts.artifactFiles)
+            val compileArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.LINT_MODEL
+            )
+            projectCompileLintModels.setDisallowChanges(compileArtifacts)
+            projectCompileLintModelsFileCollection.fromDisallowChanges(compileArtifacts.artifactFiles)
+        } else {
+            val runtimeArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
+                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA
+            )
+            runtimeLintModelMetadata.setDisallowChanges(runtimeArtifacts)
+            runtimeLintModelMetadataFileCollection.fromDisallowChanges(runtimeArtifacts.artifactFiles)
+            val compileArtifacts = variantDependencies.getArtifactCollectionForToolingModel(
+                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                AndroidArtifacts.ArtifactScope.PROJECT,
+                AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA
+            )
+            compileLintModelMetadata.setDisallowChanges(compileArtifacts)
+            compileLintModelMetadataFileCollection.fromDisallowChanges(compileArtifacts.artifactFiles)
+        }
     }
 
     protected fun initializeBaseModuleLintModel(variantDependencies: VariantDependencies) {
@@ -1408,11 +1669,15 @@ abstract class ArtifactInput {
                     artifactCollectionsInputs.compileClasspath.projectJars,
                     artifactCollectionsInputs.runtimeClasspath!!.projectJars,
                     baseModuleLintModel.orNull,
+                    runtimeLintModelMetadata.get(),
+                    compileLintModelMetadata.get(),
                     buildMapping = artifactCollectionsInputs.buildMapping
                 )
             }
         val modelBuilder = LintDependencyModelBuilder(
-            artifactHandler = artifactHandler, libraryMap = dependencyCaches.libraryMap
+            artifactHandler = artifactHandler,
+            libraryMap = dependencyCaches.libraryMap,
+            mavenCoordinatesCache = dependencyCaches.mavenCoordinatesCache
         )
 
         val graph = getDependencyGraphBuilder()
@@ -1435,4 +1700,103 @@ abstract class ArtifactInput {
 
         return modelBuilder.createModel()
     }
+}
+
+class LintFromMaven(val files: FileCollection, val version: String) {
+
+    companion object {
+        @JvmStatic
+        fun from(
+            project: Project,
+            projectOptions: ProjectOptions,
+            issueReporter: IssueReporter,
+        ): LintFromMaven {
+            val lintVersion =
+                getLintMavenArtifactVersion(
+                    projectOptions[StringOption.LINT_VERSION_OVERRIDE]?.trim(),
+                    issueReporter
+                )
+            val config =  project.configurations.detachedConfiguration(
+                project.dependencies.create(
+                    mapOf(
+                        "group" to "com.android.tools.lint",
+                        "name" to "lint-gradle",
+                        "version" to lintVersion,
+                    )
+                )
+            )
+            config.isTransitive = true
+            config.isCanBeResolved = true
+            return LintFromMaven(config, lintVersion)
+        }
+    }
+}
+
+
+/**
+ * The lint binary uses the same version numbers as AGP (see LintCliClient#getClientRevision()
+ * which is called when you run lint --version, as well as in release notes, etc etc).
+ *
+ * However, for historical reasons, the maven artifacts for its various libraries used in AGP are
+ * using the older tools-base version numbers, which are 23 higher, so lint 7.0.0 is published
+ * at com.android.tools.lint:lint-gradle:30.0.0
+ *
+ * This function maps from the user-oriented lint version specified by the user to the maven lint
+ * library version number for the artifact to load.
+ *
+ * Returns the actual lint version to use, the given [versionOverride] if valid, otherwise the default,
+ * reporting any issues as a side effect.
+ */
+
+internal fun getLintMavenArtifactVersion(
+    versionOverride: String?,
+    reporter: IssueReporter?,
+    defaultVersion: String = Version.ANDROID_TOOLS_BASE_VERSION,
+    agpVersion: String = Version.ANDROID_GRADLE_PLUGIN_VERSION
+): String {
+    if (versionOverride == null) {
+        return defaultVersion
+    }
+    // Only verify versions that parse. If it is not valid, it will fail later anyway.
+    val parsed = GradleVersion.tryParseAndroidGradlePluginVersion(versionOverride)
+    if (parsed == null) {
+        reporter?.reportError(
+            IssueReporter.Type.GENERIC,
+            """
+                    Could not parse lint version override '$versionOverride'
+                    Recommendation: Remove or update the gradle property ${StringOption.LINT_VERSION_OVERRIDE.propertyName} to be at least $agpVersion
+                    """.trimIndent()
+        )
+        return defaultVersion
+    }
+
+    val default = GradleVersion.parseAndroidGradlePluginVersion(defaultVersion)
+
+    // Heuristic when given an AGP version, find the corresponding lint version (that's 23 higher)
+    val normalizedOverride: String = (parsed.major + 23).toString() + versionOverride.removePrefix(parsed.major.toString())
+    val normalizedParsed = GradleVersion.tryParseAndroidGradlePluginVersion(normalizedOverride) ?: error("Unexpected parse error")
+
+    // Only fail if the major version is outdated.
+    // e.g. if the default lint version is 31.1.0 (as will be for AGP 8.1.0), fail is specifying
+    // lint 30.2.0, but only warn if specifying lint 31.0.0
+    if (normalizedParsed.major < default.major) {
+        reporter?.reportError(
+            IssueReporter.Type.GENERIC,
+            """
+                    Lint must be at least version ${agpVersion.substringBefore(".")}.0.0, and is recommended to be at least $agpVersion
+                    Recommendation: Remove or update the gradle property ${StringOption.LINT_VERSION_OVERRIDE.propertyName} to be at least $agpVersion
+                    """.trimIndent()
+        )
+        return defaultVersion
+    }
+    if (normalizedParsed < default) {
+        reporter?.reportWarning(
+            IssueReporter.Type.GENERIC,
+            """
+                    The build will use lint version $versionOverride which is older than the default.
+                    Recommendation: Remove or update the gradle property ${StringOption.LINT_VERSION_OVERRIDE.propertyName} to be at least $agpVersion
+                    """.trimIndent()
+        )
+    }
+    return normalizedOverride
 }

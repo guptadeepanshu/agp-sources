@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.component
 
+import com.android.build.api.component.impl.ApkCreationConfigImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.Packaging
@@ -32,14 +33,14 @@ interface VariantCreationConfig: ComponentCreationConfig {
 
     val packaging: Packaging
 
-    override val needsMainDexListForBundle: Boolean
-
+    /**
+     * Returns the minimum SDK version for which is used for dexing this variant.
+     * See [ApkCreationConfigImpl.minSdkVersionForDexing] for details.
+     */
     // TODO: move to ConsumableCreationConfig.
-    val minSdkVersionWithTargetDeviceApi: AndroidVersion
+    val minSdkVersionForDexing: AndroidVersion
 
     val maxSdkVersion: Int?
-
-    val targetSdkVersion: AndroidVersion
 
     val isMultiDexEnabled: Boolean
 

@@ -519,4 +519,31 @@ public interface GradleBuildProjectOrBuilder extends
    */
   com.google.protobuf.ByteString
       getTaskNamesBytes(int index);
+
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * @return Whether the projectApiUse field is set.
+   */
+  boolean hasProjectApiUse();
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * @return The projectApiUse.
+   */
+  com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse();
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   */
+  com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder();
 }

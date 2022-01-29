@@ -20,6 +20,7 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.GuardedBy;
 import com.android.ddmlib.AndroidDebugBridge;
+import com.android.ddmlib.AvdData;
 import com.android.ddmlib.ClientTracker;
 import com.android.ddmlib.CommandFailedException;
 import com.android.ddmlib.DdmPreferences;
@@ -59,6 +60,7 @@ public final class DeviceMonitor implements ClientTracker {
     @Nullable
     private DeviceClientMonitorTask myDeviceClientMonitorTask;
     private JdwpProxyServer mJdwpProxy;
+    private CommandService mDdmlibCommandService;
     private final Object mDevicesGuard = new Object();
 
     @GuardedBy("mDevicesGuard")
@@ -82,6 +84,9 @@ public final class DeviceMonitor implements ClientTracker {
                         new JdwpProxyServer(
                                 DdmPreferences.getJdwpProxyPort(), this::jdwpProxyChangedState);
                 mJdwpProxy.start();
+            }
+            if (DdmPreferences.isDdmlibCommandServiceEnabled()) {
+                mDdmlibCommandService = new CommandService(DdmPreferences.getDdmCommandPort());
             }
 
             // To terminate thread call stop on each respective task.
@@ -280,25 +285,37 @@ public final class DeviceMonitor implements ClientTracker {
     }
 
     private static void setProperties(@NonNull DeviceImpl device) {
-        if (!device.isEmulator()) {
-            return;
-        }
-
-        EmulatorConsole console = EmulatorConsole.getConsole(device);
-
-        if (console == null) {
-            return;
-        }
-
-        device.setAvdName(console.getAvdName());
+        AvdData avdData = null;
 
         try {
-            device.setAvdPath(console.getAvdPath());
-        } catch (CommandFailedException exception) {
-            Log.e("DeviceMonitor", exception);
-        }
+            if (!device.isEmulator()) {
+                device.setAvdData(null);
+                return;
+            }
 
-        console.close();
+            EmulatorConsole console = EmulatorConsole.getConsole(device);
+
+            if (console == null) {
+                device.setAvdData(null);
+                return;
+            }
+
+            String avdName = console.getAvdName();
+            String avdPath;
+
+            try {
+                avdPath = console.getAvdPath();
+            } catch (CommandFailedException exception) {
+                Log.e("DeviceMonitor", exception);
+                avdPath = null;
+            }
+
+            console.close();
+
+            avdData = new AvdData(avdName, avdPath);
+        } finally {
+            device.setAvdData(avdData);
+        }
     }
 
     private class DeviceListUpdateListener implements DeviceListMonitorTask.UpdateListener {

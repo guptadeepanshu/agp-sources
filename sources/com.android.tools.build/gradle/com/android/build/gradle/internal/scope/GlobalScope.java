@@ -18,9 +18,6 @@ package com.android.build.gradle.internal.scope;
 
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.MOCKABLE_JAR_RETURN_DEFAULT_VALUES;
-import static com.android.builder.core.BuilderConstants.FD_REPORTS;
-import static com.android.builder.model.AndroidProject.FD_INTERMEDIATES;
-import static com.android.builder.model.AndroidProject.FD_OUTPUTS;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import android.databinding.tool.DataBindingBuilder;
@@ -37,9 +34,9 @@ import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.options.SyncOptions;
 import com.android.builder.model.OptionalCompilationStep;
 import com.android.ide.common.blame.MessageReceiver;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 import org.gradle.api.Action;
@@ -49,6 +46,7 @@ import org.gradle.api.attributes.AttributeContainer;
 import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
+import org.gradle.api.provider.ListProperty;
 import org.gradle.api.provider.Provider;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 
@@ -266,29 +264,32 @@ public class GlobalScope {
     @NonNull
     public synchronized Provider<List<RegularFile>> getBootClasspath() {
         if (bootClasspath == null) {
-            bootClasspath =
-                    project.provider(
-                            () -> {
-                                ImmutableList.Builder<RegularFile> builder =
-                                        ImmutableList.builder();
-                                builder.addAll(getFilteredBootClasspath().get());
-                                if (extension
-                                        .getCompileOptions()
-                                        .getTargetCompatibility()
-                                        .isJava8Compatible()) {
-                                    builder.add(
-                                            getVersionedSdkLoader()
-                                                    .get()
-                                                    .getCoreLambdaStubsProvider()
-                                                    .get());
-                                }
-                                return builder.build();
-                            });
+            ListProperty<RegularFile> classpath =
+                    project.getObjects().listProperty(RegularFile.class);
+            // This cannot be protected against unsafe reads until BaseExtension::bootClasspath
+            // has been removed. Most users of that method will call it at configuration time which
+            // resolves this collection. Uncomment next line once BaseExtension::bootClasspath is
+            // removed.
+            // classpath.disallowUnsafeRead();
+            classpath.addAll(getFilteredBootClasspath());
+            if (extension.getCompileOptions().getTargetCompatibility().isJava8Compatible()) {
+                classpath.add(
+                        getVersionedSdkLoader()
+                                .flatMap(
+                                        SdkComponentsBuildService.VersionedSdkLoader
+                                                ::getCoreLambdaStubsProvider));
+            }
+            bootClasspath = classpath;
         }
         return bootClasspath;
     }
 
-    Provider<List<RegularFile>> filteredBootClasspath = null;
+    @VisibleForTesting
+    public synchronized void setBootClasspath(Provider<List<RegularFile>> classpath) {
+        this.bootClasspath = classpath;
+    }
+
+    private ListProperty<RegularFile> filteredBootClasspath = null;
 
     /**
      * Returns the boot classpath to be used during compilation with all available additional jars
@@ -302,9 +303,12 @@ public class GlobalScope {
         if (filteredBootClasspath == null) {
             Provider<SdkComponentsBuildService.VersionedSdkLoader> versionedSdkLoader =
                     getVersionedSdkLoader();
-            filteredBootClasspath =
+            filteredBootClasspath = project.getObjects().listProperty(RegularFile.class);
+            filteredBootClasspath.addAll(
                     BootClasspathBuilder.INSTANCE.computeClasspath(
-                            project,
+                            project.getLayout(),
+                            project.getProviders(),
+                            project.getObjects(),
                             getDslServices().getIssueReporter(),
                             versionedSdkLoader.flatMap(
                                     SdkComponentsBuildService.VersionedSdkLoader
@@ -322,7 +326,7 @@ public class GlobalScope {
                                     SdkComponentsBuildService.VersionedSdkLoader
                                             ::getAnnotationsJarProvider),
                             false,
-                            ImmutableList.copyOf(getExtension().getLibraryRequests()));
+                            ImmutableList.copyOf(getExtension().getLibraryRequests())));
         }
         return filteredBootClasspath;
     }
@@ -359,7 +363,9 @@ public class GlobalScope {
     @NonNull
     public Provider<List<RegularFile>> getFullBootClasspathProvider() {
         return BootClasspathBuilder.INSTANCE.computeClasspath(
-                project,
+                project.getLayout(),
+                project.getProviders(),
+                project.getObjects(),
                 getDslServices().getIssueReporter(),
                 getVersionedSdkLoader()
                         .flatMap(

@@ -91,6 +91,34 @@ private static final long serialVersionUID = 0L;
             inspectorEventCase_ = 3;
             break;
           }
+          case 34: {
+            com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder subBuilder = null;
+            if (inspectorEventCase_ == 4) {
+              subBuilder = ((com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_).toBuilder();
+            }
+            inspectorEvent_ =
+                input.readMessage(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_);
+              inspectorEvent_ = subBuilder.buildPartial();
+            }
+            inspectorEventCase_ = 4;
+            break;
+          }
+          case 42: {
+            com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder subBuilder = null;
+            if (inspectorEventCase_ == 5) {
+              subBuilder = ((com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_).toBuilder();
+            }
+            inspectorEvent_ =
+                input.readMessage(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_);
+              inspectorEvent_ = subBuilder.buildPartial();
+            }
+            inspectorEventCase_ = 5;
+            break;
+          }
           case 808: {
             int rawValue = input.readEnum();
               @SuppressWarnings("deprecation")
@@ -98,14 +126,14 @@ private static final long serialVersionUID = 0L;
             if (value == null) {
               unknownFields.mergeVarintField(101, rawValue);
             } else {
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000020;
               errorKind_ = rawValue;
             }
             break;
           }
           case 818: {
             com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.Builder subBuilder = null;
-            if (((bitField0_ & 0x00000010) != 0)) {
+            if (((bitField0_ & 0x00000040) != 0)) {
               subBuilder = environmentMetadata_.toBuilder();
             }
             environmentMetadata_ = input.readMessage(com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.PARSER, extensionRegistry);
@@ -113,7 +141,7 @@ private static final long serialVersionUID = 0L;
               subBuilder.mergeFrom(environmentMetadata_);
               environmentMetadata_ = subBuilder.buildPartial();
             }
-            bitField0_ |= 0x00000010;
+            bitField0_ |= 0x00000040;
             break;
           }
           default: {
@@ -6836,6 +6864,7 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <pre>
+   * Deprecated. Use BackgroundTaskInspectorEvent instead.
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
@@ -8698,6 +8727,7 @@ private static final long serialVersionUID = 0L;
     }
     /**
      * <pre>
+     * Deprecated. Use BackgroundTaskInspectorEvent instead.
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
@@ -9290,6 +9320,3375 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface NetworkInspectorEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppInspectionEvent.NetworkInspectorEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    boolean hasType();
+    /**
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+     * @return The type.
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType();
+  }
+  /**
+   * <pre>
+   * Events associated with users interacting with the network inspector
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.AppInspectionEvent.NetworkInspectorEvent}
+   */
+  public  static final class NetworkInspectorEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.NetworkInspectorEvent)
+      NetworkInspectorEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use NetworkInspectorEvent.newBuilder() to construct.
+    private NetworkInspectorEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private NetworkInspectorEvent() {
+      type_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new NetworkInspectorEvent();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private NetworkInspectorEvent(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type value = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = rawValue;
+              }
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_NetworkInspectorEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_NetworkInspectorEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppInspectionEvent.NetworkInspectorEvent.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_EVENT_TYPE = 0;</code>
+       */
+      UNKNOWN_EVENT_TYPE(0),
+      /**
+       * <pre>
+       * User clicks on the migration prompt in profilers
+       * </pre>
+       *
+       * <code>MIGRATION_LINK_SELECTED = 1;</code>
+       */
+      MIGRATION_LINK_SELECTED(1),
+      /**
+       * <pre>
+       * User selects a connection to bring up the details panel
+       * </pre>
+       *
+       * <code>CONNECTION_DETAIL_SELECTED = 2;</code>
+       */
+      CONNECTION_DETAIL_SELECTED(2),
+      /**
+       * <pre>
+       * Details panel
+       * User selects the request tab
+       * </pre>
+       *
+       * <code>REQUEST_TAB_SELECTED = 3;</code>
+       */
+      REQUEST_TAB_SELECTED(3),
+      /**
+       * <pre>
+       * User selects the response tab
+       * </pre>
+       *
+       * <code>RESPONSE_TAB_SELECTED = 4;</code>
+       */
+      RESPONSE_TAB_SELECTED(4),
+      /**
+       * <pre>
+       * User selects the callstack tab
+       * </pre>
+       *
+       * <code>CALLSTACK_TAB_SELECTED = 5;</code>
+       */
+      CALLSTACK_TAB_SELECTED(5),
+      ;
+
+      /**
+       * <code>UNKNOWN_EVENT_TYPE = 0;</code>
+       */
+      public static final int UNKNOWN_EVENT_TYPE_VALUE = 0;
+      /**
+       * <pre>
+       * User clicks on the migration prompt in profilers
+       * </pre>
+       *
+       * <code>MIGRATION_LINK_SELECTED = 1;</code>
+       */
+      public static final int MIGRATION_LINK_SELECTED_VALUE = 1;
+      /**
+       * <pre>
+       * User selects a connection to bring up the details panel
+       * </pre>
+       *
+       * <code>CONNECTION_DETAIL_SELECTED = 2;</code>
+       */
+      public static final int CONNECTION_DETAIL_SELECTED_VALUE = 2;
+      /**
+       * <pre>
+       * Details panel
+       * User selects the request tab
+       * </pre>
+       *
+       * <code>REQUEST_TAB_SELECTED = 3;</code>
+       */
+      public static final int REQUEST_TAB_SELECTED_VALUE = 3;
+      /**
+       * <pre>
+       * User selects the response tab
+       * </pre>
+       *
+       * <code>RESPONSE_TAB_SELECTED = 4;</code>
+       */
+      public static final int RESPONSE_TAB_SELECTED_VALUE = 4;
+      /**
+       * <pre>
+       * User selects the callstack tab
+       * </pre>
+       *
+       * <code>CALLSTACK_TAB_SELECTED = 5;</code>
+       */
+      public static final int CALLSTACK_TAB_SELECTED_VALUE = 5;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_EVENT_TYPE;
+          case 1: return MIGRATION_LINK_SELECTED;
+          case 2: return CONNECTION_DETAIL_SELECTED;
+          case 3: return REQUEST_TAB_SELECTED;
+          case 4: return RESPONSE_TAB_SELECTED;
+          case 5: return CALLSTACK_TAB_SELECTED;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppInspectionEvent.NetworkInspectorEvent.Type)
+    }
+
+    private int bitField0_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+     * @return The type.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.valueOf(type_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, type_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent other = (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) obj;
+
+      if (hasType() != other.hasType()) return false;
+      if (hasType()) {
+        if (type_ != other.type_) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasType()) {
+        hash = (37 * hash) + TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + type_;
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Events associated with users interacting with the network inspector
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.AppInspectionEvent.NetworkInspectorEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppInspectionEvent.NetworkInspectorEvent)
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_NetworkInspectorEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_NetworkInspectorEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_NetworkInspectorEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent build() {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent result = new com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int type_ = 0;
+      /**
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+       * @return Whether the type field is set.
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+       * @return The type.
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.valueOf(type_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
+      }
+      /**
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppInspectionEvent.NetworkInspectorEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppInspectionEvent.NetworkInspectorEvent)
+    private static final com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<NetworkInspectorEvent>
+        PARSER = new com.google.protobuf.AbstractParser<NetworkInspectorEvent>() {
+      @java.lang.Override
+      public NetworkInspectorEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new NetworkInspectorEvent(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<NetworkInspectorEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<NetworkInspectorEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface BackgroundTaskInspectorEventOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * The detailed type of this event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    boolean hasType();
+    /**
+     * <pre>
+     * The detailed type of this event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+     * @return The type.
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType();
+
+    /**
+     * <pre>
+     * UI context associated with the current event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+     * @return Whether the context field is set.
+     */
+    boolean hasContext();
+    /**
+     * <pre>
+     * UI context associated with the current event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+     * @return The context.
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext();
+
+    /**
+     * <pre>
+     * Active UI layout when the current event was sent
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+     * @return Whether the mode field is set.
+     */
+    boolean hasMode();
+    /**
+     * <pre>
+     * Active UI layout when the current event was sent
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+     * @return The mode.
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode();
+
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * @return Whether the chainInfo field is set.
+     */
+    boolean hasChainInfo();
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * @return The chainInfo.
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo();
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     */
+    com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder();
+  }
+  /**
+   * <pre>
+   * Events associated with users interacting with the background task inspector
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent}
+   */
+  public  static final class BackgroundTaskInspectorEvent extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
+      BackgroundTaskInspectorEventOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BackgroundTaskInspectorEvent.newBuilder() to construct.
+    private BackgroundTaskInspectorEvent(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BackgroundTaskInspectorEvent() {
+      type_ = 0;
+      context_ = 0;
+      mode_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BackgroundTaskInspectorEvent();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BackgroundTaskInspectorEvent(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type value = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = rawValue;
+              }
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context value = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                context_ = rawValue;
+              }
+              break;
+            }
+            case 24: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode value = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(3, rawValue);
+              } else {
+                bitField0_ |= 0x00000004;
+                mode_ = rawValue;
+              }
+              break;
+            }
+            case 34: {
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000008) != 0)) {
+                subBuilder = chainInfo_.toBuilder();
+              }
+              chainInfo_ = input.readMessage(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(chainInfo_);
+                chainInfo_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000008;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_EVENT_TYPE = 0;</code>
+       */
+      UNKNOWN_EVENT_TYPE(0),
+      /**
+       * <pre>
+       * General events
+       * User clicks on the migration prompt in profilers
+       * </pre>
+       *
+       * <code>MIGRATION_LINK_SELECTED = 1;</code>
+       */
+      MIGRATION_LINK_SELECTED(1),
+      /**
+       * <pre>
+       * Fired when the user requests viewing data in table form
+       * </pre>
+       *
+       * <code>TABLE_MODE_SELECTED = 2;</code>
+       */
+      TABLE_MODE_SELECTED(2),
+      /**
+       * <pre>
+       * Fired when the user requests viewing data in graph form
+       * </pre>
+       *
+       * <code>GRAPH_MODE_SELECTED = 3;</code>
+       */
+      GRAPH_MODE_SELECTED(3),
+      /**
+       * <pre>
+       * Fired when the user clicks on a link that jumps into code
+       * </pre>
+       *
+       * <code>JUMPED_TO_SOURCE = 4;</code>
+       */
+      JUMPED_TO_SOURCE(4),
+      /**
+       * <pre>
+       * Entry selection events
+       * Clicks on a standalone job
+       * </pre>
+       *
+       * <code>JOB_SELECTED = 101;</code>
+       */
+      JOB_SELECTED(101),
+      /**
+       * <pre>
+       * Clicks on a job associated with a work
+       * </pre>
+       *
+       * <code>JOB_UNDER_WORK_SELECTED = 102;</code>
+       */
+      JOB_UNDER_WORK_SELECTED(102),
+      /**
+       * <pre>
+       * Clicks on an alarm
+       * </pre>
+       *
+       * <code>ALARM_SELECTED = 103;</code>
+       */
+      ALARM_SELECTED(103),
+      /**
+       * <pre>
+       * Clicks on a standalone wake lock
+       * </pre>
+       *
+       * <code>WAKE_LOCK_SELECTED = 104;</code>
+       */
+      WAKE_LOCK_SELECTED(104),
+      /**
+       * <pre>
+       * Clicks on a wake lock associated with a job
+       * </pre>
+       *
+       * <code>WAKE_LOCK_UNDER_JOB_SELECTED = 105;</code>
+       */
+      WAKE_LOCK_UNDER_JOB_SELECTED(105),
+      /**
+       * <pre>
+       * Fired when a worker is actively selected by the user
+       * </pre>
+       *
+       * <code>WORK_SELECTED = 106;</code>
+       */
+      WORK_SELECTED(106),
+      /**
+       * <pre>
+       * Work events
+       * Fired when the user requests stopping a running worker
+       * </pre>
+       *
+       * <code>WORK_CANCELED = 201;</code>
+       */
+      WORK_CANCELED(201),
+      ;
+
+      /**
+       * <code>UNKNOWN_EVENT_TYPE = 0;</code>
+       */
+      public static final int UNKNOWN_EVENT_TYPE_VALUE = 0;
+      /**
+       * <pre>
+       * General events
+       * User clicks on the migration prompt in profilers
+       * </pre>
+       *
+       * <code>MIGRATION_LINK_SELECTED = 1;</code>
+       */
+      public static final int MIGRATION_LINK_SELECTED_VALUE = 1;
+      /**
+       * <pre>
+       * Fired when the user requests viewing data in table form
+       * </pre>
+       *
+       * <code>TABLE_MODE_SELECTED = 2;</code>
+       */
+      public static final int TABLE_MODE_SELECTED_VALUE = 2;
+      /**
+       * <pre>
+       * Fired when the user requests viewing data in graph form
+       * </pre>
+       *
+       * <code>GRAPH_MODE_SELECTED = 3;</code>
+       */
+      public static final int GRAPH_MODE_SELECTED_VALUE = 3;
+      /**
+       * <pre>
+       * Fired when the user clicks on a link that jumps into code
+       * </pre>
+       *
+       * <code>JUMPED_TO_SOURCE = 4;</code>
+       */
+      public static final int JUMPED_TO_SOURCE_VALUE = 4;
+      /**
+       * <pre>
+       * Entry selection events
+       * Clicks on a standalone job
+       * </pre>
+       *
+       * <code>JOB_SELECTED = 101;</code>
+       */
+      public static final int JOB_SELECTED_VALUE = 101;
+      /**
+       * <pre>
+       * Clicks on a job associated with a work
+       * </pre>
+       *
+       * <code>JOB_UNDER_WORK_SELECTED = 102;</code>
+       */
+      public static final int JOB_UNDER_WORK_SELECTED_VALUE = 102;
+      /**
+       * <pre>
+       * Clicks on an alarm
+       * </pre>
+       *
+       * <code>ALARM_SELECTED = 103;</code>
+       */
+      public static final int ALARM_SELECTED_VALUE = 103;
+      /**
+       * <pre>
+       * Clicks on a standalone wake lock
+       * </pre>
+       *
+       * <code>WAKE_LOCK_SELECTED = 104;</code>
+       */
+      public static final int WAKE_LOCK_SELECTED_VALUE = 104;
+      /**
+       * <pre>
+       * Clicks on a wake lock associated with a job
+       * </pre>
+       *
+       * <code>WAKE_LOCK_UNDER_JOB_SELECTED = 105;</code>
+       */
+      public static final int WAKE_LOCK_UNDER_JOB_SELECTED_VALUE = 105;
+      /**
+       * <pre>
+       * Fired when a worker is actively selected by the user
+       * </pre>
+       *
+       * <code>WORK_SELECTED = 106;</code>
+       */
+      public static final int WORK_SELECTED_VALUE = 106;
+      /**
+       * <pre>
+       * Work events
+       * Fired when the user requests stopping a running worker
+       * </pre>
+       *
+       * <code>WORK_CANCELED = 201;</code>
+       */
+      public static final int WORK_CANCELED_VALUE = 201;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_EVENT_TYPE;
+          case 1: return MIGRATION_LINK_SELECTED;
+          case 2: return TABLE_MODE_SELECTED;
+          case 3: return GRAPH_MODE_SELECTED;
+          case 4: return JUMPED_TO_SOURCE;
+          case 101: return JOB_SELECTED;
+          case 102: return JOB_UNDER_WORK_SELECTED;
+          case 103: return ALARM_SELECTED;
+          case 104: return WAKE_LOCK_SELECTED;
+          case 105: return WAKE_LOCK_UNDER_JOB_SELECTED;
+          case 106: return WORK_SELECTED;
+          case 201: return WORK_CANCELED;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type)
+    }
+
+    /**
+     * <pre>
+     * UI context associated with the current event
+     * </pre>
+     *
+     * Protobuf enum {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context}
+     */
+    public enum Context
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_CONTEXT = 0;</code>
+       */
+      UNKNOWN_CONTEXT(0),
+      /**
+       * <pre>
+       * The current event is related to the table view
+       * </pre>
+       *
+       * <code>TABLE_CONTEXT = 1;</code>
+       */
+      TABLE_CONTEXT(1),
+      /**
+       * <pre>
+       * The current event is related to the graph view
+       * </pre>
+       *
+       * <code>GRAPH_CONTEXT = 2;</code>
+       */
+      GRAPH_CONTEXT(2),
+      /**
+       * <pre>
+       * The current event is related to the details panel
+       * </pre>
+       *
+       * <code>DETAILS_CONTEXT = 3;</code>
+       */
+      DETAILS_CONTEXT(3),
+      /**
+       * <pre>
+       * The current event is related to the tool buttons bar
+       * </pre>
+       *
+       * <code>TOOL_BUTTON_CONTEXT = 4;</code>
+       */
+      TOOL_BUTTON_CONTEXT(4),
+      ;
+
+      /**
+       * <code>UNKNOWN_CONTEXT = 0;</code>
+       */
+      public static final int UNKNOWN_CONTEXT_VALUE = 0;
+      /**
+       * <pre>
+       * The current event is related to the table view
+       * </pre>
+       *
+       * <code>TABLE_CONTEXT = 1;</code>
+       */
+      public static final int TABLE_CONTEXT_VALUE = 1;
+      /**
+       * <pre>
+       * The current event is related to the graph view
+       * </pre>
+       *
+       * <code>GRAPH_CONTEXT = 2;</code>
+       */
+      public static final int GRAPH_CONTEXT_VALUE = 2;
+      /**
+       * <pre>
+       * The current event is related to the details panel
+       * </pre>
+       *
+       * <code>DETAILS_CONTEXT = 3;</code>
+       */
+      public static final int DETAILS_CONTEXT_VALUE = 3;
+      /**
+       * <pre>
+       * The current event is related to the tool buttons bar
+       * </pre>
+       *
+       * <code>TOOL_BUTTON_CONTEXT = 4;</code>
+       */
+      public static final int TOOL_BUTTON_CONTEXT_VALUE = 4;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Context valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Context forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_CONTEXT;
+          case 1: return TABLE_CONTEXT;
+          case 2: return GRAPH_CONTEXT;
+          case 3: return DETAILS_CONTEXT;
+          case 4: return TOOL_BUTTON_CONTEXT;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Context>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Context> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Context>() {
+              public Context findValueByNumber(int number) {
+                return Context.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final Context[] VALUES = values();
+
+      public static Context valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Context(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context)
+    }
+
+    /**
+     * <pre>
+     * Active UI layout when the current event was sent
+     * </pre>
+     *
+     * Protobuf enum {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode}
+     */
+    public enum Mode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_MODE = 0;</code>
+       */
+      UNKNOWN_MODE(0),
+      /**
+       * <pre>
+       * The table view is currently active
+       * </pre>
+       *
+       * <code>TABLE_MODE = 1;</code>
+       */
+      TABLE_MODE(1),
+      /**
+       * <pre>
+       * The graph view is currently active
+       * </pre>
+       *
+       * <code>GRAPH_MODE = 2;</code>
+       */
+      GRAPH_MODE(2),
+      ;
+
+      /**
+       * <code>UNKNOWN_MODE = 0;</code>
+       */
+      public static final int UNKNOWN_MODE_VALUE = 0;
+      /**
+       * <pre>
+       * The table view is currently active
+       * </pre>
+       *
+       * <code>TABLE_MODE = 1;</code>
+       */
+      public static final int TABLE_MODE_VALUE = 1;
+      /**
+       * <pre>
+       * The graph view is currently active
+       * </pre>
+       *
+       * <code>GRAPH_MODE = 2;</code>
+       */
+      public static final int GRAPH_MODE_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Mode valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Mode forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_MODE;
+          case 1: return TABLE_MODE;
+          case 2: return GRAPH_MODE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Mode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Mode> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Mode>() {
+              public Mode findValueByNumber(int number) {
+                return Mode.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDescriptor().getEnumTypes().get(2);
+      }
+
+      private static final Mode[] VALUES = values();
+
+      public static Mode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Mode(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode)
+    }
+
+    public interface ChainInfoOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <pre>
+       * The total number of all workers in this work chain
+       * </pre>
+       *
+       * <code>optional int32 worker_count = 1;</code>
+       * @return Whether the workerCount field is set.
+       */
+      boolean hasWorkerCount();
+      /**
+       * <pre>
+       * The total number of all workers in this work chain
+       * </pre>
+       *
+       * <code>optional int32 worker_count = 1;</code>
+       * @return The workerCount.
+       */
+      int getWorkerCount();
+
+      /**
+       * <pre>
+       * The total number of all connections between workers
+       * </pre>
+       *
+       * <code>optional int32 dependency_count = 2;</code>
+       * @return Whether the dependencyCount field is set.
+       */
+      boolean hasDependencyCount();
+      /**
+       * <pre>
+       * The total number of all connections between workers
+       * </pre>
+       *
+       * <code>optional int32 dependency_count = 2;</code>
+       * @return The dependencyCount.
+       */
+      int getDependencyCount();
+
+      /**
+       * <pre>
+       * The longest chain of parents / children
+       * </pre>
+       *
+       * <code>optional int32 max_depth = 3;</code>
+       * @return Whether the maxDepth field is set.
+       */
+      boolean hasMaxDepth();
+      /**
+       * <pre>
+       * The longest chain of parents / children
+       * </pre>
+       *
+       * <code>optional int32 max_depth = 3;</code>
+       * @return The maxDepth.
+       */
+      int getMaxDepth();
+
+      /**
+       * <pre>
+       * The widest chain of siblings
+       * </pre>
+       *
+       * <code>optional int32 max_width = 4;</code>
+       * @return Whether the maxWidth field is set.
+       */
+      boolean hasMaxWidth();
+      /**
+       * <pre>
+       * The widest chain of siblings
+       * </pre>
+       *
+       * <code>optional int32 max_width = 4;</code>
+       * @return The maxWidth.
+       */
+      int getMaxWidth();
+    }
+    /**
+     * <pre>
+     * Information about the chain of workers a worker is part of
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo}
+     */
+    public  static final class ChainInfo extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
+        ChainInfoOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use ChainInfo.newBuilder() to construct.
+      private ChainInfo(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private ChainInfo() {
+      }
+
+      @java.lang.Override
+      @SuppressWarnings({"unused"})
+      protected java.lang.Object newInstance(
+          UnusedPrivateParameter unused) {
+        return new ChainInfo();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private ChainInfo(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              case 8: {
+                bitField0_ |= 0x00000001;
+                workerCount_ = input.readInt32();
+                break;
+              }
+              case 16: {
+                bitField0_ |= 0x00000002;
+                dependencyCount_ = input.readInt32();
+                break;
+              }
+              case 24: {
+                bitField0_ |= 0x00000004;
+                maxDepth_ = input.readInt32();
+                break;
+              }
+              case 32: {
+                bitField0_ |= 0x00000008;
+                maxWidth_ = input.readInt32();
+                break;
+              }
+              default: {
+                if (!parseUnknownField(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_ChainInfo_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_ChainInfo_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder.class);
+      }
+
+      private int bitField0_;
+      public static final int WORKER_COUNT_FIELD_NUMBER = 1;
+      private int workerCount_;
+      /**
+       * <pre>
+       * The total number of all workers in this work chain
+       * </pre>
+       *
+       * <code>optional int32 worker_count = 1;</code>
+       * @return Whether the workerCount field is set.
+       */
+      public boolean hasWorkerCount() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * The total number of all workers in this work chain
+       * </pre>
+       *
+       * <code>optional int32 worker_count = 1;</code>
+       * @return The workerCount.
+       */
+      public int getWorkerCount() {
+        return workerCount_;
+      }
+
+      public static final int DEPENDENCY_COUNT_FIELD_NUMBER = 2;
+      private int dependencyCount_;
+      /**
+       * <pre>
+       * The total number of all connections between workers
+       * </pre>
+       *
+       * <code>optional int32 dependency_count = 2;</code>
+       * @return Whether the dependencyCount field is set.
+       */
+      public boolean hasDependencyCount() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * The total number of all connections between workers
+       * </pre>
+       *
+       * <code>optional int32 dependency_count = 2;</code>
+       * @return The dependencyCount.
+       */
+      public int getDependencyCount() {
+        return dependencyCount_;
+      }
+
+      public static final int MAX_DEPTH_FIELD_NUMBER = 3;
+      private int maxDepth_;
+      /**
+       * <pre>
+       * The longest chain of parents / children
+       * </pre>
+       *
+       * <code>optional int32 max_depth = 3;</code>
+       * @return Whether the maxDepth field is set.
+       */
+      public boolean hasMaxDepth() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * The longest chain of parents / children
+       * </pre>
+       *
+       * <code>optional int32 max_depth = 3;</code>
+       * @return The maxDepth.
+       */
+      public int getMaxDepth() {
+        return maxDepth_;
+      }
+
+      public static final int MAX_WIDTH_FIELD_NUMBER = 4;
+      private int maxWidth_;
+      /**
+       * <pre>
+       * The widest chain of siblings
+       * </pre>
+       *
+       * <code>optional int32 max_width = 4;</code>
+       * @return Whether the maxWidth field is set.
+       */
+      public boolean hasMaxWidth() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * The widest chain of siblings
+       * </pre>
+       *
+       * <code>optional int32 max_width = 4;</code>
+       * @return The maxWidth.
+       */
+      public int getMaxWidth() {
+        return maxWidth_;
+      }
+
+      private byte memoizedIsInitialized = -1;
+      @java.lang.Override
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      @java.lang.Override
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (((bitField0_ & 0x00000001) != 0)) {
+          output.writeInt32(1, workerCount_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          output.writeInt32(2, dependencyCount_);
+        }
+        if (((bitField0_ & 0x00000004) != 0)) {
+          output.writeInt32(3, maxDepth_);
+        }
+        if (((bitField0_ & 0x00000008) != 0)) {
+          output.writeInt32(4, maxWidth_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      @java.lang.Override
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, workerCount_);
+        }
+        if (((bitField0_ & 0x00000002) != 0)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(2, dependencyCount_);
+        }
+        if (((bitField0_ & 0x00000004) != 0)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(3, maxDepth_);
+        }
+        if (((bitField0_ & 0x00000008) != 0)) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(4, maxWidth_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)) {
+          return super.equals(obj);
+        }
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo other = (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo) obj;
+
+        if (hasWorkerCount() != other.hasWorkerCount()) return false;
+        if (hasWorkerCount()) {
+          if (getWorkerCount()
+              != other.getWorkerCount()) return false;
+        }
+        if (hasDependencyCount() != other.hasDependencyCount()) return false;
+        if (hasDependencyCount()) {
+          if (getDependencyCount()
+              != other.getDependencyCount()) return false;
+        }
+        if (hasMaxDepth() != other.hasMaxDepth()) return false;
+        if (hasMaxDepth()) {
+          if (getMaxDepth()
+              != other.getMaxDepth()) return false;
+        }
+        if (hasMaxWidth() != other.hasMaxWidth()) return false;
+        if (hasMaxWidth()) {
+          if (getMaxWidth()
+              != other.getMaxWidth()) return false;
+        }
+        if (!unknownFields.equals(other.unknownFields)) return false;
+        return true;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        if (hasWorkerCount()) {
+          hash = (37 * hash) + WORKER_COUNT_FIELD_NUMBER;
+          hash = (53 * hash) + getWorkerCount();
+        }
+        if (hasDependencyCount()) {
+          hash = (37 * hash) + DEPENDENCY_COUNT_FIELD_NUMBER;
+          hash = (53 * hash) + getDependencyCount();
+        }
+        if (hasMaxDepth()) {
+          hash = (37 * hash) + MAX_DEPTH_FIELD_NUMBER;
+          hash = (53 * hash) + getMaxDepth();
+        }
+        if (hasMaxWidth()) {
+          hash = (37 * hash) + MAX_WIDTH_FIELD_NUMBER;
+          hash = (53 * hash) + getMaxWidth();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      @java.lang.Override
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      @java.lang.Override
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * <pre>
+       * Information about the chain of workers a worker is part of
+       * </pre>
+       *
+       * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_ChainInfo_descriptor;
+        }
+
+        @java.lang.Override
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_ChainInfo_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder.class);
+        }
+
+        // Construct using com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        @java.lang.Override
+        public Builder clear() {
+          super.clear();
+          workerCount_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000001);
+          dependencyCount_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000002);
+          maxDepth_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000004);
+          maxWidth_ = 0;
+          bitField0_ = (bitField0_ & ~0x00000008);
+          return this;
+        }
+
+        @java.lang.Override
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_ChainInfo_descriptor;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getDefaultInstanceForType() {
+          return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance();
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo build() {
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        @java.lang.Override
+        public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo buildPartial() {
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo result = new com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          if (((from_bitField0_ & 0x00000001) != 0)) {
+            result.workerCount_ = workerCount_;
+            to_bitField0_ |= 0x00000001;
+          }
+          if (((from_bitField0_ & 0x00000002) != 0)) {
+            result.dependencyCount_ = dependencyCount_;
+            to_bitField0_ |= 0x00000002;
+          }
+          if (((from_bitField0_ & 0x00000004) != 0)) {
+            result.maxDepth_ = maxDepth_;
+            to_bitField0_ |= 0x00000004;
+          }
+          if (((from_bitField0_ & 0x00000008) != 0)) {
+            result.maxWidth_ = maxWidth_;
+            to_bitField0_ |= 0x00000008;
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        @java.lang.Override
+        public Builder clone() {
+          return super.clone();
+        }
+        @java.lang.Override
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.setField(field, value);
+        }
+        @java.lang.Override
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return super.clearField(field);
+        }
+        @java.lang.Override
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return super.clearOneof(oneof);
+        }
+        @java.lang.Override
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return super.setRepeatedField(field, index, value);
+        }
+        @java.lang.Override
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return super.addRepeatedField(field, value);
+        }
+        @java.lang.Override
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo) {
+            return mergeFrom((com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo other) {
+          if (other == com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance()) return this;
+          if (other.hasWorkerCount()) {
+            setWorkerCount(other.getWorkerCount());
+          }
+          if (other.hasDependencyCount()) {
+            setDependencyCount(other.getDependencyCount());
+          }
+          if (other.hasMaxDepth()) {
+            setMaxDepth(other.getMaxDepth());
+          }
+          if (other.hasMaxWidth()) {
+            setMaxWidth(other.getMaxWidth());
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        @java.lang.Override
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        @java.lang.Override
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private int workerCount_ ;
+        /**
+         * <pre>
+         * The total number of all workers in this work chain
+         * </pre>
+         *
+         * <code>optional int32 worker_count = 1;</code>
+         * @return Whether the workerCount field is set.
+         */
+        public boolean hasWorkerCount() {
+          return ((bitField0_ & 0x00000001) != 0);
+        }
+        /**
+         * <pre>
+         * The total number of all workers in this work chain
+         * </pre>
+         *
+         * <code>optional int32 worker_count = 1;</code>
+         * @return The workerCount.
+         */
+        public int getWorkerCount() {
+          return workerCount_;
+        }
+        /**
+         * <pre>
+         * The total number of all workers in this work chain
+         * </pre>
+         *
+         * <code>optional int32 worker_count = 1;</code>
+         * @param value The workerCount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setWorkerCount(int value) {
+          bitField0_ |= 0x00000001;
+          workerCount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The total number of all workers in this work chain
+         * </pre>
+         *
+         * <code>optional int32 worker_count = 1;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearWorkerCount() {
+          bitField0_ = (bitField0_ & ~0x00000001);
+          workerCount_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int dependencyCount_ ;
+        /**
+         * <pre>
+         * The total number of all connections between workers
+         * </pre>
+         *
+         * <code>optional int32 dependency_count = 2;</code>
+         * @return Whether the dependencyCount field is set.
+         */
+        public boolean hasDependencyCount() {
+          return ((bitField0_ & 0x00000002) != 0);
+        }
+        /**
+         * <pre>
+         * The total number of all connections between workers
+         * </pre>
+         *
+         * <code>optional int32 dependency_count = 2;</code>
+         * @return The dependencyCount.
+         */
+        public int getDependencyCount() {
+          return dependencyCount_;
+        }
+        /**
+         * <pre>
+         * The total number of all connections between workers
+         * </pre>
+         *
+         * <code>optional int32 dependency_count = 2;</code>
+         * @param value The dependencyCount to set.
+         * @return This builder for chaining.
+         */
+        public Builder setDependencyCount(int value) {
+          bitField0_ |= 0x00000002;
+          dependencyCount_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The total number of all connections between workers
+         * </pre>
+         *
+         * <code>optional int32 dependency_count = 2;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearDependencyCount() {
+          bitField0_ = (bitField0_ & ~0x00000002);
+          dependencyCount_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int maxDepth_ ;
+        /**
+         * <pre>
+         * The longest chain of parents / children
+         * </pre>
+         *
+         * <code>optional int32 max_depth = 3;</code>
+         * @return Whether the maxDepth field is set.
+         */
+        public boolean hasMaxDepth() {
+          return ((bitField0_ & 0x00000004) != 0);
+        }
+        /**
+         * <pre>
+         * The longest chain of parents / children
+         * </pre>
+         *
+         * <code>optional int32 max_depth = 3;</code>
+         * @return The maxDepth.
+         */
+        public int getMaxDepth() {
+          return maxDepth_;
+        }
+        /**
+         * <pre>
+         * The longest chain of parents / children
+         * </pre>
+         *
+         * <code>optional int32 max_depth = 3;</code>
+         * @param value The maxDepth to set.
+         * @return This builder for chaining.
+         */
+        public Builder setMaxDepth(int value) {
+          bitField0_ |= 0x00000004;
+          maxDepth_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The longest chain of parents / children
+         * </pre>
+         *
+         * <code>optional int32 max_depth = 3;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearMaxDepth() {
+          bitField0_ = (bitField0_ & ~0x00000004);
+          maxDepth_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int maxWidth_ ;
+        /**
+         * <pre>
+         * The widest chain of siblings
+         * </pre>
+         *
+         * <code>optional int32 max_width = 4;</code>
+         * @return Whether the maxWidth field is set.
+         */
+        public boolean hasMaxWidth() {
+          return ((bitField0_ & 0x00000008) != 0);
+        }
+        /**
+         * <pre>
+         * The widest chain of siblings
+         * </pre>
+         *
+         * <code>optional int32 max_width = 4;</code>
+         * @return The maxWidth.
+         */
+        public int getMaxWidth() {
+          return maxWidth_;
+        }
+        /**
+         * <pre>
+         * The widest chain of siblings
+         * </pre>
+         *
+         * <code>optional int32 max_width = 4;</code>
+         * @param value The maxWidth to set.
+         * @return This builder for chaining.
+         */
+        public Builder setMaxWidth(int value) {
+          bitField0_ |= 0x00000008;
+          maxWidth_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * The widest chain of siblings
+         * </pre>
+         *
+         * <code>optional int32 max_width = 4;</code>
+         * @return This builder for chaining.
+         */
+        public Builder clearMaxWidth() {
+          bitField0_ = (bitField0_ & ~0x00000008);
+          maxWidth_ = 0;
+          onChanged();
+          return this;
+        }
+        @java.lang.Override
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFields(unknownFields);
+        }
+
+        @java.lang.Override
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
+      }
+
+      // @@protoc_insertion_point(class_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
+      private static final com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo();
+      }
+
+      public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      @java.lang.Deprecated public static final com.google.protobuf.Parser<ChainInfo>
+          PARSER = new com.google.protobuf.AbstractParser<ChainInfo>() {
+        @java.lang.Override
+        public ChainInfo parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ChainInfo(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<ChainInfo> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<ChainInfo> getParserForType() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    private int bitField0_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <pre>
+     * The detailed type of this event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * The detailed type of this event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+     * @return The type.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.valueOf(type_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
+    }
+
+    public static final int CONTEXT_FIELD_NUMBER = 2;
+    private int context_;
+    /**
+     * <pre>
+     * UI context associated with the current event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+     * @return Whether the context field is set.
+     */
+    public boolean hasContext() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * UI context associated with the current event
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+     * @return The context.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.valueOf(context_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.UNKNOWN_CONTEXT : result;
+    }
+
+    public static final int MODE_FIELD_NUMBER = 3;
+    private int mode_;
+    /**
+     * <pre>
+     * Active UI layout when the current event was sent
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+     * @return Whether the mode field is set.
+     */
+    public boolean hasMode() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Active UI layout when the current event was sent
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+     * @return The mode.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.valueOf(mode_);
+      return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.UNKNOWN_MODE : result;
+    }
+
+    public static final int CHAIN_INFO_FIELD_NUMBER = 4;
+    private com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chainInfo_;
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * @return Whether the chainInfo field is set.
+     */
+    public boolean hasChainInfo() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     * @return The chainInfo.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo() {
+      return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
+    }
+    /**
+     * <pre>
+     * Set if event indicates we're going to update the graph view, i.e.
+     * |type| is |GRAPH_MODE_SELECTED|,
+     * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
+      return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeEnum(2, context_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeEnum(3, mode_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeMessage(4, getChainInfo());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, context_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, mode_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, getChainInfo());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent other = (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) obj;
+
+      if (hasType() != other.hasType()) return false;
+      if (hasType()) {
+        if (type_ != other.type_) return false;
+      }
+      if (hasContext() != other.hasContext()) return false;
+      if (hasContext()) {
+        if (context_ != other.context_) return false;
+      }
+      if (hasMode() != other.hasMode()) return false;
+      if (hasMode()) {
+        if (mode_ != other.mode_) return false;
+      }
+      if (hasChainInfo() != other.hasChainInfo()) return false;
+      if (hasChainInfo()) {
+        if (!getChainInfo()
+            .equals(other.getChainInfo())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasType()) {
+        hash = (37 * hash) + TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + type_;
+      }
+      if (hasContext()) {
+        hash = (37 * hash) + CONTEXT_FIELD_NUMBER;
+        hash = (53 * hash) + context_;
+      }
+      if (hasMode()) {
+        hash = (37 * hash) + MODE_FIELD_NUMBER;
+        hash = (53 * hash) + mode_;
+      }
+      if (hasChainInfo()) {
+        hash = (37 * hash) + CHAIN_INFO_FIELD_NUMBER;
+        hash = (53 * hash) + getChainInfo().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Events associated with users interacting with the background task inspector
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.class, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getChainInfoFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        context_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        mode_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        if (chainInfoBuilder_ == null) {
+          chainInfo_ = null;
+        } else {
+          chainInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AppInspectionEvent_BackgroundTaskInspectorEvent_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent build() {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent buildPartial() {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent result = new com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.context_ = context_;
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.mode_ = mode_;
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          if (chainInfoBuilder_ == null) {
+            result.chainInfo_ = chainInfo_;
+          } else {
+            result.chainInfo_ = chainInfoBuilder_.build();
+          }
+          to_bitField0_ |= 0x00000008;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent other) {
+        if (other == com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasContext()) {
+          setContext(other.getContext());
+        }
+        if (other.hasMode()) {
+          setMode(other.getMode());
+        }
+        if (other.hasChainInfo()) {
+          mergeChainInfo(other.getChainInfo());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int type_ = 0;
+      /**
+       * <pre>
+       * The detailed type of this event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+       * @return Whether the type field is set.
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * The detailed type of this event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+       * @return The type.
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.valueOf(type_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
+      }
+      /**
+       * <pre>
+       * The detailed type of this event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The detailed type of this event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int context_ = 0;
+      /**
+       * <pre>
+       * UI context associated with the current event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+       * @return Whether the context field is set.
+       */
+      public boolean hasContext() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * UI context associated with the current event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+       * @return The context.
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.valueOf(context_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.UNKNOWN_CONTEXT : result;
+      }
+      /**
+       * <pre>
+       * UI context associated with the current event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+       * @param value The context to set.
+       * @return This builder for chaining.
+       */
+      public Builder setContext(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        context_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * UI context associated with the current event
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearContext() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        context_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int mode_ = 0;
+      /**
+       * <pre>
+       * Active UI layout when the current event was sent
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+       * @return Whether the mode field is set.
+       */
+      public boolean hasMode() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Active UI layout when the current event was sent
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+       * @return The mode.
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.valueOf(mode_);
+        return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.UNKNOWN_MODE : result;
+      }
+      /**
+       * <pre>
+       * Active UI layout when the current event was sent
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+       * @param value The mode to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMode(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000004;
+        mode_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Active UI layout when the current event was sent
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMode() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        mode_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chainInfo_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder> chainInfoBuilder_;
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * @return Whether the chainInfo field is set.
+       */
+      public boolean hasChainInfo() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       * @return The chainInfo.
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo() {
+        if (chainInfoBuilder_ == null) {
+          return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
+        } else {
+          return chainInfoBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public Builder setChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo value) {
+        if (chainInfoBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          chainInfo_ = value;
+          onChanged();
+        } else {
+          chainInfoBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public Builder setChainInfo(
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder builderForValue) {
+        if (chainInfoBuilder_ == null) {
+          chainInfo_ = builderForValue.build();
+          onChanged();
+        } else {
+          chainInfoBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public Builder mergeChainInfo(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo value) {
+        if (chainInfoBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) != 0) &&
+              chainInfo_ != null &&
+              chainInfo_ != com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance()) {
+            chainInfo_ =
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.newBuilder(chainInfo_).mergeFrom(value).buildPartial();
+          } else {
+            chainInfo_ = value;
+          }
+          onChanged();
+        } else {
+          chainInfoBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000008;
+        return this;
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public Builder clearChainInfo() {
+        if (chainInfoBuilder_ == null) {
+          chainInfo_ = null;
+          onChanged();
+        } else {
+          chainInfoBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder getChainInfoBuilder() {
+        bitField0_ |= 0x00000008;
+        onChanged();
+        return getChainInfoFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
+        if (chainInfoBuilder_ != null) {
+          return chainInfoBuilder_.getMessageOrBuilder();
+        } else {
+          return chainInfo_ == null ?
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
+        }
+      }
+      /**
+       * <pre>
+       * Set if event indicates we're going to update the graph view, i.e.
+       * |type| is |GRAPH_MODE_SELECTED|,
+       * |type| is |WORK_SELECTED| when |mode| is |GRAPH_MODE|
+       * </pre>
+       *
+       * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder> 
+          getChainInfoFieldBuilder() {
+        if (chainInfoBuilder_ == null) {
+          chainInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder>(
+                  getChainInfo(),
+                  getParentForChildren(),
+                  isClean());
+          chainInfo_ = null;
+        }
+        return chainInfoBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
+    private static final com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<BackgroundTaskInspectorEvent>
+        PARSER = new com.google.protobuf.AbstractParser<BackgroundTaskInspectorEvent>() {
+      @java.lang.Override
+      public BackgroundTaskInspectorEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BackgroundTaskInspectorEvent(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BackgroundTaskInspectorEvent> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BackgroundTaskInspectorEvent> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   private int inspectorEventCase_ = 0;
   private java.lang.Object inspectorEvent_;
@@ -9298,6 +12697,8 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     DATABASE_INSPECTOR_EVENT(2),
     WORK_MANAGER_INSPECTOR_EVENT(3),
+    NETWORK_INSPECTOR_EVENT(4),
+    BACKGROUND_TASK_INSPECTOR_EVENT(5),
     INSPECTOREVENT_NOT_SET(0);
     private final int value;
     private InspectorEventCase(int value) {
@@ -9317,6 +12718,8 @@ private static final long serialVersionUID = 0L;
       switch (value) {
         case 2: return DATABASE_INSPECTOR_EVENT;
         case 3: return WORK_MANAGER_INSPECTOR_EVENT;
+        case 4: return NETWORK_INSPECTOR_EVENT;
+        case 5: return BACKGROUND_TASK_INSPECTOR_EVENT;
         case 0: return INSPECTOREVENT_NOT_SET;
         default: return null;
       }
@@ -9439,6 +12842,86 @@ private static final long serialVersionUID = 0L;
     return com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.getDefaultInstance();
   }
 
+  public static final int NETWORK_INSPECTOR_EVENT_FIELD_NUMBER = 4;
+  /**
+   * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * @return Whether the networkInspectorEvent field is set.
+   */
+  public boolean hasNetworkInspectorEvent() {
+    return inspectorEventCase_ == 4;
+  }
+  /**
+   * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * @return The networkInspectorEvent.
+   */
+  public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent() {
+    if (inspectorEventCase_ == 4) {
+       return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
+    }
+    return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+  }
+  /**
+   * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   */
+  public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
+    if (inspectorEventCase_ == 4) {
+       return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
+    }
+    return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+  }
+
+  public static final int BACKGROUND_TASK_INSPECTOR_EVENT_FIELD_NUMBER = 5;
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * @return Whether the backgroundTaskInspectorEvent field is set.
+   */
+  public boolean hasBackgroundTaskInspectorEvent() {
+    return inspectorEventCase_ == 5;
+  }
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * @return The backgroundTaskInspectorEvent.
+   */
+  public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent() {
+    if (inspectorEventCase_ == 5) {
+       return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
+    }
+    return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+  }
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   */
+  public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
+    if (inspectorEventCase_ == 5) {
+       return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
+    }
+    return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+  }
+
   public static final int ERROR_KIND_FIELD_NUMBER = 101;
   private int errorKind_;
   /**
@@ -9450,7 +12933,7 @@ private static final long serialVersionUID = 0L;
    * @return Whether the errorKind field is set.
    */
   public boolean hasErrorKind() {
-    return ((bitField0_ & 0x00000008) != 0);
+    return ((bitField0_ & 0x00000020) != 0);
   }
   /**
    * <pre>
@@ -9477,7 +12960,7 @@ private static final long serialVersionUID = 0L;
    * @return Whether the environmentMetadata field is set.
    */
   public boolean hasEnvironmentMetadata() {
-    return ((bitField0_ & 0x00000010) != 0);
+    return ((bitField0_ & 0x00000040) != 0);
   }
   /**
    * <pre>
@@ -9524,10 +13007,16 @@ private static final long serialVersionUID = 0L;
     if (inspectorEventCase_ == 3) {
       output.writeMessage(3, (com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent) inspectorEvent_);
     }
-    if (((bitField0_ & 0x00000008) != 0)) {
+    if (inspectorEventCase_ == 4) {
+      output.writeMessage(4, (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_);
+    }
+    if (inspectorEventCase_ == 5) {
+      output.writeMessage(5, (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
       output.writeEnum(101, errorKind_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000040) != 0)) {
       output.writeMessage(102, getEnvironmentMetadata());
     }
     unknownFields.writeTo(output);
@@ -9551,11 +13040,19 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, (com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent) inspectorEvent_);
     }
-    if (((bitField0_ & 0x00000008) != 0)) {
+    if (inspectorEventCase_ == 4) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_);
+    }
+    if (inspectorEventCase_ == 5) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_);
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(101, errorKind_);
     }
-    if (((bitField0_ & 0x00000010) != 0)) {
+    if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(102, getEnvironmentMetadata());
     }
@@ -9597,6 +13094,14 @@ private static final long serialVersionUID = 0L;
         if (!getWorkManagerInspectorEvent()
             .equals(other.getWorkManagerInspectorEvent())) return false;
         break;
+      case 4:
+        if (!getNetworkInspectorEvent()
+            .equals(other.getNetworkInspectorEvent())) return false;
+        break;
+      case 5:
+        if (!getBackgroundTaskInspectorEvent()
+            .equals(other.getBackgroundTaskInspectorEvent())) return false;
+        break;
       case 0:
       default:
     }
@@ -9631,6 +13136,14 @@ private static final long serialVersionUID = 0L;
       case 3:
         hash = (37 * hash) + WORK_MANAGER_INSPECTOR_EVENT_FIELD_NUMBER;
         hash = (53 * hash) + getWorkManagerInspectorEvent().hashCode();
+        break;
+      case 4:
+        hash = (37 * hash) + NETWORK_INSPECTOR_EVENT_FIELD_NUMBER;
+        hash = (53 * hash) + getNetworkInspectorEvent().hashCode();
+        break;
+      case 5:
+        hash = (37 * hash) + BACKGROUND_TASK_INSPECTOR_EVENT_FIELD_NUMBER;
+        hash = (53 * hash) + getBackgroundTaskInspectorEvent().hashCode();
         break;
       case 0:
       default:
@@ -9772,13 +13285,13 @@ private static final long serialVersionUID = 0L;
       type_ = 0;
       bitField0_ = (bitField0_ & ~0x00000001);
       errorKind_ = 0;
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000020);
       if (environmentMetadataBuilder_ == null) {
         environmentMetadata_ = null;
       } else {
         environmentMetadataBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000040);
       inspectorEventCase_ = 0;
       inspectorEvent_ = null;
       return this;
@@ -9827,17 +13340,31 @@ private static final long serialVersionUID = 0L;
           result.inspectorEvent_ = workManagerInspectorEventBuilder_.build();
         }
       }
-      if (((from_bitField0_ & 0x00000008) != 0)) {
-        to_bitField0_ |= 0x00000008;
+      if (inspectorEventCase_ == 4) {
+        if (networkInspectorEventBuilder_ == null) {
+          result.inspectorEvent_ = inspectorEvent_;
+        } else {
+          result.inspectorEvent_ = networkInspectorEventBuilder_.build();
+        }
+      }
+      if (inspectorEventCase_ == 5) {
+        if (backgroundTaskInspectorEventBuilder_ == null) {
+          result.inspectorEvent_ = inspectorEvent_;
+        } else {
+          result.inspectorEvent_ = backgroundTaskInspectorEventBuilder_.build();
+        }
+      }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        to_bitField0_ |= 0x00000020;
       }
       result.errorKind_ = errorKind_;
-      if (((from_bitField0_ & 0x00000010) != 0)) {
+      if (((from_bitField0_ & 0x00000040) != 0)) {
         if (environmentMetadataBuilder_ == null) {
           result.environmentMetadata_ = environmentMetadata_;
         } else {
           result.environmentMetadata_ = environmentMetadataBuilder_.build();
         }
-        to_bitField0_ |= 0x00000010;
+        to_bitField0_ |= 0x00000040;
       }
       result.bitField0_ = to_bitField0_;
       result.inspectorEventCase_ = inspectorEventCase_;
@@ -9905,6 +13432,14 @@ private static final long serialVersionUID = 0L;
         }
         case WORK_MANAGER_INSPECTOR_EVENT: {
           mergeWorkManagerInspectorEvent(other.getWorkManagerInspectorEvent());
+          break;
+        }
+        case NETWORK_INSPECTOR_EVENT: {
+          mergeNetworkInspectorEvent(other.getNetworkInspectorEvent());
+          break;
+        }
+        case BACKGROUND_TASK_INSPECTOR_EVENT: {
+          mergeBackgroundTaskInspectorEvent(other.getBackgroundTaskInspectorEvent());
           break;
         }
         case INSPECTOREVENT_NOT_SET: {
@@ -10362,6 +13897,354 @@ private static final long serialVersionUID = 0L;
       return workManagerInspectorEventBuilder_;
     }
 
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder> networkInspectorEventBuilder_;
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * @return Whether the networkInspectorEvent field is set.
+     */
+    public boolean hasNetworkInspectorEvent() {
+      return inspectorEventCase_ == 4;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * @return The networkInspectorEvent.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent() {
+      if (networkInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 4) {
+          return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+      } else {
+        if (inspectorEventCase_ == 4) {
+          return networkInspectorEventBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public Builder setNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
+      if (networkInspectorEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        inspectorEvent_ = value;
+        onChanged();
+      } else {
+        networkInspectorEventBuilder_.setMessage(value);
+      }
+      inspectorEventCase_ = 4;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public Builder setNetworkInspectorEvent(
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder builderForValue) {
+      if (networkInspectorEventBuilder_ == null) {
+        inspectorEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        networkInspectorEventBuilder_.setMessage(builderForValue.build());
+      }
+      inspectorEventCase_ = 4;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public Builder mergeNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
+      if (networkInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 4 &&
+            inspectorEvent_ != com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance()) {
+          inspectorEvent_ = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.newBuilder((com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          inspectorEvent_ = value;
+        }
+        onChanged();
+      } else {
+        if (inspectorEventCase_ == 4) {
+          networkInspectorEventBuilder_.mergeFrom(value);
+        }
+        networkInspectorEventBuilder_.setMessage(value);
+      }
+      inspectorEventCase_ = 4;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public Builder clearNetworkInspectorEvent() {
+      if (networkInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 4) {
+          inspectorEventCase_ = 0;
+          inspectorEvent_ = null;
+          onChanged();
+        }
+      } else {
+        if (inspectorEventCase_ == 4) {
+          inspectorEventCase_ = 0;
+          inspectorEvent_ = null;
+        }
+        networkInspectorEventBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder getNetworkInspectorEventBuilder() {
+      return getNetworkInspectorEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
+      if ((inspectorEventCase_ == 4) && (networkInspectorEventBuilder_ != null)) {
+        return networkInspectorEventBuilder_.getMessageOrBuilder();
+      } else {
+        if (inspectorEventCase_ == 4) {
+          return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with the Network inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder> 
+        getNetworkInspectorEventFieldBuilder() {
+      if (networkInspectorEventBuilder_ == null) {
+        if (!(inspectorEventCase_ == 4)) {
+          inspectorEvent_ = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.getDefaultInstance();
+        }
+        networkInspectorEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder>(
+                (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_,
+                getParentForChildren(),
+                isClean());
+        inspectorEvent_ = null;
+      }
+      inspectorEventCase_ = 4;
+      onChanged();;
+      return networkInspectorEventBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder> backgroundTaskInspectorEventBuilder_;
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * @return Whether the backgroundTaskInspectorEvent field is set.
+     */
+    public boolean hasBackgroundTaskInspectorEvent() {
+      return inspectorEventCase_ == 5;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * @return The backgroundTaskInspectorEvent.
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent() {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 5) {
+          return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+      } else {
+        if (inspectorEventCase_ == 5) {
+          return backgroundTaskInspectorEventBuilder_.getMessage();
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public Builder setBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        inspectorEvent_ = value;
+        onChanged();
+      } else {
+        backgroundTaskInspectorEventBuilder_.setMessage(value);
+      }
+      inspectorEventCase_ = 5;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public Builder setBackgroundTaskInspectorEvent(
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder builderForValue) {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        inspectorEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        backgroundTaskInspectorEventBuilder_.setMessage(builderForValue.build());
+      }
+      inspectorEventCase_ = 5;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public Builder mergeBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 5 &&
+            inspectorEvent_ != com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance()) {
+          inspectorEvent_ = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.newBuilder((com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          inspectorEvent_ = value;
+        }
+        onChanged();
+      } else {
+        if (inspectorEventCase_ == 5) {
+          backgroundTaskInspectorEventBuilder_.mergeFrom(value);
+        }
+        backgroundTaskInspectorEventBuilder_.setMessage(value);
+      }
+      inspectorEventCase_ = 5;
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public Builder clearBackgroundTaskInspectorEvent() {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        if (inspectorEventCase_ == 5) {
+          inspectorEventCase_ = 0;
+          inspectorEvent_ = null;
+          onChanged();
+        }
+      } else {
+        if (inspectorEventCase_ == 5) {
+          inspectorEventCase_ = 0;
+          inspectorEvent_ = null;
+        }
+        backgroundTaskInspectorEventBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder getBackgroundTaskInspectorEventBuilder() {
+      return getBackgroundTaskInspectorEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
+      if ((inspectorEventCase_ == 5) && (backgroundTaskInspectorEventBuilder_ != null)) {
+        return backgroundTaskInspectorEventBuilder_.getMessageOrBuilder();
+      } else {
+        if (inspectorEventCase_ == 5) {
+          return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
+        }
+        return com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <pre>
+     * Event associated with the user interacting with background task inspector
+     * </pre>
+     *
+     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder> 
+        getBackgroundTaskInspectorEventFieldBuilder() {
+      if (backgroundTaskInspectorEventBuilder_ == null) {
+        if (!(inspectorEventCase_ == 5)) {
+          inspectorEvent_ = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.getDefaultInstance();
+        }
+        backgroundTaskInspectorEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder>(
+                (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_,
+                getParentForChildren(),
+                isClean());
+        inspectorEvent_ = null;
+      }
+      inspectorEventCase_ = 5;
+      onChanged();;
+      return backgroundTaskInspectorEventBuilder_;
+    }
+
     private int errorKind_ = 0;
     /**
      * <pre>
@@ -10372,7 +14255,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the errorKind field is set.
      */
     public boolean hasErrorKind() {
-      return ((bitField0_ & 0x00000008) != 0);
+      return ((bitField0_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -10400,7 +14283,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
         throw new NullPointerException();
       }
-      bitField0_ |= 0x00000008;
+      bitField0_ |= 0x00000020;
       errorKind_ = value.getNumber();
       onChanged();
       return this;
@@ -10414,7 +14297,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearErrorKind() {
-      bitField0_ = (bitField0_ & ~0x00000008);
+      bitField0_ = (bitField0_ & ~0x00000020);
       errorKind_ = 0;
       onChanged();
       return this;
@@ -10432,7 +14315,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the environmentMetadata field is set.
      */
     public boolean hasEnvironmentMetadata() {
-      return ((bitField0_ & 0x00000010) != 0);
+      return ((bitField0_ & 0x00000040) != 0);
     }
     /**
      * <pre>
@@ -10466,7 +14349,7 @@ private static final long serialVersionUID = 0L;
       } else {
         environmentMetadataBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000040;
       return this;
     }
     /**
@@ -10484,7 +14367,7 @@ private static final long serialVersionUID = 0L;
       } else {
         environmentMetadataBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000040;
       return this;
     }
     /**
@@ -10496,7 +14379,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeEnvironmentMetadata(com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata value) {
       if (environmentMetadataBuilder_ == null) {
-        if (((bitField0_ & 0x00000010) != 0) &&
+        if (((bitField0_ & 0x00000040) != 0) &&
             environmentMetadata_ != null &&
             environmentMetadata_ != com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.getDefaultInstance()) {
           environmentMetadata_ =
@@ -10508,7 +14391,7 @@ private static final long serialVersionUID = 0L;
       } else {
         environmentMetadataBuilder_.mergeFrom(value);
       }
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000040;
       return this;
     }
     /**
@@ -10525,7 +14408,7 @@ private static final long serialVersionUID = 0L;
       } else {
         environmentMetadataBuilder_.clear();
       }
-      bitField0_ = (bitField0_ & ~0x00000010);
+      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
     /**
@@ -10536,7 +14419,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.Builder getEnvironmentMetadataBuilder() {
-      bitField0_ |= 0x00000010;
+      bitField0_ |= 0x00000040;
       onChanged();
       return getEnvironmentMetadataFieldBuilder().getBuilder();
     }

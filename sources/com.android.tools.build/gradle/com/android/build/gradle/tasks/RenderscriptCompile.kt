@@ -47,6 +47,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.IgnoreEmptyDirectories
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
@@ -60,6 +61,7 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.Callable
 import javax.inject.Inject
+import kotlin.math.min
 
 /** Task to compile Renderscript files. Supports incremental update. */
 @CacheableTask
@@ -143,6 +145,7 @@ abstract class RenderscriptCompile : NdkTask() {
     private lateinit var sourceDirs: FileCollection
 
     @InputFiles
+    @IgnoreEmptyDirectories
     @PathSensitive(PathSensitivity.RELATIVE)
     @SkipWhenEmpty
     fun getSourceDirs(): FileCollection {
@@ -176,7 +179,7 @@ abstract class RenderscriptCompile : NdkTask() {
             resDestDir,
             objDestDir,
             libDestDir,
-            targetApi.get(),
+            min(targetApi.get(), 24), // Max api level for renderscript is 24
             optimLevel.get(),
             ndkMode.get(),
             supportMode.get(),

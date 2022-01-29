@@ -141,4 +141,31 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder getSystemOrBuilder();
+
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * @return Whether the gotoDeclaration field is set.
+   */
+  boolean hasGotoDeclaration();
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * @return The gotoDeclaration.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration();
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder();
 }

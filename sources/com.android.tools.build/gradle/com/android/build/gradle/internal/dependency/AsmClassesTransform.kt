@@ -38,11 +38,12 @@ import org.gradle.api.internal.artifacts.ArtifactAttributes.ARTIFACT_FORMAT
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.CompileClasspath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 
 @CacheableTransform
 abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Parameters> {
@@ -108,7 +109,7 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
     @get:InputArtifactDependencies
     abstract val classpath: FileCollection
 
-    @get:Classpath
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:InputArtifact
     abstract val inputArtifact: Provider<FileSystemLocation>
 

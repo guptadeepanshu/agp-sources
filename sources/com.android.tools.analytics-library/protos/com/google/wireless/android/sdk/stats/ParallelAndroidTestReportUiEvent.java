@@ -182,6 +182,16 @@ private static final long serialVersionUID = 0L;
      * <code>TEST_SUITE_RETENTION_VIEW = 8;</code>
      */
     TEST_SUITE_RETENTION_VIEW(8),
+    /**
+     * <pre>
+     * A dialog that is displayed after you click on run button
+     * to promote Android instrumentation test execution using
+     * Gradle from Android Studio. b/190209774.
+     * </pre>
+     *
+     * <code>GRADLE_ANDROID_TEST_RUNNER_OPT_IN_DIALOG = 9;</code>
+     */
+    GRADLE_ANDROID_TEST_RUNNER_OPT_IN_DIALOG(9),
     ;
 
     /**
@@ -220,6 +230,16 @@ private static final long serialVersionUID = 0L;
      * <code>TEST_SUITE_RETENTION_VIEW = 8;</code>
      */
     public static final int TEST_SUITE_RETENTION_VIEW_VALUE = 8;
+    /**
+     * <pre>
+     * A dialog that is displayed after you click on run button
+     * to promote Android instrumentation test execution using
+     * Gradle from Android Studio. b/190209774.
+     * </pre>
+     *
+     * <code>GRADLE_ANDROID_TEST_RUNNER_OPT_IN_DIALOG = 9;</code>
+     */
+    public static final int GRADLE_ANDROID_TEST_RUNNER_OPT_IN_DIALOG_VALUE = 9;
 
 
     public final int getNumber() {
@@ -251,6 +271,7 @@ private static final long serialVersionUID = 0L;
         case 6: return TEST_SUITE_DEVICE_INFO_VIEW;
         case 7: return TEST_SUITE_OPT_IN_BANNER;
         case 8: return TEST_SUITE_RETENTION_VIEW;
+        case 9: return GRADLE_ANDROID_TEST_RUNNER_OPT_IN_DIALOG;
         default: return null;
       }
     }

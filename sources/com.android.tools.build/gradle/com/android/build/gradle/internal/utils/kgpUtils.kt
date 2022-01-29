@@ -74,7 +74,7 @@ fun getProjectKotlinPluginKotlinVersion(project: Project): KotlinVersion? {
     return parseKotlinVersion(currVersion)
 }
 
-private fun parseKotlinVersion(currVersion: String): KotlinVersion? {
+fun parseKotlinVersion(currVersion: String): KotlinVersion? {
     return try {
         val parts = currVersion.split(".")
         val major = parts[0]
@@ -95,7 +95,7 @@ private fun parseKotlinVersion(currVersion: String): KotlinVersion? {
  * returns the kotlin plugin version as string, or null if plugin is not applied to this project, or
  * "unknown" if plugin is applied but version can't be determined.
  */
-private fun getKotlinPluginVersion(project: Project): String? {
+fun getKotlinPluginVersion(project: Project): String? {
     val plugin = project.plugins.findPlugin("kotlin-android") ?: return null
     return try {
         // No null checks below because we're catching all exceptions.
@@ -212,7 +212,6 @@ fun addComposeArgsToKotlinCompile(
         }
         val extraFreeCompilerArgs = mutableListOf(
                 "-Xplugin=${compilerExtension.files.first().absolutePath}",
-                "-XXLanguage:+NonParenthesizedAnnotationsOnFunctionalTypes",
                 "-P", "plugin:androidx.compose.plugins.idea:enabled=true",
                 "-Xallow-unstable-dependencies"
         )

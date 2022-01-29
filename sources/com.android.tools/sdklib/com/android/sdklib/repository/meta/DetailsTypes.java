@@ -51,18 +51,79 @@ public final class DetailsTypes {
          */
         @NonNull
         default AndroidVersion getAndroidVersion() {
-            return new AndroidVersion(getApiLevel(), getCodename());
+            return new AndroidVersion(
+                    getApiLevel(), getCodename(), getExtensionLevel(), isBaseExtension());
         }
 
-        /**
-         * Sets the api level this package corresponds to.
-         */
-        void setApiLevel(int apiLevel);
+        /** Sets the api level this package corresponds to. */
+        default void setApiLevel(int apiLevel) {
+            // Implementation for schema v3 and above.
+            if (isBaseExtension()) {
+                setApiLevelString(String.valueOf(apiLevel));
+            }
+            else {
+                setApiLevelString(apiLevel + "x");
+            }
+        }
 
         /**
          * Gets the api level of this package.
          */
-        int getApiLevel();
+        default int getApiLevel() {
+            // Implementation for schema v3 and above.
+            return getApiLevelInt(getApiLevelString());
+        }
+
+        /**
+         * Only to be used for schema v3 and above.Returns the contents of the api-level tag. This
+         * is an int if it is the base SDK, or an int followed by an 'x' character if the sdk
+         * contains extensions eg. "32x".
+         */
+        default String getApiLevelString() {
+            // Overridden by v3 and shouldn't be used otherwise
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * @Deprecated Use {@link #setApiLevel(int)} instead.
+         */
+        default void setApiLevelString(String apiLevelString) {
+            // Overridden by v3 and shouldn't be used otherwise
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Returns whether the package is the base sdk for this api level.
+         */
+        default boolean isBaseExtension() {
+            // Implementation for schema v1 and v2.
+            return true;
+        }
+
+        /**
+         * Sets whether the package is the base sdk for this api level.
+         */
+        default void setBaseExtension(boolean isBaseExtension) {
+            // Overridden by v3 and shouldn't be used otherwise.
+            throw new UnsupportedOperationException();
+        }
+
+        /**
+         * Gets the extension level of this package.
+         */
+        @Nullable
+        default Integer getExtensionLevel() {
+            // Implementation for schema v1 and v2.
+            return null;
+        }
+
+        /**
+         * Sets the extension level of this package.
+         */
+        default void setExtensionLevel(Integer extensionLevel) {
+            // Overridden by v3 and shouldn't be used otherwise
+            throw new UnsupportedOperationException();
+        }
 
         /**
          * If this is a preview release the api is identified by a codename in addition to the api
@@ -75,6 +136,23 @@ public final class DetailsTypes {
          * null for preview releases.
          */
         String getCodename();
+
+        static int getApiLevelInt(String apiLevel) {
+            if (apiLevel == null) {
+                return 0;
+            }
+            try {
+                if (apiLevel.endsWith("x")) {
+                    return Integer.parseInt(apiLevel.substring(0, apiLevel.length() - 1));
+                }
+                else {
+                    return Integer.parseInt(apiLevel);
+                }
+            }
+            catch (NumberFormatException exception) {
+                return 0;
+            }
+        }
     }
 
     /**
@@ -297,15 +375,37 @@ public final class DetailsTypes {
     /** Gets the path/unique id for the platform of the given {@link AndroidVersion}. */
     @NonNull
     public static String getPlatformPath(@NonNull AndroidVersion version) {
-        return SdkConstants.FD_PLATFORMS + RepoPackage.PATH_SEPARATOR + "android-" +
-                version.getApiString();
+        if (version.isBaseExtension()) {
+            return SdkConstants.FD_PLATFORMS
+                    + RepoPackage.PATH_SEPARATOR
+                    + "android-"
+                    + version.getApiString();
+        } else {
+            return SdkConstants.FD_PLATFORMS
+                    + RepoPackage.PATH_SEPARATOR
+                    + "android-"
+                    + version.getApiString()
+                    + "-ext"
+                    + version.getExtensionLevel();
+        }
     }
 
     /** Gets the path/unique id for the sources of the given {@link AndroidVersion}. */
     @NonNull
     public static String getSourcesPath(@NonNull AndroidVersion version) {
-        return SdkConstants.FD_PKG_SOURCES + RepoPackage.PATH_SEPARATOR + "android-" +
-                version.getApiString();
+        if (version.isBaseExtension()) {
+            return SdkConstants.FD_PKG_SOURCES
+                    + RepoPackage.PATH_SEPARATOR
+                    + "android-"
+                    + version.getApiString();
+        } else {
+            return SdkConstants.FD_PKG_SOURCES
+                    + RepoPackage.PATH_SEPARATOR
+                    + "android-"
+                    + version.getApiString()
+                    + "-ext"
+                    + version.getExtensionLevel();
+        }
     }
 
     /**
@@ -323,15 +423,20 @@ public final class DetailsTypes {
      * Gets the default path/unique id for the given addon
      */
     public static String getAddonPath(IdDisplay vendor, AndroidVersion version, IdDisplay name) {
-        return new StringBuilder().append(SdkConstants.FD_ADDONS)
-                .append(RepoPackage.PATH_SEPARATOR)
-                .append("addon-")
-                .append(name.getId())
-                .append("-")
-                .append(vendor.getId())
-                .append("-")
-                .append(version.getApiString())
-                .toString();
+        StringBuilder pathBuilder =
+                new StringBuilder()
+                        .append(SdkConstants.FD_ADDONS)
+                        .append(RepoPackage.PATH_SEPARATOR)
+                        .append("addon-")
+                        .append(name.getId())
+                        .append("-")
+                        .append(vendor.getId())
+                        .append("-")
+                        .append(version.getApiString());
+        if (!version.isBaseExtension()) {
+            pathBuilder.append("-ext").append(version.getExtensionLevel());
+        }
+        return pathBuilder.toString();
     }
 
     /**
@@ -339,11 +444,16 @@ public final class DetailsTypes {
      */
     public static String getSysImgPath(IdDisplay vendor, AndroidVersion version, IdDisplay name,
             String abi) {
-        return new StringBuilder()
-                .append(SdkConstants.FD_SYSTEM_IMAGES)
-                .append(RepoPackage.PATH_SEPARATOR)
-                .append("android-")
-                .append(version.getApiString())
+        StringBuilder pathBuilder =
+                new StringBuilder()
+                        .append(SdkConstants.FD_SYSTEM_IMAGES)
+                        .append(RepoPackage.PATH_SEPARATOR)
+                        .append("android-")
+                        .append(version.getApiString());
+        if (!version.isBaseExtension()) {
+            pathBuilder.append("-ext").append(version.getExtensionLevel());
+        }
+        return pathBuilder
                 .append(RepoPackage.PATH_SEPARATOR)
                 .append(name.getId())
                 .append(RepoPackage.PATH_SEPARATOR)

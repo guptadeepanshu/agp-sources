@@ -20,6 +20,7 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -40,11 +41,13 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.util.concurrent.Callable
 import java.util.function.Function
 
 // TODO: Make incremental
+@DisableCachingByDefault
 abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -210,7 +213,7 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
             task.apiDirectDependenciesConfiguration = creationConfig
                 .variantDependencies
-                .getElements(AndroidArtifacts.PublishedConfigType.API_ELEMENTS)
+                .getElements(PublishedConfigSpec(AndroidArtifacts.PublishedConfigType.API_ELEMENTS))
 
             task.allDirectDependencies = creationConfig
                 .variantDependencies

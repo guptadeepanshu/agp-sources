@@ -16,15 +16,18 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.Component
 import com.android.build.api.component.UnitTest
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.Component
 import com.android.build.api.variant.ExternalNativeBuild
 import com.android.build.api.variant.ExternalNdkBuildImpl
+import com.android.build.api.variant.HasAndroidTest
+import com.android.build.api.variant.HasTestFixtures
 import com.android.build.api.variant.Packaging
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
@@ -44,7 +47,6 @@ import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.builder.core.DefaultApiVersion
 import com.android.builder.core.VariantType
 import com.google.common.collect.ImmutableList
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -58,7 +60,7 @@ import java.io.Serializable
 abstract class VariantImpl(
     open val variantBuilder: VariantBuilderImpl,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    variantDslInfo: VariantDslInfo<*>,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
@@ -68,6 +70,7 @@ abstract class VariantImpl(
     transformManager: TransformManager,
     variantPropertiesApiServices: VariantPropertiesApiServices,
     taskCreationServices: TaskCreationServices,
+    sdkComponents: SdkComponents,
     globalScope: GlobalScope
 ) : ComponentImpl(
     variantBuilder,
@@ -82,6 +85,7 @@ abstract class VariantImpl(
     transformManager,
     variantPropertiesApiServices,
     taskCreationServices,
+    sdkComponents,
     globalScope
 ), Variant, ConsumableCreationConfig {
 
@@ -89,18 +93,12 @@ abstract class VariantImpl(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
-    override val minSdkVersion: AndroidVersion  by lazy {
-        val apiVersion = variantBuilder.minSdk?.let { DefaultApiVersion(it)}
-            ?: variantBuilder.minSdkPreview?.let { DefaultApiVersion(it) }
-            ?: DefaultApiVersion(1)
-        AndroidVersionImpl(apiVersion.apiLevel, apiVersion.codename)
+    override val minSdkVersion: AndroidVersion by lazy {
+        variantBuilder.minSdkVersion
     }
 
-    override val targetSdkVersion: AndroidVersion  by lazy {
-        val apiVersion = variantBuilder.targetSdk?.let { DefaultApiVersion(it)}
-            ?: variantBuilder.targetSdkPreview?.let { DefaultApiVersion(it) }
-            ?: DefaultApiVersion(1)
-        AndroidVersionImpl(apiVersion.apiLevel, apiVersion.codename)
+    override val targetSdkVersion: AndroidVersion by lazy {
+        variantBuilder.targetSdkVersion
     }
 
     override val maxSdkVersion: Int?
@@ -176,6 +174,9 @@ abstract class VariantImpl(
         variantBuilder.getRegisteredExtensions()
     }
 
+    override val targetSdkVersionOverride: AndroidVersion?
+        get() = variantBuilder.mutableTargetSdk?.sanitize()
+
     override val resValues: MapProperty<ResValue.Key, ResValue> by lazy {
         internalServices.mapPropertyOf(
             ResValue.Key::class.java,
@@ -237,4 +238,19 @@ abstract class VariantImpl(
                     String::class.java,
                     Any::class.java,
                     variantDslInfo.experimentalProperties)
+
+    override val nestedComponents: List<Component>
+        get() = listOfNotNull(
+            unitTest,
+            if (this is HasAndroidTest) {
+                androidTest
+            } else {
+                null
+            },
+            if (this is HasTestFixtures) {
+                testFixtures
+            } else {
+                null
+            }
+        )
 }

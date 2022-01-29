@@ -32,7 +32,6 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.component.impl.ComponentImpl;
-import com.android.build.api.component.impl.TestComponentImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.BuildToolsExecutableInput;
 import com.android.build.gradle.internal.LoggerWrapper;
@@ -40,7 +39,6 @@ import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.SdkComponentsKt;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots;
-import com.android.build.gradle.internal.process.GradleJavaProcessExecutor;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
@@ -66,11 +64,11 @@ import com.android.build.gradle.internal.testing.utp.UtpTestRunner;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.ProjectOptions;
+import com.android.builder.core.VariantType;
 import com.android.builder.model.TestOptions;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
-import com.android.ide.common.process.JavaProcessExecutor;
 import com.android.ide.common.workers.ExecutorServiceAdapter;
 import com.android.utils.FileUtils;
 import com.android.utils.StringHelper;
@@ -114,8 +112,11 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.process.ExecOperations;
+import org.gradle.work.DisableCachingByDefault;
+import org.gradle.workers.WorkerExecutor;
 
 /** Run instrumentation tests for a given variant */
+@DisableCachingByDefault
 public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTask
         implements AndroidTestTask {
 
@@ -132,6 +133,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         @Input
         @Optional
         public abstract Property<Integer> getNumShards();
+
+        @Input
+        public abstract Property<Boolean> getUninstallIncompatibleApks();
 
         @Input
         public abstract Property<TestOptions.Execution> getExecutionEnum();
@@ -178,12 +182,11 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         public abstract BuildToolsExecutableInput getBuildTools();
 
         TestRunner createTestRunner(
+                WorkerExecutor workerExecutor,
                 ExecutorServiceAdapter executorServiceAdapter,
                 @Nullable UtpTestResultListener utpTestResultListener) {
             GradleProcessExecutor gradleProcessExecutor =
                     new GradleProcessExecutor(getExecOperations()::exec);
-            JavaProcessExecutor javaProcessExecutor =
-                    new GradleJavaProcessExecutor(getExecOperations()::javaexec);
 
             if (getUnifiedTestPlatform().get()) {
                 boolean useOrchestrator =
@@ -192,7 +195,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                 return new UtpTestRunner(
                         getBuildTools().splitSelectExecutable().getOrNull(),
                         gradleProcessExecutor,
-                        javaProcessExecutor,
+                        workerExecutor,
                         executorServiceAdapter,
                         getUtpDependencies(),
                         getSdkBuildService()
@@ -202,6 +205,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                         getBuildTools().getBuildToolsRevision()),
                         getRetentionConfig().get(),
                         useOrchestrator,
+                        getUninstallIncompatibleApks().get(),
                         utpTestResultListener);
             } else {
                 switch (getExecutionEnum().get()) {
@@ -331,6 +335,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                 TestRunner testRunner =
                                         getTestRunnerFactory()
                                                 .createTestRunner(
+                                                        getWorkerExecutor(),
                                                         getExecutorServiceAdapter(),
                                                         utpTestResultListener);
                                 Collection<String> extraArgs =
@@ -682,11 +687,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .on(InternalArtifactType.DEVICE_PROVIDER_CODE_COVERAGE.INSTANCE);
             }
 
-            if (creationConfig instanceof TestComponentImpl) {
+            if (creationConfig.getVariantType().isForTesting()) {
                 if (type == Type.INTERNAL_CONNECTED_DEVICE_PROVIDER) {
                     creationConfig.getTaskContainer().setConnectedTestTask(taskProvider);
-                    // possible redundant with setConnectedTestTask?
-                    creationConfig.getTaskContainer().setConnectedTask(taskProvider);
                 } else {
                     creationConfig.getTaskContainer().getProviderTestTaskList().add(taskProvider);
                 }
@@ -704,6 +707,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             // this can be null for test plugin
             VariantCreationConfig testedConfig = creationConfig.getTestedConfig();
 
+            VariantType variantType =
+                    testedConfig != null
+                            ? testedConfig.getVariantType()
+                            : creationConfig.getVariantType();
             String variantName =
                     testedConfig != null ? testedConfig.getName() : creationConfig.getName();
             if (type == Type.INTERNAL_CONNECTED_DEVICE_PROVIDER) {
@@ -759,7 +766,8 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .getConnectedCheckDeviceSerials()
                         .set(connectedCheckTargetSerials);
             }
-            boolean useUtp = shouldEnableUtp(projectOptions, extension.getTestOptions());
+            boolean useUtp =
+                    shouldEnableUtp(projectOptions, extension.getTestOptions(), variantType);
             task.getTestRunnerFactory().getUnifiedTestPlatform().set(useUtp);
             if (useUtp) {
                 if (!projectOptions.get(BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM)) {
@@ -779,6 +787,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             }
 
             task.getTestRunnerFactory()
+                    .getUninstallIncompatibleApks()
+                    .set(projectOptions.get(BooleanOption.UNINSTALL_INCOMPATIBLE_APKS));
+
+            task.getTestRunnerFactory()
                     .getRetentionConfig()
                     .set(
                             createRetentionConfig(
@@ -788,13 +800,21 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
             task.getCodeCoverageEnabled()
                     .set(creationConfig.getVariantDslInfo().isTestCoverageEnabled());
+            boolean useJacocoTransformOutputs =
+                    creationConfig
+                                    .getServices()
+                                    .getProjectOptions()
+                                    .get(BooleanOption.ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION)
+                            && creationConfig.getVariantDslInfo().isTestCoverageEnabled();
             task.dependencies =
                     creationConfig
                             .getVariantDependencies()
                             .getArtifactCollection(
                                     AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                                     AndroidArtifacts.ArtifactScope.EXTERNAL,
-                                    AndroidArtifacts.ArtifactType.CLASSES_JAR);
+                                    useJacocoTransformOutputs
+                                            ? AndroidArtifacts.ArtifactType.JACOCO_CLASSES_JAR
+                                            : AndroidArtifacts.ArtifactType.CLASSES_JAR);
 
             String flavorFolder = testData.getFlavorName().get();
             if (!flavorFolder.isEmpty()) {

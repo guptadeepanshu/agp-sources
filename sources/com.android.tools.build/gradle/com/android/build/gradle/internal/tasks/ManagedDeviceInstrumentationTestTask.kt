@@ -25,8 +25,8 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.computeAvdName
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
-import com.android.build.gradle.internal.process.GradleJavaProcessExecutor
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.test.AbstractTestDataImpl
@@ -45,6 +45,7 @@ import com.android.build.gradle.internal.testing.utp.resolveDependencies
 import com.android.build.gradle.internal.testing.utp.shouldEnableUtp
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.IntegerOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.BuilderConstants.FD_FLAVORS
 import com.android.builder.core.BuilderConstants.FD_REPORTS
@@ -54,7 +55,6 @@ import com.android.builder.model.TestOptions
 import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
-import org.gradle.api.Action
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.artifacts.ArtifactCollection
@@ -74,15 +74,15 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.options.Option
 import org.gradle.internal.logging.ConsoleRenderer
-import org.gradle.process.ExecOperations
-import org.gradle.process.JavaExecSpec
 import java.io.File
-import java.util.function.Function
-import javax.inject.Inject
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
+import org.gradle.workers.WorkerExecutor
 
 /**
  * Runs instrumentation tests of a variant on a device defined in the DSL.
  */
+@DisableCachingByDefault
 abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), AndroidTestTask {
 
     abstract class TestRunnerFactory {
@@ -101,24 +101,17 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
         @get: Input
         abstract val buildToolsRevision: Property<Revision>
 
+        @get: Input
+        @get: Optional
+        abstract val testShardsSize: Property<Int>
+
         @get: Internal
         abstract val sdkBuildService: Property<SdkComponentsBuildService>
 
         @get: Nested
         abstract val utpDependencies: UtpDependencies
 
-        @Inject
-        open fun getExecOperations(): ExecOperations {
-            throw UnsupportedOperationException("Injected by Gradle.")
-        }
-
-        fun createTestRunner(): ManagedDeviceTestRunner {
-            val javaProcessExecutor =
-                GradleJavaProcessExecutor(
-                        Function { action: Action<in JavaExecSpec?>? ->
-                            getExecOperations().javaexec(action)
-                        }
-                )
+        fun createTestRunner(workerExecutor: WorkerExecutor): ManagedDeviceTestRunner {
 
             Preconditions.checkArgument(
                     unifiedTestPlatform.get(),
@@ -131,12 +124,13 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
             }
 
             return ManagedDeviceTestRunner(
-                    javaProcessExecutor,
-                    utpDependencies,
-                    sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
-                    retentionConfig.get(),
-                    useOrchestrator)
-
+                workerExecutor,
+                utpDependencies,
+                sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
+                retentionConfig.get(),
+                useOrchestrator,
+                testShardsSize.getOrNull()
+            )
         }
     }
 
@@ -203,6 +197,9 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
     @OutputDirectory
     abstract fun getReportsDir(): DirectoryProperty
 
+    @OutputDirectory
+    abstract fun getCoverageDirectory(): DirectoryProperty
+
     override fun doTaskAction() {
         val emulatorProvider = avdComponents.get().emulatorDirectory
         Preconditions.checkArgument(
@@ -226,15 +223,19 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
         val resultsOutDir = resultsDir.get().asFile
         FileUtils.cleanOutputDir(resultsOutDir)
 
+        val codeCoverageOutDir = getCoverageDirectory().get().asFile
+        FileUtils.cleanOutputDir(codeCoverageOutDir)
+
         val success = if (!testsFound()) {
             logger.info("No tests found, nothing to do.")
             true
         } else {
             try {
-                val runner = testRunnerFactory.createTestRunner()
+                val runner = testRunnerFactory.createTestRunner(workerExecutor)
                 runner.runTests(
                         managedDevice,
                         resultsOutDir,
+                        codeCoverageOutDir,
                         projectName,
                         testData.get().flavorName.get(),
                         testData.get().getAsStaticData(),
@@ -295,6 +296,17 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
 
         override val type = ManagedDeviceInstrumentationTestTask::class.java
 
+        override fun handleProvider(taskProvider: TaskProvider<ManagedDeviceInstrumentationTestTask>) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts
+                .setInitialProvider(
+                    taskProvider,
+                    ManagedDeviceInstrumentationTestTask::getCoverageDirectory)
+                .withName(BuilderConstants.MANAGED_DEVICE)
+                .on(InternalArtifactType.MANAGED_DEVICE_CODE_COVERAGE)
+        }
+
         override fun configure(task: ManagedDeviceInstrumentationTestTask) {
             super.configure(task)
 
@@ -332,10 +344,14 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                     getBuildService(
                             creationConfig.services.buildServiceRegistry,
                             SdkComponentsBuildService::class.java))
+            task.testRunnerFactory.testShardsSize.setDisallowChanges(
+                projectOptions.get(IntegerOption.MANAGED_DEVICE_SHARD_POOL_SIZE)
+            )
 
             val executionEnum = extension.testOptions.getExecutionEnum()
             task.testRunnerFactory.executionEnum.setDisallowChanges(executionEnum)
-            val useUtp = shouldEnableUtp(projectOptions,extension.testOptions)
+            val useUtp = shouldEnableUtp(projectOptions,extension.testOptions,
+                                         testedConfig?.variantType)
             task.testRunnerFactory.unifiedTestPlatform.setDisallowChanges(useUtp)
 
             if (useUtp) {

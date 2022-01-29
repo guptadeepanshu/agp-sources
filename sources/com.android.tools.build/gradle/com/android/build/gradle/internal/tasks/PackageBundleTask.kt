@@ -55,6 +55,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.io.Serializable
 import java.nio.file.Path
@@ -62,6 +63,7 @@ import java.nio.file.Path
 /**
  * Task that generates the bundle (.aab) with all the modules.
  */
+@DisableCachingByDefault
 abstract class PackageBundleTask : NonIncrementalTask() {
 
     // Android Gradle plugin supports two kinds of bundle:
@@ -526,7 +528,7 @@ abstract class PackageBundleTask : NonIncrementalTask() {
 
             task.abiFilters.setDisallowChanges(creationConfig.variantDslInfo.supportedAbis)
 
-            task.aaptOptionsNoCompress.setDisallowChanges(creationConfig.globalScope.extension.aaptOptions.noCompress)
+            task.aaptOptionsNoCompress.setDisallowChanges(creationConfig.services.projectInfo.getExtension().aaptOptions.noCompress)
 
             task.bundleOptions =
                 ((creationConfig.globalScope.extension as BaseAppModuleExtension).bundle).convert()
@@ -568,9 +570,14 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 task.appMetadata
             )
 
-            creationConfig.artifacts.setTaskInputToFinalProduct(
-                InternalArtifactType.BINARY_ART_PROFILE,
-                task.binaryArtProfile)
+            if (creationConfig.services.projectOptions[BooleanOption.ENABLE_ART_PROFILES]
+                && !creationConfig.debuggable) {
+                creationConfig.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.BINARY_ART_PROFILE,
+                    task.binaryArtProfile
+                )
+            }
+            task.binaryArtProfile.disallowChanges()
         }
     }
 }

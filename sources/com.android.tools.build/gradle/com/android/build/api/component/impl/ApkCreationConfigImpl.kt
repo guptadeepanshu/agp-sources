@@ -17,17 +17,20 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.impl.AndroidVersionImpl
+import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.options.ProjectOptions
+import com.android.sdklib.AndroidVersion.VersionCodes
+import kotlin.math.max
 
 open class ApkCreationConfigImpl(
     override val config: ApkCreationConfig,
     projectOptions: ProjectOptions,
     globalScope: GlobalScope,
-    dslInfo: VariantDslInfo
+    dslInfo: VariantDslInfo<*>
 ): ConsumableCreationConfigImpl(config, projectOptions, globalScope, dslInfo) {
 
     val isDebuggable = variantDslInfo.isDebuggable
@@ -43,25 +46,24 @@ open class ApkCreationConfigImpl(
         }
 
     /**
-     * Returns the minimum SDK version for this variant, potentially overridden by a property passed
-     * by the IDE.
+     * Returns the minimum SDK version which we want to use for dexing.
+     * In most cases this will be equal the minSdkVersion, but when the IDE is deploying to:
+     * - device running API 24+, the min sdk version for dexing is max(24, minSdkVersion)
+     * - device running API 23-, the min sdk version for dexing is minSdkVersion
+     * - there is no device, the min sdk version for dexing is minSdkVersion
+     * It is used to enable some optimizations to build the APK faster.
      *
-     * @see .getMinSdkVersion
+     * This has no relation with targetSdkVersion from build.gradle/manifest.
      */
-    override val minSdkVersionWithTargetDeviceApi: AndroidVersion
+    override val minSdkVersionForDexing: AndroidVersion
         get() {
-            val targetApiLevel = variantDslInfo.minSdkVersionFromIDE
-            return if (targetApiLevel != null && config.isMultiDexEnabled && isDebuggable) {
-                // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is
-                // debuggable.
-                val minVersion: Int =
-                        if (config.targetSdkVersion.apiLevel > 1) Integer.min(
-                                config.targetSdkVersion.apiLevel,
-                                targetApiLevel
-                        ) else targetApiLevel
-                AndroidVersionImpl(minVersion)
-            } else {
-                config.minSdkVersion
-            }
+            val targetDeployApiFromIDE = variantDslInfo.targetDeployApiFromIDE ?: 1
+
+            val minForDexing = if (targetDeployApiFromIDE >= VersionCodes.N) {
+                    max(24, config.minSdkVersion.getFeatureLevel())
+                } else {
+                    config.minSdkVersion.getFeatureLevel()
+                }
+            return AndroidVersionImpl(minForDexing)
         }
 }

@@ -15,6 +15,7 @@
  */
 package com.android.builder.model.v2.ide
 
+import com.android.builder.model.v2.ModelSyncFile
 import com.android.builder.model.v2.AndroidModel
 import java.io.File
 
@@ -35,9 +36,11 @@ interface AndroidArtifact : BaseArtifact, AndroidModel {
     val minSdkVersion: ApiVersion
 
     /**
-     * The target SDK version of this artifact
+     * The target SDK version override. If null, there is no override and the value may
+     * be coming from the manifest(s) if present there.
+     * If not null, this is the final resolved value.
      */
-    val targetSdkVersion: ApiVersion
+    val targetSdkVersionOverride: ApiVersion?
 
     /**
      * The max SDK version of this artifact, or null if not set

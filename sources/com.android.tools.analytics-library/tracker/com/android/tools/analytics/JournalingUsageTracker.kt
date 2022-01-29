@@ -59,225 +59,225 @@ class JournalingUsageTracker
  * @param scheduler     used for scheduling writing logs and closing & starting new files on
  * timeout/size limits.
  */
-(
-  /** Gets the scheduler used by this tracker.  */
-  val scheduler: ScheduledExecutorService,
-  private val spoolLocation: Path) : UsageTrackerWriter() {
-  private val gate = Any()
-  private var lock: FileLock? = null
-  private var channel: FileChannel? = null
-  private var outputStream: OutputStream? = null
-  private var currentLogCount = 0
-  private var journalTimeout: ScheduledFuture<*>? = null
-  private var scheduleVersion = 0
-  @Volatile
-  private var state = State.Open
-  private val pendingEvents: Queue<ClientAnalytics.LogEvent.Builder> = ConcurrentLinkedQueue<ClientAnalytics.LogEvent.Builder>()
-  private val quietFlushRunnable = Runnable {
-    try {
-      flush()
-    } catch (ignored: IOException) {
-    }
-  }
+    (
+    /** Gets the scheduler used by this tracker.  */
+    val scheduler: ScheduledExecutorService,
+    private val spoolLocation: Path
+) : UsageTrackerWriter() {
 
-  private enum class State {
-    Open,
-    Closed,
-    Broken
-  }
+    private val gate = Any()
+    private var lock: FileLock? = null
+    private var channel: FileChannel? = null
+    private var outputStream: OutputStream? = null
+    private var currentLogCount = 0
+    private var journalTimeout: ScheduledFuture<*>? = null
+    private var scheduleVersion = 0
 
-  init {
-    try {
-      newTrackFile()
-    }
-    catch (e: IOException) {
-      throw RuntimeException("Unable to initialize first usage tracking spool file", e)
-    }
-  }
-
-  /**
-   * Creates a new track file with a guid name (for uniqueness) and locks it for writing.
-   */
-  @Throws(IOException::class)
-  private fun newTrackFile() {
-    val spoolFile = Paths.get(spoolLocation.toString(), UUID.randomUUID().toString() + ".trk")
-    Files.createDirectories(spoolFile.parent)
-
-    channel = FileChannel.open(spoolFile, StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.DSYNC)
-    outputStream = Channels.newOutputStream(channel!!)
-
-    try {
-      lock = channel!!.tryLock()
-    }
-    catch (e: OverlappingFileLockException) {
-      closeTrackFile()
-      throw IOException("Unable to lock usage tracking spool file", e)
-    }
-
-    if (lock == null) {
-      closeTrackFile()
-      throw IOException("Unable to lock usage tracking spool file, file already locked")
-    }
-    currentLogCount = 0
-  }
-
-  /**
-   * Closes the track file currently open for writing.
-   */
-  @Throws(IOException::class)
-  private fun closeTrackFile() {
-    var ex: IOException? = null
-
-    try {
-        lock?.release()
-    }
-    catch (e: IOException) {
-      ex = e
-    }
-
-    lock = null
-
-    try {
-        channel?.close()
-    }
-    catch (e: IOException) {
-      if (ex == null) {
-        ex = e
-      }
-      else {
-        ex.addSuppressed(e)
-      }
-    }
-
-    channel = null
-
-    try {
-      outputStream?.close()
-    }
-    catch (e: IOException) {
-      if (ex == null) {
-        ex = e
-      }
-      else {
-        ex.addSuppressed(e)
-      }
-    }
-
-    outputStream = null
-
-    // Rethrow first encountered exception, if any.
-    if (ex != null) {
-      throw ex
-    }
-  }
-
-  override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {
-    if (state != State.Open) {
-      return
-    }
-    pendingEvents.add(logEvent)
-    scheduler.submit(quietFlushRunnable)
-  }
-
-  /**
-   * Writes any pending events to the currently open file.
-   *
-   * @throws IOException on failure, and the UsageTracker will be closed in those cases.
-   */
-  override fun flush() {
-    while (true) {
-      synchronized(gate) {
-        val logEvent = pendingEvents.poll() ?: return
-        if (state != State.Open) {
-          return
-        }
+    @Volatile
+    private var state = State.Open
+    private val pendingEvents: Queue<ClientAnalytics.LogEvent.Builder> =
+        ConcurrentLinkedQueue<ClientAnalytics.LogEvent.Builder>()
+    private val quietFlushRunnable = Runnable {
         try {
-          logEvent.build().writeDelimitedTo(outputStream!!)
+            flush()
+        } catch (ignored: IOException) {
         }
-        catch (exception: IOException) {
-          closeAsBroken()
-          throw IOException("Failed to write log event", exception)
+    }
+
+    private enum class State {
+        Open,
+        Closed,
+        Broken
+    }
+
+    init {
+        try {
+            newTrackFile()
+        } catch (e: IOException) {
+            throw RuntimeException("Unable to initialize first usage tracking spool file", e)
+        }
+    }
+
+    /**
+     * Creates a new track file with a guid name (for uniqueness) and locks it for writing.
+     */
+    @Throws(IOException::class)
+    private fun newTrackFile() {
+        val spoolFile = Paths.get(spoolLocation.toString(), UUID.randomUUID().toString() + ".trk")
+        Files.createDirectories(spoolFile.parent)
+
+        channel =
+            FileChannel.open(
+                spoolFile,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.CREATE,
+                StandardOpenOption.DSYNC
+            )
+        outputStream = Channels.newOutputStream(channel!!)
+
+        try {
+            lock = channel!!.tryLock()
+        } catch (e: OverlappingFileLockException) {
+            closeTrackFile()
+            throw IOException("Unable to lock usage tracking spool file", e)
         }
 
-        currentLogCount++
-        if (UsageTracker.maxJournalSize in 1..currentLogCount) {
-          switchTrackFile()
-          if (journalTimeout != null) {
-            // Reset the max journal time as we just reset the logs.
-            scheduleJournalTimeout(UsageTracker.maxJournalTime)
-          }
+        if (lock == null) {
+            closeTrackFile()
+            throw IOException("Unable to lock usage tracking spool file, file already locked")
         }
-      }
-    }
-  }
-
-  private fun closeAsBroken() {
-    try {
-      close()
-    }
-    catch (ignored: Exception) {
+        currentLogCount = 0
     }
 
-    state = State.Broken
-  }
+    /**
+     * Closes the track file currently open for writing.
+     */
+    @Throws(IOException::class)
+    private fun closeTrackFile() {
+        var ex: IOException? = null
 
-  /**
-   * Closes the trackfile currently used for writing and creates a brand new one and opens that
-   * one for writing.
-   * <br></br>
-   * @return `true` when succeeds, otherwise `false`. If there was an error during the switch,
-   * JournalingUsageTracker is left in `Broken` state and stops logging/reporting any new events.
-   */
-  private fun switchTrackFile(): Boolean {
-    try {
-      closeTrackFile()
-      newTrackFile()
-      return true
-    }
-    catch (e: IOException) {
-      closeAsBroken()
-      return false
-    }
+        try {
+            lock?.release()
+        } catch (e: IOException) {
+            ex = e
+        }
 
-  }
+        lock = null
 
-  /**
-   * Closes the UsageTracker (closes current tracker file, disables scheduling of timeout,
-   * drops any pending logs and disables new logs from being posted).
-   */
-  @Throws(Exception::class)
-  override fun close() {
-    synchronized(gate) {
-      state = State.Closed
-      this.journalTimeout?.cancel(false)
-      closeTrackFile()
-    }
-  }
-
-
-  /**
-   * Schedules a timeout at which point the journal will be
-   */
-  override fun scheduleJournalTimeout(maxJournalTime: Long) {
-    val currentScheduleVersion = ++scheduleVersion
-      journalTimeout?.cancel(false)
-    journalTimeout = scheduler
-      .schedule(
-        {
-          synchronized(gate) {
-            if (state != State.Open) {
-              return@schedule
+        try {
+            channel?.close()
+        } catch (e: IOException) {
+            if (ex == null) {
+                ex = e
+            } else {
+                ex.addSuppressed(e)
             }
-            if (currentLogCount > 0) {
-              switchTrackFile()
+        }
+
+        channel = null
+
+        try {
+            outputStream?.close()
+        } catch (e: IOException) {
+            if (ex == null) {
+                ex = e
+            } else {
+                ex.addSuppressed(e)
             }
-            // only schedule next beat if we're still the authority.
-            if (scheduleVersion == currentScheduleVersion) {
-              scheduleJournalTimeout(maxJournalTime)
+        }
+
+        outputStream = null
+
+        // Rethrow first encountered exception, if any.
+        if (ex != null) {
+            throw ex
+        }
+    }
+
+    override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {
+        if (state != State.Open) {
+            return
+        }
+        pendingEvents.add(logEvent)
+        scheduler.submit(quietFlushRunnable)
+    }
+
+    /**
+     * Writes any pending events to the currently open file.
+     *
+     * @throws IOException on failure, and the UsageTracker will be closed in those cases.
+     */
+    override fun flush() {
+        while (true) {
+            synchronized(gate) {
+                val logEvent = pendingEvents.poll() ?: return
+                if (state != State.Open) {
+                    return
+                }
+                try {
+                    logEvent.build().writeDelimitedTo(outputStream!!)
+                } catch (exception: IOException) {
+                    closeAsBroken()
+                    throw IOException("Failed to write log event", exception)
+                }
+
+                currentLogCount++
+                if (UsageTracker.maxJournalSize in 1..currentLogCount) {
+                    switchTrackFile()
+                    if (journalTimeout != null) {
+                        // Reset the max journal time as we just reset the logs.
+                        scheduleJournalTimeout(UsageTracker.maxJournalTime)
+                    }
+                }
             }
-          }
-        },
-        maxJournalTime,
-        TimeUnit.NANOSECONDS)
-  }
+        }
+    }
+
+    private fun closeAsBroken() {
+        try {
+            close()
+        } catch (ignored: Exception) {
+        }
+
+        state = State.Broken
+    }
+
+    /**
+     * Closes the trackfile currently used for writing and creates a brand new one and opens that
+     * one for writing.
+     * <br></br>
+     * @return `true` when succeeds, otherwise `false`. If there was an error during the switch,
+     * JournalingUsageTracker is left in `Broken` state and stops logging/reporting any new events.
+     */
+    private fun switchTrackFile(): Boolean {
+        try {
+            closeTrackFile()
+            newTrackFile()
+            return true
+        } catch (e: IOException) {
+            closeAsBroken()
+            return false
+        }
+
+    }
+
+    /**
+     * Closes the UsageTracker (closes current tracker file, disables scheduling of timeout,
+     * drops any pending logs and disables new logs from being posted).
+     */
+    @Throws(Exception::class)
+    override fun close() {
+        synchronized(gate) {
+            state = State.Closed
+            this.journalTimeout?.cancel(false)
+            closeTrackFile()
+        }
+    }
+
+    /**
+     * Schedules a timeout at which point the journal will be
+     */
+    override fun scheduleJournalTimeout(maxJournalTime: Long) {
+        val currentScheduleVersion = ++scheduleVersion
+        journalTimeout?.cancel(false)
+        journalTimeout = scheduler
+            .schedule(
+                {
+                    synchronized(gate) {
+                        if (state != State.Open) {
+                            return@schedule
+                        }
+                        if (currentLogCount > 0) {
+                            switchTrackFile()
+                        }
+                        // only schedule next beat if we're still the authority.
+                        if (scheduleVersion == currentScheduleVersion) {
+                            scheduleJournalTimeout(maxJournalTime)
+                        }
+                    }
+                },
+                maxJournalTime,
+                TimeUnit.NANOSECONDS
+            )
+    }
 }

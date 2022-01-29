@@ -30,6 +30,7 @@ private static final long serialVersionUID = 0L;
     deviceType_ = 0;
     buildApiLevelFull_ = "";
     mdnsConnectionType_ = 0;
+    characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
 
   @java.lang.Override
@@ -146,6 +147,15 @@ private static final long serialVersionUID = 0L;
             }
             break;
           }
+          case 98: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            if (!((mutable_bitField0_ & 0x00000800) != 0)) {
+              characteristics_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField0_ |= 0x00000800;
+            }
+            characteristics_.add(bs);
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -161,6 +171,9 @@ private static final long serialVersionUID = 0L;
       throw new com.google.protobuf.InvalidProtocolBufferException(
           e).setUnfinishedMessage(this);
     } finally {
+      if (((mutable_bitField0_ & 0x00000800) != 0)) {
+        characteristics_ = characteristics_.getUnmodifiableView();
+      }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
     }
@@ -1147,6 +1160,57 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.UNKNOWN_MDNS_CONNECTION_TYPE : result;
   }
 
+  public static final int CHARACTERISTICS_FIELD_NUMBER = 12;
+  private com.google.protobuf.LazyStringList characteristics_;
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @return A list containing the characteristics.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getCharacteristicsList() {
+    return characteristics_;
+  }
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @return The count of characteristics.
+   */
+  public int getCharacteristicsCount() {
+    return characteristics_.size();
+  }
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @param index The index of the element to return.
+   * @return The characteristics at the given index.
+   */
+  public java.lang.String getCharacteristics(int index) {
+    return characteristics_.get(index);
+  }
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the characteristics at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getCharacteristicsBytes(int index) {
+    return characteristics_.getByteString(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1194,6 +1258,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000400) != 0)) {
       output.writeEnum(11, mdnsConnectionType_);
     }
+    for (int i = 0; i < characteristics_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 12, characteristics_.getRaw(i));
+    }
     unknownFields.writeTo(output);
   }
 
@@ -1239,6 +1306,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000400) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(11, mdnsConnectionType_);
+    }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < characteristics_.size(); i++) {
+        dataSize += computeStringSizeNoTag(characteristics_.getRaw(i));
+      }
+      size += dataSize;
+      size += 1 * getCharacteristicsList().size();
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1307,6 +1382,8 @@ private static final long serialVersionUID = 0L;
     if (hasMdnsConnectionType()) {
       if (mdnsConnectionType_ != other.mdnsConnectionType_) return false;
     }
+    if (!getCharacteristicsList()
+        .equals(other.getCharacteristicsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1361,6 +1438,10 @@ private static final long serialVersionUID = 0L;
     if (hasMdnsConnectionType()) {
       hash = (37 * hash) + MDNS_CONNECTION_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + mdnsConnectionType_;
+    }
+    if (getCharacteristicsCount() > 0) {
+      hash = (37 * hash) + CHARACTERISTICS_FIELD_NUMBER;
+      hash = (53 * hash) + getCharacteristicsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1521,6 +1602,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000200);
       mdnsConnectionType_ = 0;
       bitField0_ = (bitField0_ & ~0x00000400);
+      characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000800);
       return this;
     }
 
@@ -1593,6 +1676,11 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000400;
       }
       result.mdnsConnectionType_ = mdnsConnectionType_;
+      if (((bitField0_ & 0x00000800) != 0)) {
+        characteristics_ = characteristics_.getUnmodifiableView();
+        bitField0_ = (bitField0_ & ~0x00000800);
+      }
+      result.characteristics_ = characteristics_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1688,6 +1776,16 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasMdnsConnectionType()) {
         setMdnsConnectionType(other.getMdnsConnectionType());
+      }
+      if (!other.characteristics_.isEmpty()) {
+        if (characteristics_.isEmpty()) {
+          characteristics_ = other.characteristics_;
+          bitField0_ = (bitField0_ & ~0x00000800);
+        } else {
+          ensureCharacteristicsIsMutable();
+          characteristics_.addAll(other.characteristics_);
+        }
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -2710,6 +2808,151 @@ private static final long serialVersionUID = 0L;
     public Builder clearMdnsConnectionType() {
       bitField0_ = (bitField0_ & ~0x00000400);
       mdnsConnectionType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.LazyStringList characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureCharacteristicsIsMutable() {
+      if (!((bitField0_ & 0x00000800) != 0)) {
+        characteristics_ = new com.google.protobuf.LazyStringArrayList(characteristics_);
+        bitField0_ |= 0x00000800;
+       }
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @return A list containing the characteristics.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getCharacteristicsList() {
+      return characteristics_.getUnmodifiableView();
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @return The count of characteristics.
+     */
+    public int getCharacteristicsCount() {
+      return characteristics_.size();
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param index The index of the element to return.
+     * @return The characteristics at the given index.
+     */
+    public java.lang.String getCharacteristics(int index) {
+      return characteristics_.get(index);
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the characteristics at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getCharacteristicsBytes(int index) {
+      return characteristics_.getByteString(index);
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param index The index to set the value at.
+     * @param value The characteristics to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCharacteristics(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureCharacteristicsIsMutable();
+      characteristics_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param value The characteristics to add.
+     * @return This builder for chaining.
+     */
+    public Builder addCharacteristics(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureCharacteristicsIsMutable();
+      characteristics_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param values The characteristics to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllCharacteristics(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureCharacteristicsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, characteristics_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCharacteristics() {
+      characteristics_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField0_ = (bitField0_ & ~0x00000800);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set of characteristics obtained from "ro.build.characteristics" property
+     * </pre>
+     *
+     * <code>repeated string characteristics = 12;</code>
+     * @param value The bytes of the characteristics to add.
+     * @return This builder for chaining.
+     */
+    public Builder addCharacteristicsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureCharacteristicsIsMutable();
+      characteristics_.add(value);
       onChanged();
       return this;
     }

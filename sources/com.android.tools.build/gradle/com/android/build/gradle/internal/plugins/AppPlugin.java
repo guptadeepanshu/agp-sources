@@ -21,9 +21,9 @@ import com.android.build.api.component.impl.TestComponentImpl;
 import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.dsl.ApplicationExtension;
 import com.android.build.api.dsl.SdkComponents;
-import com.android.build.api.extension.AndroidComponentsExtension;
 import com.android.build.api.extension.impl.ApplicationAndroidComponentsExtensionImpl;
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.AndroidComponentsExtension;
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension;
 import com.android.build.api.variant.ApplicationVariant;
 import com.android.build.api.variant.ApplicationVariantBuilder;
@@ -64,6 +64,7 @@ import org.jetbrains.annotations.NotNull;
 /** Gradle plugin class for 'application' projects, applied on the base application module */
 public class AppPlugin
         extends AbstractAppPlugin<
+                com.android.build.api.dsl.ApplicationExtension,
                 ApplicationAndroidComponentsExtension,
                 ApplicationVariantBuilderImpl,
                 ApplicationVariantImpl> {
@@ -155,8 +156,7 @@ public class AppPlugin
     public abstract static class ApplicationAndroidComponentsExtensionImplCompat
             extends ApplicationAndroidComponentsExtensionImpl
             implements AndroidComponentsExtension<
-                            ApplicationExtension, ApplicationVariantBuilder, ApplicationVariant>,
-                    com.android.build.api.extension.ApplicationAndroidComponentsExtension {
+                    ApplicationExtension, ApplicationVariantBuilder, ApplicationVariant> {
 
         public ApplicationAndroidComponentsExtensionImplCompat(
                 @NotNull DslServices dslServices,
@@ -178,7 +178,7 @@ public class AppPlugin
             @NonNull DslServices dslServices,
             @NonNull
                     VariantApiOperationsRegistrar<
-                            com.android.build.api.dsl.CommonExtension<?, ?, ?, ?>,
+                            com.android.build.api.dsl.ApplicationExtension,
                             ApplicationVariantBuilderImpl,
                             ApplicationVariantImpl>
                         variantApiOperationsRegistrar) {
@@ -189,7 +189,8 @@ public class AppPlugin
                         project.provider(getExtension()::getCompileSdkVersion),
                         project.provider(getExtension()::getBuildToolsRevision),
                         project.provider(getExtension()::getNdkVersion),
-                        project.provider(getExtension()::getNdkPath));
+                        project.provider(getExtension()::getNdkPath),
+                        project.provider(globalScope::getBootClasspath));
 
         // register under the new interface for kotlin, groovy will find both the old and new
         // interfaces through the implementation class.
@@ -204,16 +205,6 @@ public class AppPlugin
                                 sdkComponents,
                                 variantApiOperationsRegistrar,
                                 getExtension());
-
-        // register the same extension under a different name with the deprecated extension type.
-        // this will allow plugins that use getByType() API to retrieve the old interface and keep
-        // binary compatibility. This will become obsolete once old extension packages are removed.
-        project.getExtensions()
-                .add(
-                        com.android.build.api.extension.ApplicationAndroidComponentsExtension.class,
-                        "androidComponents_compat_by_type",
-                        (com.android.build.api.extension.ApplicationAndroidComponentsExtension)
-                                extension);
 
         return extension;
     }

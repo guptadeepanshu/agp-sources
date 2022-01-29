@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.FN_CLASSES_JAR
-import com.android.build.api.transform.QualifiedContent
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.databinding.DataBindingExcludeDelegate
 import com.android.build.gradle.internal.databinding.configureFrom
@@ -71,6 +70,7 @@ interface BundleLibraryClassesInputs {
     val namespace: Property<String>
 
     @get:Classpath
+    @get:Optional
     val classes: ConfigurableFileCollection
 
     @get:Input
@@ -91,11 +91,13 @@ private fun BundleLibraryClassesInputs.configure(
 ) {
     namespace.setDisallowChanges(creationConfig.namespace)
     classes.from(inputs)
-    this.packageRClass.set(packageRClass)
     if (packageRClass) {
-        classes.from(creationConfig.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR))
+        classes.from(
+                creationConfig.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR)
+        )
     }
-    jarCreatorType.set(creationConfig.variantScope.jarCreatorType)
+    this.packageRClass.setDisallowChanges(packageRClass)
+    jarCreatorType.setDisallowChanges(creationConfig.variantScope.jarCreatorType)
 
     dataBindingExcludeDelegate.configureFrom(creationConfig)
 }
@@ -105,6 +107,7 @@ private fun BundleLibraryClassesInputs.configureWorkerActionParams(
     inputChanges: InputChanges?,
     output: Provider<File>
 ) {
+
     val incrementalChanges = if (inputChanges?.isIncremental == true) {
         inputChanges.getFileChanges(classes)
     } else {
@@ -154,10 +157,11 @@ abstract class BundleLibraryClassesDir: NewIncrementalTask(), BundleLibraryClass
         init {
             // Because ordering matters for TransformAPI, we need to fetch classes from the
             // transform pipeline as soon as this creation action is instantiated.
+            @Suppress("DEPRECATION") // Legacy support (b/195153220)
             inputs =
                 creationConfig.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
-                    types.contains(QualifiedContent.DefaultContentType.CLASSES)
-                            && scopes.size == 1 && scopes.contains(QualifiedContent.Scope.PROJECT)
+                    types.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
+                            && scopes.size == 1 && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
                 }
         }
 
@@ -211,10 +215,11 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
             ) { "Library classes bundling is supported only for api and runtime." }
             // Because ordering matters for TransformAPI, we need to fetch classes from the
             // transform pipeline as soon as this creation action is instantiated.
+            @Suppress("DEPRECATION") // Legacy support (b/195153220)
             inputs = if (publishedType == PublishedConfigType.RUNTIME_ELEMENTS) {
                 creationConfig.transformManager.getPipelineOutputAsFileCollection { types, scopes ->
-                    types.contains(QualifiedContent.DefaultContentType.CLASSES)
-                            && scopes.size == 1 && scopes.contains(QualifiedContent.Scope.PROJECT)
+                    types.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES)
+                            && scopes.size == 1 && scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.PROJECT)
                 }
             } else {
                 creationConfig.artifacts.getAllClasses()
@@ -254,7 +259,7 @@ abstract class BundleLibraryClassesJar : NonIncrementalTask(), BundleLibraryClas
             val packageRClass =
                 creationConfig.services.projectOptions[BooleanOption.COMPILE_CLASSPATH_LIBRARY_R_CLASSES] &&
                         publishedType == PublishedConfigType.API_ELEMENTS &&
-                        creationConfig.buildFeatures.androidResources
+                        creationConfig.androidResourcesEnabled
             task.configure(creationConfig, inputs, packageRClass)
         }
     }

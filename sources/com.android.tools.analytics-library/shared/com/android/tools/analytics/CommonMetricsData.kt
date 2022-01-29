@@ -46,6 +46,12 @@ object CommonMetricsData {
   const val INVALID_NUMBER = -3
   const val EMPTY_SIZE = -4
 
+  const val OS_NAME_FREE_BSD = "freebsd"
+  const val OS_NAME_LINUX = "linux"
+  const val OS_NAME_MAC = "macosx"
+  const val OS_NAME_WINDOWS = "windows"
+  const val OS_NAME_CHROMIUM = "chromium"
+
   @VisibleForTesting
   @JvmStatic
   val garbageCollectionStatsCache: HashMap<String, GarbageCollectionStatsDiffs> = HashMap()
@@ -118,13 +124,13 @@ object CommonMetricsData {
       val osLower = os.toLowerCase(Locale.US)
 
       when {
-        osLower.startsWith("mac") -> os = "macosx"
-        osLower.startsWith("win") -> os = "windows"
+        osLower.startsWith("mac") -> os = OS_NAME_MAC
+        osLower.startsWith("win") -> os = OS_NAME_WINDOWS
         osLower.startsWith("linux") -> {
           if (File("/dev/.cros_milestone").exists()) {
-           os = "chromium"
+           os = OS_NAME_CHROMIUM
           } else {
-            os = "linux"
+            os = OS_NAME_LINUX
           }
         }
         os.length > 32 -> os = os.substring(0, 32)

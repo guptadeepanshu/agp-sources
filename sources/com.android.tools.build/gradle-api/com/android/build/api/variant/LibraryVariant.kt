@@ -16,13 +16,7 @@
 package com.android.build.api.variant
 
 /** [Variant] for Library projects */
-interface LibraryVariant : Variant, GeneratesAar {
-
-    /**
-     * Variant's [AndroidTest] configuration, or null if android tests are disabled for this
-     * variant.
-     */
-    val androidTest: com.android.build.api.component.AndroidTest??
+interface LibraryVariant : Variant, GeneratesAar, HasAndroidTest, HasTestFixtures {
 
     /**
      * Variant specific settings for the renderscript compiler. This will return null when

@@ -18,14 +18,26 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.AndroidTest
-import com.android.build.api.component.Component
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.analytics.AnalyticsEnabledAndroidTest
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
-import com.android.build.api.variant.*
-import com.android.build.api.variant.impl.*
+import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.AndroidTest
+import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.Component
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.Renderscript
+import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.SigningConfig
+import com.android.build.api.variant.Variant
+import com.android.build.api.variant.VariantBuilder
+import com.android.build.api.variant.impl.ApkPackagingImpl
+import com.android.build.api.variant.impl.ResValueKeyImpl
+import com.android.build.api.variant.impl.SigningConfigImpl
+import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.api.variant.impl.initializeAaptOptionsFromDsl
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
@@ -55,7 +67,7 @@ import javax.inject.Inject
 open class AndroidTestImpl @Inject constructor(
     componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    variantDslInfo: VariantDslInfo<*>,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
@@ -66,6 +78,7 @@ open class AndroidTestImpl @Inject constructor(
     transformManager: TransformManager,
     variantPropertiesApiServices: VariantPropertiesApiServices,
     taskCreationServices: TaskCreationServices,
+    sdkComponents: SdkComponents,
     globalScope: GlobalScope
 ) : TestComponentImpl(
     componentIdentity,
@@ -81,6 +94,7 @@ open class AndroidTestImpl @Inject constructor(
     transformManager,
     variantPropertiesApiServices,
     taskCreationServices,
+    sdkComponents,
     globalScope
 ), AndroidTest, AndroidTestCreationConfig {
 
@@ -88,7 +102,7 @@ open class AndroidTestImpl @Inject constructor(
         variantDslInfo.multiDexKeepProguard?.let {
             artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                     .addInitialProvider(
-                            taskCreationServices.regularFile(internalServices.provider { it })
+                            null, taskCreationServices.regularFile(internalServices.provider { it })
                     )
         }
     }
@@ -130,7 +144,7 @@ open class AndroidTestImpl @Inject constructor(
 
     override val androidResources: AndroidResources by lazy {
         initializeAaptOptionsFromDsl(
-                globalScope.extension.aaptOptions,
+                taskCreationServices.projectInfo.getExtension().aaptOptions,
                 variantPropertiesApiServices
         )
     }
@@ -174,7 +188,10 @@ open class AndroidTestImpl @Inject constructor(
         )
     }
 
-    override val signingConfig: SigningConfigImpl? by lazy {
+    override val signingConfig: SigningConfig?
+        get() = signingConfigImpl
+
+    override val signingConfigImpl: SigningConfigImpl? by lazy {
         variantDslInfo.signingConfig?.let {
             SigningConfigImpl(
                 it,
@@ -217,6 +234,9 @@ open class AndroidTestImpl @Inject constructor(
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
+    override val targetSdkVersionOverride: AndroidVersion?
+        get() = testedVariant.targetSdkVersionOverride
+
     // always false for this type
     override val embedsMicroApp: Boolean
         get() = false
@@ -256,8 +276,8 @@ open class AndroidTestImpl @Inject constructor(
             else -> testedConfig.variantType.isBaseModule && needsShrinkDesugarLibrary
         }
 
-    override val minSdkVersionWithTargetDeviceApi: AndroidVersion =
-        testedVariant.minSdkVersionWithTargetDeviceApi
+    override val minSdkVersionForDexing: AndroidVersion =
+        testedVariant.minSdkVersionForDexing
 
     override val isMultiDexEnabled: Boolean =
         testedVariant.isMultiDexEnabled
@@ -270,9 +290,6 @@ open class AndroidTestImpl @Inject constructor(
 
     override val dexingType: DexingType
         get() = delegate.dexingType
-
-    override val needsMainDexListForBundle: Boolean
-        get() = false
 
     override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,

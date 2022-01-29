@@ -18,14 +18,13 @@ package com.android.build.gradle.internal.variant
 
 import com.android.build.VariantOutput
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.dsl.ApplicationBuildFeatures
 import com.android.build.api.dsl.BuildFeatures
-import com.android.build.api.variant.DependenciesInfo
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.FilterConfiguration
 import com.android.build.api.variant.impl.ApplicationVariantBuilderImpl
 import com.android.build.api.variant.impl.ApplicationVariantImpl
-import com.android.build.api.variant.impl.DependenciesInfoImpl
 import com.android.build.api.variant.impl.FilterConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
@@ -39,6 +38,7 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.GlobalScope
+import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
@@ -68,7 +68,7 @@ class ApplicationVariantFactory(
 
     override fun createVariantBuilder(
         componentIdentity: ComponentIdentity,
-        variantDslInfo: VariantDslInfo,
+        variantDslInfo: VariantDslInfo<*>,
         variantApiServices: VariantApiServices
     ): ApplicationVariantBuilderImpl {
         val extension = globalScope.extension as BaseAppModuleExtension
@@ -88,7 +88,7 @@ class ApplicationVariantFactory(
             variantBuilder: ApplicationVariantBuilderImpl,
             componentIdentity: ComponentIdentity,
             buildFeatures: BuildFeatureValues,
-            variantDslInfo: VariantDslInfo,
+            variantDslInfo: VariantDslInfo<*>,
             variantDependencies: VariantDependencies,
             variantSources: VariantSources,
             paths: VariantPathHelper,
@@ -97,8 +97,9 @@ class ApplicationVariantFactory(
             variantData: BaseVariantData,
             transformManager: TransformManager,
             variantPropertiesApiServices: VariantPropertiesApiServices,
-            taskCreationServices: TaskCreationServices
-    ): ApplicationVariantImpl {
+            taskCreationServices: TaskCreationServices,
+            androidComponentsExtension: AndroidComponentsExtension<*, *, *>,
+        ): ApplicationVariantImpl {
         val appVariant = projectServices
             .objectFactory
             .newInstance(
@@ -116,6 +117,7 @@ class ApplicationVariantFactory(
                 transformManager,
                 variantPropertiesApiServices,
                 taskCreationServices,
+                androidComponentsExtension.sdkComponents,
                 globalScope
             )
 
@@ -132,6 +134,19 @@ class ApplicationVariantFactory(
             ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
 
         return BuildFeatureValuesImpl(buildFeatures, projectOptions)
+    }
+
+    override fun createTestFixturesBuildFeatureValues(
+        buildFeatures: BuildFeatures,
+        projectOptions: ProjectOptions
+    ): BuildFeatureValues {
+        buildFeatures as? ApplicationBuildFeatures
+            ?: throw RuntimeException("buildFeatures not of type ApplicationBuildFeatures")
+
+        return TestFixturesBuildFeaturesValuesImpl(
+            buildFeatures,
+            projectOptions
+        )
     }
 
     override fun createTestBuildFeatureValues(
@@ -258,7 +273,7 @@ class ApplicationVariantFactory(
     }
 
     private fun checkSplitsConflicts(
-        variantDslInfo: VariantDslInfo,
+        variantDslInfo: VariantDslInfo<*>,
         variantData: ApplicationVariantData,
         abiFilters: Set<String?>
     ) { // if we don't have any ABI splits, nothing is conflicting.
@@ -287,7 +302,7 @@ class ApplicationVariantFactory(
     }
 
     private fun restrictEnabledOutputs(
-        variantDslInfo: VariantDslInfo, variantOutputs: VariantOutputList
+        variantDslInfo: VariantDslInfo<*>, variantOutputs: VariantOutputList
     ) {
         val supportedAbis: Set<String> = variantDslInfo.supportedAbis
         val projectOptions = projectServices.projectOptions

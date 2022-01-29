@@ -77,7 +77,8 @@ public class ZFiles {
       @Nullable String builtBy,
       @Nullable String createdBy)
       throws IOException {
-    return apk(f, options, signingOptions, builtBy, createdBy, true);
+    return apk(
+        f, options, signingOptions, builtBy, createdBy, options.getAlwaysGenerateJarManifest());
   }
 
   /**
@@ -95,9 +96,10 @@ public class ZFiles {
    *     get apk with manifest.mf because the flag is true by default
    * @return the zip file
    * @throws IOException failed to create the zip file
+   * @deprecated Use ZFileOptions.setAlwaysGenerateJarManifest() instead.
    */
   @Deprecated
-  // This method should be removed once this version of apkzlib is released to maven
+  // This method can be removed once ZFileOptions.getAlwaysGenerateJarManifest() is on Maven.
   public static ZFile apk(
       File f,
       ZFileOptions options,
@@ -132,4 +134,6 @@ public class ZFiles {
 
     return zfile;
   }
+
+  private ZFiles() {}
 }

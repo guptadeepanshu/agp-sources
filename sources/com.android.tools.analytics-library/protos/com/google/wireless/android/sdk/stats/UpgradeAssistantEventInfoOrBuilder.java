@@ -29,7 +29,8 @@ public interface UpgradeAssistantEventInfoOrBuilder extends
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
-   * PREVIEW_REFACTORING or EXECUTE.
+   * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+   * SYNC_SUCCEEDED.
    * </pre>
    *
    * <code>optional int32 usages = 2;</code>
@@ -39,11 +40,35 @@ public interface UpgradeAssistantEventInfoOrBuilder extends
   /**
    * <pre>
    * The number of usages.  Will be set if kind is FIND_USAGES,
-   * PREVIEW_REFACTORING or EXECUTE.
+   * PREVIEW_REFACTORING, EXECUTE, SYNC_SKIPPED, SYNC_FAILED, or
+   * SYNC_SUCCEEDED.
    * </pre>
    *
    * <code>optional int32 usages = 2;</code>
    * @return The usages.
    */
   int getUsages();
+
+  /**
+   * <pre>
+   * The number of files involved in the build.  Will be set if
+   * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+   * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+   * </pre>
+   *
+   * <code>optional int32 files = 3;</code>
+   * @return Whether the files field is set.
+   */
+  boolean hasFiles();
+  /**
+   * <pre>
+   * The number of files involved in the build.  Will be set if
+   * kind is FIND_USAGES, PREVIEW_REFACTORING, EXECUTE,
+   * SYNC_SKIPPED, SYNC_FAILED, or SYNC_SUCCEEDED.
+   * </pre>
+   *
+   * <code>optional int32 files = 3;</code>
+   * @return The files.
+   */
+  int getFiles();
 }

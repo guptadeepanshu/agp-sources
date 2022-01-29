@@ -33,9 +33,11 @@ import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
 import com.android.builder.errors.IssueReporter
 import com.android.repository.Revision
+import com.android.sdklib.AndroidTargetHash.SYSTEM_IMAGE_PREFIX
 import com.android.sdklib.AndroidVersion
 import com.android.sdklib.BuildToolInfo
 import com.android.sdklib.OptionalLibrary
+import com.android.tools.analytics.Environment
 import org.gradle.api.NonExtensible
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -85,6 +87,17 @@ abstract class SdkComponentsBuildService @Inject constructor(
         SdkLocationSourceSet(parameters.projectRootDir.get().asFile)
     }
 
+    class Environment(providerFactory: ProviderFactory): SdkLibDataFactory.Environment() {
+        private val systemProperties = SystemProperty.values().associate {
+            it to providerFactory.systemProperty(it.key).forUseAtConfigurationTime().orNull
+        }
+        override fun getSystemProperty(property: SystemProperty): String? {
+            return systemProperties[property]
+        }
+    }
+
+    val environment = Environment(providerFactory)
+
     // Trick to not initialize the sdkHandler just to call unload() on it. Using the Delegate
     // allows to test wether or not the [SdkHandler] has been initialized.
     private val sdkHandlerDelegate = lazy {
@@ -99,7 +112,7 @@ abstract class SdkComponentsBuildService @Inject constructor(
                     !parameters.offlineMode.get() && parameters.enableSdkDownload.get(),
                     parameters.androidSdkChannel.orNull,
                     LoggerWrapper.getLogger(SdkLibDataFactory::class.java)
-                ).getSdkLibData()
+                ).getSdkLibData(environment)
             )
         }
     }
@@ -221,10 +234,32 @@ abstract class SdkComponentsBuildService @Inject constructor(
             sdkLoadStrategy.getOptionalLibraries()
         }
 
+        /**
+         * The API versions file from the platform being compiled against.
+         *
+         * Historically this was distributed in platform-tools. It has been moved to platforms, so it
+         * is versioned now. (There was some overlap, so this is available in platforms since platform
+         * api 26, and was removed in the platform-tools several years later in 31.x)
+         *
+         * This will not be present if the compile-sdk version is less than 26 (a fallback to
+         * platform-tools would not help for users that update their SDK, as it is removed in recent
+         * platform-tools)
+         */
+        val apiVersionsFile: Provider<RegularFile> = objectFactory.fileProperty().fileProvider(
+            providerFactory.provider { sdkLoadStrategy.getApiVersionsFile() }
+        )
+
         fun sdkImageDirectoryProvider(imageHash: String): Provider<Directory> =
             objectFactory.directoryProperty().fileProvider(providerFactory.provider {
                 sdkLoadStrategy.getSystemImageLibFolder(imageHash)
             })
+
+        fun allSystemImageHashes(): List<String>? {
+            return sdkHandler.remoteRepoIdsWithPrefix(SYSTEM_IMAGE_PREFIX)
+        }
+
+        val offlineMode: Boolean
+            get() = parameters.offlineMode.get()
 
         val emulatorDirectoryProvider: Provider<Directory> =
             objectFactory.directoryProperty().fileProvider(providerFactory.provider {
@@ -493,3 +528,7 @@ fun NdkHandlerInput.initialize(creationConfig: ComponentCreationConfig) {
     ndkVersion.setDisallowChanges(creationConfig.globalScope.extension.ndkVersion)
     ndkPath.setDisallowChanges(creationConfig.globalScope.extension.ndkPath)
 }
+
+internal const val API_VERSIONS_FILE_NAME = "api-versions.xml"
+internal const val PLATFORM_API_VERSIONS_FILE_PATH = "data/$API_VERSIONS_FILE_NAME"
+internal const val PLATFORM_TOOLS_API_VERSIONS_FILE_PATH = "api/$API_VERSIONS_FILE_NAME"

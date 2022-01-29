@@ -291,4 +291,45 @@ public interface DeviceInfoOrBuilder extends
    * @return The mdnsConnectionType.
    */
   com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType getMdnsConnectionType();
+
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @return A list containing the characteristics.
+   */
+  java.util.List<java.lang.String>
+      getCharacteristicsList();
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @return The count of characteristics.
+   */
+  int getCharacteristicsCount();
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @param index The index of the element to return.
+   * @return The characteristics at the given index.
+   */
+  java.lang.String getCharacteristics(int index);
+  /**
+   * <pre>
+   * Set of characteristics obtained from "ro.build.characteristics" property
+   * </pre>
+   *
+   * <code>repeated string characteristics = 12;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the characteristics at the given index.
+   */
+  com.google.protobuf.ByteString
+      getCharacteristicsBytes(int index);
 }

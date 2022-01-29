@@ -15,16 +15,18 @@
  */
 package com.android.build.gradle.internal.core
 
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.BuildType
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DynamicFeatureBuildType
 import com.android.build.api.dsl.LibraryVariantDimension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.dsl.VariantDimension
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.JavaCompileOptions
@@ -38,6 +40,7 @@ import com.android.build.gradle.internal.dsl.CoreNdkOptions
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
+import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.testFixtures.testFixturesFeatureName
@@ -80,7 +83,7 @@ import java.util.concurrent.Callable
  * Use [VariantDslInfoBuilder] to instantiate.
  *
  */
-open class VariantDslInfoImpl internal constructor(
+open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> internal constructor(
     override val componentIdentity: ComponentIdentity,
     override val variantType: VariantType,
     private val defaultConfig: DefaultConfig,
@@ -92,13 +95,12 @@ open class VariantDslInfoImpl internal constructor(
     override val productFlavorList: List<ProductFlavor>,
     private val signingConfigOverride: SigningConfig? = null,
     /**
-     * The parent variant. This is only valid for test and test fixtures variants. This
-     * is the "production" variant.
+     * The production variant. This is only valid for test and test fixtures variants.
      * This is mostly used to derive some property values from the parent when it's either
      * not present in the DSL for this (test/test-fixture) variant, or when it's always
      * derived from the parent (e.g. test fixture namespace).
      */
-    private val parentVariant: VariantDslInfoImpl? = null,
+    private val productionVariant: VariantDslInfoImpl<*>? = null,
     val dataProvider: ManifestDataProvider,
     @Deprecated("Only used for merged flavor")
     private val dslServices: DslServices,
@@ -107,13 +109,15 @@ open class VariantDslInfoImpl internal constructor(
     /** the namespace coming for the DSL for this variant. */
     private val dslNamespace: String?,
     override val nativeBuildSystem: VariantManager.NativeBuiltType?,
+    private val publishingInfo: VariantPublishingInfo?,
     override val experimentalProperties: Map<String, Any>,
+    override val enableTestFixtures: Boolean,
     /**
      *  Whether there are inconsistent applicationId in the test.
      *  This trigger a mode where the namespaceForR just returns the same as namespace.
      */
     private val inconsistentTestAppId: Boolean,
-): VariantDslInfo, DimensionCombination {
+): VariantDslInfo<CommonExtensionT>, DimensionCombination {
 
     private val dslNamespaceProvider: Provider<String>? = dslNamespace?.let { services.provider { dslNamespace } }
 
@@ -142,8 +146,8 @@ open class VariantDslInfoImpl internal constructor(
      *
      * @see VariantType.isTestComponent
      */
-    override val testedVariant: VariantDslInfo?
-        get() = if (variantType.isTestComponent) { parentVariant } else null
+    override val testedVariant: VariantDslInfo<*>?
+        get() = if (variantType.isTestComponent) { productionVariant } else null
 
     private val mergedNdkConfig = MergedNdkConfig()
     private val mergedExternalNativeBuildOptions =
@@ -194,7 +198,7 @@ open class VariantDslInfoImpl internal constructor(
         }
         sb.append(splitName).append('-')
         sb.append(buildTypeObj.name)
-        if (variantType.isTestComponent) {
+        if (variantType.isNestedComponent) {
             sb.append('-').append(variantType.prefix)
         }
         return sb.toString()
@@ -222,7 +226,7 @@ open class VariantDslInfoImpl internal constructor(
     override val directorySegments: Collection<String?> by lazy {
         val builder =
             ImmutableList.builder<String>()
-        if (variantType.isTestComponent || variantType.isTestFixturesComponent) {
+        if (variantType.isNestedComponent) {
             builder.add(variantType.prefix)
         }
         if (productFlavorList.isNotEmpty()) {
@@ -247,7 +251,7 @@ open class VariantDslInfoImpl internal constructor(
      */
     override fun computeDirNameWithSplits(vararg splitNames: String): String {
         val sb = StringBuilder()
-        if (variantType.isTestComponent) {
+        if (variantType.isNestedComponent) {
             sb.append(variantType.prefix).append("/")
         }
         if (productFlavorList.isNotEmpty()) {
@@ -312,7 +316,7 @@ open class VariantDslInfoImpl internal constructor(
             // Namespace is always derived from the parent variant's namespace
             variantType.isTestFixturesComponent -> {
                 val parentVariant =
-                        parentVariant
+                        productionVariant
                                 ?: throw RuntimeException("null parentVariantImpl in test-fixtures VariantDslInfoImpl")
                 parentVariant.namespace.map { "$it.$testFixturesFeatureName" }
             }
@@ -373,7 +377,7 @@ open class VariantDslInfoImpl internal constructor(
                 throw RuntimeException("namespaceForR should only be used by test variants")
             }
 
-            val testedVariant = parentVariant!!
+            val testedVariant = productionVariant!!
 
             // For legacy reason, this code does the following:
             // - If testNamespace is set, use it.
@@ -638,9 +642,9 @@ open class VariantDslInfoImpl internal constructor(
      */
     override val instrumentationRunnerArguments: Map<String, String>
         get() {
-            val variantDslInfo: VariantDslInfoImpl =
+            val variantDslInfo: VariantDslInfoImpl<*> =
                 if (variantType.isTestComponent) {
-                    parentVariant!!
+                    productionVariant!!
                 } else {
                     this
                 }
@@ -700,52 +704,30 @@ open class VariantDslInfoImpl internal constructor(
         }
 
     /**
-     * Return the minSdkVersion for this variant.
+     * The minSdkVersion for this variant.
      *
-     *
-     * This uses both the value from the manifest (if present), and the override coming from the
-     * flavor(s) (if present).
-     *
-     * @return the minSdkVersion
+     * This is only the version declared in the DSL, not including the value present in the Manifest.
      */
-    override val minSdkVersion: AndroidVersion
-        get() {
-            val testedVariant = testedVariant
-            if (testedVariant != null) {
-                return testedVariant.minSdkVersion
-            }
-            // default to 1 for minSdkVersion.
-            val minSdkVersion =
-                mergedFlavor.minSdkVersion ?: DefaultApiVersion.create(Integer.valueOf(1))
-
-            return AndroidVersion(
-                minSdkVersion.apiLevel,
-                minSdkVersion.codename
-            )
-        }
+    override val minSdkVersion: MutableAndroidVersion
+        // if there's a testedVariant, return its value, otherwise return the merged flavor
+        // value. If there's no value set, then the default is just the first API Level: 1
+        get() = testedVariant?.minSdkVersion
+                ?: mergedFlavor.minSdkVersion?.let { MutableAndroidVersion(it.apiLevel, it.codename) }
+                ?: MutableAndroidVersion(1)
 
     override val maxSdkVersion: Int?
         get() = mergedFlavor.maxSdkVersion
 
     /**
-     * Return the targetSdkVersion for this variant.
+     * The targetSdkVersion for this variant.
      *
-     *
-     * This uses both the value from the manifest (if present), and the override coming from the
-     * flavor(s) (if present).
-     *
-     * @return the targetSdkVersion
+     * This is only the version declared in the DSL, not including the value present in the Manifest.
      */
-    override val targetSdkVersion: ApiVersion
-        get() {
-            val testedVariant = testedVariant
-            if (testedVariant != null) {
-                return testedVariant.targetSdkVersion
-            }
-            return mergedFlavor.targetSdkVersion
-                // default to -1 if not in build.gradle file.
-                ?: DefaultApiVersion.create(Integer.valueOf(-1))
-        }
+    override val targetSdkVersion: MutableAndroidVersion?
+        // if there's a testedVariant, return its value, otherwise return the merged flavor
+        // value. If there's no value set, then return null
+        get() = testedVariant?.targetSdkVersion
+                ?: mergedFlavor.targetSdkVersion?.let { MutableAndroidVersion(it.apiLevel, it.codename) }
 
     override val renderscriptTarget: Int = mergedFlavor.renderscriptTargetApi ?: -1
 
@@ -951,10 +933,12 @@ open class VariantDslInfoImpl internal constructor(
         get() = variantType.isAar // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
 
     /**
-     * Returns if the property passed by the IDE is set, the minimum SDK version or
-     * null if not.
+     * Returns the API to which device/emulator we're deploying via the IDE or null if not.
+     * Can be used to optimize some build steps when deploying via the IDE (for testing).
+     *
+     * This has no relation with targetSdkVersion from build.gradle/manifest.
      */
-    override val minSdkVersionFromIDE: Int? =
+    override val targetDeployApiFromIDE: Int? =
         dslServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
 
     /**
@@ -1217,6 +1201,9 @@ open class VariantDslInfoImpl internal constructor(
     override val isJniDebuggable: Boolean
         get() = buildTypeObj.isJniDebuggable
 
+    override val publishInfo: VariantPublishingInfo?
+        get() = publishingInfo
+
     companion object {
 
         const val DEFAULT_TEST_RUNNER = "android.test.InstrumentationTestRunner"
@@ -1224,28 +1211,6 @@ open class VariantDslInfoImpl internal constructor(
             "com.android.test.runner.MultiDexTestRunner"
         private const val DEFAULT_HANDLE_PROFILING = false
         private const val DEFAULT_FUNCTIONAL_TEST = false
-
-        /**
-         * Fills a list of Object from a given list of ClassField only if the name isn't in a set. Each
-         * new item added adds its name to the list.
-         *
-         * @param outList the out list
-         * @param usedFieldNames the list of field names already in the list
-         * @param list the list to copy items from
-         */
-        private fun fillFieldList(
-            outList: MutableList<Any>,
-            usedFieldNames: MutableSet<String>,
-            list: Collection<ClassField>
-        ) {
-            for (f in list) {
-                val name = f.name
-                if (!usedFieldNames.contains(name)) {
-                    usedFieldNames.add(f.name)
-                    outList.add(f)
-                }
-            }
-        }
 
         private fun getKey(fullOption: String): String {
             val pos = fullOption.lastIndexOf('=')

@@ -18,14 +18,16 @@ package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.ProductFlavorAttr
-import com.android.build.api.component.ComponentIdentity
-import com.android.build.api.component.Component
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
+import com.android.build.api.variant.Component
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.JavaCompilation
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.VariantImpl
@@ -51,6 +53,7 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.BuildArtifactSpec.Companion.get
 import com.android.build.gradle.internal.scope.BuildArtifactSpec.Companion.has
 import com.android.build.gradle.internal.scope.BuildFeatureValues
@@ -89,8 +92,8 @@ import java.util.concurrent.Callable
 
 abstract class ComponentImpl(
     open val componentIdentity: ComponentIdentity,
-    override val buildFeatures: BuildFeatureValues,
-    override val variantDslInfo: VariantDslInfo,
+    final override val buildFeatures: BuildFeatureValues,
+    override val variantDslInfo: VariantDslInfo<*>,
     override val variantDependencies: VariantDependencies,
     override val variantSources: VariantSources,
     override val paths: VariantPathHelper,
@@ -100,6 +103,7 @@ abstract class ComponentImpl(
     override val transformManager: TransformManager,
     protected val internalServices: VariantPropertiesApiServices,
     override val services: TaskCreationServices,
+    override val sdkComponents: SdkComponents,
     @Deprecated("Do not use if you can avoid it. Check if services has what you need")
     override val globalScope: GlobalScope
 ): Component, ComponentCreationConfig, ComponentIdentity by componentIdentity {
@@ -130,11 +134,17 @@ abstract class ComponentImpl(
         asmClassVisitorsRegistry.setAsmFramesComputationMode(mode)
     }
 
+    override val javaCompilation: JavaCompilation =
+        JavaCompilationImpl(
+            variantDslInfo.javaCompileOptions,
+            buildFeatures.dataBinding,
+            internalServices)
+
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val asmApiVersion = org.objectweb.asm.Opcodes.ASM7
+    override val asmApiVersion = org.objectweb.asm.Opcodes.ASM9
 
     // this is technically a public API for the Application Variant (only)
     override val outputs: VariantOutputList
@@ -283,6 +293,8 @@ abstract class ComponentImpl(
         }
         return true
     }
+
+    override val androidResourcesEnabled = buildFeatures.androidResources
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
@@ -453,16 +465,36 @@ abstract class ComponentImpl(
             val artifactProvider = artifacts.get(buildArtifactType)
             val artifactContainer = artifacts.getArtifactContainer(buildArtifactType)
             if (!artifactContainer.needInitialProducer().get()) {
-                variantScope
-                    .publishIntermediateArtifact(
-                        artifactProvider,
-                        outputSpec.artifactType,
-                        outputSpec.publishedConfigTypes,
-                        outputSpec.libraryElements?.let {
-                            internalServices.named(LibraryElements::class.java, it)
-                        },
-                        variantType.isTestFixturesComponent
-                    )
+                val isPublicationConfigs =
+                    outputSpec.publishedConfigTypes.any { it.isPublicationConfig }
+
+                if (isPublicationConfigs) {
+                    val components = variantDslInfo.publishInfo!!.components
+                    for(component in components) {
+                        variantScope
+                            .publishIntermediateArtifact(
+                                artifactProvider,
+                                outputSpec.artifactType,
+                                outputSpec.publishedConfigTypes.map {
+                                    PublishedConfigSpec(it, component) }.toSet(),
+                                outputSpec.libraryElements?.let {
+                                    internalServices.named(LibraryElements::class.java, it)
+                                },
+                                variantType.isTestFixturesComponent
+                            )
+                    }
+                } else {
+                    variantScope
+                        .publishIntermediateArtifact(
+                            artifactProvider,
+                            outputSpec.artifactType,
+                            outputSpec.publishedConfigTypes.map { PublishedConfigSpec(it) }.toSet(),
+                            outputSpec.libraryElements?.let {
+                                internalServices.named(LibraryElements::class.java, it)
+                            },
+                            variantType.isTestFixturesComponent
+                        )
+                }
             }
         }
     }
@@ -574,7 +606,7 @@ abstract class ComponentImpl(
 
     /** Returns the path(s) to compiled R classes (R.jar). */
     fun getCompiledRClasses(configType: ConsumedConfigType): FileCollection {
-        return if (globalScope.extension.aaptOptions.namespaced) {
+        return if (services.projectInfo.getExtension().aaptOptions.namespaced) {
             internalServices.fileCollection().also { fileCollection ->
                 val namespacedRClassJar = artifacts.get(COMPILE_R_CLASS_JAR)
                 val fileTree = internalServices.fileTree(namespacedRClassJar).builtBy(namespacedRClassJar)
@@ -598,7 +630,7 @@ abstract class ComponentImpl(
                     .ENABLE_APP_COMPILE_TIME_R_CLASS]
                         && !variantType.isForTesting)
                 if (variantType.isAar || useCompileRClassInApp) {
-                    if (buildFeatures.androidResources) {
+                    if (androidResourcesEnabled) {
                         internalServices.fileCollection(artifacts.get(COMPILE_R_CLASS_JAR)
                         )
                     } else {
@@ -620,7 +652,7 @@ abstract class ComponentImpl(
                         artifacts.get(COMPILE_AND_RUNTIME_NOT_NAMESPACED_R_CLASS_JAR)
                     )
                 } else {
-                    if (buildFeatures.androidResources) {
+                    if (androidResourcesEnabled) {
                         internalServices.fileCollection(variantScope.rJarForUnitTests)
                     } else {
                         internalServices.fileCollection()
@@ -664,11 +696,7 @@ abstract class ComponentImpl(
         // First, setup the requested value, which isn't the actual requested value, but
         // the variant name, modified
         val requestedValue = VariantManager.getModifiedName(name)
-        val attributeKey =
-            Attribute.of(
-                dimension,
-                ProductFlavorAttr::class.java
-            )
+        val attributeKey = ProductFlavorAttr.of(dimension)
         val attributeValue: ProductFlavorAttr = internalServices.named(
             ProductFlavorAttr::class.java, requestedValue
         )
@@ -704,7 +732,7 @@ abstract class ComponentImpl(
         asmClassVisitorsRegistry.configureAndLock(objectFactory, asmApiVersion)
     }
 
-    abstract fun <T: Component> createUserVisibleVariantObject(
+    abstract fun <T: com.android.build.api.variant.Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
             operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
             stats: GradleBuildVariant.Builder?
@@ -729,9 +757,9 @@ abstract class ComponentImpl(
             }
         } else {
             variantDependencies.getArtifactFileCollection(
-                    ConsumedConfigType.RUNTIME_CLASSPATH,
-                    scope,
-                    AndroidArtifacts.ArtifactType.CLASSES_JAR
+                ConsumedConfigType.RUNTIME_CLASSPATH,
+                scope,
+                AndroidArtifacts.ArtifactType.CLASSES_JAR
             )
         }
     }

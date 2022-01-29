@@ -19,11 +19,10 @@ package com.android.build.gradle.internal.publishing
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.SingleArtifact.APK
 import com.android.build.api.artifact.SingleArtifact.MERGED_MANIFEST
+import com.android.build.api.artifact.SingleArtifact.METADATA_LIBRARY_DEPENDENCIES_REPORT
 import com.android.build.api.artifact.SingleArtifact.OBFUSCATION_MAPPING_FILE
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_API_PUBLICATION
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_RUNTIME_PUBLICATION
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_ELEMENTS
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_PUBLICATION
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.REVERSE_METADATA_ELEMENTS
@@ -53,6 +52,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_ASSE
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_JNI
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_MODEL_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_PARTIAL_RESULTS
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_PUBLISH_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.LINT_VITAL_LINT_MODEL
@@ -62,7 +62,6 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MET
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.METADATA_FEATURE_DECLARATION
 import com.android.build.gradle.internal.scope.InternalArtifactType.METADATA_FEATURE_MANIFEST
-import com.android.build.gradle.internal.scope.InternalArtifactType.METADATA_LIBRARY_DEPENDENCIES_REPORT
 import com.android.build.gradle.internal.scope.InternalArtifactType.MODULE_AND_RUNTIME_DEPS_CLASSES
 import com.android.build.gradle.internal.scope.InternalArtifactType.MODULE_BUNDLE
 import com.android.build.gradle.internal.scope.InternalArtifactType.NATIVE_DEBUG_METADATA
@@ -71,6 +70,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_J
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.PREFAB_PACKAGE
+import com.android.build.gradle.internal.scope.InternalArtifactType.PREFAB_PACKAGE_CONFIGURATION
 import com.android.build.gradle.internal.scope.InternalArtifactType.PUBLIC_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_HEADERS
 import com.android.build.gradle.internal.scope.InternalArtifactType.RES_STATIC_LIBRARY
@@ -212,9 +212,13 @@ class PublishingSpecs {
             variantSpec(VariantTypeImpl.LIBRARY) {
                 publish(com.android.build.api.artifact.SingleArtifact.AAR, ArtifactType.AAR)
 
+                source(InternalArtifactType.SOURCE_JAR, ArtifactType.SOURCES_JAR)
+                javaDoc(InternalArtifactType.JAVA_DOC_JAR, ArtifactType.JAVA_DOC_JAR)
+
                 api(AIDL_PARCELABLE, ArtifactType.AIDL)
                 api(RENDERSCRIPT_HEADERS, ArtifactType.RENDERSCRIPT)
                 api(COMPILE_LIBRARY_CLASSES_JAR, ArtifactType.CLASSES_JAR)
+                api(PREFAB_PACKAGE_CONFIGURATION, ArtifactType.PREFAB_PACKAGE_CONFIGURATION)
                 api(PREFAB_PACKAGE, ArtifactType.PREFAB_PACKAGE)
 
                 // manifest is published to both to compare and detect provided-only library
@@ -247,12 +251,13 @@ class PublishingSpecs {
                 runtime(COMPILED_LOCAL_RESOURCES, ArtifactType.COMPILED_DEPENDENCIES_RESOURCES)
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 runtime(InternalArtifactType.LIBRARY_ART_PROFILE, ArtifactType.ART_PROFILE)
-                // Publish LINT, LINT_MODEL, LINT_PARTIAL_RESULTS, and LOCAL_AAR_FOR_LINT to
-                // API_AND_RUNTIME_ELEMENTS to support compileOnly module dependencies.
+                // Publish lint artifacts to API_AND_RUNTIME_ELEMENTS to support compileOnly module
+                // dependencies.
                 output(LINT_PUBLISH_JAR, ArtifactType.LINT)
                 output(LINT_MODEL, ArtifactType.LINT_MODEL)
                 output(LINT_PARTIAL_RESULTS, ArtifactType.LINT_PARTIAL_RESULTS)
                 output(LOCAL_AAR_FOR_LINT, ArtifactType.LOCAL_AAR_FOR_LINT)
+                output(LINT_MODEL_METADATA, ArtifactType.LINT_MODEL_METADATA)
             }
 
             variantSpec(VariantTypeImpl.TEST_FIXTURES) {
@@ -289,9 +294,7 @@ class PublishingSpecs {
                 runtime(AAR_METADATA, ArtifactType.AAR_METADATA)
                 // Publish LOCAL_AAR_FOR_LINT to API_AND_RUNTIME_ELEMENTS to support compileOnly
                 // module dependencies.
-                output(
-                    com.android.build.api.artifact.SingleArtifact.AAR,
-                    ArtifactType.LOCAL_AAR_FOR_LINT)
+                output(LOCAL_AAR_FOR_LINT, ArtifactType.LOCAL_AAR_FOR_LINT)
             }
 
             // Publishing will be done manually from the lint standalone plugin for now.
@@ -350,6 +353,8 @@ class PublishingSpecs {
         fun runtime(taskOutputType: Artifact.Single<out FileSystemLocation>, artifactType: ArtifactType, libraryElements: String? = null)
         fun reverseMetadata(taskOutputType: Artifact.Single<out FileSystemLocation>, artifactType: ArtifactType)
         fun publish(taskOutputType: Artifact.Single<out FileSystemLocation>, artifactType: ArtifactType)
+        fun source(taskOutputType: Artifact.Single<out FileSystemLocation>, artifactType: ArtifactType)
+        fun javaDoc(taskOutputType: Artifact.Single<out FileSystemLocation>, artifactType: ArtifactType)
     }
 }
 
@@ -359,7 +364,13 @@ private val API_AND_RUNTIME_ELEMENTS: ImmutableList<PublishedConfigType> = Immut
 private val REVERSE_METADATA_ELEMENTS_ONLY: ImmutableList<PublishedConfigType> = ImmutableList.of(
     REVERSE_METADATA_ELEMENTS)
 private val API_AND_RUNTIME_PUBLICATION: ImmutableList<PublishedConfigType> =
-    ImmutableList.of(API_PUBLICATION, RUNTIME_PUBLICATION, ALL_API_PUBLICATION, ALL_RUNTIME_PUBLICATION)
+    ImmutableList.of(API_PUBLICATION, RUNTIME_PUBLICATION)
+private val SOURCE_PUBLICATION: ImmutableList<PublishedConfigType> = ImmutableList.of(
+    PublishedConfigType.SOURCE_PUBLICATION
+)
+private val JAVA_DOC_PUBLICATION: ImmutableList<PublishedConfigType> = ImmutableList.of(
+    PublishedConfigType.JAVA_DOC_PUBLICATION
+)
 private val APK_PUBLICATION: ImmutableList<PublishedConfigType> = ImmutableList.of(
     PublishedConfigType.APK_PUBLICATION)
 private val AAB_PUBLICATION: ImmutableList<PublishedConfigType> = ImmutableList.of(
@@ -447,6 +458,14 @@ private open class VariantSpecBuilderImpl (
         throw RuntimeException("This VariantSpecBuilder does not support publish. VariantType is $variantType")
     }
 
+    override fun source(taskOutputType: Artifact.Single<*>, artifactType: ArtifactType) {
+        throw RuntimeException("This VariantSpecBuilder does not support source. VariantType is $variantType")
+    }
+
+    override fun javaDoc(taskOutputType: Artifact.Single<*>, artifactType: ArtifactType) {
+        throw RuntimeException("This VariantSpecBuilder does not support javaDoc. VariantType is $variantType")
+    }
+
     fun toSpec(parentSpec: PublishingSpecs.VariantSpec? = null): PublishingSpecs.VariantSpec {
         return VariantPublishingSpecImpl(
                 variantType,
@@ -467,6 +486,14 @@ private class LibraryVariantSpecBuilder(variantType: VariantType): VariantSpecBu
 
     override fun publish(taskOutputType: Artifact.Single<*>, artifactType: ArtifactType) {
         outputs.add(OutputSpecImpl(taskOutputType, artifactType, API_AND_RUNTIME_PUBLICATION))
+    }
+
+    override fun source(taskOutputType: Artifact.Single<*>, artifactType: ArtifactType) {
+        outputs.add(OutputSpecImpl(taskOutputType, artifactType, SOURCE_PUBLICATION))
+    }
+
+    override fun javaDoc(taskOutputType: Artifact.Single<*>, artifactType: ArtifactType) {
+        outputs.add(OutputSpecImpl(taskOutputType, artifactType, JAVA_DOC_PUBLICATION))
     }
 }
 

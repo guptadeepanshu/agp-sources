@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("DEPRECATION")
+
 package com.android.build.api.variant
 
-import com.android.build.api.component.Component
 import com.android.build.api.component.UnitTest
 import org.gradle.api.Incubating
 import org.gradle.api.file.RegularFile
@@ -47,10 +48,6 @@ interface Variant : Component, HasAndroidResources {
     /**
      * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
      * any relative class names that are declared in the AndroidManifest.xml.
-     *
-     * This value supersedes any value specified by the `package` attribute in the source
-     * AndroidManifest.xml, but doing a 'get' on this property will not retrieve the value specified
-     * in the AndroidManifest.xml.
      */
     val namespace: Provider<String>
 
@@ -111,4 +108,31 @@ interface Variant : Component, HasAndroidResources {
      */
     @get:Incubating
     val experimentalProperties: MapProperty<String, Any>
+
+    /**
+     * List of the components nested in this variant, the returned list will contain:
+     *
+     * * [UnitTest] component if the unit tests for this variant are enabled,
+     * * [AndroidTest] component if this variant [HasAndroidTest] and android tests for this variant
+     * are enabled,
+     * * [TestFixtures] component if this variant [HasTestFixtures] and test fixtures for this
+     * variant are enabled.
+     *
+     * Use this list to do operations on all nested components of this variant without having to
+     * manually check whether the variant has each component.
+     *
+     * Example:
+     *
+     * ```kotlin
+     *  androidComponents.onVariants(selector().withName("debug")) {
+     *      // will return unitTests, androidTests, testFixtures for the debug variant (if enabled).
+     *      nestedComponents.forEach { component ->
+     *          component.transformClassesWith(NestedComponentsClassVisitorFactory::class.java,
+     *                                         InstrumentationScope.Project) {}
+     *      }
+     *  }
+     *  ```
+     */
+    @get:Incubating
+    val nestedComponents: List<com.android.build.api.variant.Component>
 }

@@ -272,6 +272,7 @@ public class AndroidDebugBridge {
         sUserManagedAdbMode = options.userManagedAdbMode;
         sLastKnownGoodAddress = null;
         DdmPreferences.enableJdwpProxyService(options.useJdwpProxyService);
+        DdmPreferences.enableDdmlibCommandService(options.useDdmlibCommandService);
         DdmPreferences.setsJdwpMaxPacketSize(options.maxJdwpPacketSize);
 
         // Determine port and instantiate socket address.
@@ -469,8 +470,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.bridgeChanged(localThis);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
 
@@ -563,8 +564,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.bridgeChanged(localThis);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
 
@@ -619,8 +620,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.bridgeChanged(null);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
 
@@ -645,8 +646,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.bridgeChanged(localThis);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
     }
@@ -1130,8 +1131,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.restartInitiated();
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
 
@@ -1158,8 +1159,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.restartCompleted(isSuccessful);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
 
@@ -1180,8 +1181,8 @@ public class AndroidDebugBridge {
             // we attempt to catch any exception so that a bad listener doesn't kill our thread
             try {
                 listener.deviceConnected(device);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
     }
@@ -1201,8 +1202,8 @@ public class AndroidDebugBridge {
             // thread
             try {
                 listener.deviceDisconnected(device);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
     }
@@ -1223,8 +1224,8 @@ public class AndroidDebugBridge {
             // thread
             try {
                 listener.deviceChanged(device, changeMask);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
     }
@@ -1246,8 +1247,8 @@ public class AndroidDebugBridge {
             // thread
             try {
                 listener.clientChanged(client, changeMask);
-            } catch (Exception e) {
-                Log.e(DDMS, e);
+            } catch (Throwable t) {
+                Log.e(DDMS, t);
             }
         }
     }

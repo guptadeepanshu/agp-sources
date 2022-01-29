@@ -54,6 +54,11 @@ public abstract class CrashReport {
     return productId;
   }
 
+  @NonNull
+  public String getType() {
+    return type;
+  }
+
   @Nullable
   public String getVersion() {
     return version;

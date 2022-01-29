@@ -49,4 +49,23 @@ public interface StudioToolWindowActionStatsOrBuilder extends
    * @return The eventType.
    */
   com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType();
+
+  /**
+   * <pre>
+   * "View Mode" in the UI
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+   * @return Whether the toolWindowType field is set.
+   */
+  boolean hasToolWindowType();
+  /**
+   * <pre>
+   * "View Mode" in the UI
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+   * @return The toolWindowType.
+   */
+  com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType();
 }

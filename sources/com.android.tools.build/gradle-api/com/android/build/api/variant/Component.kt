@@ -21,6 +21,7 @@ import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
+import org.gradle.api.Incubating
 
 interface Component: ComponentIdentity {
 
@@ -28,6 +29,12 @@ interface Component: ComponentIdentity {
      * Access to the variant's buildable artifacts for build customization.
      */
     val artifacts: Artifacts
+
+    /**
+     * Access to the variant's java compilation options.
+     */
+    @get:Incubating
+    val javaCompilation: JavaCompilation
 
     /**
      * Registers an asm class visitor to instrument the classes defined by the given scope.
@@ -44,9 +51,6 @@ interface Component: ComponentIdentity {
      *      setAsmFramesComputationMode(COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
      *  })
      * ```
-     *
-     * This API is experimental and subject to breaking change and we strongly suggest you don't
-     * publish plugins that depend on it yet.
      *
      * @param classVisitorFactoryImplClass the factory class implementing [AsmClassVisitorFactory]
      * @param scope either instrumenting the classes of the current project or the project and its

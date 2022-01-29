@@ -44,6 +44,14 @@ public enum VariantApiArtifactType
    * <code>PUBLIC_ANDROID_RESOURCES_LIST = 7;</code>
    */
   PUBLIC_ANDROID_RESOURCES_LIST(7),
+  /**
+   * <code>ASSETS = 8;</code>
+   */
+  ASSETS(8),
+  /**
+   * <code>METADATA_LIBRARY_DEPENDENCIES_REPORT = 9;</code>
+   */
+  METADATA_LIBRARY_DEPENDENCIES_REPORT(9),
   UNRECOGNIZED(-1),
   ;
 
@@ -83,6 +91,14 @@ public enum VariantApiArtifactType
    * <code>PUBLIC_ANDROID_RESOURCES_LIST = 7;</code>
    */
   public static final int PUBLIC_ANDROID_RESOURCES_LIST_VALUE = 7;
+  /**
+   * <code>ASSETS = 8;</code>
+   */
+  public static final int ASSETS_VALUE = 8;
+  /**
+   * <code>METADATA_LIBRARY_DEPENDENCIES_REPORT = 9;</code>
+   */
+  public static final int METADATA_LIBRARY_DEPENDENCIES_REPORT_VALUE = 9;
 
 
   public final int getNumber() {
@@ -117,6 +133,8 @@ public enum VariantApiArtifactType
       case 5: return MERGED_MANIFEST;
       case 6: return OBFUSCATION_MAPPING_FILE;
       case 7: return PUBLIC_ANDROID_RESOURCES_LIST;
+      case 8: return ASSETS;
+      case 9: return METADATA_LIBRARY_DEPENDENCIES_REPORT;
       default: return null;
     }
   }

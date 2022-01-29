@@ -16,14 +16,14 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AarMetadata
+import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
+import com.android.build.api.variant.TestFixtures
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 open class AnalyticsEnabledLibraryVariant @Inject constructor(
@@ -34,8 +34,25 @@ open class AnalyticsEnabledLibraryVariant @Inject constructor(
     delegate, stats, objectFactory
 ), LibraryVariant {
 
-    override val androidTest: com.android.build.api.component.AndroidTest?
+    override val androidTest: AndroidTest?
         get() = delegate.androidTest
+
+    private val userVisibleTestFixtures: TestFixtures? by lazy {
+        delegate.testFixtures?.let {
+            objectFactory.newInstance(
+                AnalyticsEnabledTestFixtures::class.java,
+                it,
+                stats
+            )
+        }
+    }
+
+    override val testFixtures: TestFixtures?
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.TEST_FIXTURES_VALUE
+            return userVisibleTestFixtures
+        }
 
     private val userVisibleRenderscript: Renderscript by lazy {
         objectFactory.newInstance(

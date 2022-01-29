@@ -53,11 +53,13 @@ import com.android.builder.dexing.getSortedFilesInDir
 import com.android.builder.dexing.getSortedRelativePathsInJar
 import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableFileChanges
+import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Throwables
 import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
@@ -88,6 +90,7 @@ import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -232,7 +235,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
         private val dexingType: DexingType,
         private val dexingUsingArtifactTransforms: Boolean = true,
         private val separateFileDependenciesDexingTask: Boolean = false,
-        private val outputType: InternalMultipleArtifactType = InternalMultipleArtifactType.DEX
+        private val outputType: InternalMultipleArtifactType<Directory> = InternalMultipleArtifactType.DEX
     ) : VariantTaskCreationAction<DexMergingTask, ApkCreationConfig>(creationConfig) {
 
         private val internalName: String = when (action) {
@@ -269,7 +272,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
             // Shared parameters
             task.sharedParams.dexingType.setDisallowChanges(dexingType)
             task.sharedParams.minSdkVersion.setDisallowChanges(
-                creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
+                creationConfig.minSdkVersionForDexing.getFeatureLevel()
             )
             task.sharedParams.debuggable.setDisallowChanges(creationConfig.debuggable)
             task.sharedParams.errorFormatMode.setDisallowChanges(
@@ -303,7 +306,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
                         ) && libraryScopes.intersect(scopes).isNotEmpty()
                     }
 
-                val bootClasspath = creationConfig.variantScope.bootClasspath
+                val bootClasspath = creationConfig.sdkComponents.bootClasspath
                 task.sharedParams.mainDexListConfig.libraryClasses
                     .from(bootClasspath, libraryClasses).disallowChanges()
             }
@@ -445,18 +448,11 @@ abstract class DexMergingTask : NewIncrementalTask() {
                         return customNumberOfBuckets
                     }
 
-                    // If the property is not set, compute its value
-                    val minSdkVersion =
-                        creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
-                    val overrideMinSdkVersion =
-                        if (creationConfig.variantType.isDynamicFeature && minSdkVersion < 21) {
-                            // Dynamic features can always be built in native multidex mode
-                            // even with minSdkVersion < 21, so for the following
-                            // computation, we consider it to be 21.
-                            21
-                        } else {
-                            minSdkVersion
-                        }
+                    // Deploy API is either the minSdkVersion or if deploying from the IDE, the API level of
+                    // the device we're deploying too.
+                    val targetDeployApi = creationConfig.minSdkVersionForDexing.getFeatureLevel()
+                    // We can be in native multidex mode while using 20- value for dexing
+                    val overrideMinSdkVersion = max(21, targetDeployApi)
                     getNumberOfBuckets(minSdkVersion = overrideMinSdkVersion)
                 }
             }

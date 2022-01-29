@@ -118,6 +118,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000010;
             break;
           }
+          case 50: {
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000020) != 0)) {
+              subBuilder = gotoDeclaration_.toBuilder();
+            }
+            gotoDeclaration_ = input.readMessage(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(gotoDeclaration_);
+              gotoDeclaration_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000020;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -326,6 +339,41 @@ private static final long serialVersionUID = 0L;
     return system_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.getDefaultInstance() : system_;
   }
 
+  public static final int GOTO_DECLARATION_FIELD_NUMBER = 6;
+  private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration gotoDeclaration_;
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * @return Whether the gotoDeclaration field is set.
+   */
+  public boolean hasGotoDeclaration() {
+    return ((bitField0_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   * @return The gotoDeclaration.
+   */
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration() {
+    return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
+  }
+  /**
+   * <pre>
+   * Session data around goto declaration
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+   */
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder() {
+    return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -355,6 +403,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       output.writeMessage(5, getSystem());
     }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      output.writeMessage(6, getGotoDeclaration());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -383,6 +434,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000010) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(5, getSystem());
+    }
+    if (((bitField0_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(6, getGotoDeclaration());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -424,6 +479,11 @@ private static final long serialVersionUID = 0L;
       if (!getSystem()
           .equals(other.getSystem())) return false;
     }
+    if (hasGotoDeclaration() != other.hasGotoDeclaration()) return false;
+    if (hasGotoDeclaration()) {
+      if (!getGotoDeclaration()
+          .equals(other.getGotoDeclaration())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -454,6 +514,10 @@ private static final long serialVersionUID = 0L;
     if (hasSystem()) {
       hash = (37 * hash) + SYSTEM_FIELD_NUMBER;
       hash = (53 * hash) + getSystem().hashCode();
+    }
+    if (hasGotoDeclaration()) {
+      hash = (37 * hash) + GOTO_DECLARATION_FIELD_NUMBER;
+      hash = (53 * hash) + getGotoDeclaration().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -592,6 +656,7 @@ private static final long serialVersionUID = 0L;
         getMemoryFieldBuilder();
         getComposeFieldBuilder();
         getSystemFieldBuilder();
+        getGotoDeclarationFieldBuilder();
       }
     }
     @java.lang.Override
@@ -627,6 +692,12 @@ private static final long serialVersionUID = 0L;
         systemBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000010);
+      if (gotoDeclarationBuilder_ == null) {
+        gotoDeclaration_ = null;
+      } else {
+        gotoDeclarationBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000020);
       return this;
     }
 
@@ -695,6 +766,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000010;
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        if (gotoDeclarationBuilder_ == null) {
+          result.gotoDeclaration_ = gotoDeclaration_;
+        } else {
+          result.gotoDeclaration_ = gotoDeclarationBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000020;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -758,6 +837,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasSystem()) {
         mergeSystem(other.getSystem());
+      }
+      if (other.hasGotoDeclaration()) {
+        mergeGotoDeclaration(other.getGotoDeclaration());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1567,6 +1649,162 @@ private static final long serialVersionUID = 0L;
         system_ = null;
       }
       return systemBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration gotoDeclaration_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder> gotoDeclarationBuilder_;
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * @return Whether the gotoDeclaration field is set.
+     */
+    public boolean hasGotoDeclaration() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     * @return The gotoDeclaration.
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration() {
+      if (gotoDeclarationBuilder_ == null) {
+        return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
+      } else {
+        return gotoDeclarationBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public Builder setGotoDeclaration(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration value) {
+      if (gotoDeclarationBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        gotoDeclaration_ = value;
+        onChanged();
+      } else {
+        gotoDeclarationBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public Builder setGotoDeclaration(
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder builderForValue) {
+      if (gotoDeclarationBuilder_ == null) {
+        gotoDeclaration_ = builderForValue.build();
+        onChanged();
+      } else {
+        gotoDeclarationBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public Builder mergeGotoDeclaration(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration value) {
+      if (gotoDeclarationBuilder_ == null) {
+        if (((bitField0_ & 0x00000020) != 0) &&
+            gotoDeclaration_ != null &&
+            gotoDeclaration_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance()) {
+          gotoDeclaration_ =
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.newBuilder(gotoDeclaration_).mergeFrom(value).buildPartial();
+        } else {
+          gotoDeclaration_ = value;
+        }
+        onChanged();
+      } else {
+        gotoDeclarationBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000020;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public Builder clearGotoDeclaration() {
+      if (gotoDeclarationBuilder_ == null) {
+        gotoDeclaration_ = null;
+        onChanged();
+      } else {
+        gotoDeclarationBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000020);
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder getGotoDeclarationBuilder() {
+      bitField0_ |= 0x00000020;
+      onChanged();
+      return getGotoDeclarationFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder() {
+      if (gotoDeclarationBuilder_ != null) {
+        return gotoDeclarationBuilder_.getMessageOrBuilder();
+      } else {
+        return gotoDeclaration_ == null ?
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
+      }
+    }
+    /**
+     * <pre>
+     * Session data around goto declaration
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder> 
+        getGotoDeclarationFieldBuilder() {
+      if (gotoDeclarationBuilder_ == null) {
+        gotoDeclarationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder>(
+                getGotoDeclaration(),
+                getParentForChildren(),
+                isClean());
+        gotoDeclaration_ = null;
+      }
+      return gotoDeclarationBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

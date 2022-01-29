@@ -401,7 +401,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         AndroidArtifacts.ArtifactType.FEATURE_NAME
                     )
             }
-            if (!globalScope.extension.aaptOptions.namespaced) {
+            if (!creationConfig.services.projectInfo.getExtension().aaptOptions.namespaced) {
                 task.navigationJsons = project.files(
                     creationConfig.artifacts.get(NAVIGATION_JSON),
                     creationConfig
@@ -509,6 +509,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             if (creationConfig.services.projectOptions[BooleanOption.ENFORCE_UNIQUE_PACKAGE_NAMES]
             ) {
                 features.add(Invoker.Feature.ENFORCE_UNIQUE_PACKAGE_NAME)
+            }
+            if (creationConfig.services.projectOptions[BooleanOption.DISABLE_MINSDKLIBRARY_CHECK]) {
+                features.add(Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK)
             }
             return if (features.isEmpty())
                 EnumSet.noneOf(Invoker.Feature::class.java)

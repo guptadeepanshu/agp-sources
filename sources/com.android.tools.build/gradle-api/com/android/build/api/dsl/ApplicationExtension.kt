@@ -16,17 +16,15 @@
 
 package com.android.build.api.dsl
 
-import com.android.build.api.variant.ApplicationVariantBuilder
-import com.android.build.api.variant.ApplicationVariant
 import org.gradle.api.Incubating
 
 /**
  * Extension for the Android Gradle Plugin Application plugin.
  *
+ * This is the `android` block when the `com.android.application` plugin is applied.
  *
- * Only the Android Gradle Plugin should create instances of this interface.
+ * Only the Android Gradle Plugin should create instances of interfaces in com.android.build.api.dsl.
  */
-@Incubating
 interface ApplicationExtension :
     CommonExtension<
             ApplicationBuildFeatures,
@@ -47,10 +45,26 @@ interface ApplicationExtension :
 
     fun bundle(action: Bundle.() -> Unit)
 
+    @get:Incubating
     val dynamicFeatures: MutableSet<String>
 
     /**
      * Set of asset pack subprojects to be included in the app's bundle.
      */
+    @get:Incubating
     val assetPacks: MutableSet<String>
+
+    /**
+     * Customizes publishing build variant artifacts from app module to a Maven repository.
+     *
+     * For more information about the properties you can configure in this block, see [ApplicationPublishing]
+     */
+    val publishing: ApplicationPublishing
+
+    /**
+     * Customizes publishing build variant artifacts from app module to a Maven repository.
+     *
+     * For more information about the properties you can configure in this block, see [ApplicationPublishing]
+     */
+    fun publishing(action: ApplicationPublishing.() -> Unit)
 }

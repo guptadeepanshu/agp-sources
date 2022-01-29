@@ -82,6 +82,60 @@ public interface AppInspectionEventOrBuilder extends
 
   /**
    * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * @return Whether the networkInspectorEvent field is set.
+   */
+  boolean hasNetworkInspectorEvent();
+  /**
+   * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * @return The networkInspectorEvent.
+   */
+  com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent();
+  /**
+   * <pre>
+   * Event associated with the user interacting with the Network inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder();
+
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * @return Whether the backgroundTaskInspectorEvent field is set.
+   */
+  boolean hasBackgroundTaskInspectorEvent();
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * @return The backgroundTaskInspectorEvent.
+   */
+  com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent();
+  /**
+   * <pre>
+   * Event associated with the user interacting with background task inspector
+   * </pre>
+   *
+   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder();
+
+  /**
+   * <pre>
    * Set if |type| is |ERROR_OCCURRED|
    * </pre>
    *

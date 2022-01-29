@@ -16,22 +16,23 @@
 package com.android.build.gradle.internal.core
 
 import com.android.SdkConstants
-import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.variant.BuildConfigField
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
 import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.AbstractProductFlavor
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
-import com.android.builder.model.ApiVersion
 import com.android.builder.model.VectorDrawablesOptions
-import com.android.sdklib.AndroidVersion
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.file.RegularFile
@@ -48,7 +49,7 @@ import java.io.File
  * Use [VariantDslInfoBuilder] to instantiate.
  *
  */
-interface VariantDslInfo {
+interface VariantDslInfo<CommonExtensionT: CommonExtension<*, *, *, *>> {
 
     val componentIdentity: ComponentIdentity
 
@@ -62,7 +63,7 @@ interface VariantDslInfo {
      *
      * @see VariantType.isTestComponent
      */
-    val testedVariant: VariantDslInfo?
+    val testedVariant: VariantDslInfo<*>?
 
     /**
      * Returns a full name that includes the given splits name.
@@ -204,7 +205,7 @@ interface VariantDslInfo {
      *
      * @return the minSdkVersion
      */
-    val minSdkVersion: AndroidVersion
+    val minSdkVersion: MutableAndroidVersion
 
     val maxSdkVersion: Int?
 
@@ -217,7 +218,7 @@ interface VariantDslInfo {
      *
      * @return the targetSdkVersion
      */
-    val targetSdkVersion: ApiVersion
+    val targetSdkVersion: MutableAndroidVersion?
 
     val renderscriptTarget: Int
 
@@ -271,10 +272,12 @@ interface VariantDslInfo {
     val isBundled: Boolean
 
     /**
-     * Returns if the property passed by the IDE is set, the minimum SDK version or
-     * null if not.
+     * Returns the API to which device/emulator we're deploying via the IDE or null if not.
+     * Can be used to optimize some build steps when deploying via the IDE.
+     *
+     * This has no relation with targetSdkVersion from build.gradle/manifest.
      */
-    val minSdkVersionFromIDE: Int?
+    val targetDeployApiFromIDE: Int?
 
     val nativeBuildSystem: VariantManager.NativeBuiltType?
 
@@ -318,6 +321,10 @@ interface VariantDslInfo {
     val isJniDebuggable: Boolean
 
     val aarMetadata: MergedAarMetadata
+
+    val publishInfo: VariantPublishingInfo?
+
+    val enableTestFixtures: Boolean
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //  APIs below should only be used at CreationConfig/Variant instantiation time       //

@@ -132,6 +132,9 @@ public interface AndroidProject {
      */
     String PROPERTY_ATTRIBUTION_FILE_LOCATION = "android.injected.attribution.file.location";
 
+    /** Absolute path to a file containing the result of the `CheckJetifier` task. */
+    String PROPERTY_CHECK_JETIFIER_RESULT_FILE = "android.injected.checkJetifier.resultFile";
+
     /**
      * Comma separated list of on-demand dynamic modules or instant app modules names that are
      * selected by the user for installation on the device during deployment.
@@ -144,6 +147,7 @@ public interface AndroidProject {
     String ARTIFACT_MAIN = "_main_";
     String ARTIFACT_ANDROID_TEST = "_android_test_";
     String ARTIFACT_UNIT_TEST = "_unit_test_";
+    String ARTIFACT_TEST_FIXTURES = "_test_fixtures_";
 
     String FD_INTERMEDIATES = "intermediates";
     String FD_LOGS = "logs";

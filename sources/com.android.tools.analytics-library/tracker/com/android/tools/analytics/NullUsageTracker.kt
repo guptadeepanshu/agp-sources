@@ -24,9 +24,9 @@ import com.google.wireless.android.play.playlog.proto.ClientAnalytics
  */
 object NullUsageTracker : UsageTrackerWriter() {
 
-  override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {}
+    override fun logDetails(logEvent: ClientAnalytics.LogEvent.Builder) {}
 
-  override fun close() {}
+    override fun close() {}
 
-  override fun flush() {}
+    override fun flush() {}
 }

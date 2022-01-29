@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -54,8 +55,10 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 
 /** Task that publishes the app dependencies proto for each app or dynamic feature module. */
+@DisableCachingByDefault
 abstract class PerModuleReportDependenciesTask : NonIncrementalTask() {
 
     private lateinit var runtimeClasspathArtifacts: ArtifactCollection
@@ -281,7 +284,7 @@ abstract class PerModuleReportDependenciesTask : NonIncrementalTask() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 PerModuleReportDependenciesTask::dependencyReport
-            ).withName("dependencies.pb").on(InternalArtifactType.METADATA_LIBRARY_DEPENDENCIES_REPORT)
+            ).withName("dependencies.pb").on(SingleArtifact.METADATA_LIBRARY_DEPENDENCIES_REPORT)
         }
 
         override fun configure(

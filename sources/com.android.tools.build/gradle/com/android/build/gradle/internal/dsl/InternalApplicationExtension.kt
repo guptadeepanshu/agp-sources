@@ -21,10 +21,15 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationDefaultConfig
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.ApplicationProductFlavor
+import com.android.build.api.dsl.ApplicationPublishing
+import com.android.build.api.dsl.Bundle
+import com.android.build.api.dsl.DependenciesInfo
+import org.gradle.api.Action
 
 /** See [InternalCommonExtension] */
 interface InternalApplicationExtension :
     ApplicationExtension,
+    InternalTestedExtension,
         InternalCommonExtension<
                 ApplicationBuildFeatures,
                 ApplicationBuildType,
@@ -34,4 +39,9 @@ interface InternalApplicationExtension :
     fun setDynamicFeatures(dynamicFeatures: Set<String>)
     override val assetPacks: MutableSet<String>
     fun setAssetPacks(assetPacks: Set<String>)
+
+    // See GroovyBlockInExtensionsTest
+    fun bundle(action: Action<BundleOptions>)
+    fun dependenciesInfo(action: Action<DependenciesInfo>)
+    fun publishing(action: Action<ApplicationPublishing>)
 }

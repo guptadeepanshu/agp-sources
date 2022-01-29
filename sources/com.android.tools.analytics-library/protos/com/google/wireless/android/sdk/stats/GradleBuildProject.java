@@ -230,6 +230,19 @@ private static final long serialVersionUID = 0L;
             taskNames_.add(bs);
             break;
           }
+          case 146: {
+            com.google.wireless.android.sdk.stats.ProjectApiUse.Builder subBuilder = null;
+            if (((bitField0_ & 0x00002000) != 0)) {
+              subBuilder = projectApiUse_.toBuilder();
+            }
+            projectApiUse_ = input.readMessage(com.google.wireless.android.sdk.stats.ProjectApiUse.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(projectApiUse_);
+              projectApiUse_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00002000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -2017,6 +2030,41 @@ private static final long serialVersionUID = 0L;
     return taskNames_.getByteString(index);
   }
 
+  public static final int PROJECT_API_USE_FIELD_NUMBER = 18;
+  private com.google.wireless.android.sdk.stats.ProjectApiUse projectApiUse_;
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * @return Whether the projectApiUse field is set.
+   */
+  public boolean hasProjectApiUse() {
+    return ((bitField0_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   * @return The projectApiUse.
+   */
+  public com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse() {
+    return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
+  }
+  /**
+   * <pre>
+   * Records use of APIs used at the sub-project level
+   * </pre>
+   *
+   * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+   */
+  public com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder() {
+    return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2081,6 +2129,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < taskNames_.size(); i++) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 17, taskNames_.getRaw(i));
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      output.writeMessage(18, getProjectApiUse());
     }
     unknownFields.writeTo(output);
   }
@@ -2167,6 +2218,10 @@ private static final long serialVersionUID = 0L;
       size += dataSize;
       size += 2 * getTaskNamesList().size();
     }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(18, getProjectApiUse());
+    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -2252,6 +2307,11 @@ private static final long serialVersionUID = 0L;
         .equals(other.getPluginNamesList())) return false;
     if (!getTaskNamesList()
         .equals(other.getTaskNamesList())) return false;
+    if (hasProjectApiUse() != other.hasProjectApiUse()) return false;
+    if (hasProjectApiUse()) {
+      if (!getProjectApiUse()
+          .equals(other.getProjectApiUse())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -2333,6 +2393,10 @@ private static final long serialVersionUID = 0L;
     if (getTaskNamesCount() > 0) {
       hash = (37 * hash) + TASK_NAMES_FIELD_NUMBER;
       hash = (53 * hash) + getTaskNamesList().hashCode();
+    }
+    if (hasProjectApiUse()) {
+      hash = (37 * hash) + PROJECT_API_USE_FIELD_NUMBER;
+      hash = (53 * hash) + getProjectApiUse().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -2466,6 +2530,7 @@ private static final long serialVersionUID = 0L;
         getVariantFieldBuilder();
         getSplitsFieldBuilder();
         getOptionsFieldBuilder();
+        getProjectApiUseFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2521,6 +2586,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00008000);
       taskNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00010000);
+      if (projectApiUseBuilder_ == null) {
+        projectApiUse_ = null;
+      } else {
+        projectApiUseBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00020000);
       return this;
     }
 
@@ -2637,6 +2708,14 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00010000);
       }
       result.taskNames_ = taskNames_;
+      if (((from_bitField0_ & 0x00020000) != 0)) {
+        if (projectApiUseBuilder_ == null) {
+          result.projectApiUse_ = projectApiUse_;
+        } else {
+          result.projectApiUse_ = projectApiUseBuilder_.build();
+        }
+        to_bitField0_ |= 0x00002000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -2790,6 +2869,9 @@ private static final long serialVersionUID = 0L;
           taskNames_.addAll(other.taskNames_);
         }
         onChanged();
+      }
+      if (other.hasProjectApiUse()) {
+        mergeProjectApiUse(other.getProjectApiUse());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -4897,6 +4979,162 @@ private static final long serialVersionUID = 0L;
       taskNames_.add(value);
       onChanged();
       return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.ProjectApiUse projectApiUse_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ProjectApiUse, com.google.wireless.android.sdk.stats.ProjectApiUse.Builder, com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder> projectApiUseBuilder_;
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * @return Whether the projectApiUse field is set.
+     */
+    public boolean hasProjectApiUse() {
+      return ((bitField0_ & 0x00020000) != 0);
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     * @return The projectApiUse.
+     */
+    public com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse() {
+      if (projectApiUseBuilder_ == null) {
+        return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
+      } else {
+        return projectApiUseBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public Builder setProjectApiUse(com.google.wireless.android.sdk.stats.ProjectApiUse value) {
+      if (projectApiUseBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        projectApiUse_ = value;
+        onChanged();
+      } else {
+        projectApiUseBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public Builder setProjectApiUse(
+        com.google.wireless.android.sdk.stats.ProjectApiUse.Builder builderForValue) {
+      if (projectApiUseBuilder_ == null) {
+        projectApiUse_ = builderForValue.build();
+        onChanged();
+      } else {
+        projectApiUseBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public Builder mergeProjectApiUse(com.google.wireless.android.sdk.stats.ProjectApiUse value) {
+      if (projectApiUseBuilder_ == null) {
+        if (((bitField0_ & 0x00020000) != 0) &&
+            projectApiUse_ != null &&
+            projectApiUse_ != com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance()) {
+          projectApiUse_ =
+            com.google.wireless.android.sdk.stats.ProjectApiUse.newBuilder(projectApiUse_).mergeFrom(value).buildPartial();
+        } else {
+          projectApiUse_ = value;
+        }
+        onChanged();
+      } else {
+        projectApiUseBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00020000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public Builder clearProjectApiUse() {
+      if (projectApiUseBuilder_ == null) {
+        projectApiUse_ = null;
+        onChanged();
+      } else {
+        projectApiUseBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00020000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ProjectApiUse.Builder getProjectApiUseBuilder() {
+      bitField0_ |= 0x00020000;
+      onChanged();
+      return getProjectApiUseFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder() {
+      if (projectApiUseBuilder_ != null) {
+        return projectApiUseBuilder_.getMessageOrBuilder();
+      } else {
+        return projectApiUse_ == null ?
+            com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
+      }
+    }
+    /**
+     * <pre>
+     * Records use of APIs used at the sub-project level
+     * </pre>
+     *
+     * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ProjectApiUse, com.google.wireless.android.sdk.stats.ProjectApiUse.Builder, com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder> 
+        getProjectApiUseFieldBuilder() {
+      if (projectApiUseBuilder_ == null) {
+        projectApiUseBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.ProjectApiUse, com.google.wireless.android.sdk.stats.ProjectApiUse.Builder, com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder>(
+                getProjectApiUse(),
+                getParentForChildren(),
+                isClean());
+        projectApiUse_ = null;
+      }
+      return projectApiUseBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -21,20 +21,23 @@ import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Classpath
 import java.io.File
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ClassesDirFormat.CONTAINS_SINGLE_JAR
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ClassesDirFormat.CONTAINS_CLASS_FILES_ONLY
 import com.android.builder.dexing.isJarFile
 import org.gradle.api.artifacts.transform.InputArtifact
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 
 /**
  * Transform from [AndroidArtifacts.ArtifactType.CLASSES_DIR] to
  * [AndroidArtifacts.ArtifactType.CLASSES].
  */
+@DisableCachingByDefault
 abstract class ClassesDirToClassesTransform : TransformAction<GenericTransformParameters> {
 
-    @get:Classpath
+    @get:PathSensitive(PathSensitivity.ABSOLUTE)
     @get:InputArtifact
     abstract val inputArtifact: Provider<FileSystemLocation>
 

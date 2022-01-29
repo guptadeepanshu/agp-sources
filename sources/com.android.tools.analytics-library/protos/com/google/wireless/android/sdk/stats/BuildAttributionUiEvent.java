@@ -372,6 +372,14 @@ private static final long serialVersionUID = 0L;
      * <code>UPDATE_PLUGIN_BUTTON_CLICKED = 24;</code>
      */
     UPDATE_PLUGIN_BUTTON_CLICKED(24),
+    /**
+     * <code>RUN_CHECK_JETIFIER_TASK_CLICKED = 25;</code>
+     */
+    RUN_CHECK_JETIFIER_TASK_CLICKED(25),
+    /**
+     * <code>REMOVE_JETIFIER_PROPERTY_CLICKED = 26;</code>
+     */
+    REMOVE_JETIFIER_PROPERTY_CLICKED(26),
     ;
 
     /**
@@ -543,6 +551,14 @@ private static final long serialVersionUID = 0L;
      * <code>UPDATE_PLUGIN_BUTTON_CLICKED = 24;</code>
      */
     public static final int UPDATE_PLUGIN_BUTTON_CLICKED_VALUE = 24;
+    /**
+     * <code>RUN_CHECK_JETIFIER_TASK_CLICKED = 25;</code>
+     */
+    public static final int RUN_CHECK_JETIFIER_TASK_CLICKED_VALUE = 25;
+    /**
+     * <code>REMOVE_JETIFIER_PROPERTY_CLICKED = 26;</code>
+     */
+    public static final int REMOVE_JETIFIER_PROPERTY_CLICKED_VALUE = 26;
 
 
     public final int getNumber() {
@@ -590,6 +606,8 @@ private static final long serialVersionUID = 0L;
         case 22: return RERUN_BUILD_WITH_CONFIGURATION_CACHE_CLICKED;
         case 23: return TURN_ON_CONFIGURATION_CACHE_IN_PROPERTIES_LINK_CLICKED;
         case 24: return UPDATE_PLUGIN_BUTTON_CLICKED;
+        case 25: return RUN_CHECK_JETIFIER_TASK_CLICKED;
+        case 26: return REMOVE_JETIFIER_PROPERTY_CLICKED;
         default: return null;
       }
     }
@@ -684,6 +702,10 @@ private static final long serialVersionUID = 0L;
      * <code>CONFIGURATION_CACHING = 8;</code>
      */
     CONFIGURATION_CACHING(8),
+    /**
+     * <code>JETIFIER_MIGRATION = 9;</code>
+     */
+    JETIFIER_MIGRATION(9),
     ;
 
     /**
@@ -722,6 +744,10 @@ private static final long serialVersionUID = 0L;
      * <code>CONFIGURATION_CACHING = 8;</code>
      */
     public static final int CONFIGURATION_CACHING_VALUE = 8;
+    /**
+     * <code>JETIFIER_MIGRATION = 9;</code>
+     */
+    public static final int JETIFIER_MIGRATION_VALUE = 9;
 
 
     public final int getNumber() {
@@ -753,6 +779,7 @@ private static final long serialVersionUID = 0L;
         case 6: return OPTIMIZE_CONFIGURATION_PHASE_HELP;
         case 7: return CONFIGURE_GC;
         case 8: return CONFIGURATION_CACHING;
+        case 9: return JETIFIER_MIGRATION;
         default: return null;
       }
     }
@@ -806,7 +833,7 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * Filter consists of items that might be included or not.
    * Current filter state is represented by items that are included (turned on).
-   * Next ID: 10
+   * Next ID: 11
    * </pre>
    *
    * Protobuf enum {@code android_studio.BuildAttributionUiEvent.FilterItem}
@@ -853,6 +880,10 @@ private static final long serialVersionUID = 0L;
      * <code>SHOW_CONFIGURATION_CACHE_WARNINGS = 9;</code>
      */
     SHOW_CONFIGURATION_CACHE_WARNINGS(9),
+    /**
+     * <code>SHOW_JETIFIER_USAGE_WARNINGS = 10;</code>
+     */
+    SHOW_JETIFIER_USAGE_WARNINGS(10),
     /**
      * <pre>
      * Other task attributes filters
@@ -908,6 +939,10 @@ private static final long serialVersionUID = 0L;
      */
     public static final int SHOW_CONFIGURATION_CACHE_WARNINGS_VALUE = 9;
     /**
+     * <code>SHOW_JETIFIER_USAGE_WARNINGS = 10;</code>
+     */
+    public static final int SHOW_JETIFIER_USAGE_WARNINGS_VALUE = 10;
+    /**
      * <pre>
      * Other task attributes filters
      * </pre>
@@ -949,6 +984,7 @@ private static final long serialVersionUID = 0L;
         case 5: return SHOW_TASK_SETUP_ISSUE_WARNINGS;
         case 6: return SHOW_ANNOTATION_PROCESSOR_WARNINGS;
         case 9: return SHOW_CONFIGURATION_CACHE_WARNINGS;
+        case 10: return SHOW_JETIFIER_USAGE_WARNINGS;
         case 7: return SHOW_WARNINGS_FOR_TASK_NOT_FROM_CRITICAL_PATH;
         case 8: return SHOW_TASKS_WITHOUT_WARNINGS;
         default: return null;
@@ -1271,6 +1307,10 @@ private static final long serialVersionUID = 0L;
        * <code>CONFIGURATION_CACHE_PLUGIN_WARNING = 27;</code>
        */
       CONFIGURATION_CACHE_PLUGIN_WARNING(27),
+      /**
+       * <code>JETIFIER_USAGE_WARNING = 28;</code>
+       */
+      JETIFIER_USAGE_WARNING(28),
       ;
 
       /**
@@ -1393,6 +1433,10 @@ private static final long serialVersionUID = 0L;
        * <code>CONFIGURATION_CACHE_PLUGIN_WARNING = 27;</code>
        */
       public static final int CONFIGURATION_CACHE_PLUGIN_WARNING_VALUE = 27;
+      /**
+       * <code>JETIFIER_USAGE_WARNING = 28;</code>
+       */
+      public static final int JETIFIER_USAGE_WARNING_VALUE = 28;
 
 
       public final int getNumber() {
@@ -1443,6 +1487,7 @@ private static final long serialVersionUID = 0L;
           case 25: return PLUGIN_TASK_WARNINGS;
           case 26: return CONFIGURATION_CACHE_ROOT;
           case 27: return CONFIGURATION_CACHE_PLUGIN_WARNING;
+          case 28: return JETIFIER_USAGE_WARNING;
           default: return null;
         }
       }

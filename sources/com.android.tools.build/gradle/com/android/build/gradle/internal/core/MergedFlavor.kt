@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.core
 
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.gradle.internal.api.BaseVariantImpl
+import com.android.build.gradle.internal.dsl.VectorDrawablesOptions
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.options.BooleanOption
@@ -26,7 +27,6 @@ import com.android.builder.core.DefaultVectorDrawablesOptions
 import com.android.builder.errors.IssueReporter
 import com.android.builder.model.BaseConfig
 import com.android.builder.model.ProductFlavor
-import com.android.builder.model.SigningConfig
 import com.google.common.collect.Lists
 import org.gradle.api.provider.Property
 
@@ -38,6 +38,19 @@ class MergedFlavor(
     private val _applicationId: Property<String>,
     private val dslServices: DslServices
 ) : AbstractProductFlavor(name), InternalBaseVariant.MergedFlavor {
+
+    override var dimension: String? = null
+    override var renderscriptSupportModeEnabled: Boolean? = null
+    override var renderscriptSupportModeBlasEnabled: Boolean? = null
+    override var renderscriptNdkModeEnabled: Boolean? = null
+    override var testApplicationId: String? = null
+    override var testInstrumentationRunner: String? = null
+    override var testHandleProfiling: Boolean? = null
+    override var testFunctionalTest: Boolean? = null
+    override var wearAppUnbundled: Boolean? = null
+    protected override var _versionCode: Int? = null
+    protected override var _versionName: String? = null
+    override val resourceConfigurations: MutableSet<String> = mutableSetOf()
 
     // in the merged flavor scenario which is still accessible from the old variant API, we need
     // to reset the value in the VariantProperties which we can do through the DslInfo reference.
@@ -148,7 +161,7 @@ class MergedFlavor(
     override fun _initWith(that: BaseConfig) {
         super._initWith(that)
         if (that is ProductFlavor) {
-            _vectorDrawables = DefaultVectorDrawablesOptions.copyOf(that.vectorDrawables)
+            _vectorDrawables = VectorDrawablesOptions.copyOf(that.vectorDrawables)
         }
     }
 

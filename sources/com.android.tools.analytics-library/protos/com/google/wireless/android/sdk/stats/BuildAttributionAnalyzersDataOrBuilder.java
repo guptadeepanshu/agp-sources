@@ -187,4 +187,31 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
    */
   com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder getConfigurationCacheCompatibilityDataOrBuilder();
+
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * @return Whether the jetifierUsageData field is set.
+   */
+  boolean hasJetifierUsageData();
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * @return The jetifierUsageData.
+   */
+  com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData();
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   */
+  com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder();
 }

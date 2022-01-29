@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.ide.v2
 
 import com.android.SdkConstants
+import com.android.Version
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.dsl.ApkSigningConfig
@@ -27,12 +28,14 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.ProductFlavor
 import com.android.build.api.dsl.TestExtension
-import com.android.build.api.variant.impl.HasAndroidTest
+import com.android.build.api.variant.HasAndroidTest
+import com.android.build.api.variant.HasTestFixtures
 import com.android.build.api.variant.impl.TestVariantImpl
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -43,33 +46,34 @@ import com.android.build.gradle.internal.errors.SyncIssueReporterImpl.GlobalSync
 import com.android.build.gradle.internal.ide.DependencyFailureHandler
 import com.android.build.gradle.internal.ide.ModelBuilder
 import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputs
+import com.android.build.gradle.internal.ide.dependencies.ArtifactCollectionsInputsImpl
 import com.android.build.gradle.internal.ide.dependencies.BuildMapping
-import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
+import com.android.build.gradle.internal.ide.dependencies.FullDependencyGraphBuilder
 import com.android.build.gradle.internal.ide.dependencies.computeBuildMapping
-import com.android.build.gradle.internal.ide.dependencies.getDependencyGraphBuilder
 import com.android.build.gradle.internal.ide.dependencies.getVariantName
 import com.android.build.gradle.internal.ide.verifyIDEIsNotOld
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecksForModel
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.PROVIDED_CLASSPATH
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.scope.InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL
-import com.android.build.gradle.internal.scope.InternalArtifactType.APK_IDE_MODEL
-import com.android.build.gradle.internal.scope.InternalArtifactType.BUNDLE_IDE_MODEL
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 import com.android.build.gradle.internal.scope.InternalArtifactType.UNIT_TEST_CONFIG_DIRECTORY
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.AnchorTaskNames
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask
-import com.android.build.gradle.internal.tasks.ExtractApksTask
 import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import com.android.builder.core.VariantTypeImpl
 import com.android.builder.errors.IssueReporter
+import com.android.builder.model.v2.ModelSyncFile
 import com.android.builder.model.SyncIssue
 import com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags.BooleanFlag
 import com.android.builder.model.v2.ide.ArtifactDependencies
@@ -82,16 +86,17 @@ import com.android.builder.model.v2.ide.TestInfo
 import com.android.builder.model.v2.ide.TestedTargetVariant
 import com.android.builder.model.v2.models.AndroidDsl
 import com.android.builder.model.v2.models.AndroidProject
+import com.android.builder.model.v2.models.BuildMap
 import com.android.builder.model.v2.models.GlobalLibraryMap
 import com.android.builder.model.v2.models.ModelBuilderParameter
-import com.android.builder.model.v2.models.ModelVersions
 import com.android.builder.model.v2.models.ProjectSyncIssues
 import com.android.builder.model.v2.models.VariantDependencies
+import com.android.builder.model.v2.models.Versions
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.ImmutableSet
 import org.gradle.api.Project
-import org.gradle.api.provider.Provider
+import org.gradle.api.invocation.Gradle
 import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder
 import java.io.File
 import java.io.FileInputStream
@@ -125,7 +130,8 @@ class ModelBuilder<
     }
 
     override fun canBuild(className: String): Boolean {
-        return className == ModelVersions::class.java.name
+        return className == Versions::class.java.name
+                || className == BuildMap::class.java.name
                 || className == AndroidProject::class.java.name
                 || className == AndroidDsl::class.java.name
                 || className == GlobalLibraryMap::class.java.name
@@ -137,7 +143,8 @@ class ModelBuilder<
      * Non-parameterized model query. Valid for all but the VariantDependencies model
      */
     override fun buildAll(className: String, project: Project): Any = when (className) {
-        ModelVersions::class.java.name -> buildModelVersions(project)
+        Versions::class.java.name -> buildModelVersions()
+        BuildMap::class.java.name -> buildBuildMap(project)
         AndroidProject::class.java.name -> buildAndroidProjectModel(project)
         AndroidDsl::class.java.name -> buildAndroidDslModel(project)
         GlobalLibraryMap::class.java.name -> buildGlobalLibraryMapModel(project)
@@ -157,7 +164,8 @@ class ModelBuilder<
         project: Project
     ): Any? = when (className) {
         VariantDependencies::class.java.name -> buildVariantDependenciesModel(project, parameter)
-        ModelVersions::class.java.name,
+        Versions::class.java.name,
+        BuildMap::class.java.name,
         AndroidProject::class.java.name,
         GlobalLibraryMap::class.java.name,
         ProjectSyncIssues::class.java.name -> throw RuntimeException(
@@ -166,14 +174,17 @@ class ModelBuilder<
         else -> throw RuntimeException("Does not support model '$className'")
     }
 
-    private fun buildModelVersions(project: Project): ModelVersions {
-        return ModelVersionsImpl(
+    private fun buildModelVersions(): Versions {
+        return VersionsImpl(
             androidProject = VersionImpl(0, 1),
             androidDsl = VersionImpl(0, 1),
             variantDependencies = VersionImpl(0, 1),
-            nativeModule = VersionImpl(0, 1)
+            nativeModule = VersionImpl(0, 1),
+            agp = Version.ANDROID_GRADLE_PLUGIN_VERSION
         )
     }
+
+    private fun buildBuildMap(project: Project): BuildMap = BuildMapImpl(getBuildMap(project))
 
     private fun buildAndroidProjectModel(project: Project): AndroidProject {
         // Cannot be injected, as the project might not be the same as the project used to construct
@@ -198,6 +209,17 @@ class ModelBuilder<
 
         val variants = variantModel.variants
 
+        val testFixturesEnabledBuildTypes = mutableSetOf<String>()
+        val testFixturesEnabledProductFlavors = mutableSetOf<Pair<String, String>>()
+
+        for (variant in variants) {
+            // testFixtures is enabled for this variant
+            if (variant.testFixturesComponent != null) {
+                testFixturesEnabledBuildTypes.add(variant.buildType!!)
+                testFixturesEnabledProductFlavors.addAll(variant.productFlavors)
+            }
+        }
+
         // for now grab the first buildFeatureValues as they cannot be different.
         val buildFeatures = variants.first().buildFeatures
 
@@ -207,7 +229,9 @@ class ModelBuilder<
             sourceProvider = defaultConfigData.sourceSet.convert(buildFeatures),
             androidTestSourceProvider = defaultConfigData.getTestSourceSet(VariantTypeImpl.ANDROID_TEST)?.convert(buildFeatures),
             unitTestSourceProvider = defaultConfigData.getTestSourceSet(VariantTypeImpl.UNIT_TEST)?.convert(buildFeatures),
-            testFixturesSourceProvider = defaultConfigData.testFixturesSourceSet?.convert(buildFeatures)
+            testFixturesSourceProvider = defaultConfigData.testFixturesSourceSet?.takeIf {
+                testFixturesEnabledBuildTypes.isNotEmpty()
+            }?.convert(buildFeatures)
         )
 
         // gather all the build types
@@ -218,7 +242,9 @@ class ModelBuilder<
                     sourceProvider = buildType.sourceSet.convert(buildFeatures),
                     androidTestSourceProvider = buildType.getTestSourceSet(VariantTypeImpl.ANDROID_TEST)?.convert(buildFeatures),
                     unitTestSourceProvider = buildType.getTestSourceSet(VariantTypeImpl.UNIT_TEST)?.convert(buildFeatures),
-                    testFixturesSourceProvider = buildType.testFixturesSourceSet?.convert(buildFeatures)
+                    testFixturesSourceProvider = buildType.testFixturesSourceSet?.takeIf {
+                        testFixturesEnabledBuildTypes.contains(buildType.buildType.name)
+                    }?.convert(buildFeatures)
                 )
             )
         }
@@ -231,7 +257,11 @@ class ModelBuilder<
                     sourceProvider = flavor.sourceSet.convert(buildFeatures),
                     androidTestSourceProvider = flavor.getTestSourceSet(VariantTypeImpl.ANDROID_TEST)?.convert(buildFeatures),
                     unitTestSourceProvider = flavor.getTestSourceSet(VariantTypeImpl.UNIT_TEST)?.convert(buildFeatures),
-                    testFixturesSourceProvider = flavor.testFixturesSourceSet?.convert(buildFeatures)
+                    testFixturesSourceProvider = flavor.testFixturesSourceSet?.takeIf {
+                        testFixturesEnabledProductFlavors.contains(
+                            Pair(flavor.productFlavor.dimension, flavor.productFlavor.name)
+                        )
+                    }?.convert(buildFeatures)
                 )
             )
         }
@@ -243,6 +273,7 @@ class ModelBuilder<
         // gather variants
         var namespace: String? = null
         var androidTestNamespace: String? = null
+        var testFixturesNamespace: String? = null
         val variantList = variants.map {
             namespace = it.namespace.get()
             if (androidTestNamespace == null && it is HasAndroidTest) {
@@ -252,15 +283,23 @@ class ModelBuilder<
                     androidTestNamespace = androidTest.namespaceForR.get()
                 }
             }
+            if (testFixturesNamespace == null && it is HasTestFixtures) {
+                testFixturesNamespace = it.testFixtures?.namespace?.get()
+            }
 
             createVariant(it, buildFeatures, instantAppResultMap)
         }
 
         return AndroidProjectImpl(
             path = project.path,
+            buildName = getBuildName(project),
             buildFolder = project.layout.buildDirectory.get().asFile,
 
             projectType = projectType,
+
+            namespace = namespace ?: "",
+            androidTestNamespace = androidTestNamespace,
+            testFixturesNamespace = testFixturesNamespace,
 
             mainSourceSet = defaultConfig,
             buildTypeSourceSets = buildTypes,
@@ -280,6 +319,49 @@ class ModelBuilder<
             flags = getFlags(),
             lintRuleJars = getLocalCustomLintChecksForModel(project, syncIssueReporter)
         )
+    }
+
+    /**
+     * Returns the current build name
+     */
+    private fun getBuildName(project: Project): String {
+        val currentGradle = project.gradle
+        val parentGradle = currentGradle.parent
+
+        return if (parentGradle != null) {
+            // search for the parent included builds for the current gradle, matching by the
+            // root dir
+            parentGradle.includedBuilds.singleOrNull {
+                // these values already canonicalized
+                //noinspection FileComparisons
+                it.projectDir == currentGradle.rootProject.projectDir
+            }?.name
+                ?: throw RuntimeException("Failed to get Gradle name for ${project.path}")
+        } else {
+            // this is top gradle so name is ":"
+            ":"
+        }
+    }
+
+    /**
+     * Returns the build map and the current name
+     */
+    private fun getBuildMap(project: Project): Map<String, File> {
+        var rootGradle = project.gradle
+        while (rootGradle.parent != null) {
+            rootGradle = rootGradle.parent!!
+        }
+
+        return mutableMapOf<String, File>().also { map ->
+            map[":"] = rootGradle.rootProject.projectDir
+            getBuildMap(rootGradle, map)
+        }
+    }
+
+    private fun getBuildMap(gradle: Gradle, map: MutableMap<String, File>) {
+        for (build in gradle.includedBuilds) {
+            map[build.name] = build.projectDir
+        }
     }
 
     private fun buildAndroidDslModel(project: Project): AndroidDsl {
@@ -392,12 +474,6 @@ class ModelBuilder<
                 GlobalLibraryBuildService::class.java
             ).get()
 
-        val mavenCoordinatesBuildService =
-            getBuildService(
-                project.gradle.sharedServices,
-                MavenCoordinatesCacheBuildService::class.java
-            )
-
         val buildMapping = project.gradle.computeBuildMapping()
 
         return VariantDependenciesImpl(
@@ -406,14 +482,12 @@ class ModelBuilder<
                 variant,
                 buildMapping,
                 globalLibraryBuildService,
-                mavenCoordinatesBuildService
             ),
             androidTestArtifact = variant.testComponents[VariantTypeImpl.ANDROID_TEST]?.let {
                 createDependencies(
                     it,
                     buildMapping,
                     globalLibraryBuildService,
-                    mavenCoordinatesBuildService
                 )
             },
             unitTestArtifact = variant.testComponents[VariantTypeImpl.UNIT_TEST]?.let {
@@ -421,7 +495,6 @@ class ModelBuilder<
                     it,
                     buildMapping,
                     globalLibraryBuildService,
-                    mavenCoordinatesBuildService
                 )
             },
             testFixturesArtifact = variant.testFixturesComponent?.let {
@@ -429,7 +502,6 @@ class ModelBuilder<
                     it,
                     buildMapping,
                     globalLibraryBuildService,
-                    mavenCoordinatesBuildService
                 )
             }
         )
@@ -490,7 +562,7 @@ class ModelBuilder<
 
                 val testOptionsDsl = globalScope.extension.testOptions
 
-                val testTaskName = taskContainer.connectedTask?.name ?: "".also {
+                val testTaskName = taskContainer.connectedTestTask?.name ?: "".also {
                     syncIssueReporter.reportError(
                         IssueReporter.Type.GENERIC,
                         "unable to find connectedCheck task name for ${component.name}"
@@ -508,20 +580,31 @@ class ModelBuilder<
         }
 
         val signingConfig = if (component is ApkCreationConfig)
-            component.signingConfig else null
+            component.signingConfigImpl else null
 
         val minSdkVersion =
                 ApiVersionImpl(component.minSdkVersion.apiLevel, component.minSdkVersion.codename)
-        val targetSdkVersion =
-                if (component is VariantCreationConfig) ApiVersionImpl(
-                    component.targetSdkVersion.apiLevel,
-                    component.targetSdkVersion.codename
-                ) else ApiVersionImpl(1, null)
-        val maxSdkVersion = if (component is VariantCreationConfig) component.maxSdkVersion else null
+        val targetSdkVersionOverride = component.targetSdkVersionOverride?.let {
+            ApiVersionImpl(it.apiLevel, it.codename)
+        }
+        val maxSdkVersion =
+                if (component is VariantCreationConfig) component.maxSdkVersion else null
+
+        val modelSyncFiles = if (component is ApplicationCreationConfig) {
+            listOf(
+                ModelSyncFileImpl(
+                    ModelSyncFile.ModelSyncType.BASIC,
+                    ApplicationVariantModelTask.getTaskName(component),
+                    component.artifacts.get(InternalArtifactType.VARIANT_MODEL).get().asFile
+                )
+            )
+        } else {
+            listOf()
+        }
 
         return AndroidArtifactImpl(
             minSdkVersion = minSdkVersion,
-            targetSdkVersion = targetSdkVersion,
+            targetSdkVersionOverride = targetSdkVersionOverride,
             maxSdkVersion = maxSdkVersion,
 
             variantSourceProvider = sourceProviders.variantSourceProvider?.convert(features),
@@ -530,7 +613,8 @@ class ModelBuilder<
             ),
 
             signingConfigName = signingConfig?.name,
-            isSigned = signingConfig != null,
+            isSigned = signingConfig?.hasConfig() ?: false,
+
 
             abiFilters = variantDslInfo.supportedAbis,
             testInfo = testInfo,
@@ -548,9 +632,10 @@ class ModelBuilder<
             generatedResourceFolders = ModelBuilder.getGeneratedResourceFolders(component),
             classesFolders = classesFolders,
             assembleTaskOutputListingFile = if (component.variantType.isApk)
-                component.artifacts.get(APK_IDE_MODEL).get().asFile
+                component.artifacts.get(InternalArtifactType.APK_IDE_REDIRECT_FILE).get().asFile
             else
-                null
+                null,
+            modelSyncFiles = modelSyncFiles,
         )
     }
 
@@ -573,7 +658,7 @@ class ModelBuilder<
             classesFolders.add(component.artifacts.get(UNIT_TEST_CONFIG_DIRECTORY).get().asFile)
         }
         // The separately compile R class, if applicable.
-        if (!globalScope.extension.aaptOptions.namespaced) {
+        if (!component.services.projectInfo.getExtension().aaptOptions.namespaced) {
             variantScope.rJarForUnitTests.orNull?.let { classesFolders.add(it.asFile) }
         }
 
@@ -589,7 +674,8 @@ class ModelBuilder<
             generatedSourceFolders = ModelBuilder.getGeneratedSourceFoldersForUnitTests(component),
             runtimeResourceFolder = component.variantData.javaResourcesForUnitTesting,
 
-            mockablePlatformJar = globalScope.mockableJarArtifact.files.singleOrNull()
+            mockablePlatformJar = globalScope.mockableJarArtifact.files.singleOrNull(),
+            modelSyncFiles = listOf(),
         )
     }
 
@@ -597,28 +683,18 @@ class ModelBuilder<
         component: ComponentImpl,
         buildMapping: BuildMapping,
         globalLibraryBuildService: GlobalLibraryBuildService,
-        mavenCoordinatesBuildService: Provider<MavenCoordinatesCacheBuildService>
     ): ArtifactDependencies {
-        val modelBuilder = DependencyModelBuilder(globalLibraryBuildService)
-        val graphBuilder = getDependencyGraphBuilder()
 
-        val inputs = ArtifactCollectionsInputs(
+        val inputs = ArtifactCollectionsInputsImpl(
             variantDependencies = component.variantDependencies,
             projectPath = component.services.projectInfo.getProject().path,
             variantName = component.name,
             runtimeType = ArtifactCollectionsInputs.RuntimeType.FULL,
-            mavenCoordinatesCache = mavenCoordinatesBuildService,
             buildMapping = buildMapping
         )
 
-        graphBuilder.createDependencies(
-            modelBuilder = modelBuilder,
-            artifactCollectionsProvider = inputs,
-            withFullDependency = true,
-            issueReporter = syncIssueReporter
-        )
-
-        return modelBuilder.createModel()
+        return FullDependencyGraphBuilder(inputs, component.variantDependencies, globalLibraryBuildService).build(
+            syncIssueReporter)
     }
 
     private fun getFlags(): AndroidGradlePluginProjectFlagsImpl {
@@ -641,6 +717,10 @@ class ModelBuilder<
             BooleanFlag.TRANSITIVE_R_CLASS,
             !projectOptions[BooleanOption.NON_TRANSITIVE_R_CLASS]
         )
+        flags.put(
+            BooleanFlag.UNIFIED_TEST_PLATFORM,
+            projectOptions[BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM]
+        )
 
         return AndroidGradlePluginProjectFlagsImpl(flags.build())
     }
@@ -658,9 +738,9 @@ class ModelBuilder<
 
         return BundleInfoImpl(
             bundleTaskName = taskContainer.bundleTask?.name ?: error("failed to find bundle task name for ${component.name}"),
-            bundleTaskOutputListingFile = artifacts.get(BUNDLE_IDE_MODEL).get().asFile,
-            apkFromBundleTaskName = ExtractApksTask.getTaskName(component),
-            apkFromBundleTaskOutputListingFile = artifacts.get(APK_FROM_BUNDLE_IDE_MODEL).get().asFile
+            bundleTaskOutputListingFile = artifacts.get(InternalArtifactType.BUNDLE_IDE_REDIRECT_FILE).get().asFile,
+            apkFromBundleTaskName = AnchorTaskNames.getExtractApksAnchorTaskName(component),
+            apkFromBundleTaskOutputListingFile = artifacts.get(InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE).get().asFile
         )
     }
 
@@ -760,9 +840,9 @@ class ModelBuilder<
             val apkArtifacts = component
                 .variantDependencies
                 .getArtifactCollection(
-                    COMPILE_CLASSPATH,
+                    PROVIDED_CLASSPATH,
                     AndroidArtifacts.ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.MANIFEST_METADATA
+                    AndroidArtifacts.ArtifactType.APK
                 )
 
             // while there should be a single result, the list may be empty if the variant

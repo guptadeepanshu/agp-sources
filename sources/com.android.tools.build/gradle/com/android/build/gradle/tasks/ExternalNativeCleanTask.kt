@@ -19,11 +19,11 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputLevel
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.getNativeBuildMiniConfigs
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
+import com.android.build.gradle.internal.cxx.model.ifLogNativeCleanToLifecycle
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.process.createProcessOutputJunction
 import com.android.build.gradle.internal.services.getBuildService
@@ -36,6 +36,7 @@ import com.google.common.base.Joiner
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
+import org.gradle.work.DisableCachingByDefault
 import javax.inject.Inject
 
 /**
@@ -44,6 +45,7 @@ import javax.inject.Inject
  * It declares no inputs or outputs, as it's supposed to always run when invoked. Incrementality
  * is left to the underlying build system.
  */
+@DisableCachingByDefault
 abstract class ExternalNativeCleanTask @Inject constructor(private val ops: ExecOperations) : NonIncrementalTask() {
     @get:Internal
     abstract val sdkComponents: Property<SdkComponentsBuildService>
@@ -54,7 +56,7 @@ abstract class ExternalNativeCleanTask @Inject constructor(private val ops: Exec
         IssueReporterLoggingEnvironment(
             DefaultIssueReporter(LoggerWrapper(logger)),
             analyticsService.get(),
-            configurationModel
+            configurationModel.variant
         ).use {
             infoln("starting clean")
             infoln("finding existing JSONs")
@@ -117,7 +119,7 @@ abstract class ExternalNativeCleanTask @Inject constructor(private val ops: Exec
             )
                     .logStderr()
                     .logStdout()
-                    .logFullStdout(configurationModel.variant.module.nativeBuildOutputLevel == NativeBuildOutputLevel.VERBOSE)
+                    .logFullStdout(configurationModel.variant.ifLogNativeCleanToLifecycle { true } ?: false)
                     .execute(ops::exec)
         }
     }

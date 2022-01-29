@@ -31,6 +31,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactTyp
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PACKAGED_DEPENDENCIES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.VariantType
@@ -45,10 +46,15 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.component.ComponentIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.artifacts.result.ResolutionResult
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.FileCollection
 import org.gradle.api.specs.Spec
 
+
+interface ResolutionResultProvider {
+    fun getResolutionResult(configType: ConsumedConfigType): ResolutionResult
+}
 /**
  * Object that represents the dependencies of variant.
  *
@@ -64,7 +70,7 @@ class VariantDependencies internal constructor(
     val runtimeClasspath: Configuration,
     private val sourceSetRuntimeConfigurations: Collection<Configuration>,
     val sourceSetImplementationConfigurations: Collection<Configuration>,
-    private val elements: Map<PublishedConfigType, Configuration>,
+    private val elements: Map<PublishedConfigSpec, Configuration>,
     private val providedClasspath: Configuration,
     val annotationProcessorConfiguration: Configuration,
     private val reverseMetadataValuesConfiguration: Configuration?,
@@ -73,7 +79,7 @@ class VariantDependencies internal constructor(
     private val project: Project,
     private val projectOptions: ProjectOptions,
     isSelfInstrumenting: Boolean,
-) {
+): ResolutionResultProvider {
 
     // Never exclude artifacts for self-instrumenting, test-only modules.
     private val avoidExcludingArtifacts = variantType.isSeparateTestProject && isSelfInstrumenting
@@ -92,12 +98,18 @@ class VariantDependencies internal constructor(
         return builder.build()
     }
 
-    fun getElements(configType: PublishedConfigType): Configuration? {
-        return elements[configType]
+    fun getElements(configSpec: PublishedConfigSpec): Configuration? {
+        return elements[configSpec]
     }
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this).add("name", variantName).toString()
+    }
+
+    override fun getResolutionResult(configType: ConsumedConfigType): ResolutionResult = when (configType) {
+        ConsumedConfigType.COMPILE_CLASSPATH -> compileClasspath.incoming.resolutionResult
+        ConsumedConfigType.RUNTIME_CLASSPATH -> runtimeClasspath.incoming.resolutionResult
+        else -> throw RuntimeException("Unsupported ConsumedConfigType value: $configType")
     }
 
     @JvmOverloads

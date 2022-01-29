@@ -12,6 +12,10 @@ package com.android.build.gradle.internal.cxx.logging;
  *plus the prior ID. The ID itself is not embedded in the message
  *and the caller must keep track of the IDs as they arrive and
  *increment a counter.
+ *The [NewList] message creates a new list with ID equal to one
+ *plus the prior ID. The ID itself is not embedded in the message
+ *and the caller must keep track of the IDs as they arrive and
+ *increment a counter.
  *The [PayloadHeader] message indicates that a user-defined, delimited payload
  *message is arriving next in the stream.
  * </pre>
@@ -75,8 +79,22 @@ private static final long serialVersionUID = 0L;
             break;
           }
           case 18: {
-            com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder subBuilder = null;
+            com.android.build.gradle.internal.cxx.logging.NewList.Builder subBuilder = null;
             if (recordCase_ == 2) {
+              subBuilder = ((com.android.build.gradle.internal.cxx.logging.NewList) record_).toBuilder();
+            }
+            record_ =
+                input.readMessage(com.android.build.gradle.internal.cxx.logging.NewList.parser(), extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom((com.android.build.gradle.internal.cxx.logging.NewList) record_);
+              record_ = subBuilder.buildPartial();
+            }
+            recordCase_ = 2;
+            break;
+          }
+          case 26: {
+            com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder subBuilder = null;
+            if (recordCase_ == 3) {
               subBuilder = ((com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_).toBuilder();
             }
             record_ =
@@ -85,7 +103,7 @@ private static final long serialVersionUID = 0L;
               subBuilder.mergeFrom((com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
               record_ = subBuilder.buildPartial();
             }
-            recordCase_ = 2;
+            recordCase_ = 3;
             break;
           }
           default: {
@@ -126,7 +144,8 @@ private static final long serialVersionUID = 0L;
       implements com.google.protobuf.Internal.EnumLite,
           com.google.protobuf.AbstractMessage.InternalOneOfEnum {
     NEW_STRING(1),
-    PAYLOAD_HEADER(2),
+    NEW_LIST(2),
+    PAYLOAD_HEADER(3),
     RECORD_NOT_SET(0);
     private final int value;
     private RecordCase(int value) {
@@ -145,7 +164,8 @@ private static final long serialVersionUID = 0L;
     public static RecordCase forNumber(int value) {
       switch (value) {
         case 1: return NEW_STRING;
-        case 2: return PAYLOAD_HEADER;
+        case 2: return NEW_LIST;
+        case 3: return PAYLOAD_HEADER;
         case 0: return RECORD_NOT_SET;
         default: return null;
       }
@@ -189,29 +209,57 @@ private static final long serialVersionUID = 0L;
     return com.android.build.gradle.internal.cxx.logging.NewString.getDefaultInstance();
   }
 
-  public static final int PAYLOAD_HEADER_FIELD_NUMBER = 2;
+  public static final int NEW_LIST_FIELD_NUMBER = 2;
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
-   * @return Whether the payloadHeader field is set.
+   * <code>.NewList new_list = 2;</code>
+   * @return Whether the newList field is set.
    */
-  public boolean hasPayloadHeader() {
+  public boolean hasNewList() {
     return recordCase_ == 2;
   }
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
+   * <code>.NewList new_list = 2;</code>
+   * @return The newList.
+   */
+  public com.android.build.gradle.internal.cxx.logging.NewList getNewList() {
+    if (recordCase_ == 2) {
+       return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
+    }
+    return com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+  }
+  /**
+   * <code>.NewList new_list = 2;</code>
+   */
+  public com.android.build.gradle.internal.cxx.logging.NewListOrBuilder getNewListOrBuilder() {
+    if (recordCase_ == 2) {
+       return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
+    }
+    return com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+  }
+
+  public static final int PAYLOAD_HEADER_FIELD_NUMBER = 3;
+  /**
+   * <code>.PayloadHeader payload_header = 3;</code>
+   * @return Whether the payloadHeader field is set.
+   */
+  public boolean hasPayloadHeader() {
+    return recordCase_ == 3;
+  }
+  /**
+   * <code>.PayloadHeader payload_header = 3;</code>
    * @return The payloadHeader.
    */
   public com.android.build.gradle.internal.cxx.logging.PayloadHeader getPayloadHeader() {
-    if (recordCase_ == 2) {
+    if (recordCase_ == 3) {
        return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
     }
     return com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
   }
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
+   * <code>.PayloadHeader payload_header = 3;</code>
    */
   public com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder() {
-    if (recordCase_ == 2) {
+    if (recordCase_ == 3) {
        return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
     }
     return com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
@@ -235,7 +283,10 @@ private static final long serialVersionUID = 0L;
       output.writeMessage(1, (com.android.build.gradle.internal.cxx.logging.NewString) record_);
     }
     if (recordCase_ == 2) {
-      output.writeMessage(2, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
+      output.writeMessage(2, (com.android.build.gradle.internal.cxx.logging.NewList) record_);
+    }
+    if (recordCase_ == 3) {
+      output.writeMessage(3, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
     }
     unknownFields.writeTo(output);
   }
@@ -252,7 +303,11 @@ private static final long serialVersionUID = 0L;
     }
     if (recordCase_ == 2) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
+        .computeMessageSize(2, (com.android.build.gradle.internal.cxx.logging.NewList) record_);
+    }
+    if (recordCase_ == 3) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(3, (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -276,6 +331,10 @@ private static final long serialVersionUID = 0L;
             .equals(other.getNewString())) return false;
         break;
       case 2:
+        if (!getNewList()
+            .equals(other.getNewList())) return false;
+        break;
+      case 3:
         if (!getPayloadHeader()
             .equals(other.getPayloadHeader())) return false;
         break;
@@ -299,6 +358,10 @@ private static final long serialVersionUID = 0L;
         hash = (53 * hash) + getNewString().hashCode();
         break;
       case 2:
+        hash = (37 * hash) + NEW_LIST_FIELD_NUMBER;
+        hash = (53 * hash) + getNewList().hashCode();
+        break;
+      case 3:
         hash = (37 * hash) + PAYLOAD_HEADER_FIELD_NUMBER;
         hash = (53 * hash) + getPayloadHeader().hashCode();
         break;
@@ -409,6 +472,10 @@ private static final long serialVersionUID = 0L;
    *plus the prior ID. The ID itself is not embedded in the message
    *and the caller must keep track of the IDs as they arrive and
    *increment a counter.
+   *The [NewList] message creates a new list with ID equal to one
+   *plus the prior ID. The ID itself is not embedded in the message
+   *and the caller must keep track of the IDs as they arrive and
+   *increment a counter.
    *The [PayloadHeader] message indicates that a user-defined, delimited payload
    *message is arriving next in the stream.
    * </pre>
@@ -486,6 +553,13 @@ private static final long serialVersionUID = 0L;
         }
       }
       if (recordCase_ == 2) {
+        if (newListBuilder_ == null) {
+          result.record_ = record_;
+        } else {
+          result.record_ = newListBuilder_.build();
+        }
+      }
+      if (recordCase_ == 3) {
         if (payloadHeaderBuilder_ == null) {
           result.record_ = record_;
         } else {
@@ -544,6 +618,10 @@ private static final long serialVersionUID = 0L;
       switch (other.getRecordCase()) {
         case NEW_STRING: {
           mergeNewString(other.getNewString());
+          break;
+        }
+        case NEW_LIST: {
+          mergeNewList(other.getNewList());
           break;
         }
         case PAYLOAD_HEADER: {
@@ -737,33 +815,171 @@ private static final long serialVersionUID = 0L;
     }
 
     private com.google.protobuf.SingleFieldBuilderV3<
-        com.android.build.gradle.internal.cxx.logging.PayloadHeader, com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder, com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder> payloadHeaderBuilder_;
+        com.android.build.gradle.internal.cxx.logging.NewList, com.android.build.gradle.internal.cxx.logging.NewList.Builder, com.android.build.gradle.internal.cxx.logging.NewListOrBuilder> newListBuilder_;
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
-     * @return Whether the payloadHeader field is set.
+     * <code>.NewList new_list = 2;</code>
+     * @return Whether the newList field is set.
      */
-    public boolean hasPayloadHeader() {
+    public boolean hasNewList() {
       return recordCase_ == 2;
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.NewList new_list = 2;</code>
+     * @return The newList.
+     */
+    public com.android.build.gradle.internal.cxx.logging.NewList getNewList() {
+      if (newListBuilder_ == null) {
+        if (recordCase_ == 2) {
+          return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
+        }
+        return com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+      } else {
+        if (recordCase_ == 2) {
+          return newListBuilder_.getMessage();
+        }
+        return com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public Builder setNewList(com.android.build.gradle.internal.cxx.logging.NewList value) {
+      if (newListBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        record_ = value;
+        onChanged();
+      } else {
+        newListBuilder_.setMessage(value);
+      }
+      recordCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public Builder setNewList(
+        com.android.build.gradle.internal.cxx.logging.NewList.Builder builderForValue) {
+      if (newListBuilder_ == null) {
+        record_ = builderForValue.build();
+        onChanged();
+      } else {
+        newListBuilder_.setMessage(builderForValue.build());
+      }
+      recordCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public Builder mergeNewList(com.android.build.gradle.internal.cxx.logging.NewList value) {
+      if (newListBuilder_ == null) {
+        if (recordCase_ == 2 &&
+            record_ != com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance()) {
+          record_ = com.android.build.gradle.internal.cxx.logging.NewList.newBuilder((com.android.build.gradle.internal.cxx.logging.NewList) record_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          record_ = value;
+        }
+        onChanged();
+      } else {
+        if (recordCase_ == 2) {
+          newListBuilder_.mergeFrom(value);
+        }
+        newListBuilder_.setMessage(value);
+      }
+      recordCase_ = 2;
+      return this;
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public Builder clearNewList() {
+      if (newListBuilder_ == null) {
+        if (recordCase_ == 2) {
+          recordCase_ = 0;
+          record_ = null;
+          onChanged();
+        }
+      } else {
+        if (recordCase_ == 2) {
+          recordCase_ = 0;
+          record_ = null;
+        }
+        newListBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public com.android.build.gradle.internal.cxx.logging.NewList.Builder getNewListBuilder() {
+      return getNewListFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    public com.android.build.gradle.internal.cxx.logging.NewListOrBuilder getNewListOrBuilder() {
+      if ((recordCase_ == 2) && (newListBuilder_ != null)) {
+        return newListBuilder_.getMessageOrBuilder();
+      } else {
+        if (recordCase_ == 2) {
+          return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
+        }
+        return com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.NewList new_list = 2;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.android.build.gradle.internal.cxx.logging.NewList, com.android.build.gradle.internal.cxx.logging.NewList.Builder, com.android.build.gradle.internal.cxx.logging.NewListOrBuilder> 
+        getNewListFieldBuilder() {
+      if (newListBuilder_ == null) {
+        if (!(recordCase_ == 2)) {
+          record_ = com.android.build.gradle.internal.cxx.logging.NewList.getDefaultInstance();
+        }
+        newListBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.android.build.gradle.internal.cxx.logging.NewList, com.android.build.gradle.internal.cxx.logging.NewList.Builder, com.android.build.gradle.internal.cxx.logging.NewListOrBuilder>(
+                (com.android.build.gradle.internal.cxx.logging.NewList) record_,
+                getParentForChildren(),
+                isClean());
+        record_ = null;
+      }
+      recordCase_ = 2;
+      onChanged();;
+      return newListBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.android.build.gradle.internal.cxx.logging.PayloadHeader, com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder, com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder> payloadHeaderBuilder_;
+    /**
+     * <code>.PayloadHeader payload_header = 3;</code>
+     * @return Whether the payloadHeader field is set.
+     */
+    public boolean hasPayloadHeader() {
+      return recordCase_ == 3;
+    }
+    /**
+     * <code>.PayloadHeader payload_header = 3;</code>
      * @return The payloadHeader.
      */
     public com.android.build.gradle.internal.cxx.logging.PayloadHeader getPayloadHeader() {
       if (payloadHeaderBuilder_ == null) {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
         }
         return com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
       } else {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           return payloadHeaderBuilder_.getMessage();
         }
         return com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
       }
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public Builder setPayloadHeader(com.android.build.gradle.internal.cxx.logging.PayloadHeader value) {
       if (payloadHeaderBuilder_ == null) {
@@ -775,11 +991,11 @@ private static final long serialVersionUID = 0L;
       } else {
         payloadHeaderBuilder_.setMessage(value);
       }
-      recordCase_ = 2;
+      recordCase_ = 3;
       return this;
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public Builder setPayloadHeader(
         com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder builderForValue) {
@@ -789,15 +1005,15 @@ private static final long serialVersionUID = 0L;
       } else {
         payloadHeaderBuilder_.setMessage(builderForValue.build());
       }
-      recordCase_ = 2;
+      recordCase_ = 3;
       return this;
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public Builder mergePayloadHeader(com.android.build.gradle.internal.cxx.logging.PayloadHeader value) {
       if (payloadHeaderBuilder_ == null) {
-        if (recordCase_ == 2 &&
+        if (recordCase_ == 3 &&
             record_ != com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance()) {
           record_ = com.android.build.gradle.internal.cxx.logging.PayloadHeader.newBuilder((com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_)
               .mergeFrom(value).buildPartial();
@@ -806,26 +1022,26 @@ private static final long serialVersionUID = 0L;
         }
         onChanged();
       } else {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           payloadHeaderBuilder_.mergeFrom(value);
         }
         payloadHeaderBuilder_.setMessage(value);
       }
-      recordCase_ = 2;
+      recordCase_ = 3;
       return this;
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public Builder clearPayloadHeader() {
       if (payloadHeaderBuilder_ == null) {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           recordCase_ = 0;
           record_ = null;
           onChanged();
         }
       } else {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           recordCase_ = 0;
           record_ = null;
         }
@@ -834,32 +1050,32 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder getPayloadHeaderBuilder() {
       return getPayloadHeaderFieldBuilder().getBuilder();
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     public com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder() {
-      if ((recordCase_ == 2) && (payloadHeaderBuilder_ != null)) {
+      if ((recordCase_ == 3) && (payloadHeaderBuilder_ != null)) {
         return payloadHeaderBuilder_.getMessageOrBuilder();
       } else {
-        if (recordCase_ == 2) {
+        if (recordCase_ == 3) {
           return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
         }
         return com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
       }
     }
     /**
-     * <code>.PayloadHeader payload_header = 2;</code>
+     * <code>.PayloadHeader payload_header = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.android.build.gradle.internal.cxx.logging.PayloadHeader, com.android.build.gradle.internal.cxx.logging.PayloadHeader.Builder, com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder> 
         getPayloadHeaderFieldBuilder() {
       if (payloadHeaderBuilder_ == null) {
-        if (!(recordCase_ == 2)) {
+        if (!(recordCase_ == 3)) {
           record_ = com.android.build.gradle.internal.cxx.logging.PayloadHeader.getDefaultInstance();
         }
         payloadHeaderBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
@@ -869,7 +1085,7 @@ private static final long serialVersionUID = 0L;
                 isClean());
         record_ = null;
       }
-      recordCase_ = 2;
+      recordCase_ = 3;
       onChanged();;
       return payloadHeaderBuilder_;
     }

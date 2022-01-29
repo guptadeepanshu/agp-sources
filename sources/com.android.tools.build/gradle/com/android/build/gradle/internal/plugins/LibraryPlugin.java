@@ -20,9 +20,9 @@ import com.android.annotations.NonNull;
 import com.android.build.api.component.impl.TestComponentImpl;
 import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.dsl.SdkComponents;
-import com.android.build.api.extension.AndroidComponentsExtension;
 import com.android.build.api.extension.impl.LibraryAndroidComponentsExtensionImpl;
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.AndroidComponentsExtension;
 import com.android.build.api.variant.LibraryAndroidComponentsExtension;
 import com.android.build.api.variant.LibraryVariant;
 import com.android.build.api.variant.LibraryVariantBuilder;
@@ -62,7 +62,10 @@ import org.jetbrains.annotations.NotNull;
 /** Gradle plugin class for 'library' projects. */
 public class LibraryPlugin
         extends BasePlugin<
-                LibraryAndroidComponentsExtension, LibraryVariantBuilderImpl, LibraryVariantImpl> {
+                LibraryExtension,
+                LibraryAndroidComponentsExtension,
+                LibraryVariantBuilderImpl,
+                LibraryVariantImpl> {
 
     @Inject
     public LibraryPlugin(
@@ -131,10 +134,9 @@ public class LibraryPlugin
     public abstract static class LibraryAndroidComponentsExtensionImplCompat
             extends LibraryAndroidComponentsExtensionImpl
             implements AndroidComponentsExtension<
-                            com.android.build.api.dsl.LibraryExtension,
-                            LibraryVariantBuilder,
-                            LibraryVariant>,
-                    com.android.build.api.extension.LibraryAndroidComponentsExtension {
+                    com.android.build.api.dsl.LibraryExtension,
+                    LibraryVariantBuilder,
+                    LibraryVariant> {
 
         public LibraryAndroidComponentsExtensionImplCompat(
                 @NotNull DslServices dslServices,
@@ -156,7 +158,7 @@ public class LibraryPlugin
             @NonNull DslServices dslServices,
             @NonNull
                     VariantApiOperationsRegistrar<
-                            com.android.build.api.dsl.CommonExtension<?, ?, ?, ?>,
+                            LibraryExtension,
                             LibraryVariantBuilderImpl,
                             LibraryVariantImpl>
                             variantApiOperationsRegistrar) {
@@ -167,7 +169,8 @@ public class LibraryPlugin
                         project.provider(getExtension()::getCompileSdkVersion),
                         project.provider(getExtension()::getBuildToolsRevision),
                         project.provider(getExtension()::getNdkVersion),
-                        project.provider(getExtension()::getNdkPath));
+                        project.provider(getExtension()::getNdkPath),
+                        project.provider(globalScope::getBootClasspath));
 
         // register under the new interface for kotlin, groovy will find both the old and new
         // interfaces through the implementation class.
@@ -181,16 +184,6 @@ public class LibraryPlugin
                                 sdkComponents,
                                 variantApiOperationsRegistrar,
                                 getExtension());
-
-        // register the same extension under a different name with the deprecated extension type.
-        // this will allow plugins that use getByType() API to retrieve the old interface and keep
-        // binary compatibility. This will become obsolete once old extension packages are removed.
-        project.getExtensions()
-                .add(
-                        com.android.build.api.extension.LibraryAndroidComponentsExtension.class,
-                        "androidComponents_compat_by_type",
-                        (com.android.build.api.extension.LibraryAndroidComponentsExtension)
-                                extension);
 
         return extension;
     }

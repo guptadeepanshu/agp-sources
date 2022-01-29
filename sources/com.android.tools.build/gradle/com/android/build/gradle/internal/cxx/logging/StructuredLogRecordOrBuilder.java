@@ -23,17 +23,32 @@ public interface StructuredLogRecordOrBuilder extends
   com.android.build.gradle.internal.cxx.logging.NewStringOrBuilder getNewStringOrBuilder();
 
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
+   * <code>.NewList new_list = 2;</code>
+   * @return Whether the newList field is set.
+   */
+  boolean hasNewList();
+  /**
+   * <code>.NewList new_list = 2;</code>
+   * @return The newList.
+   */
+  com.android.build.gradle.internal.cxx.logging.NewList getNewList();
+  /**
+   * <code>.NewList new_list = 2;</code>
+   */
+  com.android.build.gradle.internal.cxx.logging.NewListOrBuilder getNewListOrBuilder();
+
+  /**
+   * <code>.PayloadHeader payload_header = 3;</code>
    * @return Whether the payloadHeader field is set.
    */
   boolean hasPayloadHeader();
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
+   * <code>.PayloadHeader payload_header = 3;</code>
    * @return The payloadHeader.
    */
   com.android.build.gradle.internal.cxx.logging.PayloadHeader getPayloadHeader();
   /**
-   * <code>.PayloadHeader payload_header = 2;</code>
+   * <code>.PayloadHeader payload_header = 3;</code>
    */
   com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder();
 

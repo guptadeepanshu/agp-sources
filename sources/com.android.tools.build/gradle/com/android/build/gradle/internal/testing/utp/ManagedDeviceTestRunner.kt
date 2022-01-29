@@ -17,43 +17,34 @@
 package com.android.build.gradle.internal.testing.utp
 
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.StaticTestData
 import com.android.builder.testing.api.DeviceException
 import com.android.builder.testing.api.TestException
-import com.android.ide.common.process.JavaProcessExecutor
-import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent
-import com.android.utils.FileUtils
 import com.android.utils.ILogger
-import com.google.common.io.Files
-import com.google.testing.platform.proto.api.core.TestStatusProto
-import com.google.testing.platform.proto.api.core.TestSuiteResultProto.TestSuiteResult
+import com.google.testing.platform.proto.api.config.RunnerConfigProto
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import org.gradle.workers.WorkerExecutor
 
-/**
- * Runs Android Instrumentation tests on a managed device through UTP (Unified Test Platform).
- */
 class ManagedDeviceTestRunner(
-    private val javaProcessExecutor: JavaProcessExecutor,
+    private val workerExecutor: WorkerExecutor,
     private val utpDependencies: UtpDependencies,
     private val versionedSdkLoader: SdkComponentsBuildService.VersionedSdkLoader,
     private val retentionConfig: RetentionConfig,
     private val useOrchestrator: Boolean,
+    private val numShards: Int?,
     private val configFactory: UtpConfigFactory = UtpConfigFactory(),
-    private val resultListenerServerRunnerFactory:
-        (UtpTestResultListener) -> UtpTestResultListenerServerRunner = {
-        UtpTestResultListenerServerRunner(it)
-    }) {
-
-    /**
-     * @param additionalInstallOptions an additional install options to be used for installing
-     *   app (tested-) APKs and test APK. These options are not used for the test helper APKs.
-     */
+    private val runUtpTestSuiteAndWaitFunc: (
+        List<UtpRunnerConfig>, String, String, File, ILogger
+    ) -> List<Boolean> = { runnerConfigs, projectName, variantName, resultsDir, logger ->
+        runUtpTestSuiteAndWait(
+            runnerConfigs, workerExecutor, projectName, variantName, resultsDir, logger,
+            null, utpDependencies)
+    }
+) {
     fun runTests(
         managedDevice: UtpManagedDevice,
         outputDirectory: File,
+        coverageOutputDirectory: File,
         projectName: String,
         variantName: String,
         testData: StaticTestData,
@@ -61,93 +52,91 @@ class ManagedDeviceTestRunner(
         helperApks: Set<File>,
         logger: ILogger
     ): Boolean {
-        lateinit var resultsProto: TestSuiteResult
-        val ddmlibTestResultAdapter = DdmlibTestResultAdapter(
-                managedDevice.deviceName,
-                CustomTestRunListener(
-                        managedDevice.deviceName,
-                        projectName,
-                        variantName,
-                        logger).apply {
-                    setReportDir(outputDirectory)
-                }
-        )
-        val testResultListener = object : UtpTestResultListener {
-            override fun onTestResultEvent(testResultEvent: TestResultEvent) {
-                ddmlibTestResultAdapter.onTestResultEvent(testResultEvent)
-
-                if (testResultEvent.hasTestSuiteFinished()) {
-                    resultsProto = testResultEvent.testSuiteFinished.testSuiteResult
-                            .unpack(TestSuiteResult::class.java)
+        val testedApks = ManagedDeviceTestRunner.getTestedApks(testData, managedDevice, logger)
+        val runnerConfigs = mutableListOf<UtpRunnerConfig>()
+        repeat(numShards ?: 1) { currentShard ->
+            val shardConfig = numShards?.let {
+                ShardConfig(totalCount = it, index = currentShard)
+            }
+            val utpOutputDir = if (shardConfig == null) {
+                outputDirectory
+            } else {
+                File(outputDirectory, "shard_$currentShard")
+            }.apply {
+                if (!exists()) {
+                    mkdirs()
                 }
             }
-        }
-        resultListenerServerRunnerFactory(testResultListener).use { resultListenerServerRunner ->
-            val testedApks = getTestedApks(testData, managedDevice, logger)
-            val utpOutputDir = outputDirectory
-            val utpTmpDir = Files.createTempDir()
-            val runnerConfigProtoFile = File.createTempFile("runnerConfig", ".pb").also { file ->
-                FileOutputStream(file).use { writer ->
+            val runnerConfigProto: (
+                UtpTestResultListenerServerMetadata,
+                File
+            ) -> RunnerConfigProto.RunnerConfig = { resultListenerServerMetadata, utpTmpDir ->
                     configFactory.createRunnerConfigProtoForManagedDevice(
-                            managedDevice,
-                            testData,
-                            testedApks,
-                            additionalInstallOptions,
-                            helperApks,
-                            utpDependencies,
-                            versionedSdkLoader,
-                            utpOutputDir,
-                            utpTmpDir,
-                            retentionConfig,
-                            useOrchestrator,
-                            resultListenerServerRunner.metadata).writeTo(writer)
+                        if (shardConfig == null) {
+                            managedDevice
+                        } else {
+                            managedDevice.forShard(currentShard)
+                        },
+                        testData,
+                        testedApks,
+                        additionalInstallOptions,
+                        helperApks,
+                        utpDependencies,
+                        versionedSdkLoader,
+                        utpOutputDir,
+                        utpTmpDir,
+                        retentionConfig,
+                        coverageOutputDirectory,
+                        useOrchestrator,
+                        resultListenerServerMetadata,
+                        shardConfig
+                    )
                 }
-            }
-            runUtpTestSuite(
-                    runnerConfigProtoFile,
-                    configFactory,
-                    utpDependencies,
-                    javaProcessExecutor,
-                    logger)
-            resultsProto.writeTo(File(utpOutputDir, "test-result.pb").outputStream())
-
-            try {
-                FileUtils.deleteRecursivelyIfExists(utpOutputDir.resolve(TEST_LOG_DIR))
-                FileUtils.deleteRecursivelyIfExists(utpTmpDir)
-            } catch (e: IOException) {
-                logger.warning("Failed to cleanup temporary directories: $e")
-            }
-            if (resultsProto.hasPlatformError()) {
-                logger.error(null, "Platform error occurred when running the UTP test suite")
-            }
-            return !resultsProto.hasPlatformError() &&
-                    !resultsProto.testResultList.any { testCaseResult ->
-                        testCaseResult.testStatus == TestStatusProto.TestStatus.FAILED
-                                || testCaseResult.testStatus == TestStatusProto.TestStatus.ERROR
-                    }
+            runnerConfigs.add(UtpRunnerConfig(
+                managedDevice.deviceName,
+                managedDevice.id,
+                utpOutputDir,
+                runnerConfigProto,
+                configFactory.createServerConfigProto()
+            ))
         }
+
+        val results = runUtpTestSuiteAndWaitFunc(
+            runnerConfigs,
+            projectName,
+            variantName,
+            outputDirectory,
+            logger
+        )
+
+        return results.all { it }
     }
 
-    private fun getTestedApks(
-        testData: StaticTestData, device: UtpManagedDevice, logger: ILogger): List<File> {
+    companion object {
+        /**
+         * Returns the tested apk for the given managed device and test data.
+         */
+        fun getTestedApks(
+            testData: StaticTestData, device: UtpManagedDevice, logger: ILogger): List<File> {
 
-        val minSdk = testData.minSdkVersion.apiLevel
-        if (device.api < minSdk) {
-            throw TestException(
-                DeviceException(
-                    "Device ${device.deviceName} invalid: minSdkVersion $minSdk > deviceApiLevel " +
-                        "${device.api}"))
-        }
-        val deviceConfigProvider = ManagedDeviceConfigProvider(device)
-        if (!testData.isLibrary) {
-            val testedApks =
-                testData.testedApkFinder.invoke(deviceConfigProvider, logger)
-
-            if (testedApks.isEmpty()) {
-                logger.warning("No matching Apks found for ${device.deviceName}.")
+            val minSdk = testData.minSdkVersion.apiLevel
+            if (device.api < minSdk) {
+                throw TestException(
+                    DeviceException(
+                        "Device ${device.deviceName} invalid: minSdkVersion $minSdk > deviceApiLevel " +
+                                "${device.api}"))
             }
-            return testedApks
+            val deviceConfigProvider = ManagedDeviceConfigProvider(device)
+            if (!testData.isLibrary) {
+                val testedApks =
+                    testData.testedApkFinder.invoke(deviceConfigProvider, logger)
+
+                if (testedApks.isEmpty()) {
+                    logger.warning("No matching Apks found for ${device.deviceName}.")
+                }
+                return testedApks
+            }
+            return listOf()
         }
-        return listOf()
     }
 }

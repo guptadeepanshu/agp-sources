@@ -3434,4 +3434,301 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
    */
   com.google.wireless.android.sdk.stats.VfsRefreshOrBuilder getVfsRefreshOrBuilder();
+
+  /**
+   * <pre>
+   * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
+   * </pre>
+   *
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   * @return Whether the signingWizardEvent field is set.
+   */
+  boolean hasSigningWizardEvent();
+  /**
+   * <pre>
+   * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
+   * </pre>
+   *
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   * @return The signingWizardEvent.
+   */
+  com.google.wireless.android.sdk.stats.SigningWizardEvent getSigningWizardEvent();
+  /**
+   * <pre>
+   * Set when kind is SIGNING_WIZARD_*_FAILED or SIGNING_WIZARD_*_SUCCEEDED
+   * </pre>
+   *
+   * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
+   */
+  com.google.wireless.android.sdk.stats.SigningWizardEventOrBuilder getSigningWizardEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = FILE_TYPE
+   * </pre>
+   *
+   * <code>optional .android_studio.FileType file_type = 125;</code>
+   * @return Whether the fileType field is set.
+   */
+  boolean hasFileType();
+  /**
+   * <pre>
+   * set when kind = FILE_TYPE
+   * </pre>
+   *
+   * <code>optional .android_studio.FileType file_type = 125;</code>
+   * @return The fileType.
+   */
+  com.google.wireless.android.sdk.stats.FileType getFileType();
+  /**
+   * <pre>
+   * set when kind = FILE_TYPE
+   * </pre>
+   *
+   * <code>optional .android_studio.FileType file_type = 125;</code>
+   */
+  com.google.wireless.android.sdk.stats.FileTypeOrBuilder getFileTypeOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind is KOTLIN_PROJECT_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   * @return Whether the kotlinProjectConfiguration field is set.
+   */
+  boolean hasKotlinProjectConfiguration();
+  /**
+   * <pre>
+   * set when kind is KOTLIN_PROJECT_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   * @return The kotlinProjectConfiguration.
+   */
+  com.google.wireless.android.sdk.stats.KotlinProjectConfiguration getKotlinProjectConfiguration();
+  /**
+   * <pre>
+   * set when kind is KOTLIN_PROJECT_CONFIGURATION
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
+   */
+  com.google.wireless.android.sdk.stats.KotlinProjectConfigurationOrBuilder getKotlinProjectConfigurationOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = RUN_START_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   * @return Whether the runStartData field is set.
+   */
+  boolean hasRunStartData();
+  /**
+   * <pre>
+   * set when kind = RUN_START_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   * @return The runStartData.
+   */
+  com.google.wireless.android.sdk.stats.RunStartData getRunStartData();
+  /**
+   * <pre>
+   * set when kind = RUN_START_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
+   */
+  com.google.wireless.android.sdk.stats.RunStartDataOrBuilder getRunStartDataOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = RUN_FINISH_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   * @return Whether the runFinishData field is set.
+   */
+  boolean hasRunFinishData();
+  /**
+   * <pre>
+   * set when kind = RUN_FINISH_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   * @return The runFinishData.
+   */
+  com.google.wireless.android.sdk.stats.RunFinishData getRunFinishData();
+  /**
+   * <pre>
+   * set when kind = RUN_FINISH_DATA
+   * </pre>
+   *
+   * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
+   */
+  com.google.wireless.android.sdk.stats.RunFinishDataOrBuilder getRunFinishDataOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEVICE_MANAGER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   * @return Whether the deviceManagerEvent field is set.
+   */
+  boolean hasDeviceManagerEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MANAGER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   * @return The deviceManagerEvent.
+   */
+  com.google.wireless.android.sdk.stats.DeviceManagerEvent getDeviceManagerEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MANAGER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceManagerEventOrBuilder getDeviceManagerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = WEAR_PAIRING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   * @return Whether the wearPairingEvent field is set.
+   */
+  boolean hasWearPairingEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_PAIRING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   * @return The wearPairingEvent.
+   */
+  com.google.wireless.android.sdk.stats.WearPairingEvent getWearPairingEvent();
+  /**
+   * <pre>
+   * set when kind = WEAR_PAIRING
+   * </pre>
+   *
+   * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
+   */
+  com.google.wireless.android.sdk.stats.WearPairingEventOrBuilder getWearPairingEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_INVALID
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   * @return Whether the gradleJdkInvalidEvent field is set.
+   */
+  boolean hasGradleJdkInvalidEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_INVALID
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   * @return The gradleJdkInvalidEvent.
+   */
+  com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent getGradleJdkInvalidEvent();
+  /**
+   * <pre>
+   * set when kind = GRADLE_JDK_INVALID
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradleJdkInvalidEventOrBuilder getGradleJdkInvalidEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEVICE_EXPLORER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   * @return Whether the deviceExplorerEvent field is set.
+   */
+  boolean hasDeviceExplorerEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_EXPLORER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   * @return The deviceExplorerEvent.
+   */
+  com.google.wireless.android.sdk.stats.DeviceExplorerEvent getDeviceExplorerEvent();
+  /**
+   * <pre>
+   * set when kind = DEVICE_EXPLORER
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceExplorerEventOrBuilder getDeviceExplorerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = OPTIN_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   * @return Whether the optInToMetrics field is set.
+   */
+  boolean hasOptInToMetrics();
+  /**
+   * <pre>
+   * set when kind = OPTIN_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   * @return The optInToMetrics.
+   */
+  com.google.wireless.android.sdk.stats.OptInToMetrics getOptInToMetrics();
+  /**
+   * <pre>
+   * set when kind = OPTIN_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
+   */
+  com.google.wireless.android.sdk.stats.OptInToMetricsOrBuilder getOptInToMetricsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = OPTOUT_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   * @return Whether the optOutOfMetrics field is set.
+   */
+  boolean hasOptOutOfMetrics();
+  /**
+   * <pre>
+   * set when kind = OPTOUT_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   * @return The optOutOfMetrics.
+   */
+  com.google.wireless.android.sdk.stats.OptOutOfMetrics getOptOutOfMetrics();
+  /**
+   * <pre>
+   * set when kind = OPTOUT_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
+   */
+  com.google.wireless.android.sdk.stats.OptOutOfMetricsOrBuilder getOptOutOfMetricsOrBuilder();
 }

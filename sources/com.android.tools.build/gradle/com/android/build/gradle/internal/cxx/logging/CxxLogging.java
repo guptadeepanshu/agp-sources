@@ -25,6 +25,11 @@ public final class CxxLogging {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_NewString_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_NewList_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_NewList_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_PayloadHeader_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -53,23 +58,25 @@ public final class CxxLogging {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\021cxx_logging.proto\"k\n\023StructuredLogReco" +
-      "rd\022 \n\nnew_string\030\001 \001(\0132\n.NewStringH\000\022(\n\016" +
-      "payload_header\030\002 \001(\0132\016.PayloadHeaderH\000B\010" +
-      "\n\006Record\"\031\n\tNewString\022\014\n\004data\030\001 \001(\t\"7\n\rP" +
-      "ayloadHeader\022\025\n\rtime_stamp_ms\030\001 \001(\003\022\017\n\007t" +
-      "ype_id\030\002 \001(\005\"5\n\016UnknownMessage\022\017\n\007type_i" +
-      "d\030\001 \001(\005\022\022\n\nsize_bytes\030\002 \001(\005\"\300\001\n\016LoggingM" +
-      "essage\022+\n\005level\030\001 \001(\0162\034.LoggingMessage.L" +
-      "oggingLevel\022\017\n\007message\030\002 \001(\t\022\014\n\004file\030\003 \001" +
-      "(\t\022\013\n\003tag\030\004 \001(\t\022\027\n\017diagnostic_code\030\005 \001(\005" +
-      "\"<\n\014LoggingLevel\022\010\n\004INFO\020\000\022\r\n\tLIFECYCLE\020" +
-      "\001\022\010\n\004WARN\020\002\022\t\n\005ERROR\020\003\"\222\001\n\025EncodedLoggin" +
-      "gMessage\022+\n\005level\030\001 \001(\0162\034.LoggingMessage" +
-      ".LoggingLevel\022\022\n\nmessage_id\030\002 \001(\005\022\017\n\007fil" +
-      "e_id\030\003 \001(\005\022\016\n\006tag_id\030\004 \001(\005\022\027\n\017diagnostic" +
-      "_code\030\005 \001(\005B1\n-com.android.build.gradle." +
-      "internal.cxx.loggingP\001b\006proto3"
+      "\n\021cxx_logging.proto\"\211\001\n\023StructuredLogRec" +
+      "ord\022 \n\nnew_string\030\001 \001(\0132\n.NewStringH\000\022\034\n" +
+      "\010new_list\030\002 \001(\0132\010.NewListH\000\022(\n\016payload_h" +
+      "eader\030\003 \001(\0132\016.PayloadHeaderH\000B\010\n\006Record\"" +
+      "\031\n\tNewString\022\014\n\004data\030\001 \001(\t\"\027\n\007NewList\022\014\n" +
+      "\004data\030\001 \003(\005\"7\n\rPayloadHeader\022\025\n\rtime_sta" +
+      "mp_ms\030\001 \001(\003\022\017\n\007type_id\030\002 \001(\005\"5\n\016UnknownM" +
+      "essage\022\017\n\007type_id\030\001 \001(\005\022\022\n\nsize_bytes\030\002 " +
+      "\001(\005\"\300\001\n\016LoggingMessage\022+\n\005level\030\001 \001(\0162\034." +
+      "LoggingMessage.LoggingLevel\022\017\n\007message\030\002" +
+      " \001(\t\022\014\n\004file\030\003 \001(\t\022\013\n\003tag\030\004 \001(\t\022\027\n\017diagn" +
+      "ostic_code\030\005 \001(\005\"<\n\014LoggingLevel\022\010\n\004INFO" +
+      "\020\000\022\r\n\tLIFECYCLE\020\001\022\010\n\004WARN\020\002\022\t\n\005ERROR\020\003\"\222" +
+      "\001\n\025EncodedLoggingMessage\022+\n\005level\030\001 \001(\0162" +
+      "\034.LoggingMessage.LoggingLevel\022\022\n\nmessage" +
+      "_id\030\002 \001(\005\022\017\n\007file_id\030\003 \001(\005\022\016\n\006tag_id\030\004 \001" +
+      "(\005\022\027\n\017diagnostic_code\030\005 \001(\005B1\n-com.andro" +
+      "id.build.gradle.internal.cxx.loggingP\001b\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -80,33 +87,39 @@ public final class CxxLogging {
     internal_static_StructuredLogRecord_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_StructuredLogRecord_descriptor,
-        new java.lang.String[] { "NewString", "PayloadHeader", "Record", });
+        new java.lang.String[] { "NewString", "NewList", "PayloadHeader", "Record", });
     internal_static_NewString_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_NewString_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_NewString_descriptor,
         new java.lang.String[] { "Data", });
-    internal_static_PayloadHeader_descriptor =
+    internal_static_NewList_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_NewList_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_NewList_descriptor,
+        new java.lang.String[] { "Data", });
+    internal_static_PayloadHeader_descriptor =
+      getDescriptor().getMessageTypes().get(3);
     internal_static_PayloadHeader_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PayloadHeader_descriptor,
         new java.lang.String[] { "TimeStampMs", "TypeId", });
     internal_static_UnknownMessage_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_UnknownMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_UnknownMessage_descriptor,
         new java.lang.String[] { "TypeId", "SizeBytes", });
     internal_static_LoggingMessage_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_LoggingMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_LoggingMessage_descriptor,
         new java.lang.String[] { "Level", "Message", "File", "Tag", "DiagnosticCode", });
     internal_static_EncodedLoggingMessage_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_EncodedLoggingMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EncodedLoggingMessage_descriptor,

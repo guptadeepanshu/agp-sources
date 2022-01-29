@@ -24,9 +24,11 @@ import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.AbstractAppTaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.dsl.AbstractPublishing
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.ProjectInfo
@@ -36,6 +38,7 @@ import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWr
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import org.gradle.api.Action
 import org.gradle.api.artifacts.ArtifactView
 import org.gradle.api.artifacts.Configuration
@@ -65,12 +68,13 @@ class ApplicationTaskManager(
 ) {
 
     override fun doCreateTasksForVariant(
-        variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>,
-        allVariants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>
+        variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>
     ) {
-        createCommonTasks(variantInfo, allVariants)
+        createCommonTasks(variantInfo)
 
         val variant = variantInfo.variant
+
+        taskFactory.register(ApplicationVariantModelTask.CreationAction(variant))
 
         // Base feature specific tasks.
         taskFactory.register(FeatureSetMetadataWriterTask.CreationAction(variant))
@@ -88,12 +92,8 @@ class ApplicationTaskManager(
             createAssetPackTasks(variant)
         }
 
-        // only run art profile generation for non debuggable builds.
-        if (variant.services.projectOptions[BooleanOption.ENABLE_ART_PROFILES]
-                && !variant.debuggable) {
-            taskFactory.register(MergeArtProfileTask.CreationAction(variant))
-            taskFactory.register(CompileArtProfileTask.CreationAction(variant))
-        }
+        taskFactory.register(MergeArtProfileTask.CreationAction(variant))
+        taskFactory.register(CompileArtProfileTask.CreationAction(variant))
 
         if (variant.buildFeatures.dataBinding
                 && variant.globalScope.hasDynamicFeatures()) {
@@ -111,15 +111,20 @@ class ApplicationTaskManager(
 
         handleMicroApp(variant)
 
-        // do not publish the APK(s) if there are dynamic feature.
-        if (!variant.globalScope.hasDynamicFeatures()) {
+        val publishInfo = variant.variantDslInfo.publishInfo!!
+
+        for (component in publishInfo.components) {
+            val configType = if (component.type == AbstractPublishing.Type.APK) {
+                PublishedConfigType.APK_PUBLICATION
+            } else {
+                PublishedConfigType.AAB_PUBLICATION
+            }
             createSoftwareComponent(
                 variant,
-                "_apk",
-                PublishedConfigType.APK_PUBLICATION
+                component.componentName,
+                configType
             )
         }
-        createSoftwareComponent(variant, "_aab", PublishedConfigType.AAB_PUBLICATION)
     }
 
     /** Configure variantData to generate embedded wear application.  */
@@ -199,22 +204,13 @@ class ApplicationTaskManager(
 
         if (assetPacks.isNotEmpty()) {
             val assetPackManifest =
-                assetPackManifestConfiguration.incoming.files
+                assetPackManifestConfiguration.incoming.artifacts
             val assetFiles = assetPackFilesConfiguration.incoming.files
 
             taskFactory.register(
                 ProcessAssetPackManifestTask.CreationAction(
                         appVariant,
-                    assetPackManifest,
-                    assetPacks
-                        .stream()
-                        .map { assetPackName: String ->
-                            assetPackName.replace(
-                                ":",
-                                File.separator
-                            )
-                        }
-                        .collect(Collectors.toSet())
+                    assetPackManifest
                 )
             )
             taskFactory.register(
@@ -237,7 +233,7 @@ class ApplicationTaskManager(
         // If namespaced resources are enabled, LINKED_RES_FOR_BUNDLE is not generated,
         // and the bundle can't be created. For now, just don't add the bundle task.
         // TODO(b/111168382): Remove this
-        if (variant.globalScope.extension.aaptOptions.namespaced) {
+        if (variant.services.projectInfo.getExtension().aaptOptions.namespaced) {
             return
         }
 
@@ -263,9 +259,31 @@ class ApplicationTaskManager(
             }
             taskFactory.register(FinalizeBundleTask.CreationAction(variant))
             taskFactory.register(BundleIdeModelProducerTask.CreationAction(variant))
+            taskFactory.register(
+                ListingFileRedirectTask.CreationAction(
+                    variant,
+                    "Bundle",
+                    InternalArtifactType.BUNDLE_IDE_MODEL,
+                    InternalArtifactType.BUNDLE_IDE_REDIRECT_FILE
+                )
+            )
             taskFactory.register(BundleToApkTask.CreationAction(variant))
             taskFactory.register(BundleToStandaloneApkTask.CreationAction(variant))
             taskFactory.register(ExtractApksTask.CreationAction(variant))
+            taskFactory.register(
+                ListingFileRedirectTask.CreationAction(
+                    variant,
+                    "ApksFromBundle",
+                    InternalArtifactType.APK_FROM_BUNDLE_IDE_MODEL,
+                    InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE
+                )
+            )
+
+            taskFactory.register(AnchorTaskNames.getExtractApksAnchorTaskName(variant)) {
+                it.dependsOn(variant.artifacts.get(
+                    InternalArtifactType.EXTRACTED_APKS
+                ))
+            }
 
             taskFactory.register(MergeNativeDebugMetadataTask.CreationAction(variant))
             variant.taskContainer.assembleTask.configure { task ->
@@ -276,11 +294,11 @@ class ApplicationTaskManager(
 
     private fun createSoftwareComponent(
         appVariant: ApplicationVariantImpl,
-        suffix: String,
+        componentName: String,
         publication: PublishedConfigType
     ) {
-        val component = globalScope.componentFactory.adhoc(appVariant.name + suffix)
-        val config = appVariant.variantDependencies.getElements(publication)!!
+        val component = globalScope.componentFactory.adhoc(componentName)
+        val config = appVariant.variantDependencies.getElements(PublishedConfigSpec(publication, componentName, false))!!
         component.addVariantsFromConfiguration(config) { }
         project.components.add(component)
     }

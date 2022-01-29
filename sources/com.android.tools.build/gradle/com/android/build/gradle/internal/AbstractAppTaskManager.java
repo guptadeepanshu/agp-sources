@@ -18,7 +18,6 @@ package com.android.build.gradle.internal;
 
 import static com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES;
 import static com.android.build.gradle.internal.cxx.configure.CxxCreateGradleTasksKt.createCxxVariantBuildTask;
-import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
 
 import com.android.annotations.NonNull;
 import com.android.build.api.component.impl.ComponentImpl;
@@ -63,10 +62,6 @@ import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
 import org.gradle.api.Task;
-import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.file.Directory;
-import org.gradle.api.file.FileCollection;
-import org.gradle.api.provider.Provider;
 import org.gradle.api.resources.TextResourceFactory;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
@@ -96,11 +91,7 @@ public abstract class AbstractAppTaskManager<
                 projectInfo);
     }
 
-    protected void createCommonTasks(
-            @NonNull ComponentInfo<VariantBuilderT, VariantT> variant,
-            @NonNull
-                    List<? extends ComponentInfo<VariantBuilderT, VariantT>>
-                            allComponentsWithLint) {
+    protected void createCommonTasks(@NonNull ComponentInfo<VariantBuilderT, VariantT> variant) {
         VariantT appVariantProperties = variant.getVariant();
         ApkCreationConfig apkCreationConfig = (ApkCreationConfig) appVariantProperties;
 
@@ -143,8 +134,6 @@ public abstract class AbstractAppTaskManager<
 
         // Add a task to process the Android Resources and generate source files
         createApkProcessResTask(appVariantProperties);
-
-        registerRClassTransformStream(appVariantProperties);
 
         // Add a task to process the java resources
         createProcessJavaResTask(appVariantProperties);
@@ -194,21 +183,9 @@ public abstract class AbstractAppTaskManager<
 
     @Override
     protected void postJavacCreation(@NonNull ComponentCreationConfig creationConfig) {
-        final Provider<Directory> javacOutput = creationConfig.getArtifacts().get(JAVAC.INSTANCE);
-        final FileCollection preJavacGeneratedBytecode =
-                creationConfig.getVariantData().getAllPreJavacGeneratedBytecode();
-        final FileCollection postJavacGeneratedBytecode =
-                creationConfig.getVariantData().getAllPostJavacGeneratedBytecode();
+        super.postJavacCreation(creationConfig);
 
         taskFactory.register(new BundleAllClasses.CreationAction(creationConfig));
-
-        // create a lighter weight version for usage inside the same module (unit tests basically)
-        ConfigurableFileCollection files =
-                creationConfig
-                        .getServices()
-                        .fileCollection(
-                                javacOutput, preJavacGeneratedBytecode, postJavacGeneratedBytecode);
-        creationConfig.getArtifacts().appendToAllClasses(files);
     }
 
     @Override
@@ -307,7 +284,11 @@ public abstract class AbstractAppTaskManager<
         ProjectOptions projectOptions = variant.getServices().getProjectOptions();
         boolean nonTransitiveR = projectOptions.get(BooleanOption.NON_TRANSITIVE_R_CLASS);
         boolean namespaced =
-                variant.getGlobalScope().getExtension().getAaptOptions().getNamespaced();
+                variant.getServices()
+                        .getProjectInfo()
+                        .getExtension()
+                        .getAaptOptions()
+                        .getNamespaced();
 
         // TODO(b/138780301): Also use compile time R class in android tests.
         if ((projectOptions.get(BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS) || nonTransitiveR)

@@ -37,7 +37,6 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessInfoBuilder
-import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.DirectoryProperty
@@ -46,13 +45,12 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.IgnoreEmptyDirectories
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -100,6 +98,7 @@ abstract class ExtractNativeDebugMetadataTask : NonIncrementalTask() {
     // We need this inputFiles property because SkipWhenEmpty doesn't work for inputDir because it's
     // a DirectoryProperty
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
     @get:SkipWhenEmpty
     @get:PathSensitive(PathSensitivity.RELATIVE)
     val inputFiles: FileTree
@@ -339,6 +338,10 @@ abstract class ExtractNativeDebugMetadataRunnable : ProfileAwareWorkAction<Extra
         // We delete a native debug metadata file that is the same size as the corresponding
         // stripped native library, because it doesn't contain any extra information.
         if (outputFile.length() == strippedFile.length()) {
+            logger.info(
+                "Unable to extract native debug metadata from ${inputFile.absolutePath} " +
+                        "because the native debug metadata has already been stripped."
+            )
             FileUtils.deleteIfExists(outputFile)
         }
     }

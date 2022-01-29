@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.options
 
-import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.builder.model.AndroidProject
 
 enum class StringOption(
@@ -32,6 +31,9 @@ enum class StringOption(
     IDE_BUILD_TARGET_ABI(AndroidProject.PROPERTY_BUILD_ABI, ApiStage.Stable),
 
     IDE_ATTRIBUTION_FILE_LOCATION(AndroidProject.PROPERTY_ATTRIBUTION_FILE_LOCATION, ApiStage.Stable),
+
+    /** Absolute path to a file containing the result of the `CheckJetifier` task. */
+    IDE_CHECK_JETIFIER_RESULT_FILE(AndroidProject.PROPERTY_CHECK_JETIFIER_RESULT_FILE, ApiStage.Stable),
 
     // Signing options
     IDE_SIGNING_STORE_TYPE(AndroidProject.PROPERTY_SIGNING_STORE_TYPE, ApiStage.Stable),
@@ -59,6 +61,9 @@ enum class StringOption(
     // The exact version of Android Support plugin used, e.g. 2.4.0.6
     IDE_ANDROID_STUDIO_VERSION(AndroidProject.PROPERTY_ANDROID_SUPPORT_VERSION, ApiStage.Stable),
 
+    // The version of Android Game Development Extension used to orchestrate the build
+    IDE_AGDE_VERSION("agde.version", ApiStage.Stable),
+
     // Native
     NATIVE_BUILD_OUTPUT_LEVEL(AndroidProject.PROPERTY_NATIVE_BUILD_OUTPUT_LEVEL, ApiStage.Stable),
 
@@ -84,6 +89,8 @@ enum class StringOption(
 
     AAPT2_FROM_MAVEN_VERSION_OVERRIDE("android.aapt2Version", ApiStage.Experimental),
 
+    AAPT2_FROM_MAVEN_PLATFORM_OVERRIDE("android.aapt2Platform", ApiStage.Experimental),
+
     SUPPRESS_UNSUPPORTED_OPTION_WARNINGS("android.suppressUnsupportedOptionWarnings", ApiStage.Experimental),
 
     // User-specified path to Prefab jar to return from getPrefabFromMaven.
@@ -98,7 +105,9 @@ enum class StringOption(
     // Lint: Allow customization of the heap size of the process started to run lint
     LINT_HEAP_SIZE("android.experimental.lint.heapSize", ApiStage.Experimental),
 
-    // Lint: Allow override of the version
+    // Lint: Allow override of the version. Note that lint versions are generally 23 higher than
+    // the version of Android Gradle Plugin. So AGP 7.0.0-beta02 defaults to using lint
+    // 30.0.0-beta02
     LINT_VERSION_OVERRIDE("android.experimental.lint.version", ApiStage.Experimental),
 
     /* ---------------

@@ -62,6 +62,12 @@ interface VariantType {
     val publishToOtherModules: Boolean
 
     /**
+     * Returns true if this is a nested component in the module (either a test component or
+     * a testFixtures component).
+     */
+    val isNestedComponent: Boolean
+
+    /**
      * Returns true if this is the test component of the module.
      */
     val isTestComponent: Boolean
@@ -242,7 +248,7 @@ enum class VariantTypeImpl(
         isTestFixturesComponent = true,
         publishToOtherModules = true,
         publishToRepository = true,
-        artifactName = "_test_fixtures_",
+        artifactName = AndroidProject.ARTIFACT_TEST_FIXTURES,
         artifactType = ArtifactMetaData.TYPE_ANDROID,
         analyticsVariantType = GradleBuildVariant.VariantType.TEST_FIXTURES
     );
@@ -255,4 +261,7 @@ enum class VariantTypeImpl(
 
     override val requiresManifest: Boolean
         get() = !isForTesting && !isTestFixturesComponent
+
+    override val isNestedComponent: Boolean
+        get() = isTestComponent || isTestFixturesComponent
 }

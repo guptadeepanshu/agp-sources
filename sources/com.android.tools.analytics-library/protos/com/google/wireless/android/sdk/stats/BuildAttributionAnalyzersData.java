@@ -136,6 +136,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000040;
             break;
           }
+          case 66: {
+            com.google.wireless.android.sdk.stats.JetifierUsageData.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000080) != 0)) {
+              subBuilder = jetifierUsageData_.toBuilder();
+            }
+            jetifierUsageData_ = input.readMessage(com.google.wireless.android.sdk.stats.JetifierUsageData.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(jetifierUsageData_);
+              jetifierUsageData_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000080;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -404,6 +417,41 @@ private static final long serialVersionUID = 0L;
     return configurationCacheCompatibilityData_ == null ? com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.getDefaultInstance() : configurationCacheCompatibilityData_;
   }
 
+  public static final int JETIFIER_USAGE_DATA_FIELD_NUMBER = 8;
+  private com.google.wireless.android.sdk.stats.JetifierUsageData jetifierUsageData_;
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * @return Whether the jetifierUsageData field is set.
+   */
+  public boolean hasJetifierUsageData() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   * @return The jetifierUsageData.
+   */
+  public com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData() {
+    return jetifierUsageData_ == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
+  }
+  /**
+   * <pre>
+   * Data from jetifier usage analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+   */
+  public com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder() {
+    return jetifierUsageData_ == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -438,6 +486,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000040) != 0)) {
       output.writeMessage(7, getConfigurationCacheCompatibilityData());
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      output.writeMessage(8, getJetifierUsageData());
     }
     unknownFields.writeTo(output);
   }
@@ -475,6 +526,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(7, getConfigurationCacheCompatibilityData());
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(8, getJetifierUsageData());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -526,6 +581,11 @@ private static final long serialVersionUID = 0L;
       if (!getConfigurationCacheCompatibilityData()
           .equals(other.getConfigurationCacheCompatibilityData())) return false;
     }
+    if (hasJetifierUsageData() != other.hasJetifierUsageData()) return false;
+    if (hasJetifierUsageData()) {
+      if (!getJetifierUsageData()
+          .equals(other.getJetifierUsageData())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -565,6 +625,10 @@ private static final long serialVersionUID = 0L;
     if (hasConfigurationCacheCompatibilityData()) {
       hash = (37 * hash) + CONFIGURATION_CACHE_COMPATIBILITY_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getConfigurationCacheCompatibilityData().hashCode();
+    }
+    if (hasJetifierUsageData()) {
+      hash = (37 * hash) + JETIFIER_USAGE_DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getJetifierUsageData().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -704,6 +768,7 @@ private static final long serialVersionUID = 0L;
         getProjectConfigurationAnalyzerDataFieldBuilder();
         getTasksConfigurationIssuesAnalyzerDataFieldBuilder();
         getConfigurationCacheCompatibilityDataFieldBuilder();
+        getJetifierUsageDataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -747,6 +812,12 @@ private static final long serialVersionUID = 0L;
         configurationCacheCompatibilityDataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000040);
+      if (jetifierUsageDataBuilder_ == null) {
+        jetifierUsageData_ = null;
+      } else {
+        jetifierUsageDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -827,6 +898,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000040;
       }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        if (jetifierUsageDataBuilder_ == null) {
+          result.jetifierUsageData_ = jetifierUsageData_;
+        } else {
+          result.jetifierUsageData_ = jetifierUsageDataBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000080;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -896,6 +975,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasConfigurationCacheCompatibilityData()) {
         mergeConfigurationCacheCompatibilityData(other.getConfigurationCacheCompatibilityData());
+      }
+      if (other.hasJetifierUsageData()) {
+        mergeJetifierUsageData(other.getJetifierUsageData());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1914,6 +1996,162 @@ private static final long serialVersionUID = 0L;
         configurationCacheCompatibilityData_ = null;
       }
       return configurationCacheCompatibilityDataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.JetifierUsageData jetifierUsageData_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.JetifierUsageData, com.google.wireless.android.sdk.stats.JetifierUsageData.Builder, com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder> jetifierUsageDataBuilder_;
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * @return Whether the jetifierUsageData field is set.
+     */
+    public boolean hasJetifierUsageData() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     * @return The jetifierUsageData.
+     */
+    public com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData() {
+      if (jetifierUsageDataBuilder_ == null) {
+        return jetifierUsageData_ == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
+      } else {
+        return jetifierUsageDataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public Builder setJetifierUsageData(com.google.wireless.android.sdk.stats.JetifierUsageData value) {
+      if (jetifierUsageDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        jetifierUsageData_ = value;
+        onChanged();
+      } else {
+        jetifierUsageDataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000080;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public Builder setJetifierUsageData(
+        com.google.wireless.android.sdk.stats.JetifierUsageData.Builder builderForValue) {
+      if (jetifierUsageDataBuilder_ == null) {
+        jetifierUsageData_ = builderForValue.build();
+        onChanged();
+      } else {
+        jetifierUsageDataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000080;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public Builder mergeJetifierUsageData(com.google.wireless.android.sdk.stats.JetifierUsageData value) {
+      if (jetifierUsageDataBuilder_ == null) {
+        if (((bitField0_ & 0x00000080) != 0) &&
+            jetifierUsageData_ != null &&
+            jetifierUsageData_ != com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance()) {
+          jetifierUsageData_ =
+            com.google.wireless.android.sdk.stats.JetifierUsageData.newBuilder(jetifierUsageData_).mergeFrom(value).buildPartial();
+        } else {
+          jetifierUsageData_ = value;
+        }
+        onChanged();
+      } else {
+        jetifierUsageDataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000080;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public Builder clearJetifierUsageData() {
+      if (jetifierUsageDataBuilder_ == null) {
+        jetifierUsageData_ = null;
+        onChanged();
+      } else {
+        jetifierUsageDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000080);
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public com.google.wireless.android.sdk.stats.JetifierUsageData.Builder getJetifierUsageDataBuilder() {
+      bitField0_ |= 0x00000080;
+      onChanged();
+      return getJetifierUsageDataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    public com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder() {
+      if (jetifierUsageDataBuilder_ != null) {
+        return jetifierUsageDataBuilder_.getMessageOrBuilder();
+      } else {
+        return jetifierUsageData_ == null ?
+            com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
+      }
+    }
+    /**
+     * <pre>
+     * Data from jetifier usage analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.JetifierUsageData, com.google.wireless.android.sdk.stats.JetifierUsageData.Builder, com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder> 
+        getJetifierUsageDataFieldBuilder() {
+      if (jetifierUsageDataBuilder_ == null) {
+        jetifierUsageDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.JetifierUsageData, com.google.wireless.android.sdk.stats.JetifierUsageData.Builder, com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder>(
+                getJetifierUsageData(),
+                getParentForChildren(),
+                isClean());
+        jetifierUsageData_ = null;
+      }
+      return jetifierUsageDataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

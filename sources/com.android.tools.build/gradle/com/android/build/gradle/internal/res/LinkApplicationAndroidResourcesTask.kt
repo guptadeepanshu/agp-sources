@@ -31,8 +31,8 @@ import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
-import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
+import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
@@ -79,6 +79,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
@@ -94,7 +95,6 @@ import org.gradle.tooling.BuildException
 import org.gradle.workers.WorkerExecutor
 import java.io.File
 import java.io.IOException
-import java.util.ArrayList
 import javax.inject.Inject
 
 @CacheableTask
@@ -136,7 +136,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
     @get:InputFile
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:PathSensitive(PathSensitivity.NONE)
     abstract val localResourcesFile: RegularFileProperty
 
     @get:InputFiles
@@ -172,9 +172,8 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:Internal
     abstract val sourceSetMaps: ConfigurableFileCollection
 
-    @get:InputFiles
+    @get:Classpath
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val featureResourcePackages: ConfigurableFileCollection
 
     @get:Input
@@ -211,9 +210,8 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     @get:Input
     abstract val applicationId: Property<String>
 
-    @get:InputFiles
+    @get:Classpath
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val inputResourcesDir: DirectoryProperty
 
     @get:Input
@@ -249,9 +247,8 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     // Not an input as it is only used to rewrite exception and doesn't affect task output
     private lateinit var manifestMergeBlameFile: Provider<RegularFile>
 
-    @get:InputFiles
+    @get:Classpath
     @get:Optional
-    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val compiledDependenciesResources: ConfigurableFileCollection
 
     override val incremental: Boolean
@@ -528,7 +525,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             task.setType(creationConfig.variantType)
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.setDisallowChanges(creationConfig.globalScope.extension.aaptOptions.noCompress)
+                task.noCompress.setDisallowChanges(creationConfig.services.projectInfo.getExtension().aaptOptions.noCompress)
                 task.aaptAdditionalParameters.set(creationConfig.androidResources.aaptAdditionalParameters)
             }
             task.noCompress.disallowChanges()
@@ -865,13 +862,22 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
                         .setUseConditionalKeepRules(parameters.useConditionalKeepRules.get())
                         .setUseMinimalKeepRules(parameters.useMinimalKeepRules.get())
                         .setUseFinalIds(parameters.useFinalIds.get())
-                        .addResourceDirectories(parameters.compiledDependenciesResources.files.reversed()
-                            .toImmutableList())
                         .setEmitStableIdsFile(parameters.outputStableIdsFile.orNull?.asFile)
                         .setConsumeStableIdsFile(stableIdsInputFile)
                         .setLocalSymbolTableFile(parameters.localResourcesFile.orNull?.asFile)
                         .setMergeBlameDirectory(parameters.mergeBlameDirectory.get().asFile)
                         .setManifestMergeBlameFile(parameters.manifestMergeBlameFile.orNull?.asFile)
+                        .apply {
+                            val compiledDependencyResourceFiles =
+                                parameters.compiledDependenciesResources.files
+                            // In the event of running process[variant]AndroidTestResources
+                            // on a module that depends on a module with no precompiled resources,
+                            // we must avoid passing the compiled resource directory to AAPT link.
+                            if (compiledDependencyResourceFiles.all(File::exists)) {
+                                addResourceDirectories(
+                                    compiledDependencyResourceFiles.reversed().toImmutableList())
+                            }
+                        }
 
                     if (parameters.namespaced.get()) {
                         configBuilder.setStaticLibraryDependencies(ImmutableList.copyOf(parameters.dependencies.files))

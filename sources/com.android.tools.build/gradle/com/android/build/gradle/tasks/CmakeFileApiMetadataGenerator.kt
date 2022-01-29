@@ -16,17 +16,16 @@
 
 package com.android.build.gradle.tasks
 
-
 import com.android.build.gradle.external.cmake.CmakeUtils
-import com.android.build.gradle.internal.cxx.cmake.readCmakeFileApiReply
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputLevel
-import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.writeNativeBuildConfigValueToJsonFile
+import com.android.build.gradle.internal.cxx.cmake.parseCmakeFileApiReply
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
-import com.android.build.gradle.internal.cxx.model.CxxVariantModel
 import com.android.build.gradle.internal.cxx.model.additionalProjectFilesIndexFile
 import com.android.build.gradle.internal.cxx.model.clientQueryFolder
 import com.android.build.gradle.internal.cxx.model.clientReplyFolder
+import com.android.build.gradle.internal.cxx.model.compileCommandsJsonBinFile
+import com.android.build.gradle.internal.cxx.model.compileCommandsJsonFile
 import com.android.build.gradle.internal.cxx.model.getBuildCommandArguments
+import com.android.build.gradle.internal.cxx.model.ifLogNativeConfigureToLifecycle
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.metadataGenerationCommandFile
 import com.android.build.gradle.internal.cxx.model.metadataGenerationStderrFile
@@ -38,20 +37,18 @@ import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import com.google.wireless.android.sdk.stats.GradleNativeAndroidModule
 import org.gradle.api.tasks.Internal
 import org.gradle.process.ExecOperations
-import java.nio.charset.StandardCharsets
 
 /**
  * Invoke CMake to generate ninja project. Along the way, generate android_gradle_build.json from
  * the result of CMake file API query.
  */
 internal class CmakeQueryMetadataGenerator(
-        variant: CxxVariantModel,
-        abis: List<CxxAbiModel>,
+        abi: CxxAbiModel,
         @get:Internal override val variantBuilder: GradleBuildVariant.Builder?
-) : ExternalNativeJsonGenerator(variant, abis, variantBuilder) {
+) : ExternalNativeJsonGenerator(abi, variantBuilder) {
     init {
         variantBuilder?.nativeBuildSystemType = GradleNativeAndroidModule.NativeBuildSystemType.CMAKE
-        cmakeMakefileChecks(variant)
+        cmakeMakefileChecks(abi.variant)
     }
     override fun executeProcess(ops: ExecOperations, abi: CxxAbiModel) {
         // Request File API responses from CMake by creating placeholder files
@@ -67,36 +64,31 @@ internal class CmakeQueryMetadataGenerator(
           abi.metadataGenerationStdoutFile,
           abi.metadataGenerationStderrFile,
           getProcessBuilder(abi),
-          "${variant.variantName}|${abi.abi.tag} :")
+          "${abi.variant.variantName}|${abi.abi.tag} :")
           .logStderr()
           .logStdout()
-          .logFullStdout(variant.module.nativeBuildOutputLevel == NativeBuildOutputLevel.VERBOSE)
+          .logFullStdout(abi.variant.ifLogNativeConfigureToLifecycle { true } ?: false)
           .execute(ops::exec)
 
-        val config = abi.additionalProjectFilesIndexFile.bufferedWriter(StandardCharsets.UTF_8).use { additionalProjectFileWriter ->
-            readCmakeFileApiReply(abi.clientReplyFolder) {
-                when (it.sourceGroup) {
-                    "Source Files" -> {
-                        // TODO(152223150) populate compile_commands.json.bin and stop generating compile_commands.json
-                    }
-                    else -> additionalProjectFileWriter.appendln(it.path.absolutePath)
-                }
-            }
-        }
-
-        // Write the ninja build command, possibly with user settings from CMakeSettings.json.
-        config.buildTargetsCommandComponents =
-          CmakeUtils.getBuildTargetsCommand(
-            variant.module.cmake!!.cmakeExe!!,
+        // Build expected metadata
+        val buildTargetsCommand = CmakeUtils.getBuildTargetsCommand(
+            abi.variant.module.cmake!!.cmakeExe!!,
             abi.cxxBuildFolder,
             abi.getBuildCommandArguments()
-          )
-        writeNativeBuildConfigValueToJsonFile(abi.jsonFile, config)
+        )
+        parseCmakeFileApiReply(
+            replyFolder = abi.clientReplyFolder,
+            additionalFiles = abi.additionalProjectFilesIndexFile,
+            androidGradleBuildJsonFile = abi.jsonFile,
+            compileCommandsJsonFile = abi.compileCommandsJsonFile,
+            compileCommandsJsonBinFile = abi.compileCommandsJsonBinFile,
+            buildTargetsCommand = buildTargetsCommand
+        )
     }
 
     override fun getProcessBuilder(abi: CxxAbiModel): ProcessInfoBuilder {
         val builder = ProcessInfoBuilder()
-        builder.setExecutable(variant.module.cmake!!.cmakeExe!!)
+        builder.setExecutable(abi.variant.module.cmake!!.cmakeExe!!)
         builder.addArgs(abi.configurationArguments)
         return builder
     }

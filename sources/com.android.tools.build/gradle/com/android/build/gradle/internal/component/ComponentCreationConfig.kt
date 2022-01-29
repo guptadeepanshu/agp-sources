@@ -17,11 +17,13 @@
 package com.android.build.gradle.internal.component
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.impl.TestComponentImpl
+import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.JavaCompilation
 import com.android.build.api.variant.impl.VariantOutputList
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.core.VariantDslInfo
@@ -81,8 +83,13 @@ interface ComponentCreationConfig : ComponentIdentity {
     val dependenciesClassesAreInstrumented: Boolean
     val debuggable: Boolean
     val pseudoLocalesEnabled: Property<Boolean>
+    val androidResourcesEnabled: Boolean
 
     val minSdkVersion: AndroidVersion
+    val targetSdkVersion: AndroidVersion
+    val targetSdkVersionOverride: AndroidVersion?
+
+    val sdkComponents: SdkComponents
 
     // ---------------------------------------------------------------------------------------------
     // ---------------------------------------------------------------------------------------------
@@ -98,7 +105,7 @@ interface ComponentCreationConfig : ComponentIdentity {
     // ---------------------------------------------------------------------------------------------
     val buildFeatures: BuildFeatureValues
     val variantScope: VariantScope
-    val variantDslInfo: VariantDslInfo
+    val variantDslInfo: VariantDslInfo<*>
     val variantSources: VariantSources
     val variantDependencies: VariantDependencies
     val artifacts: ArtifactsImpl
@@ -162,4 +169,6 @@ interface ComponentCreationConfig : ComponentIdentity {
     fun getDependenciesClassesJarsPostAsmInstrumentation(scope: AndroidArtifacts.ArtifactScope): FileCollection
 
     val packageJacocoRuntime: Boolean
+
+    val javaCompilation: JavaCompilation
 }

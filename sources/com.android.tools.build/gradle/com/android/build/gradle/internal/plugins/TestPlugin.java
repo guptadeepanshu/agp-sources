@@ -20,11 +20,10 @@ import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
 import com.android.build.api.component.impl.TestComponentImpl;
 import com.android.build.api.component.impl.TestFixturesImpl;
-import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.dsl.SdkComponents;
-import com.android.build.api.extension.AndroidComponentsExtension;
 import com.android.build.api.extension.impl.TestAndroidComponentsExtensionImpl;
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
+import com.android.build.api.variant.AndroidComponentsExtension;
 import com.android.build.api.variant.TestAndroidComponentsExtension;
 import com.android.build.api.variant.TestVariant;
 import com.android.build.api.variant.TestVariantBuilder;
@@ -63,7 +62,10 @@ import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 /** Gradle plugin class for 'test' projects. */
 public class TestPlugin
         extends BasePlugin<
-                TestAndroidComponentsExtension, TestVariantBuilderImpl, TestVariantImpl> {
+                    com.android.build.api.dsl.TestExtension,
+                    TestAndroidComponentsExtension,
+                    TestVariantBuilderImpl,
+                    TestVariantImpl> {
     @Inject
     public TestPlugin(
             ToolingModelBuilderRegistry registry,
@@ -139,10 +141,7 @@ public class TestPlugin
     public abstract static class TestAndroidComponentsExtensionImplCompat
             extends TestAndroidComponentsExtensionImpl
             implements AndroidComponentsExtension<
-                            com.android.build.api.dsl.TestExtension,
-                            TestVariantBuilder,
-                            TestVariant>,
-                    com.android.build.api.extension.TestAndroidComponentsExtension {
+                    com.android.build.api.dsl.TestExtension, TestVariantBuilder, TestVariant> {
 
         public TestAndroidComponentsExtensionImplCompat(
                 @NonNull DslServices dslServices,
@@ -162,11 +161,10 @@ public class TestPlugin
     @Override
     protected TestAndroidComponentsExtension createComponentExtension(
             @NonNull DslServices dslServices,
-            @NonNull
-                    VariantApiOperationsRegistrar<
-                                                CommonExtension<?, ?, ?, ?>,
-                                                TestVariantBuilderImpl,
-                                                TestVariantImpl>
+            @NonNull VariantApiOperationsRegistrar<
+                        com.android.build.api.dsl.TestExtension,
+                        TestVariantBuilderImpl,
+                        TestVariantImpl>
                             variantApiOperationsRegistrar) {
         SdkComponents sdkComponents =
                 dslServices.newInstance(
@@ -175,7 +173,8 @@ public class TestPlugin
                         project.provider(getExtension()::getCompileSdkVersion),
                         project.provider(getExtension()::getBuildToolsRevision),
                         project.provider(getExtension()::getNdkVersion),
-                        project.provider(getExtension()::getNdkPath));
+                        project.provider(getExtension()::getNdkPath),
+                        project.provider(globalScope::getBootClasspath));
 
         // register the same extension under a different name with the deprecated extension type.
         // this will allow plugins that use getByType() API to retrieve the old interface and keep
@@ -190,14 +189,6 @@ public class TestPlugin
                                 sdkComponents,
                                 variantApiOperationsRegistrar,
                                 getExtension());
-
-        // register under the new interface for kotlin, groovy will find both the old and new
-        // interfaces through the implementation class.
-        project.getExtensions()
-                .add(
-                        com.android.build.api.extension.TestAndroidComponentsExtension.class,
-                        "androidComponents_compat_by_type",
-                        (com.android.build.api.extension.TestAndroidComponentsExtension) extension);
 
         return extension;
     }

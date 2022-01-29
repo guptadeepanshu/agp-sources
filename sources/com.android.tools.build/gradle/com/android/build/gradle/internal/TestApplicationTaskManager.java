@@ -31,7 +31,6 @@ import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.component.TestCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.GlobalScope;
-import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.ProjectInfo;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask;
@@ -42,11 +41,9 @@ import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.CheckTestedAppObfuscation;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
-import com.android.builder.core.BuilderConstants;
 import com.android.builder.core.VariantType;
 import com.google.common.base.Preconditions;
 import java.util.List;
-import org.gradle.api.Task;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.provider.Provider;
@@ -82,11 +79,8 @@ public class TestApplicationTaskManager
 
     @Override
     protected void doCreateTasksForVariant(
-            @NotNull ComponentInfo<TestVariantBuilderImpl, TestVariantImpl> variantInfo,
-            @NotNull
-                    List<? extends ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>>
-                            allVariants) {
-        createCommonTasks(variantInfo, allVariants);
+            @NotNull ComponentInfo<TestVariantBuilderImpl, TestVariantImpl> variantInfo) {
+        createCommonTasks(variantInfo);
 
         TestVariantImpl testVariantProperties = variantInfo.getVariant();
 
@@ -128,31 +122,7 @@ public class TestApplicationTaskManager
                             }
                         });
 
-        Task connectedAndroidTest =
-                taskFactory.findByName(
-                        BuilderConstants.CONNECTED + VariantType.ANDROID_TEST_SUFFIX);
-        if (connectedAndroidTest != null) {
-            connectedAndroidTest.dependsOn(instrumentTestTask.getName());
-        }
-    }
-
-    @Override
-    protected void postJavacCreation(@NonNull ComponentCreationConfig creationConfig) {
-        creationConfig
-                .getArtifacts()
-                .appendToAllClasses(
-                        creationConfig
-                                .getServices()
-                                .fileCollection(
-                                        creationConfig
-                                                .getArtifacts()
-                                                .get(InternalArtifactType.JAVAC.INSTANCE),
-                                        creationConfig
-                                                .getVariantData()
-                                                .getAllPreJavacGeneratedBytecode(),
-                                        creationConfig
-                                                .getVariantData()
-                                                .getAllPostJavacGeneratedBytecode()));
+        taskFactory.configure(CONNECTED_ANDROID_TEST, task -> task.dependsOn(instrumentTestTask));
     }
 
     @Override

@@ -16,12 +16,8 @@
 package com.android.builder.model.v2.models
 
 import com.android.builder.model.v2.AndroidModel
-import com.android.builder.model.v2.dsl.DependenciesInfo
-import com.android.builder.model.v2.dsl.SigningConfig
-import com.android.builder.model.v2.ide.AaptOptions
 import com.android.builder.model.v2.ide.AndroidGradlePluginProjectFlags
 import com.android.builder.model.v2.ide.JavaCompileOptions
-import com.android.builder.model.v2.ide.LintOptions
 import com.android.builder.model.v2.ide.ProjectType
 import com.android.builder.model.v2.ide.SourceSetContainer
 import com.android.builder.model.v2.ide.Variant
@@ -32,8 +28,6 @@ import java.io.File
  * Entry point for the model of the Android Projects. This models a single module, whether the
  * module is an app project, a library project, a Instant App feature project, an instantApp bundle
  * project, or a dynamic feature split project.
- *
- * @since 4.2
  */
 interface AndroidProject: AndroidModel {
     companion object {
@@ -122,9 +116,42 @@ interface AndroidProject: AndroidModel {
     val path: String
 
     /**
+     * Then name of the build this project belongs to
+     */
+    val buildName: String
+
+    /**
      * The type of project: Android application, library, feature, instantApp.
      */
     val projectType: ProjectType
+
+    /**
+     * The namespace of the main artifact.
+     *
+     * This is here rather than on [com.android.builder.model.v2.ide.AndroidArtifact] because this
+     * is common to all artifacts as it cannot be changed per variants.
+     */
+    val namespace: String
+
+    /**
+     * The namespace of the AndroidTest artifact.
+     *
+     * This is here rather than on [com.android.builder.model.v2.ide.AndroidArtifact] because this
+     * is common to all artifacts as it cannot be changed per variants.
+     *
+     * If there are no AndroidTest components, this returns null.
+     */
+    val androidTestNamespace: String?
+
+    /**
+     * The namespace of the Test Fixtures artifact.
+     *
+     * This is here rather than on [com.android.builder.model.v2.ide.AndroidArtifact] because this
+     * is common to all artifacts as it cannot be changed per variants.
+     *
+     * If there are no AndroidTest components, this returns null.
+     */
+    val testFixturesNamespace: String?
 
     val mainSourceSet: SourceSetContainer
 

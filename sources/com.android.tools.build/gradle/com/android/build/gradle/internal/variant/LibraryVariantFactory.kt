@@ -16,7 +16,6 @@
 package com.android.build.gradle.internal.variant
 
 import com.android.build.api.variant.impl.LibraryVariantBuilderImpl
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.services.VariantApiServices
 import com.android.build.gradle.internal.core.VariantSources
@@ -29,6 +28,8 @@ import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.dsl.BuildFeatures
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.api.dsl.LibraryBuildFeatures
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.impl.LibraryVariantImpl
 import java.lang.RuntimeException
 import com.android.build.gradle.internal.api.BaseVariantImpl
@@ -48,7 +49,7 @@ class LibraryVariantFactory(
 
     override fun createVariantBuilder(
             componentIdentity: ComponentIdentity,
-            variantDslInfo: VariantDslInfo,
+            variantDslInfo: VariantDslInfo<*>,
             variantApiServices: VariantApiServices): LibraryVariantBuilderImpl {
         return projectServices
                 .objectFactory
@@ -63,7 +64,7 @@ class LibraryVariantFactory(
             variantBuilder: LibraryVariantBuilderImpl,
             componentIdentity: ComponentIdentity,
             buildFeatures: BuildFeatureValues,
-            variantDslInfo: VariantDslInfo,
+            variantDslInfo: VariantDslInfo<*>,
             variantDependencies: VariantDependencies,
             variantSources: VariantSources,
             paths: VariantPathHelper,
@@ -72,7 +73,9 @@ class LibraryVariantFactory(
             variantData: BaseVariantData,
             transformManager: TransformManager,
             variantPropertiesApiServices: VariantPropertiesApiServices,
-            taskCreationServices: TaskCreationServices): LibraryVariantImpl {
+            taskCreationServices: TaskCreationServices,
+            androidComponentsExtension: AndroidComponentsExtension<*, *, *>,
+        ): LibraryVariantImpl {
         val libVariant = projectServices
                 .objectFactory
                 .newInstance(
@@ -89,6 +92,7 @@ class LibraryVariantFactory(
                         transformManager,
                         variantPropertiesApiServices,
                         taskCreationServices,
+                        androidComponentsExtension.sdkComponents,
                         globalScope)
 
         // create default output
@@ -111,6 +115,20 @@ class LibraryVariantFactory(
         }
     }
 
+    override fun createTestFixturesBuildFeatureValues(
+        buildFeatures: BuildFeatures, projectOptions: ProjectOptions): BuildFeatureValues {
+        return if (buildFeatures is LibraryBuildFeatures) {
+            TestFixturesBuildFeaturesValuesImpl(
+                buildFeatures,
+                projectOptions,
+                dataBindingOverride = null,
+                mlModelBindingOverride = null
+            )
+        } else {
+            throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
+        }
+    }
+
     override fun createTestBuildFeatureValues(
             buildFeatures: BuildFeatures,
             dataBindingOptions: DataBindingOptions,
@@ -124,7 +142,7 @@ class LibraryVariantFactory(
 
     override fun createVariantData(
             componentIdentity: ComponentIdentity,
-            variantDslInfo: VariantDslInfo,
+            variantDslInfo: VariantDslInfo<*>,
             variantDependencies: VariantDependencies,
             variantSources: VariantSources,
             paths: VariantPathHelper,

@@ -52,8 +52,8 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
         try {
             // get the compile artifact first.
             Set<ResolvedArtifact> compileArtifacts =
-                    ArtifactUtils.getAllArtifacts(
-                            artifactCollectionsInputs, COMPILE_CLASSPATH, dependencyFailureHandler);
+                    artifactCollectionsInputs.getAllArtifacts(
+                            COMPILE_CLASSPATH, dependencyFailureHandler);
 
             // runtimeLintJar and compileLintJar are lists of the dependencies' lint jars.
             // We'll match the component identifier of each artifact to find the lint.jar
@@ -77,10 +77,8 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
             if (withFullDependency && modelBuilder.getNeedFullRuntimeClasspath()) {
                 // in this mode, we build the full list of runtime artifact in the model
                 Set<ResolvedArtifact> runtimeArtifacts =
-                        ArtifactUtils.getAllArtifacts(
-                                artifactCollectionsInputs,
-                                RUNTIME_CLASSPATH,
-                                dependencyFailureHandler);
+                        artifactCollectionsInputs.getAllArtifacts(
+                                RUNTIME_CLASSPATH, dependencyFailureHandler);
 
                 Set<ComponentIdentifier> runtimeIds =
                         runtimeArtifacts.stream()
@@ -159,13 +157,9 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                         .map(ResolvedArtifact::getComponentIdentifier)
                         .collect(Collectors.toSet());
 
-        // Done separately to avoid querying jetified jars on project classes as for java libraries
-        // the artifact might not exist yet.
-        ImmutableMultimap<ComponentIdentifier, ResolvedArtifactResult> projectRuntime =
-                ArtifactUtils.asMultiMap(runtimeArtifactCollections.getRuntimeProjectJars());
-
+        // only include external dependencies as projects are not needed IDE-side
         ImmutableMultimap<ComponentIdentifier, ResolvedArtifactResult> externalRuntime =
-                ArtifactUtils.asMultiMap(runtimeArtifactCollections.getRuntimeExternalJars());
+                asMultiMap(runtimeArtifactCollections.getRuntimeExternalJars());
 
         ImmutableList.Builder<File> runtimeOnlyClasspathBuilder = ImmutableList.builder();
         for (ComponentIdentifier runtimeIdentifier : runtimeIdentifiers) {
@@ -173,15 +167,31 @@ class ArtifactDependencyGraph implements DependencyGraphBuilder {
                 continue;
             }
             for (ResolvedArtifactResult resolvedArtifactResult :
-                    projectRuntime.get(runtimeIdentifier)) {
-                runtimeOnlyClasspathBuilder.add(resolvedArtifactResult.getFile());
-            }
-            for (ResolvedArtifactResult resolvedArtifactResult :
                     externalRuntime.get(runtimeIdentifier)) {
                 runtimeOnlyClasspathBuilder.add(resolvedArtifactResult.getFile());
             }
         }
         return runtimeOnlyClasspathBuilder.build();
+    }
+
+    /**
+     * This is a multi map to handle when there are multiple jars with the same component id.
+     *
+     * <p>FIXME this does not properly handle test fixtures because ComponentIdentifier is not
+     * unique for lib+fixtures
+     *
+     * <p>e.g. see `AppWithClassifierDepTest`
+     */
+    private static ImmutableMultimap<ComponentIdentifier, ResolvedArtifactResult> asMultiMap(
+            @NonNull ArtifactCollection collection) {
+        ImmutableMultimap.Builder<ComponentIdentifier, ResolvedArtifactResult> builder =
+                ImmutableMultimap.builder();
+
+        for (ResolvedArtifactResult artifact : collection.getArtifacts()) {
+            builder.put(artifact.getId().getComponentIdentifier(), artifact);
+        }
+
+        return builder.build();
     }
 
     ArtifactDependencyGraph() {

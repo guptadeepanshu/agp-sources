@@ -31,6 +31,7 @@ import com.android.bundle.Devices.DeviceSpec
 import com.android.tools.build.bundletool.commands.ExtractApksCommand
 import com.android.utils.FileUtils
 import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonToken
 import com.google.protobuf.util.JsonFormat
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -44,6 +45,7 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.io.FileReader
 import java.nio.file.Files
@@ -52,10 +54,11 @@ import java.nio.file.Files
  * Task that extract APKs from the apk zip (created with [BundleToApkTask] into a folder. a Device
  * info file indicate which APKs to extract. Only APKs for that particular device are extracted.
  */
+@DisableCachingByDefault
 abstract class ExtractApksTask : NonIncrementalTask() {
 
     companion object {
-        const val namePrefix = "extractApksFor"
+        const val namePrefix = "extractApksFromBundleFor"
         fun getTaskName(componentImpl: ComponentImpl): String {
             return componentImpl.computeTaskName(namePrefix)
         }
@@ -157,20 +160,26 @@ abstract class ExtractApksTask : NonIncrementalTask() {
                 val deliveryTypeMap = mutableMapOf<String, String>()
                 var path = ""
                 reader.beginObject()
-                reader.nextName()
-                reader.beginArray()
-                while (reader.hasNext()) {
-                    reader.beginObject()
-                    while (reader.hasNext()) {
-                        when (reader.nextName()) {
-                            "moduleName" -> reader.nextString()
-                            "path" -> path = reader.nextString()
-                            "deliveryType" -> deliveryTypeMap[path] = reader.nextString()
+                while (reader.hasNext() && reader.peek() != JsonToken.END_OBJECT) {
+                    val name = reader.nextName()
+                    if (name == "apks") {
+                        reader.beginArray()
+                        while (reader.hasNext()) {
+                            reader.beginObject()
+                            while (reader.hasNext()) {
+                                when (reader.nextName()) {
+                                    "moduleName" -> reader.nextString()
+                                    "path" -> path = reader.nextString()
+                                    "deliveryType" -> deliveryTypeMap[path] = reader.nextString()
+                                }
+                            }
+                            reader.endObject()
                         }
+                        reader.endArray()
+                    } else {
+                        reader.skipValue()
                     }
-                    reader.endObject()
                 }
-                reader.endArray()
                 reader.endObject()
                 deliveryTypeMap.forEach { elementList.add(BuiltArtifactImpl.make(outputFile = parameters.outputDir.asFile.get().absolutePath + "/" + it.key,
                         attributes = mapOf("deliveryType" to it.value))) }

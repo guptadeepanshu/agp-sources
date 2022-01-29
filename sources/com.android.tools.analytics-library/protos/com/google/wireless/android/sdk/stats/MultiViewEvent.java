@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   }
   private MultiViewEvent() {
     type_ = 0;
+    associatedSplitEditorMode_ = 0;
   }
 
   @java.lang.Override
@@ -64,6 +65,18 @@ private static final long serialVersionUID = 0L;
             } else {
               bitField0_ |= 0x00000001;
               type_ = rawValue;
+            }
+            break;
+          }
+          case 16: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode value = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(2, rawValue);
+            } else {
+              bitField0_ |= 0x00000002;
+              associatedSplitEditorMode_ = rawValue;
             }
             break;
           }
@@ -261,6 +274,124 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.MultiViewEvent.MultiViewEventType)
   }
 
+  /**
+   * <pre>
+   * Mode of the editor associated to this Validation Tool
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.MultiViewEvent.AssociatedSplitEditorMode}
+   */
+  public enum AssociatedSplitEditorMode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_MODE = 0;</code>
+     */
+    UNKNOWN_MODE(0),
+    /**
+     * <code>TEXT_MODE = 1;</code>
+     */
+    TEXT_MODE(1),
+    /**
+     * <code>SPLIT_MODE = 2;</code>
+     */
+    SPLIT_MODE(2),
+    /**
+     * <code>VISUAL_MODE = 3;</code>
+     */
+    VISUAL_MODE(3),
+    ;
+
+    /**
+     * <code>UNKNOWN_MODE = 0;</code>
+     */
+    public static final int UNKNOWN_MODE_VALUE = 0;
+    /**
+     * <code>TEXT_MODE = 1;</code>
+     */
+    public static final int TEXT_MODE_VALUE = 1;
+    /**
+     * <code>SPLIT_MODE = 2;</code>
+     */
+    public static final int SPLIT_MODE_VALUE = 2;
+    /**
+     * <code>VISUAL_MODE = 3;</code>
+     */
+    public static final int VISUAL_MODE_VALUE = 3;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AssociatedSplitEditorMode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static AssociatedSplitEditorMode forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_MODE;
+        case 1: return TEXT_MODE;
+        case 2: return SPLIT_MODE;
+        case 3: return VISUAL_MODE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AssociatedSplitEditorMode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AssociatedSplitEditorMode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AssociatedSplitEditorMode>() {
+            public AssociatedSplitEditorMode findValueByNumber(int number) {
+              return AssociatedSplitEditorMode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.MultiViewEvent.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final AssociatedSplitEditorMode[] VALUES = values();
+
+    public static AssociatedSplitEditorMode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AssociatedSplitEditorMode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.MultiViewEvent.AssociatedSplitEditorMode)
+  }
+
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_;
@@ -289,6 +420,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.UNKNOWN_EVENT_TYPE : result;
   }
 
+  public static final int ASSOCIATED_SPLIT_EDITOR_MODE_FIELD_NUMBER = 2;
+  private int associatedSplitEditorMode_;
+  /**
+   * <pre>
+   * The mode of the editor to the Validation Tool window
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+   * @return Whether the associatedSplitEditorMode field is set.
+   */
+  public boolean hasAssociatedSplitEditorMode() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * The mode of the editor to the Validation Tool window
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+   * @return The associatedSplitEditorMode.
+   */
+  public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);
+    return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -306,6 +464,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeEnum(1, type_);
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeEnum(2, associatedSplitEditorMode_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -318,6 +479,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, type_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(2, associatedSplitEditorMode_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -338,6 +503,10 @@ private static final long serialVersionUID = 0L;
     if (hasType()) {
       if (type_ != other.type_) return false;
     }
+    if (hasAssociatedSplitEditorMode() != other.hasAssociatedSplitEditorMode()) return false;
+    if (hasAssociatedSplitEditorMode()) {
+      if (associatedSplitEditorMode_ != other.associatedSplitEditorMode_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -352,6 +521,10 @@ private static final long serialVersionUID = 0L;
     if (hasType()) {
       hash = (37 * hash) + TYPE_FIELD_NUMBER;
       hash = (53 * hash) + type_;
+    }
+    if (hasAssociatedSplitEditorMode()) {
+      hash = (37 * hash) + ASSOCIATED_SPLIT_EDITOR_MODE_FIELD_NUMBER;
+      hash = (53 * hash) + associatedSplitEditorMode_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -493,6 +666,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       type_ = 0;
       bitField0_ = (bitField0_ & ~0x00000001);
+      associatedSplitEditorMode_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -525,6 +700,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       result.type_ = type_;
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        to_bitField0_ |= 0x00000002;
+      }
+      result.associatedSplitEditorMode_ = associatedSplitEditorMode_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -576,6 +755,9 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.wireless.android.sdk.stats.MultiViewEvent.getDefaultInstance()) return this;
       if (other.hasType()) {
         setType(other.getType());
+      }
+      if (other.hasAssociatedSplitEditorMode()) {
+        setAssociatedSplitEditorMode(other.getAssociatedSplitEditorMode());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -661,6 +843,64 @@ private static final long serialVersionUID = 0L;
     public Builder clearType() {
       bitField0_ = (bitField0_ & ~0x00000001);
       type_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int associatedSplitEditorMode_ = 0;
+    /**
+     * <pre>
+     * The mode of the editor to the Validation Tool window
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+     * @return Whether the associatedSplitEditorMode field is set.
+     */
+    public boolean hasAssociatedSplitEditorMode() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * The mode of the editor to the Validation Tool window
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+     * @return The associatedSplitEditorMode.
+     */
+    public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);
+      return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
+    }
+    /**
+     * <pre>
+     * The mode of the editor to the Validation Tool window
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+     * @param value The associatedSplitEditorMode to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAssociatedSplitEditorMode(com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000002;
+      associatedSplitEditorMode_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The mode of the editor to the Validation Tool window
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAssociatedSplitEditorMode() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      associatedSplitEditorMode_ = 0;
       onChanged();
       return this;
     }

@@ -87,11 +87,14 @@ public final class SdkConstants {
     public static final String AAR_FORMAT_VERSION_PROPERTY = "aarFormatVersion";
     public static final String AAR_METADATA_VERSION_PROPERTY = "aarMetadataVersion";
     public static final String MIN_COMPILE_SDK_PROPERTY = "minCompileSdk";
+    public static final String MIN_ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY =
+            "minAndroidGradlePluginVersion";
 
     /** Properties in app-metadata.properties file */
     public static final String APP_METADATA_VERSION_PROPERTY = "appMetadataVersion";
     public static final String ANDROID_GRADLE_PLUGIN_VERSION_PROPERTY =
             "androidGradlePluginVersion";
+    public static final String ANDROID_GAME_DEVELOPMENT_EXTENSION_VERSION_PROPERTY = "agdeVersion";
 
     /** Properties in lint-model-metadata.properties file */
     public static final String MAVEN_GROUP_ID_PROPERTY = "mavenGroupId";
@@ -222,17 +225,11 @@ public final class SdkConstants {
     /** Skin layout file */
     public static final String FN_SKIN_LAYOUT = "layout";
 
-    /** android private metadata folder */
-    public static final String FN_ANDROID_PRIVATE_ASSETS = "META-INF";
     /** name of the art runtime profile in aar files (located in the android private assets) */
     public static final String FN_ART_PROFILE = "baseline-prof.txt";
 
     public static final String FN_BINART_ART_PROFILE_FOLDER_IN_APK = "assets/dexopt";
     public static final String FN_BINARY_ART_PROFILE = "baseline.prof";
-
-    /** dx executable (with extension for the current OS) */
-    public static final String FN_DX =
-            "dx" + ext(".bat", "");
 
     /** aapt executable (with extension for the current OS) */
     public static final String FN_AAPT =
@@ -402,6 +399,8 @@ public final class SdkConstants {
     public static final String FD_TEST = "androidTest";
     /** Default unit test source set folder name, i.e. "test" */
     public static final String FD_UNIT_TEST = "test";
+    /** Default test fixtures source set folder name, i.e. "testFixtures" */
+    public static final String FD_TEST_FIXTURES = "testFixtures";
     /** Default java code folder name, i.e. "java" */
     public static final String FD_JAVA = "java";
     /** Default native code folder name, i.e. "jni" */
@@ -1320,6 +1319,7 @@ public final class SdkConstants {
     public static final String CONSTRAINT_REFERENCED_IDS = "constraint_referenced_ids";
 
     // Tags: Drawables
+    public static final String TAG_ANIMATION_LIST = "animation-list";
     public static final String TAG_ANIMATED_SELECTOR = "animated-selector";
     public static final String TAG_ANIMATED_VECTOR = "animated-vector";
     public static final String TAG_BITMAP = "bitmap";
@@ -1406,6 +1406,7 @@ public final class SdkConstants {
 
     // Attributes: View Binding
     public static final String ATTR_VIEW_BINDING_IGNORE = "viewBindingIgnore";
+    public static final String ATTR_VIEW_BINDING_TYPE = "viewBindingType";
 
     // Attributes: Layout
     public static final String ATTR_LAYOUT_RESOURCE_PREFIX = "layout_";
@@ -1530,6 +1531,13 @@ public final class SdkConstants {
     public static final String ATTR_PATH_DATA = "pathData";
     public static final String ATTR_FILL_COLOR = "fillColor";
 
+    // Attributes: AnimationDrawable
+    public static final String ATTR_ONESHOT = "oneshot";
+
+    // Attributes: AnimatedStateListDrawable
+    public static final String ATTR_FROM_ID = "fromId";
+    public static final String ATTR_TO_ID = "toId";
+
     // Attributes: Gradients
     public static final String ATTR_END_X = "endX";
     public static final String ATTR_END_Y = "endY";
@@ -1617,6 +1625,7 @@ public final class SdkConstants {
     public static final String ATTR_DIAL = "dial";
     public static final String ATTR_HAND_HOUR = "hand_hour";
     public static final String ATTR_HAND_MINUTE = "hand_minute";
+    public static final String ATTR_HAND_SECOND = "hand_second";
 
     // CalendarView
     public static final String ATTR_SELECTED_DATE_VERTICAL_BAR = "selectedDateVerticalBar";
@@ -2162,6 +2171,7 @@ public final class SdkConstants {
     public static final String DOT_KTS = ".kts";
     public static final String DOT_CLASS = ".class";
     public static final String DOT_JAR = ".jar";
+    public static final String DOT_KOTLIN_MODULE = ".kotlin_module";
     public static final String DOT_SRCJAR = ".srcjar";
     public static final String DOT_GRADLE = ".gradle";
     public static final String DOT_PROPERTIES = ".properties";
@@ -2171,6 +2181,7 @@ public final class SdkConstants {
     public static final String DOT_TTC = ".ttc";
     public static final String DOT_OTF = ".otf";
     public static final String DOT_EXEC = ".exec";
+    public static final String DOT_AVIF = ".avif";
 
     /** Extension of the Application package Files, i.e. "apk". */
     public static final String EXT_ANDROID_PACKAGE = "apk";
@@ -2815,7 +2826,7 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "7.0.2";
+    public static final String GRADLE_LATEST_VERSION = "7.2";
 
     public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "1.0.0";
     public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "3.3.2";
@@ -2834,7 +2845,7 @@ public final class SdkConstants {
     public static final String GRADLE_ANDROID_TEST_API_CONFIGURATION = "androidTestApi";
 
     public static final String GRADLE_ANDROID_TEST_UTIL_CONFIGURATION = "androidTestUtil";
-    public static final String CURRENT_BUILD_TOOLS_VERSION = "30.0.2";
+    public static final String CURRENT_BUILD_TOOLS_VERSION = "30.0.3";
     public static final String SUPPORT_LIB_GROUP_ID = "com.android.support";
     public static final String SUPPORT_LIB_ARTIFACT = "com.android.support:support-v4";
     public static final String DESIGN_LIB_ARTIFACT = "com.android.support:design";

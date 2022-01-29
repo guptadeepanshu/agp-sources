@@ -188,10 +188,12 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                     AndroidArtifacts.ArtifactType.PROCESSED_JAR
                 )
             ).disallowChanges()
-            val minSdkVersion =
-                creationConfig.minSdkVersionWithTargetDeviceApi.getFeatureLevel()
-            task.minSdkVersion.setDisallowChanges(minSdkVersion)
-            if (minSdkVersion < AndroidVersion.VersionCodes.N) {
+            val minSdkVersionForDexing = creationConfig.minSdkVersionForDexing.getFeatureLevel()
+            task.minSdkVersion.setDisallowChanges(minSdkVersionForDexing)
+
+            // If min sdk version for dexing is >= N(24) then we can avoid adding extra classes to
+            // the desugar classpaths.
+            if (minSdkVersionForDexing < AndroidVersion.VersionCodes.N) {
                 task.classpath.from(
                     creationConfig.variantDependencies.getArtifactFileCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
@@ -199,7 +201,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                         AndroidArtifacts.ArtifactType.PROCESSED_JAR
                     )
                 )
-                task.bootClasspath.from(creationConfig.globalScope.bootClasspath)
+                task.bootClasspath.from(creationConfig.sdkComponents.bootClasspath)
             }
 
             task.classpath.disallowChanges()

@@ -605,6 +605,22 @@ public enum BooleanOption
    * <code>ENABLE_ART_PROFILES = 146;</code>
    */
   ENABLE_ART_PROFILES(146),
+  /**
+   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147;</code>
+   */
+  ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION(147),
+  /**
+   * <code>FORCE_DETERMINISTIC_APK = 148;</code>
+   */
+  FORCE_DETERMINISTIC_APK(148),
+  /**
+   * <code>DISABLE_MINSDKLIBRARY_CHECK = 149;</code>
+   */
+  DISABLE_MINSDKLIBRARY_CHECK(149),
+  /**
+   * <code>UNINSTALL_INCOMPATIBLE_APKS = 150;</code>
+   */
+  UNINSTALL_INCOMPATIBLE_APKS(150),
   UNRECOGNIZED(-1),
   ;
 
@@ -1196,6 +1212,22 @@ public enum BooleanOption
    * <code>ENABLE_ART_PROFILES = 146;</code>
    */
   public static final int ENABLE_ART_PROFILES_VALUE = 146;
+  /**
+   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147;</code>
+   */
+  public static final int ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION_VALUE = 147;
+  /**
+   * <code>FORCE_DETERMINISTIC_APK = 148;</code>
+   */
+  public static final int FORCE_DETERMINISTIC_APK_VALUE = 148;
+  /**
+   * <code>DISABLE_MINSDKLIBRARY_CHECK = 149;</code>
+   */
+  public static final int DISABLE_MINSDKLIBRARY_CHECK_VALUE = 149;
+  /**
+   * <code>UNINSTALL_INCOMPATIBLE_APKS = 150;</code>
+   */
+  public static final int UNINSTALL_INCOMPATIBLE_APKS_VALUE = 150;
 
 
   public final int getNumber() {
@@ -1369,6 +1401,10 @@ public enum BooleanOption
       case 144: return ENABLE_TEST_FIXTURES;
       case 145: return INCLUDE_REPOSITORIES_IN_DEPENDENCY_REPORT;
       case 146: return ENABLE_ART_PROFILES;
+      case 147: return ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION;
+      case 148: return FORCE_DETERMINISTIC_APK;
+      case 149: return DISABLE_MINSDKLIBRARY_CHECK;
+      case 150: return UNINSTALL_INCOMPATIBLE_APKS;
       default: return null;
     }
   }

@@ -19,12 +19,17 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ddmlib.log.LogReceiver;
 import com.android.sdklib.AndroidVersion;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.SocketChannel;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -169,8 +174,11 @@ public interface IDevice extends IShellEnabledDevice {
      * <p>If the emulator is not running any AVD (for instance it's running from an Android source
      * tree build), this method will return "<code>&lt;build&gt;</code>".
      *
+     * <p><em>Note: Prefer using {@link #getAvdData()} if you want control over the timeout.</em>
+     *
      * @return the name of the AVD or <code>null</code> if there isn't any.
      */
+    @Deprecated
     @Nullable
     String getAvdName();
 
@@ -178,11 +186,28 @@ public interface IDevice extends IShellEnabledDevice {
      * Returns the absolute path to the virtual device in the file system. The path is operating
      * system dependent; it will have / name separators on Linux and \ separators on Windows.
      *
+     * <p><em>Note: Prefer using {@link #getAvdData()} if you want control over the timeout.</em>
+     *
      * @return the AVD path or null if this is a physical device, the emulator console subcommand
      *     failed, or the emulator's version is older than 30.0.18
      */
+    @Deprecated
     @Nullable
     String getAvdPath();
+
+    /**
+     * Returns information about the AVD the emulator is running.
+     *
+     * <p>{@link AvdData#getName} is the name of the AVD or <code>null</code> if there isn't any.
+     *
+     * <p>{@link AvdData#getPath} is the AVD path or null if this is a physical device, the emulator
+     * console subcommand failed, or the emulator's version is older than 30.0.18
+     *
+     * @return the {@link AvdData} for the device.
+     */
+    default ListenableFuture<AvdData> getAvdData() {
+        throw new UnsupportedOperationException();
+    }
 
     /** Returns the state of the device. */
     DeviceState getState();
@@ -504,26 +529,34 @@ public interface IDevice extends IShellEnabledDevice {
      * Removes a port forwarding between a local and a remote port.
      *
      * @param localPort the local port to forward
+     * @throws TimeoutException in case of timeout on the connection.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws IOException in case of I/O error on the connection.
+     */
+    void removeForward(int localPort)
+            throws TimeoutException, AdbCommandRejectedException, IOException;
+
+    /**
+     * Creates a port reversing between a remote and a local port.
+     *
+     * @param remotePort the remote port to reverse.
+     * @param localPort the local port
+     * @throws TimeoutException in case of timeout on the connection.
+     * @throws AdbCommandRejectedException if adb rejects the command
+     * @throws IOException in case of I/O error on the connection.
+     */
+    void createReverse(int remotePort, int localPort)
+            throws TimeoutException, AdbCommandRejectedException, IOException;
+
+    /**
+     * Removes a port reversing between a remote and a local port.
+     *
      * @param remotePort the remote port.
      * @throws TimeoutException in case of timeout on the connection.
      * @throws AdbCommandRejectedException if adb rejects the command
      * @throws IOException in case of I/O error on the connection.
      */
-    void removeForward(int localPort, int remotePort)
-            throws TimeoutException, AdbCommandRejectedException, IOException;
-
-    /**
-     * Removes an existing port forwarding between a local and a remote port. Removes an existing
-     * port forwarding between a local and a remote port.
-     *
-     * @param localPort the local port to forward
-     * @param remoteSocketName the remote unix domain socket name.
-     * @param namespace namespace in which the unix domain socket was created
-     * @throws TimeoutException in case of timeout on the connection.
-     * @throws AdbCommandRejectedException if adb rejects the command
-     * @throws IOException in case of I/O error on the connection.
-     */
-    void removeForward(int localPort, String remoteSocketName, DeviceUnixSocketNamespace namespace)
+    void removeReverse(int remotePort)
             throws TimeoutException, AdbCommandRejectedException, IOException;
 
     /**
@@ -977,5 +1010,15 @@ public interface IDevice extends IShellEnabledDevice {
     default SocketChannel rawBinder(String service, String[] parameters)
             throws AdbCommandRejectedException, TimeoutException, IOException {
         throw new UnsupportedOperationException();
+    }
+
+    /** Returns features obtained by reading the build characteristics property. */
+    default Set<String> getHardwareCharacteristics() throws Exception {
+        String characteristics = getProperty(PROP_BUILD_CHARACTERISTICS);
+        if (characteristics == null) {
+            return Collections.emptySet();
+        }
+
+        return Sets.newHashSet(Splitter.on(',').split(characteristics));
     }
 }

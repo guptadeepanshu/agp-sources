@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkState;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.component.ComponentIdentity;
+import com.android.build.api.variant.ComponentIdentity;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.internal.PostprocessingFeatures;
@@ -48,6 +48,7 @@ import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.packaging.JarCreatorType;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType;
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec;
 import com.android.build.gradle.internal.publishing.PublishingSpecs;
 import com.android.build.gradle.internal.services.BaseServices;
 import com.android.build.gradle.internal.testFixtures.TestFixturesUtil;
@@ -72,6 +73,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -79,6 +81,7 @@ import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ProjectDependency;
 import org.gradle.api.artifacts.SelfResolvingDependency;
+import org.gradle.api.attributes.DocsType;
 import org.gradle.api.attributes.LibraryElements;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.RegularFile;
@@ -110,7 +113,7 @@ public class VariantScopeImpl implements VariantScope {
 
     public VariantScopeImpl(
             @NonNull ComponentIdentity componentIdentity,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull VariantDslInfo<?> variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantPathHelper pathHelper,
             @NonNull ArtifactsImpl artifacts,
@@ -159,7 +162,7 @@ public class VariantScopeImpl implements VariantScope {
      *
      * @param artifact Provider of File or FileSystemLocation to be published.
      * @param artifactType the artifact type.
-     * @param configTypes the PublishedConfigType. (e.g. api, runtime, etc)
+     * @param configSpecs the PublishedConfigSpec.
      * @param libraryElements the artifact's library elements
      * @param isTestFixturesArtifact whether the artifact is from a test fixtures component
      */
@@ -167,34 +170,44 @@ public class VariantScopeImpl implements VariantScope {
     public void publishIntermediateArtifact(
             @NonNull Provider<?> artifact,
             @NonNull ArtifactType artifactType,
-            @NonNull Collection<PublishedConfigType> configTypes,
+            @NonNull Set<PublishedConfigSpec> configSpecs,
             @Nullable LibraryElements libraryElements,
             boolean isTestFixturesArtifact) {
 
-        Preconditions.checkState(!configTypes.isEmpty());
+        Preconditions.checkState(!configSpecs.isEmpty());
 
-        for (PublishedConfigType configType : PublishedConfigType.values()) {
-            if (configTypes.contains(configType)) {
-                Configuration config = variantDependencies.getElements(configType);
-                if (config == null) {
-                    throw new NullPointerException(
-                            "Publishing to "
-                                    + configType
-                                    + " with no "
-                                    + configType
-                                    + " configuration object. VariantType: "
-                                    + variantDslInfo.getVariantType());
-                }
+        for (PublishedConfigSpec configSpec : configSpecs) {
+            Configuration config = variantDependencies.getElements(configSpec);
+            PublishedConfigType configType = configSpec.getConfigType();
+            if (config != null) {
                 if (configType.isPublicationConfig()) {
                     String classifier = null;
-                    if (configType.isClassifierRequired()) {
-                        classifier = componentIdentity.getName();
+                    boolean isSourcePublication =
+                            configType == PublishedConfigType.SOURCE_PUBLICATION;
+                    boolean isJavaDocPublication =
+                            configType == PublishedConfigType.JAVA_DOC_PUBLICATION;
+                    if (configSpec.isClassifierRequired()) {
+                        if (isSourcePublication) {
+                            classifier = componentIdentity.getName() + "-" + DocsType.SOURCES;
+                        } else if (isJavaDocPublication) {
+                            classifier = componentIdentity.getName() + "-" + DocsType.JAVADOC;
+                        } else {
+                            classifier = componentIdentity.getName();
+                        }
                     } else if (isTestFixturesArtifact) {
                         classifier = TestFixturesUtil.testFixturesClassifier;
+                    } else if (isSourcePublication) {
+                        classifier = DocsType.SOURCES;
+                    } else if (isJavaDocPublication) {
+                        classifier = DocsType.JAVADOC;
                     }
                     publishArtifactToDefaultVariant(config, artifact, artifactType, classifier);
                 } else {
-                    publishArtifactToConfiguration(config, artifact, artifactType, new AndroidAttributes(null, libraryElements));
+                    publishArtifactToConfiguration(
+                            config,
+                            artifact,
+                            artifactType,
+                            new AndroidAttributes(null, libraryElements));
                 }
             }
         }
@@ -209,7 +222,11 @@ public class VariantScopeImpl implements VariantScope {
         }
         // Otherwise, if set globally, respect that.
         Boolean globalOverride =
-                globalScope.getExtension().getAaptOptions().getCruncherEnabledOverride();
+                baseServices
+                        .getProjectInfo()
+                        .getExtension()
+                        .getAaptOptions()
+                        .getCruncherEnabledOverride();
         if (globalOverride != null) {
             return globalOverride;
         }
@@ -445,12 +462,6 @@ public class VariantScopeImpl implements VariantScope {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).addValue(componentIdentity.getName()).toString();
-    }
-
-    @NonNull
-    @Override
-    public FileCollection getBootClasspath() {
-        return baseServices.getProjectInfo().getProject().files(globalScope.getBootClasspath());
     }
 
     @NonNull

@@ -16,15 +16,25 @@
 
 package com.android.build.gradle.internal.lint
 
+import com.android.build.gradle.internal.lint.AndroidLintTextOutputTask.Companion.HANDLED_ERRORS
+import com.android.utils.JvmWideVariable
+import com.google.common.hash.HashCode
+import com.google.common.hash.Hashing
+import com.google.common.io.Files
+import com.google.common.reflect.TypeToken
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.FileSystemLocation
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
+import java.lang.ref.SoftReference
 import java.net.URI
 import java.net.URLClassLoader
+import javax.annotation.concurrent.GuardedBy
 
 @Suppress("UnstableApiUsage")
 abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWorkActionParameters> {
@@ -33,9 +43,11 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         abstract val mainClass: Property<String>
         abstract val arguments: ListProperty<String>
         abstract val classpath: ConfigurableFileCollection
+        abstract val versionKey: Property<String>
         abstract val android: Property<Boolean>
         abstract val fatalOnly: Property<Boolean>
         abstract val runInProcess: Property<Boolean>
+        abstract val returnValueOutputFile: RegularFileProperty
     }
 
     override fun execute() {
@@ -51,80 +63,26 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
         }
         val execResult = runLint(arguments)
         logger.debug("Lint returned $execResult")
-        if (execResult == ERRNO_SUCCESS) {
-            return
-        }
-
-        val message: String = when {
-            !parameters.android.get() -> {
-                """
-                    Lint found errors in the project; aborting build.
-
-                    Fix the issues identified by lint, or add the following to your build script to proceed with errors:
-                    ...
-                    lintOptions {
-                        abortOnError false
-                    }
-                    ...
-                    """.trimIndent()
-            }
-            parameters.fatalOnly.get() -> {
-                """
-                    Lint found fatal errors while assembling a release target.
-
-                    To proceed, either fix the issues identified by lint, or modify your build script as follows:
-                    ...
-                    android {
-                        lintOptions {
-                            checkReleaseBuilds false
-                            // Or, if you prefer, you can continue to check for errors in release builds,
-                            // but continue the build even when errors are found:
-                            abortOnError false
-                        }
-                    }
-                    ...
-                    """.trimIndent()
-            }
-            else -> {
-                """
-                    Lint found errors in the project; aborting build.
-
-                    Fix the issues identified by lint, or add the following to your build script to proceed with errors:
-                    ...
-                    android {
-                        lintOptions {
-                            abortOnError false
-                        }
-                    }
-                    ...
-                    """.trimIndent()
+        parameters.returnValueOutputFile.orNull?.asFile?.let {
+            it.writeText("$execResult")
+            if (execResult in HANDLED_ERRORS) {
+                // return early in this case because a subsequent task will throw the corresponding
+                // exception if necessary.
+                return@execute
             }
         }
-
-        when (execResult) {
-            ERRNO_ERRORS -> {
-                logger.error(message)
-                throw RuntimeException(
-                    if (parameters.android.get() && parameters.fatalOnly.get()) {
-                        "Lint found fatal errors while assembling a release target."
-                    } else {
-                        "Lint found errors in the project; aborting build."
-                    }
-                )
-            }
-            ERRNO_USAGE -> throw IllegalStateException("Internal Error: Unexpected lint usage")
-            ERRNO_EXISTS -> throw RuntimeException("Unable to write lint output")
-            ERRNO_HELP -> throw IllegalStateException("Internal error: Unexpected lint help call")
-            ERRNO_INVALID_ARGS -> throw IllegalStateException("Internal error: Unexpected lint invalid arguments")
-            ERRNO_CREATED_BASELINE -> throw RuntimeException("Aborting build since new baseline file was created")
-            ERRNO_APPLIED_SUGGESTIONS -> throw RuntimeException("Aborting build since sources were modified to apply quickfixes after compilation")
-            else -> throw IllegalStateException("Internal error: unexpected lint return value ${execResult}")
-        }
+        maybeThrowException(execResult, parameters.android.get(), parameters.fatalOnly.get())
     }
 
     private fun runLint(arguments: List<String>): Int {
-        val classLoader = getClassloader(parameters.classpath)
-        return invokeLintMainRunMethod(classLoader, arguments)
+        val classLoader = getClassloader(parameters.versionKey.get(), parameters.classpath)
+        val currentContextClassLoader = Thread.currentThread().contextClassLoader
+        try {
+            Thread.currentThread().contextClassLoader = null
+            return invokeLintMainRunMethod(classLoader, arguments)
+        } finally {
+            Thread.currentThread().contextClassLoader = currentContextClassLoader
+        }
     }
 
     private fun invokeLintMainRunMethod(classLoader: ClassLoader, arguments: List<String>): Int {
@@ -147,28 +105,80 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
     companion object {
 
         private const val ERRNO_SUCCESS = 0
-        private const val ERRNO_ERRORS = 1
+        const val ERRNO_ERRORS = 1
         private const val ERRNO_USAGE = 2
         private const val ERRNO_EXISTS = 3
         private const val ERRNO_HELP = 4
         private const val ERRNO_INVALID_ARGS = 5
-        private const val ERRNO_CREATED_BASELINE = 6
+        const val ERRNO_CREATED_BASELINE = 6
         private const val ERRNO_APPLIED_SUGGESTIONS = 7
 
-        private var _cachedClassLoader: URLClassLoader? = null
-        private var cachedClassLoaderUris: List<URI> = listOf()
+        /**
+         * Cache the classloaders across the daemon, even if the buildscipt classpath changes
+         *
+         * Use a soft reference so the cache doesn't end up keeping a classloader that isn't
+         * actually reachable.
+         *
+         * JvmWideVariable must only use built in types to avoid leaking the current classloader.
+         */
+        private val cachedClassloader: JvmWideVariable<MutableMap<String, SoftReference<URLClassLoader>>> = JvmWideVariable(
+            AndroidLintWorkAction::class.java,
+            "cachedClassloader",
+            object: TypeToken<MutableMap<String, SoftReference<URLClassLoader>>>() {}
+        ) { HashMap() }
+
+
+        /**
+         * Classloaders used during this build that will have disposeApplicationEnvironment called
+         * at the end of the build.
+         *
+         * This is cleared at the end of each build
+         */
+        @GuardedBy("this")
+        private val toDispose = mutableMapOf<String, URLClassLoader>()
+
+        private val logger get() = Logging.getLogger(AndroidLintWorkAction::class.java)
 
         @Synchronized
-        private fun getClassloader(classpath: FileCollection): ClassLoader {
+        private fun getClassloader(key: String, classpath: FileCollection): ClassLoader {
+
             val uris = classpath.files.map { it.toURI() }
-            if (uris != cachedClassLoaderUris) {
-                cachedClassLoaderUris = uris
-                _cachedClassLoader = createClassLoader(uris)
+            return cachedClassloader.executeCallableSynchronously {
+                val map = cachedClassloader.get()
+                val classloader = map[key]?.get()?.also {
+                    logger.info("Android Lint: Reusing lint classloader {}", key)
+                } ?: createClassLoader(key, uris).also { map[key] = SoftReference(it) }
+                toDispose[key] = classloader
+                maintainClassloaders(map)
+                classloader
             }
-            return _cachedClassLoader!!
         }
 
-        private fun createClassLoader(classpath: List<URI>): URLClassLoader {
+        @Synchronized
+        private fun maintainClassloaders(map: MutableMap<String, SoftReference<URLClassLoader>>) {
+            if (map.size <= 1) return
+            for (otherKey in ArrayList(map.keys)) {
+                if (map[otherKey]?.get() == null) {
+                    logger.info("Android Lint: Classloader was garbage collected {}", otherKey)
+                    map.remove(otherKey)
+                }
+            }
+            if (map.size <= 1) return
+            logger.info(
+                "Android Lint: There are multiple lint class loaders in this gradle daemon, " +
+                        "which can lead to jvm metaspace pressure.\n" +
+                        "This be caused when developing lint (usually by using a -dev version) " +
+                        "or switching lint versions.\n" +
+                        "   Classloaders used in this build: {}\n" +
+                        "   Classloaders in this daemon: {}",
+                        toDispose.keys.joinToString(", "),
+                        map.keys.joinToString(", ")
+            )
+        }
+
+
+        private fun createClassLoader(key: String, classpath: List<URI>): URLClassLoader {
+            logger.info("Android Lint: Creating lint class loader {}", key)
             val classpathUrls = classpath.map { it.toURL() }.toTypedArray()
             return URLClassLoader(classpathUrls, getPlatformClassLoader())
         }
@@ -180,9 +190,79 @@ abstract class AndroidLintWorkAction : WorkAction<AndroidLintWorkAction.LintWork
 
         @Synchronized
         fun dispose() {
-            _cachedClassLoader?.loadClass("com.android.tools.lint.UastEnvironment")
-                ?.getDeclaredMethod("disposeApplicationEnvironment")
-                ?.invoke(null)
+
+            if (toDispose.isNotEmpty()) {
+                logger.info(
+                    "Android Lint: Disposing Uast application environment in lint classloader{} [{}]",
+                    if (toDispose.size == 1) "" else "s",
+                    toDispose.keys.joinToString(", "))
+                try {
+                    toDispose.values.forEach { classloader ->
+                        classloader.loadClass("com.android.tools.lint.UastEnvironment")
+                            .getDeclaredMethod("disposeApplicationEnvironment")
+                            .invoke(null)
+                    }
+                } finally {
+                    toDispose.clear()
+                }
+            }
+        }
+
+        @JvmStatic
+        fun maybeThrowException(execResult: Int, android: Boolean, fatalOnly: Boolean) =
+            when (execResult) {
+                ERRNO_SUCCESS -> {}
+                ERRNO_ERRORS -> throw RuntimeException(getErrorMessage(android, fatalOnly))
+                ERRNO_USAGE -> throw IllegalStateException("Internal Error: Unexpected lint usage")
+                ERRNO_EXISTS -> throw RuntimeException("Unable to write lint output")
+                ERRNO_HELP -> throw IllegalStateException("Internal error: Unexpected lint help call")
+                ERRNO_INVALID_ARGS -> throw IllegalStateException("Internal error: Unexpected lint invalid arguments")
+                ERRNO_CREATED_BASELINE -> throw RuntimeException("Aborting build since new baseline file was created")
+                ERRNO_APPLIED_SUGGESTIONS -> throw RuntimeException("Aborting build since sources were modified to apply quickfixes after compilation")
+                else -> throw IllegalStateException("Internal error: unexpected lint return value $execResult")
+            }
+
+        private fun getErrorMessage(android: Boolean, fatalOnly: Boolean) : String = when {
+            !android -> """
+                Lint found errors in the project; aborting build.
+
+                Fix the issues identified by lint, or create a baseline to see only new errors:
+                ```
+                lint {
+                    baseline = file("lint-baseline.xml")
+                }
+                ```
+
+                For more details, see https://developer.android.com/studio/write/lint#snapshot
+            """.trimIndent()
+            fatalOnly -> """
+                Lint found fatal errors while assembling a release target.
+
+                Fix the issues identified by lint, or create a baseline to see only new errors:
+                ```
+                android {
+                    lint {
+                        baseline = file("lint-baseline.xml")
+                    }
+                }
+                ```
+
+                For more details, see https://developer.android.com/studio/write/lint#snapshot
+            """.trimIndent()
+            else -> """
+                Lint found errors in the project; aborting build.
+
+                Fix the issues identified by lint, or create a baseline to see only new errors:
+                ```
+                android {
+                    lint {
+                        baseline = file("lint-baseline.xml")
+                    }
+                }
+                ```
+
+                For more details, see https://developer.android.com/studio/write/lint#snapshot
+            """.trimIndent()
         }
     }
 }

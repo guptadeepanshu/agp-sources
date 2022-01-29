@@ -23,6 +23,7 @@ import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
+import com.android.build.gradle.internal.lint.LintFromMaven
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.NoOpAnalyticsService
 import com.android.build.gradle.internal.res.Aapt2FromMaven.Companion.create
@@ -89,6 +90,7 @@ class AssetPackBundlePlugin : Plugin<Project> {
             project.layout,
             projectOptions,
             project.gradle.sharedServices,
+            LintFromMaven.from(project, projectOptions, syncIssueHandler),
             create(project, projectOptions),
             project.gradle.startParameter.maxWorkerCount,
             ProjectInfo(project),
@@ -188,14 +190,13 @@ class AssetPackBundlePlugin : Plugin<Project> {
         val tasks = TaskFactoryImpl(project.tasks)
         val artifacts = ArtifactsImpl(project, "global")
 
-        tasks.register(AppMetadataTask.CreationAction(artifacts, variantName = ""))
+        tasks.register(AppMetadataTask.CreationForAssetPackBundleAction(artifacts, projectServices.projectOptions))
 
         tasks.register(
             ProcessAssetPackManifestTask.CreationForAssetPackBundleAction(
                 artifacts,
                 extension.applicationId,
-                assetPackManifestConfiguration,
-                extension.assetPacks.map { it.replace(':', File.separatorChar) }.toSet()
+                assetPackManifestConfiguration.incoming.artifacts
             )
         )
 

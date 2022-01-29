@@ -16,7 +16,6 @@
 
 package com.android.build.api.instrumentation
 
-import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.objectweb.asm.ClassVisitor
@@ -25,10 +24,16 @@ import java.io.Serializable
 /**
  * Instrumentation context data that will be injected to [AsmClassVisitorFactory] on instantiation.
  */
-@Incubating
 interface InstrumentationContext : Serializable {
     /**
      * The asm api version to be passed to the [ClassVisitor] constructor.
+     *
+     * ```
+     * | AGP version | Corresponding ASM version |
+     * |-------------|---------------------------|
+     * | 4.2.0 - 7.0 |            ASM7           |
+     * |    7.1.0+   |            ASM9           |
+     * ```
      */
     @get:Input
     val apiVersion: Property<Int>

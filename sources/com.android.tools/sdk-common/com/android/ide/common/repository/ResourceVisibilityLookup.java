@@ -207,7 +207,7 @@ public abstract class ResourceVisibilityLookup {
         public boolean isPublic(@NonNull ResourceType type, @NonNull String name) {
             for (int i = 0, n = mRepositories.size(); i < n; i++) {
                 ResourceVisibilityLookup lookup = mRepositories.get(i);
-                if (lookup.isPublic(type, name) && lookup.isKnown(type, name)) {
+                if (lookup.isPublic(type, name)) {
                     return true;
                 }
             }
@@ -277,12 +277,9 @@ public abstract class ResourceVisibilityLookup {
             mPublic = computeVisibilityMap(publicResources);
             Multimap<String, ResourceType> all = null;
             //noinspection VariableNotUsedInsideIf
-            if (mPublic != null) {
-                try {
-                    all = readSymbolFile(allResources);
-                }
-                catch (IOException ignore) {
-                }
+            try {
+                all = readSymbolFile(allResources);
+            } catch (IOException ignore) {
             }
             mAll = all;
             mMapKey = mapKey;
@@ -390,7 +387,7 @@ public abstract class ResourceVisibilityLookup {
         @Override
         public boolean isPublic(@NonNull ResourceType type, @NonNull String name) {
             if (mAll == null) {
-                return true;
+                return false;
             }
             return isKnown(type, name) && (mPublic == null || mPublic.containsEntry(name, type));
         }

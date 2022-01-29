@@ -59,7 +59,13 @@ abstract class AbstractTestDataImpl(
 
     override val applicationId = creationConfig.applicationId
 
+    // Note: creationConfig.testedApplicationId returns the instrumentation target application ID.
+    // testedApplicationId and instrumentationTargetPackageID are usually the same value
+    // except for the one case where there are test.apk and app.apk and the self-instrumeting
+    // flag is enabled. See TestApplicationTestData class.
     override val testedApplicationId = creationConfig.testedApplicationId
+
+    override val instrumentationTargetPackageId = creationConfig.testedApplicationId
 
     override val instrumentationRunner = instrumentedTestCreationConfig.instrumentationRunner
 
@@ -100,6 +106,7 @@ abstract class AbstractTestDataImpl(
         return StaticTestData(
                 applicationId.get(),
                 testedApplicationId.orNull,
+                instrumentationTargetPackageId.get(),
                 instrumentationRunner.get(),
                 instrumentationRunnerArguments,
                 animationsDisabled.get(),
@@ -124,15 +131,15 @@ abstract class AbstractTestDataImpl(
                 val namespaceDir = namespace.get().replace('.', '/')
                 val DATA_BINDER_MAPPER_IMPL = "DataBinderMapperImpl"
                 val ignoredPaths = setOf(
-                        "${namespaceDir}/${SdkConstants.FN_BUILD_CONFIG_BASE}${SdkConstants.DOT_CLASS}",
-                        "${namespaceDir}/${SdkConstants.FN_MANIFEST_BASE}${SdkConstants.DOT_CLASS}",
-                        "${namespaceDir}/${DATA_BINDING_TRIGGER_CLASS}${SdkConstants.DOT_CLASS}",
-                        "${namespaceDir}/$DATA_BINDER_MAPPER_IMPL${SdkConstants.DOT_CLASS}",
+                    "${namespaceDir}/${SdkConstants.FN_BUILD_CONFIG_BASE}${SdkConstants.DOT_CLASS}",
+                    "${namespaceDir}/${SdkConstants.FN_MANIFEST_BASE}${SdkConstants.DOT_CLASS}",
+                    "${namespaceDir}/${DATA_BINDING_TRIGGER_CLASS}${SdkConstants.DOT_CLASS}",
+                    "${namespaceDir}/$DATA_BINDER_MAPPER_IMPL${SdkConstants.DOT_CLASS}",
                 )
                 val regexIgnoredPaths = setOf(
-                        "androidx/databinding/.*\\${SdkConstants.DOT_CLASS}".toRegex(), // Classes in androidx/databinding
-                        "${namespaceDir}/$DATA_BINDER_MAPPER_IMPL\\\$.*\\${SdkConstants.DOT_CLASS}".toRegex(), // DataBinderMapplerImpl inner classes
-                        ".*/BR${SdkConstants.DOT_CLASS}".toRegex(), // BR.class files
+                    "androidx/databinding/.*\\${SdkConstants.DOT_CLASS}".toRegex(), // Classes in androidx/databinding
+                    "${namespaceDir}/$DATA_BINDER_MAPPER_IMPL\\\$.*\\${SdkConstants.DOT_CLASS}".toRegex(), // DataBinderMapplerImpl inner classes
+                    ".*/BR${SdkConstants.DOT_CLASS}".toRegex(), // BR.class files
                 )
                 val isNotIgnoredClass = { relativePath: String ->
                     Files.getFileExtension(relativePath)==SdkConstants.EXT_CLASS &&
@@ -148,8 +155,8 @@ abstract class AbstractTestDataImpl(
                     if (jarOrDirectory.isDirectory) {
                         for (file in jarOrDirectory.walk()) {
                             if (isNotIgnoredClass(jarOrDirectory.toPath()
-                                            .relativize(file.toPath())
-                                            .toPathString().portablePath)) {
+                                    .relativize(file.toPath())
+                                    .toPathString().portablePath)) {
                                 return@map true
                             }
                         }

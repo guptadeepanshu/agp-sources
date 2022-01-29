@@ -17,7 +17,7 @@ package com.android.build.gradle.internal.variant
 
 import com.android.build.VariantOutput
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.ComponentIdentity
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
@@ -48,7 +48,7 @@ import java.util.HashSet
 abstract class BaseVariantData(
     // Variant specific Data
     protected val componentIdentity: ComponentIdentity,
-    protected val variantDslInfo: VariantDslInfo,
+    protected val variantDslInfo: VariantDslInfo<*>,
     val variantDependencies: VariantDependencies,
     protected val variantSources: VariantSources,
     protected val paths: VariantPathHelper,

@@ -16,23 +16,18 @@
 
 package com.android.build.api.variant
 
+import org.gradle.api.Incubating
 import org.gradle.api.provider.Property
 
 /**
  * Properties for the main Variant of an application.
  */
-interface ApplicationVariant : GeneratesApk, Variant {
+interface ApplicationVariant : GeneratesApk, Variant, HasAndroidTest, HasTestFixtures {
 
     /**
      * Variant's application ID as present in the final manifest file of the APK.
      */
     override val applicationId: Property<String>
-
-    /**
-     * Variant's [AndroidTest] configuration, or null if android tests are disabled for this
-     * variant.
-     */
-    val androidTest: com.android.build.api.component.AndroidTest?
 
     /**
      * Returns the final list of variant outputs.
@@ -47,5 +42,12 @@ interface ApplicationVariant : GeneratesApk, Variant {
      * Variant's signingConfig, initialized by the corresponding DSL element.
      * @return Variant's config or null if the variant is not configured for signing.
      */
-    val signingConfig: SigningConfig?
+    val signingConfig: SigningConfig
+
+    /**
+     * Variant's information related to the bundle creation configuration.
+     * @return Variant's [BundleConfig].
+     */
+    @get:Incubating
+    val bundleConfig: BundleConfig
 }

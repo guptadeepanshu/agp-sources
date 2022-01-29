@@ -119,13 +119,7 @@ fun makeLinkCommand(config: AaptPackageConfig): ImmutableList<String> {
     Preconditions.checkNotNull(manifestFile)
     builder.add("--manifest", manifestFile.absolutePath)
 
-    val resourceOutputApk = config.resourceOutputApk ?: try {
-        val tmpOutput = File.createTempFile("aapt-", "-out")
-        tmpOutput.deleteOnExit()
-        tmpOutput
-    } catch (e: IOException) {
-        throw AaptException("No output apk defined and failed to create tmp file", e)
-    }
+    val resourceOutputApk = config.resourceOutputApk
     FileUtils.mkdirs(resourceOutputApk.parentFile)
     builder.add("-o", resourceOutputApk.absolutePath)
 
@@ -201,7 +195,7 @@ fun makeLinkCommand(config: AaptPackageConfig): ImmutableList<String> {
     }
 
     // options controlled by build variants
-    if (!config.variantType.isTestComponent && config.customPackageForR != null) {
+    if (!config.variantType.isNestedComponent && config.customPackageForR != null) {
         builder.add("--custom-package", config.customPackageForR)
     }
 

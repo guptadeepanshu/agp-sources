@@ -16,40 +16,48 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.TestComponentImpl
+import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.AndroidDependenciesRenderer
+import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
 import org.gradle.api.DefaultTask
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import org.gradle.work.DisableCachingByDefault
 import java.io.IOException
 
-open class DependencyReportTask : DefaultTask() {
-
-    private val renderer = AndroidDependenciesRenderer()
+@DisableCachingByDefault
+abstract class DependencyReportTask : DefaultTask() {
 
     @get:Internal
-    lateinit var variants: List<VariantImpl>
+    abstract val mavenCoordinateCache: Property<MavenCoordinatesCacheBuildService>
+
     @get:Internal
-    lateinit var testComponents: List<TestComponentImpl>
+    abstract val variants: ListProperty<VariantImpl>
+    @get:Internal
+    abstract val nestedComponents: ListProperty<ComponentImpl>
 
     @TaskAction
     @Throws(IOException::class)
     fun generate() {
+        val renderer = AndroidDependenciesRenderer(mavenCoordinateCache.get())
+
         renderer.setOutput(services.get(StyledTextOutputFactory::class.java).create(javaClass))
-        val sortedVariants = variants.sortedWith(compareBy { it.name })
+        val sortedVariants = variants.get().sortedWith(compareBy { it.name })
 
         for (variant in sortedVariants) {
             renderer.startComponent(variant)
             renderer.render(variant)
         }
 
-        val sortedTestComponents = testComponents.sortedWith(compareBy { it.name })
+        val sortedNestedComponents = nestedComponents.get().sortedWith(compareBy { it.name })
 
-        for (testComponent in sortedTestComponents) {
-            renderer.startComponent(testComponent)
-            renderer.render(testComponent)
+        for (component in sortedNestedComponents) {
+            renderer.startComponent(component)
+            renderer.render(component)
         }
     }
 }

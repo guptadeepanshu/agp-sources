@@ -44,12 +44,11 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
-import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.IgnoreEmptyDirectories
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
-import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -89,6 +88,7 @@ abstract class StripDebugSymbolsTask : IncrementalTask() {
     // We need inputFiles in addition to inputDir because SkipWhenEmpty doesn't work for inputDir
     // because it's a DirectoryProperty
     @get:InputFiles
+    @get:IgnoreEmptyDirectories
     @get:SkipWhenEmpty
     @get:PathSensitive(PathSensitivity.RELATIVE)
     val inputFiles: FileTree
@@ -196,7 +196,7 @@ class StripDebugSymbolsDelegate(
                 if (input.isDirectory) {
                     continue
                 }
-                val path = FileUtils.relativePossiblyNonExistingPath(input, inputDir)
+                val path = input.toRelativeString(inputDir)
                 val output = File(outputDir, path)
 
                 when (changedInputs[input]) {
@@ -222,7 +222,7 @@ class StripDebugSymbolsDelegate(
                 if (input.isDirectory) {
                     continue
                 }
-                val path = FileUtils.relativePath(input, inputDir)
+                val path = input.toRelativeString(inputDir)
                 val output = File(outputDir, path)
                 val justCopyInput =
                     keepDebugSymbolsMatchers.any { matcher -> matcher.matches(Paths.get(path)) }

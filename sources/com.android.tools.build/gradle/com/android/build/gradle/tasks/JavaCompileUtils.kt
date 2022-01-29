@@ -18,6 +18,7 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.build.api.component.impl.AnnotationProcessorImpl
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.dependency.CONFIG_NAME_ANDROID_JDK_IMAGE
 import com.android.build.gradle.internal.dependency.JDK_IMAGE_OUTPUT_DIR
@@ -33,13 +34,13 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedCon
 import com.android.builder.errors.IssueReporter
 import com.android.sdklib.AndroidTargetHash
 import com.android.utils.FileUtils
-import com.google.common.base.Joiner
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.google.wireless.android.sdk.stats.AnnotationProcessorInfo
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -76,7 +77,11 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, tas
         checkNotNull(task.project.configurations.findByName(CONFIG_NAME_ANDROID_JDK_IMAGE)) {
             "The $CONFIG_NAME_ANDROID_JDK_IMAGE configuration must exist for Java 9+ sources."
         }
-        val jdkImage = getJdkImageFromTransform(creationConfig.services.projectInfo.getProject())
+
+        val jdkImage = getJdkImageFromTransform(
+            creationConfig.services.projectInfo.getProject(),
+            task.javaCompiler.orNull
+        )
 
         this.options.compilerArgumentProviders.add(JdkImageInput(jdkImage))
         // Make Javac generate legacy bytecode for string concatenation, see b/65004097
@@ -84,11 +89,11 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, tas
         this.classpath = project.files(
             // classes(e.g. android.jar) that were previously passed through bootstrapClasspath need to be provided
             // through classpath
-            creationConfig.variantScope.bootClasspath,
+            creationConfig.sdkComponents.bootClasspath,
             creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
         )
     } else {
-        this.options.bootstrapClasspath = creationConfig.variantScope.bootClasspath
+        this.options.bootstrapClasspath = task.project.files(creationConfig.sdkComponents.bootClasspath)
         this.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null)
     }
 
@@ -105,23 +110,23 @@ fun JavaCompile.configureProperties(creationConfig: ComponentCreationConfig, tas
 fun JavaCompile.configurePropertiesForAnnotationProcessing(
     creationConfig: ComponentCreationConfig
 ) {
-    val processorOptions = creationConfig.variantDslInfo.javaCompileOptions.annotationProcessorOptions
+    val processorOptions = creationConfig.javaCompilation.annotationProcessor
     val compileOptions = this.options
 
     configureAnnotationProcessorPath(creationConfig)
 
-    if (processorOptions.classNames.isNotEmpty()) {
-        compileOptions.compilerArgs.add("-processor")
-        compileOptions
-            .compilerArgs
-            .add(Joiner.on(',').join(processorOptions.classNames))
-    }
+    compileOptions.compilerArgumentProviders.add(
+        CommandLineArgumentProviderAdapter(
+            (processorOptions as AnnotationProcessorImpl).finalListOfClassNames,
+            processorOptions.arguments
+        )
+    )
 
-    for ((key, value) in processorOptions.arguments) {
-        compileOptions.compilerArgs.add("-A$key=$value")
+    processorOptions.argumentProviders.let {
+        // lock the list so arguments provides cannot be added from the Variant API any longer.
+        it.lock()
+        compileOptions.compilerArgumentProviders.addAll(it)
     }
-
-    compileOptions.compilerArgumentProviders.addAll(processorOptions.compilerArgumentProviders)
 }
 
 /**
@@ -301,6 +306,6 @@ private fun checkSdkCompatibility(compileSdkVersion: String, issueReporter: Issu
     }
 }
 
-class JdkImageInput(@get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) val jdkImage: FileCollection) : CommandLineArgumentProvider {
+class JdkImageInput(@get:Classpath val jdkImage: FileCollection) : CommandLineArgumentProvider {
     override fun asArguments() = listOf("--system", jdkImage.singleFile.resolve(JDK_IMAGE_OUTPUT_DIR).absolutePath)
 }

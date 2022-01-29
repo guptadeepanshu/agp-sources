@@ -25,4 +25,23 @@ public interface MultiViewEventOrBuilder extends
    * @return The type.
    */
   com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType();
+
+  /**
+   * <pre>
+   * The mode of the editor to the Validation Tool window
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+   * @return Whether the associatedSplitEditorMode field is set.
+   */
+  boolean hasAssociatedSplitEditorMode();
+  /**
+   * <pre>
+   * The mode of the editor to the Validation Tool window
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
+   * @return The associatedSplitEditorMode.
+   */
+  com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode();
 }

@@ -26,7 +26,9 @@ import org.gradle.api.artifacts.transform.TransformAction
 import org.gradle.api.artifacts.transform.TransformOutputs
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.Classpath
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
+import org.gradle.work.DisableCachingByDefault
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -35,9 +37,10 @@ import java.util.jar.JarOutputStream
 import java.util.jar.Manifest
 
 /** Transform that extracts an AAR file into a directory.  */
+@DisableCachingByDefault
 abstract class ExtractAarTransform: TransformAction<GenericTransformParameters> {
 
-    @get:Classpath
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
     @get:InputArtifact
     abstract val primaryInput: Provider<FileSystemLocation>
 

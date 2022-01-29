@@ -1098,6 +1098,42 @@ public enum GradleTaskExecutionType
    * <code>COMPILE_ART_PROFILE = 270;</code>
    */
   COMPILE_ART_PROFILE(270),
+  /**
+   * <code>ANDROID_LINT_TEXT_OUTPUT = 271;</code>
+   */
+  ANDROID_LINT_TEXT_OUTPUT(271),
+  /**
+   * <code>SOURCE_JAR = 272;</code>
+   */
+  SOURCE_JAR(272),
+  /**
+   * <code>MERGE_ASSETS_FOR_UNIT_TEST = 273;</code>
+   */
+  MERGE_ASSETS_FOR_UNIT_TEST(273),
+  /**
+   * <code>CHECK_JETIFIER = 274;</code>
+   */
+  CHECK_JETIFIER(274),
+  /**
+   * <code>JAVA_DOC_GENERATION = 275;</code>
+   */
+  JAVA_DOC_GENERATION(275),
+  /**
+   * <code>JAVA_DOC_JAR = 276;</code>
+   */
+  JAVA_DOC_JAR(276),
+  /**
+   * <code>LISTING_FILE_REDIRECT = 277;</code>
+   */
+  LISTING_FILE_REDIRECT(277),
+  /**
+   * <code>PREFAB_PACKAGE_CONFIGURATION = 278;</code>
+   */
+  PREFAB_PACKAGE_CONFIGURATION(278),
+  /**
+   * <code>APPLICATION_VARIANT_MODEL = 279;</code>
+   */
+  APPLICATION_VARIANT_MODEL(279),
   UNRECOGNIZED(-1),
   ;
 
@@ -2185,6 +2221,42 @@ public enum GradleTaskExecutionType
    * <code>COMPILE_ART_PROFILE = 270;</code>
    */
   public static final int COMPILE_ART_PROFILE_VALUE = 270;
+  /**
+   * <code>ANDROID_LINT_TEXT_OUTPUT = 271;</code>
+   */
+  public static final int ANDROID_LINT_TEXT_OUTPUT_VALUE = 271;
+  /**
+   * <code>SOURCE_JAR = 272;</code>
+   */
+  public static final int SOURCE_JAR_VALUE = 272;
+  /**
+   * <code>MERGE_ASSETS_FOR_UNIT_TEST = 273;</code>
+   */
+  public static final int MERGE_ASSETS_FOR_UNIT_TEST_VALUE = 273;
+  /**
+   * <code>CHECK_JETIFIER = 274;</code>
+   */
+  public static final int CHECK_JETIFIER_VALUE = 274;
+  /**
+   * <code>JAVA_DOC_GENERATION = 275;</code>
+   */
+  public static final int JAVA_DOC_GENERATION_VALUE = 275;
+  /**
+   * <code>JAVA_DOC_JAR = 276;</code>
+   */
+  public static final int JAVA_DOC_JAR_VALUE = 276;
+  /**
+   * <code>LISTING_FILE_REDIRECT = 277;</code>
+   */
+  public static final int LISTING_FILE_REDIRECT_VALUE = 277;
+  /**
+   * <code>PREFAB_PACKAGE_CONFIGURATION = 278;</code>
+   */
+  public static final int PREFAB_PACKAGE_CONFIGURATION_VALUE = 278;
+  /**
+   * <code>APPLICATION_VARIANT_MODEL = 279;</code>
+   */
+  public static final int APPLICATION_VARIANT_MODEL_VALUE = 279;
 
 
   public final int getNumber() {
@@ -2482,6 +2554,15 @@ public enum GradleTaskExecutionType
       case 268: return MERGE_ART_PROFILE;
       case 269: return PROCESS_LIBRARY_ART_PROFILE;
       case 270: return COMPILE_ART_PROFILE;
+      case 271: return ANDROID_LINT_TEXT_OUTPUT;
+      case 272: return SOURCE_JAR;
+      case 273: return MERGE_ASSETS_FOR_UNIT_TEST;
+      case 274: return CHECK_JETIFIER;
+      case 275: return JAVA_DOC_GENERATION;
+      case 276: return JAVA_DOC_JAR;
+      case 277: return LISTING_FILE_REDIRECT;
+      case 278: return PREFAB_PACKAGE_CONFIGURATION;
+      case 279: return APPLICATION_VARIANT_MODEL;
       default: return null;
     }
   }

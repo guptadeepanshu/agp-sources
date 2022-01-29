@@ -19,11 +19,10 @@ package com.android.build.gradle.internal;
 import static com.android.SdkConstants.FN_PUBLIC_TXT;
 import static com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES;
 import static com.android.build.gradle.internal.cxx.configure.CxxCreateGradleTasksKt.createCxxVariantBuildTask;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_API_PUBLICATION;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.ALL_RUNTIME_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.API_PUBLICATION;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.JAVA_DOC_PUBLICATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.RUNTIME_PUBLICATION;
-import static com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType.SOURCE_PUBLICATION;
 
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.SingleArtifact;
@@ -43,6 +42,9 @@ import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.pipeline.OriginalStream;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
+import com.android.build.gradle.internal.publishing.ComponentPublishingInfo;
+import com.android.build.gradle.internal.publishing.PublishedConfigSpec;
+import com.android.build.gradle.internal.publishing.VariantPublishingInfo;
 import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask;
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
@@ -57,7 +59,6 @@ import com.android.build.gradle.internal.tasks.CheckManifest;
 import com.android.build.gradle.internal.tasks.ExportConsumerProguardFilesTask;
 import com.android.build.gradle.internal.tasks.LibraryAarJarsTask;
 import com.android.build.gradle.internal.tasks.LibraryJniLibsTask;
-import com.android.build.gradle.internal.tasks.LintModelMetadataTask;
 import com.android.build.gradle.internal.tasks.MergeConsumerProguardFilesTask;
 import com.android.build.gradle.internal.tasks.MergeGeneratedProguardFilesCreationAction;
 import com.android.build.gradle.internal.tasks.PackageRenderscriptTask;
@@ -71,10 +72,13 @@ import com.android.build.gradle.tasks.BundleAar;
 import com.android.build.gradle.tasks.CompileLibraryResourcesTask;
 import com.android.build.gradle.tasks.ExtractAnnotations;
 import com.android.build.gradle.tasks.ExtractDeepLinksTask;
+import com.android.build.gradle.tasks.JavaDocGenerationTask;
+import com.android.build.gradle.tasks.JavaDocJarTask;
 import com.android.build.gradle.tasks.MergeResources;
 import com.android.build.gradle.tasks.MergeSourceSetFolders;
 import com.android.build.gradle.tasks.ProcessLibraryArtProfileTask;
 import com.android.build.gradle.tasks.ProcessLibraryManifest;
+import com.android.build.gradle.tasks.SourceJarTask;
 import com.android.build.gradle.tasks.ZipMergingTask;
 import com.android.builder.errors.IssueReporter;
 import com.android.builder.errors.IssueReporter.Type;
@@ -85,7 +89,6 @@ import java.util.List;
 import java.util.Set;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.component.AdhocComponentWithVariants;
-import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.jetbrains.annotations.NotNull;
@@ -115,10 +118,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     @Override
     protected void doCreateTasksForVariant(
-            @NotNull ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl> variantInfo,
-            @NotNull
-                    List<? extends ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>>
-                            allVariants) {
+            @NotNull ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl> variantInfo) {
 
         LibraryVariantImpl libraryVariant = variantInfo.getVariant();
         BuildFeatureValues buildFeatures = libraryVariant.getBuildFeatures();
@@ -134,7 +134,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
             createGenerateResValuesTask(libraryVariant);
         } else { // Resource processing is disabled.
             // TODO(b/147579629): add a warning for manifests containing resource references.
-            if (globalScope.getExtension().getAaptOptions().getNamespaced()) {
+            if (extension.getAaptOptions().getNamespaced()) {
                 getLogger()
                         .error(
                                 "Disabling resource processing in resource namespace aware "
@@ -184,8 +184,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                     libraryVariant.getServices().getProjectInfo().getProjectBaseName());
 
             // Only verify resources if in Release and not namespaced.
-            if (!libraryVariant.getDebuggable()
-                    && !globalScope.getExtension().getAaptOptions().getNamespaced()) {
+            if (!libraryVariant.getDebuggable() && !extension.getAaptOptions().getNamespaced()) {
                 createVerifyLibraryResTask(libraryVariant);
             }
 
@@ -341,8 +340,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         // Add a task to create the AAR metadata file
         taskFactory.register(new AarMetadataTask.CreationAction(libraryVariant));
 
-        // Add tasks to write the lint model metadata file and the local lint AAR file
-        taskFactory.register(new LintModelMetadataTask.CreationAction(libraryVariant));
+        // Add a task to write the local lint AAR file
         taskFactory.register(new BundleAar.LibraryLocalLintCreationAction(libraryVariant));
 
         createBundleTask(libraryVariant);
@@ -358,33 +356,72 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                             task.dependsOn(variant.getArtifacts().get(SingleArtifact.AAR.INSTANCE));
                         });
 
+        VariantPublishingInfo publishInfo = variant.getVariantDslInfo().getPublishInfo();
+        if (publishInfo != null) {
+            List<ComponentPublishingInfo> components = publishInfo.getComponents();
+
+            // Checks all components which the current variant is published to and see if there is
+            // any component that is configured to publish source or javadoc.
+            if (components.stream().anyMatch(ComponentPublishingInfo::getWithSourcesJar)) {
+                taskFactory.register(new SourceJarTask.CreationAction(variant));
+            }
+            if (components.stream().anyMatch(ComponentPublishingInfo::getWithJavadocJar)) {
+                taskFactory.register(new JavaDocGenerationTask.CreationAction(variant));
+                taskFactory.register(new JavaDocJarTask.CreationAction(variant));
+            }
+
+            for (ComponentPublishingInfo component : components) {
+                createComponent(
+                        variant, component.getComponentName(), component.isClassifierRequired());
+            }
+        }
+    }
+
+    private void createComponent(
+            @NonNull VariantImpl variant,
+            @NonNull String componentName,
+            boolean isClassifierRequired) {
         final VariantDependencies variantDependencies = variant.getVariantDependencies();
 
         AdhocComponentWithVariants component =
-                globalScope.getComponentFactory().adhoc(variant.getName());
-
-        final Configuration apiPub = variantDependencies.getElements(API_PUBLICATION);
-        final Configuration runtimePub = variantDependencies.getElements(RUNTIME_PUBLICATION);
-
-        component.addVariantsFromConfiguration(
-                apiPub, new ConfigurationVariantMapping("compile", false));
-        component.addVariantsFromConfiguration(
-                runtimePub, new ConfigurationVariantMapping("runtime", false));
-        project.getComponents().add(component);
-
-        AdhocComponentWithVariants allVariants =
-                (AdhocComponentWithVariants) project.getComponents().findByName("all");
-        if (allVariants == null) {
-            allVariants = globalScope.getComponentFactory().adhoc("all");
-            project.getComponents().add(allVariants);
+                (AdhocComponentWithVariants) project.getComponents().findByName(componentName);
+        if (component == null) {
+            component = globalScope.getComponentFactory().adhoc(componentName);
+            project.getComponents().add(component);
         }
-        final Configuration allApiPub = variantDependencies.getElements(ALL_API_PUBLICATION);
-        allVariants.addVariantsFromConfiguration(
-                allApiPub, new ConfigurationVariantMapping("compile", true));
-        final Configuration allRuntimePub =
-                variantDependencies.getElements(ALL_RUNTIME_PUBLICATION);
-        allVariants.addVariantsFromConfiguration(
-                allRuntimePub, new ConfigurationVariantMapping("runtime", true));
+        final Configuration apiPub =
+                variantDependencies.getElements(
+                        new PublishedConfigSpec(
+                                API_PUBLICATION, componentName, isClassifierRequired));
+        final Configuration runtimePub =
+                variantDependencies.getElements(
+                        new PublishedConfigSpec(
+                                RUNTIME_PUBLICATION, componentName, isClassifierRequired));
+
+        final Configuration sourcePub =
+                variantDependencies.getElements(
+                        new PublishedConfigSpec(
+                                SOURCE_PUBLICATION, componentName, isClassifierRequired));
+
+        final Configuration javaDocPub =
+                variantDependencies.getElements(
+                        new PublishedConfigSpec(
+                                JAVA_DOC_PUBLICATION, componentName, isClassifierRequired));
+
+        component.addVariantsFromConfiguration(
+                apiPub, new ConfigurationVariantMapping("compile", isClassifierRequired));
+        component.addVariantsFromConfiguration(
+                runtimePub, new ConfigurationVariantMapping("runtime", isClassifierRequired));
+
+        if (sourcePub != null) {
+            component.addVariantsFromConfiguration(
+                    sourcePub, new ConfigurationVariantMapping("runtime", true));
+        }
+
+        if (javaDocPub != null) {
+            component.addVariantsFromConfiguration(
+                    javaDocPub, new ConfigurationVariantMapping("runtime", true));
+        }
     }
 
     @Override
@@ -422,7 +459,11 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     private void createMergeResourcesTasks(@NonNull VariantImpl variant) {
         ImmutableSet<MergeResources.Flag> flags;
-        if (variant.getGlobalScope().getExtension().getAaptOptions().getNamespaced()) {
+        if (variant.getServices()
+                .getProjectInfo()
+                .getExtension()
+                .getAaptOptions()
+                .getNamespaced()) {
             flags =
                     Sets.immutableEnumSet(
                             MergeResources.Flag.REMOVE_RESOURCE_NAMESPACES,
@@ -463,15 +504,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     @Override
     protected void postJavacCreation(@NonNull ComponentCreationConfig creationConfig) {
-        // create an anchor collection for usage inside the same module (unit tests basically)
-        ConfigurableFileCollection files =
-                creationConfig
-                        .getServices()
-                        .fileCollection(
-                                creationConfig.getArtifacts().get(JAVAC.INSTANCE),
-                                creationConfig.getVariantData().getAllPreJavacGeneratedBytecode(),
-                                creationConfig.getVariantData().getAllPostJavacGeneratedBytecode());
-        creationConfig.getArtifacts().appendToAllClasses(files);
+        super.postJavacCreation(creationConfig);
 
         if (creationConfig
                 .getServices()
@@ -500,11 +533,6 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
             return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS;
         }
         return TransformManager.SCOPE_FULL_LIBRARY_WITH_LOCAL_JARS;
-    }
-
-    @Override
-    protected boolean isLibrary() {
-        return true;
     }
 
     @Override

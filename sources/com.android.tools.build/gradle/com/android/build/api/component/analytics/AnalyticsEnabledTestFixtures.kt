@@ -16,17 +16,18 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.component.TestFixtures
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.TestFixtures
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
-abstract class AnalyticsEnabledTestFixtures @Inject constructor(
+open class AnalyticsEnabledTestFixtures @Inject constructor(
     override val delegate: TestFixtures,
     stats: GradleBuildVariant.Builder,
     objectFactory: ObjectFactory
@@ -40,6 +41,13 @@ abstract class AnalyticsEnabledTestFixtures @Inject constructor(
             stats
         )
     }
+
+    override val namespace: Provider<String>
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                    VariantPropertiesMethodType.NAMESPACE_VALUE
+            return delegate.namespace
+        }
 
     override val aarMetadata: AarMetadata
         get() {

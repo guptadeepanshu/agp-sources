@@ -49,14 +49,20 @@ public class ZFileOptions {
   /**
    * Skip expensive validation during {@link ZFile} creation?
    *
-   * During incremental build we are absolutely sure that the zip file is valid, so we do not have
-   * to spend time verifying different fields (some of these checks are relatively expensive and
-   * should be skipped if possible for performance)
+   * <p>During incremental build we are absolutely sure that the zip file is valid, so we do not
+   * have to spend time verifying different fields (some of these checks are relatively expensive
+   * and should be skipped if possible for performance)
    */
   private boolean skipValidation;
 
   /** Factory creating verification logs to use. */
   private Supplier<VerifyLog> verifyLogFactory;
+
+  /**
+   * Whether to always generate the MANIFEST.MF file regardless whether the APK will be signed with
+   * v1 signing scheme (i.e. jar signing).
+   */
+  private boolean alwaysGenerateJarManifest;
 
   /** Creates a new options object. All options are set to their defaults. */
   public ZFileOptions() {
@@ -71,6 +77,8 @@ public class ZFileOptions {
     // in the zip file.
     coverEmptySpaceUsingExtraField = true;
     skipValidation = false;
+    // True by default for backwards compatibility.
+    alwaysGenerateJarManifest = true;
   }
 
   /**
@@ -234,5 +242,19 @@ public class ZFileOptions {
    */
   public boolean getSkipValidation() {
     return skipValidation;
+  }
+
+  /**
+   * Sets whether to always generate the MANIFEST.MF file, regardless whether the APK is signed with
+   * v1 signing scheme.
+   */
+  public ZFileOptions setAlwaysGenerateJarManifest(boolean alwaysGenerateJarManifest) {
+    this.alwaysGenerateJarManifest = alwaysGenerateJarManifest;
+    return this;
+  }
+
+  /** Returns whether the MANIFEST.MF file should always be generated. */
+  public boolean getAlwaysGenerateJarManifest() {
+    return alwaysGenerateJarManifest;
   }
 }

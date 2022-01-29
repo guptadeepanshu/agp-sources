@@ -37,6 +37,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
+    @Suppress("DEPRECATION")
     @get:Incubating
     @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     val aaptOptions: AaptOptions
@@ -46,6 +47,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AaptOptions].
      */
+    @Suppress("DEPRECATION")
     @Incubating
     @Deprecated("Replaced by ", replaceWith = ReplaceWith("androidResources"))
     fun aaptOptions(action: AaptOptions.() -> Unit)
@@ -71,6 +73,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
+    @Suppress("DEPRECATION")
     @get:Incubating
     @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     val adbOptions: AdbOptions
@@ -82,6 +85,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
+    @Suppress("DEPRECATION")
     @Incubating
     @Deprecated("Replaced by installation", replaceWith = ReplaceWith("installation"))
     fun adbOptions(action: AdbOptions.() -> Unit)
@@ -93,7 +97,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    @get:Incubating
     val installation: Installation
 
     /**
@@ -103,7 +106,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [AdbOptions].
      */
-    @Incubating
     fun installation(action: Installation.() -> Unit)
 
     /**
@@ -151,7 +153,6 @@ interface CommonExtension<
      *
      * @see [BuildType
      */
-    @get:Incubating
     val buildTypes: NamedDomainObjectContainer<out BuildTypeT>
 
     /**
@@ -159,7 +160,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [BuildType]
      */
-    @Incubating
     fun buildTypes(action: NamedDomainObjectContainer<BuildTypeT>.() -> Unit)
 
     /**
@@ -176,7 +176,6 @@ interface CommonExtension<
      * }
      * ```
      */
-    @Incubating
     fun NamedDomainObjectContainer<BuildTypeT>.debug(action: BuildTypeT.() -> Unit)
     /**
      * Shortcut extension method to allow easy access to the predefined `release` [BuildType]
@@ -192,7 +191,6 @@ interface CommonExtension<
      * }
      * ```
      */
-    @Incubating
     fun NamedDomainObjectContainer<BuildTypeT>.release(action: BuildTypeT.() -> Unit)
 
     /**
@@ -216,6 +214,7 @@ interface CommonExtension<
      *
      * This is replaced by [testCoverage].
      */
+    @Suppress("DEPRECATION")
     @get:Incubating
     @Deprecated("Renamed to testCoverage", replaceWith = ReplaceWith("testCoverage"))
     val jacoco: JacocoOptions
@@ -225,6 +224,7 @@ interface CommonExtension<
      *
      * This is replaced by [testCoverage].
      */
+    @Suppress("DEPRECATION")
     @Incubating
     @Deprecated("Renamed to testCoverage", replaceWith = ReplaceWith("testCoverage"))
     fun jacoco(action: JacocoOptions.() -> Unit)
@@ -284,6 +284,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [LintOptions].
      */
+    @Suppress("DEPRECATION")
     @get:Incubating
     @Deprecated("Renamed to lint", replaceWith = ReplaceWith("lint"))
     val lintOptions: LintOptions
@@ -293,6 +294,7 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [LintOptions].
      */
+    @Suppress("DEPRECATION")
     @Incubating
     @Deprecated("Renamed to lint", replaceWith = ReplaceWith("lint"))
     fun lintOptions(action: LintOptions.() -> Unit)
@@ -355,7 +357,6 @@ interface CommonExtension<
      *
      * @see [ProductFlavor]
      */
-    @get:Incubating
     val productFlavors: NamedDomainObjectContainer<out ProductFlavorT>
 
     /**
@@ -364,7 +365,6 @@ interface CommonExtension<
      * For more information about the properties you can configure in this block,
      * see [ProductFlavor]
      */
-    @Incubating
     fun productFlavors(action: NamedDomainObjectContainer<ProductFlavorT>.() -> Unit)
 
 
@@ -377,7 +377,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DefaultConfig].
      */
-    @get:Incubating
     val defaultConfig: DefaultConfigT
 
     /**
@@ -389,7 +388,6 @@ interface CommonExtension<
      *
      * For more information about the properties you can configure in this block, see [DefaultConfig].
      */
-    @Incubating
     fun defaultConfig(action: DefaultConfigT.() -> Unit)
 
 
@@ -442,7 +440,6 @@ interface CommonExtension<
      * @since 2.2.0
      */
 
-    @get:Incubating
     val externalNativeBuild: ExternalNativeBuild
     /**
      * Specifies options for external native build using [CMake](https://cmake.org/) or
@@ -462,7 +459,6 @@ interface CommonExtension<
      *
      * @since 2.2.0
      */
-    @Incubating
     fun externalNativeBuild(action: ExternalNativeBuild.()->Unit)
 
     /**
@@ -788,6 +784,8 @@ interface CommonExtension<
      * reading it back may return a slightly different value.
      */
     var compileSdk: Int?
+
+    var compileSdkExtension: Int?
 
     /**
      * Specify a preview API to compile your project against.

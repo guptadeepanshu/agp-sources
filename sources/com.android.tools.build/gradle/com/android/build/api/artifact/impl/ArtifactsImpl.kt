@@ -25,7 +25,7 @@ import com.android.build.api.artifact.Artifacts
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.variant.BuiltArtifactsLoader
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.gradle.internal.scope.AnchorOutputType
+import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.Project
@@ -186,7 +186,7 @@ class ArtifactsImpl(
             // be multiple ones, just put the task name at all times.
             property(it).set(type.getOutputPath(buildDirectory, identifier, taskProvider.name))
         }
-        artifactContainer.addInitialProvider(taskProvider.flatMap { property(it) })
+        artifactContainer.addInitialProvider(taskProvider, taskProvider.flatMap { property(it) })
     }
 
     /**
@@ -225,26 +225,41 @@ class ArtifactsImpl(
         storageProvider.getStorage(artifactType.kind).copy(artifactType, artifactContainer)
     }
 
-    /**
-     * Backward compatibility section
-     */
-
-    // because of existing public APIs, we cannot move [AnchorOutputType.ALL_CLASSES] to Provider<>
-    private val allClasses= project.files()
-
-    /**
-     * Appends a [FileCollection] to the [AnchorOutputType.ALL_CLASSES] artifact.
-     *
-     * @param files the [FileCollection] to add.
-     */
-    fun appendToAllClasses(files: FileCollection) {
-        synchronized(allClasses) {
-            allClasses.from(files)
-        }
+    fun <FILE_TYPE : FileSystemLocation> copy(
+        artifactType: Multiple<FILE_TYPE>,
+        from: ArtifactsImpl
+    ) {
+        val artifactContainer = from.getArtifactContainer(artifactType)
+        storageProvider.getStorage(artifactType.kind).copy(artifactType, artifactContainer)
     }
 
     /**
-     * The current [FileCollection] for [AnchorOutputType.ALL_CLASSES] as of now.
+     * Appends a single [Provider] of [T] to a [Artifact.Multiple] of <T>
+     *
+     * @param type the multiple type to append to.
+     * @param element the element to add.
+     */
+    fun <T: FileSystemLocation> appendTo(type: Multiple<T>, from: Single<T>) {
+        getArtifactContainer(type).transferFrom(this, from)
+    }
+    /**
+     * Appends a [List] of [Provider] of [T] to a [MultipleArtifactType] of <T>
+     *
+     * @param type the multiple type to append to.
+     * @param elements the list of elements to add.
+     */
+    fun <T: FileSystemLocation> appendAll(type: Multiple<T>, elements: Provider<List<T>>) {
+        getArtifactContainer(type).addInitialProvider(listOf(), elements);
+    }
+
+    private val allClasses = project.files().from(
+        getAll(MultipleArtifact.ALL_CLASSES_DIRS),
+        getAll(MultipleArtifact.ALL_CLASSES_JARS)
+    )
+
+    /**
+     * The current [FileCollection] for [InternalMultipleArtifactType.ALL_CLASSES_JARS]
+     * and [InternalMultipleArtifactType.ALL_CLASSES_DIRS]
      * The returned file collection is final but its content can change.
      */
     fun getAllClasses(): FileCollection = allClasses
@@ -333,7 +348,7 @@ internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSyste
             // since the taskProvider will execute, resolve its output path.
             from(it).set(outputAbsolutePath)
         }
-        artifactContainer.setInitialProvider(taskProvider.flatMap { from(it) })
+        artifactContainer.setInitialProvider(taskProvider, taskProvider.flatMap { from(it) })
     }
 }
 

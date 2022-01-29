@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.build.api.variant
+@file:Suppress("DEPRECATION")
 
-import com.android.build.api.component.ComponentBuilder
+package com.android.build.api.variant
 
 /**
  * Variant object that contains properties that must be set during configuration time as it
@@ -89,7 +89,7 @@ interface VariantBuilder: ComponentBuilder {
 
     /**
      * Registers an extension object to the variant object. Extension objects can be looked up
-     * during the [com.android.build.api.extension.AndroidComponentsExtension.onVariants] callbacks
+     * during the [AndroidComponentsExtension.onVariants] callbacks
      * by using the [Variant.getExtension] API.
      *
      * This is very useful for third party plugins that want to attach some variant specific

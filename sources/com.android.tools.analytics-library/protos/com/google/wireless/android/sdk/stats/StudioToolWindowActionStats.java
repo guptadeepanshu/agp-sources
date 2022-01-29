@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   private StudioToolWindowActionStats() {
     toolWindowId_ = "";
     eventType_ = 0;
+    toolWindowType_ = 0;
   }
 
   @java.lang.Override
@@ -70,6 +71,18 @@ private static final long serialVersionUID = 0L;
             } else {
               bitField0_ |= 0x00000002;
               eventType_ = rawValue;
+            }
+            break;
+          }
+          case 24: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType value = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(3, rawValue);
+            } else {
+              bitField0_ |= 0x00000004;
+              toolWindowType_ = rawValue;
             }
             break;
           }
@@ -219,6 +232,173 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.StudioToolWindowActionStats.EventType)
   }
 
+  /**
+   * <pre>
+   * "View Mode" in the UI
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.StudioToolWindowActionStats.ToolWindowType}
+   */
+  public enum ToolWindowType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * Default tool window type
+     * </pre>
+     *
+     * <code>UNKNOWN_TOOL_WINDOW_TYPE = 0;</code>
+     */
+    UNKNOWN_TOOL_WINDOW_TYPE(0),
+    /**
+     * <pre>
+     * "Dock Pinned" in the UI
+     * </pre>
+     *
+     * <code>DOCKED_TOOL_WINDOW_TYPE = 1;</code>
+     */
+    DOCKED_TOOL_WINDOW_TYPE(1),
+    /**
+     * <pre>
+     * "Float" in the UI
+     * </pre>
+     *
+     * <code>FLOATING_TOOL_WINDOW_TYPE = 2;</code>
+     */
+    FLOATING_TOOL_WINDOW_TYPE(2),
+    /**
+     * <pre>
+     * "Undock" in the UI
+     * </pre>
+     *
+     * <code>SLIDING_TOOL_WINDOW_TYPE = 3;</code>
+     */
+    SLIDING_TOOL_WINDOW_TYPE(3),
+    /**
+     * <pre>
+     * "Window" in the UI
+     * </pre>
+     *
+     * <code>WINDOWED_TOOL_WINDOW_TYPE = 4;</code>
+     */
+    WINDOWED_TOOL_WINDOW_TYPE(4),
+    ;
+
+    /**
+     * <pre>
+     * Default tool window type
+     * </pre>
+     *
+     * <code>UNKNOWN_TOOL_WINDOW_TYPE = 0;</code>
+     */
+    public static final int UNKNOWN_TOOL_WINDOW_TYPE_VALUE = 0;
+    /**
+     * <pre>
+     * "Dock Pinned" in the UI
+     * </pre>
+     *
+     * <code>DOCKED_TOOL_WINDOW_TYPE = 1;</code>
+     */
+    public static final int DOCKED_TOOL_WINDOW_TYPE_VALUE = 1;
+    /**
+     * <pre>
+     * "Float" in the UI
+     * </pre>
+     *
+     * <code>FLOATING_TOOL_WINDOW_TYPE = 2;</code>
+     */
+    public static final int FLOATING_TOOL_WINDOW_TYPE_VALUE = 2;
+    /**
+     * <pre>
+     * "Undock" in the UI
+     * </pre>
+     *
+     * <code>SLIDING_TOOL_WINDOW_TYPE = 3;</code>
+     */
+    public static final int SLIDING_TOOL_WINDOW_TYPE_VALUE = 3;
+    /**
+     * <pre>
+     * "Window" in the UI
+     * </pre>
+     *
+     * <code>WINDOWED_TOOL_WINDOW_TYPE = 4;</code>
+     */
+    public static final int WINDOWED_TOOL_WINDOW_TYPE_VALUE = 4;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ToolWindowType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ToolWindowType forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_TOOL_WINDOW_TYPE;
+        case 1: return DOCKED_TOOL_WINDOW_TYPE;
+        case 2: return FLOATING_TOOL_WINDOW_TYPE;
+        case 3: return SLIDING_TOOL_WINDOW_TYPE;
+        case 4: return WINDOWED_TOOL_WINDOW_TYPE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ToolWindowType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ToolWindowType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ToolWindowType>() {
+            public ToolWindowType findValueByNumber(int number) {
+              return ToolWindowType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final ToolWindowType[] VALUES = values();
+
+    public static ToolWindowType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ToolWindowType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.StudioToolWindowActionStats.ToolWindowType)
+  }
+
   private int bitField0_;
   public static final int TOOL_WINDOW_ID_FIELD_NUMBER = 1;
   private volatile java.lang.Object toolWindowId_;
@@ -299,6 +479,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.UNKNOWN_EVENT_TYPE : result;
   }
 
+  public static final int TOOL_WINDOW_TYPE_FIELD_NUMBER = 3;
+  private int toolWindowType_;
+  /**
+   * <pre>
+   * "View Mode" in the UI
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+   * @return Whether the toolWindowType field is set.
+   */
+  public boolean hasToolWindowType() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * "View Mode" in the UI
+   * </pre>
+   *
+   * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+   * @return The toolWindowType.
+   */
+  public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);
+    return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -319,6 +526,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeEnum(2, eventType_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeEnum(3, toolWindowType_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -334,6 +544,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, eventType_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(3, toolWindowType_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -359,6 +573,10 @@ private static final long serialVersionUID = 0L;
     if (hasEventType()) {
       if (eventType_ != other.eventType_) return false;
     }
+    if (hasToolWindowType() != other.hasToolWindowType()) return false;
+    if (hasToolWindowType()) {
+      if (toolWindowType_ != other.toolWindowType_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -377,6 +595,10 @@ private static final long serialVersionUID = 0L;
     if (hasEventType()) {
       hash = (37 * hash) + EVENT_TYPE_FIELD_NUMBER;
       hash = (53 * hash) + eventType_;
+    }
+    if (hasToolWindowType()) {
+      hash = (37 * hash) + TOOL_WINDOW_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + toolWindowType_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -519,6 +741,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       eventType_ = 0;
       bitField0_ = (bitField0_ & ~0x00000002);
+      toolWindowType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -555,6 +779,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000002;
       }
       result.eventType_ = eventType_;
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        to_bitField0_ |= 0x00000004;
+      }
+      result.toolWindowType_ = toolWindowType_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -611,6 +839,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasEventType()) {
         setEventType(other.getEventType());
+      }
+      if (other.hasToolWindowType()) {
+        setToolWindowType(other.getToolWindowType());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -794,6 +1025,64 @@ private static final long serialVersionUID = 0L;
     public Builder clearEventType() {
       bitField0_ = (bitField0_ & ~0x00000002);
       eventType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int toolWindowType_ = 0;
+    /**
+     * <pre>
+     * "View Mode" in the UI
+     * </pre>
+     *
+     * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+     * @return Whether the toolWindowType field is set.
+     */
+    public boolean hasToolWindowType() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * "View Mode" in the UI
+     * </pre>
+     *
+     * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+     * @return The toolWindowType.
+     */
+    public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);
+      return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
+    }
+    /**
+     * <pre>
+     * "View Mode" in the UI
+     * </pre>
+     *
+     * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+     * @param value The toolWindowType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setToolWindowType(com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000004;
+      toolWindowType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "View Mode" in the UI
+     * </pre>
+     *
+     * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearToolWindowType() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      toolWindowType_ = 0;
       onChanged();
       return this;
     }

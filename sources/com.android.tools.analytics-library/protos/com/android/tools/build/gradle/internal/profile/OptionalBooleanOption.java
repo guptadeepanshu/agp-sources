@@ -44,6 +44,10 @@ public enum OptionalBooleanOption
    * <code>INTERNAL_ONLY_ENABLE_R8 = 8;</code>
    */
   INTERNAL_ONLY_ENABLE_R8(8),
+  /**
+   * <code>DISABLE_AUTOMATIC_COMPONENT_CREATION = 9;</code>
+   */
+  DISABLE_AUTOMATIC_COMPONENT_CREATION(9),
   UNRECOGNIZED(-1),
   ;
 
@@ -83,6 +87,10 @@ public enum OptionalBooleanOption
    * <code>INTERNAL_ONLY_ENABLE_R8 = 8;</code>
    */
   public static final int INTERNAL_ONLY_ENABLE_R8_VALUE = 8;
+  /**
+   * <code>DISABLE_AUTOMATIC_COMPONENT_CREATION = 9;</code>
+   */
+  public static final int DISABLE_AUTOMATIC_COMPONENT_CREATION_VALUE = 9;
 
 
   public final int getNumber() {
@@ -118,6 +126,7 @@ public enum OptionalBooleanOption
       case 6: return FIREBASE_PERF_PLUGIN_ENABLE_FLAG;
       case 7: return ENABLE_TEST_FAILURE_RETENTION_COMPRESS_SNAPSHOT;
       case 8: return INTERNAL_ONLY_ENABLE_R8;
+      case 9: return DISABLE_AUTOMATIC_COMPONENT_CREATION;
       default: return null;
     }
   }

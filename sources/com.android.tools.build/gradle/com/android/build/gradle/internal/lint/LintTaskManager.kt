@@ -7,6 +7,7 @@ import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.dsl.LintOptions
 import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.ProjectInfo
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.builder.core.VariantType
@@ -50,14 +51,17 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
         // Map of task path to the providers for tasks that that task subsumes,
         // and therefore should be disabled if both are in the task graph.
         // e.g. Running `lintRelease` should cause `lintVitalRelease` to be skipped,
-        val variantLintTaskToLintVitalTask = mutableMapOf<String, TaskProvider<AndroidLintTask>>()
+        val variantLintTaskToLintVitalTask =
+            mutableMapOf<String, TaskProvider<AndroidLintTextOutputTask>>()
 
         val needsCopyReportTask = needsCopyReportTask(globalScope.extension.lintOptions)
 
         for (variantWithTests in variantsWithTests.values) {
             if (variantType.isAar) {
                 // We need the library lint models if checkDependencies is true
-                taskFactory.register(LintModelWriterTask.LintCreationAction(variantWithTests.main))
+                taskFactory.register(LintModelWriterTask.LintCreationAction(variantWithTests))
+                // We need the library lint model metadata if checkDependencies is false
+                taskFactory.register(LintModelMetadataTask.CreationAction(variantWithTests.main))
             } else {
                 // We need app and dynamic feature models if there are dynamic features.
                 // TODO (b/180672373) consider also publishing dynamic feature and app lint models
@@ -65,7 +69,7 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
                 //  app or dynamic feature module with checkDependencies = true.
                 taskFactory.register(
                     LintModelWriterTask.LintCreationAction(
-                        variantWithTests.main,
+                        variantWithTests,
                         checkDependencies = false
                     )
                 )
@@ -76,7 +80,7 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
 
             if (variantType.isDynamicFeature) {
                 taskFactory.register(
-                    AndroidLintAnalysisTask.LintVitalCreationAction(variantWithTests)
+                    AndroidLintAnalysisTask.LintVitalCreationAction(variantWithTests.main)
                 )
                 taskFactory.register(
                     LintModelWriterTask.LintVitalCreationAction(variantWithTests.main)
@@ -86,8 +90,11 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
                 continue
             }
 
+            taskFactory.register(AndroidLintTask.SingleVariantCreationAction(variantWithTests))
             val variantLintTask =
-                taskFactory.register(AndroidLintTask.SingleVariantCreationAction(variantWithTests))
+                taskFactory.register(
+                    AndroidLintTextOutputTask.SingleVariantCreationAction(variantWithTests.main)
+                )
 
             if (needsCopyReportTask) {
                 val copyLintReportTask =
@@ -102,11 +109,14 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
                 !mainVariant.variantDslInfo.isDebuggable &&
                 globalScope.extension.lintOptions.isCheckReleaseBuilds
             ) {
-                val lintVitalTask =
-                    taskFactory.register(AndroidLintTask.LintVitalCreationAction(mainVariant))
                 taskFactory.register(
-                    AndroidLintAnalysisTask.LintVitalCreationAction(variantWithTests)
+                    AndroidLintAnalysisTask.LintVitalCreationAction(mainVariant)
                 )
+                taskFactory.register(AndroidLintTask.LintVitalCreationAction(mainVariant))
+                val lintVitalTask =
+                    taskFactory.register(
+                        AndroidLintTextOutputTask.LintVitalCreationAction(mainVariant)
+                    )
 
                 // If lint is being run, we do not need to run lint vital.
                 variantLintTaskToLintVitalTask[getTaskPath(variantLintTask)] = lintVitalTask
@@ -177,7 +187,7 @@ class LintTaskManager constructor(private val globalScope: GlobalScope, private 
         return variantsWithTests
     }
 
-    private fun getTaskPath(task: TaskProvider<AndroidLintTask>): String {
+    private fun getTaskPath(task: TaskProvider<AndroidLintTextOutputTask>): String {
         return (getTaskPath(task.name))
     }
 

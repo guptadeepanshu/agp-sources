@@ -66,6 +66,7 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.io.IOException
 
@@ -80,6 +81,7 @@ import java.io.IOException
  * while the test modules get the info from the published intermediate manifest with type
  * [AndroidArtifacts.TYPE_METADATA] of the tested app.
  */
+@DisableCachingByDefault
 abstract class ProcessTestManifest : ManifestProcessorTask() {
 
     @get:OutputDirectory
@@ -248,9 +250,11 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     .setPlaceHolderValues(manifestPlaceholders)
                     .addFlavorAndBuildTypeManifests(*manifestOverlays.get().toTypedArray())
                     .addLibraryManifest(generatedTestManifest)
+                    .addAllowNonUniquePackageNames(testApplicationId)
                     .setOverride(ManifestSystemProperty.PACKAGE, testApplicationId)
                     .setOverride(ManifestSystemProperty.MIN_SDK_VERSION, minSdkVersion)
                     .setOverride(ManifestSystemProperty.TARGET_PACKAGE, testedApplicationId)
+                    .withFeatures(ManifestMerger2.Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK)
 
                 instrumentationRunner?.let {
                     intermediateInvoker.setPlaceHolderValue(
@@ -493,7 +497,7 @@ abstract class ProcessTestManifest : ManifestProcessorTask() {
                     AndroidArtifacts.ArtifactType.MANIFEST
                 )
             task.placeholdersValues.setDisallowChanges(creationConfig.manifestPlaceholders)
-            if (!creationConfig.globalScope.extension.aaptOptions.namespaced) {
+            if (!creationConfig.services.projectInfo.getExtension().aaptOptions.namespaced) {
                 task.navigationJsons = project.files(
                     creationConfig
                         .variantDependencies

@@ -16,14 +16,16 @@
 
 package com.android.build.api.component.analytics
 
-import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidResources
+import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.GeneratesApk
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.ApplicationVariant
+import com.android.build.api.variant.BundleConfig
 import com.android.build.api.variant.DependenciesInfo
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.SigningConfig
+import com.android.build.api.variant.TestFixtures
 import com.android.build.api.variant.VariantOutput
 import com.android.tools.build.gradle.internal.profile.VariantPropertiesMethodType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -59,11 +61,19 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
             return delegate.dependenciesInfo
         }
 
-    override val signingConfig: SigningConfig?
+    val userVisibleSigningConfig: AnalyticsEnabledSigningConfig by lazy {
+        objectFactory.newInstance(
+            AnalyticsEnabledSigningConfig::class.java,
+            delegate.signingConfig,
+            stats
+        )
+    }
+
+    override val signingConfig: SigningConfig
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.SIGNING_CONFIG_VALUE
-            return delegate.signingConfig
+            return userVisibleSigningConfig
         }
 
     private val userVisibleAndroidTest: AnalyticsEnabledAndroidTest? by lazy {
@@ -76,11 +86,28 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
         }
     }
 
-    override val androidTest: com.android.build.api.component.AndroidTest?
+    override val androidTest: AndroidTest?
         get() {
             stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
                 VariantPropertiesMethodType.ANDROID_TEST_VALUE
             return userVisibleAndroidTest
+        }
+
+    private val userVisibleTestFixtures: TestFixtures? by lazy {
+        delegate.testFixtures?.let {
+            objectFactory.newInstance(
+                AnalyticsEnabledTestFixtures::class.java,
+                it,
+                stats
+            )
+        }
+    }
+
+    override val testFixtures: TestFixtures?
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.TEST_FIXTURES_VALUE
+            return userVisibleTestFixtures
         }
 
     private val generatesApk: GeneratesApk by lazy {
@@ -99,4 +126,19 @@ open class AnalyticsEnabledApplicationVariant @Inject constructor(
 
     override val packaging: ApkPackaging
         get() = generatesApk.packaging
+
+    private val userVisibleBundleConfig: BundleConfig by lazy {
+        objectFactory.newInstance(
+            AnalyticsEnabledBundleConfig::class.java,
+            delegate.bundleConfig,
+            stats
+        )
+    }
+
+    override val bundleConfig: BundleConfig
+        get() {
+            stats.variantApiAccessBuilder.addVariantPropertiesAccessBuilder().type =
+                VariantPropertiesMethodType.GET_BUNDLE_CONFIG_VALUE
+            return userVisibleBundleConfig
+        }
 }

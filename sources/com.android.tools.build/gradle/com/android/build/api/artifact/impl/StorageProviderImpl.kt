@@ -85,7 +85,17 @@ class TypedStorageProvider<T :FileSystemLocation>(private val propertyAllocator:
         // override. In that case, we need to just link the source to the target.
         if (singleStorage[type] == null)
             singleStorage[type] = container
-        else singleStorage[type]?.setInitialProvider(container.get())
+        else singleStorage[type]?.transferFrom(container)
+    }
+
+    internal fun copy(type: Artifact.Multiple<T>,
+        container: MultipleArtifactContainer<T>) {
+        // if the target container is null, we can just override with the source container
+        // however, if it is not null, which mean that is has been queried, we cannot just
+        // override. In that case, we need to just link the source to the target.
+        if (multipleStorage[type] == null)
+            multipleStorage[type] = container
+        else multipleStorage[type]?.addInitialProvider(container)
     }
 
     fun lock() {

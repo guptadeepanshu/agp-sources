@@ -47,6 +47,10 @@ public class AndroidArtifacts {
     // they can be used)
     private static final String TYPE_PROCESSED_JAR = "processed-jar";
 
+    private static final String TYPE_INSTRUMENTED_CLASSES = "jacoco-instrumented-classes";
+    private static final String TYPE_JACOCO_CLASSES_JAR = "jacoco-classes-jar";
+    private static final String TYPE_JACOCO_ASM_INSTRUMENTED_JARS = "jacoco-asm-instrumented-jars";
+
     private static final String TYPE_MAYBE_NOT_NAMESPACED_AAR = "non-namespaced-aar";
     private static final String TYPE_PREPROCESSED_AAR_FOR_AUTO_NAMESPACE =
             "preprocessed-aar-for-auto-namespace";
@@ -91,6 +95,7 @@ public class AndroidArtifacts {
             "android-lint-vital-variant-dependencies-partial-results";
     private static final String TYPE_LOCAL_AAR_FOR_LINT = "android-lint-local-aar";
     private static final String TYPE_LOCAL_EXPLODED_AAR_FOR_LINT = "android-lint-exploded-aar";
+    private static final String TYPE_LINT_MODEL_METADATA = "android-lint-model-metadata";
     private static final String TYPE_EXT_ANNOTATIONS = "android-ext-annot";
     private static final String TYPE_PUBLIC_RES = "android-public-res";
     private static final String TYPE_SYMBOL = "android-symbol";
@@ -157,11 +162,15 @@ public class AndroidArtifacts {
     private static final String TYPE_NAVIGATION_JSON = "android-navigation-json";
 
     private static final String TYPE_PREFAB_PACKAGE = "android-prefab";
+    private static final String TYPE_PREFAB_PACKAGE_CONFIGURATION = "android-prefab-configuration";
 
     private static final String TYPE_DESUGAR_LIB_MERGED_KEEP_RULES =
             "android-desugar-lib-merged-keep-rules";
 
     private static final String TYPE_FEATURE_PUBLISHED_DEX = "android-feature-published-dex";
+
+    private static final String TYPE_SOURCES_JAR = "android-sources-jar";
+    private static final String TYPE_JAVA_DOC_JAR = "android-java-doc-jar";
 
     public enum ConsumedConfigType {
         COMPILE_CLASSPATH("compileClasspath", API_ELEMENTS, true),
@@ -210,47 +219,29 @@ public class AndroidArtifacts {
         RUNTIME_ELEMENTS, // inter-project publishing (RUNTIME)
         REVERSE_METADATA_ELEMENTS, // inter-project publishing (REVERSE META-DATA)
 
-        // Maven/SoftwareComponent AAR publishing (API, w/o variant-specific attributes)
-        API_PUBLICATION(true, false),
-        // Maven/SoftwareComponent AAR publishing (RUNTIME, w/o variant-specific attributes)
-        RUNTIME_PUBLICATION(true, false),
-        // Maven/SoftwareComponent AAR publishing (API, with variant-specific attributes)
-        ALL_API_PUBLICATION(true, true),
-        // Maven/SoftwareComponent AAR publishing (RUNTIME, with variant-specific attributes)
-        ALL_RUNTIME_PUBLICATION(true, true),
+        // Maven/SoftwareComponent AAR publishing (API)
+        API_PUBLICATION(true),
+        // Maven/SoftwareComponent AAR publishing (RUNTIME)
+        RUNTIME_PUBLICATION(true),
 
-        APK_PUBLICATION(true, false), // Maven/SoftwareComponent APK publishing
-        AAB_PUBLICATION(true, false); // Maven/SoftwareComponent AAB publishing
+        APK_PUBLICATION(true), // Maven/SoftwareComponent APK publishing
+        AAB_PUBLICATION(true), // Maven/SoftwareComponent AAB publishing
+
+        SOURCE_PUBLICATION(true),
+        JAVA_DOC_PUBLICATION(true);
 
         private boolean isPublicationConfig;
-        private boolean isClassifierRequired;
 
-        PublishedConfigType(boolean isPublicationConfig, boolean isClassifierRequired) {
+        PublishedConfigType(boolean isPublicationConfig) {
             this.isPublicationConfig = isPublicationConfig;
-            this.isClassifierRequired = isClassifierRequired;
         }
 
         PublishedConfigType() {
-            this(false, false);
+            this(false);
         }
 
         public boolean isPublicationConfig() {
             return isPublicationConfig;
-        }
-
-        /**
-         * Some publishing configurations require setting the classifier. This is because artifacts
-         * from those configurations are added to a single software component, and unless there is a
-         * classifier, POM cannot choose the main artifact.
-         *
-         * <p>E.g. when publishing an AAR that has debug and release variants, there will be two AAR
-         * to publish. POM publishing ignores configuration attributes, and it has to use
-         * classifiers in order to de-duplicate artifacts. In this case, to disambiguate between
-         * these two artifacts, they need to have different classifiers specified when publishing
-         * them.
-         */
-        public boolean isClassifierRequired() {
-            return isClassifierRequired;
         }
     }
 
@@ -280,6 +271,12 @@ public class AndroidArtifacts {
 
         /** A jar containing classes. */
         CLASSES_JAR(TYPE_CLASSES_JAR),
+
+        /** A jar containing source files. */
+        SOURCES_JAR(TYPE_SOURCES_JAR),
+
+        /** A jar containing java doc files. */
+        JAVA_DOC_JAR(TYPE_JAVA_DOC_JAR),
 
         /**
          * A directory containing classes.
@@ -311,6 +308,11 @@ public class AndroidArtifacts {
          * </ul>
          */
         JAR(TYPE_JAR),
+
+        /** Jacoco instrumented versions of CLASSES and CLASSES_JAR produced by JacocoTransform. */
+        JACOCO_CLASSES(TYPE_INSTRUMENTED_CLASSES),
+        JACOCO_CLASSES_JAR(TYPE_JACOCO_CLASSES_JAR),
+        JACOCO_ASM_INSTRUMENTED_JARS(TYPE_JACOCO_ASM_INSTRUMENTED_JARS),
 
         /**
          * Processed jar.
@@ -380,6 +382,7 @@ public class AndroidArtifacts {
          * dependencies from AARs. https://google.github.io/prefab/
          */
         PREFAB_PACKAGE(TYPE_PREFAB_PACKAGE),
+        PREFAB_PACKAGE_CONFIGURATION(TYPE_PREFAB_PACKAGE_CONFIGURATION),
         ANNOTATIONS(TYPE_EXT_ANNOTATIONS),
         PUBLIC_RES(TYPE_PUBLIC_RES),
         UNFILTERED_PROGUARD_RULES(TYPE_UNFILTERED_PROGUARD_RULES),
@@ -401,6 +404,8 @@ public class AndroidArtifacts {
         // Exploded AARs from library projects for lint to consume when not run with check
         // dependencies.
         LOCAL_EXPLODED_AAR_FOR_LINT(TYPE_LOCAL_EXPLODED_AAR_FOR_LINT),
+        // The lint model metadata file, containing maven groupId e.g.
+        LINT_MODEL_METADATA(AndroidArtifacts.TYPE_LINT_MODEL_METADATA),
 
         APK_MAPPING(TYPE_MAPPING),
         APK_METADATA(TYPE_METADATA),

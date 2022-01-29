@@ -17,8 +17,9 @@
 package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.ComponentIdentity
-import com.android.build.api.component.TestComponent
+import com.android.build.api.dsl.SdkComponents
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.TestComponent
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
@@ -40,7 +41,7 @@ import javax.inject.Inject
 abstract class TestComponentImpl @Inject constructor(
     componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    variantDslInfo: VariantDslInfo<*>,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
@@ -51,6 +52,7 @@ abstract class TestComponentImpl @Inject constructor(
     transformManager: TransformManager,
     variantPropertiesApiServices: VariantPropertiesApiServices,
     taskCreationServices: TaskCreationServices,
+    sdkComponents: SdkComponents,
     globalScope: GlobalScope
 ) : ComponentImpl(
     componentIdentity,
@@ -65,6 +67,7 @@ abstract class TestComponentImpl @Inject constructor(
     transformManager,
     variantPropertiesApiServices,
     taskCreationServices,
+    sdkComponents,
     globalScope
 ), TestComponent, TestComponentCreationConfig {
 

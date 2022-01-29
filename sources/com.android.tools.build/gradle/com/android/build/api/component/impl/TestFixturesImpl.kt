@@ -17,15 +17,18 @@
 package com.android.build.api.component.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.component.Component
-import com.android.build.api.component.ComponentIdentity
-import com.android.build.api.component.TestFixtures
 import com.android.build.api.component.analytics.AnalyticsEnabledTestFixtures
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.SdkComponents
+import com.android.build.api.dsl.TestedExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.Component
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.JavaCompilation
 import com.android.build.api.variant.ResValue
+import com.android.build.api.variant.TestFixtures
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.ResValueKeyImpl
@@ -42,6 +45,7 @@ import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
 import com.android.build.gradle.internal.variant.TestFixturesVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -53,7 +57,7 @@ import javax.inject.Inject
 open class TestFixturesImpl @Inject constructor(
     componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    variantDslInfo: VariantDslInfo<*>,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
@@ -64,6 +68,7 @@ open class TestFixturesImpl @Inject constructor(
     transformManager: TransformManager,
     variantPropertiesApiServices: VariantPropertiesApiServices,
     taskCreationServices: TaskCreationServices,
+    sdkComponents: SdkComponents,
     globalScope: GlobalScope
 ) : ComponentImpl(
     componentIdentity,
@@ -78,6 +83,7 @@ open class TestFixturesImpl @Inject constructor(
     transformManager,
     variantPropertiesApiServices,
     taskCreationServices,
+    sdkComponents,
     globalScope
 ), TestFixtures, ComponentCreationConfig, AarCreationConfig {
 
@@ -91,17 +97,33 @@ open class TestFixturesImpl @Inject constructor(
         get() = mainVariant.debuggable
     override val minSdkVersion: AndroidVersion
         get() = mainVariant.minSdkVersion
+    override val targetSdkVersion: AndroidVersion
+        get() = mainVariant.targetSdkVersion
     override val needsMainDexListForBundle: Boolean
         get() = mainVariant.needsMainDexListForBundle
 
     override val aarMetadata: AarMetadata =
             internalServices.newInstance(AarMetadata::class.java).also {
                 it.minCompileSdk.set(variantDslInfo.aarMetadata.minCompileSdk ?: 1)
+                it.minAgpVersion.set(
+                    variantDslInfo.aarMetadata.minAgpVersion ?: DEFAULT_MIN_AGP_VERSION
+                )
             }
+
+    override val javaCompilation: JavaCompilation =
+        JavaCompilationImpl(
+            variantDslInfo.javaCompileOptions,
+            buildFeatures.dataBinding,
+            internalServices
+        )
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
+
+    override val targetSdkVersionOverride: AndroidVersion?
+        get() = mainVariant.targetSdkVersionOverride
+
     override fun <T : Component> createUserVisibleVariantObject(
         projectServices: ProjectServices,
         operationsRegistrar: VariantApiOperationsRegistrar<out CommonExtension<*, *, *, *>, out VariantBuilder, out Variant>,
@@ -129,5 +151,15 @@ open class TestFixturesImpl @Inject constructor(
     override fun makeResValueKey(type: String, name: String): ResValue.Key = ResValueKeyImpl(type, name)
 
     override val pseudoLocalesEnabled: Property<Boolean> =
-        internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, variantDslInfo.isPseudoLocalesEnabled)
+        internalServices.newPropertyBackingDeprecatedApi(
+            Boolean::class.java,
+            variantDslInfo.isPseudoLocalesEnabled
+        )
+
+    // ---------------------------------------------------------------------------------------------
+    // Private stuff
+    // ---------------------------------------------------------------------------------------------
+
+    override val androidResourcesEnabled: Boolean =
+        (globalScope.extension as TestedExtension).testFixtures.androidResources
 }

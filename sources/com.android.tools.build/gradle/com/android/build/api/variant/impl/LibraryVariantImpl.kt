@@ -16,17 +16,20 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.variant.AndroidTest
-import com.android.build.api.component.Component
 import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariant
+import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ConsumableCreationConfigImpl
+import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AarMetadata
 import com.android.build.api.variant.AndroidVersion
+import com.android.build.api.variant.Component
 import com.android.build.api.variant.LibraryVariant
 import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.Variant
@@ -42,6 +45,7 @@ import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.BooleanOption
@@ -53,7 +57,7 @@ import javax.inject.Inject
 open class  LibraryVariantImpl @Inject constructor(
         override val variantBuilder: LibraryVariantBuilderImpl,
         buildFeatureValues: BuildFeatureValues,
-        variantDslInfo: VariantDslInfo,
+        variantDslInfo: VariantDslInfo<LibraryExtension>,
         variantDependencies: VariantDependencies,
         variantSources: VariantSources,
         paths: VariantPathHelper,
@@ -63,6 +67,7 @@ open class  LibraryVariantImpl @Inject constructor(
         transformManager: TransformManager,
         internalServices: VariantPropertiesApiServices,
         taskCreationServices: TaskCreationServices,
+        sdkComponents: SdkComponents,
         globalScope: GlobalScope
 ) : VariantImpl(
     variantBuilder,
@@ -77,8 +82,9 @@ open class  LibraryVariantImpl @Inject constructor(
     transformManager,
     internalServices,
     taskCreationServices,
+    sdkComponents,
     globalScope
-), LibraryVariant, LibraryCreationConfig, HasAndroidTest {
+), LibraryVariant, LibraryCreationConfig, HasAndroidTest, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -108,7 +114,9 @@ open class  LibraryVariantImpl @Inject constructor(
         super.transformClassesWith(classVisitorFactoryImplClass, scope, instrumentationParamsConfig)
     }
 
-    override var androidTest: com.android.build.api.component.AndroidTest? = null
+    override var androidTest: AndroidTestImpl? = null
+
+    override var testFixtures: TestFixturesImpl? = null
 
     override val renderscript: Renderscript? by lazy {
         delegate.renderscript(internalServices)
@@ -117,6 +125,9 @@ open class  LibraryVariantImpl @Inject constructor(
     override val aarMetadata: AarMetadata =
         internalServices.newInstance(AarMetadata::class.java).also {
             it.minCompileSdk.set(variantDslInfo.aarMetadata.minCompileSdk ?: 1)
+            it.minAgpVersion.set(
+                variantDslInfo.aarMetadata.minAgpVersion ?: DEFAULT_MIN_AGP_VERSION
+            )
         }
 
     // ---------------------------------------------------------------------------------------------
@@ -161,8 +172,8 @@ open class  LibraryVariantImpl @Inject constructor(
     override val needsShrinkDesugarLibrary: Boolean
         get() = delegate.needsShrinkDesugarLibrary
 
-    override val minSdkVersionWithTargetDeviceApi: AndroidVersion
-        get() = delegate.minSdkVersionWithTargetDeviceApi
+    override val minSdkVersionForDexing: AndroidVersion
+        get() = delegate.minSdkVersionForDexing
 
     override val packageJacocoRuntime: Boolean
         get() = variantDslInfo.isTestCoverageEnabled

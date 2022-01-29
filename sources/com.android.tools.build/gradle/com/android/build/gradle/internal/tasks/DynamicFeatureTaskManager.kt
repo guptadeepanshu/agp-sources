@@ -52,10 +52,9 @@ internal class DynamicFeatureTaskManager(
 ) {
 
     override fun doCreateTasksForVariant(
-            variantInfo: ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>,
-            allVariants: List<ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>>
+            variantInfo: ComponentInfo<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>
     ) {
-        createCommonTasks(variantInfo, allVariants)
+        createCommonTasks(variantInfo)
 
         val variant = variantInfo.variant
 
@@ -79,7 +78,7 @@ internal class DynamicFeatureTaskManager(
         // If namespaced resources are enabled, LINKED_RES_FOR_BUNDLE is not generated,
         // and the bundle can't be created. For now, just don't add the bundle task.
         // TODO(b/111168382): Remove this
-        if (variantProperties.globalScope.extension.aaptOptions.namespaced) {
+        if (variantProperties.services.projectInfo.getExtension().aaptOptions.namespaced) {
             return
         }
 

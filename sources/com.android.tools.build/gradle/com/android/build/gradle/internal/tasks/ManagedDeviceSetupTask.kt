@@ -20,6 +20,7 @@ import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.AvdComponentsBuildService
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.SdkComponentsBuildService.VersionedSdkLoader
 import com.android.build.gradle.internal.computeAvdName
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
 import com.android.build.gradle.internal.profile.AnalyticsService
@@ -29,10 +30,13 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.repository.Revision
+import com.android.testing.utils.computeSystemImageHashFromDsl
+import com.android.testing.utils.findClosestHashes
 import com.android.utils.GrabProcessOutput
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import org.gradle.work.DisableCachingByDefault
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
@@ -53,6 +57,7 @@ private val loggerWrapper = LoggerWrapper.getLogger(ManagedDeviceSetupTask::clas
  * This task is required as a dependency for all Unified Testing Platform Tasks that require this
  * device.
  */
+@DisableCachingByDefault
 abstract class ManagedDeviceSetupTask: NonIncrementalGlobalTask() {
 
     @get: Internal
@@ -100,70 +105,19 @@ abstract class ManagedDeviceSetupTask: NonIncrementalGlobalTask() {
                 compileSdkVersion = parameters.compileSdkVersion,
                 buildToolsRevision = parameters.buildToolsRevision
             )
+            val imageHash = parameters.imageHash.get()
+            val sdkImageProvider = versionedSdkLoader.sdkImageDirectoryProvider(imageHash)
+            if (!sdkImageProvider.isPresent) {
+                error(generateSystemImageErrorMessage(imageHash, versionedSdkLoader))
+            }
             parameters.avdService.get().avdProvider(
-                versionedSdkLoader.sdkImageDirectoryProvider(parameters.imageHash.get()),
+                sdkImageProvider,
                 parameters.imageHash.get(),
                 parameters.deviceName.get(),
                 parameters.hardwareProfile.get()).get()
 
-            if (parameters.avdService.get().deviceSnapshotCreated(parameters.deviceName.get())) {
-                // Snapshot is already there, don't need to create with emulator.
-                loggerWrapper.info("Snapshot already exists for device " +
-                        "${parameters.deviceName.get()}.")
-                return
-            }
-
-            loggerWrapper.info("Creating snapshot for ${parameters.deviceName.get()}")
-            val emulatorDir = versionedSdkLoader.emulatorDirectoryProvider.orNull?.asFile
-                ?: error("Emulator is missing.")
-            val emulatorExecutable = emulatorDir.resolve("emulator")
-            val processBuilder = ProcessBuilder(
-                listOf(
-                    emulatorExecutable.absolutePath,
-                    "@${parameters.deviceName.get()}",
-                    "-no-window",
-                    "-read-only",
-                    "-no-boot-anim"
-                )
-            )
-            val environment = processBuilder.environment()
-            environment["ANDROID_AVD_HOME"] =
-                parameters.avdService.get().parameters.avdLocation.get().asFile.absolutePath
-            val process = processBuilder.start()
-
-            try {
-                GrabProcessOutput.grabProcessOutput(
-                    process,
-                    GrabProcessOutput.Wait.ASYNC,
-                    object : GrabProcessOutput.IProcessOutput {
-                        override fun out(line: String?) {
-                            line ?: return
-                            if (line.contains("boot completed")) {
-                                Thread.sleep(WAIT_AFTER_BOOT_MS)
-                                process.destroyForcibly()
-                            }
-                        }
-
-                        override fun err(line: String?) {}
-                    }
-                )
-                if (!process.waitFor(DEVICE_BOOT_TIMEOUT_SEC, TimeUnit.SECONDS)) {
-                    process.destroyForcibly()
-                    process.waitFor()
-                    if (!parameters.avdService.get().deviceSnapshotCreated(
-                            parameters.deviceName.get())) {
-                        error("Failed to generate snapshot for device.")
-                    }
-                } else {
-                    loggerWrapper.info(
-                        "Successfully created snapshot for ${parameters.deviceName.get()}")
-                }
-            } catch (e : Exception) {
-                process.destroyForcibly()
-                process.waitFor()
-                throw RuntimeException(e)
-            }
-
+            parameters.avdService.get().ensureLoadableSnapshot(
+                parameters.deviceName.get())
         }
     }
 
@@ -178,19 +132,7 @@ abstract class ManagedDeviceSetupTask: NonIncrementalGlobalTask() {
     }
 
     private fun computeImageHash(): String {
-        return SYSTEM_IMAGE_PREFIX +
-                computeVersionString() + HASH_DIVIDER +
-                computeVendorString() + HASH_DIVIDER +
-                abi.get()
-    }
-
-    private fun computeVersionString() = "android-${apiLevel.get()}"
-
-    private fun computeVendorString() = when (systemImageVendor.get()) {
-        "google" -> "google_apis_playstore"
-        "aosp" -> "default"
-        else -> throw RuntimeException("Unrecognized systemImageVendor ${systemImageVendor.get()}" +
-                ". \"google\" or \"aosp\" expected.")
+        return computeSystemImageHashFromDsl(apiLevel.get(), systemImageVendor.get(), abi.get())
     }
 
     class CreationAction(
@@ -234,5 +176,47 @@ abstract class ManagedDeviceSetupTask: NonIncrementalGlobalTask() {
             )
         }
 
+    }
+
+    companion object {
+        fun generateSystemImageErrorMessage(
+            imageHash: String,
+            versionedSdkLoader: VersionedSdkLoader
+        ) : String {
+            // If the system image wasn't available. Check to see if we are offline.
+            if (versionedSdkLoader.offlineMode) {
+                return """
+                    $imageHash is not available, and could not be downloaded while in offline mode.
+                """.trimIndent()
+            }
+
+            val allImages = versionedSdkLoader.allSystemImageHashes() ?: listOf()
+            val targetHashes = findClosestHashes(
+                imageHash,
+                allImages
+            )
+
+            // Now need to figure out if it was a licensing issue or if the system
+            // image did not exist.
+            if (targetHashes.isEmpty()) {
+                // Don't know how we got here, this implies we generated an invalid hash string
+                return "Generated invalid hash string \"$imageHash\" from the DSL. This should" +
+                        " not occur."
+            }
+            if (targetHashes.first() == imageHash) {
+                // If the imageHash exists, the most likely scenario is that there is a licensing
+                // issue. This will already be reported by the SdkHandler, so we just reiterate
+                // here.
+                return """
+                    System image hash: $imageHash exists, but could not be downloaded. This is
+                    likely due to a licensing exception. See above errors for clarification.
+                """.trimIndent()
+            }
+            return """
+                System image hash: $imageHash does not exist. However, here is a list of similar
+                images:
+                $targetHashes
+            """.trimIndent()
+        }
     }
 }

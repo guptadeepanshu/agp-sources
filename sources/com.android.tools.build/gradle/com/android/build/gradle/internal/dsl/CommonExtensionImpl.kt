@@ -21,15 +21,14 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.ComposeOptions
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.Installation
-import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.TestCoverage
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.AndroidSourceSet
-import com.android.build.gradle.internal.CompileOptions
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
 import com.android.builder.errors.IssueReporter
@@ -38,6 +37,7 @@ import java.util.function.Supplier
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import java.io.File
+import java.util.regex.Pattern
 
 /** Internal implementation of the 'new' DSL interface */
 abstract class CommonExtensionImpl<
@@ -89,6 +89,10 @@ abstract class CommonExtensionImpl<
         action.invoke(aaptOptions)
     }
 
+    override fun aaptOptions(action: Action<AaptOptions>) {
+        action.execute(aaptOptions)
+    }
+
     override val installation: Installation = dslServices.newInstance(AdbOptions::class.java)
 
     override fun installation(action: Installation.() -> Unit) {
@@ -105,7 +109,11 @@ abstract class CommonExtensionImpl<
         action.invoke(adbOptions)
     }
 
-    fun buildFeatures(action: Action<BuildFeaturesT>) {
+    override fun adbOptions(action: Action<AdbOptions>) {
+        action.execute(adbOptions)
+    }
+
+    override fun buildFeatures(action: Action<BuildFeaturesT>) {
         action.execute(buildFeatures)
     }
 
@@ -113,41 +121,122 @@ abstract class CommonExtensionImpl<
         action(buildFeatures)
     }
 
-    override val compileOptions: CompileOptions =
-        dslServices.newInstance(CompileOptions::class.java)
+    protected abstract var _compileSdkVersion: String?
 
-    override fun compileOptions(action: com.android.build.api.dsl.CompileOptions.() -> Unit) {
-        action.invoke(compileOptions)
-    }
+    override var compileSdkVersion: String?
+        get() = _compileSdkVersion
 
-    override abstract var compileSdkVersion: String?
+        set(value) {
+            // set this first to enforce lockdown with right name
+            _compileSdkVersion = value
+
+            // then set the other values
+            _compileSdk = null
+            _compileSdkPreview = null
+            _compileSdkAddon = null
+
+            if (value == null) {
+                return
+            }
+
+            val compileData = parseTargetHash(value)
+
+            if (compileData.isAddon()) {
+                _compileSdkAddon = "${compileData.vendorName}:${compileData.addonName}:${compileData.apiLevel}"
+            } else {
+                _compileSdk = compileData.apiLevel
+                _compileSdkExtension = compileData.sdkExtension
+                _compileSdkPreview = compileData.codeName
+            }
+        }
+
+    protected abstract var _compileSdk: Int?
 
     override var compileSdk: Int?
-        get() {
-            if (compileSdkVersion == null) {
-                return null
-            }
-            if (compileSdkVersion!!.startsWith("android-")) {
-                return try {
-                    Integer.valueOf(compileSdkVersion!!.substring(8))
-                } catch (e: Exception) {
-                    null
+        get() = _compileSdk
+        set(value) {
+            _compileSdk = value
+
+            _compileSdkVersion = _compileSdk?.let { api ->
+                if (_compileSdkExtension != null) {
+                    "android-$api-ext$_compileSdkExtension"
+                } else {
+                    "android-$api"
                 }
             }
-            return null
-        }
-        set(value) {
-            compileSdkVersion = if (value == null) null
-            else "android-$value"
-        }
-    override var compileSdkPreview: String?
-        get() = compileSdkVersion?.let { if(it.startsWith("android-")) it.removePrefix("android-") else null }
-        set(value) {
-            compileSdkVersion = value?.removePrefix("android-")?.let { "android-$it" }
+
+            _compileSdkPreview = null
+            _compileSdkAddon = null
         }
 
+    protected abstract var _compileSdkExtension: Int?
+
+    override var compileSdkExtension: Int?
+        get() = _compileSdkExtension
+        set(value) {
+            _compileSdkExtension = value
+
+            _compileSdkVersion = _compileSdk?.let { api ->
+                if (value != null) {
+                    "android-$api-ext$value"
+                } else {
+                    "android-$api"
+                }
+            }
+
+            _compileSdkPreview = null
+            _compileSdkAddon = null
+        }
+
+    private var _compileSdkPreview: String? = null
+
+    override var compileSdkPreview: String?
+        get() = _compileSdkPreview
+        set(value) {
+            if (value == null) {
+                if (_compileSdkPreview != null) {
+                    // if current compile sdk value is preview, then null it out.
+                    _compileSdkPreview = null
+                    _compileSdkVersion = null
+                }
+                return
+            }
+
+            _compileSdkPreview = if (value.matches(Regex("^[A-Z][0-9A-Za-z]*$"))) {
+                value
+            } else {
+                if (value.toIntOrNull() != null) {
+                    dslServices.issueReporter.reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException("Invalid integer value for compileSdkPreview ($value). Use compileSdk instead")
+                    )
+                } else {
+                    val expected = if (value.startsWith("android-")) value.substring(8) else "S"
+                    dslServices.issueReporter.reportError(
+                        IssueReporter.Type.GENERIC,
+                        RuntimeException("Invalid value for compileSdkPreview (\"$value\"). Value must be a platform preview name (e.g. \"$expected\")")
+                    )
+                }
+
+                // has to set the value to something in case of sync
+                "INVALID"
+            }
+
+            _compileSdkVersion = "android-$value"
+            _compileSdk = null
+            _compileSdkExtension = null
+            _compileSdkAddon = null
+        }
+
+    private var _compileSdkAddon: String? = null
+
     override fun compileSdkAddon(vendor: String, name: String, version: Int) {
-        compileSdkVersion = "$vendor:$name:$version"
+        _compileSdkAddon = "$vendor:$name:$version"
+
+        _compileSdkVersion = _compileSdkAddon
+        _compileSdk = null
+        _compileSdkExtension = null
+        _compileSdkPreview = null
     }
 
     override fun compileSdkVersion(apiLevel: Int) {
@@ -163,6 +252,10 @@ abstract class CommonExtensionImpl<
 
     override fun composeOptions(action: ComposeOptions.() -> Unit) {
         action.invoke(composeOptions)
+    }
+
+    override fun composeOptions(action: Action<ComposeOptions>) {
+        action.execute(composeOptions)
     }
 
     override fun buildTypes(action: Action<in NamedDomainObjectContainer<BuildType>>) {
@@ -192,6 +285,10 @@ abstract class CommonExtensionImpl<
         action.invoke(dataBinding)
     }
 
+    override fun dataBinding(action: Action<DataBindingOptions>) {
+        action.execute(dataBinding)
+    }
+
     override fun defaultConfig(action: Action<com.android.build.gradle.internal.dsl.DefaultConfig>) {
         action.execute(defaultConfig as com.android.build.gradle.internal.dsl.DefaultConfig)
     }
@@ -205,6 +302,10 @@ abstract class CommonExtensionImpl<
 
     override fun externalNativeBuild(action: com.android.build.api.dsl.ExternalNativeBuild.() -> Unit) {
         action.invoke(externalNativeBuild)
+    }
+
+    override fun externalNativeBuild(action: Action<ExternalNativeBuild>) {
+        action.execute(externalNativeBuild)
     }
 
     override val testCoverage: TestCoverage  = dslServices.newInstance(JacocoOptions::class.java)
@@ -224,28 +325,21 @@ abstract class CommonExtensionImpl<
         action.invoke(jacoco)
     }
 
-    override val lint: Lint = dslServices.newInstance(LintOptions::class.java, dslServices)
-
-    override fun lint(action: Lint.() -> Unit) {
-        action.invoke(lint)
+    override fun jacoco(action: Action<JacocoOptions>) {
+        action.execute(jacoco)
     }
 
-    override fun lint(action: Action<Lint>) {
-        action.execute(lint)
+    final override val lintOptions: LintOptions by lazy(LazyThreadSafetyMode.PUBLICATION) {
+        dslServices.newInstance(LintOptions::class.java, dslServices, lint)
     }
 
-    override val lintOptions: LintOptions
-        get() = lint as LintOptions
 
     override fun lintOptions(action: com.android.build.api.dsl.LintOptions.() -> Unit) {
         action.invoke(lintOptions)
     }
 
-    override val packagingOptions: PackagingOptions =
-        dslServices.newInstance(PackagingOptions::class.java, dslServices)
-
-    override fun packagingOptions(action: com.android.build.api.dsl.PackagingOptions.() -> Unit) {
-        action.invoke(packagingOptions)
+    override fun lintOptions(action: Action<LintOptions>) {
+        action.execute(lintOptions)
     }
 
     override fun productFlavors(action: Action<NamedDomainObjectContainer<ProductFlavor>>) {
@@ -271,11 +365,8 @@ abstract class CommonExtensionImpl<
         sourceSetManager.executeAction(action)
     }
 
-    override val splits: Splits =
-        dslServices.newInstance(Splits::class.java, dslServices)
-
-    override fun splits(action: com.android.build.api.dsl.Splits.() -> Unit) {
-        action.invoke(splits)
+    override fun sourceSets(action: Action<NamedDomainObjectContainer<AndroidSourceSet>>) {
+        action.execute(sourceSets)
     }
 
     override val testOptions: TestOptions =
@@ -283,6 +374,10 @@ abstract class CommonExtensionImpl<
 
     override fun testOptions(action: com.android.build.api.dsl.TestOptions.() -> Unit) {
         action.invoke(testOptions)
+    }
+
+    override fun testOptions(action: Action<TestOptions>) {
+        action.execute(testOptions)
     }
 
     override var buildToolsVersion: String

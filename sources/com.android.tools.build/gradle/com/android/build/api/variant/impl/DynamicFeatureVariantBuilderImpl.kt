@@ -16,8 +16,9 @@
 
 package com.android.build.api.variant.impl
 
-import com.android.build.api.component.ComponentIdentity
 import com.android.build.api.component.analytics.AnalyticsEnabledDynamicFeatureVariantBuilder
+import com.android.build.api.dsl.DynamicFeatureExtension
+import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.core.VariantDslInfo
@@ -27,7 +28,7 @@ import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import javax.inject.Inject
 
 open class DynamicFeatureVariantBuilderImpl @Inject constructor(
-    variantDslInfo: VariantDslInfo,
+    variantDslInfo: VariantDslInfo<DynamicFeatureExtension>,
     variantConfiguration: ComponentIdentity,
     variantApiServices: VariantApiServices
 ) : VariantBuilderImpl(
@@ -43,6 +44,8 @@ open class DynamicFeatureVariantBuilderImpl @Inject constructor(
         }
 
     override var enableAndroidTest: Boolean = true
+
+    override var enableTestFixtures: Boolean = variantDslInfo.enableTestFixtures
 
     override fun <T : VariantBuilder> createUserVisibleVariantObject(
             projectServices: ProjectServices,

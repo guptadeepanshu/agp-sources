@@ -17,11 +17,15 @@ package com.android.build.gradle
 
 import com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.dsl.Lint
+import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule
+import com.android.build.gradle.internal.dsl.LintImpl
 import com.android.build.gradle.internal.dsl.LintOptions
+import com.android.build.gradle.internal.dsl.decorator.androidPluginDslDecorator
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.ide.dependencies.LibraryDependencyCacheBuildService
@@ -30,11 +34,12 @@ import com.android.build.gradle.internal.ide.v2.GlobalLibraryBuildService
 import com.android.build.gradle.internal.lint.AndroidLintAnalysisTask
 import com.android.build.gradle.internal.lint.AndroidLintCopyReportTask
 import com.android.build.gradle.internal.lint.AndroidLintTask
+import com.android.build.gradle.internal.lint.AndroidLintTextOutputTask
 import com.android.build.gradle.internal.lint.LintFixBuildService
+import com.android.build.gradle.internal.lint.LintFromMaven
 import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
-import com.android.build.gradle.internal.plugins.BasePlugin
 import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.AnalyticsUtil
@@ -47,6 +52,10 @@ import com.android.build.gradle.internal.services.DslServicesImpl
 import com.android.build.gradle.internal.services.LintClassLoaderBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.StringCachingBuildService
+import com.android.build.gradle.internal.tasks.LintModelMetadataTask
+import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.services.TaskCreationServicesImpl
+import com.android.build.gradle.internal.services.VariantPropertiesApiServicesImpl
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.SyncOptions
@@ -72,7 +81,7 @@ import javax.inject.Inject
  */
 abstract class LintPlugin : Plugin<Project> {
     private lateinit var projectServices: ProjectServices
-    private var dslServices: DslServicesImpl? = null
+    private lateinit var dslServices: DslServicesImpl
     private var lintOptions: LintOptions? = null
 
     @get:Inject
@@ -89,18 +98,18 @@ abstract class LintPlugin : Plugin<Project> {
             project.providers.provider { null }
         )
 
-        createExtension(project)
-        withJavaPlugin(project) { registerTasks(project) }
+        val dslOperationsRegistrar = createExtension(project, dslServices)
+        withJavaPlugin(project) { registerTasks(project, dslOperationsRegistrar) }
     }
-    private fun registerTasks(project: Project) {
+    private fun registerTasks(project: Project, dslOperationsRegistrar: DslLifecycleComponentsOperationsRegistrar<Lint>) {
         val javaConvention: JavaPluginConvention = getJavaPluginConvention(project) ?: return
         val customLintChecksConfig = TaskManager.createCustomLintChecksConfig(project)
         val customLintChecks = getLocalCustomLintChecks(customLintChecksConfig)
-        BasePlugin.createLintClasspathConfiguration(project, projectServices.projectOptions)
         registerTasks(
             project,
             javaConvention,
-            customLintChecks
+            customLintChecks,
+            dslOperationsRegistrar,
         )
         ModelArtifactCompatibilityRule.setUp(project.dependencies.attributesSchema)
     }
@@ -108,38 +117,62 @@ abstract class LintPlugin : Plugin<Project> {
     private fun registerTasks(
         project: Project,
         javaConvention: JavaPluginConvention,
-        customLintChecks: FileCollection
+        customLintChecks: FileCollection,
+        dslOperationsRegistrar: DslLifecycleComponentsOperationsRegistrar<Lint>,
     ) {
         registerBuildServices(project)
         val artifacts = ArtifactsImpl(project, "global")
+        val taskCreationServices: TaskCreationServices = TaskCreationServicesImpl(
+            VariantPropertiesApiServicesImpl(projectServices), projectServices
+        )
         // Create the 'lint' task before afterEvaluate to avoid breaking existing build scripts that
         // expect it to be present during evaluation
-        val lintTask =
-            project.tasks.register("lint", AndroidLintTask::class.java) { task ->
-                task.description = "Generates the lint report for project `${project.name}`"
-            }
+        val lintTask = project.tasks.register("lint", AndroidLintTextOutputTask::class.java)
         project.tasks.named(JavaBasePlugin.CHECK_TASK_NAME).configure { t: Task -> t.dependsOn(lintTask) }
 
         // Avoid reading the lintOptions DSL and build directory before the build author can customize them
         project.afterEvaluate {
+            dslOperationsRegistrar.executeDslFinalizationBlocks()
+
             lintTask.configure { task ->
+                task.configureForStandalone(taskCreationServices, artifacts, lintOptions!!)
+            }
+            project.tasks.register("lintReport", AndroidLintTask::class.java) { task ->
+                task.description = "Generates the lint report for project `${project.name}`"
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     customLintChecks,
                     lintOptions!!,
                     artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
                     artifacts.getOutputPath(InternalArtifactType.LINT_MODEL)
                 )
+            }.also {
+                AndroidLintTask.VariantCreationAction.registerLintIntermediateArtifacts(
+                    it,
+                    artifacts
+                )
+                AndroidLintTask.SingleVariantCreationAction.registerLintReportArtifacts(
+                    it,
+                    artifacts,
+                    null,
+                    project.buildDir.resolve("reports")
+                )
             }
 
-            project.tasks.register("lintVital", AndroidLintTask::class.java) { task ->
+            project.tasks.register("lintVital", AndroidLintTextOutputTask::class.java) { task ->
+                task.configureForStandalone(
+                    taskCreationServices,
+                    artifacts,
+                    lintOptions!!,
+                    fatalOnly = true
+                )
+            }
+            project.tasks.register("lintVitalReport", AndroidLintTask::class.java) { task ->
                 task.description =
                     "Generates the lint report for just the fatal issues for project  `${project.name}`"
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     customLintChecks,
                     lintOptions!!,
@@ -147,12 +180,18 @@ abstract class LintPlugin : Plugin<Project> {
                     artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
                     fatalOnly = true
                 )
+            }.also {
+                AndroidLintTask.VariantCreationAction.registerLintIntermediateArtifacts(
+                    it,
+                    artifacts,
+                    fatalOnly = true
+                )
             }
+
             project.tasks.register("lintFix", AndroidLintTask::class.java) { task ->
                 task.description = "Generates the lint report for project `${project.name}` and applies any safe suggestions to the source code."
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     customLintChecks,
                     lintOptions!!,
@@ -164,8 +203,7 @@ abstract class LintPlugin : Plugin<Project> {
             val lintAnalysisTask = project.tasks.register("lintAnalyze", AndroidLintAnalysisTask::class.java) { task ->
                 task.description = "Runs lint analysis for project `${project.name}`"
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     customLintChecks,
                     lintOptions!!
@@ -180,8 +218,7 @@ abstract class LintPlugin : Plugin<Project> {
                 task.description =
                     "Runs lint analysis on just the fatal issues for project `${project.name}`"
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     customLintChecks,
                     lintOptions!!,
@@ -195,8 +232,7 @@ abstract class LintPlugin : Plugin<Project> {
             )
             val lintModelWriterTask = project.tasks.register("generateLintModel", LintModelWriterTask::class.java) { task ->
                 task.configureForStandalone(
-                    project,
-                    projectServices.projectOptions,
+                    taskCreationServices,
                     javaConvention,
                     lintOptions!!,
                     artifacts.getOutputPath(
@@ -206,7 +242,12 @@ abstract class LintPlugin : Plugin<Project> {
                 )
             }
             LintModelWriterTask.BaseCreationAction.registerOutputArtifacts(lintModelWriterTask, artifacts)
-            AndroidLintTask.SingleVariantCreationAction.registerLintReportArtifacts(lintTask, artifacts, null, project.buildDir.resolve("reports"))
+            val lintModelMetadataWriterTask =
+                project.tasks
+                    .register("writeLintModelMetadata", LintModelMetadataTask::class.java) { task ->
+                        task.configureForStandalone(project)
+                    }
+            LintModelMetadataTask.registerOutputArtifacts(lintModelMetadataWriterTask, artifacts)
             if (LintTaskManager.needsCopyReportTask(lintOptions!!)) {
                 val copyLintReportsTask =
                     project.tasks.register(
@@ -239,6 +280,12 @@ abstract class LintPlugin : Plugin<Project> {
                         AndroidArtifacts.ArtifactType.LINT_PARTIAL_RESULTS,
                         AndroidAttributes(category = androidLintCategory)
                     )
+                    publishArtifactToConfiguration(
+                        configuration,
+                        artifacts.get(InternalArtifactType.LINT_MODEL_METADATA),
+                        AndroidArtifacts.ArtifactType.LINT_MODEL_METADATA,
+                        AndroidAttributes(category = androidLintCategory)
+                    )
                     // We don't want to publish the lint models or partial results to repositories.
                     // Remove them.
                     project.components.all { component: SoftwareComponent ->
@@ -257,8 +304,23 @@ abstract class LintPlugin : Plugin<Project> {
         }
     }
 
-    private fun createExtension(project: Project) {
-        lintOptions = project.extensions.create("lintOptions", LintOptions::class.java, dslServices)
+    private fun createExtension(
+        project: Project,
+        dslServices: DslServicesImpl
+    ): DslLifecycleComponentsOperationsRegistrar<Lint> {
+        val lintImplClass = androidPluginDslDecorator.decorate(LintImpl::class.java)
+        val newLintExtension = project.extensions.create(Lint::class.java, "lint", lintImplClass, dslServices)
+        val decoratedLintOptionsClass =
+            androidPluginDslDecorator.decorate(LintOptions::class.java)
+        lintOptions =
+            project.extensions.create("lintOptions", decoratedLintOptionsClass, dslServices, newLintExtension)
+        val dslOperationsRegistrar= DslLifecycleComponentsOperationsRegistrar<Lint>(newLintExtension)
+        project.extensions.create(
+            "lintLifecycle",
+            LintLifecycleExtensionImpl::class.java,
+            dslOperationsRegistrar
+        )
+        return dslOperationsRegistrar
     }
 
     private fun withJavaPlugin(project: Project, action: Action<Plugin<*>>) {
@@ -291,9 +353,11 @@ abstract class LintPlugin : Plugin<Project> {
         val deprecationReporter =
             DeprecationReporterImpl(syncIssueReporter, projectOptions, projectPath)
         val projectInfo = ProjectInfo(project)
+        val lintFromMaven = LintFromMaven.from(project, projectOptions, syncIssueReporter)
         projectServices = ProjectServices(
             syncIssueReporter, deprecationReporter, objectFactory, project.logger,
             project.providers, project.layout, projectOptions, project.gradle.sharedServices,
+            lintFromMaven,
             maxWorkerCount = project.gradle.startParameter.maxWorkerCount, projectInfo = projectInfo
         ) { o: Any -> project.file(o) }
         projectOptions

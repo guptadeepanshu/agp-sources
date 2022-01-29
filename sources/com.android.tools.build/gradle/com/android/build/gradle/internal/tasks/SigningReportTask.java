@@ -45,10 +45,12 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.logging.text.StyledTextOutput;
 import org.gradle.internal.logging.text.StyledTextOutputFactory;
+import org.gradle.work.DisableCachingByDefault;
 
 /**
  * Report tasks displaying the signing information for all variants.
  */
+@DisableCachingByDefault
 public class SigningReportTask extends DefaultTask {
 
     private List<ApkCreationConfig> components;
@@ -67,7 +69,7 @@ public class SigningReportTask extends DefaultTask {
             textOutput.println();
 
             // get the data
-            SigningConfigImpl signingConfig = component.getSigningConfig();
+            SigningConfigImpl signingConfig = component.getSigningConfigImpl();
             if (signingConfig == null) {
                 textOutput.withStyle(Identifier).text("Config: ");
                 textOutput.withStyle(Normal).text("none");

@@ -21,16 +21,22 @@ import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 /**
  * Four kinds of Gradle task.
  *
- * Configure: Invokes CMake or ndk-build to create a configuration, including compile_commands.json
- * Build: Invokes ninja or ndk-build to build .so files for a single ABI.
- * VariantBuild: A referring build used to depend on single ABI build tasks.
- * Anchor: A placeholder task that exists to depend on working tasks.
+ * Configure: Invokes CMake or ndk-build to create a configuration for a single ABI, including
+ *   compile_commands.json.
+ * ConfigureGroup: A grouping task that depends on all ABIs of a single configuration.
+ * VariantConfigure: A per-variant configure task that refers many-to-one with per-configuration
+ *   configure.
+ * Build: Invokes ninja or ndk-build to build .so files for a single configuration and ABI.
+ * BuildGroup: A grouping task that depends on all ABIs of a single build configuration.
+ * VariantBuild: A per-variant build that refers many-to-one with per-configuration builds.
  */
 sealed class CxxGradleTaskModel {
-    data class Configure(val representatives: List<CxxAbiModel>) : CxxGradleTaskModel()
-    data class Build(val representatives: List<CxxAbiModel>) : CxxGradleTaskModel()
-    data class VariantBuild(val variantName: String, val isRepublishOnly:Boolean, val representatives: List<CxxAbiModel>) : CxxGradleTaskModel()
-    data class Anchor(val variantName: String) : CxxGradleTaskModel()
+    data class Configure(val representative: CxxAbiModel) : CxxGradleTaskModel()
+    object ConfigureGroup : CxxGradleTaskModel()
+    data class VariantConfigure(val representatives: List<CxxAbiModel>) : CxxGradleTaskModel()
+    data class Build(val representative: CxxAbiModel) : CxxGradleTaskModel()
+    object BuildGroup : CxxGradleTaskModel()
+    data class VariantBuild(val representatives: List<CxxAbiModel>) : CxxGradleTaskModel()
 }
 
 /**
@@ -38,5 +44,5 @@ sealed class CxxGradleTaskModel {
  */
 data class CxxTaskDependencyModel(
         val tasks : Map<String, CxxGradleTaskModel>, // Key is task name
-        val edges : List<Pair<String, String>>   // first dependsOn second
+        val edges : List<Pair<String, String>>   // first task name dependsOn second
 )

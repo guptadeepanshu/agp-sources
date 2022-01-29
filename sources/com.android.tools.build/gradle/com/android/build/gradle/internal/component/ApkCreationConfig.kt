@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.component
 
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.ApkPackaging
+import com.android.build.api.variant.impl.BundleConfigImpl
 import com.android.build.api.variant.impl.SigningConfigImpl
 import org.gradle.api.provider.MapProperty
 import java.io.File
@@ -53,7 +54,7 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     /**
      * Variant's signing information of null if signing is not configured for this variant.
      */
-    val signingConfig: SigningConfigImpl?
+    val signingConfigImpl: SigningConfigImpl?
 
     /**
      * DO NOT USE, only present for old variant API.
@@ -61,4 +62,7 @@ interface ApkCreationConfig: ConsumableCreationConfig {
     val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig?
 
     val multiDexKeepFile: File?
+
+    val bundleConfig: BundleConfigImpl?
+        get() = null
 }

@@ -44,6 +44,10 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.process.CommandLineArgumentProvider
 
+// KAPT resolving artifacts at configuration time was fixed in version 1.5.20. For versions older
+// than that we need to workaround the issue by merging R files in a separate task.
+val KAPT_FIX_KOTLIN_VERSION: KotlinVersion = KotlinVersion(1, 5, 20)
+
 /**
  * Arguments passed to data binding. This class mimics the [CompilerArguments] class except that it
  * also implements [CommandLineArgumentProvider] for input/output annotations.
@@ -63,12 +67,24 @@ class DataBindingCompilerArguments constructor(
     @get:Input
     val minApi: Int,
 
-    // We can't set the sdkDir as an @InputDirectory because it is too large to compute a hash. We
-    // can't set it as an @Input either because it would break cache relocatability. Therefore, we
-    // annotate it with @Internal, expecting that the directory's contents should be stable and this
-    // won't affect correctness.
-    @get:Internal
-    val sdkDir: Provider<Directory>,
+    /**
+     * The API versions file from the platform being compiled against.
+     *
+     * Historically this was distributed in platform-tools. It has been moved to platforms, so it
+     * is versioned now. (There was some overlap, so this is available in platforms since platform
+     * api 26, and was removed in the platform-tools several years later in 31.x)
+     *
+     * This will not be present if the compile-sdk version is less than 26 (a fallback to
+     * platform-tools would not help for users that update their SDK, as it is removed in recent
+     * platform-tools)
+     *
+     * Data binding will fall back to a fixed api versions file shipped as a java resource in the
+     * unusual case of compiling against an older version.
+     */
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    val apiVersionsFile: Provider<RegularFile>,
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -149,7 +165,7 @@ class DataBindingCompilerArguments constructor(
             artifactType = artifactType,
             modulePackage = packageName.get(),
             minApi = minApi,
-            sdkDir = sdkDir.get().asFile,
+            apiFile = apiVersionsFile.get().asFile,
             dependencyArtifactsDir = dependencyArtifactsDir.get().asFile,
             layoutInfoDir = layoutInfoDir.get().asFile,
             classLogDir = classLogDir.get().asFile,
@@ -180,7 +196,8 @@ class DataBindingCompilerArguments constructor(
             creationConfig: ComponentCreationConfig,
             enableDebugLogs: Boolean,
             printEncodedErrorLogs: Boolean,
-            isKaptPluginApplied: Boolean
+            isKaptPluginApplied: Boolean,
+            projectKotlinVersion: KotlinVersion?
         ): DataBindingCompilerArguments {
             val globalScope = creationConfig.globalScope
             val artifacts = creationConfig.artifacts
@@ -193,9 +210,14 @@ class DataBindingCompilerArguments constructor(
                     else null
 
             // TODO(183423660): Re-enable this fully and removed merged dependencies R file after
-            //  KAPT bug is fixed
+            //  KAPT min version is higher or equal to 1.5.20.
+            val kaptWorkaroundNeeded =
+                    isKaptPluginApplied
+                            && projectKotlinVersion != null
+                            && projectKotlinVersion < KAPT_FIX_KOTLIN_VERSION
+
             val dependenciesLocalRFiles =
-                    if (isNonTransitiveR && !isKaptPluginApplied)
+                    if (isNonTransitiveR && !kaptWorkaroundNeeded)
                         creationConfig.variantDependencies.getArtifactFileCollection(
                                 AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                                 AndroidArtifacts.ArtifactScope.ALL,
@@ -203,7 +225,7 @@ class DataBindingCompilerArguments constructor(
                     else null
 
             val mergedDependenciesRFile =
-                    if (isNonTransitiveR && isKaptPluginApplied)
+                    if (isNonTransitiveR && kaptWorkaroundNeeded)
                         artifacts.get(InternalArtifactType.MERGED_DEPENDENCIES_SYMBOL_LIST)
                     else null
 
@@ -213,7 +235,7 @@ class DataBindingCompilerArguments constructor(
                 artifactType = getModuleType(creationConfig),
                 packageName = creationConfig.namespace,
                 minApi = creationConfig.minSdkVersion.apiLevel,
-                sdkDir = globalScope.sdkComponents.flatMap { it.sdkDirectoryProvider },
+                apiVersionsFile = globalScope.versionedSdkLoader.flatMap { it.apiVersionsFile },
                 dependencyArtifactsDir = artifacts.get(DATA_BINDING_DEPENDENCY_ARTIFACTS),
                 layoutInfoDir = artifacts.get(getLayoutInfoArtifactType(creationConfig)),
                 classLogDir = artifacts.get(DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),

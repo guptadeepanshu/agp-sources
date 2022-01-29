@@ -60,6 +60,10 @@ public enum IntegerOption
    * <code>TEST_FAILURE_RETENTION = 12;</code>
    */
   TEST_FAILURE_RETENTION(12),
+  /**
+   * <code>MANAGED_DEVICE_SHARD_POOL_SIZE = 13;</code>
+   */
+  MANAGED_DEVICE_SHARD_POOL_SIZE(13),
   UNRECOGNIZED(-1),
   ;
 
@@ -115,6 +119,10 @@ public enum IntegerOption
    * <code>TEST_FAILURE_RETENTION = 12;</code>
    */
   public static final int TEST_FAILURE_RETENTION_VALUE = 12;
+  /**
+   * <code>MANAGED_DEVICE_SHARD_POOL_SIZE = 13;</code>
+   */
+  public static final int MANAGED_DEVICE_SHARD_POOL_SIZE_VALUE = 13;
 
 
   public final int getNumber() {
@@ -154,6 +162,7 @@ public enum IntegerOption
       case 10: return PRE_O_MAX_NUMBER_OF_FEATURES;
       case 11: return AAPT2_THREAD_POOL_SIZE;
       case 12: return TEST_FAILURE_RETENTION;
+      case 13: return MANAGED_DEVICE_SHARD_POOL_SIZE;
       default: return null;
     }
   }

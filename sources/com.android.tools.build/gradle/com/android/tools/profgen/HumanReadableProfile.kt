@@ -82,7 +82,7 @@ fun HumanReadableProfile(
     val rules = src.readLines().mapIndexedNotNull { lineNumber, line ->
         val errorHandler: (Int, String) -> Unit = { columnNumber, message ->
                 failed = true
-                onError(lineNumber, columnNumber, message)
+                onError(lineNumber, columnNumber, message.withSnippet(line, columnNumber))
             }
         parseRule(line, errorHandler, fragmentParser)
     }
@@ -138,6 +138,10 @@ fun HumanReadableProfile(file: File,  diagnostics: Diagnostics): HumanReadablePr
     }
 }
 
+internal fun String.withSnippet(line: String, column: Int) =
+    "$this\n$line\n${" ".repeat(column)}^"
+
+
 internal sealed class Part {
     class Exact(val value: String) : Part() {
         override fun toString(): String = value
@@ -146,8 +150,12 @@ internal sealed class Part {
         override fun toString(): String = parsed
     }
     object WildChar : Pattern("[\\w<>\\[\\]]", "?")
-    object WildPart : Pattern("(\\-(?!\\>)|[\\w\\$<>\\[\\]])*", "*")
-    object WildParts : Pattern("(\\-(?!\\>)|[\\w\\$<>/;\\[\\]])*", "**")
+    // Note that this regex will match `->` even though the HRP syntax will prevent wild parts from
+    // matching with the method separator. This is okay because we only ever build regular
+    // expressions to match the method name, parameters, and class name separately, so the parser
+    // itself will guarantee that only a single `->` token per line is actually allowed.
+    object WildPart : Pattern("[-\\w\\$<>\\[\\]]*", "*")
+    object WildParts : Pattern("[-\\w\\$<>/;\\[\\]]*", "**")
 }
 
 internal class Flags(var flags: Int = 0)
@@ -285,52 +293,52 @@ internal fun parseRule(
     }
     var i = 0
     try {
-    if (line[i] == COMMENT_START) {
-        // If the line starts with a comment, the entire line gets skipped
-        return null
-    }
-    val flags = Flags().apply { i = parseFlags(line, i) }
-    val targetIndex = i
-    i = fragmentParser.parseTarget(line, i)
-    val target = fragmentParser.build()
-    // check if it has only target class
-    if (i == line.length || line[i].isWhitespace()) {
-        if (flags.flags != 0) {
-            throw ParsingException(0, flagsForClassRuleMessage(line.substring(0, targetIndex)))
+        if (line[i] == COMMENT_START) {
+            // If the line starts with a comment, the entire line gets skipped
+            return null
+        }
+        val flags = Flags().apply { i = parseFlags(line, i) }
+        val targetIndex = i
+        i = fragmentParser.parseTarget(line, i)
+        val target = fragmentParser.build()
+        // check if it has only target class
+        if (i == line.length || line[i].isWhitespace()) {
+            if (flags.flags != 0) {
+                throw ParsingException(0, flagsForClassRuleMessage(line.substring(0, targetIndex)))
+            }
+            return ProfileRule(
+                    MethodFlags.STARTUP,
+                    target,
+                    RuleFragment.Empty,
+                    RuleFragment.Empty,
+                    RuleFragment.Empty
+            )
+        }
+        i = consume(METHOD_SEPARATOR_START, line, i)
+        i = consume(METHOD_SEPARATOR_END, line, i)
+        i = fragmentParser.parseMethodName(line, i)
+        val method = fragmentParser.build()
+        i = consume(OPEN_PAREN, line, i)
+        i = fragmentParser.parseParameters(line, i)
+        val parameters = fragmentParser.build()
+        i = consume(CLOSE_PAREN, line, i)
+        i = fragmentParser.parseReturnType(line, i)
+        val returnType = fragmentParser.build()
+        if (i != line.length) {
+            if (line.substring(i).isNotBlank()) {
+                throw ParsingException(i, unexpectedTextAfterRule(line.substring(i)))
+            }
+        }
+        if (flags.flags == 0) {
+            throw ParsingException(0, emptyFlagsForMethodRuleMessage())
         }
         return ProfileRule(
-                MethodFlags.STARTUP,
-                target,
-                RuleFragment.Empty,
-                RuleFragment.Empty,
-                RuleFragment.Empty
+            flags = flags.flags,
+            target = target,
+            method = method,
+            params = parameters,
+            returnType = returnType,
         )
-    }
-    i = consume(METHOD_SEPARATOR_START, line, i)
-    i = consume(METHOD_SEPARATOR_END, line, i)
-    i = fragmentParser.parseMethodName(line, i)
-    val method = fragmentParser.build()
-    i = consume(OPEN_PAREN, line, i)
-    i = fragmentParser.parseParameters(line, i)
-    val parameters = fragmentParser.build()
-    i = consume(CLOSE_PAREN, line, i)
-    i = fragmentParser.parseReturnType(line, i)
-    val returnType = fragmentParser.build()
-    if (i != line.length) {
-        if (line.substring(i).isNotBlank()) {
-            throw ParsingException(i, unexpectedTextAfterRule(line.substring(i)))
-        }
-    }
-    if (flags.flags == 0) {
-        throw ParsingException(0, emptyFlagsForMethodRuleMessage())
-    }
-    return ProfileRule(
-        flags = flags.flags,
-        target = target,
-        method = method,
-        params = parameters,
-        returnType = returnType,
-    )
     } catch (ex: ParsingException) {
         onError(ex.index, ex.message!!)
         return null

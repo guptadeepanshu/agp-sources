@@ -21,6 +21,7 @@ import com.android.annotations.concurrency.GuardedBy;
 import com.android.ddmlib.AdbCommandRejectedException;
 import com.android.ddmlib.AdbHelper;
 import com.android.ddmlib.AndroidDebugBridge;
+import com.android.ddmlib.AvdData;
 import com.android.ddmlib.ClientData;
 import com.android.ddmlib.ClientTracker;
 import com.android.ddmlib.CollectingOutputReceiver;
@@ -47,11 +48,10 @@ import com.android.ddmlib.log.LogReceiver;
 import com.android.sdklib.AndroidVersion;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Atomics;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,6 +63,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -77,10 +78,8 @@ public final class DeviceImpl implements IDevice {
     /** Serial number of the device */
     private final String mSerialNumber;
 
-    /** Name of the AVD */
-    @Nullable private String mAvdName;
-
-    @Nullable private String mAvdPath;
+    /** Name and path of the AVD */
+    private final SettableFuture<AvdData> mAvdData = SettableFuture.create();
 
     /** State of the device. */
     private DeviceState mState;
@@ -161,31 +160,34 @@ public final class DeviceImpl implements IDevice {
     @Nullable
     @Override
     public String getAvdName() {
-        return mAvdName;
-    }
-
-    /** Sets the name of the AVD */
-    void setAvdName(String avdName) {
-        if (!isEmulator()) {
-            throw new IllegalArgumentException(
-                    "Cannot set the AVD name of the device is not an emulator");
-        }
-
-        mAvdName = avdName;
+        AvdData avdData = getCurrentAvdData();
+        return avdData != null ? avdData.getName() : null;
     }
 
     @Nullable
     @Override
     public String getAvdPath() {
-        return mAvdPath;
+        AvdData avdData = getCurrentAvdData();
+        return avdData != null ? avdData.getPath() : null;
     }
 
-    void setAvdPath(@NonNull String avdPath) {
-        if (!isEmulator()) {
-            throw new IllegalStateException();
+    @Nullable
+    private AvdData getCurrentAvdData() {
+        try {
+            return mAvdData.isDone() ? mAvdData.get() : null;
+        } catch (ExecutionException | InterruptedException e) {
+            return null;
         }
+    }
 
-        mAvdPath = avdPath;
+    @NonNull
+    @Override
+    public ListenableFuture<AvdData> getAvdData() {
+        return mAvdData;
+    }
+
+    void setAvdData(@Nullable AvdData data) {
+        mAvdData.set(data);
     }
 
     @NonNull
@@ -337,6 +339,10 @@ public final class DeviceImpl implements IDevice {
     public boolean supportsFeature(@NonNull Feature feature) {
         switch (feature) {
             case SCREEN_RECORD:
+                if (supportsFeature(HardwareFeature.WATCH)) {
+                    // Currently physical watches do not support screen recording.
+                    return false;
+                }
                 if (!getVersion().isGreaterOrEqualThan(19)) {
                     return false;
                 }
@@ -397,20 +403,11 @@ public final class DeviceImpl implements IDevice {
     // reading the build characteristics property.
     @Override
     public boolean supportsFeature(@NonNull HardwareFeature feature) {
-        if (mHardwareCharacteristics == null) {
-            try {
-                String characteristics = getProperty(PROP_BUILD_CHARACTERISTICS);
-                if (characteristics == null) {
-                    return false;
-                }
-
-                mHardwareCharacteristics = Sets.newHashSet(Splitter.on(',').split(characteristics));
-            } catch (Exception e) {
-                mHardwareCharacteristics = Collections.emptySet();
-            }
+        try {
+            return getHardwareCharacteristics().contains(feature.getCharacteristic());
+        } catch (Exception e) {
+            return false;
         }
-
-        return mHardwareCharacteristics.contains(feature.getCharacteristic());
     }
 
     @NonNull
@@ -793,24 +790,31 @@ public final class DeviceImpl implements IDevice {
     }
 
     @Override
-    public void removeForward(int localPort, int remotePort)
+    public void removeForward(int localPort)
             throws TimeoutException, AdbCommandRejectedException, IOException {
         AdbHelper.removeForward(
                 AndroidDebugBridge.getSocketAddress(),
                 this,
-                String.format("tcp:%d", localPort), //$NON-NLS-1$
-                String.format("tcp:%d", remotePort)); //$NON-NLS-1$
+                String.format("tcp:%d", localPort)); // $NON-NLS-1$
     }
 
     @Override
-    public void removeForward(
-            int localPort, String remoteSocketName, DeviceUnixSocketNamespace namespace)
+    public void createReverse(int remotePort, int localPort)
             throws TimeoutException, AdbCommandRejectedException, IOException {
-        AdbHelper.removeForward(
+        AdbHelper.createReverse(
                 AndroidDebugBridge.getSocketAddress(),
                 this,
-                String.format("tcp:%d", localPort), //$NON-NLS-1$
-                String.format("%s:%s", namespace.getType(), remoteSocketName)); //$NON-NLS-1$
+                String.format(Locale.US, "tcp:%d", localPort), //$NON-NLS-1$
+                String.format(Locale.US, "tcp:%d", remotePort)); //$NON-NLS-1$
+    }
+
+    @Override
+    public void removeReverse(int remotePort)
+            throws TimeoutException, AdbCommandRejectedException, IOException {
+        AdbHelper.removeReverse(
+                AndroidDebugBridge.getSocketAddress(),
+                this,
+                String.format(Locale.US, "tcp:%d", remotePort)); //$NON-NLS-1$
     }
 
     // @VisibleForTesting

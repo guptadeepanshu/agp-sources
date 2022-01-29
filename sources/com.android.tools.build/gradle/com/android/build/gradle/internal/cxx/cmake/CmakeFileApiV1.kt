@@ -19,14 +19,18 @@ import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Artifacts
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.CompileGroups
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Dependencies
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Link
+import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Paths
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Source
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.SourceGroups
 import com.android.build.gradle.internal.cxx.cmake.TargetDataItem.Type
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty
+import com.android.build.gradle.internal.cxx.configure.convertCMakeToCompileCommandsBin
+import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.writeNativeBuildConfigValueToJsonFile
 import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValue
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValue
 import com.android.build.gradle.internal.cxx.json.NativeToolchainValue
 import com.android.build.gradle.internal.cxx.logging.errorln
+import com.android.build.gradle.internal.cxx.logging.warnln
 import com.android.utils.cxx.CxxDiagnosticCode.EXTRA_OUTPUT
 import com.google.gson.GsonBuilder
 import com.google.gson.stream.JsonReader
@@ -65,18 +69,21 @@ private fun findCmakeQueryApiIndexFile(replyFolder: File) : File? {
     if (files == null || files.isEmpty()) error("$replyFolder didn't have any files: $files")
     return files.toList()
             .filter { it.name.startsWith("index") && it.name.endsWith(".json") }
-            .maxBy { it.name }
+            .maxByOrNull { it.name }
 }
 
 
 /**
- * Information about a single source file. [path] should be a full path, [sourceGroup] is usually
- * "Source Files" or "Header Files", and [compileGroup] contains flags, defines, and other
- * information relevant to a single source or header file.
+ * Information about a single source file.
  */
 data class CmakeFileApiSourceFile(
-    val path : File,
+    // Path to the root sources folder
+    val rootSourceFolder : File,
+    // Path to a particular source file, if not absolute then relative to [rootSourceFolder]
+    val sourcePath : String,
+    // A type for this file. For example, "Source Files" or "Header Files"
     val sourceGroup : String,
+    // Contains flags, defines, and other information relevant to a single source or header file
     val compileGroup : TargetCompileGroupData?
 )
 
@@ -90,7 +97,9 @@ fun readCmakeFileApiReply(
     sourceFlagAction: (CmakeFileApiSourceFile) -> Unit
 ) : NativeBuildConfigValue {
     val indexFile = findCmakeQueryApiIndexFile(replyFolder)!!
-    val index = GSON.fromJson(FileReader(indexFile), IndexData::class.java)
+    val index = FileReader(indexFile).use { reader ->
+        GSON.fromJson(reader, IndexData::class.java)
+    }
     val config = NativeBuildConfigValue()
 
     // Read CMake cache properties
@@ -128,8 +137,7 @@ fun readCmakeFileApiReply(
     // because the information for both comes from the same target json file and
     // we only want to scan it once since it can be large.
     val targetIdToOutputs = mutableMapOf<String, MutableSet<String>>()
-    var compileGroups : List<TargetCompileGroupData>? = null
-    var sourceGroups : List<String>? = null
+    val targetIdToType = mutableMapOf<String, String>()
     val targetIdToNativeLibraryValue = mutableMapOf<String, NativeLibraryValue>()
     val languageToExtensionMap = mutableMapOf<String, MutableSet<String>>()
     val codeModel = index.getIndexObject("codemodel", replyFolder, CmakeFileApiCodeModelDataV2::class.java)!!
@@ -146,6 +154,8 @@ fun readCmakeFileApiReply(
 
     targetDataFiles
         .forEach { (id, jsonFile) ->
+            lateinit var compileGroups : List<TargetCompileGroupData>
+            lateinit var sourceGroups : List<String>
             TargetDataStream(id, replyFolder.resolve(jsonFile)).use {
                 it.stream().forEach { item ->
                     when (item) {
@@ -162,31 +172,31 @@ fun readCmakeFileApiReply(
                         }
                         is CompileGroups -> compileGroups = item.compileGroups
                         is SourceGroups -> sourceGroups = item.sourceGroups
-                        is Link -> targetIdToLink[item.targetId] = item
+                        is Link -> targetIdToLink[id] = item
+                        is Type -> targetIdToType[id] = item.type
                         is Source -> {
                             // This relies on "compileGroups" arriving before "sources". Without this
                             // assumption we'd need to scan source files twice, first to find compileGroups
                             // then to scan sources and join with compileGroups.
-                            val sourceGroup = sourceGroups!![item.sourceGroupIndex]
+                            val sourceGroup = sourceGroups[item.sourceGroupIndex]
                             val compileGroup =
                                     if (item.compileGroupIndex != null) {
-                                        compileGroups?.get(item.compileGroupIndex)
+                                        compileGroups[item.compileGroupIndex]
                                     } else {
                                         // No compile group probably means the sourceGroup is "Header Files"
                                         null
                                     }
-                            val sourceFile = rootSourceFolder.resolve(item.path)
-
                             // Record the file extension for each language seen.
                             if (compileGroup != null) {
                                 languageToExtensionMap.computeIfAbsent(compileGroup.language) {
                                     mutableSetOf()
-                                }.add(sourceFile.extension)
+                                }.add(File(item.path).extension)
                             }
 
                             sourceFlagAction(
                                     CmakeFileApiSourceFile(
-                                            path = sourceFile,
+                                            rootSourceFolder = rootSourceFolder,
+                                            sourcePath = item.path,
                                             sourceGroup = sourceGroup,
                                             compileGroup = compileGroup
                                     )
@@ -200,7 +210,9 @@ fun readCmakeFileApiReply(
         }
 
     // Populate NativeLibraryValues#output
-    targetIdToOutputs.forEach { (id, outputs) ->
+    targetIdToOutputs
+        .filter {(id, _) -> targetIdToType.get(id) != "OBJECT_LIBRARY" }
+        .forEach { (id, outputs) ->
         if (outputs.size > 1) {
             errorln(
                 EXTRA_OUTPUT, "Target $id produces multiple outputs ${outputs.joinToString(", ")}"
@@ -220,17 +232,15 @@ fun readCmakeFileApiReply(
                         .filter {
                             // Just 'libraries' role
                             it.role == "libraries" &&
-                            // Ignore '-llog', etc
-                            !it.fragment.startsWith("-l") &&
-                            // Ignore *.a and *.o
-                            !it.fragment.endsWith(".a") && !it.fragment.endsWith(".o") &&
+                            // Only accept .so
+                            it.fragment.endsWith(".so") &&
                             // Ignore libraries under sysroot
                             !it.fragment.startsWith(link.sysroot)
                         }
                         .map {
                             File(cmakeFiles.paths.build)
-                                    .resolve(it.fragment)
-                                    .normalize()
+                                .resolve(it.fragment)
+                                .normalize()
                         }
                         .toList()
     }
@@ -282,6 +292,7 @@ private class TargetDataStream(
                                 readSingleStringObjectList("id")))
                         "sourceGroups" -> yield(SourceGroups(
                                 readSingleStringObjectList("name")))
+                        "paths" -> yield(readPaths())
                         "sources" -> yieldAll(streamSources())
                         "type" -> yield(Type(reader.nextString()))
                         else -> reader.skipValue()
@@ -356,6 +367,23 @@ private class TargetDataStream(
         }
         reader.endObject()
         return Link(targetId, commandFragments, language, sysroot)
+    }
+
+    private fun readPaths() : Paths {
+        reader.beginObject()
+        lateinit var build : String
+        lateinit var source: String
+        while (reader.hasNext()) {
+            when(reader.nextName()) {
+                "build" -> build = reader.nextString()
+                "source" -> source = reader.nextString()
+                else -> reader.skipValue()
+            }
+        }
+        reader.endObject()
+        return Paths(
+            build = build,
+            source = source)
     }
 
     private fun readCommandFragments() : List<CommandFragmentData> = sequence {
@@ -463,3 +491,43 @@ private class TargetDataStream(
 private val GSON = GsonBuilder()
     .setPrettyPrinting()
     .create()
+
+/**
+ * Convert a CMake file API reply folder into the metadata that
+ * we need to provide Intellisense, caching, etc.
+ */
+fun parseCmakeFileApiReply(
+    replyFolder : File,
+    additionalFiles : File,
+    androidGradleBuildJsonFile : File,
+    compileCommandsJsonFile : File,
+    compileCommandsJsonBinFile : File,
+    buildTargetsCommand : List<String>) {
+    try {
+        val extra = mutableSetOf<String>()
+        val config = readCmakeFileApiReply(replyFolder) { source ->
+            if (source.sourceGroup != "Source Files") {
+                extra += source.rootSourceFolder.resolve(source.sourcePath).absolutePath
+            }
+        }
+        additionalFiles.writeText(extra.joinToString("\n"))
+
+        // Write the ninja build command, possibly with user settings from CMakeSettings.json.
+        config.buildTargetsCommandComponents = buildTargetsCommand
+
+        writeNativeBuildConfigValueToJsonFile(
+            androidGradleBuildJsonFile,
+            config
+        )
+
+        // Write compile_commands.json.bin
+        convertCMakeToCompileCommandsBin(
+            compileCommandsJsonFile,
+            compileCommandsJsonBinFile,
+        )
+    } catch (e : Exception) {
+        // Give the user a way to open a constructive bug
+        warnln("There was an error parsing CMake File API result. Please open a bug with zip of ${compileCommandsJsonFile.parentFile.absoluteFile}", e)
+        throw e
+    }
+}

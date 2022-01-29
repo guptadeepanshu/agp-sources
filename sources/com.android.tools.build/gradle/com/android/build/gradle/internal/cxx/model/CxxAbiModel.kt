@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.cmake.cmakeBoolean
+import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.ndk.AbiInfo
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
@@ -287,13 +288,18 @@ val CxxAbiModel.clientQueryFolder: File
 val CxxAbiModel.clientReplyFolder: File
     get() = join(cxxBuildFolder, ".cmake/api/v1/reply")
 
-fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean {
-    // Prefab will fail if we try to create ARMv5/MIPS/MIPS64 modules. r17 was the first NDK version
-    // that we can guarantee will not be used to use those ABIs.
-    return (variant.module.project.isPrefabEnabled
-            && (variant.prefabPackageDirectoryListFileCollection != null)
-            && variant.module.ndkVersion.major >= 17)
-}
+// True if the build is capable of handling prefab packages. Does not indicate that prefab will
+// actually run. Separate from shouldGeneratePrefabPackages because whether or not prefab actually
+// runs depends on whether or not prefab has any inputs, which cannot be known during configuration
+// time.
+fun CxxAbiModel.buildIsPrefabCapable(): Boolean = variant.module.project.isPrefabEnabled
+        // Prefab will fail if we try to create ARMv5/MIPS/MIPS64 modules. r17 was the first NDK
+        // version that we can guarantee will not be used to use those ABIs.
+        && variant.module.ndkVersion.major >= 17
+
+fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean = buildIsPrefabCapable()
+        && variant.prefabPackageDirectoryListFileCollection != null
+        && !variant.prefabPackageDirectoryListFileCollection.isEmpty
 
 /**
  * Call [compute] if this is a CMake build.
@@ -302,10 +308,28 @@ fun <T> CxxAbiModel.ifCMake(compute : () -> T?) =
     if (variant.module.buildSystem == CMAKE) compute() else null
 
 /**
- * Call [compute] if this is an nndk-build build.
+ * Call [compute] if this is an ndk-build build.
  */
 fun <T> CxxAbiModel.ifNdkBuild(compute : () -> T?) =
         if (variant.module.buildSystem == NDK_BUILD) compute() else null
+
+/**
+ * Call [compute] if logging native configure to lifecycle
+ */
+fun <T> CxxAbiModel.ifLogNativeConfigureToLifecycle(compute : () -> T?) =
+    variant.ifLogNativeConfigureToLifecycle(compute)
+
+/**
+ * Call [compute] if logging native build to lifecycle
+ */
+fun <T> CxxAbiModel.ifLogNativeBuildToLifecycle(compute : () -> T?) =
+    variant.ifLogNativeBuildToLifecycle(compute)
+
+/**
+ * Call [compute] if logging native clean to lifecycle
+ */
+fun <T> CxxAbiModel.ifLogNativeCleanToLifecycle(compute : () -> T?) =
+    variant.ifLogNativeCleanToLifecycle(compute)
 
 /**
  * Returns the Ninja build commands from CMakeSettings.json.
@@ -336,6 +360,23 @@ val CxxAbiModel.configurationHash
  */
 val CxxAbiModel.tag
     get() = abi.tag
+/**
+ * The CPU architecture name
+ */
+val CxxAbiModel.cpuArchitecture
+    get() = abi.architecture
+
+/**
+ * The name of the CPU architecture (like "arm") for use in
+ * android triplet naming that is compatible with vcpkg.
+ * The difference is that X86_64 is represented by "x64" not
+ * "x86_64"
+ */
+val CxxAbiModel.altCpuArchitecture
+    get() = when(abi) {
+        Abi.X86_64 -> "x64"
+        else -> abi.architecture
+    }
 
 /**
  * True if this ABI is 64 bits.

@@ -20,9 +20,22 @@ import org.gradle.api.Incubating
 import org.gradle.api.Named
 import org.gradle.api.plugins.ExtensionAware
 
-/** DSL object to configure build types. */
-@Incubating
-interface BuildType : Named, VariantDimension, ExtensionAware {
+/**
+ * Build types define certain properties that Gradle uses when building and packaging your app, and
+ * are typically configured for different stages of your development lifecycle.
+ *
+ * There are two build types defined by default, `debug` and `release`, and you can customize them
+ * and create additional build types.
+ *
+ * The default debug build type enables debug options and signs the APK with the debug
+ * key, while the release build type is not debuggable and can be configured to shrink, obfuscate,
+ * and sign your APK with a release key for distribution.
+ *
+ * See
+ * [configuring build types](https://developer.android.com/studio/build#build-config)
+ * for more information.
+ */
+interface BuildType : Named, VariantDimension, ExtensionAware, HasInitWith<BuildType> {
     /**
      * Whether test coverage is enabled for this build type.
      *
@@ -32,12 +45,14 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * The version of Jacoco can be configured with:
      * ```
      * android {
-     *     jacoco {
-     *         version = '0.6.2.201302030002'
+     *     testCoverage {
+     *         jacocoVersion = '0.6.2.201302030002'
      *     }
      * }
      * ```
      */
+    @get:Incubating
+    @set:Incubating
     var isTestCoverageEnabled: Boolean
 
     /**
@@ -65,25 +80,33 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * When you build your app, the plugin includes the pseudolocale resources in your APK. If
      * you notice that your APK does not include those locale resources, make sure your build
      * configuration isn't limiting which locale resources are packaged with your APK, such as using
-     * the `resConfigs` property to
+     * the `resourceConfigurations` property to
      * [remove unused locale resources](https://d.android.com/studio/build/shrink-code.html#unused-alt-resources).
      *
      * To learn more, read
      * [Test Your App with Pseudolocales](https://d.android.com/guide/topics/resources/pseudolocales.html).
      */
+    @get:Incubating
+    @set:Incubating
     var isPseudoLocalesEnabled: Boolean
 
     /**
      * Whether this build type is configured to generate an APK with debuggable native code.
      */
+    @get:Incubating
+    @set:Incubating
     var isJniDebuggable: Boolean
 
     /**
      * Whether the build type is configured to generate an apk with debuggable RenderScript code.
      */
+    @get:Incubating
+    @set:Incubating
     var isRenderscriptDebuggable: Boolean
 
     /** Optimization level to use by the renderscript compiler.  */
+    @get:Incubating
+    @set:Incubating
     var renderscriptOptimLevel: Int
 
     /**
@@ -95,6 +118,8 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * To learn more, read
      * [Shrink Your Code and Resources](https://developer.android.com/studio/build/shrink-code.html).
      */
+    @get:Incubating
+    @set:Incubating
     var isMinifyEnabled: Boolean
 
     /**
@@ -103,6 +128,8 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * To learn more, read
      * [Shrink Your Code and Resources](https://developer.android.com/studio/build/shrink-code.html).
      */
+    @get:Incubating
+    @set:Incubating
     var isShrinkResources: Boolean
 
     /**
@@ -159,6 +186,7 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      *
      * @return the names of product flavors to use, in descending priority order
      */
+    @get:Incubating
     val matchingFallbacks: MutableList<String>
 
     @get:Incubating
@@ -181,7 +209,7 @@ interface BuildType : Named, VariantDimension, ExtensionAware {
      * ```
      */
     @Incubating
-    fun initWith(that: BuildType)
+    override fun initWith(that: BuildType)
 
     @Incubating
     @Deprecated("Replaced with property matchingFallbacks")

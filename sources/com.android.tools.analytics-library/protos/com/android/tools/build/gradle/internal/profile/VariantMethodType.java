@@ -64,6 +64,10 @@ public enum VariantMethodType
    * <code>VARIANT_BUILDER_DEPENDENCIES_INFO = 12;</code>
    */
   VARIANT_BUILDER_DEPENDENCIES_INFO(12),
+  /**
+   * <code>TEST_FIXTURES_ENABLED = 13;</code>
+   */
+  TEST_FIXTURES_ENABLED(13),
   UNRECOGNIZED(-1),
   ;
 
@@ -123,6 +127,10 @@ public enum VariantMethodType
    * <code>VARIANT_BUILDER_DEPENDENCIES_INFO = 12;</code>
    */
   public static final int VARIANT_BUILDER_DEPENDENCIES_INFO_VALUE = 12;
+  /**
+   * <code>TEST_FIXTURES_ENABLED = 13;</code>
+   */
+  public static final int TEST_FIXTURES_ENABLED_VALUE = 13;
 
 
   public final int getNumber() {
@@ -162,6 +170,7 @@ public enum VariantMethodType
       case 10: return MIN_SDK_PREVIEW;
       case 11: return TARGET_SDK_PREVIEW;
       case 12: return VARIANT_BUILDER_DEPENDENCIES_INFO;
+      case 13: return TEST_FIXTURES_ENABLED;
       default: return null;
     }
   }
