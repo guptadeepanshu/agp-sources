@@ -49,6 +49,7 @@ import com.android.build.gradle.internal.dependency.AsmClassesTransform
 import com.android.build.gradle.internal.dependency.RecalculateStackFramesTransform
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.instrumentation.AsmClassVisitorsFactoryRegistry
+import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
@@ -144,7 +145,7 @@ abstract class ComponentImpl(
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val asmApiVersion = org.objectweb.asm.Opcodes.ASM9
+    override val asmApiVersion = ASM_API_VERSION_FOR_INSTRUMENTATION
 
     // this is technically a public API for the Application Variant (only)
     override val outputs: VariantOutputList

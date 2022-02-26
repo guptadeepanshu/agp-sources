@@ -94,6 +94,9 @@ InternalArtifactType<T : FileSystemLocation>(
     // the packaged classes published by APK modules.
     // This is for external compile/api usage. For usage inside a module use ALL_CLASSES
     object APP_CLASSES: InternalArtifactType<RegularFile>(FILE), Replaceable
+    // the packaged runtime classes published by APK modules.
+    // This is for external runtime usage. For usage inside a module use ALL_CLASSES
+    object RUNTIME_APP_CLASSES_JAR: InternalArtifactType<RegularFile>(FILE), Replaceable
 
     // Outputs of Desugar tool for project classes.
     object DESUGAR_PROJECT_CLASSES: InternalArtifactType<Directory>(DIRECTORY)
