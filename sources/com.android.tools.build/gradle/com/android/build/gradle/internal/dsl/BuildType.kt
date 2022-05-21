@@ -23,6 +23,7 @@ import com.android.build.api.dsl.Ndk
 import com.android.build.api.dsl.PostProcessing
 import com.android.build.api.dsl.Shaders
 import com.android.build.api.dsl.TestBuildType
+import com.android.build.api.variant.impl.ResValueKeyImpl
 import com.android.build.gradle.internal.dsl.decorator.annotation.WithLazyInitialization
 import com.android.build.gradle.internal.errors.DeprecationReporter
 import com.android.build.gradle.internal.services.DslServices
@@ -36,8 +37,8 @@ import org.gradle.api.Action
 import org.gradle.api.Incubating
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Property
-import org.gradle.api.reflect.TypeOf
 import org.gradle.api.tasks.Internal
+import org.gradle.testing.jacoco.plugins.JacocoPlugin
 import java.io.File
 import java.io.Serializable
 import javax.inject.Inject
@@ -58,6 +59,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     fun lazyInit() {
         renderscriptOptimLevel = 3
         isEmbedMicroApp = true
+        enableUnitTestCoverage = dslServices.projectInfo.hasPlugin(JacocoPlugin.PLUGIN_EXTENSION_NAME)
     }
 
     /**
@@ -66,6 +68,8 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     override fun getName(): String {
         return name
     }
+
+    abstract override var enableUnitTestCoverage: Boolean
 
     abstract var _isDebuggable: Boolean
 
@@ -243,6 +247,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         )
         _shrinkResources = thatBuildType._shrinkResources
         shaders._initWith(thatBuildType.shaders)
+        enableUnitTestCoverage = thatBuildType.enableUnitTestCoverage
         externalNativeBuildOptions._initWith(thatBuildType.externalNativeBuildOptions)
         _postProcessing.initWith(that.postprocessing)
         isCrunchPngs = thatBuildType.isCrunchPngs
@@ -288,18 +293,19 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         name: String,
         value: String
     ) {
-        val alreadyPresent = resValues[name]
+        val resValueKey = ResValueKeyImpl(type, name)
+        val alreadyPresent = resValues[resValueKey.toString()]
         if (alreadyPresent != null) {
             val message = String.format(
                 "BuildType(%s): resValue '%s' value is being replaced.",
-                getName(), name
+                getName(), resValueKey.toString()
             )
             dslServices.issueReporter.reportWarning(
                 IssueReporter.Type.GENERIC,
                 message
             )
         }
-        addResValue(ClassFieldImpl(type, name, value))
+        addResValue(resValueKey.toString(), ClassFieldImpl(type, name, value))
     }
 
     override var proguardFiles: MutableList<File>

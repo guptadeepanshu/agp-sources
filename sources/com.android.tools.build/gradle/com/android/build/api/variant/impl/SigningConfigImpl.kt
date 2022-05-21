@@ -52,7 +52,6 @@ class SigningConfigImpl(
                     else -> dslSigningConfig?.enableV4Signing ?: false
                 }
             },
-            "enableV4Signing"
         )
 
     override val enableV3Signing =
@@ -66,7 +65,6 @@ class SigningConfigImpl(
                     else -> dslSigningConfig?.enableV3Signing ?: false
                 }
             },
-            "enableV3Signing"
         )
 
     override val enableV2Signing =
@@ -87,7 +85,6 @@ class SigningConfigImpl(
                     else -> !enableV3Signing.get()
                 }
             },
-            "enableV2Signing"
         )
 
     override val enableV1Signing =
@@ -109,7 +106,6 @@ class SigningConfigImpl(
                     else -> !enableV3Signing.get()
                 }
             },
-            "enableV1Signing"
         )
 
     //-----------------------------------------------------

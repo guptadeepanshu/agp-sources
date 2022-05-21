@@ -24,6 +24,8 @@ import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.RENDERSCRIPT
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
+import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_GENERATED_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_LIB
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
 import com.android.build.gradle.internal.services.getBuildService
@@ -31,12 +33,18 @@ import com.android.build.gradle.internal.tasks.NdkTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.Version
 import com.android.builder.internal.compiler.DirectoryWalker
 import com.android.builder.internal.compiler.RenderScriptProcessor
 import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessOutputHandler
 import com.android.repository.Revision
 import com.android.sdklib.BuildToolInfo
+import com.android.sdklib.BuildToolInfo.PathId.ANDROID_RS
+import com.android.sdklib.BuildToolInfo.PathId.ANDROID_RS_CLANG
+import com.android.sdklib.BuildToolInfo.PathId.BCC_COMPAT
+import com.android.sdklib.BuildToolInfo.PathId.LLD
+import com.android.sdklib.BuildToolInfo.PathId.LLVM_RS_CC
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions.checkNotNull
 import com.google.common.collect.Lists
@@ -101,10 +109,10 @@ abstract class RenderscriptCompile : NdkTask() {
     fun getBuildToolsVersion(): String =
         buildToolsRevision.get().toString()
 
-    @get: Input
+    @get:Input
     abstract val compileSdkVersion: Property<String>
 
-    @get: Internal
+    @get:Internal
     abstract val buildToolsRevision: Property<Revision>
 
     @get:Internal
@@ -153,6 +161,12 @@ abstract class RenderscriptCompile : NdkTask() {
     }
 
     override fun doTaskAction() {
+        logger.warn(
+            "The RenderScript APIs are deprecated. They will be removed in Android Gradle plugin " +
+                    "${Version.VERSION_9_0.versionString}. See the following link for a guide to " +
+                    "migrate from RenderScript: " +
+                    "https://developer.android.com/guide/topics/renderscript/migrate"
+        )
         // this is full run (always), clean the previous outputs
         val sourceDestDir = sourceOutputDir.get().asFile
         FileUtils.cleanOutputDir(sourceDestDir)
@@ -172,6 +186,11 @@ abstract class RenderscriptCompile : NdkTask() {
             compileSdkVersion = compileSdkVersion,
             buildToolsRevision = buildToolsRevision
         ).buildToolInfoProvider.get()
+
+        if (!buildToolsInfo.containsRenderscript()) {
+            throw IllegalStateException("Build tools Revision '${buildToolsInfo.revision}' does not support Renderscript. Select an earlier version of Build Tools if you need Renderscript.")
+        }
+
         compileAllRenderscriptFiles(
             sourceDirectories,
             importFolders,
@@ -188,6 +207,23 @@ abstract class RenderscriptCompile : NdkTask() {
             LoggedProcessOutputHandler(LoggerWrapper(logger)),
             buildToolsInfo
         )
+    }
+
+    /**
+     * Does a check on whether the given BuildToolInfo has renderscript binaries and folders.
+     * This is not as efficient as checking the removal dates on the PathId enums but because
+     * we can't predict the future (ie exactly when things will be removed), this works well
+     * enough and is more lenient.
+     */
+    private fun BuildToolInfo.containsRenderscript(): Boolean {
+        for (pathId in listOf(LLVM_RS_CC, ANDROID_RS, ANDROID_RS_CLANG, BCC_COMPAT, LLD)) {
+            val tool = getPath(pathId)
+            if (tool == null || !File(tool).exists()) {
+                return false
+            }
+        }
+
+        return true
     }
 
     /**
@@ -233,11 +269,6 @@ abstract class RenderscriptCompile : NdkTask() {
         checkNotNull(importFolders, "importFolders cannot be null.")
         checkNotNull(sourceOutputDir, "sourceOutputDir cannot be null.")
         checkNotNull(resOutputDir, "resOutputDir cannot be null.")
-
-        val renderscript = buildToolInfo.getPath(BuildToolInfo.PathId.LLVM_RS_CC)
-        if (renderscript == null || !File(renderscript).isFile) {
-            throw IllegalStateException("llvm-rs-cc is missing")
-        }
 
         val processor = RenderScriptProcessor(
             sourceFolders,
@@ -287,6 +318,12 @@ abstract class RenderscriptCompile : NdkTask() {
                 taskProvider,
                 RenderscriptCompile::libOutputDir
             ).withName("lib").on(RENDERSCRIPT_LIB)
+
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                RenderscriptCompile::resOutputDir
+            ).atLocation(creationConfig.paths.getGeneratedResourcesDir("rs").get().asFile.absolutePath)
+                .on(RENDERSCRIPT_GENERATED_RES)
         }
 
         override fun configure(
@@ -310,17 +347,12 @@ abstract class RenderscriptCompile : NdkTask() {
                 COMPILE_CLASSPATH, ALL, RENDERSCRIPT
             )
 
-            task.resOutputDir.setDisallowChanges(creationConfig.paths.renderscriptResOutputDir)
             task.objOutputDir = creationConfig.paths.renderscriptObjOutputDir
 
             task.ndkConfig = variantDslInfo.ndkConfig
 
-            task.buildToolsRevision.setDisallowChanges(
-                creationConfig.globalScope.extension.buildToolsRevision
-            )
-            task.compileSdkVersion.setDisallowChanges(
-                creationConfig.globalScope.extension.compileSdkVersion
-            )
+            task.buildToolsRevision.setDisallowChanges(creationConfig.global.buildToolsRevision)
+            task.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)
             task.sdkBuildService.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
             )

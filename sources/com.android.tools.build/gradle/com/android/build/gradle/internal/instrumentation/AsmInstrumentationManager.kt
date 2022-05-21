@@ -18,7 +18,10 @@ package com.android.build.gradle.internal.instrumentation
 
 import com.android.SdkConstants.DOT_CLASS
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.ClassContext
 import com.android.build.api.instrumentation.FramesComputationMode
+import com.android.build.gradle.internal.matcher.GlobPathMatcherFactory
+import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
 import com.android.utils.FileUtils
 import com.google.common.io.ByteStreams
 import org.objectweb.asm.ClassReader
@@ -37,6 +40,7 @@ import java.net.URLClassLoader
 import java.nio.file.FileVisitResult
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
 import java.util.zip.Deflater
@@ -54,17 +58,22 @@ import java.util.zip.ZipOutputStream
  *                                 to load the actual classes.
  * @param framesComputationMode the frame computation mode that will be applied to the bytecode of
  *                              the instrumented classes.
+ * @param excludes the set of patterns to exclude from instrumentation
  * @param profilingTransforms list of paths to the profiler jars injected by the IDE to transform
  *                            classes.
  */
 class AsmInstrumentationManager(
-        private val visitors: List<AsmClassVisitorFactory<*>>,
-        private val apiVersion: Int,
-        private val classesHierarchyResolver: ClassesHierarchyResolver,
-        private val framesComputationMode: FramesComputationMode,
-        profilingTransforms: List<String> = emptyList()
+    private val visitors: List<AsmClassVisitorFactory<*>>,
+    private val apiVersion: Int,
+    private val classesHierarchyResolver: ClassesHierarchyResolver,
+    private val framesComputationMode: FramesComputationMode,
+    excludes: Set<String>,
+    profilingTransforms: List<String> = emptyList()
 ): Closeable {
     private val profilingTransformsClassLoaders = mutableListOf<URLClassLoader>()
+    private val excludesMatchers = excludes.map {
+        GlobPathMatcherFactory.create(FileUtils.toSystemIndependentPath(it))
+    }
 
     private val profilingTransforms = profilingTransforms.map {
         val jarFile = File(it)
@@ -73,12 +82,11 @@ class AsmInstrumentationManager(
         loadTransformFunction(jarFile, classLoader)
     }
 
-    private fun getClassWriterFlags(javaVersion: Int): Int =
+    private fun getClassWriterFlags(containsJsrOrRetInstruction: Boolean): Int =
         when (framesComputationMode) {
             FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS,
             FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_CLASSES -> {
-                // Don't compute frames for bytecode compiled by a version older than java 6
-                if (javaVersion < Opcodes.V1_6) {
+                if (containsJsrOrRetInstruction) {
                     ClassWriter.COMPUTE_MAXS
                 } else {
                     ClassWriter.COMPUTE_FRAMES
@@ -87,8 +95,8 @@ class AsmInstrumentationManager(
             else -> 0
         }
 
-    private fun getClassReaderFlags(javaVersion: Int): Int {
-        if (javaVersion < Opcodes.V1_6) {
+    private fun getClassReaderFlags(containsJsrOrRetInstruction: Boolean): Int {
+        if (containsJsrOrRetInstruction) {
             return ClassReader.EXPAND_FRAMES
         }
         return when (framesComputationMode) {
@@ -103,6 +111,15 @@ class AsmInstrumentationManager(
         profilingTransformsClassLoaders.forEach(URLClassLoader::close)
     }
 
+    private fun includeFileInInstrumentation(relativePath: String): Boolean {
+        val pathWithoutExtension by lazy {
+            Paths.get(FileUtils.toSystemIndependentPath(relativePath).removeSuffix(DOT_CLASS))
+        }
+        return CLASS_MATCHER.test(relativePath) && excludesMatchers.none {
+            it.matches(pathWithoutExtension)
+        }
+    }
+
     fun instrumentClassesFromDirectoryToDirectory(inputDir: File, outputDir: File) {
         val inputPath = inputDir.toPath()
         Files.walkFileTree(inputPath, object : SimpleFileVisitor<Path>() {
@@ -113,7 +130,7 @@ class AsmInstrumentationManager(
                 val outputFile = outputDir.resolve(relativePath.toString())
                 outputFile.parentFile.mkdirs()
 
-                if (fileName.endsWith(DOT_CLASS)) {
+                if (includeFileInInstrumentation(relativePath.toString())) {
                     instrumentClassToDir(
                         packageName = relativePath.toString()
                             .removeSuffix(File.separatorChar + fileName)
@@ -145,11 +162,11 @@ class AsmInstrumentationManager(
         }
     }
 
-    fun instrumentModifiedFile(inputFile: File, outputFile: File, packageName: String) {
+    fun instrumentModifiedFile(inputFile: File, outputFile: File, relativePath: String) {
         outputFile.parentFile.mkdirs()
-        if (inputFile.name.endsWith(DOT_CLASS)) {
+        if (includeFileInInstrumentation(relativePath)) {
             instrumentClassToDir(
-                packageName = packageName,
+                packageName = relativePath.removeSuffix("/${inputFile.name}").replace('/', '.'),
                 className = inputFile.name.removeSuffix(DOT_CLASS),
                 classFile = inputFile,
                 outputFile = outputFile
@@ -173,6 +190,40 @@ class AsmInstrumentationManager(
         return bytes
     }
 
+    private fun doInstrumentByteCode(
+        classContext: ClassContext,
+        byteCode: ByteArray,
+        visitors: List<AsmClassVisitorFactory<*>>,
+        containsJsrOrRetInstruction: Boolean
+    ): ByteArray {
+        val classReader = ClassReader(byteCode)
+        val classWriter =
+            FixFramesClassWriter(
+                classReader,
+                getClassWriterFlags(containsJsrOrRetInstruction),
+                classesHierarchyResolver
+            )
+        var nextVisitor: ClassVisitor = classWriter
+
+        if (framesComputationMode == FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_CLASSES) {
+            nextVisitor = MaxsInvalidatingClassVisitor(apiVersion, classWriter)
+        }
+
+        val originalVisitor = nextVisitor
+
+        visitors.forEach { entry ->
+            nextVisitor = entry.createClassVisitor(classContext, nextVisitor)
+        }
+
+        // No external visitor will instrument this class
+        if (nextVisitor == originalVisitor) {
+            return byteCode
+        }
+
+        classReader.accept(nextVisitor, getClassReaderFlags(containsJsrOrRetInstruction))
+        return classWriter.toByteArray()
+    }
+
     private fun doInstrumentClass(
         packageName: String,
         className: String,
@@ -181,11 +232,11 @@ class AsmInstrumentationManager(
         val classFullName = "$packageName.$className"
         val classInternalName = classFullName.replace('.', '/')
 
-        val classData = ClassDataImpl(
+        val classData = ClassDataLazyImpl(
             classFullName,
-            classesHierarchyResolver.getAnnotations(classInternalName),
-            classesHierarchyResolver.getAllInterfaces(classInternalName),
-            classesHierarchyResolver.getAllSuperClasses(classInternalName)
+            { classesHierarchyResolver.getAnnotations(classInternalName) },
+            { classesHierarchyResolver.getAllInterfaces(classInternalName) },
+            { classesHierarchyResolver.getAllSuperClasses(classInternalName) }
         )
 
         // Reversing the visitors as they will be chained from the end, and so the visiting
@@ -199,29 +250,48 @@ class AsmInstrumentationManager(
                 classInputStream.invoke().use {
                     val classContext = ClassContextImpl(classData, classesHierarchyResolver)
                     val byteCode = performProfilingTransformations(it)
-                    val classReader = ClassReader(byteCode)
                     val javaVersion = getJavaMajorVersionOfCompiledClass(byteCode)
-                    val classWriter =
-                        FixFramesClassWriter(
-                            classReader,
-                            getClassWriterFlags(javaVersion),
-                            classesHierarchyResolver
-                        )
-                    var nextVisitor: ClassVisitor = classWriter
-
-                    if (framesComputationMode == FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_CLASSES) {
-                        nextVisitor = MaxsInvalidatingClassVisitor(apiVersion, classWriter)
-                    }
-
-                    filteredVisitors.forEach { entry ->
-                        nextVisitor = entry.createClassVisitor(classContext, nextVisitor)
-                    }
-
-                    classReader.accept(nextVisitor, getClassReaderFlags(javaVersion))
                     try {
-                        classWriter.toByteArray()
+                        return@use doInstrumentByteCode(
+                            classContext,
+                            byteCode,
+                            filteredVisitors,
+                            // Don't compute frames for bytecode compiled by a version older than
+                            // java 6
+                            containsJsrOrRetInstruction = javaVersion < Opcodes.V1_6
+                        )
                     } catch (e: Exception) {
-                        throw RuntimeException("Error occurred while instrumenting class $classFullName", e)
+                        // A class file whose version number is 6 or above must be verified using
+                        // the type checking rules which means frames will be verified and so need
+                        // to be computed.
+                        // If, and only if, a class file's version number equals 6, then if the
+                        // type checking fails, a Java Virtual Machine implementation may choose to
+                        // attempt to perform verification by type inference instead which can
+                        // happen when JSR/RET instructions exist in the class file.
+                        // We need to try first to compute the frames assuming the JVM will use type
+                        // checking for verification, and if it fails redo the instrumentation as in
+                        // that case the JVM will use type inference for verification.
+                        if (e.message == "JSR/RET are not supported with computeFrames option" &&
+                                javaVersion == Opcodes.V1_6) {
+                            try {
+                                return@use doInstrumentByteCode(
+                                    classContext,
+                                    byteCode,
+                                    filteredVisitors,
+                                    containsJsrOrRetInstruction = true
+                                )
+                            } catch (e: Exception) {
+                                throw RuntimeException(
+                                    "Error occurred while instrumenting class $classFullName",
+                                    e
+                                )
+                            }
+                        } else {
+                            throw RuntimeException(
+                                "Error occurred while instrumenting class $classFullName",
+                                e
+                            )
+                        }
                     }
                 }
             }
@@ -254,7 +324,7 @@ class AsmInstrumentationManager(
         classInputStream: () -> InputStream
     ) {
         val entryName = entry.name
-        if (!entryName.endsWith(DOT_CLASS)) {
+        if (!includeFileInInstrumentation(entryName)) {
             classInputStream.invoke().use {
                 saveEntryToJar(
                     entryName,

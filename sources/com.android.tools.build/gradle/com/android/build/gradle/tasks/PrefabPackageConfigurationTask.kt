@@ -28,7 +28,7 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.internal.file.FileOperations
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -36,7 +36,7 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
 import org.gradle.api.tasks.Optional
-import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -60,8 +60,8 @@ abstract class PrefabPackageConfigurationTask : NonIncrementalTask() {
 
     private lateinit var configurationModel: CxxConfigurationModel
 
-    @get:OutputFile
-    abstract val prefabJson: RegularFileProperty
+    @get:OutputDirectory
+    abstract val outputDirectory: DirectoryProperty
 
     @get:Input
     lateinit var packageName: String
@@ -86,7 +86,7 @@ abstract class PrefabPackageConfigurationTask : NonIncrementalTask() {
     override fun doTaskAction() {
         configurePrefab(
             getFileOperations(),
-            prefabJson.get().asFile.parentFile,
+            outputDirectory.get().asFile,
             packageName,
             packageVersion,
             modules,
@@ -114,18 +114,18 @@ abstract class PrefabPackageConfigurationTask : NonIncrementalTask() {
 
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
-                PrefabPackageConfigurationTask::prefabJson
-            ).withName("prefab/prefab.json")
+                PrefabPackageConfigurationTask::outputDirectory
+            ).withName("prefab")
              .atLocation(location)
              .on(PREFAB_PACKAGE_CONFIGURATION)
         }
 
         override fun configure(task: PrefabPackageConfigurationTask) {
             super.configure(task)
-            val project = creationConfig.services.projectInfo.getProject()
+            val projectInfo = creationConfig.services.projectInfo
             task.description = "Creates a configuration for Prefab package"
-            task.packageName = project.name
-            task.packageVersion = versionOrError(project.version.toString())
+            task.packageName = projectInfo.name
+            task.packageVersion = versionOrError(projectInfo.version)
             task.modules = modules
 
             task.configurationModel = config

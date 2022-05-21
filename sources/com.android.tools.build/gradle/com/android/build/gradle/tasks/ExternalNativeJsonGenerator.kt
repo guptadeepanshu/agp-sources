@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.PrefabConfigurationState
 import com.android.build.gradle.internal.cxx.model.PrefabConfigurationState.Companion.fromJson
 import com.android.build.gradle.internal.cxx.model.buildFileIndexFile
+import com.android.build.gradle.internal.cxx.model.buildSystemTag
 import com.android.build.gradle.internal.cxx.model.getBuildCommandArguments
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.jsonGenerationLoggingRecordFile
@@ -37,7 +38,6 @@ import com.android.build.gradle.internal.cxx.model.metadataGenerationTimingFolde
 import com.android.build.gradle.internal.cxx.model.modelOutputFile
 import com.android.build.gradle.internal.cxx.model.prefabClassPath
 import com.android.build.gradle.internal.cxx.model.prefabConfigFile
-import com.android.build.gradle.internal.cxx.model.prefabPackageDirectoryList
 import com.android.build.gradle.internal.cxx.model.shouldGeneratePrefabPackages
 import com.android.build.gradle.internal.cxx.model.symbolFolderIndexFile
 import com.android.build.gradle.internal.cxx.model.writeJsonToFile
@@ -89,7 +89,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
 
         // If anything in the prefab package changes, re-run. Note that this also depends on the
         // directories, so added/removed files will also trigger a re-run.
-        for (pkgDir in abi.variant.prefabPackageDirectoryList) {
+        for (pkgDir in abi.variant.prefabConfigurationPackages) {
             Files.walk(pkgDir.toPath())
                 .forEach {
                     result.add(it.toFile())
@@ -103,7 +103,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
         requireExplicitLogger()
         // These are lazily initialized values that can only be computed from a Gradle managed
         // thread. Compute now so that we don't in the worker threads that we'll be running as.
-        abi.variant.prefabPackageDirectoryList
+        abi.variant.prefabConfigurationPackages
         abi.variant.prefabClassPath
         try {
             buildForOneConfiguration(ops, forceGeneration, abi)
@@ -117,7 +117,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
             errorln(
                     METADATA_GENERATION_FAILURE,
                     "error when building with %s using %s: %s",
-                    abi.variant.module.buildSystem.tag,
+                    abi.variant.module.buildSystemTag,
                     abi.variant.module.makeFile,
                     e.message!!
             )
@@ -164,7 +164,7 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                     val prefabState = PrefabConfigurationState(
                             abi.variant.module.project.isPrefabEnabled,
                             abi.variant.prefabClassPath,
-                            abi.variant.prefabPackageDirectoryList
+                            abi.variant.prefabConfigurationPackages
                     )
                     val previousPrefabState =
                             getPreviousPrefabConfigurationState(abi.prefabConfigFile)
@@ -219,9 +219,9 @@ abstract class ExternalNativeJsonGenerator internal constructor(
                             infoln("created folder '%s'", abi.cxxBuildFolder)
                         }
 
-                        infoln("executing %s %s", abi.variant.module.buildSystem.tag, processBuilder)
+                        infoln("executing %s %s", abi.variant.module.buildSystemTag, processBuilder)
                         time("execute-generate-process") { executeProcess(ops, abi) }
-                        infoln("done executing %s", abi.variant.module.buildSystem.tag)
+                        infoln("done executing %s", abi.variant.module.buildSystemTag)
 
                         if (!abi.jsonFile.exists()) {
                             throw GradleException(

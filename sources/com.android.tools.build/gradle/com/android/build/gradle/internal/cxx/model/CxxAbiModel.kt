@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.cmake.cmakeBoolean
-import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.ndk.AbiInfo
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
@@ -109,6 +108,13 @@ data class CxxAbiModel(
      * If present, the STL .so file that needs to be distributed with the libraries built.
      */
     val stlLibraryFile: File?,
+
+    /**
+     * This ABI's intermediates folder but without the ABI at the end. This can't be stored
+     * on the variant because {hashcode} may be different between two ABIs in the same variant.
+     *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}
+     */
+    val intermediatesParentFolder: File
 ) {
     override fun toString() = "${abi.tag}:${variant.variantName}${variant.module.gradleModulePathName}"
 }
@@ -126,6 +132,14 @@ val CxxAbiModel.jsonFile: File
  */
 val CxxAbiModel.miniConfigFile: File
     get() = join(modelMetadataFolder, "android_gradle_build_mini.json")
+
+/**
+ * Location of model generation metadata
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta
+ */
+private val CxxAbiModel.modelMetadataFolder: File
+    get() = join(intermediatesParentFolder, "meta", abi.tag)
+
 
 /**
  * Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
@@ -172,15 +186,9 @@ val CxxAbiModel.ninjaDepsFile: File
 val CxxAbiModel.objFolder: File
     get() = when(variant.module.buildSystem) {
         CMAKE -> join(cxxBuildFolder, "CMakeFiles")
-        NDK_BUILD -> join(variant.soFolder, abi.tag)
+        NDK_BUILD -> soFolder
+        else -> error("${variant.module.buildSystem}")
     }
-
-/**
- * Location of model generation metadata
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta
- */
-private val CxxAbiModel.modelMetadataFolder: File
-    get() = join(variant.intermediatesFolder, "meta", abi.tag)
 
 /**
  * Output file of the Cxx*Model structure
@@ -298,20 +306,8 @@ fun CxxAbiModel.buildIsPrefabCapable(): Boolean = variant.module.project.isPrefa
         && variant.module.ndkVersion.major >= 17
 
 fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean = buildIsPrefabCapable()
-        && variant.prefabPackageDirectoryListFileCollection != null
-        && !variant.prefabPackageDirectoryListFileCollection.isEmpty
-
-/**
- * Call [compute] if this is a CMake build.
- */
-fun <T> CxxAbiModel.ifCMake(compute : () -> T?) =
-    if (variant.module.buildSystem == CMAKE) compute() else null
-
-/**
- * Call [compute] if this is an ndk-build build.
- */
-fun <T> CxxAbiModel.ifNdkBuild(compute : () -> T?) =
-        if (variant.module.buildSystem == NDK_BUILD) compute() else null
+        && variant.prefabPackages != null
+        && !variant.prefabPackages.isEmpty
 
 /**
  * Call [compute] if logging native configure to lifecycle
@@ -324,12 +320,6 @@ fun <T> CxxAbiModel.ifLogNativeConfigureToLifecycle(compute : () -> T?) =
  */
 fun <T> CxxAbiModel.ifLogNativeBuildToLifecycle(compute : () -> T?) =
     variant.ifLogNativeBuildToLifecycle(compute)
-
-/**
- * Call [compute] if logging native clean to lifecycle
- */
-fun <T> CxxAbiModel.ifLogNativeCleanToLifecycle(compute : () -> T?) =
-    variant.ifLogNativeCleanToLifecycle(compute)
 
 /**
  * Returns the Ninja build commands from CMakeSettings.json.
@@ -410,8 +400,21 @@ val CxxAbiModel.platformCode
         it.aliases
                 .toList()
                 .filter { (_, code) -> code == abiPlatformVersion }
-                .minBy { (alias, _) -> alias.length }
+                .minByOrNull { (alias, _) -> alias.length }
                 ?.first
     } ?: ""
+
+/**
+ * Construct a ninja command-line with [args] at the end.
+ */
+fun CxxAbiModel.createNinjaCommand(vararg args: String) : List<String> {
+    val command = mutableListOf<String>()
+    command.add(variant.module.ninjaExe!!.absolutePath)
+    command.addAll(getBuildCommandArguments())
+    command.add("-C")
+    command.add(cxxBuildFolder.absolutePath)
+    command.addAll(args.asList())
+    return command
+}
 
 

@@ -21,7 +21,6 @@ import com.android.builder.model.v2.ide.AndroidArtifact
 import com.android.builder.model.v2.ide.ApiVersion
 import com.android.builder.model.v2.ide.BundleInfo
 import com.android.builder.model.v2.ide.CodeShrinker
-import com.android.builder.model.v2.ide.SourceProvider
 import com.android.builder.model.v2.ide.TestInfo
 import java.io.File
 import java.io.Serializable
@@ -33,8 +32,6 @@ data class AndroidArtifactImpl(
     override val minSdkVersion: ApiVersion,
     override val targetSdkVersionOverride: ApiVersion?,
     override val maxSdkVersion: Int?,
-    override val variantSourceProvider: SourceProvider?,
-    override val multiFlavorSourceProvider: SourceProvider?,
 
     override val signingConfigName: String?,
     override val isSigned: Boolean,
@@ -47,6 +44,7 @@ data class AndroidArtifactImpl(
     override val compileTaskName: String,
     override val assembleTaskName: String,
     override val sourceGenTaskName: String,
+    override val resGenTaskName: String?,
     override val ideSetupTaskNames: Set<String>,
 
     override val generatedSourceFolders: Collection<File>,

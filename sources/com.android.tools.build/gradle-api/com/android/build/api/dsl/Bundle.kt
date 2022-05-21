@@ -17,6 +17,7 @@
 package com.android.build.api.dsl
 
 import org.gradle.api.Incubating
+import org.gradle.api.file.DirectoryProperty
 
 /** Features that apply to distribution by the bundle  */
 interface Bundle {
@@ -35,6 +36,12 @@ interface Bundle {
     @get:Incubating
     val codeTransparency: BundleCodeTransparency
 
+    @get:Incubating
+    val storeArchive: StoreArchive
+
+    @get:Incubating
+    val integrityConfigDir: DirectoryProperty
+
     fun abi(action: BundleAbi.() -> Unit)
 
     fun density(action: BundleDensity.() -> Unit)
@@ -48,4 +55,7 @@ interface Bundle {
 
     @Incubating
     fun codeTransparency(action: BundleCodeTransparency.() -> Unit)
+
+    @Incubating
+    fun storeArchive(action: StoreArchive.() -> Unit)
 }

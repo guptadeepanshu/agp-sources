@@ -20,6 +20,7 @@ import static com.android.SdkConstants.DOT_JSON;
 
 import com.android.annotations.NonNull;
 import com.android.ide.common.blame.MergingLogPersistUtil.SourcePositionsSerializer.Kind;
+import com.android.ide.common.resources.RelativeResourceUtils;
 import com.android.utils.Pair;
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
@@ -367,11 +368,12 @@ public class MergingLogPersistUtil {
      *
      * @param folder the folder containing merge logs.
      * @param shard the shard to load.
+     * @param relativeResFilepathEnabled uses RelativeResourcesUtils for resolving absolute path.
      * @return the memory model of merged logs.
      */
     @NonNull
     static Map<SourceFile, Map<SourcePosition, SourceFilePosition>> loadFromMultiFileVersion2(
-            @NonNull File folder, @NonNull String shard) {
+            @NonNull File folder, @NonNull String shard, boolean relativeResFilepathEnabled) {
 
         Map<SourceFile, Map<SourcePosition, SourceFilePosition>> map = Maps.newConcurrentMap();
         JsonReader reader;
@@ -400,7 +402,14 @@ public class MergingLogPersistUtil {
                 while (reader.peek() != JsonToken.END_OBJECT) {
                     name = reader.nextName();
                     if (name.equals(KEY_OUTPUT_FILE)) {
-                        toFile = new SourceFile(new File(reader.nextString()));
+                        String pathname = reader.nextString();
+                        toFile = new SourceFile(new File(pathname));
+                        // When relative resources are used, the key of the merging log will
+                        // follow the relative resource set identification format, this sets
+                        // the key to the relative path.
+                        if (relativeResFilepathEnabled) {
+                            toFile.setOverrideSourcePath(pathname);
+                        }
                     } else if (name.equals(KEY_MAP)) {
                         reader.beginArray();
                         while (reader.peek() != JsonToken.END_ARRAY) {

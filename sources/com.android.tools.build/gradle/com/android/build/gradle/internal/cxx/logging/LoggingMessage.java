@@ -139,6 +139,10 @@ private static final long serialVersionUID = 0L;
      * <code>ERROR = 3;</code>
      */
     ERROR(3),
+    /**
+     * <code>BUG = 4;</code>
+     */
+    BUG(4),
     UNRECOGNIZED(-1),
     ;
 
@@ -158,6 +162,10 @@ private static final long serialVersionUID = 0L;
      * <code>ERROR = 3;</code>
      */
     public static final int ERROR_VALUE = 3;
+    /**
+     * <code>BUG = 4;</code>
+     */
+    public static final int BUG_VALUE = 4;
 
 
     public final int getNumber() {
@@ -188,6 +196,7 @@ private static final long serialVersionUID = 0L;
         case 1: return LIFECYCLE;
         case 2: return WARN;
         case 3: return ERROR;
+        case 4: return BUG;
         default: return null;
       }
     }

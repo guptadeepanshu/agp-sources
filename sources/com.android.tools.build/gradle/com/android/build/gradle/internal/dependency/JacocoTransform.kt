@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.dependency
 
 import com.android.SdkConstants
-import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.tasks.JacocoTask
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.files.RelativeFile
@@ -25,6 +24,7 @@ import com.android.builder.files.SerializableFileChanges
 import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
 import com.google.common.io.ByteStreams
+import com.google.common.io.Files
 import org.gradle.api.artifacts.transform.CacheableTransform
 import org.gradle.api.artifacts.transform.InputArtifact
 import org.gradle.api.artifacts.transform.TransformAction
@@ -39,7 +39,6 @@ import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
-import org.jetbrains.kotlin.gradle.internal.ensureParentDirsCreated
 import java.io.BufferedOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -163,7 +162,9 @@ abstract class JacocoTransform : TransformAction<JacocoTransform.Params> {
             return
         }
         val outputFile = outputDir.resolve(sourceFile.relativePath)
-        outputFile.ensureParentDirsCreated()
+        if (!outputFile.exists()) {
+            Files.createParentDirs(outputFile)
+        }
         if (instrumentationAction == JacocoTask.Action.INSTRUMENT) {
             outputFile.writeBytes(
                 sourceFile.file.inputStream().use {

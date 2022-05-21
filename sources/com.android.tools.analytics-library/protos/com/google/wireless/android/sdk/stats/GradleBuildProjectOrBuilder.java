@@ -434,45 +434,49 @@ public interface GradleBuildProjectOrBuilder extends
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @return A list containing the pluginNames.
    */
-  java.util.List<java.lang.String>
+  @java.lang.Deprecated java.util.List<java.lang.String>
       getPluginNamesList();
   /**
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @return The count of pluginNames.
    */
-  int getPluginNamesCount();
+  @java.lang.Deprecated int getPluginNamesCount();
   /**
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The pluginNames at the given index.
    */
-  java.lang.String getPluginNames(int index);
+  @java.lang.Deprecated java.lang.String getPluginNames(int index);
   /**
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the pluginNames at the given index.
    */
-  com.google.protobuf.ByteString
+  @java.lang.Deprecated com.google.protobuf.ByteString
       getPluginNamesBytes(int index);
 
   /**
@@ -546,4 +550,48 @@ public interface GradleBuildProjectOrBuilder extends
    * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
    */
   com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder();
+
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> 
+      getAppliedPluginsList();
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradlePluginData getAppliedPlugins(int index);
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  int getAppliedPluginsCount();
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  java.util.List<? extends com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> 
+      getAppliedPluginsOrBuilderList();
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder getAppliedPluginsOrBuilder(
+      int index);
 }

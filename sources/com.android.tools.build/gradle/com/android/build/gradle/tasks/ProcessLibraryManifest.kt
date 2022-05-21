@@ -65,10 +65,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     @get:OutputFile
     abstract val manifestOutputFile: RegularFileProperty
 
-    @get:Optional
-    @get:Input
-    abstract val packageOverride: Property<String>
-
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFiles
     abstract val manifestOverlays: ListProperty<File>
@@ -110,7 +106,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
 
     private var isNamespaced = false
 
-    override fun doFullTaskAction() {
+    override fun doTaskAction() {
         workerExecutor.noIsolation().submit(ProcessLibWorkAction::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.variantName.set(variantName)
@@ -124,7 +120,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                     }
             )
             it.manifestOverlays.set(manifestOverlays)
-            it.packageOverride.set(packageOverride)
+            it.namespace.set(namespace)
             it.minSdkVersion.set(minSdkVersion)
             it.targetSdkVersion.set(targetSdkVersion)
             it.maxSdkVersion.set(maxSdkVersion)
@@ -160,7 +156,7 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         abstract val namespaced: Property<Boolean>
         abstract val mainManifest: RegularFileProperty
         abstract val manifestOverlays: ListProperty<File>
-        abstract val packageOverride: Property<String>
+        abstract val namespace: Property<String>
         abstract val minSdkVersion: Property<String>
         abstract val targetSdkVersion: Property<String>
         abstract val maxSdkVersion: Property<Int>
@@ -186,11 +182,14 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             }
             val mergingReport = mergeManifests(
                 parameters.mainManifest.asFile.get(),
-                parameters.manifestOverlays.get(), emptyList(), emptyList(),
-                null,
-                parameters.packageOverride.get(),
-                null,
-                null,
+                parameters.manifestOverlays.get(),
+                dependencies = emptyList(),
+                navigationJsons = emptyList(),
+                featureName = null,
+                packageOverride = parameters.namespace.get(),
+                namespace = parameters.namespace.get(),
+                versionCode = null,
+                versionName = null,
                 parameters.minSdkVersion.orNull,
                 parameters.targetSdkVersion.orNull,
                 parameters.maxSdkVersion.orNull,
@@ -215,20 +214,15 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             } catch (e: IOException) {
                 throw UncheckedIOException(e)
             }
-            val properties =
-                if (mergedXmlDocument != null) mapOf(
-                    "packageId" to mergedXmlDocument.packageName,
-                    "split" to mergedXmlDocument.splitName
-                ) else mapOf()
             if (parameters.manifestOutputDirectory.isPresent) {
                 BuiltArtifactsImpl(
                     BuiltArtifacts.METADATA_FILE_VERSION,
                     InternalArtifactType.PACKAGED_MANIFESTS,
-                    parameters.packageOverride.get(),
+                    parameters.namespace.get(),
                     parameters.variantName.get(),
                     listOf(
                         parameters.mainSplit.get().toBuiltArtifact(
-                            parameters.manifestOutputFile.asFile.get(), properties
+                            parameters.manifestOutputFile.asFile.get()
                         )
                     )
                 )
@@ -238,11 +232,11 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 BuiltArtifactsImpl(
                     BuiltArtifacts.METADATA_FILE_VERSION,
                     InternalArtifactType.AAPT_FRIENDLY_MERGED_MANIFESTS,
-                    parameters.packageOverride.get(),
+                    parameters.namespace.get(),
                     parameters.variantName.get(),
                     listOf(
                         parameters.mainSplit.get().toBuiltArtifact(
-                            parameters.aaptFriendlyManifestOutputFile.asFile.get(), properties
+                            parameters.aaptFriendlyManifestOutputFile.asFile.get()
                         )
                     )
                 )
@@ -338,7 +332,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val variantSources = creationConfig.variantSources
-            val project = creationConfig.services.projectInfo.getProject()
             task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
             task.targetSdkVersion
                 .setDisallowChanges(
@@ -346,16 +339,14 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                     else targetSdkVersion.getApiString()
                 )
             task.maxSdkVersion.setDisallowChanges(maxSdkVersion)
-            task.mainSplit.set(project.provider { creationConfig.outputs.getMainSplit() })
+            task.mainSplit.set(creationConfig.services.provider { creationConfig.outputs.getMainSplit() })
             task.mainSplit.disallowChanges()
-            task.isNamespaced =
-                creationConfig.services.projectInfo.getExtension().aaptOptions.namespaced
-            task.packageOverride.setDisallowChanges(creationConfig.applicationId)
+            task.isNamespaced = creationConfig.global.namespacedAndroidResources
             manifestPlaceholders?.let {
                 task.manifestPlaceholders.setDisallowChanges(it)
             }
             task.mainManifest
-                .set(project.provider(variantSources::mainManifestIfExists))
+                .set(creationConfig.services.provider(variantSources::mainManifestIfExists))
             task.mainManifest.disallowChanges()
             task.manifestOverlays.set(
                 task.project.provider(variantSources::manifestOverlays)

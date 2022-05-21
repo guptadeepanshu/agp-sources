@@ -36,4 +36,23 @@ public interface JetifierUsageDataOrBuilder extends
    * @return The numberOfLibrariesRequireJetifier.
    */
   int getNumberOfLibrariesRequireJetifier();
+
+  /**
+   * <pre>
+   * True if this build had ran checkJetifier task
+   * </pre>
+   *
+   * <code>optional bool check_jetifier_task_build = 3;</code>
+   * @return Whether the checkJetifierTaskBuild field is set.
+   */
+  boolean hasCheckJetifierTaskBuild();
+  /**
+   * <pre>
+   * True if this build had ran checkJetifier task
+   * </pre>
+   *
+   * <code>optional bool check_jetifier_task_build = 3;</code>
+   * @return The checkJetifierTaskBuild.
+   */
+  boolean getCheckJetifierTaskBuild();
 }

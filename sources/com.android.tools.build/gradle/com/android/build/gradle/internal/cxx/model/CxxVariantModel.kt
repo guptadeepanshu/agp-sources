@@ -17,9 +17,7 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.build.gradle.internal.core.Abi
-import com.android.build.gradle.tasks.NativeBuildSystem
 import org.gradle.api.file.FileCollection
-import java.io.File
 
 /**
  * Holds immutable ABI-level information for C/C++ build and sync, see README.md
@@ -48,31 +46,6 @@ data class CxxVariantModel(
      *   ex, debug
      */
     val variantName: String,
-
-    /**
-     * Base folder for .so files
-     *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/obj
-     */
-    val soFolder: File,
-
-    /**
-     * An extra .cxx folder where build outputs are copied or symlinked too. This is also the
-     * old location where actual builds happened before configuration folding was implemented.
-     *   ex, $moduleRootFolder/build/intermediates/cmake/debug/obj
-     */
-    val soRepublishFolder: File,
-
-    /**
-     * The .cxx build folder
-     *   ex, $moduleRootFolder/.cxx/Debug/${hashcode}
-     */
-    val cxxBuildFolder: File,
-
-    /**
-     * The folder of intermediates.
-     *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}
-     */
-    val intermediatesFolder: File,
 
     /**
      * Whether this variant build is debuggable
@@ -116,14 +89,19 @@ data class CxxVariantModel(
     /**
      * Path to the Prefab jar to use.
      */
-    val prefabClassPathFileCollection: FileCollection?,
+    val prefabClassPaths: FileCollection?,
 
     /**
      * Paths to the unprocessed prefab package directories extracted from the AAR.
      *
      * For example: jsoncpp/build/.transforms/$SHA/jsoncpp/prefab
      */
-    val prefabPackageDirectoryListFileCollection: FileCollection?,
+    val prefabPackages: FileCollection?,
+
+    /**
+     * Paths to prefab package configuration directories.
+     */
+    val prefabPackageConfigurations: FileCollection?,
 
     /**
      * If present, the type of the STL.
@@ -155,34 +133,10 @@ val CxxVariantModel.cppFlags
     get() = cppFlagsList.joinToString(" ")
 
 /**
- * Return true if this is a CMake project.
+ * Return true if we should log native clean to lifecycle log
  */
-val CxxVariantModel.isCMake
-    get() = (module.buildSystem == NativeBuildSystem.CMAKE)
-
-/**
- * Call [compute] if this is a CMake build.
- */
-fun <T> CxxVariantModel.ifCMake(compute : () -> T?) =
-        if (isCMake) compute() else null
-
-/**
- * Return true if this is a CMake project.
- */
-val CxxVariantModel.isNdkBuild
-    get() = (module.buildSystem == NativeBuildSystem.NDK_BUILD)
-
-/**
- * Call [compute] if this is an ndk-build build.
- */
-fun <T> CxxVariantModel.ifNdkBuild(compute : () -> T?) =
-    if (isNdkBuild) compute() else null
-
-/**
- * Call [compute] if logging native clean to lifecycle
- */
-fun <T> CxxVariantModel.ifLogNativeCleanToLifecycle(compute : () -> T?) =
-    module.ifLogNativeCleanToLifecycle(compute)
+val CxxVariantModel.logNativeCleanToLifecycle : Boolean get() =
+    module.logNativeCleanToLifecycle
 
 /**
  * Call [compute] if logging native configure to lifecycle

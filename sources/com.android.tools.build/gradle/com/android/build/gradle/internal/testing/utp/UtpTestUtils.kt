@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.testing.utp
 
-import com.android.build.gradle.internal.dsl.TestOptions
+import com.android.build.api.dsl.TestOptions
 import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.utp.worker.RunUtpWorkAction
 import com.android.build.gradle.options.BooleanOption
@@ -27,15 +27,23 @@ import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidT
 import com.android.utils.ILogger
 import com.google.common.io.Files
 import com.google.testing.platform.proto.api.config.RunnerConfigProto
+import com.google.testing.platform.proto.api.core.ErrorDetailProto
 import com.google.testing.platform.proto.api.core.TestStatusProto
 import com.google.testing.platform.proto.api.core.TestSuiteResultProto
 import com.google.testing.platform.proto.api.service.ServerConfigProto
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
+import java.util.logging.Level
+import kotlin.math.min
 import org.gradle.api.logging.Logging
 import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
+
+const val TEST_RESULT_PB_FILE_NAME = "test-result.pb"
+
+private const val UNKNOWN_PLATFORM_ERROR_MESSAGE =
+    "Unknown platform error occurred when running the UTP test suite. Please check logs for details."
 
 /**
  * Encapsulates necessary information to run tests using Unified Test Platform.
@@ -57,6 +65,27 @@ data class UtpRunnerConfig(
     ) -> RunnerConfigProto.RunnerConfig,
     val serverConfig: ServerConfigProto.ServerConfig,
     val shardConfig: ShardConfig? = null,
+    val utpLoggingLevel: Level = Level.WARNING,
+)
+
+fun UtpRunnerConfig.shardName(): String {
+    return if (shardConfig == null) {
+        deviceName
+    } else {
+        "${deviceName}_${shardConfig.index}"
+    }
+}
+
+/**
+ * Encapsulates result of a UTP test run.
+ *
+ * @property testPassed true when all test cases in the test suite is passed.
+ * @property resultsProto test suite result protobuf message. This can be null if
+ *     UTP exits unexpectedly.
+ */
+data class UtpTestRunResult(
+    val testPassed: Boolean,
+    val resultsProto: TestSuiteResultProto.TestSuiteResult?,
 )
 
 /**
@@ -66,7 +95,7 @@ data class UtpRunnerConfig(
 fun runUtpTestSuiteAndWait(
     runnerConfigs: List<UtpRunnerConfig>,
     workerExecutor: WorkerExecutor,
-    projectName: String,
+    projectPath: String,
     variantName: String,
     resultsDir: File,
     logger: ILogger,
@@ -75,7 +104,7 @@ fun runUtpTestSuiteAndWait(
     utpTestResultListenerServerRunner: (UtpTestResultListener?) -> UtpTestResultListenerServerRunner = {
         UtpTestResultListenerServerRunner(it)
     }
-): List<Boolean> {
+): List<UtpTestRunResult> {
     val workQueue = workerExecutor.noIsolation()
 
     val testResultReporters: ConcurrentHashMap<String, UtpTestResultListener> = ConcurrentHashMap()
@@ -95,12 +124,8 @@ fun runUtpTestSuiteAndWait(
             val ddmlibTestResultAdapter = DdmlibTestResultAdapter(
                 config.deviceName,
                 CustomTestRunListener(
-                    if (config.shardConfig == null) {
-                        config.deviceName
-                    } else {
-                        "${config.deviceName}_${config.shardConfig.index}"
-                    },
-                    projectName,
+                    config.shardName(),
+                    projectPath,
                     variantName,
                     logger).apply {
                     setReportDir(resultsDir)
@@ -123,23 +148,13 @@ fun runUtpTestSuiteAndWait(
                 utpDependencies,
                 workQueue)
 
-            val postProcessFunc: () -> Boolean = {
+            val postProcessFunc: () -> UtpTestRunResult = {
                 testResultReporters.remove(config.deviceId)
 
                 val resultsProto = resultsProto
                 val testPassed = if (resultsProto != null) {
-                    val testResultPbFile = File(config.utpOutputDir, "test-result.pb")
-                    testResultPbFile.outputStream().use {
-                        resultsProto.writeTo(it)
-                    }
-                    logger.quiet(
-                        "\nTest results saved as ${testResultPbFile.toURI()}. " +
-                                "Inspect these results in Android Studio by selecting Run > Import Tests " +
-                                "From File from the menu bar and importing test-result.pb."
-                    )
-                    if (resultsProto.hasPlatformError()) {
-                        logger.error(null, "Platform error occurred when running the UTP test suite")
-                    }
+                    val testResultPbFile = File(config.utpOutputDir, TEST_RESULT_PB_FILE_NAME)
+                    resultsProto.writeTo(testResultPbFile.outputStream())
                     val testFailed = resultsProto.hasPlatformError() ||
                             resultsProto.testResultList.any { testCaseResult ->
                                 testCaseResult.testStatus == TestStatusProto.TestStatus.FAILED
@@ -151,7 +166,7 @@ fun runUtpTestSuiteAndWait(
                     false
                 }
 
-                testPassed
+                UtpTestRunResult(testPassed, resultsProto)
             }
             postProcessFunc
         }
@@ -186,9 +201,9 @@ private fun runUtpTestSuite(
     }
     val loggingPropertiesFile = createUtpTempFile("logging", "properties").also { file ->
         Files.asCharSink(file, Charsets.UTF_8).write("""
-                .level=WARNING
+                .level=${config.utpLoggingLevel.getName()}
                 .handlers=java.util.logging.ConsoleHandler
-                java.util.logging.ConsoleHandler.level=WARNING
+                java.util.logging.ConsoleHandler.level=${config.utpLoggingLevel.getName()}
             """.trimIndent())
     }
     workQueue.submit(RunUtpWorkAction::class.java) { params ->
@@ -259,4 +274,70 @@ fun shouldEnableUtp(
     }
     return (projectOptions[BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM]
             || (testOptions != null && testOptions.emulatorSnapshots.enableForTestFailures))
+}
+
+/**
+ * Returns true if the root cause of the Platform error is the EmulatorTimeoutException.
+ */
+fun hasEmulatorTimeoutException(resultsProto: TestSuiteResultProto.TestSuiteResult?): Boolean {
+    resultsProto ?: return false
+    return hasEmulatorTimeoutException(resultsProto.platformError.errorDetail)
+}
+
+private fun hasEmulatorTimeoutException(error: ErrorDetailProto.ErrorDetail): Boolean {
+    return when {
+        getExceptionFromStackTrace(error.summary.stackTrace)
+            .contains("EmulatorTimeoutException") -> true
+        error.hasCause() -> hasEmulatorTimeoutException(error.cause)
+        else -> false
+    }
+}
+
+/**
+ * Finds the root cause of the Platform Error if it came form the Managed Device
+ * Android Provider.
+ */
+fun getPlatformErrorMessage(resultsProto: TestSuiteResultProto.TestSuiteResult?): String {
+    resultsProto ?: return UNKNOWN_PLATFORM_ERROR_MESSAGE
+    return getPlatformErrorMessage(resultsProto.platformError.errorDetail)
+}
+
+/**
+ * Finds the root cause of the Platform Error if it came form the Managed Device
+ * Android Provider.
+ *
+ * @param error the top level error detail to be analyzed.
+ * @return if [error] is from the managed device plugin, the message of the error is returned. Will
+ * otherwise check the cause of the error detail. If no cause is from the managed device plugin a
+ * default error message is returned.
+ */
+private fun getPlatformErrorMessage(error : ErrorDetailProto.ErrorDetail) : String =
+    when {
+        getExceptionFromStackTrace(error.summary.stackTrace).contains("EmulatorTimeoutException") ->
+            """
+                PLATFORM ERROR:
+                ${error.summary.errorMessage}
+            """.trimIndent()
+        error.hasCause() ->
+            getPlatformErrorMessage(error.cause)
+        else -> UNKNOWN_PLATFORM_ERROR_MESSAGE
+    }
+
+/**
+ * Attempts to get a simple string by which the exception can be easily parsed.
+ *
+ * Due to the nature of UTP error details, the exception may be in a serialized string format, or
+ * in a simple toString() format. This method is meant to separate the parent exception from the
+ * stacktrace (which may include more exceptions)
+ *
+ * @param stackTrace the stackTrace of the exception in either serialized or toString() format
+ * @return A simple string, that the only exception that is contained is the top-level exception.
+ */
+private fun getExceptionFromStackTrace(stackTrace: String): String {
+    val endIndex = stackTrace.indexOf(':')
+    return if (endIndex >= 0) {
+        stackTrace.substring(0, endIndex)
+    } else {
+        stackTrace.lineSequence().firstOrNull() ?: ""
+    }
 }

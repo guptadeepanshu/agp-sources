@@ -16,6 +16,7 @@
 package com.android.tools.analytics.crash;
 
 import com.android.annotations.NonNull;
+import com.google.common.base.Ascii;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.base.Strings;
@@ -43,6 +44,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.entity.GzipCompressingEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -56,6 +58,10 @@ public class GoogleCrashReporter implements CrashReporter {
   // Send crashes during development to the staging backend
   private static final String CRASH_URL = "https://clients2.google.com/cr/report";
   private static final String STAGING_CRASH_URL = "https://clients2.google.com/cr/staging_report";
+
+  // Crash has a limit of 250 * 1024 bytes for field values
+  private static final int MAX_BYTES_FOR_VALUE = 250 * 1024;
+  private static final String TRUNCATION_INDICATOR = "[truncated]";
 
   private static final String LOCALE = Locale.getDefault() == null ? "unknown" : Locale.getDefault().toString();
 
@@ -206,8 +212,22 @@ public class GoogleCrashReporter implements CrashReporter {
   @NonNull
   private static MultipartEntityBuilder newMultipartEntityBuilderWithKv(@NonNull Map<String, String> kv) {
     MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-    kv.forEach(builder::addTextBody);
+    kv.forEach((key, value) -> addBodyToBuilder(builder, key, value));
     return builder;
+  }
+
+  public static void addBodyToBuilder(MultipartEntityBuilder builder, String key, String value) {
+    addBodyToBuilder(builder, key, value, ContentType.DEFAULT_TEXT);
+  }
+
+  /**
+    * Ensures fields too long for Crash are attached to the request as a file.
+   */
+  public static void addBodyToBuilder(MultipartEntityBuilder builder, String key, String value, ContentType contentType) {
+    builder.addTextBody(key, Ascii.truncate(value, MAX_BYTES_FOR_VALUE, TRUNCATION_INDICATOR), contentType);
+    if (value.length() > MAX_BYTES_FOR_VALUE) {
+      builder.addBinaryBody(key + "-full", value.getBytes(), contentType, key + ".txt");
+    }
   }
 
   @NonNull

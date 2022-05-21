@@ -25,18 +25,25 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.utils.FileUtils
 import com.google.common.io.Files
+import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
+import org.gradle.work.DisableCachingByDefault
 
-/** A task that writes the lint model metadata  */
-@CacheableTask
+/**
+ * A task that writes the lint model metadata
+ *
+ * Caching disabled by default for this task because the task does very little work.
+ * Input values are written to a minimal Properties file and no computation is required.
+ * Calculating cache hit/miss and fetching results is likely more expensive than
+ * simply executing the task.
+ */
+@DisableCachingByDefault
 abstract class LintModelMetadataTask : NonIncrementalTask() {
 
     @get:OutputFile
@@ -73,9 +80,9 @@ abstract class LintModelMetadataTask : NonIncrementalTask() {
         override fun configure(task: LintModelMetadataTask) {
             super.configure(task)
 
-            val project = creationConfig.services.projectInfo.getProject()
-            task.mavenGroupId.setDisallowChanges(project.group.toString())
-            task.mavenArtifactId.setDisallowChanges(project.name)
+            val projectInfo = creationConfig.services.projectInfo
+            task.mavenGroupId.setDisallowChanges(projectInfo.group)
+            task.mavenArtifactId.setDisallowChanges(projectInfo.name)
         }
     }
 

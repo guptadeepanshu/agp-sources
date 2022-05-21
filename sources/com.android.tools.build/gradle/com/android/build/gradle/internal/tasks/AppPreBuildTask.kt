@@ -22,18 +22,26 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactSco
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.MANIFEST
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
+import com.android.build.gradle.internal.ide.dependencies.getIdString
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
-import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifier
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 
-/** Pre build task that does some checks for application variants  */
-@CacheableTask
+/**
+ * Pre build task that does some checks for application variants
+ *
+ * Caching disabled by default for this task because the task does very little work.
+ * The task performs no disk I/O and has no real Output.
+ * Calculating cache hit/miss and fetching results is likely more expensive than
+ * simply executing the task.
+ */
+@DisableCachingByDefault
 abstract class AppPreBuildTask : NonIncrementalTask() {
 
     // list of Android only compile and runtime classpath.
@@ -106,7 +114,7 @@ abstract class AppPreBuildTask : NonIncrementalTask() {
         fun getCreationAction(
             creationConfig: ComponentCreationConfig
         ): TaskManager.AbstractPreBuildCreationAction<*> {
-            return if (creationConfig.variantType.isBaseModule && creationConfig.globalScope.hasDynamicFeatures()) {
+            return if (creationConfig.variantType.isBaseModule && creationConfig.global.hasDynamicFeatures) {
                 CheckCreationAction(creationConfig)
             } else EmptyCreationAction(creationConfig)
 
@@ -120,7 +128,7 @@ private fun getAndroidDependencies(artifactView: ArtifactCollection): Set<String
 
 private fun ResolvedArtifactResult.toIdString(): String? {
     return when (val id = id.componentIdentifier) {
-        is ProjectComponentIdentifier -> id.projectPath
+        is ProjectComponentIdentifier -> id.getIdString()
         is ModuleComponentIdentifier -> id.toString()
         is OpaqueComponentArtifactIdentifier -> {
             // skip those for now.

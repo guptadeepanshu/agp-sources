@@ -27,10 +27,9 @@ import com.android.build.gradle.internal.cxx.configure.NdkMetaPlatforms
 import com.android.build.gradle.internal.cxx.configure.getNdkBuildProperty
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.buildIsPrefabCapable
-import com.android.build.gradle.internal.cxx.model.determineUsedStlForCmake
-import com.android.build.gradle.internal.cxx.model.determineUsedStlForNdkBuild
-import com.android.build.gradle.internal.cxx.model.ifCMake
-import com.android.build.gradle.internal.cxx.model.ifNdkBuild
+import com.android.build.gradle.internal.cxx.model.buildSystemTag
+import com.android.build.gradle.internal.cxx.model.determineUsedStlFromArguments
+import com.android.build.gradle.internal.cxx.model.intermediatesParentDirSuffix
 import com.android.build.gradle.internal.cxx.settings.Environment.GRADLE
 import com.android.build.gradle.internal.cxx.settings.Environment.MICROSOFT_BUILT_IN
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK
@@ -43,6 +42,7 @@ import com.android.build.gradle.internal.cxx.settings.Macro.NDK_ABI_IS_DEPRECATE
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_BUILD_ROOT
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CMAKE_TOOLCHAIN
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CONFIGURATION_HASH
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_INTERMEDIATES_PARENT_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_MAX_PLATFORM
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_MIN_PLATFORM
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_MODULE_BUILD_INTERMEDIATES_DIR
@@ -57,13 +57,13 @@ import com.android.build.gradle.internal.cxx.settings.Macro.NDK_PREFAB_PATH
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_SO_OUTPUT_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_SO_REPUBLISH_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_STL_LIBRARY_FILE
-import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_BUILD_INTERMEDIATES_DIR
-import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_BUILD_ROOT
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_NAME
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_OPTIMIZATION_TAG
-import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_SO_OUTPUT_DIR
-import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_SO_REPUBLISH_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_STL_TYPE
+import com.android.build.gradle.tasks.NativeBuildSystem
+import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
+import com.android.build.gradle.tasks.NativeBuildSystem.CUSTOM
+import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
 import com.android.utils.FileUtils.join
 
 const val TRADITIONAL_CONFIGURATION_NAME = "traditional-android-studio-cmake-environment"
@@ -183,18 +183,15 @@ fun CxxAbiModel.getAndroidGradleSettings() : Settings {
 
     // This is the main switch point which defines the group of output folders used for
     // configuration and build.
-    val legacyConfigurationSegment = join(variant.module.buildSystem.tag, NDK_VARIANT_NAME.ref)
+    val legacyConfigurationSegment = join(variant.module.buildSystemTag, NDK_VARIANT_NAME.ref)
     val configurationSegment = join(NDK_VARIANT_OPTIMIZATION_TAG.ref, NDK_CONFIGURATION_HASH.ref)
 
     nameTable.addAll(
-        NDK_VARIANT_BUILD_ROOT to join(NDK_MODULE_BUILD_ROOT.ref, configurationSegment),
-        NDK_VARIANT_BUILD_INTERMEDIATES_DIR to join(NDK_MODULE_BUILD_INTERMEDIATES_DIR.ref, configurationSegment),
-        NDK_PREFAB_PATH to join(NDK_VARIANT_BUILD_ROOT.ref, "prefab", NDK_ABI.ref),
-        NDK_BUILD_ROOT to join(NDK_VARIANT_BUILD_ROOT.ref, NDK_ABI.ref),
-        NDK_VARIANT_SO_OUTPUT_DIR to join(NDK_VARIANT_BUILD_INTERMEDIATES_DIR.ref, ifCMake { "obj" } ?: "obj/local"),
-        NDK_VARIANT_SO_REPUBLISH_DIR to join(NDK_MODULE_BUILD_INTERMEDIATES_BASE_DIR.ref, legacyConfigurationSegment, ifCMake { "obj" } ?: "obj/local"),
-        NDK_SO_OUTPUT_DIR to join(NDK_VARIANT_SO_OUTPUT_DIR.ref, NDK_ABI.ref),
-        NDK_SO_REPUBLISH_DIR to join(NDK_VARIANT_SO_REPUBLISH_DIR.ref, NDK_ABI.ref),
+        NDK_INTERMEDIATES_PARENT_DIR to join(NDK_MODULE_BUILD_INTERMEDIATES_DIR.ref, configurationSegment),
+        NDK_PREFAB_PATH to join(NDK_MODULE_BUILD_ROOT.ref, configurationSegment, "prefab", NDK_ABI.ref),
+        NDK_BUILD_ROOT to join(NDK_MODULE_BUILD_ROOT.ref, configurationSegment, NDK_ABI.ref),
+        NDK_SO_OUTPUT_DIR to join(NDK_INTERMEDIATES_PARENT_DIR.ref, variant.module.intermediatesParentDirSuffix, NDK_ABI.ref),
+        NDK_SO_REPUBLISH_DIR to join(NDK_MODULE_BUILD_INTERMEDIATES_BASE_DIR.ref, legacyConfigurationSegment, variant.module.intermediatesParentDirSuffix, NDK_ABI.ref),
     )
 
     return Settings(
@@ -209,8 +206,8 @@ fun CxxAbiModel.getAndroidGradleSettings() : Settings {
 fun CxxAbiModel.getSettingsFromCommandLine(arguments: List<CommandLineArgument>): Settings {
     val nameTable = NameTable()
 
-    ifCMake {
-        arguments.forEach { argument ->
+    when(variant.module.buildSystem) {
+        CMAKE -> arguments.forEach { argument ->
             when (argument) {
                 is CmakeBinaryOutputPath -> nameTable[NDK_BUILD_ROOT] = argument.path
                 is DefineProperty ->
@@ -221,20 +218,17 @@ fun CxxAbiModel.getSettingsFromCommandLine(arguments: List<CommandLineArgument>)
                 }
             }
         }
-    }
-
-    ifNdkBuild {
-        nameTable.addAll(
+        NDK_BUILD -> nameTable.addAll(
             NDK_VARIANT_OPTIMIZATION_TAG to
-                when(arguments.getNdkBuildProperty(NDK_DEBUG)) {
-                    "0" -> "Release"
-                    else -> "Debug"
-                }
+                    when(arguments.getNdkBuildProperty(NDK_DEBUG)) {
+                        "0" -> "Release"
+                        else -> "Debug"
+                    }
         )
+        else -> error("${variant.module.buildSystem}")
     }
 
-    val stl = ifCMake { variant.module.determineUsedStlForCmake(arguments) }
-            ?: variant.module.determineUsedStlForNdkBuild(arguments)
+    val stl =  variant.module.determineUsedStlFromArguments(arguments)
 
     val stlLibraryFile =
             variant.module.stlSharedObjectMap.getValue(stl)[abi]?.toString() ?: ""
@@ -250,26 +244,25 @@ fun CxxAbiModel.getSettingsFromCommandLine(arguments: List<CommandLineArgument>)
     )
 }
 
-
 /**
  * Gather CMake settings from different locations.
  */
 fun CxxAbiModel.gatherSettingsFromAllLocations() : Settings {
     val settings = mutableListOf<Settings>()
 
-    ifCMake {
-        // Load the user's CMakeSettings.json if there is one.
-        val userSettings = join(variant.module.makeFile.parentFile, "CMakeSettings.json")
-        if (userSettings.isFile) {
-            settings += createSettingsFromJsonFile(userSettings)
+    when(variant.module.buildSystem) {
+        CMAKE -> {
+            // Load the user's CMakeSettings.json if there is one.
+            val userSettings = join(variant.module.makeFile.parentFile, "CMakeSettings.json")
+            if (userSettings.isFile) {
+                settings += createSettingsFromJsonFile(userSettings)
+            }
+            // TODO this needs to include environment variables as well.
+            // Add the synthetic traditional environment.
+            settings += getCmakeDefaultEnvironment(buildIsPrefabCapable())
         }
-        // TODO this needs to include environment variables as well.
-        // Add the synthetic traditional environment.
-        settings += getCmakeDefaultEnvironment(buildIsPrefabCapable())
-    }
-
-    ifNdkBuild {
-        settings += getNdkBuildDefaultEnvironment()
+        NDK_BUILD -> settings += getNdkBuildDefaultEnvironment()
+        else -> error("${variant.module.buildSystem}")
     }
 
     // Construct settings for gradle hosting environment.

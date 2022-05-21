@@ -33,9 +33,9 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.AAPT_PROGUAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.AAR_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.AIDL_PARCELABLE
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_ZIP
-import com.android.build.gradle.internal.scope.InternalArtifactType.APP_CLASSES
 import com.android.build.gradle.internal.scope.InternalArtifactType.BASE_MODULE_METADATA
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILED_LOCAL_RESOURCES
+import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_APP_CLASSES_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_LIBRARY_CLASSES_JAR
 import com.android.build.gradle.internal.scope.InternalArtifactType.COMPILE_SYMBOL_LIST
 import com.android.build.gradle.internal.scope.InternalArtifactType.CONSUMER_PROGUARD_DIR
@@ -133,8 +133,8 @@ class PublishingSpecs {
                 // use TYPE_JAR to give access to this via the model for now,
                 // the JarTransform will convert it back to CLASSES
                 // FIXME: stop using TYPE_JAR for APK_CLASSES
-                api(APP_CLASSES, ArtifactType.JAR)
-                api(APP_CLASSES, ArtifactType.CLASSES_JAR)
+                api(COMPILE_APP_CLASSES_JAR, ArtifactType.JAR)
+                api(COMPILE_APP_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 runtime(RUNTIME_APP_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 output(JAVA_RES, ArtifactType.JAVA_RES)
                 api(OBFUSCATION_MAPPING_FILE, ArtifactType.APK_MAPPING)
@@ -172,8 +172,8 @@ class PublishingSpecs {
                 // use TYPE_JAR to give access to this via the model for now,
                 // the JarTransform will convert it back to CLASSES
                 // FIXME: stop using TYPE_JAR for APK_CLASSES
-                api(APP_CLASSES, ArtifactType.JAR)
-                api(APP_CLASSES, ArtifactType.CLASSES_JAR)
+                api(COMPILE_APP_CLASSES_JAR, ArtifactType.JAR)
+                api(COMPILE_APP_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 runtime(RUNTIME_APP_CLASSES_JAR, ArtifactType.CLASSES_JAR)
                 output(JAVA_RES, ArtifactType.JAVA_RES)
                 api(OBFUSCATION_MAPPING_FILE, ArtifactType.APK_MAPPING)

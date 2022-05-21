@@ -414,6 +414,19 @@ private static final long serialVersionUID = 0L;
                 input.readMessage(com.google.wireless.android.sdk.stats.EmulatorIcebox.PARSER, extensionRegistry));
             break;
           }
+          case 290: {
+            com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder subBuilder = null;
+            if (((bitField0_ & 0x40000000) != 0)) {
+              subBuilder = resizableDisplay_.toBuilder();
+            }
+            resizableDisplay_ = input.readMessage(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(resizableDisplay_);
+              resizableDisplay_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x40000000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -2456,6 +2469,41 @@ private static final long serialVersionUID = 0L;
     return icebox_.get(index);
   }
 
+  public static final int RESIZABLE_DISPLAY_FIELD_NUMBER = 36;
+  private com.google.wireless.android.sdk.stats.EmulatorResizableDisplay resizableDisplay_;
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * @return Whether the resizableDisplay field is set.
+   */
+  public boolean hasResizableDisplay() {
+    return ((bitField0_ & 0x40000000) != 0);
+  }
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * @return The resizableDisplay.
+   */
+  public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay() {
+    return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
+  }
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   */
+  public com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder() {
+    return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2571,6 +2619,9 @@ private static final long serialVersionUID = 0L;
     }
     for (int i = 0; i < icebox_.size(); i++) {
       output.writeMessage(35, icebox_.get(i));
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      output.writeMessage(36, getResizableDisplay());
     }
     unknownFields.writeTo(output);
   }
@@ -2715,6 +2766,10 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < icebox_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(35, icebox_.get(i));
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(36, getResizableDisplay());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2884,6 +2939,11 @@ private static final long serialVersionUID = 0L;
     }
     if (!getIceboxList()
         .equals(other.getIceboxList())) return false;
+    if (hasResizableDisplay() != other.hasResizableDisplay()) return false;
+    if (hasResizableDisplay()) {
+      if (!getResizableDisplay()
+          .equals(other.getResizableDisplay())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -3039,6 +3099,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + ICEBOX_FIELD_NUMBER;
       hash = (53 * hash) + getIceboxList().hashCode();
     }
+    if (hasResizableDisplay()) {
+      hash = (37 * hash) + RESIZABLE_DISPLAY_FIELD_NUMBER;
+      hash = (53 * hash) + getResizableDisplay().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -3191,6 +3255,7 @@ private static final long serialVersionUID = 0L;
         getLocationV2FieldBuilder();
         getScreenshotFieldBuilder();
         getIceboxFieldBuilder();
+        getResizableDisplayFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3344,6 +3409,12 @@ private static final long serialVersionUID = 0L;
       } else {
         iceboxBuilder_.clear();
       }
+      if (resizableDisplayBuilder_ == null) {
+        resizableDisplay_ = null;
+      } else {
+        resizableDisplayBuilder_.clear();
+      }
+      bitField1_ = (bitField1_ & ~0x00000004);
       return this;
     }
 
@@ -3593,6 +3664,14 @@ private static final long serialVersionUID = 0L;
       } else {
         result.icebox_ = iceboxBuilder_.build();
       }
+      if (((from_bitField1_ & 0x00000004) != 0)) {
+        if (resizableDisplayBuilder_ == null) {
+          result.resizableDisplay_ = resizableDisplay_;
+        } else {
+          result.resizableDisplay_ = resizableDisplayBuilder_.build();
+        }
+        to_bitField0_ |= 0x40000000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3837,6 +3916,9 @@ private static final long serialVersionUID = 0L;
             iceboxBuilder_.addAllMessages(other.icebox_);
           }
         }
+      }
+      if (other.hasResizableDisplay()) {
+        mergeResizableDisplay(other.getResizableDisplay());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -8325,6 +8407,162 @@ private static final long serialVersionUID = 0L;
         icebox_ = null;
       }
       return iceboxBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EmulatorResizableDisplay resizableDisplay_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EmulatorResizableDisplay, com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder, com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder> resizableDisplayBuilder_;
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * @return Whether the resizableDisplay field is set.
+     */
+    public boolean hasResizableDisplay() {
+      return ((bitField1_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     * @return The resizableDisplay.
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay() {
+      if (resizableDisplayBuilder_ == null) {
+        return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
+      } else {
+        return resizableDisplayBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public Builder setResizableDisplay(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay value) {
+      if (resizableDisplayBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        resizableDisplay_ = value;
+        onChanged();
+      } else {
+        resizableDisplayBuilder_.setMessage(value);
+      }
+      bitField1_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public Builder setResizableDisplay(
+        com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder builderForValue) {
+      if (resizableDisplayBuilder_ == null) {
+        resizableDisplay_ = builderForValue.build();
+        onChanged();
+      } else {
+        resizableDisplayBuilder_.setMessage(builderForValue.build());
+      }
+      bitField1_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public Builder mergeResizableDisplay(com.google.wireless.android.sdk.stats.EmulatorResizableDisplay value) {
+      if (resizableDisplayBuilder_ == null) {
+        if (((bitField1_ & 0x00000004) != 0) &&
+            resizableDisplay_ != null &&
+            resizableDisplay_ != com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance()) {
+          resizableDisplay_ =
+            com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.newBuilder(resizableDisplay_).mergeFrom(value).buildPartial();
+        } else {
+          resizableDisplay_ = value;
+        }
+        onChanged();
+      } else {
+        resizableDisplayBuilder_.mergeFrom(value);
+      }
+      bitField1_ |= 0x00000004;
+      return this;
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public Builder clearResizableDisplay() {
+      if (resizableDisplayBuilder_ == null) {
+        resizableDisplay_ = null;
+        onChanged();
+      } else {
+        resizableDisplayBuilder_.clear();
+      }
+      bitField1_ = (bitField1_ & ~0x00000004);
+      return this;
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder getResizableDisplayBuilder() {
+      bitField1_ |= 0x00000004;
+      onChanged();
+      return getResizableDisplayFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder() {
+      if (resizableDisplayBuilder_ != null) {
+        return resizableDisplayBuilder_.getMessageOrBuilder();
+      } else {
+        return resizableDisplay_ == null ?
+            com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
+      }
+    }
+    /**
+     * <pre>
+     * Metrics for resizable display
+     * </pre>
+     *
+     * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EmulatorResizableDisplay, com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder, com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder> 
+        getResizableDisplayFieldBuilder() {
+      if (resizableDisplayBuilder_ == null) {
+        resizableDisplayBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EmulatorResizableDisplay, com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.Builder, com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder>(
+                getResizableDisplay(),
+                getParentForChildren(),
+                isClean());
+        resizableDisplay_ = null;
+      }
+      return resizableDisplayBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

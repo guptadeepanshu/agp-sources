@@ -39,13 +39,13 @@ import com.android.annotations.Nullable;
 import com.android.build.api.attributes.AgpVersionAttr;
 import com.android.build.api.attributes.BuildTypeAttr;
 import com.android.build.api.attributes.ProductFlavorAttr;
+import com.android.build.api.dsl.ProductFlavor;
 import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet;
 import com.android.build.gradle.internal.attributes.VariantAttr;
 import com.android.build.gradle.internal.core.VariantDslInfo;
 import com.android.build.gradle.internal.dsl.AbstractPublishing;
 import com.android.build.gradle.internal.dsl.ModulePropertyKeys;
-import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.publishing.ComponentPublishingInfo;
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec;
@@ -96,7 +96,7 @@ public class VariantDependenciesBuilder {
             @NonNull Project project,
             @NonNull ProjectOptions projectOptions,
             @NonNull IssueReporter errorReporter,
-            @NonNull VariantDslInfo<?> variantDslInfo) {
+            @NonNull VariantDslInfo variantDslInfo) {
         return new VariantDependenciesBuilder(
                 project, projectOptions, errorReporter, variantDslInfo);
     }
@@ -304,24 +304,19 @@ public class VariantDependenciesBuilder {
             Provider<StringCachingBuildService> stringCachingService =
                     new StringCachingBuildService.RegistrationAction(project).execute();
             // make compileClasspath match runtimeClasspath
-            compileClasspath
-                    .getIncoming()
-                    .beforeResolve(
-                            new ConstraintHandler(
-                                    runtimeClasspath, dependencies, false, stringCachingService));
+            ConstraintHandler.alignWith(
+                    compileClasspath, runtimeClasspath, dependencies, false, stringCachingService);
 
             // if this is a test App, then also synchronize the 2 runtime classpaths
             if (variantType.isApk() && testedVariant != null) {
                 Configuration testedRuntimeClasspath =
                         testedVariant.getVariantDependencies().getRuntimeClasspath();
-                runtimeClasspath
-                        .getIncoming()
-                        .beforeResolve(
-                                new ConstraintHandler(
-                                        testedRuntimeClasspath,
-                                        dependencies,
-                                        true,
-                                        stringCachingService));
+                ConstraintHandler.alignWith(
+                        runtimeClasspath,
+                        testedRuntimeClasspath,
+                        dependencies,
+                        true,
+                        stringCachingService);
             }
         }
 

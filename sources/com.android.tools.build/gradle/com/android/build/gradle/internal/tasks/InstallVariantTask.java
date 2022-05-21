@@ -17,6 +17,7 @@ package com.android.build.gradle.internal.tasks;
 
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.SingleArtifact;
+import com.android.build.api.dsl.Installation;
 import com.android.build.api.variant.impl.BuiltArtifactsImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
 import com.android.build.api.variant.impl.VariantApiExtensionsKt;
@@ -96,7 +97,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                             new BuiltArtifactsLoaderImpl().load(getApkDirectory().get());
 
                     install(
-                            getProjectName(),
+                            getProjectPath().get(),
                             variantName,
                             deviceProvider,
                             minSdkVersion,
@@ -111,7 +112,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
     }
 
     static void install(
-            @NonNull String projectName,
+            @NonNull String projectPath,
             @NonNull String variantName,
             @NonNull DeviceProvider deviceProvider,
             @NonNull AndroidVersion minSkdVersion,
@@ -126,7 +127,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
         List<? extends DeviceConnector> devices = deviceProvider.getDevices();
         for (final DeviceConnector device : devices) {
             if (InstallUtils.checkDeviceApiLevel(
-                    device, minSkdVersion, iLogger, projectName, variantName)) {
+                    device, minSkdVersion, iLogger, projectPath, variantName)) {
                 // When InstallUtils.checkDeviceApiLevel returns false, it logs the reason.
                 final List<File> apkFiles =
                         BuiltArtifactsSplitOutputMatcher.INSTANCE.computeBestOutput(
@@ -139,7 +140,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                             "Skipping device '{}' for '{}:{}': Could not find build of variant "
                                     + "which supports density {} and an ABI in {}",
                             device.getName(),
-                            projectName,
+                            projectPath,
                             variantName,
                             device.getDensity(),
                             Joiner.on(", ").join(device.getAbis()));
@@ -148,7 +149,7 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                             "Installing APK '{}' on '{}' for {}:{}",
                             FileUtils.getNamesAsCommaSeparatedList(apkFiles),
                             device.getName(),
-                            projectName,
+                            projectPath,
                             variantName);
 
                     final Collection<String> extraArgs =
@@ -236,18 +237,10 @@ public abstract class InstallVariantTask extends NonIncrementalTask {
                     .getArtifacts()
                     .setTaskInputToFinalProduct(
                             SingleArtifact.APK.INSTANCE, task.getApkDirectory());
-            task.setTimeOutInMs(
-                    creationConfig
-                            .getGlobalScope()
-                            .getExtension()
-                            .getAdbOptions()
-                            .getTimeOutInMs());
-            task.setInstallOptions(
-                    creationConfig
-                            .getGlobalScope()
-                            .getExtension()
-                            .getAdbOptions()
-                            .getInstallOptions());
+
+            Installation installationOptions = creationConfig.getGlobal().getInstallationOptions();
+            task.setTimeOutInMs(installationOptions.getTimeOutInMs());
+            task.setInstallOptions(installationOptions.getInstallOptions());
 
             SdkComponentsKt.initialize(task.getBuildTools(), creationConfig);
         }

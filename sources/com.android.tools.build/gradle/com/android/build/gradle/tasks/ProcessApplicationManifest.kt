@@ -30,6 +30,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MER
 import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_JSON
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
+import com.android.build.gradle.internal.ide.dependencies.getIdString
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ProcessApplicationManifest.CreationAction.ManifestProviderImpl
@@ -99,6 +100,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Input
     abstract val packageOverride: Property<String>
 
+    @get:Input
+    abstract val namespace: Property<String>
+
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFiles
     abstract val manifestOverlays: ListProperty<File>
@@ -117,7 +121,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         private set
 
     @Throws(IOException::class)
-    override fun doFullTaskAction() {
+
+    override fun doTaskAction() {
         if (baseModuleDebuggable.isPresent) {
             val isDebuggable = optionalFeatures.get()
                 .contains(Invoker.Feature.DEBUGGABLE)
@@ -148,6 +153,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             navJsons,
             featureName.orNull,
             packageOverride.get(),
+            namespace.get(),
             variantOutput.get().versionCode.orNull,
             variantOutput.get().versionName.orNull,
             minSdkVersion.orNull,
@@ -271,9 +277,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     abstract val featureName: Property<String>
 
     @get:Internal("only for task execution")
-    abstract val projectPath: Property<String?>
-
-    @get:Internal("only for task execution")
     abstract val projectBuildFile: RegularFileProperty
 
     @get:Nested
@@ -338,10 +341,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val variantSources = creationConfig.variantSources
-            val globalScope =
-                creationConfig.globalScope
             val variantType = creationConfig.variantType
-            val project = creationConfig.services.projectInfo.getProject()
             // This includes the dependent libraries.
             task.manifests = creationConfig
                 .variantDependencies
@@ -371,8 +371,11 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         else creationConfig.targetSdkVersion.getApiString()
                 )
             task.maxSdkVersion.setDisallowChanges(creationConfig.maxSdkVersion)
-            task.optionalFeatures.set(project.provider { getOptionalFeatures(creationConfig) })
-            task.optionalFeatures.disallowChanges()
+            task.optionalFeatures.setDisallowChanges(creationConfig.services.provider {
+                getOptionalFeatures(
+                    creationConfig
+                )
+            })
             task.jniLibsUseLegacyPackaging.setDisallowChanges(
                 creationConfig.packaging.jniLibs.useLegacyPackaging
             )
@@ -401,8 +404,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         AndroidArtifacts.ArtifactType.FEATURE_NAME
                     )
             }
-            if (!creationConfig.services.projectInfo.getExtension().aaptOptions.namespaced) {
-                task.navigationJsons = project.files(
+            if (!creationConfig.global.namespacedAndroidResources) {
+                task.navigationJsons = creationConfig.services.fileCollection(
                     creationConfig.artifacts.get(NAVIGATION_JSON),
                     creationConfig
                         .variantDependencies
@@ -413,20 +416,16 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         )
                 )
             }
-            task.packageOverride.set(creationConfig.applicationId)
-            task.packageOverride.disallowChanges()
+            task.packageOverride.setDisallowChanges(creationConfig.applicationId)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
             task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
             task.manifestPlaceholders.disallowChanges()
-            task.mainManifest
-                .set(project.provider(variantSources::mainManifestFilePath))
-            task.mainManifest.disallowChanges()
-            task.manifestOverlays.set(
+            task.mainManifest.setDisallowChanges(creationConfig.services.provider(variantSources::mainManifestFilePath))
+            task.manifestOverlays.setDisallowChanges(
                 task.project.provider(variantSources::manifestOverlays)
             )
-            task.manifestOverlays.disallowChanges()
             task.isFeatureSplitVariantType = creationConfig.variantType.isDynamicFeature
             task.buildTypeName = creationConfig.buildType
-            task.projectPath.setDisallowChanges(task.project.path)
             task.projectBuildFile.set(task.project.buildFile)
             task.projectBuildFile.disallowChanges()
             // TODO: here in the "else" block should be the code path for the namespaced pipeline
@@ -472,7 +471,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         @JvmStatic
         fun getArtifactName(artifact: ResolvedArtifactResult): String {
             return when(val id = artifact.id.componentIdentifier) {
-                is ProjectComponentIdentifier -> id.projectPath
+                is ProjectComponentIdentifier -> id.getIdString()
                 is ModuleComponentIdentifier -> "${id.group}:${id.module}:${id.version}"
                 is OpaqueComponentArtifactIdentifier -> id.displayName
                 is ExtraComponentIdentifier -> id.displayName

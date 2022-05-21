@@ -23,8 +23,8 @@ import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.builder.internal.InstallUtils
 import com.android.build.gradle.internal.testing.ConnectedDeviceProvider
+import com.android.builder.internal.InstallUtils
 import com.android.builder.testing.api.DeviceConfigProviderImpl
 import com.android.builder.testing.api.DeviceConnector
 import com.android.builder.testing.api.DeviceProvider
@@ -108,7 +108,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                 val androidVersion = AndroidVersion(parameters.minSdkVersion.get(), parameters.minApiCodeName.orNull)
                 for (device in devices) {
                     if (!InstallUtils.checkDeviceApiLevel(
-                            device, androidVersion, iLogger, parameters.projectName.get(), parameters.variantName.get())
+                            device, androidVersion, iLogger, parameters.projectPath.get(), parameters.variantName.get())
                     ) {
                         continue
                     }
@@ -116,7 +116,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                     logger.lifecycle(
                         "Generating APKs for device '{}' for {}:{}",
                         device.name,
-                        parameters.projectName.get(),
+                        parameters.projectPath.get(),
                         parameters.variantName.get()
                     )
 
@@ -126,7 +126,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                         logger.lifecycle(
                             "Skipping device '{}' for '{}:{}': No APK generated",
                             device.name,
-                            parameters.projectName.get(),
+                            parameters.projectPath.get(),
                             parameters.variantName.get())
 
                     } else {
@@ -137,7 +137,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                             "Installing APKs '{}' on '{}' for {}:{}",
                             FileUtils.getNamesAsCommaSeparatedList(apkFiles),
                             device.name,
-                            parameters.projectName.get(),
+                            parameters.projectPath.get(),
                             parameters.variantName.get()
                         )
 
@@ -201,7 +201,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                 task.minSdkVersion = it.apiLevel
                 task.minSdkCodename = it.codename
             }
-            creationConfig.globalScope.extension.adbOptions.installOptions?.let {
+            creationConfig.global.installationOptions.installOptions?.let {
                 task.installOptions.addAll(it)
             }
 
@@ -210,7 +210,7 @@ abstract class InstallVariantViaBundleTask : NonIncrementalTask() {
                 task.apkBundle
             )
 
-            task.timeOutInMs = creationConfig.globalScope.extension.adbOptions.timeOutInMs
+            task.timeOutInMs = creationConfig.global.installationOptions.timeOutInMs
             task.buildTools.initialize(creationConfig)
         }
 

@@ -32,12 +32,14 @@ import com.android.ide.common.blame.parser.ToolOutputParser
 import com.android.ide.common.blame.parser.aapt.Aapt2OutputParser
 import com.android.ide.common.blame.parser.aapt.AbstractAaptOutputParser
 import com.android.ide.common.resources.CompileResourceRequest
+import com.android.ide.common.resources.relativeResourcePathToAbsolutePath
 import com.android.tools.build.bundletool.model.utils.files.FileUtils
 import com.android.utils.StdLogger
 import com.google.common.base.Charsets
 import com.google.common.collect.ImmutableList
 import org.gradle.api.logging.Logger
 import java.io.File
+import java.nio.file.FileSystems
 
 /**
  * Rewrite exceptions to point to their original files.
@@ -152,21 +154,38 @@ fun rewriteLinkException(
  * @return A Blame Logger that can rewrite sources, to their correct locations pre-merge.
  */
 fun blameLoggerFor(
-    request: CompileResourceRequest, logger: LoggerWrapper) : BlameLogger {
-
+    request: CompileResourceRequest, logger: LoggerWrapper
+): BlameLogger {
+    val sourcePathFunc = if (request.identifiedSourceSetMap.any()) {
+        relativeResourcePathToAbsolutePath(
+            request.identifiedSourceSetMap,
+            FileSystems.getDefault()
+        )
+    } else {
+        { it }
+    }
     if (request.blameMap.isEmpty()) {
         if (request.mergeBlameFolder != null) {
             val mergingLog = MergingLog(request.mergeBlameFolder!!)
-            return BlameLogger(logger, request.identifiedSourceSetMap) {
+            return BlameLogger(
+                logger,
+                sourcePathFunc,
+            ) {
                 val sourceFile = it.toSourceFilePosition()
                 BlameLogger.Source.fromSourceFilePosition(mergingLog.find(sourceFile))
             }
         }
-        return BlameLogger(logger, request.identifiedSourceSetMap)
+        return BlameLogger(
+            logger,
+            sourcePathFunc
+        )
     }
-    return BlameLogger(logger, request.identifiedSourceSetMap) {
+    return BlameLogger(
+        logger, sourcePathFunc
+    ) {
         if (FileUtils.getPath(it.sourcePath).toAbsolutePath() ==
-            request.originalInputFile.toPath().toAbsolutePath()) {
+            request.originalInputFile.toPath().toAbsolutePath()
+        ) {
             val sourceFile = it.toSourceFilePosition()
             val foundSource = MergingLog.find(sourceFile.position, request.blameMap)
             if (foundSource == null) {
@@ -191,11 +210,11 @@ private fun rewriteException(
 ): Aapt2Exception {
     try {
         var messages =
-                ToolOutputParser(
-                        Aapt2OutputParser(identifiedSourceSetMap),
-                        Message.Kind.SIMPLE,
-                        StdLogger(StdLogger.Level.INFO)
-                ).parseToolOutput(e.output ?: "", true)
+            ToolOutputParser(
+                Aapt2OutputParser(identifiedSourceSetMap),
+                Message.Kind.SIMPLE,
+                StdLogger(StdLogger.Level.INFO)
+            ).parseToolOutput(e.output ?: "", true)
         if (messages.isEmpty()) {
             // No messages were parsed, create a dummy message.
             messages = listOf(

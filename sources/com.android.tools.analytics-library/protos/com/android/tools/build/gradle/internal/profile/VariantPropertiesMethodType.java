@@ -17,10 +17,18 @@ public enum VariantPropertiesMethodType
    */
   ARTIFACTS(1),
   /**
+   * <pre>
+   * deprecated
+   * </pre>
+   *
    * <code>ASM_TRANSFORM_CLASSES = 2;</code>
    */
   ASM_TRANSFORM_CLASSES(2),
   /**
+   * <pre>
+   * deprecated
+   * </pre>
+   *
    * <code>ASM_FRAMES_COMPUTATION_NODE = 3;</code>
    */
   ASM_FRAMES_COMPUTATION_NODE(3),
@@ -437,6 +445,62 @@ public enum VariantPropertiesMethodType
    * <code>VARIANT_AAR_METADATA_MIN_AGP_VERSION = 97;</code>
    */
   VARIANT_AAR_METADATA_MIN_AGP_VERSION(97),
+  /**
+   * <code>COMPONENT_SOURCES_ACCESS = 98;</code>
+   */
+  COMPONENT_SOURCES_ACCESS(98),
+  /**
+   * <code>SOURCES_JAVA_ACCESS = 99;</code>
+   */
+  SOURCES_JAVA_ACCESS(99),
+  /**
+   * <code>SOURCES_DIRECTORIES_GET_ALL = 100;</code>
+   */
+  SOURCES_DIRECTORIES_GET_ALL(100),
+  /**
+   * <code>SOURCES_DIRECTORIES_ADD = 101;</code>
+   */
+  SOURCES_DIRECTORIES_ADD(101),
+  /**
+   * <code>SOURCES_DIRECTORIES_SRC_DIR = 102;</code>
+   */
+  SOURCES_DIRECTORIES_SRC_DIR(102),
+  /**
+   * <code>SOURCES_EXTRAS_ACCESS = 103;</code>
+   */
+  SOURCES_EXTRAS_ACCESS(103),
+  /**
+   * <code>INSTRUMENTATION = 104;</code>
+   */
+  INSTRUMENTATION(104),
+  /**
+   * <code>INSTRUMENTATION_TRANSFORM_CLASSES_WITH = 105;</code>
+   */
+  INSTRUMENTATION_TRANSFORM_CLASSES_WITH(105),
+  /**
+   * <code>INSTRUMENTATION_SET_ASM_FRAMES_COMPUTATUION_MODE = 106;</code>
+   */
+  INSTRUMENTATION_SET_ASM_FRAMES_COMPUTATUION_MODE(106),
+  /**
+   * <code>INSTRUMENTATION_EXCLUDES = 107;</code>
+   */
+  INSTRUMENTATION_EXCLUDES(107),
+  /**
+   * <code>SOURCES_RES_ACCESS = 108;</code>
+   */
+  SOURCES_RES_ACCESS(108),
+  /**
+   * <code>SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL = 109;</code>
+   */
+  SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL(109),
+  /**
+   * <code>COMPILE_CLASSPATH = 110;</code>
+   */
+  COMPILE_CLASSPATH(110),
+  /**
+   * <code>BUNDLE_CONFIG_ADD_METADATA = 111;</code>
+   */
+  BUNDLE_CONFIG_ADD_METADATA(111),
   UNRECOGNIZED(-1),
   ;
 
@@ -449,10 +513,18 @@ public enum VariantPropertiesMethodType
    */
   public static final int ARTIFACTS_VALUE = 1;
   /**
+   * <pre>
+   * deprecated
+   * </pre>
+   *
    * <code>ASM_TRANSFORM_CLASSES = 2;</code>
    */
   public static final int ASM_TRANSFORM_CLASSES_VALUE = 2;
   /**
+   * <pre>
+   * deprecated
+   * </pre>
+   *
    * <code>ASM_FRAMES_COMPUTATION_NODE = 3;</code>
    */
   public static final int ASM_FRAMES_COMPUTATION_NODE_VALUE = 3;
@@ -868,6 +940,62 @@ public enum VariantPropertiesMethodType
    * <code>VARIANT_AAR_METADATA_MIN_AGP_VERSION = 97;</code>
    */
   public static final int VARIANT_AAR_METADATA_MIN_AGP_VERSION_VALUE = 97;
+  /**
+   * <code>COMPONENT_SOURCES_ACCESS = 98;</code>
+   */
+  public static final int COMPONENT_SOURCES_ACCESS_VALUE = 98;
+  /**
+   * <code>SOURCES_JAVA_ACCESS = 99;</code>
+   */
+  public static final int SOURCES_JAVA_ACCESS_VALUE = 99;
+  /**
+   * <code>SOURCES_DIRECTORIES_GET_ALL = 100;</code>
+   */
+  public static final int SOURCES_DIRECTORIES_GET_ALL_VALUE = 100;
+  /**
+   * <code>SOURCES_DIRECTORIES_ADD = 101;</code>
+   */
+  public static final int SOURCES_DIRECTORIES_ADD_VALUE = 101;
+  /**
+   * <code>SOURCES_DIRECTORIES_SRC_DIR = 102;</code>
+   */
+  public static final int SOURCES_DIRECTORIES_SRC_DIR_VALUE = 102;
+  /**
+   * <code>SOURCES_EXTRAS_ACCESS = 103;</code>
+   */
+  public static final int SOURCES_EXTRAS_ACCESS_VALUE = 103;
+  /**
+   * <code>INSTRUMENTATION = 104;</code>
+   */
+  public static final int INSTRUMENTATION_VALUE = 104;
+  /**
+   * <code>INSTRUMENTATION_TRANSFORM_CLASSES_WITH = 105;</code>
+   */
+  public static final int INSTRUMENTATION_TRANSFORM_CLASSES_WITH_VALUE = 105;
+  /**
+   * <code>INSTRUMENTATION_SET_ASM_FRAMES_COMPUTATUION_MODE = 106;</code>
+   */
+  public static final int INSTRUMENTATION_SET_ASM_FRAMES_COMPUTATUION_MODE_VALUE = 106;
+  /**
+   * <code>INSTRUMENTATION_EXCLUDES = 107;</code>
+   */
+  public static final int INSTRUMENTATION_EXCLUDES_VALUE = 107;
+  /**
+   * <code>SOURCES_RES_ACCESS = 108;</code>
+   */
+  public static final int SOURCES_RES_ACCESS_VALUE = 108;
+  /**
+   * <code>SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL = 109;</code>
+   */
+  public static final int SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL_VALUE = 109;
+  /**
+   * <code>COMPILE_CLASSPATH = 110;</code>
+   */
+  public static final int COMPILE_CLASSPATH_VALUE = 110;
+  /**
+   * <code>BUNDLE_CONFIG_ADD_METADATA = 111;</code>
+   */
+  public static final int BUNDLE_CONFIG_ADD_METADATA_VALUE = 111;
 
 
   public final int getNumber() {
@@ -992,6 +1120,20 @@ public enum VariantPropertiesMethodType
       case 95: return ANNOTATION_PROCESSOR_ARGUMENT_PROVIDERS;
       case 96: return NESTED_COMPONENTS;
       case 97: return VARIANT_AAR_METADATA_MIN_AGP_VERSION;
+      case 98: return COMPONENT_SOURCES_ACCESS;
+      case 99: return SOURCES_JAVA_ACCESS;
+      case 100: return SOURCES_DIRECTORIES_GET_ALL;
+      case 101: return SOURCES_DIRECTORIES_ADD;
+      case 102: return SOURCES_DIRECTORIES_SRC_DIR;
+      case 103: return SOURCES_EXTRAS_ACCESS;
+      case 104: return INSTRUMENTATION;
+      case 105: return INSTRUMENTATION_TRANSFORM_CLASSES_WITH;
+      case 106: return INSTRUMENTATION_SET_ASM_FRAMES_COMPUTATUION_MODE;
+      case 107: return INSTRUMENTATION_EXCLUDES;
+      case 108: return SOURCES_RES_ACCESS;
+      case 109: return SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL;
+      case 110: return COMPILE_CLASSPATH;
+      case 111: return BUNDLE_CONFIG_ADD_METADATA;
       default: return null;
     }
   }

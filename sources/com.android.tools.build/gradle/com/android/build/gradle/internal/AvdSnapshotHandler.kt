@@ -82,6 +82,8 @@ class AvdSnapshotHandler(
                 "@$avdName",
                 "-no-window",
                 "-no-boot-anim",
+                "-gpu",
+                "auto-no-window",
                 "-check-snapshot-loadable",
                 snapshotName
             )
@@ -143,8 +145,11 @@ class AvdSnapshotHandler(
                 "@${avdName}",
                 "-no-window",
                 "-no-boot-anim",
+                "-no-audio",
                 "-id",
-                deviceId
+                deviceId,
+                "-gpu",
+                "auto-no-window",
             )
         )
         processBuilder.environment()["ANDROID_AVD_HOME"] = avdLocation.absolutePath
@@ -171,7 +176,12 @@ class AvdSnapshotHandler(
                 logger.verbose("Snapshot creation timed out. Closing emulator.")
                 closeEmulatorWithId(adbExecutable, process, deviceId, logger)
                 process.waitFor()
-                error("Failed to generate snapshot for device: $avdName")
+                error("""
+                    Gradle was not able to complete device setup for: $avdName
+                    This could be due to having insufficient resources to provision the number of
+                    devices requested. Try running the test again and request fewer devices or
+                    fewer shards.
+                """.trimIndent())
             } else {
                 logger.verbose("Successfully created snapshot for: $avdName")
             }

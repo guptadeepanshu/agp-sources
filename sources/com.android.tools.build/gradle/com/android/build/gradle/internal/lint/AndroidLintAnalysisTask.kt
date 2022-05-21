@@ -18,10 +18,10 @@ package com.android.build.gradle.internal.lint
 
 import com.android.Version
 import com.android.build.api.artifact.impl.ArtifactsImpl
+import com.android.build.api.dsl.Lint
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.dsl.LintOptions
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
@@ -201,7 +201,12 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
      * CreationAction for the lintVitalAnalyzeVariant task. Does not use the variant with tests
      */
     class LintVitalCreationAction(variant: ConsumableCreationConfig) :
-        VariantCreationAction(VariantWithTests(variant, androidTest = null, unitTest = null))
+        VariantCreationAction(VariantWithTests(
+            variant,
+            androidTest = null,
+            unitTest = null,
+            testFixtures = null
+        ))
     {
         override val name = creationConfig.computeTaskName("lintVitalAnalyze")
         override val fatalOnly = true
@@ -238,7 +243,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 isAndroid = true
             )
             task.lintModelDirectory.set(variant.main.paths.getIncrementalDir(task.name))
-            task.lintRuleJars.from(creationConfig.globalScope.localCustomLintChecks)
+            task.lintRuleJars.from(creationConfig.global.localCustomLintChecks)
             task.lintRuleJars.from(
                 creationConfig
                     .variantDependencies
@@ -261,7 +266,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.fatalOnly.setDisallowChanges(fatalOnly)
             task.checkOnly.set(
                 creationConfig.services.provider {
-                    creationConfig.globalScope.extension.lintOptions.checkOnly
+                    creationConfig.global.lintOptions.checkOnly
                 }
             )
             task.projectInputs.initialize(variant, isForAnalysis = true)
@@ -322,7 +327,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         taskCreationServices: TaskCreationServices,
         javaPluginConvention: JavaPluginConvention,
         customLintChecksConfig: FileCollection,
-        lintOptions: LintOptions,
+        lintOptions: Lint,
         fatalOnly: Boolean = false
     ) {
         initializeGlobalInputs(project = project, isAndroid = false)

@@ -18,13 +18,14 @@ package com.android.build.gradle.internal.ide.dependencies
 
 import com.android.build.gradle.internal.attributes.VariantAttr
 import com.android.build.gradle.internal.dependency.ResolutionResultProvider
-import com.android.build.gradle.internal.ide.DependencyFailureHandler
 import com.android.build.gradle.internal.ide.v2.ArtifactDependenciesImpl
 import com.android.build.gradle.internal.ide.v2.GraphItemImpl
+import com.android.build.gradle.internal.ide.v2.UnresolvedDependencyImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.builder.errors.IssueReporter
+import com.android.build.gradle.internal.testFixtures.isProjectTestFixturesCapability
 import com.android.builder.model.v2.ide.ArtifactDependencies
 import com.android.builder.model.v2.ide.GraphItem
+import com.android.builder.model.v2.ide.UnresolvedDependency
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.DependencyResult
 import org.gradle.api.artifacts.result.ResolvedDependencyResult
@@ -39,32 +40,25 @@ class FullDependencyGraphBuilder(
     private val libraryService: LibraryService
 ) {
 
-    private val unresolvedDependencies = mutableListOf<UnresolvedDependencyResult>()
+    private val unresolvedDependencies = mutableMapOf<String, UnresolvedDependency>()
 
-    fun build(
-        issueReporter: IssueReporter
-    ): ArtifactDependencies {
-
-        return ArtifactDependenciesImpl(
-            buildGraph(AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH),
-            buildGraph(AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH)
-        )
-    }
+    fun build(): ArtifactDependencies = ArtifactDependenciesImpl(
+        buildGraph(AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH),
+        buildGraph(AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH),
+        unresolvedDependencies.values.toList()
+    )
 
     private fun buildGraph(
         configType: AndroidArtifacts.ConsumedConfigType,
-
-        ): List<GraphItem> {
+    ): List<GraphItem> {
         // query for the actual graph, and get the first level children.
         val roots: Set<DependencyResult> = resolutionResultProvider.getResolutionResult(configType).root.dependencies
-
-        val dependencyFailureHandler = DependencyFailureHandler()
 
         // get the artifact first. This is a flat list of items that have been computed
         // to contain information about the actual artifacts (whether they are sub-projects
         // or external dependencies, whether they are java or android, whether they are
         // wrapper local jar/aar, etc...)
-        val artifacts = inputs.getAllArtifacts(configType, dependencyFailureHandler)
+        val artifacts = inputs.getAllArtifacts(configType)
 
         val artifactMap = artifacts.associateBy { it.variant.toKey() }
 
@@ -99,13 +93,33 @@ class FullDependencyGraphBuilder(
         visited: MutableMap<ResolvedVariantResult, GraphItem>,
         artifactMap: Map<VariantKey, ResolvedArtifact>
     ): GraphItem? {
-
+        if (dependency.isConstraint) return null
         if (dependency !is ResolvedDependencyResult) {
-            (dependency as? UnresolvedDependencyResult)?.let { unresolvedDependencies.add(it) }
+            (dependency as? UnresolvedDependencyResult)?.let {
+                val name = it.attempted.toString()
+                if (!unresolvedDependencies.containsKey(name)) {
+                    unresolvedDependencies[name] = UnresolvedDependencyImpl(
+                        name,
+                        it.failure.cause?.message
+                    )
+                }
+            }
             return null
         }
 
-        val variant = dependency.resolvedVariant
+        // ResolvedVariantResult getResolvedVariant() should not return null, but there seems to be
+        // some corner cases when it is null. https://issuetracker.google.com/214259374
+        val variant: ResolvedVariantResult? = dependency.resolvedVariant
+        if (variant == null) {
+            val name = dependency.requested.toString()
+            if (!unresolvedDependencies.containsKey(name)) {
+                unresolvedDependencies[name] = UnresolvedDependencyImpl(
+                    name,
+                    "Internal error: ResolvedVariantResult getResolvedVariant() should not return null. https://issuetracker.google.com/214259374"
+                )
+            }
+            return null
+        }
 
         // check if we already visited this.
         val graphItem = visited[variant]
@@ -117,25 +131,52 @@ class FullDependencyGraphBuilder(
         val artifact = artifactMap[variantKey]
 
         val library = if (artifact == null) {
-            // this can happen when resolving a test graph, as one of the roots will be
-            // the same module and this is not included in the other artifact-based API.
+            // There are 2 (currently known) reasons this can happen:
+            // - when resolving a test graph, as one of the roots will be the same module and this
+            //   is not included in the other artifact-based API.
+            // - when an artifact is relocated via Gradle's module "available-at" feature.
+            //
+            // In both case, there are still dependencies, so we need to create a library object,
+            // and traverse the dependencies.
             val owner = variant.owner
-            if (owner is ProjectComponentIdentifier &&
-                inputs.projectPath == owner.projectPath) {
 
+            if (variant.externalVariant.isPresent) {
+                // The presence of an external variant indicates that this is a relocation. We
+                // don't need to point to the relocation, we just need to process this node as is
+                libraryService.getLibrary(
+                    ResolvedArtifact(
+                        owner,
+                        variant,
+                        variantName = "unknown",
+                        artifactFile = null,
+                        isTestFixturesArtifact = false,
+                        extractedFolder = null,
+                        publishedLintJar = null,
+                        dependencyType = ResolvedArtifact.DependencyType.RELOCATED_ARTIFACT,
+                        isWrappedModule = false,
+                        buildMapping = inputs.buildMapping
+                    )
+                )
+            } else if (owner is ProjectComponentIdentifier && inputs.projectPath == owner.projectPath) {
                 // create on the fly a ResolvedArtifact around this project
                 // and get the matching library item
                 libraryService.getLibrary(
                     ResolvedArtifact(
-                        variant.owner,
+                        owner,
                         variant,
-                        variant.attributes.getAttribute(VariantAttr.ATTRIBUTE)?.toString()
-                                ?: "unknown",
-                        File("wont/matter"),
-                        null,
-                        ResolvedArtifact.DependencyType.ANDROID,
-                        false,
-                        inputs.buildMapping
+                        variantName = variant.attributes
+                            .getAttribute(VariantAttr.ATTRIBUTE)
+                            ?.toString()
+                            ?: "unknown",
+                        artifactFile = File("wont/matter"),
+                        isTestFixturesArtifact = variant.capabilities.any {
+                            it.isProjectTestFixturesCapability(owner.projectName)
+                        },
+                        extractedFolder = null,
+                        publishedLintJar = null,
+                        dependencyType = ResolvedArtifact.DependencyType.ANDROID,
+                        isWrappedModule = false,
+                        buildMapping = inputs.buildMapping
                     )
                 )
             } else {

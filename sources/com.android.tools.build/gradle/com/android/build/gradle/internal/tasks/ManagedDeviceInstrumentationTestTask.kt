@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.AvdComponentsBuildService
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.computeAbiFromArchitecture
 import com.android.build.gradle.internal.computeAvdName
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
@@ -47,19 +48,18 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.builder.core.BuilderConstants
-import com.android.builder.core.BuilderConstants.FD_FLAVORS
-import com.android.builder.core.BuilderConstants.FD_REPORTS
-import com.android.builder.core.BuilderConstants.MANAGED_DEVICE
-import com.android.builder.model.AndroidProject
 import com.android.builder.model.TestOptions
 import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
+import java.io.File
+import java.util.logging.Level
 import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -72,10 +72,9 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.options.Option
 import org.gradle.internal.logging.ConsoleRenderer
-import java.io.File
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import org.gradle.workers.WorkerExecutor
 
@@ -83,7 +82,7 @@ import org.gradle.workers.WorkerExecutor
  * Runs instrumentation tests of a variant on a device defined in the DSL.
  */
 @DisableCachingByDefault
-abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), AndroidTestTask {
+abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), AndroidTestTask {
 
     abstract class TestRunnerFactory {
         @get: Input
@@ -111,6 +110,9 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
         @get: Nested
         abstract val utpDependencies: UtpDependencies
 
+        @get: Internal
+        abstract val utpLoggingLevel: Property<Level>
+
         fun createTestRunner(workerExecutor: WorkerExecutor): ManagedDeviceTestRunner {
 
             Preconditions.checkArgument(
@@ -129,7 +131,8 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                 sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
                 retentionConfig.get(),
                 useOrchestrator,
-                testShardsSize.getOrNull()
+                testShardsSize.getOrNull(),
+                utpLoggingLevel.get()
             )
         }
     }
@@ -200,6 +203,13 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
     @OutputDirectory
     abstract fun getCoverageDirectory(): DirectoryProperty
 
+    @Input
+    abstract fun getAdditionalTestOutputEnabled(): Property<Boolean>
+
+    @Optional
+    @OutputDirectory
+    abstract fun getAdditionalTestOutputDir(): DirectoryProperty
+
     override fun doTaskAction() {
         val emulatorProvider = avdComponents.get().emulatorDirectory
         Preconditions.checkArgument(
@@ -226,6 +236,14 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
         val codeCoverageOutDir = getCoverageDirectory().get().asFile
         FileUtils.cleanOutputDir(codeCoverageOutDir)
 
+        val additionalTestOutputDir = if (getAdditionalTestOutputEnabled().get()) {
+            getAdditionalTestOutputDir().get().getAsFile().also {
+                FileUtils.cleanOutputDir(it)
+            }
+        } else {
+            null
+        }
+
         val success = if (!testsFound()) {
             logger.info("No tests found, nothing to do.")
             true
@@ -236,7 +254,8 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                         managedDevice,
                         resultsOutDir,
                         codeCoverageOutDir,
-                        projectName,
+                        additionalTestOutputDir,
+                        projectPath.get(),
                         testData.get().flavorName.get(),
                         testData.get().getAsStaticData(),
                         installOptions.getOrElse(listOf()),
@@ -285,11 +304,12 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
     private fun testsFound() = !testData.get().testDirectories.asFileTree.isEmpty
 
     class CreationAction(
-            creationConfig: VariantCreationConfig,
-            private val avdComponents: Provider<AvdComponentsBuildService>,
-            private val device: ManagedVirtualDevice,
-            private val testData: AbstractTestDataImpl
-    ): VariantTaskCreationAction<
+        creationConfig: VariantCreationConfig,
+        private val device: ManagedVirtualDevice,
+        private val testData: AbstractTestDataImpl,
+        private val testResultOutputDir: File,
+        private val testReportOutputDir: File,
+    ) : VariantTaskCreationAction<
             ManagedDeviceInstrumentationTestTask, VariantCreationConfig>(creationConfig) {
 
         override val name = computeTaskName(device.name)
@@ -305,6 +325,19 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                     ManagedDeviceInstrumentationTestTask::getCoverageDirectory)
                 .withName(BuilderConstants.MANAGED_DEVICE)
                 .on(InternalArtifactType.MANAGED_DEVICE_CODE_COVERAGE)
+
+            val isAdditionalAndroidTestOutputEnabled = creationConfig
+                .services
+                .projectOptions[BooleanOption.ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT]
+            if (isAdditionalAndroidTestOutputEnabled) {
+                creationConfig
+                    .artifacts
+                    .setInitialProvider(
+                        taskProvider,
+                        ManagedDeviceInstrumentationTestTask::getAdditionalTestOutputDir)
+                    .withName(BuilderConstants.MANAGED_DEVICE)
+                    .on(InternalArtifactType.MANAGED_DEVICE_ANDROID_TEST_ADDITIONAL_OUTPUT)
+            }
         }
 
         override fun configure(task: ManagedDeviceInstrumentationTestTask) {
@@ -312,7 +345,7 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
 
             task.enableEmulatorDisplay.convention(false)
 
-            val extension = creationConfig.globalScope.extension
+            val globalConfig = creationConfig.global
             val projectOptions = creationConfig.services.projectOptions
 
             val testedConfig = creationConfig.testedConfig
@@ -326,19 +359,20 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
             task.avdName.setDisallowChanges(computeAvdName(device))
 
             task.apiLevel.setDisallowChanges(device.apiLevel)
-            task.abi.setDisallowChanges(device.abi)
+            task.abi.setDisallowChanges(computeAbiFromArchitecture(device))
 
-            task.avdComponents.setDisallowChanges(avdComponents)
-
+            task.avdComponents.setDisallowChanges(
+                getBuildService(creationConfig.services.buildServiceRegistry)
+            )
             task.group = JavaBasePlugin.VERIFICATION_GROUP
 
             task.testData.setDisallowChanges(testData)
-            task.installOptions.set(extension.adbOptions.installOptions)
+            task.installOptions.set(globalConfig.installationOptions.installOptions)
             task.testRunnerFactory.compileSdkVersion.setDisallowChanges(
-                extension.compileSdkVersion
+                globalConfig.compileSdkHashString
             )
             task.testRunnerFactory.buildToolsRevision.setDisallowChanges(
-                extension.buildToolsRevision
+                globalConfig.buildToolsRevision
             )
             task.testRunnerFactory.sdkBuildService.setDisallowChanges(
                     getBuildService(
@@ -348,10 +382,12 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                 projectOptions.get(IntegerOption.MANAGED_DEVICE_SHARD_POOL_SIZE)
             )
 
-            val executionEnum = extension.testOptions.getExecutionEnum()
+            val executionEnum = globalConfig.testOptionExecutionEnum
             task.testRunnerFactory.executionEnum.setDisallowChanges(executionEnum)
-            val useUtp = shouldEnableUtp(projectOptions,extension.testOptions,
-                                         testedConfig?.variantType)
+            val useUtp = shouldEnableUtp(
+                projectOptions, globalConfig.testOptions,
+                testedConfig?.variantType
+            )
             task.testRunnerFactory.unifiedTestPlatform.setDisallowChanges(useUtp)
 
             if (useUtp) {
@@ -368,12 +404,18 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                         .resolveDependencies(task.project.configurations)
             }
 
+            val infoLoggingEnabled =
+                Logging.getLogger(ManagedDeviceInstrumentationTestTask::class.java).isInfoEnabled()
+            task.testRunnerFactory.utpLoggingLevel.set(
+                if (infoLoggingEnabled) Level.INFO else Level.OFF
+            )
+
             task.testRunnerFactory
                 .retentionConfig
                 .setDisallowChanges(
                         createRetentionConfig(
                                 projectOptions,
-                                extension.testOptions.emulatorSnapshots as EmulatorSnapshots))
+                                globalConfig.testOptions.emulatorSnapshots as EmulatorSnapshots))
 
             task.dependencies =
                 creationConfig
@@ -383,20 +425,11 @@ abstract class ManagedDeviceInstrumentationTestTask(): NonIncrementalTask(), And
                             AndroidArtifacts.ArtifactScope.EXTERNAL,
                             AndroidArtifacts.ArtifactType.CLASSES_JAR)
 
-            val flavor: String? = testData.flavorName.get()
-            val flavorFolder = flavor?.let { "$FD_FLAVORS/$it"} ?: ""
-            val deviceFolder = "$MANAGED_DEVICE/${device.name}"
-            val subFolder = "/$deviceFolder/$flavorFolder"
+            task.getAdditionalTestOutputEnabled()
+                .set(projectOptions[BooleanOption.ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT])
 
-            val resultsLocation = extension.testOptions.resultsDir ?:
-                    "${task.project.buildDir}/${AndroidProject.FD_OUTPUTS}/" +
-                    BuilderConstants.FD_ANDROID_RESULTS
-            task.resultsDir.set(File(resultsLocation + subFolder))
-
-            val reportsLocation = extension.testOptions.reportDir ?:
-                    "${task.project.buildDir}/$FD_REPORTS/" +
-                    BuilderConstants.FD_ANDROID_TESTS
-            task.getReportsDir().set(File(reportsLocation + subFolder))
+            task.resultsDir.set(testResultOutputDir)
+            task.getReportsDir().set(testReportOutputDir)
 
             task.project.configurations
                 .findByName(SdkConstants.GRADLE_ANDROID_TEST_UTIL_CONFIGURATION)?.let {

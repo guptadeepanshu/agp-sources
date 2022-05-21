@@ -38,7 +38,8 @@ object UsageTracker {
     private val gate = Any()
     private val LOG = Logger.getLogger(UsageTracker.javaClass.name)
 
-    private var initialized = false
+    var initialized = false
+        private set
     private var exceptionThrown = false
 
     @VisibleForTesting

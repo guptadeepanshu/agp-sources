@@ -20,6 +20,7 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.ide.common.blame.SourcePosition;
 import org.w3c.dom.Attr;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,6 +52,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.android.SdkConstants.UTF_8;
+import static com.android.utils.XmlUtils.CDATA_PREFIX;
 
 /**
  * A simple DOM XML parser which can retrieve exact beginning and end offsets
@@ -61,6 +63,7 @@ public class PositionXmlParser {
     private static final String UTF_16LE = "UTF_16LE";
     public static final String CONTENT_KEY = "contents";
     private static final String POS_KEY = "offsets";
+    private static final int CDATA_PREFIX_LENGTH = CDATA_PREFIX.length();
     /** See http://www.w3.org/TR/REC-xml/#NT-EncodingDecl */
     private static final Pattern ENCODING_PATTERN =
             Pattern.compile("encoding=['\"](\\S*)['\"]");
@@ -226,7 +229,7 @@ public class PositionXmlParser {
                 xml = xml.replaceFirst("^([\\W]+)<", "<");
                 retry = true;
             }
-        };
+        }
         return domBuilder.getDocument();
     }
 
@@ -234,7 +237,7 @@ public class PositionXmlParser {
     private static Document parseInternal(
             @NonNull String xml, boolean namespaceAware, @NonNull List<String> parseErrors)
             throws ParserConfigurationException, IOException {
-        DomBuilder domBuilder = null;
+        DomBuilder domBuilder;
         boolean retry = false;
         while (true) {
             domBuilder = new DomBuilder(xml);
@@ -616,8 +619,8 @@ public class PositionXmlParser {
                 // Fast string check first for the common occurrence.
                 String name = attr.getName();
                 Pattern pattern = Pattern.compile(attr.getPrefix() != null
-                    ? String.format("(%1$s\\s*=\\s*[\"'].*?[\"'])", name)
-                    : String.format("[^:](%1$s\\s*=\\s*[\"'].*?[\"'])", name));
+                    ? String.format("(%1$s\\s*=\\s*((\".*?\")|('.*?')))", name)
+                    : String.format("[^:](%1$s\\s*=\\s*((\".*?\")|('.*?')))", name));
                 Matcher matcher = pattern.matcher(contents);
                 if (matcher.find(startOffset) && matcher.start(1) <= endOffset) {
                     int index = matcher.start(1);
@@ -644,7 +647,7 @@ public class PositionXmlParser {
                     return pos;
                 }
             }
-        } else if (node instanceof Text) {
+        } else if (node instanceof Text) { // includes CharacterData
             // Position of parent element, if any.
             Position pos = null;
             if (node.getPreviousSibling() != null) {
@@ -675,6 +678,13 @@ public class PositionXmlParser {
                         // Skip >
                         offset++;
                         column++;
+
+                        if (node instanceof CDATASection
+                            && contents.regionMatches(
+                                    offset, CDATA_PREFIX, 0, CDATA_PREFIX_LENGTH)) {
+                            offset += CDATA_PREFIX_LENGTH;
+                            column += CDATA_PREFIX_LENGTH;
+                        }
 
                         String text = node.getNodeValue();
                         int textIndex = 0;
@@ -989,13 +999,13 @@ public class PositionXmlParser {
         }
 
         @Override
-        public void startCDATA() throws SAXException {
+        public void startCDATA() {
             flushText();
             mCdata = true;
         }
 
         @Override
-        public void endCDATA() throws SAXException {
+        public void endCDATA() {
             flushText();
             mCdata = false;
         }

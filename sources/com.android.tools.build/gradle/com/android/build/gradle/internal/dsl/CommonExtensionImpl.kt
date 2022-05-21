@@ -28,6 +28,7 @@ import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.utils.validatePreviewTargetValue
 import com.android.build.gradle.internal.utils.parseTargetHash
 import com.android.builder.core.LibraryRequest
 import com.android.builder.core.ToolsRevisionUtils
@@ -37,7 +38,6 @@ import java.util.function.Supplier
 import org.gradle.api.Action
 import org.gradle.api.NamedDomainObjectContainer
 import java.io.File
-import java.util.regex.Pattern
 
 /** Internal implementation of the 'new' DSL interface */
 abstract class CommonExtensionImpl<
@@ -202,8 +202,16 @@ abstract class CommonExtensionImpl<
                 return
             }
 
-            _compileSdkPreview = if (value.matches(Regex("^[A-Z][0-9A-Za-z]*$"))) {
-                value
+            // then set the values
+            _compileSdk = null
+            _compileSdkPreview = null
+            _compileSdkAddon = null
+            _compileSdkVersion = null
+
+            val previewValue = validatePreviewTargetValue(value)
+            if (previewValue != null) {
+                _compileSdkPreview = previewValue
+                _compileSdkVersion = "android-$previewValue"
             } else {
                 if (value.toIntOrNull() != null) {
                     dslServices.issueReporter.reportError(
@@ -217,15 +225,7 @@ abstract class CommonExtensionImpl<
                         RuntimeException("Invalid value for compileSdkPreview (\"$value\"). Value must be a platform preview name (e.g. \"$expected\")")
                     )
                 }
-
-                // has to set the value to something in case of sync
-                "INVALID"
             }
-
-            _compileSdkVersion = "android-$value"
-            _compileSdk = null
-            _compileSdkExtension = null
-            _compileSdkAddon = null
         }
 
     private var _compileSdkAddon: String? = null

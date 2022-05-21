@@ -21,6 +21,7 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.AssetPackBundleExtension
 import com.android.build.api.variant.impl.ApplicationVariantImpl
+import com.android.build.api.variant.impl.MetadataRecord
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -42,9 +43,11 @@ import com.google.common.collect.ImmutableList
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -151,6 +154,14 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     @get:Optional
     abstract val binaryArtProfile: RegularFileProperty
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    abstract val binaryArtProfileMetadata: RegularFileProperty
+
+    @get:Nested
+    abstract val metadataFiles: ListProperty<MetadataRecord>
+
     companion object {
         const val MIN_SDK_FOR_SPLITS = 21
     }
@@ -180,6 +191,14 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             it.appMetadata.set(appMetadata)
             it.abiFilters.set(abiFilters)
             it.binaryArtProfiler.set(binaryArtProfile)
+            it.binaryArtProfilerMetadata.set(binaryArtProfileMetadata)
+            // work action parameters are not serialized like tasks are, therefore it is not possible
+            // to use @Nested annotated java beans. Therefore, decompose the MetadataRecord into
+            // parts that can be individually serialized by the worker machinery.
+            metadataFiles.get().forEach { metadataRecord ->
+                it.metadataFiles.add(metadataRecord.metadataFile)
+                it.metadataDirectories.add(metadataRecord.directory)
+            }
         }
     }
 
@@ -202,6 +221,9 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         abstract val appMetadata: RegularFileProperty
         abstract val abiFilters: SetProperty<String>
         abstract val binaryArtProfiler: RegularFileProperty
+        abstract val binaryArtProfilerMetadata: RegularFileProperty
+        abstract val metadataFiles: ListProperty<RegularFile>
+        abstract val metadataDirectories: ListProperty<String>
     }
 
     abstract class BundleToolWorkAction : ProfileAwareWorkAction<Params>() {
@@ -261,6 +283,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
             val bundleOptimizations = Config.Optimizations.newBuilder()
                 .setSplitsConfig(splitsConfig)
                 .setUncompressNativeLibraries(uncompressNativeLibrariesConfig)
+
+            parameters.bundleOptions.get().enableStoreArchive?.let {
+                bundleOptimizations.setStoreArchive(Config.StoreArchive.newBuilder().setEnabled(it))
+            }
 
             if (parameters.bundleNeedsFusedStandaloneConfig.get()) {
                 bundleOptimizations.setStandaloneConfig(
@@ -325,6 +351,15 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                 )
             }
 
+            if (parameters.binaryArtProfilerMetadata.isPresent
+                && parameters.binaryArtProfilerMetadata.get().asFile.exists()) {
+                command.addMetadataFile(
+                    SdkConstants.FN_BINART_ART_PROFILE_FOLDER_IN_APK.replace('/', '.'),
+                    SdkConstants.FN_BINARY_ART_PROFILE_METADATA,
+                    parameters.binaryArtProfilerMetadata.get().asFile.toPath(),
+                )
+            }
+
             parameters.bundleDeps.asFile.orNull?.let {
                 command.addMetadataFile(
                     "com.android.tools.build.libraries",
@@ -373,6 +408,18 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                     parameters.appMetadata.asFile.get().toPath()
             )
 
+            // all metadata files added through the Variant API
+            val directories = parameters.metadataDirectories.get().iterator()
+            parameters.metadataFiles.get().forEach { metadataFile ->
+                metadataFile.asFile.let {
+                    command.addMetadataFile(
+                        directories.next(),
+                        it.name,
+                        it.toPath(),
+                    )
+                }
+            }
+
             command.build().execute()
         }
 
@@ -406,7 +453,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         val enableDeviceTier: Boolean?,
         @get:Input
         @get:Optional
-        val defaultDeviceTier: String?
+        val defaultDeviceTier: String?,
+        @get:Input
+        @get:Optional
+        val enableStoreArchive: Boolean?,
     ) : Serializable
 
     data class AssetPackOptionsForAssetPackBundle(
@@ -441,13 +491,12 @@ abstract class PackageBundleTask : NonIncrementalTask() {
         override fun configure(
             task: PackageBundleTask
         ) {
-            task.configureVariantProperties(variantName = "", task.project)
+            task.configureVariantProperties(variantName = "", projectServices.buildServiceRegistry)
             task.bundleType.set(Config.BundleConfig.BundleType.ASSET_ONLY)
             task.featureZips = projectServices.objectFactory.fileCollection()
             artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.ASSET_PACK_BUNDLE, task.assetPackZips
             )
-            task.appMetadata
             task.bundleOptions = assetPackBundle.convert();
             task.compressNativeLibs.setDisallowChanges(true)
             task.assetPackOptionsForAssetPackBundle.set(
@@ -528,10 +577,9 @@ abstract class PackageBundleTask : NonIncrementalTask() {
 
             task.abiFilters.setDisallowChanges(creationConfig.variantDslInfo.supportedAbis)
 
-            task.aaptOptionsNoCompress.setDisallowChanges(creationConfig.services.projectInfo.getExtension().aaptOptions.noCompress)
+            task.aaptOptionsNoCompress.setDisallowChanges(creationConfig.androidResources.noCompress)
 
-            task.bundleOptions =
-                ((creationConfig.globalScope.extension as BaseAppModuleExtension).bundle).convert()
+            task.bundleOptions = creationConfig.global.bundleOptions.convert()
 
             task.compressNativeLibs.set(
                 componentProperties.packaging.jniLibs.useLegacyPackagingFromBundle
@@ -576,21 +624,31 @@ abstract class PackageBundleTask : NonIncrementalTask() {
                     InternalArtifactType.BINARY_ART_PROFILE,
                     task.binaryArtProfile
                 )
+                creationConfig.artifacts.setTaskInputToFinalProduct(
+                    InternalArtifactType.BINARY_ART_PROFILE_METADATA,
+                    task.binaryArtProfileMetadata
+                )
+
             }
             task.binaryArtProfile.disallowChanges()
+            task.binaryArtProfileMetadata.disallowChanges()
+
+            // Metadata files added through the variant API.
+            task.metadataFiles.setDisallowChanges(creationConfig.bundleConfig.metadataFiles)
         }
     }
 }
 
-private fun com.android.build.gradle.internal.dsl.BundleOptions.convert() =
+private fun com.android.build.api.dsl.Bundle.convert() =
     PackageBundleTask.BundleOptions(
-        enableAbi = abi.enableSplit,
-        enableDensity = density.enableSplit,
-        enableLanguage = language.enableSplit,
-        enableTexture = texture.enableSplit,
-        textureDefaultFormat = texture.defaultFormat,
-        enableDeviceTier = deviceTier.enableSplit,
-        defaultDeviceTier = deviceTier.defaultTier
+      enableAbi = abi.enableSplit,
+      enableDensity = density.enableSplit,
+      enableLanguage = language.enableSplit,
+      enableTexture = texture.enableSplit,
+      textureDefaultFormat = texture.defaultFormat,
+      enableDeviceTier = deviceTier.enableSplit,
+      defaultDeviceTier = deviceTier.defaultTier,
+      enableStoreArchive = storeArchive.enable,
     )
 
 private fun AssetPackBundleExtension.convert() =
@@ -601,7 +659,8 @@ private fun AssetPackBundleExtension.convert() =
         enableTexture = texture.enableSplit,
         textureDefaultFormat = texture.defaultFormat,
         enableDeviceTier = deviceTier.enableSplit,
-        defaultDeviceTier = deviceTier.defaultTier
+        defaultDeviceTier = deviceTier.defaultTier,
+        enableStoreArchive = null,
     )
 
 /**

@@ -27,6 +27,7 @@ private static final long serialVersionUID = 0L;
     firebasePerformancePluginVersion_ = "";
     pluginNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     taskNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    appliedPlugins_ = java.util.Collections.emptyList();
   }
 
   @java.lang.Override
@@ -243,6 +244,15 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00002000;
             break;
           }
+          case 154: {
+            if (!((mutable_bitField0_ & 0x00040000) != 0)) {
+              appliedPlugins_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradlePluginData>();
+              mutable_bitField0_ |= 0x00040000;
+            }
+            appliedPlugins_.add(
+                input.readMessage(com.google.wireless.android.sdk.stats.GradlePluginData.PARSER, extensionRegistry));
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -269,6 +279,9 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField0_ & 0x00010000) != 0)) {
         taskNames_ = taskNames_.getUnmodifiableView();
+      }
+      if (((mutable_bitField0_ & 0x00040000) != 0)) {
+        appliedPlugins_ = java.util.Collections.unmodifiableList(appliedPlugins_);
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -1926,12 +1939,13 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @return A list containing the pluginNames.
    */
-  public com.google.protobuf.ProtocolStringList
+  @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
       getPluginNamesList() {
     return pluginNames_;
   }
@@ -1939,38 +1953,41 @@ private static final long serialVersionUID = 0L;
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @return The count of pluginNames.
    */
-  public int getPluginNamesCount() {
+  @java.lang.Deprecated public int getPluginNamesCount() {
     return pluginNames_.size();
   }
   /**
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @param index The index of the element to return.
    * @return The pluginNames at the given index.
    */
-  public java.lang.String getPluginNames(int index) {
+  @java.lang.Deprecated public java.lang.String getPluginNames(int index) {
     return pluginNames_.get(index);
   }
   /**
    * <pre>
    * All of the gradle plugin names applied to this project,
    * these are class names of the plugins, not free form names
+   * deprecated, use applied_plugins instead
    * </pre>
    *
-   * <code>repeated string plugin_names = 16;</code>
+   * <code>repeated string plugin_names = 16 [deprecated = true];</code>
    * @param index The index of the value to return.
    * @return The bytes of the pluginNames at the given index.
    */
-  public com.google.protobuf.ByteString
+  @java.lang.Deprecated public com.google.protobuf.ByteString
       getPluginNamesBytes(int index) {
     return pluginNames_.getByteString(index);
   }
@@ -2065,6 +2082,61 @@ private static final long serialVersionUID = 0L;
     return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
   }
 
+  public static final int APPLIED_PLUGINS_FIELD_NUMBER = 19;
+  private java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> appliedPlugins_;
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  public java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> getAppliedPluginsList() {
+    return appliedPlugins_;
+  }
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  public java.util.List<? extends com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> 
+      getAppliedPluginsOrBuilderList() {
+    return appliedPlugins_;
+  }
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  public int getAppliedPluginsCount() {
+    return appliedPlugins_.size();
+  }
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  public com.google.wireless.android.sdk.stats.GradlePluginData getAppliedPlugins(int index) {
+    return appliedPlugins_.get(index);
+  }
+  /**
+   * <pre>
+   * All the gradle plugins applied to this project.
+   * </pre>
+   *
+   * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+   */
+  public com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder getAppliedPluginsOrBuilder(
+      int index) {
+    return appliedPlugins_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2132,6 +2204,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00002000) != 0)) {
       output.writeMessage(18, getProjectApiUse());
+    }
+    for (int i = 0; i < appliedPlugins_.size(); i++) {
+      output.writeMessage(19, appliedPlugins_.get(i));
     }
     unknownFields.writeTo(output);
   }
@@ -2221,6 +2296,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00002000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(18, getProjectApiUse());
+    }
+    for (int i = 0; i < appliedPlugins_.size(); i++) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(19, appliedPlugins_.get(i));
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2312,6 +2391,8 @@ private static final long serialVersionUID = 0L;
       if (!getProjectApiUse()
           .equals(other.getProjectApiUse())) return false;
     }
+    if (!getAppliedPluginsList()
+        .equals(other.getAppliedPluginsList())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -2397,6 +2478,10 @@ private static final long serialVersionUID = 0L;
     if (hasProjectApiUse()) {
       hash = (37 * hash) + PROJECT_API_USE_FIELD_NUMBER;
       hash = (53 * hash) + getProjectApiUse().hashCode();
+    }
+    if (getAppliedPluginsCount() > 0) {
+      hash = (37 * hash) + APPLIED_PLUGINS_FIELD_NUMBER;
+      hash = (53 * hash) + getAppliedPluginsList().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -2531,6 +2616,7 @@ private static final long serialVersionUID = 0L;
         getSplitsFieldBuilder();
         getOptionsFieldBuilder();
         getProjectApiUseFieldBuilder();
+        getAppliedPluginsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -2592,6 +2678,12 @@ private static final long serialVersionUID = 0L;
         projectApiUseBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00020000);
+      if (appliedPluginsBuilder_ == null) {
+        appliedPlugins_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00040000);
+      } else {
+        appliedPluginsBuilder_.clear();
+      }
       return this;
     }
 
@@ -2715,6 +2807,15 @@ private static final long serialVersionUID = 0L;
           result.projectApiUse_ = projectApiUseBuilder_.build();
         }
         to_bitField0_ |= 0x00002000;
+      }
+      if (appliedPluginsBuilder_ == null) {
+        if (((bitField0_ & 0x00040000) != 0)) {
+          appliedPlugins_ = java.util.Collections.unmodifiableList(appliedPlugins_);
+          bitField0_ = (bitField0_ & ~0x00040000);
+        }
+        result.appliedPlugins_ = appliedPlugins_;
+      } else {
+        result.appliedPlugins_ = appliedPluginsBuilder_.build();
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -2872,6 +2973,32 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasProjectApiUse()) {
         mergeProjectApiUse(other.getProjectApiUse());
+      }
+      if (appliedPluginsBuilder_ == null) {
+        if (!other.appliedPlugins_.isEmpty()) {
+          if (appliedPlugins_.isEmpty()) {
+            appliedPlugins_ = other.appliedPlugins_;
+            bitField0_ = (bitField0_ & ~0x00040000);
+          } else {
+            ensureAppliedPluginsIsMutable();
+            appliedPlugins_.addAll(other.appliedPlugins_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.appliedPlugins_.isEmpty()) {
+          if (appliedPluginsBuilder_.isEmpty()) {
+            appliedPluginsBuilder_.dispose();
+            appliedPluginsBuilder_ = null;
+            appliedPlugins_ = other.appliedPlugins_;
+            bitField0_ = (bitField0_ & ~0x00040000);
+            appliedPluginsBuilder_ = 
+              com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                 getAppliedPluginsFieldBuilder() : null;
+          } else {
+            appliedPluginsBuilder_.addAllMessages(other.appliedPlugins_);
+          }
+        }
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -4684,12 +4811,13 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @return A list containing the pluginNames.
      */
-    public com.google.protobuf.ProtocolStringList
+    @java.lang.Deprecated public com.google.protobuf.ProtocolStringList
         getPluginNamesList() {
       return pluginNames_.getUnmodifiableView();
     }
@@ -4697,38 +4825,41 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @return The count of pluginNames.
      */
-    public int getPluginNamesCount() {
+    @java.lang.Deprecated public int getPluginNamesCount() {
       return pluginNames_.size();
     }
     /**
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param index The index of the element to return.
      * @return The pluginNames at the given index.
      */
-    public java.lang.String getPluginNames(int index) {
+    @java.lang.Deprecated public java.lang.String getPluginNames(int index) {
       return pluginNames_.get(index);
     }
     /**
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param index The index of the value to return.
      * @return The bytes of the pluginNames at the given index.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getPluginNamesBytes(int index) {
       return pluginNames_.getByteString(index);
     }
@@ -4736,14 +4867,15 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param index The index to set the value at.
      * @param value The pluginNames to set.
      * @return This builder for chaining.
      */
-    public Builder setPluginNames(
+    @java.lang.Deprecated public Builder setPluginNames(
         int index, java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4757,13 +4889,14 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param value The pluginNames to add.
      * @return This builder for chaining.
      */
-    public Builder addPluginNames(
+    @java.lang.Deprecated public Builder addPluginNames(
         java.lang.String value) {
       if (value == null) {
     throw new NullPointerException();
@@ -4777,13 +4910,14 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param values The pluginNames to add.
      * @return This builder for chaining.
      */
-    public Builder addAllPluginNames(
+    @java.lang.Deprecated public Builder addAllPluginNames(
         java.lang.Iterable<java.lang.String> values) {
       ensurePluginNamesIsMutable();
       com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -4795,12 +4929,13 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @return This builder for chaining.
      */
-    public Builder clearPluginNames() {
+    @java.lang.Deprecated public Builder clearPluginNames() {
       pluginNames_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       bitField0_ = (bitField0_ & ~0x00008000);
       onChanged();
@@ -4810,13 +4945,14 @@ private static final long serialVersionUID = 0L;
      * <pre>
      * All of the gradle plugin names applied to this project,
      * these are class names of the plugins, not free form names
+     * deprecated, use applied_plugins instead
      * </pre>
      *
-     * <code>repeated string plugin_names = 16;</code>
+     * <code>repeated string plugin_names = 16 [deprecated = true];</code>
      * @param value The bytes of the pluginNames to add.
      * @return This builder for chaining.
      */
-    public Builder addPluginNamesBytes(
+    @java.lang.Deprecated public Builder addPluginNamesBytes(
         com.google.protobuf.ByteString value) {
       if (value == null) {
     throw new NullPointerException();
@@ -5135,6 +5271,318 @@ private static final long serialVersionUID = 0L;
         projectApiUse_ = null;
       }
       return projectApiUseBuilder_;
+    }
+
+    private java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> appliedPlugins_ =
+      java.util.Collections.emptyList();
+    private void ensureAppliedPluginsIsMutable() {
+      if (!((bitField0_ & 0x00040000) != 0)) {
+        appliedPlugins_ = new java.util.ArrayList<com.google.wireless.android.sdk.stats.GradlePluginData>(appliedPlugins_);
+        bitField0_ |= 0x00040000;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradlePluginData, com.google.wireless.android.sdk.stats.GradlePluginData.Builder, com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> appliedPluginsBuilder_;
+
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> getAppliedPluginsList() {
+      if (appliedPluginsBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(appliedPlugins_);
+      } else {
+        return appliedPluginsBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public int getAppliedPluginsCount() {
+      if (appliedPluginsBuilder_ == null) {
+        return appliedPlugins_.size();
+      } else {
+        return appliedPluginsBuilder_.getCount();
+      }
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradlePluginData getAppliedPlugins(int index) {
+      if (appliedPluginsBuilder_ == null) {
+        return appliedPlugins_.get(index);
+      } else {
+        return appliedPluginsBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder setAppliedPlugins(
+        int index, com.google.wireless.android.sdk.stats.GradlePluginData value) {
+      if (appliedPluginsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.set(index, value);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder setAppliedPlugins(
+        int index, com.google.wireless.android.sdk.stats.GradlePluginData.Builder builderForValue) {
+      if (appliedPluginsBuilder_ == null) {
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder addAppliedPlugins(com.google.wireless.android.sdk.stats.GradlePluginData value) {
+      if (appliedPluginsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.add(value);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder addAppliedPlugins(
+        int index, com.google.wireless.android.sdk.stats.GradlePluginData value) {
+      if (appliedPluginsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.add(index, value);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder addAppliedPlugins(
+        com.google.wireless.android.sdk.stats.GradlePluginData.Builder builderForValue) {
+      if (appliedPluginsBuilder_ == null) {
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.add(builderForValue.build());
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder addAppliedPlugins(
+        int index, com.google.wireless.android.sdk.stats.GradlePluginData.Builder builderForValue) {
+      if (appliedPluginsBuilder_ == null) {
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder addAllAppliedPlugins(
+        java.lang.Iterable<? extends com.google.wireless.android.sdk.stats.GradlePluginData> values) {
+      if (appliedPluginsBuilder_ == null) {
+        ensureAppliedPluginsIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, appliedPlugins_);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder clearAppliedPlugins() {
+      if (appliedPluginsBuilder_ == null) {
+        appliedPlugins_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00040000);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public Builder removeAppliedPlugins(int index) {
+      if (appliedPluginsBuilder_ == null) {
+        ensureAppliedPluginsIsMutable();
+        appliedPlugins_.remove(index);
+        onChanged();
+      } else {
+        appliedPluginsBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradlePluginData.Builder getAppliedPluginsBuilder(
+        int index) {
+      return getAppliedPluginsFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder getAppliedPluginsOrBuilder(
+        int index) {
+      if (appliedPluginsBuilder_ == null) {
+        return appliedPlugins_.get(index);  } else {
+        return appliedPluginsBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public java.util.List<? extends com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> 
+         getAppliedPluginsOrBuilderList() {
+      if (appliedPluginsBuilder_ != null) {
+        return appliedPluginsBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(appliedPlugins_);
+      }
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradlePluginData.Builder addAppliedPluginsBuilder() {
+      return getAppliedPluginsFieldBuilder().addBuilder(
+          com.google.wireless.android.sdk.stats.GradlePluginData.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public com.google.wireless.android.sdk.stats.GradlePluginData.Builder addAppliedPluginsBuilder(
+        int index) {
+      return getAppliedPluginsFieldBuilder().addBuilder(
+          index, com.google.wireless.android.sdk.stats.GradlePluginData.getDefaultInstance());
+    }
+    /**
+     * <pre>
+     * All the gradle plugins applied to this project.
+     * </pre>
+     *
+     * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
+     */
+    public java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData.Builder> 
+         getAppliedPluginsBuilderList() {
+      return getAppliedPluginsFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.GradlePluginData, com.google.wireless.android.sdk.stats.GradlePluginData.Builder, com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> 
+        getAppliedPluginsFieldBuilder() {
+      if (appliedPluginsBuilder_ == null) {
+        appliedPluginsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.GradlePluginData, com.google.wireless.android.sdk.stats.GradlePluginData.Builder, com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder>(
+                appliedPlugins_,
+                ((bitField0_ & 0x00040000) != 0),
+                getParentForChildren(),
+                isClean());
+        appliedPlugins_ = null;
+      }
+      return appliedPluginsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

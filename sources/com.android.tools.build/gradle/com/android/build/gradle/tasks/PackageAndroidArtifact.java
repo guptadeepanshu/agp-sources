@@ -51,7 +51,6 @@ import com.android.build.gradle.internal.manifest.ManifestDataKt;
 import com.android.build.gradle.internal.packaging.IncrementalPackagerBuilder;
 import com.android.build.gradle.internal.pipeline.StreamFilter;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
-import com.android.build.gradle.internal.scope.GlobalScope;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType;
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider;
@@ -135,7 +134,6 @@ import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.InputFiles;
-import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
@@ -181,6 +179,12 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
     @PathSensitive(PathSensitivity.RELATIVE)
     @Optional
     public abstract RegularFileProperty getMergedArtProfile();
+
+    @InputFiles
+    @Incremental
+    @PathSensitive(PathSensitivity.RELATIVE)
+    @Optional
+    public abstract RegularFileProperty getMergedArtProfileMetadata();
 
     @OutputDirectory
     public abstract DirectoryProperty getIncrementalFolder();
@@ -413,9 +417,6 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
         return apkCreatorType;
     }
 
-    @Internal
-    public abstract Property<String> getProjectPath();
-
     @Override
     public void doTaskAction(@NonNull InputChanges changes) {
         if (!changes.isIncremental()) {
@@ -516,6 +517,20 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                         .getMergedArtProfile()
                         .set(new SerializableInputChanges(ImmutableList.of(), ImmutableList.of()));
             }
+
+            if (getMergedArtProfileMetadata().isPresent()
+                    && getMergedArtProfileMetadata().get().getAsFile().exists()) {
+                parameter
+                        .getMergedArtProfileMetadata()
+                        .set(
+                                IncrementalChangesUtils.getChangesInSerializableForm(
+                                        changes, getMergedArtProfileMetadata()));
+            } else {
+                parameter
+                        .getMergedArtProfileMetadata()
+                        .set(new SerializableInputChanges(ImmutableList.of(), ImmutableList.of()));
+            }
+
             parameter.getManifestType().set(manifestType);
             parameter.getSigningConfigData().set(signingConfigData.convertToParams());
             parameter
@@ -703,6 +718,9 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
 
         @Optional
         public abstract Property<SerializableInputChanges> getMergedArtProfile();
+
+        @Optional
+        public abstract Property<SerializableInputChanges> getMergedArtProfileMetadata();
     }
 
     /**
@@ -768,6 +786,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
             @NonNull Map<RelativeFile, FileStatus> changedNLibs,
             @NonNull Collection<SerializableChange> changedAppMetadata,
             @NonNull Collection<SerializableChange> artProfile,
+            @NonNull Collection<SerializableChange> artProfileMetadata,
             @NonNull SplitterParams params)
             throws IOException {
 
@@ -873,6 +892,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                         .withChangedNativeLibs(changedNLibs)
                         .withChangedAppMetadata(changedAppMetadata)
                         .withChangedArtProfile(artProfile)
+                        .withChangedArtProfileMetadata(artProfileMetadata)
                         .build()) {
             packager.updateFiles();
         }
@@ -1050,6 +1070,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                         changedJniLibs,
                         params.getAppMetadataFiles().get().getChanges(),
                         params.getMergedArtProfile().get().getChanges(),
+                        params.getMergedArtProfileMetadata().get().getChanges(),
                         params);
 
                 /*
@@ -1139,7 +1160,6 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                 @NonNull final TaskT packageAndroidArtifact) {
             super.configure(packageAndroidArtifact);
 
-            GlobalScope globalScope = creationConfig.getGlobalScope();
             VariantDslInfo variantDslInfo = creationConfig.getVariantDslInfo();
 
             packageAndroidArtifact
@@ -1166,12 +1186,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
 
             packageAndroidArtifact
                     .getAaptOptionsNoCompress()
-                    .set(
-                            creationConfig
-                                    .getGlobalScope()
-                                    .getExtension()
-                                    .getAaptOptions()
-                                    .getNoCompress());
+                    .set(creationConfig.getAndroidResources().getNoCompress());
             packageAndroidArtifact.getAaptOptionsNoCompress().disallowChanges();
 
             packageAndroidArtifact
@@ -1231,6 +1246,17 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                                 .getAllInputFilesWithRelativePathSensitivity()
                                 .from(packageAndroidArtifact.getMergedArtProfile());
                     }
+
+                    creationConfig
+                            .getArtifacts()
+                            .setTaskInputToFinalProduct(
+                                    InternalArtifactType.BINARY_ART_PROFILE_METADATA.INSTANCE,
+                                    packageAndroidArtifact.getMergedArtProfileMetadata());
+                    if (isDeterministic(creationConfig)) {
+                        packageAndroidArtifact
+                                .getAllInputFilesWithRelativePathSensitivity()
+                                .from(packageAndroidArtifact.getMergedArtProfileMetadata());
+                    }
                 }
             }
 
@@ -1245,7 +1271,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                     creationConfig.getServices().getProjectInfo().getProjectBaseName();
             packageAndroidArtifact.manifestType = manifestType;
             packageAndroidArtifact.buildTargetAbi =
-                    globalScope.getExtension().getSplits().getAbi().isEnable()
+                    creationConfig.getGlobal().getSplits().getAbi().isEnable()
                             ? projectOptions.get(StringOption.IDE_BUILD_TARGET_ABI)
                             : null;
             if (creationConfig.getVariantType().isDynamicFeature()) {
@@ -1274,14 +1300,14 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
             }
             packageAndroidArtifact.getAbiFilters().disallowChanges();
             packageAndroidArtifact.buildTargetDensity =
-                    globalScope.getExtension().getSplits().getDensity().isEnable()
+                    creationConfig.getGlobal().getSplits().getDensity().isEnable()
                             ? projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
                             : null;
 
             packageAndroidArtifact.apkCreatorType =
                     creationConfig.getVariantScope().getApkCreatorType();
 
-            packageAndroidArtifact.getCreatedBy().set(globalScope.getCreatedBy());
+            packageAndroidArtifact.getCreatedBy().set(creationConfig.getGlobal().getCreatedBy());
 
             if (creationConfig.getVariantType().isBaseModule()
                     && creationConfig
@@ -1294,10 +1320,6 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                                 InternalArtifactType.SDK_DEPENDENCY_DATA.INSTANCE,
                                 packageAndroidArtifact.getDependencyDataFile());
             }
-
-            packageAndroidArtifact
-                    .getProjectPath()
-                    .set(packageAndroidArtifact.getProject().getPath());
 
             // If we're in a dynamic feature, we use FEATURE_SIGNING_CONFIG_VERSIONS, published from
             // the base. Otherwise, we use the SIGNING_CONFIG_VERSIONS internal artifact.

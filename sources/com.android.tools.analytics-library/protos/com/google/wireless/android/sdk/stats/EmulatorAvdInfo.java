@@ -213,6 +213,14 @@ private static final long serialVersionUID = 0L;
      * <code>PLAY_STORE_KIND = 3;</code>
      */
     PLAY_STORE_KIND(3),
+    /**
+     * <code>AOSP_ATD = 4;</code>
+     */
+    AOSP_ATD(4),
+    /**
+     * <code>GOOGLE_ATD = 5;</code>
+     */
+    GOOGLE_ATD(5),
     ;
 
     /**
@@ -231,6 +239,14 @@ private static final long serialVersionUID = 0L;
      * <code>PLAY_STORE_KIND = 3;</code>
      */
     public static final int PLAY_STORE_KIND_VALUE = 3;
+    /**
+     * <code>AOSP_ATD = 4;</code>
+     */
+    public static final int AOSP_ATD_VALUE = 4;
+    /**
+     * <code>GOOGLE_ATD = 5;</code>
+     */
+    public static final int GOOGLE_ATD_VALUE = 5;
 
 
     public final int getNumber() {
@@ -257,6 +273,8 @@ private static final long serialVersionUID = 0L;
         case 1: return AOSP;
         case 2: return GOOGLE;
         case 3: return PLAY_STORE_KIND;
+        case 4: return AOSP_ATD;
+        case 5: return GOOGLE_ATD;
         default: return null;
       }
     }

@@ -62,20 +62,18 @@ public final class AvdInfo implements Comparable<AvdInfo> {
     }
 
     private final String mName;
-    private final File mIniFile;
-    private final String mFolderPath;
+    private final Path mIniFile;
+    private final Path mFolderPath;
     /** An immutable map of properties. This must not be modified. Map can be empty. Never null. */
     private final Map<String, String> mProperties;
     private final AvdStatus mStatus;
     private final ISystemImage mSystemImage;
     private final boolean mHasPlayStore;
 
-
     /**
      * Creates a new valid AVD info. Values are immutable.
-     * <p>
-     * Such an AVD is available and can be used.
-     * The error string is set to null.
+     *
+     * <p>Such an AVD is available and can be used. The error string is set to null.
      *
      * @param name The name of the AVD (for display or reference)
      * @param iniFile The path to the config.ini file
@@ -83,20 +81,20 @@ public final class AvdInfo implements Comparable<AvdInfo> {
      * @param systemImage The system image.
      * @param properties The property map. If null, an empty map will be created.
      */
-    public AvdInfo(@NonNull  String name,
-                   @NonNull  File iniFile,
-                   @NonNull  String folderPath,
-                   @NonNull  ISystemImage systemImage,
-                   @Nullable Map<String, String> properties) {
+    public AvdInfo(
+            @NonNull String name,
+            @NonNull Path iniFile,
+            @NonNull Path folderPath,
+            @NonNull ISystemImage systemImage,
+            @Nullable Map<String, String> properties) {
          this(name, iniFile, folderPath,
               systemImage, properties, AvdStatus.OK);
     }
 
     /**
      * Creates a new <em>invalid</em> AVD info. Values are immutable.
-     * <p>
-     * Such an AVD is not complete and cannot be used.
-     * The error string must be non-null.
+     *
+     * <p>Such an AVD is not complete and cannot be used. The error string must be non-null.
      *
      * @param name The name of the AVD (for display or reference)
      * @param iniFile The path to the config.ini file
@@ -105,12 +103,13 @@ public final class AvdInfo implements Comparable<AvdInfo> {
      * @param properties The property map. If null, an empty map will be created.
      * @param status The {@link AvdStatus} of this AVD. Cannot be null.
      */
-    public AvdInfo(@NonNull  String name,
-                   @NonNull  File iniFile,
-                   @NonNull  String folderPath,
-                   @Nullable  ISystemImage systemImage,
-                   @Nullable Map<String, String> properties,
-                   @NonNull AvdStatus status) {
+    public AvdInfo(
+            @NonNull String name,
+            @NonNull Path iniFile,
+            @NonNull Path folderPath,
+            @Nullable ISystemImage systemImage,
+            @Nullable Map<String, String> properties,
+            @NonNull AvdStatus status) {
         mName = name;
         mIniFile = iniFile;
         mFolderPath = folderPath;
@@ -139,7 +138,7 @@ public final class AvdInfo implements Comparable<AvdInfo> {
 
     /** Returns the path of the AVD data directory. */
     @NonNull
-    public String getDataFolderPath() {
+    public Path getDataFolderPath() {
         return mFolderPath;
     }
 
@@ -301,27 +300,21 @@ public final class AvdInfo implements Comparable<AvdInfo> {
         return avdRoot.resolve(avdName + AvdManager.INI_EXTENSION);
     }
 
-    /**
-     * Returns the .ini {@link File} for this AVD.
-     */
+    /** Returns the .ini {@link File} for this AVD. */
     @NonNull
-    public File getIniFile() {
+    public Path getIniFile() {
         return mIniFile;
     }
 
-    /**
-     * Helper method that returns the Config {@link File} for a given AVD name.
-     */
+    /** Helper method that returns the Config file for a given AVD name. */
     @NonNull
-    public static File getConfigFile(@NonNull String path) {
-        return new File(path, AvdManager.CONFIG_INI);
+    public static Path getConfigFile(@NonNull Path path) {
+        return path.resolve(AvdManager.CONFIG_INI);
     }
 
-    /**
-     * Returns the Config {@link File} for this AVD.
-     */
+    /** Returns the Config file for this AVD. */
     @NonNull
-    public File getConfigFile() {
+    public Path getConfigFile() {
         return getConfigFile(mFolderPath);
     }
 
@@ -361,7 +354,7 @@ public final class AvdInfo implements Comparable<AvdInfo> {
             case ERROR_IMAGE_DIR:
             case ERROR_IMAGE_MISSING:
                 return String.format(
-                        "Missing system image for %1$s%2$s %3$s.'",
+                        "Missing system image for %s%s %s.",
                         SystemImage.DEFAULT_TAG.equals(getTag()) ? "" : (getTag().getDisplay() + " "),
                         getAbiType(),
                         mName);
@@ -383,17 +376,17 @@ public final class AvdInfo implements Comparable<AvdInfo> {
     }
 
     /**
-     * Compares this object with the specified object for order. Returns a
-     * negative integer, zero, or a positive integer as this object is less
-     * than, equal to, or greater than the specified object.
+     * Compares this object with the specified object for order. Returns a negative integer, zero,
+     * or a positive integer as this object is less than, equal to, or greater than the specified
+     * object.
      *
      * @param o the Object to be compared.
-     * @return a negative integer, zero, or a positive integer as this object is
-     *         less than, equal to, or greater than the specified object.
+     * @return a negative integer, zero, or a positive integer as this object is less than, equal
+     *     to, or greater than the specified object.
      */
     @Override
-    public int compareTo(AvdInfo o) {
-        int imageDiff = 0;
+    public int compareTo(@NonNull AvdInfo o) {
+        int imageDiff;
         if (mSystemImage == null) {
             if (o.mSystemImage == null) {
                 imageDiff = 0;

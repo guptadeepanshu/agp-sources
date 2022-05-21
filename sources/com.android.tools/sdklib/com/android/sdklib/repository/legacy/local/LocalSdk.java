@@ -25,8 +25,6 @@ import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.GuardedBy;
 import com.android.repository.Revision;
 import com.android.repository.api.RepoManager;
-import com.android.repository.io.FileOp;
-import com.android.repository.io.FileOpUtils;
 import com.android.sdklib.AndroidTargetHash;
 import com.android.sdklib.AndroidVersion;
 import com.android.sdklib.AndroidVersion.AndroidVersionException;
@@ -37,6 +35,7 @@ import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.IdDisplay;
 import com.android.sdklib.repository.PackageParserUtils;
 import com.android.sdklib.repository.PkgProps;
+import com.android.sdklib.repository.legacy.FileOp;
 import com.android.sdklib.repository.legacy.descriptors.IPkgDesc;
 import com.android.sdklib.repository.legacy.descriptors.PkgDescExtra;
 import com.android.sdklib.repository.legacy.descriptors.PkgType;
@@ -188,23 +187,6 @@ public class LocalSdk {
     private final Multimap<PkgType, LocalDirInfo> mVisitedDirs = HashMultimap.create();
     /** A legacy build-tool for older platform-tools < 17. */
     private BuildToolInfo mLegacyBuildTools;
-
-    /**
-     * Creates an initial LocalSdk instance with an unknown location.
-     */
-    public LocalSdk() {
-        mFileOp = FileOpUtils.create();
-    }
-
-    /**
-     * Creates an initial LocalSdk instance for a known SDK location.
-     *
-     * @param sdkRoot The location of the SDK root folder.
-     */
-    public LocalSdk(@NonNull File sdkRoot) {
-        this();
-        setLocation(sdkRoot);
-    }
 
     /**
      * Creates an initial LocalSdk instance with an unknown location. This is designed for unit

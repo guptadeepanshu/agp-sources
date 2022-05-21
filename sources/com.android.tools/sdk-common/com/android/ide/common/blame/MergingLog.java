@@ -65,7 +65,7 @@ public class MergingLog {
                         public Map<SourceFile, Map<SourcePosition, SourceFilePosition>> load(
                                 String shard) throws Exception {
                             return MergingLogPersistUtil.loadFromMultiFileVersion2(
-                                    mOutputFolder, shard);
+                                    mOutputFolder, shard, !mSourceSetPaths.isEmpty());
                         }
                     };
 
@@ -190,7 +190,9 @@ public class MergingLog {
             if (relativeSourceFile != null && relativeSourceFile.getSourcePath() != null) {
                 String absoluteSourcePath =
                         RelativeResourceUtils.relativeResourcePathToAbsolutePath(
-                                relativeSourceFile.getSourcePath(), mSourceSetPaths);
+                                relativeSourceFile.getSourcePath(),
+                                mSourceSetPaths,
+                                java.nio.file.FileSystems.getDefault());
                 return new SourceFile(new File(absoluteSourcePath));
             }
         }
@@ -304,8 +306,8 @@ public class MergingLog {
 
     @NonNull
     private static String getShard(@NonNull SourceFile sourceFile) {
-        File file = sourceFile.getSourceFile();
-        return file != null ? file.getParentFile().getName() : "unknown";
+        String sourcePath = sourceFile.getSourcePath();
+        return sourcePath != null ? sourceFile.getSourceFile().getParentFile().getName() : "unknown";
     }
 
     /**

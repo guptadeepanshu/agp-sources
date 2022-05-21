@@ -197,6 +197,10 @@ private static final long serialVersionUID = 0L;
      * <code>REDUNDANT_PROPERTIES = 19;</code>
      */
     REDUNDANT_PROPERTIES(19),
+    /**
+     * <code>ANDROID_MANIFEST_PACKAGE = 20;</code>
+     */
+    ANDROID_MANIFEST_PACKAGE(20),
     ;
 
     /**
@@ -279,6 +283,10 @@ private static final long serialVersionUID = 0L;
      * <code>REDUNDANT_PROPERTIES = 19;</code>
      */
     public static final int REDUNDANT_PROPERTIES_VALUE = 19;
+    /**
+     * <code>ANDROID_MANIFEST_PACKAGE = 20;</code>
+     */
+    public static final int ANDROID_MANIFEST_PACKAGE_VALUE = 20;
 
 
     public final int getNumber() {
@@ -321,6 +329,7 @@ private static final long serialVersionUID = 0L;
         case 17: return MIGRATE_TO_LINT;
         case 18: return REWRITE_DEPRECATED_OPERATORS;
         case 19: return REDUNDANT_PROPERTIES;
+        case 20: return ANDROID_MANIFEST_PACKAGE;
         default: return null;
       }
     }

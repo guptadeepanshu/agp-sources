@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.scope
 
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
+import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.SingleArtifact
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -93,7 +94,7 @@ InternalArtifactType<T : FileSystemLocation>(
     object EXTERNAL_FILE_LIB_DEX_ARCHIVES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // the packaged classes published by APK modules.
     // This is for external compile/api usage. For usage inside a module use ALL_CLASSES
-    object APP_CLASSES: InternalArtifactType<RegularFile>(FILE), Replaceable
+    object COMPILE_APP_CLASSES_JAR: InternalArtifactType<RegularFile>(FILE), Replaceable
     // the packaged runtime classes published by APK modules.
     // This is for external runtime usage. For usage inside a module use ALL_CLASSES
     object RUNTIME_APP_CLASSES_JAR: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -144,6 +145,10 @@ InternalArtifactType<T : FileSystemLocation>(
     object JACOCO_INSTRUMENTED_CLASSES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // A folder containing jars with classes instrumented with jacoco
     object JACOCO_INSTRUMENTED_JARS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // A folder containing classes with classes from legacy transform api instrumented with Jacoco.
+    object LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_CLASSES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // A folder containing jars with classes from legacy transform api instrumented with Jacoco.
+    object LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_JARS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // The jacoco code coverage from the connected tests
     object CODE_COVERAGE: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS), Replaceable
     // The jacoco code coverage from unit tests
@@ -155,10 +160,15 @@ InternalArtifactType<T : FileSystemLocation>(
     // The automatically generated jacoco config file
     object JACOCO_CONFIG_RESOURCES_JAR: InternalArtifactType<RegularFile>(FILE)
 
+    // The android test results proto merged test results from all devices.
+    object MANAGED_DEVICE_ANDROID_TEST_MERGED_RESULTS_PROTO: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS)
+
     // Additional test output data from the connected task
     object CONNECTED_ANDROID_TEST_ADDITIONAL_OUTPUT: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
     // Additional test output data from the device provider tasks.
     object DEVICE_PROVIDER_ANDROID_TEST_ADDITIONAL_OUTPUT: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
+    // Additional test output data from the Gradle managed device tasks.
+    object MANAGED_DEVICE_ANDROID_TEST_ADDITIONAL_OUTPUT: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
     // A folder with project classes instrumented with ASM visitors registered via
     // variantProperties.transformClassesWith. Internal folder file structure reflects the hierarchy
     // of namespaces
@@ -174,10 +184,28 @@ InternalArtifactType<T : FileSystemLocation>(
     object FIXED_STACK_FRAMES_ASM_INSTRUMENTED_PROJECT_JARS : InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     // --- android res ---
+    // generated res
+    object GENERATED_RES: InternalArtifactType<Directory>(
+        DIRECTORY,
+        Category.GENERATED,
+        "res/resValues"
+    ), Replaceable
     // output of the resource merger ready for aapt.
     object MERGED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // folder for the blame report on the merged resources
     object MERGED_RES_BLAME_FOLDER: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // folder for the incremental support.
+    object MERGED_RES_INCREMENTAL_FOLDER: InternalArtifactType<Directory>(DIRECTORY,
+        Category.INTERMEDIATES,
+        "incremental",
+    ), Replaceable
+
+    object GENERATED_PNGS_RES: InternalArtifactType<Directory>(
+        DIRECTORY,
+        Category.GENERATED,
+        "res/pngs",
+    ), Replaceable
+
     // File containing map between a source set identifier and an absolute resource sourceset path
     // for generating absolute paths in resource linking error messages.
     object SOURCE_SET_PATH_MAP: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -258,7 +286,7 @@ InternalArtifactType<T : FileSystemLocation>(
     object MERGED_NATIVE_DEBUG_METADATA: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS, "native-debug-symbols"), Replaceable
 
     // Partial prefab directory without libraries built yet.
-    object PREFAB_PACKAGE_CONFIGURATION: InternalArtifactType<RegularFile>(FILE), Replaceable
+    object PREFAB_PACKAGE_CONFIGURATION: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // Assembled prefab directory to be packaged in the AAR.
     object PREFAB_PACKAGE: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
@@ -281,6 +309,11 @@ InternalArtifactType<T : FileSystemLocation>(
     object RENDERSCRIPT_SOURCE_OUTPUT_DIR: InternalArtifactType<Directory>(DIRECTORY, Category.GENERATED), Replaceable
     // renderscript library
     object RENDERSCRIPT_LIB: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    // renderscript generated res
+    object RENDERSCRIPT_GENERATED_RES: InternalArtifactType<Directory>(
+        DIRECTORY,
+        Category.GENERATED,
+        "res/rs"), Replaceable
 
     // An output of AndroidManifest.xml check.
     // REMOVE ME (bug 139855995): This artifact can be removed in the new variant API, we haven't
@@ -539,6 +572,7 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // binary art profile artifacts.
     object BINARY_ART_PROFILE: InternalArtifactType<RegularFile>(FILE)
+    object BINARY_ART_PROFILE_METADATA: InternalArtifactType<RegularFile>(FILE)
 
 
     // Sync dynamic properties file artifacts

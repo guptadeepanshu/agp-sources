@@ -18,6 +18,7 @@ package com.android.build.gradle.options
 
 import com.android.builder.model.AndroidProject
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
+import com.android.builder.model.PROPERTY_BUILD_API
 
 enum class IntegerOption(
     override val propertyName: String,
@@ -46,9 +47,7 @@ enum class IntegerOption(
      * <p>For preview versions that is the last stable version, and the {@link
      * StringOption#IDE_TARGET_DEVICE_CODENAME} will also be set.
      */
-    IDE_TARGET_DEVICE_API(AndroidProject.PROPERTY_BUILD_API, ApiStage.Stable),
-
-    IDE_VERSION_CODE_OVERRIDE(AndroidProject.PROPERTY_VERSION_CODE, ApiStage.Stable),
+    IDE_TARGET_DEVICE_API(PROPERTY_BUILD_API, ApiStage.Stable),
 
     /**
      * Size of the buffers in kilobytes used to read .class files and storage for writing .dex files
@@ -81,7 +80,7 @@ enum class IntegerOption(
     /**
      * The number of shards ran on Managed Devices during testing.
      */
-    MANAGED_DEVICE_SHARD_POOL_SIZE("android.experimental.androidTesting.numManagedDeviceShards", ApiStage.Experimental),
+    MANAGED_DEVICE_SHARD_POOL_SIZE("android.experimental.androidTest.numManagedDeviceShards", ApiStage.Experimental),
 
     /* ------------
      * REMOVED APIS

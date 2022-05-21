@@ -20,14 +20,14 @@ import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariant
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ConsumableCreationConfigImpl
 import com.android.build.api.component.impl.TestFixturesImpl
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import com.android.build.api.variant.AarMetadata
+import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.LibraryVariant
@@ -38,37 +38,36 @@ import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.dsl.InstrumentationImpl
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
+import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.BooleanOption
 import com.android.builder.dexing.DexingType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 open class  LibraryVariantImpl @Inject constructor(
-        override val variantBuilder: LibraryVariantBuilderImpl,
-        buildFeatureValues: BuildFeatureValues,
-        variantDslInfo: VariantDslInfo<LibraryExtension>,
-        variantDependencies: VariantDependencies,
-        variantSources: VariantSources,
-        paths: VariantPathHelper,
-        artifacts: ArtifactsImpl,
-        variantScope: VariantScope,
-        variantData: BaseVariantData,
-        transformManager: TransformManager,
-        internalServices: VariantPropertiesApiServices,
-        taskCreationServices: TaskCreationServices,
-        sdkComponents: SdkComponents,
-        globalScope: GlobalScope
+    override val variantBuilder: LibraryVariantBuilderImpl,
+    buildFeatureValues: BuildFeatureValues,
+    variantDslInfo: VariantDslInfo,
+    variantDependencies: VariantDependencies,
+    variantSources: VariantSources,
+    paths: VariantPathHelper,
+    artifacts: ArtifactsImpl,
+    variantScope: VariantScope,
+    variantData: BaseVariantData,
+    transformManager: TransformManager,
+    internalServices: VariantPropertiesApiServices,
+    taskCreationServices: TaskCreationServices,
+    globalTaskCreationConfig: GlobalTaskCreationConfig,
 ) : VariantImpl(
     variantBuilder,
     buildFeatureValues,
@@ -82,8 +81,7 @@ open class  LibraryVariantImpl @Inject constructor(
     transformManager,
     internalServices,
     taskCreationServices,
-    sdkComponents,
-    globalScope
+    globalTaskCreationConfig,
 ), LibraryVariant, LibraryCreationConfig, HasAndroidTest, HasTestFixtures {
 
     // ---------------------------------------------------------------------------------------------
@@ -91,28 +89,16 @@ open class  LibraryVariantImpl @Inject constructor(
     // ---------------------------------------------------------------------------------------------
 
     override val applicationId: Provider<String> =
-        internalServices.providerOf(
+        internalServices.newProviderBackingDeprecatedApi(
             type = String::class.java,
-            value = variantDslInfo.namespace,
-            disallowUnsafeRead = !services.projectOptions.get(BooleanOption.ENABLE_LEGACY_API)
+            value = variantDslInfo.namespace
         )
 
-    override fun <ParamT : InstrumentationParameters> transformClassesWith(
-        classVisitorFactoryImplClass: Class<out AsmClassVisitorFactory<ParamT>>,
-        scope: InstrumentationScope,
-        instrumentationParamsConfig: (ParamT) -> Unit
-    ) {
-        if (scope == InstrumentationScope.ALL) {
-            throw RuntimeException(
-                "Can't register ${classVisitorFactoryImplClass.name} to " +
-                        "instrument library dependencies.\n" +
-                        "Instrumenting library dependencies will have no effect on library " +
-                        "consumers, move the dependencies instrumentation to be done in the " +
-                        "consuming app or test component."
-            )
-        }
-        super.transformClassesWith(classVisitorFactoryImplClass, scope, instrumentationParamsConfig)
-    }
+    override val instrumentation = InstrumentationImpl(
+        services,
+        internalServices,
+        isLibraryVariant = true
+    )
 
     override var androidTest: AndroidTestImpl? = null
 
@@ -134,10 +120,11 @@ open class  LibraryVariantImpl @Inject constructor(
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
+    override val dslAndroidResources: AndroidResources
+        get() = variantDslInfo.androidResources
+
     private val delegate by lazy { ConsumableCreationConfigImpl(
         this,
-        internalServices.projectOptions,
-        globalScope,
         variantDslInfo) }
 
     override val dexingType: DexingType

@@ -380,6 +380,15 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_JETIFIER_PROPERTY_CLICKED = 26;</code>
      */
     REMOVE_JETIFIER_PROPERTY_CLICKED(26),
+    /**
+     * <pre>
+     * Use of an action on jetifier warning page that searches for where
+     * the problematic library is defined in build files.
+     * </pre>
+     *
+     * <code>FIND_LIBRARY_DECLARATION_CLICKED = 27;</code>
+     */
+    FIND_LIBRARY_DECLARATION_CLICKED(27),
     ;
 
     /**
@@ -559,6 +568,15 @@ private static final long serialVersionUID = 0L;
      * <code>REMOVE_JETIFIER_PROPERTY_CLICKED = 26;</code>
      */
     public static final int REMOVE_JETIFIER_PROPERTY_CLICKED_VALUE = 26;
+    /**
+     * <pre>
+     * Use of an action on jetifier warning page that searches for where
+     * the problematic library is defined in build files.
+     * </pre>
+     *
+     * <code>FIND_LIBRARY_DECLARATION_CLICKED = 27;</code>
+     */
+    public static final int FIND_LIBRARY_DECLARATION_CLICKED_VALUE = 27;
 
 
     public final int getNumber() {
@@ -608,6 +626,7 @@ private static final long serialVersionUID = 0L;
         case 24: return UPDATE_PLUGIN_BUTTON_CLICKED;
         case 25: return RUN_CHECK_JETIFIER_TASK_CLICKED;
         case 26: return REMOVE_JETIFIER_PROPERTY_CLICKED;
+        case 27: return FIND_LIBRARY_DECLARATION_CLICKED;
         default: return null;
       }
     }

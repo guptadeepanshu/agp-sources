@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.tasks.featuresplit
 
 import com.android.build.gradle.internal.attributes.VariantAttr
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.ide.dependencies.getIdString
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -70,7 +71,7 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
         get() = transitivePackagedDeps.artifactFiles
 
     @get:Input
-    abstract val projectPath: Property<String>
+    abstract val projectPathAndVariant: Property<String>
 
     override fun doTaskAction() {
         val apkFilters = mutableSetOf<String>()
@@ -87,7 +88,7 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
             contentFilters.addAll(lines)
         }
 
-        val contentWithProject = content + projectPath.get()
+        val contentWithProject = content + projectPathAndVariant.get()
 
         // compute the overall content
         val filteredContent =
@@ -131,8 +132,7 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
             task: PackagedDependenciesWriterTask
         ) {
             super.configure(task)
-            task.projectPath.setDisallowChanges("${task.project.path}::${task.variantName}")
-
+            task.projectPathAndVariant.setDisallowChanges("${creationConfig.services.projectInfo.path}::${task.variantName}")
             task.runtimeAarOrJarDeps =
                 creationConfig.variantDependencies
                     .runtimeClasspath
@@ -161,9 +161,9 @@ private inline fun ComponentIdentifier.toIdString(variantProvider: () -> String?
         is ProjectComponentIdentifier -> {
             val variant = variantProvider()
             if (variant == null) {
-                projectPath
+                getIdString()
             } else {
-                "$projectPath::$variant"
+                "${getIdString()}::${variant}"
             }
         }
         is ModuleComponentIdentifier -> "$group:$module"

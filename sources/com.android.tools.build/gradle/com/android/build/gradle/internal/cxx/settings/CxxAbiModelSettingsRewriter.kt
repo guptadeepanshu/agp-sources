@@ -48,15 +48,16 @@ import com.android.build.gradle.internal.cxx.model.CxxModuleModel
 import com.android.build.gradle.internal.cxx.model.CxxProjectModel
 import com.android.build.gradle.internal.cxx.model.CxxVariantModel
 import com.android.build.gradle.internal.cxx.model.buildIsPrefabCapable
-import com.android.build.gradle.internal.cxx.model.ifCMake
 import com.android.build.gradle.internal.cxx.settings.Macro.ENV_THIS_FILE_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_ABI
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CMAKE_TOOLCHAIN
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_CONFIGURATION_HASH
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_FULL_CONFIGURATION_HASH
+import com.android.build.gradle.internal.cxx.settings.Macro.NDK_INTERMEDIATES_PARENT_DIR
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_MODULE_CMAKE_EXECUTABLE
 import com.android.build.gradle.internal.cxx.settings.Macro.NDK_PREFAB_PATH
-import com.android.build.gradle.internal.cxx.settings.Macro.NDK_VARIANT_BUILD_INTERMEDIATES_DIR
+import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
+import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
 import com.android.utils.FileUtils.join
 import com.android.utils.cxx.CxxDiagnosticCode.NDK_FEATURE_NOT_SUPPORTED_FOR_VERSION
 import com.google.common.annotations.VisibleForTesting
@@ -114,10 +115,12 @@ private fun CxxAbiModel.calculateConfigurationArgumentsExceptHash() : CxxAbiMode
             // Instantiate ${...} macro values in the argument
             .map { argument -> rewriteConfig.reifier(argument) }
             // Parse the argument
-            .map { argument ->
-                ifCMake {
-                    argument.toCmakeArgument()
-                } ?: argument.toNdkBuildArgument()
+            // Parse the argument
+            .map { argument -> when(variant.module.buildSystem) {
+                    CMAKE -> argument.toCmakeArgument()
+                    NDK_BUILD -> argument.toNdkBuildArgument()
+                    else -> error("${variant.module.buildSystem}")
+                }
             }
             // Get rid of arguments that are irrelevant because they were superseded
             .removeSubsumedArguments()
@@ -190,13 +193,17 @@ fun CxxAbiModel.getAbiRewriteConfiguration() : RewriteConfiguration {
             allSettings.getConfiguration(TRADITIONAL_CONFIGURATION_NAME)!!
                     .withConfigurationsFrom(allSettings.getConfiguration(variant.cmakeSettingsConfiguration))
 
-    val builtInCommandLineArguments =
-            ifCMake { configuration.getCmakeCommandLineArguments() }
-                    ?: getNdkBuildCommandLineArguments()
+    val builtInCommandLineArguments = when(variant.module.buildSystem) {
+        CMAKE -> configuration.getCmakeCommandLineArguments()
+        NDK_BUILD -> getNdkBuildCommandLineArguments()
+        else -> error("${variant.module.buildSystem}")
+    }
 
-    val buildGradleCommandLineArguments =
-            ifCMake { variant.buildSystemArgumentList.toCmakeArguments() }
-                    ?: variant.buildSystemArgumentList.toNdkBuildArguments()
+    val buildGradleCommandLineArguments =  when(variant.module.buildSystem) {
+        CMAKE -> variant.buildSystemArgumentList.toCmakeArguments()
+        NDK_BUILD -> variant.buildSystemArgumentList.toNdkBuildArguments()
+        else -> error("${variant.module.buildSystem}")
+    }
 
     val arguments =
             (builtInCommandLineArguments + buildGradleCommandLineArguments).removeSubsumedArguments()
@@ -349,8 +356,8 @@ private fun CxxAbiModel.getNdkBuildCommandLine(): List<String> {
         result.add("$NDK_DEBUG=0")
     }
     result.add("$APP_PLATFORM=android-$abiPlatformVersion")
-    result.add("$NDK_OUT=${NDK_VARIANT_BUILD_INTERMEDIATES_DIR.ref}/obj")
-    result.add("$NDK_LIBS_OUT=${NDK_VARIANT_BUILD_INTERMEDIATES_DIR.ref}/lib")
+    result.add("$NDK_OUT=${NDK_INTERMEDIATES_PARENT_DIR.ref}/obj")
+    result.add("$NDK_LIBS_OUT=${NDK_INTERMEDIATES_PARENT_DIR.ref}/lib")
 
     // Related to issuetracker.google.com/69110338. Semantics of APP_CFLAGS and APP_CPPFLAGS
     // is that the flag(s) are unquoted. User may place quotes if it is appropriate for the
@@ -381,6 +388,7 @@ fun CxxAbiModel.rewrite(rewrite : (property: KProperty1<*, *>, value: String) ->
         cxxBuildFolder = rewrite(CxxAbiModel::cxxBuildFolder, cxxBuildFolder.path).toFile(),
         prefabFolder = rewrite(CxxAbiModel::prefabFolder, prefabFolder.path).toFile(),
         soFolder = rewrite(CxxAbiModel::soFolder, soFolder.path).toFile(),
+        intermediatesParentFolder = rewrite(CxxAbiModel::intermediatesParentFolder, intermediatesParentFolder.path).toFile(),
         stlLibraryFile = rewrite.fileOrNull(CxxAbiModel::stlLibraryFile, stlLibraryFile),
         buildSettings = buildSettings.rewrite(rewrite),
         configurationArguments = configurationArguments.map { rewrite(CxxAbiModel::configurationArguments, it ) }
@@ -395,7 +403,6 @@ private fun CxxProjectModel.rewrite(rewrite : (property: KProperty1<*, *>, value
 // Rewriter for CxxCmakeModuleModel
 private fun CxxCmakeModuleModel.rewrite(rewrite : (property: KProperty1<*, *>, String: String) -> String) = copy(
         cmakeExe = rewrite.fileOrNull(CxxCmakeModuleModel::cmakeExe, cmakeExe),
-        ninjaExe = rewrite.fileOrNull(CxxCmakeModuleModel::ninjaExe, ninjaExe)
 )
 
 // Rewriter for CxxModuleModel
@@ -407,14 +414,12 @@ private fun CxxModuleModel.rewrite(rewrite : (property: KProperty1<*, *>, value:
         intermediatesFolder = rewrite(CxxModuleModel::intermediatesFolder, intermediatesFolder.path).toFile(),
         moduleRootFolder = rewrite(CxxModuleModel::moduleRootFolder, moduleRootFolder.path).toFile(),
         ndkFolder = rewrite(CxxModuleModel::ndkFolder, ndkFolder.path).toFile(),
+        ninjaExe = rewrite.fileOrNull(CxxModuleModel::ninjaExe, ninjaExe)
 )
 
 // Rewriter for CxxVariantModel
 private fun CxxVariantModel.rewrite(rewrite : (property: KProperty1<*, *>, value: String) -> String) = copy(
         module = module.rewrite(rewrite),
-        cxxBuildFolder = rewrite(CxxVariantModel::cxxBuildFolder, cxxBuildFolder.path).toFile(),
-        intermediatesFolder = rewrite(CxxVariantModel::intermediatesFolder, intermediatesFolder.path).toFile(),
-        soFolder = rewrite(CxxVariantModel::soFolder, soFolder.path).toFile(),
         optimizationTag = rewrite(CxxVariantModel::optimizationTag, optimizationTag),
         stlType = rewrite(CxxVariantModel::stlType, stlType),
         verboseMakefile = rewrite.booleanOrNull(CxxVariantModel::verboseMakefile, verboseMakefile),
@@ -443,7 +448,7 @@ private fun String.toFile() : File = File(this)
  * Rewrite a String?. Use isBlank() to transmit null.
  */
 private fun ((KProperty1<*, *>, String) -> String).stringOrNull(property: KProperty1<*, *>, string : String?) : String? {
-    val result = this(property, string ?: "")
+    val result = invoke(property, string ?: "")
     if (result.isBlank()) return null
     return result
 }
@@ -452,7 +457,7 @@ private fun ((KProperty1<*, *>, String) -> String).stringOrNull(property: KPrope
  * Rewrite a File?. Use isBlank() to transmit null.
  */
 private fun ((KProperty1<*, *>, String) -> String).fileOrNull(property: KProperty1<*, *>, file : File?) : File? {
-    val result = this(property, file?.path ?: "")
+    val result = invoke(property, file?.path ?: "")
     if (result.isBlank()) return null
     return result.toFile()
 }
@@ -469,7 +474,7 @@ private fun ((KProperty1<*, *>, String) -> String).booleanOrNull(
         true -> "1"
         false -> "0"
     }
-    val result = this(property, value)
+    val result = invoke(property, value)
     if (result.isBlank()) return null
     return isCmakeConstantTruthy(result)
 }

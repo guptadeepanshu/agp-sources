@@ -295,4 +295,31 @@ public interface LayoutEditorEventOrBuilder extends
    * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
    */
   com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder getAnimationPreviewEventOrBuilder();
+
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * @return Whether the visualLintEvent field is set.
+   */
+  boolean hasVisualLintEvent();
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * @return The visualLintEvent.
+   */
+  com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent();
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   */
+  com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder();
 }

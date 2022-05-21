@@ -15,19 +15,27 @@
  */
 package com.android.build.gradle.internal.core
 
+import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.DynamicFeatureBuildType
 import com.android.build.api.dsl.LibraryVariantDimension
+import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.PackagingOptions
 import com.android.build.api.dsl.ProductFlavor
+import com.android.build.api.dsl.TestFixtures
+import com.android.build.api.dsl.TestedExtension
 import com.android.build.api.dsl.VariantDimension
+import com.android.build.api.transform.Transform
 import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.api.variant.impl.ResValueKeyImpl
+import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.PostprocessingFeatures
@@ -46,19 +54,15 @@ import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.testFixtures.testFixturesFeatureName
 import com.android.build.gradle.internal.variant.DimensionCombination
 import com.android.build.gradle.options.IntegerOption
-import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.Version
 import com.android.builder.core.AbstractProductFlavor
-import com.android.builder.core.DefaultApiVersion
 import com.android.builder.core.VariantType
 import com.android.builder.dexing.DexingType
 import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.errors.IssueReporter
-import com.android.builder.model.ApiVersion
 import com.android.builder.model.BaseConfig
 import com.android.builder.model.ClassField
 import com.android.builder.model.VectorDrawablesOptions
-import com.android.sdklib.AndroidVersion
 import com.android.utils.combineAsCamelCase
 import com.google.common.base.Joiner
 import com.google.common.collect.ImmutableList
@@ -83,9 +87,9 @@ import java.util.concurrent.Callable
  * Use [VariantDslInfoBuilder] to instantiate.
  *
  */
-open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> internal constructor(
+open class VariantDslInfoImpl internal constructor(
     override val componentIdentity: ComponentIdentity,
-    override val variantType: VariantType,
+    final override val variantType: VariantType,
     private val defaultConfig: DefaultConfig,
     /**
      * Public because this is needed by the old Variant API. Nothing else should touch this.
@@ -100,26 +104,27 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
      * not present in the DSL for this (test/test-fixture) variant, or when it's always
      * derived from the parent (e.g. test fixture namespace).
      */
-    private val productionVariant: VariantDslInfoImpl<*>? = null,
+    private val productionVariant: VariantDslInfoImpl? = null,
     val dataProvider: ManifestDataProvider,
     @Deprecated("Only used for merged flavor")
     private val dslServices: DslServices,
     private val services: VariantPropertiesApiServices,
     private val buildDirectory: DirectoryProperty,
-    /** the namespace coming for the DSL for this variant. */
-    private val dslNamespace: String?,
     override val nativeBuildSystem: VariantManager.NativeBuiltType?,
-    private val publishingInfo: VariantPublishingInfo?,
+    override val publishInfo: VariantPublishingInfo?,
     override val experimentalProperties: Map<String, Any>,
-    override val enableTestFixtures: Boolean,
     /**
      *  Whether there are inconsistent applicationId in the test.
      *  This trigger a mode where the namespaceForR just returns the same as namespace.
      */
     private val inconsistentTestAppId: Boolean,
-): VariantDslInfo<CommonExtensionT>, DimensionCombination {
+    @Deprecated("use extension") private val oldExtension: BaseExtension,
+    private val extension: CommonExtension<*,*,*,*>
+): VariantDslInfo, DimensionCombination {
 
-    private val dslNamespaceProvider: Provider<String>? = dslNamespace?.let { services.provider { dslNamespace } }
+    private val dslNamespaceProvider: Provider<String>? = extension.getDslNamespace(variantType)?.let {
+        services.provider { it }
+    }
 
     override val buildType: String?
         get() = componentIdentity.buildType
@@ -146,7 +151,7 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
      *
      * @see VariantType.isTestComponent
      */
-    override val testedVariant: VariantDslInfo<*>?
+    override val testedVariant: VariantDslInfo?
         get() = if (variantType.isTestComponent) { productionVariant } else null
 
     private val mergedNdkConfig = MergedNdkConfig()
@@ -419,8 +424,7 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
     override val applicationId: Property<String> =
         services.newPropertyBackingDeprecatedApi(
             String::class.java,
-            initApplicationId(),
-            "applicationId"
+            initApplicationId()
         )
 
 
@@ -510,13 +514,6 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
                 return services.provider(callable)
             }
 
-            // TODO: figure out whether it's worth it to put all this inside a Provider to make it lazy.
-            val injectedVersionName =
-                services.projectOptions[StringOption.IDE_VERSION_NAME_OVERRIDE]
-            if (injectedVersionName != null) {
-                return services.provider(Callable { injectedVersionName })
-            }
-
             // If the version name from the flavors is null, then we read from the manifest and combine
             // with suffixes, unless it's a test at which point we just return.
             // If the name is not-null, we just combine it with suffixes
@@ -580,13 +577,6 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
                 return services.provider(callable)
             }
 
-            // TODO: figure out whether it's worth it to put all this inside a Provider to make it lazy.
-            val injectedVersionCode =
-                services.projectOptions.get(IntegerOption.IDE_VERSION_CODE_OVERRIDE)
-            if (injectedVersionCode != null) {
-                return services.provider(Callable { injectedVersionCode })
-            }
-
             // If the version code from the flavors is null, then we read from the manifest and combine
             // with suffixes, unless it's a test at which point we just return.
             // If the name is not-null, we just combine it with suffixes
@@ -642,7 +632,7 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
      */
     override val instrumentationRunnerArguments: Map<String, String>
         get() {
-            val variantDslInfo: VariantDslInfoImpl<*> =
+            val variantDslInfo: VariantDslInfoImpl =
                 if (variantType.isTestComponent) {
                     productionVariant!!
                 } else {
@@ -849,6 +839,9 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
     override val isTestCoverageEnabled: Boolean
         get() = buildTypeObj.isTestCoverageEnabled // so far, blindly override the build type placeholders
 
+    override val isUnitTestCoverageEnabled: Boolean
+        get() = buildTypeObj.enableUnitTestCoverage || buildTypeObj.isTestCoverageEnabled
+
     /**
      * Returns the merged manifest placeholders. All product flavors are merged first, then build
      * type specific placeholders are added and potentially overrides product flavors values.
@@ -993,14 +986,14 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
             result.addAll(_postProcessingOptions.getDefaultProguardFiles())
         }
 
-        val projectDir = services.projectInfo.getProject().layout.projectDirectory
+        val projectDir = services.projectInfo.projectDirectory
         result.forEach { file ->
             into.add(projectDir.file(file.absolutePath))
         }
     }
 
     override fun gatherProguardFiles(type: ProguardFileType, into: ListProperty<RegularFile>) {
-        val projectDir = services.projectInfo.getProject().layout.projectDirectory
+        val projectDir = services.projectInfo.projectDirectory
         mergedProguardFiles(type).forEach {
             into.add(projectDir.file(it.absolutePath))
         }
@@ -1201,8 +1194,30 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
     override val isJniDebuggable: Boolean
         get() = buildTypeObj.isJniDebuggable
 
-    override val publishInfo: VariantPublishingInfo?
-        get() = publishingInfo
+    override val testFixtures: TestFixtures
+        get() {
+            if (extension is TestedExtension) {
+                return extension.testFixtures
+            }
+
+            throw RuntimeException("call to VariantDslInfo.testFixtures on wrong extension type: ${extension.javaClass.name}")
+        }
+
+    override val androidResources: AndroidResources
+        get() = extension.androidResources
+
+    override val packaging: PackagingOptions
+        get() = extension.packagingOptions
+
+    override val compileOptions: CompileOptions
+        get() = extension.compileOptions
+
+    // when we remove the old DSL (and the old Transforms API) this should be deleted as well.
+    override val transforms: List<Transform>
+        get() = oldExtension.transforms
+
+    override val lintOptions: Lint
+        get() = extension.lint
 
     companion object {
 
@@ -1217,6 +1232,16 @@ open class VariantDslInfoImpl<CommonExtensionT: CommonExtension<*, *, *, *>> int
             return if (pos == -1) {
                 fullOption
             } else fullOption.substring(0, pos)
+        }
+
+        private fun CommonExtension<*, *, *, *>.getDslNamespace(variantType: VariantType): String? {
+            return if (variantType.isTestComponent) {
+                (this as TestedExtension).testNamespace
+            } else if (variantType.isTestFixturesComponent) {
+                null
+            } else {
+                namespace
+            }
         }
     }
 }

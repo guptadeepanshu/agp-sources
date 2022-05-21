@@ -178,4 +178,37 @@ public interface TestRunOrBuilder extends
    * @return The testExecution.
    */
   com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution();
+
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * @return Whether the automaticSnapshotOnFailure field is set.
+   */
+  boolean hasAutomaticSnapshotOnFailure();
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * @return The automaticSnapshotOnFailure.
+   */
+  com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure();
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   */
+  com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder();
 }

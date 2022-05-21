@@ -22,8 +22,8 @@ import com.android.repository.api.Checksum;
 import com.android.repository.api.Downloader;
 import com.android.repository.api.ProgressIndicator;
 import com.android.repository.api.SettingsController;
-import com.android.repository.io.FileOp;
 import com.android.repository.io.FileOpUtils;
+import com.android.sdklib.repository.legacy.io.FileOpImpl;
 import com.android.sdklib.repository.legacy.remote.internal.DownloadCache;
 import com.android.utils.Pair;
 import java.io.BufferedInputStream;
@@ -51,10 +51,10 @@ public class LegacyDownloader implements Downloader {
     private final SettingsController mSettingsController;
     private static final int BUF_SIZE = 8192;
 
-    public LegacyDownloader(@NonNull FileOp fop, @NonNull SettingsController settings) {
+    public LegacyDownloader(@NonNull SettingsController settings) {
+        mFileOp = new FileOpImpl();
         mDownloadCache =
-                DownloadCache.inUserHome(fop, DownloadCache.Strategy.FRESH_CACHE, settings);
-        mFileOp = fop;
+                DownloadCache.inUserHome(mFileOp, DownloadCache.Strategy.FRESH_CACHE, settings);
         mSettingsController = settings;
     }
 

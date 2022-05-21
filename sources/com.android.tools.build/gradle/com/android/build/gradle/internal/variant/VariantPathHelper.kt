@@ -16,15 +16,14 @@
 
 package com.android.build.gradle.internal.variant
 
+import com.android.SdkConstants
 import com.android.build.api.artifact.Artifact
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.VariantType
-import com.android.builder.model.AndroidProject
 import com.android.utils.toStrings
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -34,30 +33,21 @@ import java.util.Locale
 
 class VariantPathHelper(
     val buildDirectory: DirectoryProperty,
-    private val variantDslInfo: VariantDslInfo<*>,
+    private val variantDslInfo: VariantDslInfo,
     private val dslServices: DslServices
 ) {
 
     fun intermediatesDir(vararg subDirs: String): Provider<Directory> =
-        getBuildSubDir(AndroidProject.FD_INTERMEDIATES, subDirs)
+        getBuildSubDir(SdkConstants.FD_INTERMEDIATES, subDirs)
 
     fun outputDir(vararg subDirs: String): Provider<Directory> =
-        getBuildSubDir(AndroidProject.FD_OUTPUTS, subDirs)
+        getBuildSubDir(SdkConstants.FD_OUTPUTS, subDirs)
 
     fun generatedDir(vararg subDirs: String): Provider<Directory> =
-        getBuildSubDir(AndroidProject.FD_GENERATED, subDirs)
+        getBuildSubDir(SdkConstants.FD_GENERATED, subDirs)
 
     fun reportsDir(vararg subDirs: String): Provider<Directory> =
         getBuildSubDir(BuilderConstants.FD_REPORTS, subDirs)
-
-    val generatedResOutputDir: Provider<Directory>
-            by lazy { getGeneratedResourcesDir("resValues") }
-
-    val generatedPngsOutputDir: Provider<Directory>
-            by lazy { getGeneratedResourcesDir("pngs") }
-
-    val renderscriptResOutputDir: Provider<Directory>
-            by lazy { getGeneratedResourcesDir("rs") }
 
     val buildConfigSourceOutputDir: Provider<Directory>
             by lazy { generatedDir("source", "buildConfig", variantDslInfo.dirName) }
@@ -65,7 +55,7 @@ class VariantPathHelper(
     val renderscriptObjOutputDir: Provider<Directory>
             by lazy {
                 getBuildSubDir(
-                    AndroidProject.FD_INTERMEDIATES,
+                    SdkConstants.FD_INTERMEDIATES,
                     toStrings("rs", variantDslInfo.directorySegments, "obj").toTypedArray()
                 )
             }
@@ -81,11 +71,13 @@ class VariantPathHelper(
     val apkLocation: File
             by lazy {
                 val override = dslServices.projectOptions.get(StringOption.IDE_APK_LOCATION)
+                // it does not really matter if the build was invoked from the IDE or not, it only
+                // matters if it is an 'optimized' build and in that case, we consider it a
+                // custom build.
                 val customBuild =
                         dslServices.projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY) != null ||
                         dslServices.projectOptions.get(StringOption.IDE_BUILD_TARGET_ABI) != null ||
-                        dslServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null ||
-                                dslServices.projectOptions.get(BooleanOption.IDE_INVOKED_FROM_IDE)
+                        dslServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API) != null
                 val baseDirectory =when {
                     override != null -> dslServices.file(override)
                     customBuild ->  deploymentApkLocation.get().asFile
@@ -136,11 +128,7 @@ class VariantPathHelper(
         return intermediatesDir("incremental", name).get().asFile
     }
 
-    fun getIntermediateDir(taskOutput: Artifact<Directory>): File {
-        return intermediate(taskOutput.name().toLowerCase(Locale.US))
-    }
-
-    private fun getGeneratedResourcesDir(name: String): Provider<Directory> {
+    fun getGeneratedResourcesDir(name: String): Provider<Directory> {
         val dirs: List<String> =
             listOf("res", name) + variantDslInfo.directorySegments.filterNotNull()
         return generatedDir(*dirs.toTypedArray())

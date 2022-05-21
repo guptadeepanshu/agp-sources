@@ -16,15 +16,15 @@
 
 package com.android.build.gradle.internal.cxx.build
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
+import com.android.build.gradle.internal.cxx.io.synchronizeFile
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.getNativeBuildMiniConfigs
+import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
-import com.android.utils.FileUtils.join
-import org.gradle.caching.internal.controller.BuildCacheController
+import com.android.build.gradle.internal.cxx.logging.lifecycleln
+import com.android.build.gradle.internal.cxx.model.toJsonString
 import org.gradle.process.ExecOperations
 import java.io.File
-import org.gradle.internal.hash.FileHasher
 
 /**
  * A CxxBuilder that symlinks (or copies) files from [soFolder] to [soRepublishFolder].
@@ -32,35 +32,42 @@ import org.gradle.internal.hash.FileHasher
 class CxxRepublishBuilder(val model: CxxConfigurationModel) : CxxBuilder {
     // objFolder must be here for legacy reasons but its value was never correct for CMake.
     // There is no folder that has .o files for the entire variant.
-    override val objFolder: File get() = model.variant.soFolder
-    override val soFolder: File get() = model.variant.soFolder
-    override fun build(
-        ops: ExecOperations,
-        fileHasher: FileHasher,
-        buildCacheController: BuildCacheController) {
+    val objFolder: File get() =
+        (model.activeAbis + model.unusedAbis).first().intermediatesParentFolder
+    val soFolder: File get() =
+        (model.activeAbis + model.unusedAbis).first().intermediatesParentFolder
+    override fun build(ops: ExecOperations) {
         infoln("link or copy build outputs to republish point")
-        val variant = model.variant
         val abis = model.activeAbis
         val miniConfigs = getNativeBuildMiniConfigs(abis, null)
         for (config in miniConfigs) {
             for (library in config.libraries.values) {
-                val output = library.output ?: continue
-                if (!output.exists()) continue
-                val libraryAbi = library.abi ?: continue
-                val abi = Abi.getByName(libraryAbi) ?: continue
-                val baseOutputFolder = join(variant.soFolder, abi.tag)
-                if (!baseOutputFolder.isDirectory) continue
-                val baseRepublishFolder = join(variant.soRepublishFolder, abi.tag)
-                baseRepublishFolder.mkdirs()
+                val baseOutputLibrary = library.output ?: continue
+                if (baseOutputLibrary.extension != "" && baseOutputLibrary.extension != "so") {
+                    infoln("Not republishing $baseOutputLibrary because it wasn't an executable type")
+                    continue
+                }
+                val abi = abis.single { it.abi.tag == library.abi }
 
-                hardLinkOrCopy(
-                        join(baseOutputFolder, output.name),
-                        join(baseRepublishFolder, output.name))
+                if (!baseOutputLibrary.canonicalPath.startsWith(abi.soFolder.canonicalPath)) {
+                    infoln("Not republishing $baseOutputLibrary because it wasn't under ${abi.soFolder}")
+                    continue
+                }
+                // Determine the subfolder segment baseOutputLibrary with respect to the
+                // ABI's soFolder.
+                val subfolderSegment = baseOutputLibrary.relativeTo(abi.soFolder)
+                // The file will be republished with the same subfolder segment but now
+                // under soRepublishFolder.
+                val republishOutputLibrary = abi.soRepublishFolder.resolve(subfolderSegment).canonicalFile
+
+                synchronizeFile(
+                    baseOutputLibrary,
+                    republishOutputLibrary)
 
                 for (runtimeFile in library.runtimeFiles) {
-                    hardLinkOrCopy(
-                            join(baseOutputFolder, runtimeFile.name),
-                            join(baseRepublishFolder, runtimeFile.name))
+                    synchronizeFile(
+                        runtimeFile,
+                        abi.soRepublishFolder.resolve(runtimeFile.name))
                 }
             }
         }
@@ -71,7 +78,9 @@ class CxxRepublishBuilder(val model: CxxConfigurationModel) : CxxBuilder {
             if (!abi.stlLibraryFile.isFile) continue
             if (!abi.soRepublishFolder.isDirectory) continue
             val objAbi = abi.soRepublishFolder.resolve(abi.stlLibraryFile.name)
-            hardLinkOrCopy(abi.stlLibraryFile, objAbi)
+            synchronizeFile(
+                abi.stlLibraryFile,
+                objAbi)
         }
     }
 }

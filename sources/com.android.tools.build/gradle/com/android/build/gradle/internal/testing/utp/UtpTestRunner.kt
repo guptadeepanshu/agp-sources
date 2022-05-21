@@ -26,6 +26,7 @@ import com.android.utils.ILogger
 import com.google.common.collect.ImmutableList
 import com.google.testing.platform.proto.api.config.RunnerConfigProto
 import java.io.File
+import java.util.logging.Level
 import org.gradle.workers.WorkerExecutor
 
 /**
@@ -42,10 +43,11 @@ class UtpTestRunner @JvmOverloads constructor(
         private val useOrchestrator: Boolean,
         private val uninstallIncompatibleApks: Boolean,
         private val utpTestResultListener: UtpTestResultListener?,
+        private val utpLoggingLevel: Level,
         private val configFactory: UtpConfigFactory = UtpConfigFactory(),
         private val runUtpTestSuiteAndWaitFunc: (
             List<UtpRunnerConfig>, String, String, File, ILogger
-        ) -> List<Boolean> = { runnerConfigs, projectName, variantName, resultsDir, logger ->
+        ) -> List<UtpTestRunResult> = { runnerConfigs, projectName, variantName, resultsDir, logger ->
             runUtpTestSuiteAndWait(
                 runnerConfigs, workerExecutor, projectName, variantName, resultsDir, logger,
                 utpTestResultListener, utpDependencies)
@@ -106,7 +108,8 @@ class UtpTestRunner @JvmOverloads constructor(
                 deviceConnector.serialNumber,
                 utpOutputDir,
                 runnerConfig,
-                configFactory.createServerConfigProto())
+                configFactory.createServerConfigProto(),
+                utpLoggingLevel = utpLoggingLevel)
         }.toList()
 
         val testSuiteResults = runUtpTestSuiteAndWaitFunc(
@@ -117,9 +120,30 @@ class UtpTestRunner @JvmOverloads constructor(
             logger
         )
 
-        return testSuiteResults.map { testSuitePassed ->
+        testSuiteResults.forEach { result ->
+            if (result.resultsProto?.hasPlatformError() == true) {
+                logger.error(null, getPlatformErrorMessage(result.resultsProto))
+            }
+        }
+
+        val resultProtos = testSuiteResults
+            .map(UtpTestRunResult::resultsProto)
+            .filterNotNull()
+        if (resultProtos.isNotEmpty()) {
+            val mergedTestResultPbFile = File(resultsDir, TEST_RESULT_PB_FILE_NAME)
+            val resultsMerger = UtpTestSuiteResultMerger()
+            resultProtos.forEach(resultsMerger::merge)
+            resultsMerger.result.writeTo(mergedTestResultPbFile.outputStream())
+            logger.quiet(
+                "\nTest results saved as ${mergedTestResultPbFile.toURI()}. " +
+                        "Inspect these results in Android Studio by selecting Run > Import Tests " +
+                        "From File from the menu bar and importing test-result.pb."
+            )
+        }
+
+        return testSuiteResults.map { testRunResult ->
             TestResult().apply {
-                testResult = if (testSuitePassed) {
+                testResult = if (testRunResult.testPassed) {
                     TestResult.Result.SUCCEEDED
                 } else {
                     TestResult.Result.FAILED

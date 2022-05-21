@@ -55,9 +55,22 @@ enum class CxxDiagnosticCode(val errorCode: Int) {
     BUILD_TARGET_COMMAND_COMPONENTS_DID_NOT_EXIST(1410),
     BUILD_TARGET_COMMAND_COMPONENTS_COMMAND_DID_NOT_EXIST(1411),
     LIBRARY_ARTIFACT_NAME_DID_NOT_EXIST(1412),
+    LIBRARY_ABI_NAME_DID_NOT_EXIST(1413),
+    LIBRARY_HAD_MULTIPLE_ABIS(1414),
+    LIBRARY_ABI_NAME_IS_INVALID(1415),
+    NINJA_IS_MISSING(1416),
 
     // Build cache config messages
     BUILD_CACHE_DISABLED_ACCESS(1500);
 
     val warningCode: Int get() = errorCode + 4000
+}
+
+/**
+ * These are messages issued when a specific bug manifests.
+ * The error code should be the bug number and bugNumber should not coincide with any values in
+ * [CxxDiagnosticCode].
+ */
+enum class CxxBugDiagnosticCode(val bugNumber: Int)  {
+    CMAKE_SERVER_HANDSHAKE_FAILED(194020297);
 }

@@ -16,11 +16,10 @@
 
 package com.android.build.gradle.internal.cxx.build
 
-import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.attribution.encode
 import com.android.build.gradle.internal.cxx.attribution.generateChromeTrace
 import com.android.build.gradle.internal.cxx.attribution.generateNinjaSourceFileAttribution
-import com.android.build.gradle.internal.cxx.caching.CxxBuildCache
+import com.android.build.gradle.internal.cxx.io.synchronizeFile
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons
 import com.android.build.gradle.internal.cxx.json.NativeBuildConfigValueMini
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValueMini
@@ -28,14 +27,13 @@ import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.logging.logStructured
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
-import com.android.build.gradle.internal.cxx.model.ifCMake
 import com.android.build.gradle.internal.cxx.model.ifLogNativeBuildToLifecycle
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.model.ninjaLogFile
-import com.android.build.gradle.internal.cxx.model.objFolder
 import com.android.build.gradle.internal.cxx.process.createProcessOutputJunction
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.cxx.settings.getEnvironmentVariableMap
+import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.ide.common.process.ProcessInfoBuilder
 import com.android.utils.FileUtils
 import com.android.utils.cxx.CxxDiagnosticCode
@@ -45,12 +43,8 @@ import com.google.common.base.Strings
 import com.google.common.collect.Lists
 import com.google.common.collect.Sets
 import org.gradle.api.GradleException
-import org.gradle.caching.internal.controller.BuildCacheController
-import org.gradle.internal.hash.FileHasher
 import org.gradle.process.ExecOperations
 import java.io.File
-import java.io.IOException
-import java.nio.file.Files
 import java.time.Clock
 import kotlin.streams.toList
 
@@ -58,9 +52,6 @@ import kotlin.streams.toList
  * Build a C/C++ project.
  */
 class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
-    override val objFolder: File get() = abi.objFolder
-    override val soFolder: File get() = abi.soFolder
-
     private val variant get() = abi.variant
 
     /**
@@ -81,10 +72,7 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
         val outputFolder: File
     )
 
-    override fun build(
-        ops: ExecOperations,
-        fileHasher: FileHasher,
-        buildCacheController: BuildCacheController) {
+    override fun build(ops: ExecOperations) {
         infoln("starting build")
         infoln("reading expected JSONs")
         val config = nativeBuildConfigValueMini
@@ -98,7 +86,6 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
             verifyTargetExists(config)
         }
 
-        val buildCache = CxxBuildCache(buildCacheController, fileHasher)
         val buildSteps = Lists.newArrayList<BuildStep>()
 
         infoln("evaluate miniconfig")
@@ -151,7 +138,6 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
         }
 
         executeProcessBatch(
-            buildCache,
             ops,
             buildSteps)
 
@@ -186,27 +172,26 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
             // (2) ExternalNativeCleanTask calls the individual clean targets for everything
             //     that was built. This is expected to delete the .so file but it is up to the
             //     CMakeLists.txt or Android.mk author to ensure this.
-            val abi = Abi.getByName(library.abi!!) ?: throw RuntimeException(
-                "Unknown ABI seen ${library.abi}"
-            )
             val expectedOutputFile = FileUtils.join(
-                variant.soFolder,
-                abi.tag,
+                abi.soFolder,
                 output.name
             )
+
             if (!FileUtils.isSameFile(output, expectedOutputFile)) {
                 infoln("external build set its own library output location for " +
                         "'${output.name}', hard link or copy to expected location")
-
-                if (expectedOutputFile.parentFile.mkdirs()) {
-                    infoln("created folder ${expectedOutputFile.parentFile}")
-                }
-                hardLinkOrCopy(output, expectedOutputFile)
+                // Use synchronizeFile so that libs removed from the build will
+                // also be deleted.
+                synchronizeFile(
+                    output,
+                    expectedOutputFile)
             }
 
             for (runtimeFile in library.runtimeFiles) {
-                val dest = FileUtils.join(variant.soFolder, abi.tag, runtimeFile.name)
-                hardLinkOrCopy(runtimeFile, dest)
+                val dest = FileUtils.join(abi.soFolder, runtimeFile.name)
+                synchronizeFile(
+                    runtimeFile,
+                    dest)
             }
         }
 
@@ -217,7 +202,9 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
         } else {
             if (abi.stlLibraryFile != null && abi.stlLibraryFile.isFile) {
                 val objAbi = abi.soFolder.resolve(abi.stlLibraryFile.name)
-                hardLinkOrCopy(abi.stlLibraryFile, objAbi)
+                synchronizeFile(
+                    abi.stlLibraryFile,
+                    objAbi)
             }
         }
 
@@ -326,7 +313,6 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
      * that point.
      */
     private fun executeProcessBatch(
-        buildCache: CxxBuildCache,
         ops: ExecOperations,
         buildSteps: List<BuildStep>) {
         for (buildStep in buildSteps) {
@@ -365,25 +351,23 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
                 abi.ninjaLogFile.useLines { it.count() }
             } else 0
 
-            buildCache.cacheBuild(abi, buildStep.targetsFromDsl) {
-                createProcessOutputJunction(
-                    buildStep.outputFolder.resolve("android_gradle_build_command_$logFileSuffix.txt"),
-                    buildStep.outputFolder.resolve("android_gradle_build_stdout_$logFileSuffix.txt"),
-                    buildStep.outputFolder.resolve("android_gradle_build_stderr_$logFileSuffix.txt"),
-                    processBuilder,
-                    "")
-                    .logStderr()
-                    .logStdout()
-                    .logFullStdout(abi.ifLogNativeBuildToLifecycle { true } ?: false)
-                    .execute(ops::exec)
-            }
+            createProcessOutputJunction(
+                buildStep.outputFolder.resolve("android_gradle_build_command_$logFileSuffix.txt"),
+                buildStep.outputFolder.resolve("android_gradle_build_stdout_$logFileSuffix.txt"),
+                buildStep.outputFolder.resolve("android_gradle_build_stderr_$logFileSuffix.txt"),
+                processBuilder,
+                "")
+                .logStderr()
+                .logStdout()
+                .logFullStdout(abi.ifLogNativeBuildToLifecycle { true } ?: false)
+                .execute(ops::exec)
 
             // Build attribution reporting based on .ninja_log
             // This is best-effort because it appears that ninja does not guarantee
             // that the log file is written.
             //
             // There's no existing way to track C++ build time for ndk-build.
-            abi.ifCMake {
+            if (variant.module.buildSystem == NativeBuildSystem.CMAKE) {
                 // Lazy because we only need to generate if the user has requested
                 // chrome tracing or structured logging.
                 val attributions by lazy {
@@ -441,36 +425,3 @@ class CxxRegularBuilder(val abi: CxxAbiModel) : CxxBuilder {
     }
 }
 
-/**
- * Hard link [source] to [destination].
- */
-internal fun hardLinkOrCopy(source: File, destination: File) {
-    // Dependencies within the same project will also show up as runtimeFiles, and
-    // will have the same source and destination. Can skip those.
-    if (FileUtils.isSameFile(source, destination)) {
-        // This happens if source and destination are lexically the same
-        // --or-- if one is a hard link to the other.
-        // Either way, no work to do.
-        return
-    }
-
-    Files.deleteIfExists(destination.toPath())
-
-    // CMake can report runtime files that it doesn't later produce.
-    // Don't try to copy these. Also, don't warn because hard-link/copy
-    // is not the correct location to diagnose why the *original*
-    // runtime file was not created.
-    if (!source.exists()) {
-        return
-    }
-
-    try {
-        Files.createLink(destination.toPath(), source.toPath().toRealPath())
-        infoln("linked $source to $destination")
-    } catch (e: IOException) {
-        // This can happen when hard linking from one drive to another on Windows
-        // In this case, copy the file instead.
-        com.google.common.io.Files.copy(source, destination)
-        infoln("copied $source to $destination")
-    }
-}

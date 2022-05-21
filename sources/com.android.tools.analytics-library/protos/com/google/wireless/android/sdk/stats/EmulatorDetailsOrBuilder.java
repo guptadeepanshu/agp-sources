@@ -858,4 +858,31 @@ public interface EmulatorDetailsOrBuilder extends
    */
   com.google.wireless.android.sdk.stats.EmulatorIceboxOrBuilder getIceboxOrBuilder(
       int index);
+
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * @return Whether the resizableDisplay field is set.
+   */
+  boolean hasResizableDisplay();
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   * @return The resizableDisplay.
+   */
+  com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay();
+  /**
+   * <pre>
+   * Metrics for resizable display
+   * </pre>
+   *
+   * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
+   */
+  com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder();
 }

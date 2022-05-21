@@ -196,6 +196,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000400;
             break;
           }
+          case 98: {
+            com.google.wireless.android.sdk.stats.VisualLintEvent.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000800) != 0)) {
+              subBuilder = visualLintEvent_.toBuilder();
+            }
+            visualLintEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.VisualLintEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(visualLintEvent_);
+              visualLintEvent_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000800;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -441,6 +454,10 @@ private static final long serialVersionUID = 0L;
      * <code>ANIMATION_PREVIEW = 51;</code>
      */
     ANIMATION_PREVIEW(51),
+    /**
+     * <code>VISUAL_LINT = 52;</code>
+     */
+    VISUAL_LINT(52),
     ;
 
     /**
@@ -651,6 +668,10 @@ private static final long serialVersionUID = 0L;
      * <code>ANIMATION_PREVIEW = 51;</code>
      */
     public static final int ANIMATION_PREVIEW_VALUE = 51;
+    /**
+     * <code>VISUAL_LINT = 52;</code>
+     */
+    public static final int VISUAL_LINT_VALUE = 52;
 
 
     public final int getNumber() {
@@ -725,6 +746,7 @@ private static final long serialVersionUID = 0L;
         case 49: return IGNORE_ATF_RESULT;
         case 50: return UNDO_APPLIED_ATF_FIX;
         case 51: return ANIMATION_PREVIEW;
+        case 52: return VISUAL_LINT;
         default: return null;
       }
     }
@@ -1152,6 +1174,41 @@ private static final long serialVersionUID = 0L;
     return animationPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.getDefaultInstance() : animationPreviewEvent_;
   }
 
+  public static final int VISUAL_LINT_EVENT_FIELD_NUMBER = 12;
+  private com.google.wireless.android.sdk.stats.VisualLintEvent visualLintEvent_;
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * @return Whether the visualLintEvent field is set.
+   */
+  public boolean hasVisualLintEvent() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   * @return The visualLintEvent.
+   */
+  public com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent() {
+    return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
+  }
+  /**
+   * <pre>
+   * Details related to visual linting (type = VISUAL_LINT)
+   * </pre>
+   *
+   * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+   */
+  public com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder() {
+    return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1198,6 +1255,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000400) != 0)) {
       output.writeMessage(11, getAnimationPreviewEvent());
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      output.writeMessage(12, getVisualLintEvent());
     }
     unknownFields.writeTo(output);
   }
@@ -1251,6 +1311,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000400) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(11, getAnimationPreviewEvent());
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(12, getVisualLintEvent());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1321,6 +1385,11 @@ private static final long serialVersionUID = 0L;
       if (!getAnimationPreviewEvent()
           .equals(other.getAnimationPreviewEvent())) return false;
     }
+    if (hasVisualLintEvent() != other.hasVisualLintEvent()) return false;
+    if (hasVisualLintEvent()) {
+      if (!getVisualLintEvent()
+          .equals(other.getVisualLintEvent())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1375,6 +1444,10 @@ private static final long serialVersionUID = 0L;
     if (hasAnimationPreviewEvent()) {
       hash = (37 * hash) + ANIMATION_PREVIEW_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getAnimationPreviewEvent().hashCode();
+    }
+    if (hasVisualLintEvent()) {
+      hash = (37 * hash) + VISUAL_LINT_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getVisualLintEvent().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1518,6 +1591,7 @@ private static final long serialVersionUID = 0L;
         getIgnoreAtfResultEventFieldBuilder();
         getUndoAppliedAtfFixEventFieldBuilder();
         getAnimationPreviewEventFieldBuilder();
+        getVisualLintEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1585,6 +1659,12 @@ private static final long serialVersionUID = 0L;
         animationPreviewEventBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000400);
+      if (visualLintEventBuilder_ == null) {
+        visualLintEvent_ = null;
+      } else {
+        visualLintEventBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000800);
       return this;
     }
 
@@ -1697,6 +1777,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000400;
       }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        if (visualLintEventBuilder_ == null) {
+          result.visualLintEvent_ = visualLintEvent_;
+        } else {
+          result.visualLintEvent_ = visualLintEventBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000800;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1778,6 +1866,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAnimationPreviewEvent()) {
         mergeAnimationPreviewEvent(other.getAnimationPreviewEvent());
+      }
+      if (other.hasVisualLintEvent()) {
+        mergeVisualLintEvent(other.getVisualLintEvent());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3425,6 +3516,162 @@ private static final long serialVersionUID = 0L;
         animationPreviewEvent_ = null;
       }
       return animationPreviewEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.VisualLintEvent visualLintEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.VisualLintEvent, com.google.wireless.android.sdk.stats.VisualLintEvent.Builder, com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder> visualLintEventBuilder_;
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * @return Whether the visualLintEvent field is set.
+     */
+    public boolean hasVisualLintEvent() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     * @return The visualLintEvent.
+     */
+    public com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent() {
+      if (visualLintEventBuilder_ == null) {
+        return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
+      } else {
+        return visualLintEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public Builder setVisualLintEvent(com.google.wireless.android.sdk.stats.VisualLintEvent value) {
+      if (visualLintEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        visualLintEvent_ = value;
+        onChanged();
+      } else {
+        visualLintEventBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public Builder setVisualLintEvent(
+        com.google.wireless.android.sdk.stats.VisualLintEvent.Builder builderForValue) {
+      if (visualLintEventBuilder_ == null) {
+        visualLintEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        visualLintEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public Builder mergeVisualLintEvent(com.google.wireless.android.sdk.stats.VisualLintEvent value) {
+      if (visualLintEventBuilder_ == null) {
+        if (((bitField0_ & 0x00000800) != 0) &&
+            visualLintEvent_ != null &&
+            visualLintEvent_ != com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance()) {
+          visualLintEvent_ =
+            com.google.wireless.android.sdk.stats.VisualLintEvent.newBuilder(visualLintEvent_).mergeFrom(value).buildPartial();
+        } else {
+          visualLintEvent_ = value;
+        }
+        onChanged();
+      } else {
+        visualLintEventBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000800;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public Builder clearVisualLintEvent() {
+      if (visualLintEventBuilder_ == null) {
+        visualLintEvent_ = null;
+        onChanged();
+      } else {
+        visualLintEventBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000800);
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public com.google.wireless.android.sdk.stats.VisualLintEvent.Builder getVisualLintEventBuilder() {
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return getVisualLintEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    public com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder() {
+      if (visualLintEventBuilder_ != null) {
+        return visualLintEventBuilder_.getMessageOrBuilder();
+      } else {
+        return visualLintEvent_ == null ?
+            com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * Details related to visual linting (type = VISUAL_LINT)
+     * </pre>
+     *
+     * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.VisualLintEvent, com.google.wireless.android.sdk.stats.VisualLintEvent.Builder, com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder> 
+        getVisualLintEventFieldBuilder() {
+      if (visualLintEventBuilder_ == null) {
+        visualLintEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.VisualLintEvent, com.google.wireless.android.sdk.stats.VisualLintEvent.Builder, com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder>(
+                getVisualLintEvent(),
+                getParentForChildren(),
+                isClean());
+        visualLintEvent_ = null;
+      }
+      return visualLintEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

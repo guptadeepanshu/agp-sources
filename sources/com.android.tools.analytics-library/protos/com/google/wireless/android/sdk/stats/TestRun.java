@@ -127,6 +127,19 @@ private static final long serialVersionUID = 0L;
             }
             break;
           }
+          case 74: {
+            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000100) != 0)) {
+              subBuilder = automaticSnapshotOnFailure_.toBuilder();
+            }
+            automaticSnapshotOnFailure_ = input.readMessage(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(automaticSnapshotOnFailure_);
+              automaticSnapshotOnFailure_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000100;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -528,6 +541,689 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.TestRun.TestExecution)
   }
 
+  public interface AutomaticSnapshotOnFailureOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.TestRun.AutomaticSnapshotOnFailure)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+     * @return Whether the enabled field is set.
+     */
+    boolean hasEnabled();
+    /**
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+     * @return The enabled.
+     */
+    com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled();
+  }
+  /**
+   * <pre>
+   * Configuration for automatic snapshot for test failures.
+   * </pre>
+   *
+   * Protobuf type {@code android_studio.TestRun.AutomaticSnapshotOnFailure}
+   */
+  public  static final class AutomaticSnapshotOnFailure extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.TestRun.AutomaticSnapshotOnFailure)
+      AutomaticSnapshotOnFailureOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AutomaticSnapshotOnFailure.newBuilder() to construct.
+    private AutomaticSnapshotOnFailure(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AutomaticSnapshotOnFailure() {
+      enabled_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new AutomaticSnapshotOnFailure();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AutomaticSnapshotOnFailure(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled value = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                enabled_ = rawValue;
+              }
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.class, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled}
+     */
+    public enum Enabled
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNSPECIFIED = 0;</code>
+       */
+      UNSPECIFIED(0),
+      /**
+       * <pre>
+       * AutomaticSnapshotOnFailure is enabled by RunConfiguration in Android
+       * Studio.
+       * </pre>
+       *
+       * <code>ENABLED_BY_RUN_CONFIGURATION = 1;</code>
+       */
+      ENABLED_BY_RUN_CONFIGURATION(1),
+      /**
+       * <pre>
+       * AutomaticSnapshotOnFailure is disabled by RunConfiguration in Android
+       * Studio.
+       * </pre>
+       *
+       * <code>DISABLED_BY_RUN_CONFIGURATION = 2;</code>
+       */
+      DISABLED_BY_RUN_CONFIGURATION(2),
+      /**
+       * <pre>
+       * Use value from Gradle DSL.
+       * </pre>
+       *
+       * <code>USE_VALUE_IN_GRADLE_DSL = 3;</code>
+       */
+      USE_VALUE_IN_GRADLE_DSL(3),
+      ;
+
+      /**
+       * <code>UNSPECIFIED = 0;</code>
+       */
+      public static final int UNSPECIFIED_VALUE = 0;
+      /**
+       * <pre>
+       * AutomaticSnapshotOnFailure is enabled by RunConfiguration in Android
+       * Studio.
+       * </pre>
+       *
+       * <code>ENABLED_BY_RUN_CONFIGURATION = 1;</code>
+       */
+      public static final int ENABLED_BY_RUN_CONFIGURATION_VALUE = 1;
+      /**
+       * <pre>
+       * AutomaticSnapshotOnFailure is disabled by RunConfiguration in Android
+       * Studio.
+       * </pre>
+       *
+       * <code>DISABLED_BY_RUN_CONFIGURATION = 2;</code>
+       */
+      public static final int DISABLED_BY_RUN_CONFIGURATION_VALUE = 2;
+      /**
+       * <pre>
+       * Use value from Gradle DSL.
+       * </pre>
+       *
+       * <code>USE_VALUE_IN_GRADLE_DSL = 3;</code>
+       */
+      public static final int USE_VALUE_IN_GRADLE_DSL_VALUE = 3;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Enabled valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Enabled forNumber(int value) {
+        switch (value) {
+          case 0: return UNSPECIFIED;
+          case 1: return ENABLED_BY_RUN_CONFIGURATION;
+          case 2: return DISABLED_BY_RUN_CONFIGURATION;
+          case 3: return USE_VALUE_IN_GRADLE_DSL;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Enabled>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Enabled> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Enabled>() {
+              public Enabled findValueByNumber(int number) {
+                return Enabled.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Enabled[] VALUES = values();
+
+      public static Enabled valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Enabled(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled)
+    }
+
+    private int bitField0_;
+    public static final int ENABLED_FIELD_NUMBER = 1;
+    private int enabled_;
+    /**
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+     * @return Whether the enabled field is set.
+     */
+    public boolean hasEnabled() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+     * @return The enabled.
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
+      return result == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.UNSPECIFIED : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, enabled_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, enabled_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure other = (com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure) obj;
+
+      if (hasEnabled() != other.hasEnabled()) return false;
+      if (hasEnabled()) {
+        if (enabled_ != other.enabled_) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasEnabled()) {
+        hash = (37 * hash) + ENABLED_FIELD_NUMBER;
+        hash = (53 * hash) + enabled_;
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Configuration for automatic snapshot for test failures.
+     * </pre>
+     *
+     * Protobuf type {@code android_studio.TestRun.AutomaticSnapshotOnFailure}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.TestRun.AutomaticSnapshotOnFailure)
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.class, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        enabled_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_TestRun_AutomaticSnapshotOnFailure_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure build() {
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure buildPartial() {
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure result = new com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.enabled_ = enabled_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure other) {
+        if (other == com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance()) return this;
+        if (other.hasEnabled()) {
+          setEnabled(other.getEnabled());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int enabled_ = 0;
+      /**
+       * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+       * @return Whether the enabled field is set.
+       */
+      public boolean hasEnabled() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+       * @return The enabled.
+       */
+      public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
+        return result == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.UNSPECIFIED : result;
+      }
+      /**
+       * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+       * @param value The enabled to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEnabled(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        enabled_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEnabled() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        enabled_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.TestRun.AutomaticSnapshotOnFailure)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.TestRun.AutomaticSnapshotOnFailure)
+    private static final com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure();
+    }
+
+    public static com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<AutomaticSnapshotOnFailure>
+        PARSER = new com.google.protobuf.AbstractParser<AutomaticSnapshotOnFailure>() {
+      @java.lang.Override
+      public AutomaticSnapshotOnFailure parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AutomaticSnapshotOnFailure(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AutomaticSnapshotOnFailure> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AutomaticSnapshotOnFailure> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int TEST_INVOCATION_TYPE_FIELD_NUMBER = 1;
   private int testInvocationType_;
@@ -779,6 +1475,47 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestExecution.UNKNOWN_TEST_EXECUTION : result;
   }
 
+  public static final int AUTOMATIC_SNAPSHOT_ON_FAILURE_FIELD_NUMBER = 9;
+  private com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure automaticSnapshotOnFailure_;
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * @return Whether the automaticSnapshotOnFailure field is set.
+   */
+  public boolean hasAutomaticSnapshotOnFailure() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   * @return The automaticSnapshotOnFailure.
+   */
+  public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure() {
+    return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
+  }
+  /**
+   * <pre>
+   * Whether the feature Automatic Snapshot on Test Failure is enabled.
+   * Currently only set when test_invocation_type =
+   * ANDROID_STUDIO_THROUGH_GRADLE.
+   * </pre>
+   *
+   * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+   */
+  public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder() {
+    return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -816,6 +1553,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeEnum(8, testExecution_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeMessage(9, getAutomaticSnapshotOnFailure());
     }
     unknownFields.writeTo(output);
   }
@@ -856,6 +1596,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(8, testExecution_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(9, getAutomaticSnapshotOnFailure());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -909,6 +1653,11 @@ private static final long serialVersionUID = 0L;
     if (hasTestExecution()) {
       if (testExecution_ != other.testExecution_) return false;
     }
+    if (hasAutomaticSnapshotOnFailure() != other.hasAutomaticSnapshotOnFailure()) return false;
+    if (hasAutomaticSnapshotOnFailure()) {
+      if (!getAutomaticSnapshotOnFailure()
+          .equals(other.getAutomaticSnapshotOnFailure())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -953,6 +1702,10 @@ private static final long serialVersionUID = 0L;
     if (hasTestExecution()) {
       hash = (37 * hash) + TEST_EXECUTION_FIELD_NUMBER;
       hash = (53 * hash) + testExecution_;
+    }
+    if (hasAutomaticSnapshotOnFailure()) {
+      hash = (37 * hash) + AUTOMATIC_SNAPSHOT_ON_FAILURE_FIELD_NUMBER;
+      hash = (53 * hash) + getAutomaticSnapshotOnFailure().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1087,6 +1840,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getTestLibrariesFieldBuilder();
+        getAutomaticSnapshotOnFailureFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1112,6 +1866,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
       testExecution_ = 0;
       bitField0_ = (bitField0_ & ~0x00000080);
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        automaticSnapshotOnFailure_ = null;
+      } else {
+        automaticSnapshotOnFailureBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -1176,6 +1936,14 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000080;
       }
       result.testExecution_ = testExecution_;
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        if (automaticSnapshotOnFailureBuilder_ == null) {
+          result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailure_;
+        } else {
+          result.automaticSnapshotOnFailure_ = automaticSnapshotOnFailureBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000100;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1250,6 +2018,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasTestExecution()) {
         setTestExecution(other.getTestExecution());
+      }
+      if (other.hasAutomaticSnapshotOnFailure()) {
+        mergeAutomaticSnapshotOnFailure(other.getAutomaticSnapshotOnFailure());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1880,6 +2651,180 @@ private static final long serialVersionUID = 0L;
       testExecution_ = 0;
       onChanged();
       return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure automaticSnapshotOnFailure_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder> automaticSnapshotOnFailureBuilder_;
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * @return Whether the automaticSnapshotOnFailure field is set.
+     */
+    public boolean hasAutomaticSnapshotOnFailure() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     * @return The automaticSnapshotOnFailure.
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure() {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
+      } else {
+        return automaticSnapshotOnFailureBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public Builder setAutomaticSnapshotOnFailure(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure value) {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        automaticSnapshotOnFailure_ = value;
+        onChanged();
+      } else {
+        automaticSnapshotOnFailureBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public Builder setAutomaticSnapshotOnFailure(
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder builderForValue) {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        automaticSnapshotOnFailure_ = builderForValue.build();
+        onChanged();
+      } else {
+        automaticSnapshotOnFailureBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public Builder mergeAutomaticSnapshotOnFailure(com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure value) {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        if (((bitField0_ & 0x00000100) != 0) &&
+            automaticSnapshotOnFailure_ != null &&
+            automaticSnapshotOnFailure_ != com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance()) {
+          automaticSnapshotOnFailure_ =
+            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.newBuilder(automaticSnapshotOnFailure_).mergeFrom(value).buildPartial();
+        } else {
+          automaticSnapshotOnFailure_ = value;
+        }
+        onChanged();
+      } else {
+        automaticSnapshotOnFailureBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public Builder clearAutomaticSnapshotOnFailure() {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        automaticSnapshotOnFailure_ = null;
+        onChanged();
+      } else {
+        automaticSnapshotOnFailureBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000100);
+      return this;
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder getAutomaticSnapshotOnFailureBuilder() {
+      bitField0_ |= 0x00000100;
+      onChanged();
+      return getAutomaticSnapshotOnFailureFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder() {
+      if (automaticSnapshotOnFailureBuilder_ != null) {
+        return automaticSnapshotOnFailureBuilder_.getMessageOrBuilder();
+      } else {
+        return automaticSnapshotOnFailure_ == null ?
+            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
+      }
+    }
+    /**
+     * <pre>
+     * Whether the feature Automatic Snapshot on Test Failure is enabled.
+     * Currently only set when test_invocation_type =
+     * ANDROID_STUDIO_THROUGH_GRADLE.
+     * </pre>
+     *
+     * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder> 
+        getAutomaticSnapshotOnFailureFieldBuilder() {
+      if (automaticSnapshotOnFailureBuilder_ == null) {
+        automaticSnapshotOnFailureBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Builder, com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder>(
+                getAutomaticSnapshotOnFailure(),
+                getParentForChildren(),
+                isClean());
+        automaticSnapshotOnFailure_ = null;
+      }
+      return automaticSnapshotOnFailureBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -60,6 +60,7 @@ import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -542,6 +543,18 @@ public class MergedResourceWriter
 
                         Node adoptedNode = NodeUtils.adoptNode(document, nodeValue);
                         if (source != null) {
+                            if (adoptedNode.hasChildNodes()) {
+                                // Nested resources e.g. style and st types can contain comments,
+                                // so these need to be stripped.
+                                for (int i = 0; i < adoptedNode.getChildNodes().getLength(); i++) {
+                                    Node child = adoptedNode.getChildNodes().item(i);
+                                    if (child instanceof Comment) {
+                                        adoptedNode.removeChild(child);
+                                    }
+                                }
+                                // Removes empty lines and spaces from nested resource tags.
+                                adoptedNode.normalize();
+                            }
                             XmlUtils.attachSourceFile(
                                     adoptedNode, new SourceFile(source.getFile()));
                         }
@@ -593,10 +606,11 @@ public class MergedResourceWriter
                                 mergeWriterRequest
                                         .getResourceCompilationService()
                                         .compileOutputFor(request);
-                        mMergingLog.logSource(new SourceFile(file), getSourcePath(file), blame);
+                        String fileSourcePath = getSourceFilePath(file);
+                        mMergingLog.logSource(new SourceFile(file), fileSourcePath, blame);
 
-                        String sourcePath = getSourceFilePath(outFile);
-                        mMergingLog.logSource(new SourceFile(outFile), sourcePath, blame);
+                        String outFileSourcePath = getSourceFilePath(outFile);
+                        mMergingLog.logSource(new SourceFile(outFile), outFileSourcePath, blame);
                     }
 
                     mergeWriterRequest.getResourceCompilationService().submitCompile(request);

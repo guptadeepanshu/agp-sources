@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -230,6 +230,7 @@ public final class SdkConstants {
 
     public static final String FN_BINART_ART_PROFILE_FOLDER_IN_APK = "assets/dexopt";
     public static final String FN_BINARY_ART_PROFILE = "baseline.prof";
+    public static final String FN_BINARY_ART_PROFILE_METADATA = "baseline.profm";
 
     /** aapt executable (with extension for the current OS) */
     public static final String FN_AAPT =
@@ -444,6 +445,15 @@ public final class SdkConstants {
 
     /** jars folder */
     public static final String FD_JARS = "jars";
+
+    /** Intermediates folder under the build directory */
+    public static final String FD_INTERMEDIATES = "intermediates";
+    /** logs folder under the build directory */
+    public static final String FD_LOGS = "logs";
+    /** outputs folder under the build directory */
+    public static final String FD_OUTPUTS = "outputs";
+    /** generated folder under the build directory */
+    public static final String FD_GENERATED = "generated";
 
     /* Folder Names for the Android SDK */
 
@@ -718,14 +728,35 @@ public final class SdkConstants {
 
     /* Android Class Constants */
     public static final String CLASS_ACTIVITY = "android.app.Activity";
+
+    public static final String CLASS_WATCHFACE_WSL
+            = "android.support.wearable.watchface.WatchFaceService";
+
+    public static final String CLASS_WATCHFACE_ANDROIDX =
+            "androidx.wear.watchface.WatchFaceService";
+
+    public static final String CLASS_TILE_SERVICE = "androidx.wear.tiles.TileService";
+
+    public static final String CLASS_COMPLICATION_SERVICE_ANDROIDX =
+            "androidx.wear.watchface.complications.datasource.ComplicationDataSourceService";
+
+    public static final String CLASS_COMPLICATION_SERVICE_WSL =
+            "android.support.wearable.complications.ComplicationProviderService";
+
     public static final String CLASS_APPLICATION = "android.app.Application";
+
     public static final String CLASS_SERVICE = "android.app.Service";
+
     public static final String CLASS_BROADCASTRECEIVER =
             "android.content.BroadcastReceiver";
+
     public static final String CLASS_CONTENTPROVIDER =
             "android.content.ContentProvider";
+
     public static final String CLASS_ATTRIBUTE_SET = "android.util.AttributeSet";
+
     public static final String CLASS_INSTRUMENTATION = "android.app.Instrumentation";
+
     public static final String CLASS_INSTRUMENTATION_RUNNER =
             "android.test.InstrumentationTestRunner";
     public static final String CLASS_BUNDLE = "android.os.Bundle";
@@ -770,6 +801,9 @@ public final class SdkConstants {
     public static final String CLASS_ANDROIDX_ACTION_PROVIDER = "androidx.core.view.ActionProvider";
 
     public static final String CLASS_BACKUP_AGENT = "android.app.backup.BackupAgent";
+
+    public static final String CLASS_DRAWABLE = "android.graphics.drawable.Drawable";
+
     /**
      * MockView is part of the layoutlib bridge and used to display classes that have no rendering
      * in the graphical layout editor.
@@ -868,6 +902,8 @@ public final class SdkConstants {
     public static final String CLASS_CHIP_GROUP = "com.google.android.material.chip.ChipGroup";
     public static final String CLASS_MATERIAL_BUTTON =
             "com.google.android.material.button.MaterialButton";
+    public static final String CLASS_MATERIAL_TOOLBAR =
+            "com.google.android.material.appbar.MaterialToolbar";
 
     /* Android ConstraintLayout Constants */
     public static final AndroidxName CLASS_CONSTRAINT_LAYOUT =
@@ -1284,6 +1320,7 @@ public final class SdkConstants {
     public static final AndroidxName TEXT_INPUT_LAYOUT = CLASS_TEXT_INPUT_LAYOUT;
     public static final AndroidxName TEXT_INPUT_EDIT_TEXT = CLASS_TEXT_INPUT_EDIT_TEXT;
     public static final String BOTTOM_APP_BAR = CLASS_BOTTOM_APP_BAR;
+    public static final String MATERIAL_TOOLBAR = CLASS_MATERIAL_TOOLBAR;
     public static final String MATERIAL_BUTTON = CLASS_MATERIAL_BUTTON;
     public static final AndroidxName NESTED_SCROLL_VIEW = CLASS_NESTED_SCROLL_VIEW;
     public static final AndroidxName DRAWER_LAYOUT = CLASS_DRAWER_LAYOUT;
@@ -2826,10 +2863,20 @@ public final class SdkConstants {
      * Studio product. It need not actually be the latest version of Gradle, but it will most likely
      * be fairly recent.
      */
-    public static final String GRADLE_LATEST_VERSION = "7.2";
+    public static final String GRADLE_LATEST_VERSION = "7.3.3";
 
-    public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "1.0.0";
-    public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "3.3.2";
+    /**
+     * The minimum released version of the Android Gradle Plugin that this version of Studio will
+     * support. (Support of the development series leading up to it is unknown.)
+     */
+    public static final String GRADLE_PLUGIN_MINIMUM_VERSION = "3.2.0";
+
+    /**
+     * A version of the Android Gradle Plugin that this version of Studio and associated tools (e.g.
+     * lint) can safely recommend during its development cycle. If an up-to-date version is
+     * required, consider using `LatestKnownPluginVersionProvider` instead.
+     */
+    public static final String GRADLE_PLUGIN_RECOMMENDED_VERSION = "7.0.3";
 
     /** use api or implementation */
     @Deprecated public static final String GRADLE_COMPILE_CONFIGURATION = "compile";

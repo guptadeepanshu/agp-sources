@@ -176,6 +176,19 @@ object AnalyticsSettings {
             }
         }
 
+    @JvmStatic
+    var lastOptinPromptVersion: String?
+        get() {
+            return runIfAnalyticsSettingsUsable(null) {
+                instance?.lastOptinPromptVersion
+            }
+        }
+        set(value) {
+            runIfAnalyticsSettingsUsable(Unit) {
+                instance?.lastOptinPromptVersion = value
+            }
+        }
+
     internal const val SALT_SKEW_NOT_INITIALIZED = -1
 
     @VisibleForTesting
@@ -203,6 +216,33 @@ object AnalyticsSettings {
         // Unix epoch was on a Thursday, but we want Monday to be the day the salt is refreshed.
         val days = ChronoUnit.DAYS.between(EPOCH, now) + 3
         return (days / 28).toInt()
+    }
+
+    /* Returns true if the user has already been prompted to opt in to metrics
+     * for this major release
+     */
+    @JvmStatic
+    public fun hasUserBeenPromptedForOptin(
+        currentMajorVersion: String,
+        currentMinorVersion: String
+    ): Boolean {
+        val currentMajor = currentMajorVersion.toIntOrNull() ?: return true
+        val currentMinor = currentMinorVersion.toIntOrNull() ?: return true
+
+        val last = instance?.lastOptinPromptVersion ?: return false
+
+        val tokens = last.split('.')
+        if (tokens.size != 2) {
+            return false
+        }
+
+        val lastMajor = tokens[0].toIntOrNull() ?: return false
+        val lastMinor = tokens[1].toIntOrNull() ?: return false
+
+        return when (currentMajor) {
+            lastMajor -> currentMinor <= lastMinor
+            else -> currentMajor <= lastMajor
+        }
     }
 
     /**
@@ -472,6 +512,9 @@ class AnalyticsSettingsData {
 
     @field:SerializedName("lastFeatureSurveyDateMap")
     var nextFeatureSurveyDateMap: MutableMap<String, Date>? = null
+
+    @field:SerializedName("lastOptinPromptVersion")
+    var lastOptinPromptVersion: String? = null
 }
 
 fun BigInteger.toByteArrayOfLength24(): ByteArray {

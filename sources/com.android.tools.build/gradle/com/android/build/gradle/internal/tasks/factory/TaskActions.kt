@@ -17,12 +17,13 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.scope.GlobalScope
+import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.BaseTask
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.configureVariantProperties
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 
@@ -87,7 +88,14 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreati
             val taskContainer: MutableTaskContainer = creationConfig.taskContainer
             task.dependsOn(taskContainer.preBuildTask)
         }
-        task.configureVariantProperties(creationConfig.name, task.project)
+
+        task.configureVariantProperties(
+            creationConfig.name,
+            creationConfig.services.buildServiceRegistry
+        )
+        if (task is BaseTask) {
+            task.projectPath.setDisallowChanges(creationConfig.services.projectInfo.path)
+        }
     }
 }
 
@@ -100,7 +108,7 @@ abstract class VariantTaskCreationAction<TaskT, CreationConfigT: ComponentCreati
  * and actions to configure the task ([preConfigure], [configure], [handleProvider])
  */
 abstract class GlobalTaskCreationAction<TaskT>(
-    @JvmField protected val globalScope: GlobalScope
+    @JvmField protected val creationConfig: GlobalTaskCreationConfig
 ) : TaskCreationAction<TaskT>() where TaskT: Task, TaskT: BaseTask {
 
     override fun preConfigure(taskName: String) {
@@ -111,7 +119,9 @@ abstract class GlobalTaskCreationAction<TaskT>(
     }
 
     override fun configure(task: TaskT) {
-        task.analyticsService.set(getBuildService(task.project.gradle.sharedServices))
+        task.analyticsService.setDisallowChanges(
+            getBuildService(creationConfig.services.buildServiceRegistry)
+        )
     }
 }
 /**

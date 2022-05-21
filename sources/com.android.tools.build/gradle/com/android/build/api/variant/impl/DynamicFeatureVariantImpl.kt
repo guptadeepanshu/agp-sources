@@ -23,8 +23,6 @@ import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ApkCreationConfigImpl
 import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.DynamicFeatureExtension
-import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
 import com.android.build.api.variant.AndroidTest
@@ -44,37 +42,36 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.GlobalScope
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantPropertiesApiServices
 import com.android.build.gradle.internal.tasks.ModuleMetadata
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import com.android.build.gradle.options.StringOption
 import com.android.builder.dexing.DexingType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import com.android.build.gradle.options.StringOption
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
 open class DynamicFeatureVariantImpl @Inject constructor(
-        override val variantBuilder: DynamicFeatureVariantBuilderImpl,
-        buildFeatureValues: BuildFeatureValues,
-        variantDslInfo: VariantDslInfo<DynamicFeatureExtension>,
-        variantDependencies: VariantDependencies,
-        variantSources: VariantSources,
-        paths: VariantPathHelper,
-        artifacts: ArtifactsImpl,
-        variantScope: VariantScope,
-        variantData: BaseVariantData,
-        transformManager: TransformManager,
-        internalServices: VariantPropertiesApiServices,
-        taskCreationServices: TaskCreationServices,
-        sdkComponents: SdkComponents,
-        globalScope: GlobalScope
+    override val variantBuilder: DynamicFeatureVariantBuilderImpl,
+    buildFeatureValues: BuildFeatureValues,
+    variantDslInfo: VariantDslInfo,
+    variantDependencies: VariantDependencies,
+    variantSources: VariantSources,
+    paths: VariantPathHelper,
+    artifacts: ArtifactsImpl,
+    variantScope: VariantScope,
+    variantData: BaseVariantData,
+    transformManager: TransformManager,
+    internalServices: VariantPropertiesApiServices,
+    taskCreationServices: TaskCreationServices,
+    globalTaskCreationConfig: GlobalTaskCreationConfig,
 ) : VariantImpl(
     variantBuilder,
     buildFeatureValues,
@@ -88,23 +85,18 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     transformManager,
     internalServices,
     taskCreationServices,
-    sdkComponents,
-    globalScope
+    globalTaskCreationConfig
 ), DynamicFeatureVariant, DynamicFeatureCreationConfig, HasAndroidTest, HasTestFixtures {
 
     init {
         variantDslInfo.multiDexKeepProguard?.let {
             artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
-                    .addInitialProvider(
-                            null, taskCreationServices.regularFile(internalServices.provider { it })
-                    )
+                .addInitialProvider(null, internalServices.toRegularFileProvider(it))
         }
     }
 
     private val delegate by lazy { ApkCreationConfigImpl(
         this,
-        internalServices.projectOptions,
-        globalScope,
         variantDslInfo) }
 
     /*
@@ -121,10 +113,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         internalServices.providerOf(String::class.java, baseModuleMetadata.map { it.applicationId })
 
     override val androidResources: AndroidResources by lazy {
-        initializeAaptOptionsFromDsl(
-            taskCreationServices.projectInfo.getExtension().aaptOptions,
-            internalServices
-        )
+        initializeAaptOptionsFromDsl(variantDslInfo.androidResources, internalServices)
     }
 
     override val minifiedEnabled: Boolean
@@ -132,7 +121,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
 
     override val packaging: ApkPackaging by lazy {
         ApkPackagingImpl(
-            globalScope.extension.packagingOptions,
+            variantDslInfo.packaging,
             internalServices,
             minSdkVersion.apiLevel
         )
@@ -162,7 +151,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         baseModuleMetadata.map { it.debuggable })
 
     override val featureName: Provider<String> = run {
-        val projectPath = internalServices.projectInfo.getProject().path
+        val projectPath = internalServices.projectInfo.path
         internalServices.providerOf(String::class.java, featureSetMetadata.map {
             it.getFeatureNameFor(projectPath)
                 ?: throw RuntimeException("Failed to find feature name for $projectPath in ${it.sourceFile}")
@@ -173,7 +162,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
      * resource offset for resource compilation of a feature.
      * This is computed by the base module and consumed by the features. */
     override val resOffset: Provider<Int> = run {
-        val projectPath = internalServices.projectInfo.getProject().path
+        val projectPath = internalServices.projectInfo.path
         internalServices.providerOf(Int::class.java, featureSetMetadata.map {
             it.getResOffsetFor(projectPath)
                 ?: throw RuntimeException("Failed to find resource offset for $projectPath in ${it.sourceFile}")
@@ -254,7 +243,6 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         internalServices.nullablePropertyOf(
             String::class.java,
             baseModuleMetadata.map { it.versionName },
-            "$name::versionName"
         ).also {
             it.disallowChanges()
             it.finalizeValueOnRead()
@@ -269,7 +257,6 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         internalServices.nullablePropertyOf(
             Int::class.java,
             baseModuleMetadata.map { it.versionCode?.toInt() },
-            id = "$name::versionCode"
         ).also {
             it.disallowChanges()
             it.finalizeValueOnRead()

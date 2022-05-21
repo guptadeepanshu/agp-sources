@@ -552,4 +552,23 @@ public interface AndroidProfilerEventOrBuilder extends
    * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
    */
   com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadataOrBuilder getTrackGroupMetadataOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+   * </pre>
+   *
+   * <code>optional uint32 event_count = 22;</code>
+   * @return Whether the eventCount field is set.
+   */
+  boolean hasEventCount();
+  /**
+   * <pre>
+   * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+   * </pre>
+   *
+   * <code>optional uint32 event_count = 22;</code>
+   * @return The eventCount.
+   */
+  int getEventCount();
 }

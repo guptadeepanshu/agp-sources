@@ -71,6 +71,11 @@ private static final long serialVersionUID = 0L;
             numberOfLibrariesRequireJetifier_ = input.readInt32();
             break;
           }
+          case 24: {
+            bitField0_ |= 0x00000004;
+            checkJetifierTaskBuild_ = input.readBool();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -281,6 +286,31 @@ private static final long serialVersionUID = 0L;
     return numberOfLibrariesRequireJetifier_;
   }
 
+  public static final int CHECK_JETIFIER_TASK_BUILD_FIELD_NUMBER = 3;
+  private boolean checkJetifierTaskBuild_;
+  /**
+   * <pre>
+   * True if this build had ran checkJetifier task
+   * </pre>
+   *
+   * <code>optional bool check_jetifier_task_build = 3;</code>
+   * @return Whether the checkJetifierTaskBuild field is set.
+   */
+  public boolean hasCheckJetifierTaskBuild() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * True if this build had ran checkJetifier task
+   * </pre>
+   *
+   * <code>optional bool check_jetifier_task_build = 3;</code>
+   * @return The checkJetifierTaskBuild.
+   */
+  public boolean getCheckJetifierTaskBuild() {
+    return checkJetifierTaskBuild_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -301,6 +331,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeInt32(2, numberOfLibrariesRequireJetifier_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeBool(3, checkJetifierTaskBuild_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -317,6 +350,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, numberOfLibrariesRequireJetifier_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeBoolSize(3, checkJetifierTaskBuild_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -342,6 +379,11 @@ private static final long serialVersionUID = 0L;
       if (getNumberOfLibrariesRequireJetifier()
           != other.getNumberOfLibrariesRequireJetifier()) return false;
     }
+    if (hasCheckJetifierTaskBuild() != other.hasCheckJetifierTaskBuild()) return false;
+    if (hasCheckJetifierTaskBuild()) {
+      if (getCheckJetifierTaskBuild()
+          != other.getCheckJetifierTaskBuild()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -360,6 +402,11 @@ private static final long serialVersionUID = 0L;
     if (hasNumberOfLibrariesRequireJetifier()) {
       hash = (37 * hash) + NUMBER_OF_LIBRARIES_REQUIRE_JETIFIER_FIELD_NUMBER;
       hash = (53 * hash) + getNumberOfLibrariesRequireJetifier();
+    }
+    if (hasCheckJetifierTaskBuild()) {
+      hash = (37 * hash) + CHECK_JETIFIER_TASK_BUILD_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getCheckJetifierTaskBuild());
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -502,6 +549,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       numberOfLibrariesRequireJetifier_ = 0;
       bitField0_ = (bitField0_ & ~0x00000002);
+      checkJetifierTaskBuild_ = false;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -537,6 +586,10 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.numberOfLibrariesRequireJetifier_ = numberOfLibrariesRequireJetifier_;
         to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.checkJetifierTaskBuild_ = checkJetifierTaskBuild_;
+        to_bitField0_ |= 0x00000004;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -592,6 +645,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasNumberOfLibrariesRequireJetifier()) {
         setNumberOfLibrariesRequireJetifier(other.getNumberOfLibrariesRequireJetifier());
+      }
+      if (other.hasCheckJetifierTaskBuild()) {
+        setCheckJetifierTaskBuild(other.getCheckJetifierTaskBuild());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -714,6 +770,59 @@ private static final long serialVersionUID = 0L;
     public Builder clearNumberOfLibrariesRequireJetifier() {
       bitField0_ = (bitField0_ & ~0x00000002);
       numberOfLibrariesRequireJetifier_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean checkJetifierTaskBuild_ ;
+    /**
+     * <pre>
+     * True if this build had ran checkJetifier task
+     * </pre>
+     *
+     * <code>optional bool check_jetifier_task_build = 3;</code>
+     * @return Whether the checkJetifierTaskBuild field is set.
+     */
+    public boolean hasCheckJetifierTaskBuild() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * True if this build had ran checkJetifier task
+     * </pre>
+     *
+     * <code>optional bool check_jetifier_task_build = 3;</code>
+     * @return The checkJetifierTaskBuild.
+     */
+    public boolean getCheckJetifierTaskBuild() {
+      return checkJetifierTaskBuild_;
+    }
+    /**
+     * <pre>
+     * True if this build had ran checkJetifier task
+     * </pre>
+     *
+     * <code>optional bool check_jetifier_task_build = 3;</code>
+     * @param value The checkJetifierTaskBuild to set.
+     * @return This builder for chaining.
+     */
+    public Builder setCheckJetifierTaskBuild(boolean value) {
+      bitField0_ |= 0x00000004;
+      checkJetifierTaskBuild_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * True if this build had ran checkJetifier task
+     * </pre>
+     *
+     * <code>optional bool check_jetifier_task_build = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearCheckJetifierTaskBuild() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      checkJetifierTaskBuild_ = false;
       onChanged();
       return this;
     }

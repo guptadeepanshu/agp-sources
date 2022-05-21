@@ -44,11 +44,24 @@ open class TestOptions @Inject constructor(dslServices: DslServices) :
     override var reportDir: String? = null
     override var animationsDisabled: Boolean = false
 
-    override var devices: ExtensiblePolymorphicDomainObjectContainer<Device> =
-        dslServices.polymorphicDomainObjectContainer(Device::class.java)
+    override val devices: ExtensiblePolymorphicDomainObjectContainer<Device>
+        get() = managedDevices.devices
 
-    override val deviceGroups: NamedDomainObjectContainer<DeviceGroup> =
-        dslServices.domainObjectContainer(DeviceGroup::class.java, DeviceGroupFactory(dslServices))
+    override val deviceGroups: NamedDomainObjectContainer<DeviceGroup>
+        get() = managedDevices.groups
+
+    override val managedDevices: ManagedDevices =
+        dslServices.newInstance(ManagedDevices::class.java, dslServices)
+
+    // (Implementing interface for kotlin)
+    override fun managedDevices(action: com.android.build.api.dsl.ManagedDevices.() -> Unit) {
+        action.invoke(managedDevices)
+    }
+
+    // Runtime only for groovy decorator to generate the closure based block
+    fun managedDevices(action: Action<com.android.build.api.dsl.ManagedDevices>) {
+        action.execute(managedDevices)
+    }
 
     override var execution: String
         get() = Verify.verifyNotNull(
@@ -69,18 +82,6 @@ open class TestOptions @Inject constructor(dslServices: DslServices) :
     @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
     override val failureRetention: com.android.build.api.dsl.FailureRetention
         get() = emulatorSnapshots as com.android.build.api.dsl.FailureRetention
-
-    init {
-        devices.registerBinding(
-            com.android.build.api.dsl.ManagedVirtualDevice::class.java,
-            ManagedVirtualDevice::class.java
-        )
-        devices.configureEach { device ->
-            deviceGroups.register(device.name) {
-                it.targetDevices.add(device)
-            }
-        }
-    }
 
     override fun unitTests(action: com.android.build.api.dsl.UnitTestOptions.() -> Unit) {
         action.invoke(unitTests)

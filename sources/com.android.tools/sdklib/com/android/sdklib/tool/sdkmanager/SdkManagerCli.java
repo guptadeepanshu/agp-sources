@@ -21,7 +21,6 @@ import com.android.prefs.AndroidLocationsSingleton;
 import com.android.repository.api.Downloader;
 import com.android.repository.api.License;
 import com.android.repository.api.ProgressIndicator;
-import com.android.repository.io.FileOpUtils;
 import com.android.sdklib.repository.AndroidSdkHandler;
 import com.android.sdklib.repository.legacy.LegacyDownloader;
 import java.io.BufferedReader;
@@ -78,12 +77,7 @@ public class SdkManagerCli {
         }
         AndroidSdkHandler handler =
                 AndroidSdkHandler.getInstance(AndroidLocationsSingleton.INSTANCE, localPath);
-        new SdkManagerCli(
-                        settings,
-                        System.out,
-                        System.in,
-                        new LegacyDownloader(FileOpUtils.create(), settings),
-                        handler)
+        new SdkManagerCli(settings, System.out, System.in, new LegacyDownloader(settings), handler)
                 .run(settings.getProgressIndicator());
         System.out.println();
     }
@@ -179,6 +173,8 @@ public class SdkManagerCli {
         out.println("    --include_obsolete: With --list, show obsolete packages in the");
         out.println("                        package listing. With --update, update obsolete");
         out.println("                        packages as well as non-obsolete.");
+        out.println();
+        out.println("    --newer: With --list, show only new and/or updatable packages.");
         out.println();
         out.println("    --no_https: Force all connections to use http rather than https.");
         out.println();

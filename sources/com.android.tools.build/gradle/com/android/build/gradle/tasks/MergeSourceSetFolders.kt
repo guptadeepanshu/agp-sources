@@ -19,6 +19,7 @@ import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
@@ -117,7 +118,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
 
         val logger = LoggerWrapper(logger)
         try {
-            Workers.withGradleWorkers(projectName, path, workerExecutor, analyticsService).use { workerExecutor ->
+            Workers.withGradleWorkers(projectPath.get(), path, workerExecutor, analyticsService).use { workerExecutor ->
                 for (assetSet in assetSets) {
                     // set needs to be loaded.
                     assetSet.loadFromFiles(logger)
@@ -151,7 +152,7 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
         // create a merger and load the known state.
         val merger = AssetMerger()
         try {
-            Workers.withGradleWorkers(projectName, path, workerExecutor, analyticsService).use { workerExecutor ->
+            Workers.withGradleWorkers(projectPath.get(), path, workerExecutor, analyticsService).use { workerExecutor ->
                 if (!/*incrementalState*/merger.loadFromBlob(incrementalFolder!!, true, aaptEnv)) {
                     doFullTaskAction()
                     return
@@ -371,12 +372,18 @@ abstract class MergeSourceSetFolders : IncrementalTask() {
                 task.mlModelsOutputDir
             )
 
-            if (creationConfig is ApkCreationConfig) {
-                task.ignoreAssetsPatterns.set(creationConfig.androidResources.ignoreAssetsPatterns)
-            } else {
-                // support ignoring asset patterns in library modules via DSL
-                creationConfig.services.projectInfo.getExtension().aaptOptions.ignoreAssetsPattern?.let {
-                    task.ignoreAssetsPatterns.set(it.split(':'))
+            when (creationConfig) {
+                is ApkCreationConfig -> {
+                    task.ignoreAssetsPatterns.set(creationConfig.androidResources.ignoreAssetsPatterns)
+                }
+                is LibraryCreationConfig -> {
+                    // support ignoring asset patterns in library modules via DSL
+                    creationConfig.dslAndroidResources.ignoreAssetsPattern?.let {
+                        task.ignoreAssetsPatterns.set(it.split(':'))
+                    }
+                }
+                else -> {
+                    // do nothing, property locked below
                 }
             }
             task.ignoreAssetsPatterns.disallowChanges()

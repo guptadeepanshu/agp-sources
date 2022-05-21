@@ -326,6 +326,11 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00100000;
             break;
           }
+          case 176: {
+            bitField0_ |= 0x00200000;
+            eventCount_ = input.readUInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -955,6 +960,18 @@ private static final long serialVersionUID = 0L;
      */
     CPU_API_TRACING(219),
     /**
+     * <code>SELECT_FRAME = 220;</code>
+     */
+    SELECT_FRAME(220),
+    /**
+     * <code>TOGGLE_ALL_FRAMES = 221;</code>
+     */
+    TOGGLE_ALL_FRAMES(221),
+    /**
+     * <code>TOGGLE_LIFECYCLE = 222;</code>
+     */
+    TOGGLE_LIFECYCLE(222),
+    /**
      * <code>FORCE_GC = 301;</code>
      */
     FORCE_GC(301),
@@ -1375,6 +1392,18 @@ private static final long serialVersionUID = 0L;
      */
     public static final int CPU_API_TRACING_VALUE = 219;
     /**
+     * <code>SELECT_FRAME = 220;</code>
+     */
+    public static final int SELECT_FRAME_VALUE = 220;
+    /**
+     * <code>TOGGLE_ALL_FRAMES = 221;</code>
+     */
+    public static final int TOGGLE_ALL_FRAMES_VALUE = 221;
+    /**
+     * <code>TOGGLE_LIFECYCLE = 222;</code>
+     */
+    public static final int TOGGLE_LIFECYCLE_VALUE = 222;
+    /**
      * <code>FORCE_GC = 301;</code>
      */
     public static final int FORCE_GC_VALUE = 301;
@@ -1602,6 +1631,9 @@ private static final long serialVersionUID = 0L;
         case 217: return CPU_STARTUP_PROFILING;
         case 218: return CPU_IMPORT_TRACE;
         case 219: return CPU_API_TRACING;
+        case 220: return SELECT_FRAME;
+        case 221: return TOGGLE_ALL_FRAMES;
+        case 222: return TOGGLE_LIFECYCLE;
         case 301: return FORCE_GC;
         case 302: return SNAPSHOT_HPROF;
         case 303: return CAPTURE_ALLOCATIONS;
@@ -2401,6 +2433,31 @@ private static final long serialVersionUID = 0L;
     return trackGroupMetadata_ == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.getDefaultInstance() : trackGroupMetadata_;
   }
 
+  public static final int EVENT_COUNT_FIELD_NUMBER = 22;
+  private int eventCount_;
+  /**
+   * <pre>
+   * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+   * </pre>
+   *
+   * <code>optional uint32 event_count = 22;</code>
+   * @return Whether the eventCount field is set.
+   */
+  public boolean hasEventCount() {
+    return ((bitField0_ & 0x00200000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+   * </pre>
+   *
+   * <code>optional uint32 event_count = 22;</code>
+   * @return The eventCount.
+   */
+  public int getEventCount() {
+    return eventCount_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2477,6 +2534,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00100000) != 0)) {
       output.writeMessage(21, getTrackGroupMetadata());
+    }
+    if (((bitField0_ & 0x00200000) != 0)) {
+      output.writeUInt32(22, eventCount_);
     }
     unknownFields.writeTo(output);
   }
@@ -2570,6 +2630,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00100000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(21, getTrackGroupMetadata());
+    }
+    if (((bitField0_ & 0x00200000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(22, eventCount_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2688,6 +2752,11 @@ private static final long serialVersionUID = 0L;
       if (!getTrackGroupMetadata()
           .equals(other.getTrackGroupMetadata())) return false;
     }
+    if (hasEventCount() != other.hasEventCount()) return false;
+    if (hasEventCount()) {
+      if (getEventCount()
+          != other.getEventCount()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -2782,6 +2851,10 @@ private static final long serialVersionUID = 0L;
     if (hasTrackGroupMetadata()) {
       hash = (37 * hash) + TRACK_GROUP_METADATA_FIELD_NUMBER;
       hash = (53 * hash) + getTrackGroupMetadata().hashCode();
+    }
+    if (hasEventCount()) {
+      hash = (37 * hash) + EVENT_COUNT_FIELD_NUMBER;
+      hash = (53 * hash) + getEventCount();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3052,6 +3125,8 @@ private static final long serialVersionUID = 0L;
         trackGroupMetadataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00100000);
+      eventCount_ = 0;
+      bitField0_ = (bitField0_ & ~0x00200000);
       return this;
     }
 
@@ -3236,6 +3311,10 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00100000;
       }
+      if (((from_bitField0_ & 0x00200000) != 0)) {
+        result.eventCount_ = eventCount_;
+        to_bitField0_ |= 0x00200000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3347,6 +3426,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasTrackGroupMetadata()) {
         mergeTrackGroupMetadata(other.getTrackGroupMetadata());
+      }
+      if (other.hasEventCount()) {
+        setEventCount(other.getEventCount());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -6367,6 +6449,59 @@ private static final long serialVersionUID = 0L;
         trackGroupMetadata_ = null;
       }
       return trackGroupMetadataBuilder_;
+    }
+
+    private int eventCount_ ;
+    /**
+     * <pre>
+     * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+     * </pre>
+     *
+     * <code>optional uint32 event_count = 22;</code>
+     * @return Whether the eventCount field is set.
+     */
+    public boolean hasEventCount() {
+      return ((bitField0_ & 0x00200000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+     * </pre>
+     *
+     * <code>optional uint32 event_count = 22;</code>
+     * @return The eventCount.
+     */
+    public int getEventCount() {
+      return eventCount_;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+     * </pre>
+     *
+     * <code>optional uint32 event_count = 22;</code>
+     * @param value The eventCount to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEventCount(int value) {
+      bitField0_ |= 0x00200000;
+      eventCount_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |SELECT_FRAME|, |TOGGLE_ALL_FRAMES|, or |TOGGLE_LIFECYCLE|
+     * </pre>
+     *
+     * <code>optional uint32 event_count = 22;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEventCount() {
+      bitField0_ = (bitField0_ & ~0x00200000);
+      eventCount_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

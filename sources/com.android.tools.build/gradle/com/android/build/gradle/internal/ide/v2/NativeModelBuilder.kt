@@ -24,16 +24,14 @@ import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.additionalProjectFilesIndexFile
 import com.android.build.gradle.internal.cxx.model.buildFileIndexFile
 import com.android.build.gradle.internal.cxx.model.compileCommandsJsonBinFile
-import com.android.build.gradle.internal.cxx.model.ifCMake
 import com.android.build.gradle.internal.cxx.model.symbolFolderIndexFile
 import com.android.build.gradle.internal.errors.SyncIssueReporter
 import com.android.build.gradle.internal.profile.AnalyticsService
-import com.android.build.gradle.internal.scope.GlobalScope
-import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.builder.model.v2.models.ndk.NativeBuildSystem.CMAKE
 import com.android.builder.model.v2.models.ndk.NativeBuildSystem.NDK_BUILD
 import com.android.builder.model.v2.models.ndk.NativeModelBuilderParameter
@@ -47,18 +45,17 @@ import org.gradle.process.JavaExecSpec
 import org.gradle.tooling.provider.model.ParameterizedToolingModelBuilder
 
 class NativeModelBuilder(
+    private val project: Project,
     private val issueReporter: SyncIssueReporter,
     private val projectOptions: ProjectOptions,
-    private val globalScope: GlobalScope,
     private val variantModel: VariantModel,
-    private val projectInfo: ProjectInfo
 ) : ParameterizedToolingModelBuilder<NativeModelBuilderParameter> {
     private val ops = object : ExecOperations {
         override fun exec(action: Action<in ExecSpec>) =
-            projectInfo.getProject().exec(action)
+            project.exec(action)
 
         override fun javaexec(action: Action<in JavaExecSpec>) =
-                projectInfo.getProject().javaexec(action)
+                project.javaexec(action)
     }
     private val ideRefreshExternalNativeModel
         get() =
@@ -76,7 +73,7 @@ class NativeModelBuilder(
     fun createGenerator(abi: CxxAbiModel) : CxxMetadataGenerator {
         return generators.computeIfAbsent(abi) { model ->
             val analyticsService =
-                getBuildService<AnalyticsService>(projectInfo.getProject().gradle.sharedServices).get()
+                getBuildService<AnalyticsService>(project.gradle.sharedServices).get()
             IssueReporterLoggingEnvironment(issueReporter, analyticsService, abi.variant).use {
                 createCxxMetadataGenerator(
                     abi,
@@ -110,7 +107,11 @@ class NativeModelBuilder(
         ).use {
             val cxxModuleModel = configurationModel.variant.module
 
-            val buildSystem = cxxModuleModel.ifCMake { CMAKE } ?: NDK_BUILD
+            val buildSystem = when(cxxModuleModel.buildSystem) {
+                NativeBuildSystem.CMAKE -> CMAKE
+                NativeBuildSystem.NDK_BUILD -> NDK_BUILD
+                else -> error("${cxxModuleModel.buildSystem}")
+            }
 
             val variants: List<NativeVariant> = configurationModels
                 .flatMap { (variantName, model) -> model.activeAbis.map { variantName to it } }

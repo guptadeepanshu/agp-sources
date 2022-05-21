@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.cxx.hashing.update
 import com.android.build.gradle.internal.cxx.settings.SettingsConfiguration
 import com.android.build.gradle.internal.cxx.settings.createBuildSettingsFromFile
 import com.android.build.gradle.internal.ndk.Stl
+import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.utils.FileUtils.join
 import java.io.File
 import java.security.MessageDigest
@@ -44,13 +45,29 @@ fun createCxxAbiModel(
     digest.update(configurationParameters.variantName)
     val configurationHash = digest.toBase36()
     with(variant) {
+        val variantSoFolder = join(
+            module.intermediatesBaseFolder,
+            module.buildSystemTag,
+            variantName,
+            module.intermediatesParentDirSuffix
+        )
+        val variantCxxBuildFolder = join(
+            module.cxxFolder,
+            module.buildSystemTag,
+            variantName
+        )
+        val variantIntermediatesFolder = join(
+            module.intermediatesFolder,
+            module.buildSystemTag,
+            variantName
+        )
         return CxxAbiModel(
                 variant = this,
                 abi = abi,
                 info = module.ndkMetaAbiList.single { it.abi == abi },
-                cxxBuildFolder = join(variant.cxxBuildFolder, abi.tag),
-                soFolder = join(variant.soFolder, abi.tag),
-                soRepublishFolder = join(variant.soRepublishFolder, abi.tag),
+                cxxBuildFolder = join(variantCxxBuildFolder, abi.tag),
+                soFolder = join(variantSoFolder, abi.tag),
+                soRepublishFolder = join(variantSoFolder, abi.tag),
                 abiPlatformVersion =
                     sdkComponents
                             .versionedNdkHandler(
@@ -63,19 +80,22 @@ fun createCxxAbiModel(
                             .ndkInfo
                             .findSuitablePlatformVersion(abi.tag,
                                 configurationParameters.minSdkVersion),
-                cmake = ifCMake { CxxCmakeAbiModel(
+                cmake = when(module.buildSystem) {
+                    NativeBuildSystem.CMAKE ->  CxxCmakeAbiModel(
                         buildCommandArgs = null,
                         effectiveConfiguration = SettingsConfiguration())
+                    else -> null
                 },
                 buildSettings = createBuildSettingsFromFile(module.buildSettingsFile),
                 fullConfigurationHash = configurationHash,
                 configurationArguments = listOf(),
                 isActiveAbi = validAbiList.contains(abi),
-                prefabFolder = join(cxxBuildFolder, "prefab", abi.tag),
+                prefabFolder = join(variantCxxBuildFolder, "prefab", abi.tag),
                 stlLibraryFile =
                     Stl.fromArgumentName(variant.stlType)
-                            ?.let { module.stlSharedObjectMap.getValue(it)[abi]?.toString() }
-                            ?.let { File(it) }
+                        ?.let { module.stlSharedObjectMap.getValue(it)[abi]?.toString() }
+                        ?.let { File(it) },
+                intermediatesParentFolder = variantIntermediatesFolder
         )
     }
 }

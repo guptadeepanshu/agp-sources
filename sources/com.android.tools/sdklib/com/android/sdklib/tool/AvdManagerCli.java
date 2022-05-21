@@ -21,6 +21,7 @@ import static com.google.common.base.Verify.verifyNotNull;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.io.CancellableFileIo;
 import com.android.prefs.AndroidLocationsException;
 import com.android.prefs.AndroidLocationsSingleton;
 import com.android.repository.api.ConsoleProgressIndicator;
@@ -244,14 +245,16 @@ class AvdManagerCli extends CommandLineParser {
 
             @Override
             public void verbose(@NonNull String msgFormat, Object... args) {
-                System.out.printf(msgFormat, args);
+                if (cli.get().isVerbose()) {
+                    System.out.printf(msgFormat, args);
+                }
             }
 
             /**
-             * Used by UpdaterData.acceptLicense() to prompt for license acceptance
-             * when updating the SDK from the command-line.
-             * <p/>
-             * {@inheritDoc}
+             * Used by UpdaterData.acceptLicense() to prompt for license acceptance when updating
+             * the SDK from the command-line.
+             *
+             * <p>{@inheritDoc}
              */
             @Override
             public int readLine(@NonNull byte[] inputBuffer) throws IOException {
@@ -708,7 +711,7 @@ class AvdManagerCli extends CommandLineParser {
             String paramFolderPath = getParamLocationPath();
             Path avdFolder;
             if (paramFolderPath != null) {
-                avdFolder = mSdkHandler.getFileOp().toPath(paramFolderPath);
+                avdFolder = mSdkHandler.toCompatiblePath(paramFolderPath);
             } else {
                 avdFolder = AvdInfo.getDefaultAvdFolder(avdManager, avdName, false);
             }
@@ -853,7 +856,7 @@ class AvdManagerCli extends CommandLineParser {
                     getParamSdCard(),
                     hardwareConfig,
                     device == null ? null : device.getBootProps(),
-                    false,
+                    true,
                     removePrevious,
                     false,
                     mSdkLog);
@@ -938,13 +941,16 @@ class AvdManagerCli extends CommandLineParser {
             }
 
             // This is a move (of the data files) if there's a new location path
-            String paramFolderPath = getParamLocationPath();
+            String paramFolderLocation = getParamLocationPath();
+            Path paramFolderPath =
+                    paramFolderLocation == null
+                            ? null
+                            : mSdkHandler.toCompatiblePath(paramFolderLocation);
             if (paramFolderPath != null) {
                 // check if paths are the same. Use File methods to account for OS idiosyncrasies.
                 try {
-                    File f1 = new File(paramFolderPath).getCanonicalFile();
-                    File f2 = new File(info.getDataFolderPath()).getCanonicalFile();
-                    if (f1.equals(f2)) {
+                    Path f2 = info.getDataFolderPath();
+                    if (CancellableFileIo.isSameFile(paramFolderPath, f2)) {
                         // same canonical path, so not actually a move
                         paramFolderPath = null;
                     }
@@ -970,15 +976,14 @@ class AvdManagerCli extends CommandLineParser {
                         AndroidLocationsSingleton.INSTANCE
                                 .getAvdLocation()
                                 .resolve(info.getName() + AvdManager.AVD_FOLDER_EXTENSION);
-                if (originalFolder.equals(Paths.get(info.getDataFolderPath()))) {
+                if (originalFolder.equals(info.getDataFolderPath())) {
                     try {
                         // The AVD is using the default data folder path based on the AVD name.
                         // That folder needs to be adjusted to use the new name.
                         paramFolderPath =
                                 AndroidLocationsSingleton.INSTANCE
                                         .getAvdLocation()
-                                        .resolve(newName + AvdManager.AVD_FOLDER_EXTENSION)
-                                        .toString();
+                                        .resolve(newName + AvdManager.AVD_FOLDER_EXTENSION);
                     } catch (Throwable e) {
                         // Fail to resolve canonical path. Fail now rather than later.
                         errorAndExit(e.getMessage());
@@ -993,14 +998,14 @@ class AvdManagerCli extends CommandLineParser {
                     return;
                 }
 
-                File ini = info.getIniFile();
+                Path ini = info.getIniFile();
                 if (ini.equals(AvdInfo.getDefaultIniFile(avdManager, newName))) {
-                    errorAndExit("The AVD file '%s' is in the way.", ini.getCanonicalPath());
+                    errorAndExit("The AVD file '%s' is in the way.", ini.toRealPath());
                     return;
                 }
             }
 
-            if (paramFolderPath != null && new File(paramFolderPath).exists()) {
+            if (paramFolderPath != null && CancellableFileIo.exists(paramFolderPath)) {
                 errorAndExit(
                         "There is already a file or directory at '%s'.\nUse --path to specify a different data folder.",
                         paramFolderPath);
@@ -1424,7 +1429,7 @@ class AvdManagerCli extends CommandLineParser {
         mSdkHandler = sdkHandler;
         mOsSdkFolder = sdkRoot;
         mInput = input;
-        mAvdFolder = sdkHandler.getFileOp().toPath(avdRoot);
+        mAvdFolder = sdkHandler.toCompatiblePath(avdRoot);
     }
 
     private AvdManagerCli(ILogger logger) {

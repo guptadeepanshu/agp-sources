@@ -18,12 +18,12 @@ package com.android.build.gradle.internal.ide.v2
 
 import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CompileOptions
-import com.android.build.api.dsl.LintOptions
+import com.android.build.api.variant.impl.SourcesImpl
+import com.android.build.api.dsl.Lint
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.utils.toImmutableList
 import com.android.build.gradle.internal.utils.toImmutableMap
-import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.builder.model.TestOptions
 import com.android.builder.model.v2.dsl.ClassField
 import com.android.builder.model.v2.ide.AaptOptions.Namespacing.DISABLED
@@ -185,10 +185,33 @@ internal fun DslApiVersion.convert() = ApiVersionImpl(
     codename = codename
 )
 
-internal fun DefaultAndroidSourceSet.convert(features: BuildFeatureValues) = SourceProviderImpl(
+internal fun DefaultAndroidSourceSet.convert(
+        features: BuildFeatureValues,
+) = SourceProviderImpl(
+        name = name,
+        manifestFile = manifestFile,
+        javaDirectories = javaDirectories,
+        kotlinDirectories = kotlinDirectories,
+        resourcesDirectories = resourcesDirectories,
+        aidlDirectories = if (features.aidl) aidlDirectories else null,
+        renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
+        resDirectories = if (features.androidResources) resDirectories else null,
+        assetsDirectories = assetsDirectories,
+        jniLibsDirectories = jniLibsDirectories,
+        shadersDirectories = if (features.shaders) shadersDirectories else null,
+        mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null,
+        customDirectories = customDirectories,
+)
+
+internal fun DefaultAndroidSourceSet.convert(
+    features: BuildFeatureValues,
+    sources: SourcesImpl,
+) = SourceProviderImpl(
     name = name,
     manifestFile = manifestFile,
-    javaDirectories = javaDirectories,
+    javaDirectories = sources.java.variantSourcesForModel {
+              it.isUserAdded && it.shouldBeAddedToIdeModel
+    },
     kotlinDirectories = kotlinDirectories,
     resourcesDirectories = resourcesDirectories,
     aidlDirectories = if (features.aidl) aidlDirectories else null,
@@ -197,17 +220,22 @@ internal fun DefaultAndroidSourceSet.convert(features: BuildFeatureValues) = Sou
     assetsDirectories = assetsDirectories,
     jniLibsDirectories = jniLibsDirectories,
     shadersDirectories = if (features.shaders) shadersDirectories else null,
-    mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null
+    mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null,
+    customDirectories = customDirectories,
 )
 
 internal fun AndroidResources.convert() = AaptOptionsImpl(
     namespacing = if (namespaced) REQUIRED else DISABLED
 )
 
-internal fun LintOptions.convert() = LintOptionsImpl(
+internal fun Lint.convert() = LintOptionsImpl(
     disable = disable.toSet(),
     enable = enable.toSet(),
-    check = checkOnly.toSet(),
+    informational = informational.toSet(),
+    warning = warning.toSet(),
+    error = error.toSet(),
+    fatal = fatal.toSet(),
+    checkOnly = checkOnly.toSet(),
     lintConfig = lintConfig,
     textReport = textReport,
     textOutput = textOutput,
@@ -217,22 +245,22 @@ internal fun LintOptions.convert() = LintOptionsImpl(
     xmlOutput = xmlOutput,
     sarifReport = sarifReport,
     sarifOutput = sarifOutput,
-    isAbortOnError = isAbortOnError,
-    isAbsolutePaths = isAbsolutePaths,
-    isNoLines = isNoLines,
-    isQuiet = isQuiet,
-    isCheckAllWarnings = isCheckAllWarnings,
-    isIgnoreWarnings = isIgnoreWarnings,
-    isWarningsAsErrors = isWarningsAsErrors,
-    isShowAll = isShowAll,
-    isExplainIssues = isExplainIssues,
-    isCheckReleaseBuilds = isCheckReleaseBuilds,
-    isCheckTestSources = isCheckTestSources,
-    isIgnoreTestSources = isIgnoreTestSources,
-    isCheckGeneratedSources = isCheckGeneratedSources,
-    isCheckDependencies = isCheckDependencies,
-    baselineFile = baselineFile,
-    severityOverrides = null
+    abortOnError = abortOnError,
+    absolutePaths = absolutePaths,
+    noLines = noLines,
+    quiet = quiet,
+    checkAllWarnings = checkAllWarnings,
+    ignoreWarnings = ignoreWarnings,
+    warningsAsErrors = warningsAsErrors,
+    showAll = showAll,
+    explainIssues = explainIssues,
+    checkReleaseBuilds = checkReleaseBuilds,
+    checkTestSources = checkTestSources,
+    ignoreTestSources = ignoreTestSources,
+    ignoreTestFixturesSources = ignoreTestFixturesSources,
+    checkGeneratedSources = checkGeneratedSources,
+    checkDependencies = checkDependencies,
+    baseline = baseline,
 )
 
 internal fun CompileOptions.convert(): JavaCompileOptions {
@@ -253,4 +281,13 @@ internal fun TestOptions.Execution.convert(): TestInfo.Execution = when (this) {
     TestOptions.Execution.HOST -> TestInfo.Execution.HOST
     TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR -> TestInfo.Execution.ANDROID_TEST_ORCHESTRATOR
     TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR -> TestInfo.Execution.ANDROIDX_TEST_ORCHESTRATOR
+}
+
+internal fun String.convertToExecution(): TestInfo.Execution? = when (this) {
+    // The string coming from the old DSL (which is the enum converted) can be lowercase, so we
+    // need to handle both
+    "host","HOST" -> TestInfo.Execution.HOST
+    "android_test_orchestrator","ANDROID_TEST_ORCHESTRATOR" -> TestInfo.Execution.ANDROID_TEST_ORCHESTRATOR
+    "androidx_test_orchestrator","ANDROIDX_TEST_ORCHESTRATOR" -> TestInfo.Execution.ANDROIDX_TEST_ORCHESTRATOR
+    else -> null
 }

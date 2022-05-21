@@ -39,6 +39,7 @@ import com.android.build.gradle.tasks.PrefabPackageConfigurationTask
 import com.android.build.gradle.tasks.PrefabPackageTask
 import com.android.build.gradle.internal.cxx.prefab.prefabConfigurePackageTaskName
 import com.android.build.gradle.internal.cxx.prefab.prefabPackageConfigurationData
+import com.android.build.gradle.internal.cxx.prefab.prefabPackageConfigurationLocation
 import com.android.build.gradle.internal.cxx.prefab.prefabPackageLocation
 import com.android.build.gradle.internal.cxx.prefab.prefabPackageTaskName
 import com.android.build.gradle.internal.cxx.settings.calculateConfigurationArguments
@@ -110,7 +111,8 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
     if (variants.isEmpty()) return
     IssueReporterLoggingEnvironment(
         issueReporter,
-        variants.first().variant.services.projectInfo.getProject().rootDir).use {
+        variants.first().variant.services.projectInfo.rootDir,
+        null).use {
         val configurationParameters = variants
                 .mapNotNull { tryCreateConfigurationParameters(
                     projectOptions,
@@ -126,7 +128,7 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
             }
             val taskModel = createFoldedCxxTaskDependencyModel(abis)
 
-            val global = variants.first().variant.globalScope
+            val globalConfig = variants.first().variant.global
 
             val variantMap = variants.associate { it.variant.name to it.variant }
 
@@ -135,7 +137,7 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                     is Configure -> {
                         val variant = variantMap.getValue(task.representative.variant.variantName)
                         val configureTask = taskFactory.register(createCxxConfigureTask(
-                            global,
+                            globalConfig,
                             task.representative,
                             name))
                         // Make sure any prefab configurations are generated first
@@ -167,9 +169,9 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                     is Build -> {
                         val variant = variantMap.getValue(task.representative.variant.variantName)
                         val buildTask = taskFactory.register(createWorkingCxxBuildTask(
-                                global,
-                                task.representative,
-                                name))
+                            globalConfig,
+                            task.representative,
+                            name))
                         // Make sure any prefab dependencies are built first
                         buildTask.dependsOn(
                             variant.variantDependencies.getArtifactCollection(
@@ -227,7 +229,7 @@ private fun createPrefabConfigurePackageTask(
         val configurePackageTask = taskFactory.register(
             PrefabPackageConfigurationTask.CreationAction(
                 libraryVariant.prefabConfigurePackageTaskName(),
-                libraryVariant.prefabPackageLocation(),
+                libraryVariant.prefabPackageConfigurationLocation(),
                 modules,
                 configurationModel,
                 libraryVariant))

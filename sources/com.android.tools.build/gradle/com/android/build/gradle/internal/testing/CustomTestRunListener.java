@@ -21,6 +21,7 @@ import com.android.annotations.Nullable;
 import com.android.ddmlib.testrunner.TestIdentifier;
 import com.android.ddmlib.testrunner.TestResult;
 import com.android.ddmlib.testrunner.XmlTestRunListener;
+import com.android.utils.FileUtils;
 import com.android.utils.ILogger;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -38,7 +39,7 @@ public class CustomTestRunListener extends XmlTestRunListener {
     @NonNull
     private final String mDeviceName;
     @NonNull
-    private final String mProjectName;
+    private final String mProjectPath;
     @NonNull
     private final String mFlavorName;
     private final ILogger mLogger;
@@ -46,18 +47,20 @@ public class CustomTestRunListener extends XmlTestRunListener {
 
 
     public CustomTestRunListener(@NonNull String deviceName,
-                                 @NonNull String projectName, @NonNull String flavorName,
+                                 @NonNull String projectPath, @NonNull String flavorName,
                                  @Nullable ILogger logger) {
         mDeviceName = deviceName;
-        mProjectName = projectName;
+        mProjectPath = projectPath;
         mFlavorName = flavorName;
         mLogger = logger;
     }
 
     @Override
     protected File getResultFile(File reportDir) throws IOException {
-        return new File(reportDir,
-                "TEST-" + mDeviceName + "-" + mProjectName + "-" + mFlavorName + ".xml");
+        return new File(
+                reportDir,
+                FileUtils.sanitizeFileName(
+                        "TEST-" + mDeviceName + "-" + mProjectPath + "-" + mFlavorName + ".xml"));
     }
 
     @Override
@@ -80,7 +83,7 @@ public class CustomTestRunListener extends XmlTestRunListener {
         Map<String, String> propertiesAttributes = Maps.newLinkedHashMap(super.getPropertiesAttributes());
         propertiesAttributes.put("device", mDeviceName);
         propertiesAttributes.put("flavor", mFlavorName);
-        propertiesAttributes.put("project", mProjectName);
+        propertiesAttributes.put("project", mProjectPath);
         return ImmutableMap.copyOf(propertiesAttributes);
     }
 
@@ -104,7 +107,7 @@ public class CustomTestRunListener extends XmlTestRunListener {
 
         super.testFailed(test, trace);
     }
-    
+
     @Override
     public void testAssumptionFailure(TestIdentifier test, String trace) {
         if (mLogger != null) {

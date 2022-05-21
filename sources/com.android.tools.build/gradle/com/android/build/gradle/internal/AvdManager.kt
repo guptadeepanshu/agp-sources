@@ -36,9 +36,9 @@ import java.util.concurrent.ConcurrentHashMap
 import java.nio.file.Path
 import kotlin.math.min
 
-private const val MAX_SYSTEM_IMAGE_RETRIES = 4;
-private const val BASE_RETRY_DELAY_SECONDS = 2L;
-private const val MAX_RETRY_DELAY_SECONDS = 10L;
+private const val MAX_SYSTEM_IMAGE_RETRIES = 4
+private const val BASE_RETRY_DELAY_SECONDS = 2L
+private const val MAX_RETRY_DELAY_SECONDS = 10L
 
 private val avdLocks: ConcurrentHashMap<String, Any> = ConcurrentHashMap()
 
@@ -85,31 +85,41 @@ class AvdManager(
             info?.let {
                 logger.info("Device: $deviceName already exists. AVD creation skipped.")
                 // already generated the avd
-                return info.configFile
+                return info.configFile.toFile()
             }
 
-            if (!imageProvider.isPresent) {
-                throw RuntimeException("Failed to find system image for hash: $imageHash")
-            }
+            val newInfo = createAvd(imageProvider, imageHash, deviceName, hardwareProfile)
+            return newInfo?.configFile?.toFile() ?: error("AVD could not be created.")
+        }
+    }
 
-            val imageLocation = sdkHandler.toCompatiblePath(imageProvider.get().asFile)
-            val systemImage = retrieveSystemImage(sdkHandler, imageLocation)
-            systemImage?: error("System image does not exist at $imageLocation")
+    internal fun createAvd(
+            imageProvider: Provider<Directory>,
+            imageHash: String, deviceName: String,
+            hardwareProfile: String
+    ): AvdInfo? {
+        if (!imageProvider.isPresent) {
+            throw RuntimeException("Failed to find system image for hash: $imageHash")
+        }
 
-            val device = deviceManager.getDevices(DeviceManager.ALL_DEVICES).find {
-                it.displayName == hardwareProfile
-            } ?: error("Failed to find hardware profile for name: $hardwareProfile")
+        val imageLocation = sdkHandler.toCompatiblePath(imageProvider.get().asFile)
+        val systemImage = retrieveSystemImage(sdkHandler, imageLocation)
+        systemImage ?: error("System image does not exist at $imageLocation")
 
-            val hardwareConfig = defaultHardwareConfig()
-            hardwareConfig.putAll(DeviceManager.getHardwareProperties(device))
-            EmulatedProperties.restrictDefaultRamSize(hardwareConfig)
+        val device = deviceManager.getDevices(DeviceManager.ALL_DEVICES).find {
+            it.displayName == hardwareProfile
+        } ?: error("Failed to find hardware profile for name: $hardwareProfile")
 
-            val deviceFolder =
-                    AvdInfo.getDefaultAvdFolder(avdManager,
-                            deviceName,
-                            false)
+        val hardwareConfig = defaultHardwareConfig()
+        hardwareConfig.putAll(DeviceManager.getHardwareProperties(device))
+        EmulatedProperties.restrictDefaultRamSize(hardwareConfig)
 
-            val newInfo = avdManager.createAvd(
+        val deviceFolder =
+                AvdInfo.getDefaultAvdFolder(avdManager,
+                        deviceName,
+                        false)
+
+        return avdManager.createAvd(
                 deviceFolder,
                 deviceName,
                 systemImage,
@@ -122,9 +132,7 @@ class AvdManager(
                 false,
                 false,
                 logger
-            )
-            return newInfo?.configFile ?: error("AVD could not be created.")
-        }
+        )
     }
 
     fun loadSnapshotIfNeeded(deviceName: String) {
@@ -156,7 +164,22 @@ class AvdManager(
                 avdFolder,
                 logger
             )
-            logger.verbose("Verified snapshot created for: $deviceName.")
+
+            if (snapshotHandler.checkSnapshotLoadable(
+                    deviceName,
+                    emulatorExecutable,
+                    avdFolder,
+                    logger
+                )
+            ) {
+                logger.verbose("Verified snapshot created for: $deviceName.")
+            }  else {
+                error("""
+                    Snapshot setup ran successfully, but the snapshot failed to be created. This is
+                    likely to a lack of disk space for the snapshot. Try the cleanManagedDevices
+                    task with the --unused-only flag to remove any unused devices for this project.
+                """.trimIndent())
+            }
         }
     }
 
@@ -187,12 +210,6 @@ class AvdManager(
                 logger.warning("Failed to delete avd: $avdName.")
             }
         }
-    }
-
-    fun deviceSnapshotCreated(deviceName: String): Boolean {
-        val device = avdManager.getAvd(deviceName, false)?: return false
-        val snapshotPath = File(device.dataFolderPath, "snapshots/default_boot/snapshot.pb")
-        return snapshotPath.exists()
     }
 
     private fun defaultHardwareConfig(): MutableMap<String, String> {

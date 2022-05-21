@@ -17,68 +17,42 @@
 package com.android.build.gradle.tasks.sync
 
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.NonIncrementalTask
-import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.ide.model.sync.Variant
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
-import java.io.BufferedOutputStream
-import java.io.FileOutputStream
 
+/**
+ * [org.gradle.api.Task] to create the sync model file for
+ * [com.android.build.api.variant.ApplicationVariant].
+ *
+ * The task is not incremental and not cacheable as execution should be so fast, that it outweighs
+ * the benefits in performance.
+ */
 @DisableCachingByDefault
-abstract class ApplicationVariantModelTask: NonIncrementalTask() {
-
-    companion object {
-        fun getTaskName(creationConfig: ComponentCreationConfig) =
-            creationConfig.computeTaskName("create", "VariantModel")
-    }
-
+abstract class ApplicationVariantModelTask: ModuleVariantModelTask() {
     @get:Input
     abstract val applicationId: Property<String>
 
-    @get:OutputFile
-    abstract val outputModelFile: RegularFileProperty
-
-    override fun doTaskAction() {
-        val variant = Variant.newBuilder().also { variant ->
-            variant.applicationVariantModelBuilder.applicationId = applicationId.get()
-        }.build()
-
-        BufferedOutputStream(FileOutputStream(outputModelFile.asFile.get())).use {
-            variant.writeTo(it)
-        }
+    override fun addVariantContent(variant: Variant.Builder) {
+        super.addVariantContent(variant.applicationVariantModelBuilder.moduleCommonModelBuilder)
+        variant.applicationVariantModelBuilder.applicationId = applicationId.get()
     }
 
-    class CreationAction(creationConfig: ApplicationCreationConfig) :
-        VariantTaskCreationAction<ApplicationVariantModelTask, VariantCreationConfig>(
-            creationConfig = creationConfig,
-            dependsOnPreBuildTask = false
+    class CreationAction(private val applicationCreationConfig: ApplicationCreationConfig) :
+        AbstractVariantModelTask.CreationAction<ApplicationVariantModelTask, VariantCreationConfig>(
+            creationConfig = applicationCreationConfig,
         ) {
 
-        override val name: String
-            get() = getTaskName(creationConfig)
         override val type: Class<ApplicationVariantModelTask>
             get() = ApplicationVariantModelTask::class.java
 
-        override fun handleProvider(taskProvider: TaskProvider<ApplicationVariantModelTask>) {
-            super.handleProvider(taskProvider)
-            creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                ApplicationVariantModelTask::outputModelFile
-            ).on(InternalArtifactType.VARIANT_MODEL)
-        }
-
         override fun configure(task: ApplicationVariantModelTask) {
             super.configure(task)
-            task.applicationId.setDisallowChanges(creationConfig.applicationId)
+            task.applicationId.setDisallowChanges(applicationCreationConfig.applicationId)
+            task.manifestPlaceholders.setDisallowChanges(applicationCreationConfig.manifestPlaceholders)
         }
     }
 }

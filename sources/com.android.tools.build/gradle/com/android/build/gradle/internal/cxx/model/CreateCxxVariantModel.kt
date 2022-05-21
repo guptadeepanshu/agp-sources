@@ -20,7 +20,6 @@ import com.android.build.gradle.internal.cxx.caching.CachingEnvironment
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurationKey
 import com.android.build.gradle.internal.cxx.configure.AbiConfigurator
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
-import com.android.utils.FileUtils.join
 import java.io.File
 import java.util.Locale
 
@@ -45,11 +44,8 @@ fun createCxxVariantModel(
     }
     with(module) {
         val arguments = configurationParameters.nativeVariantConfig.arguments
-        val build = ifCMake { "cmake" } ?: "ndkBuild"
         val isDebuggable = configurationParameters.isDebuggable
         val variantName = configurationParameters.variantName
-        val intermediates = join(intermediatesFolder, build, variantName)
-        val intermediatesBase = join(intermediatesBaseFolder, build, variantName)
 
         return CxxVariantModel(
                 buildTargetSet = configurationParameters.nativeVariantConfig.targets,
@@ -66,12 +62,9 @@ fun createCxxVariantModel(
                 cmakeSettingsConfiguration = "android-gradle-plugin-predetermined-name",
                 isDebuggableEnabled = isDebuggable,
                 validAbiList = validAbiList,
-                cxxBuildFolder = join(cxxFolder, build, variantName),
-                prefabClassPathFileCollection = configurationParameters.prefabClassPath,
-                prefabPackageDirectoryListFileCollection = configurationParameters.prefabPackageDirectoryList,
-                intermediatesFolder = intermediates,
-                soFolder = join(intermediates, ifCMake { "obj" } ?: "obj/local"),
-                soRepublishFolder = join(intermediatesBase, ifCMake { "obj" } ?: "obj/local"),
+                prefabClassPaths = configurationParameters.prefabClassPath,
+                prefabPackages = configurationParameters.prefabPackageDirectoryList,
+                prefabPackageConfigurations = configurationParameters.prefabPackageConfigurationList,
                 stlType = determineUsedStl(arguments).argumentName,
                 verboseMakefile = null,
                 optimizationTag = run {
@@ -116,9 +109,13 @@ fun createCxxVariantModel(
 }
 
 val CxxVariantModel.prefabClassPath : File?
-    get() = prefabClassPathFileCollection?.singleFile
+    get() = prefabClassPaths?.singleFile
 
 val CxxVariantModel.prefabPackageDirectoryList : List<File>
-    get() = prefabPackageDirectoryListFileCollection?.toList()?:listOf()
+    get() = prefabPackages?.toList()?:listOf()
+
+val CxxVariantModel.prefabPackageConfigurationDirectoriesList : List<File>
+    get() = prefabPackageConfigurations?.toList()?:listOf()
+
 
 

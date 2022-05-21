@@ -19,13 +19,13 @@ package com.android.build.gradle.tasks
 import com.android.build.api.variant.impl.LibraryVariantImpl
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationModel
+import com.android.build.gradle.internal.cxx.io.synchronizeFile
 import com.android.build.gradle.internal.cxx.json.AndroidBuildGradleJsons.getNativeBuildMiniConfig
 import com.android.build.gradle.internal.cxx.json.NativeLibraryValueMini
 import com.android.build.gradle.internal.cxx.logging.infoln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.jsonFile
 import com.android.build.gradle.internal.cxx.prefab.PrefabModuleTaskData
-import com.android.build.gradle.internal.cxx.prefab.configurePrefab
 import com.android.build.gradle.internal.cxx.prefab.versionOrError
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.getBuildService
@@ -36,6 +36,7 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.internal.file.FileOperations
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -53,7 +54,7 @@ import javax.inject.Inject
  * into a prefab-defined folder structure. This can be consumed either
  * by tasks that produce AAR or by other modules in this project.
  *
- * The exported artifacts are named [PREFAB_PACKAGE]
+ * The exported artifacts are named [InternalArtifactType.PREFAB_PACKAGE]
  */
 @DisableCachingByDefault
 abstract class PrefabPackageTask : NonIncrementalTask() {
@@ -88,18 +89,19 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
     @get:Input
     val ndkAbiFilters get() = configurationModel.variant.validAbiList
 
+    @get:InputDirectory
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val configurationOnlyDirectory: DirectoryProperty
+
     override fun doTaskAction() {
-        val installDir = outputDirectory.get().asFile
-        configurePrefab(
-            getFileOperations(),
-            installDir,
-            packageName,
-            packageVersion,
-            modules,
-            configurationModel
-        )
+        // Sync files from the configuration-only folder created by PrefabPackageConfigurationTask.
+        // This includes the prefab.json and other supporting files.
+        getFileOperations().sync { spec ->
+            spec.from(configurationOnlyDirectory)
+            spec.into(outputDirectory)
+        }
         for (module in modules) {
-            createModule(module, installDir)
+            createModule(module, outputDirectory.get().asFile)
         }
     }
 
@@ -124,7 +126,7 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
                 val libDir = libsDir.resolve("android.${abiData.abi.tag}")
                 val dest = libDir.resolve(srcLibrary.name)
                 infoln("Installing $srcLibrary to $dest")
-                srcLibrary.copyTo(dest)
+                synchronizeFile(srcLibrary, dest)
             }
         }
     }
@@ -157,15 +159,19 @@ abstract class PrefabPackageTask : NonIncrementalTask() {
 
         override fun configure(task: PrefabPackageTask) {
             super.configure(task)
-            val project = creationConfig.services.projectInfo.getProject()
+            val projectInfo = creationConfig.services.projectInfo
             task.description = "Creates a Prefab package for inclusion in an AAR"
-            task.packageName = project.name
-            task.packageVersion = versionOrError(project.version.toString())
+            task.packageName = projectInfo.name
+            task.packageVersion = versionOrError(projectInfo.version)
             task.modules = modules
 
             task.configurationModel = config
             task.sdkComponents.setDisallowChanges(
                 getBuildService(creationConfig.services.buildServiceRegistry)
+            )
+
+            task.configurationOnlyDirectory.setDisallowChanges(
+                creationConfig.artifacts.get(InternalArtifactType.PREFAB_PACKAGE_CONFIGURATION)
             )
         }
     }

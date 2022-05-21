@@ -1134,6 +1134,42 @@ public enum GradleTaskExecutionType
    * <code>APPLICATION_VARIANT_MODEL = 279;</code>
    */
   APPLICATION_VARIANT_MODEL(279),
+  /**
+   * <code>ABSTRACT_VARIANT_MODEL = 280;</code>
+   */
+  ABSTRACT_VARIANT_MODEL(280),
+  /**
+   * <code>LIBRARY_VARIANT_MODEL = 281;</code>
+   */
+  LIBRARY_VARIANT_MODEL(281),
+  /**
+   * <code>DYNAMIC_FEATURE_VARIANT_MODEL = 282;</code>
+   */
+  DYNAMIC_FEATURE_VARIANT_MODEL(282),
+  /**
+   * <code>ANDROID_TEST_VARIANT_MODEL = 283;</code>
+   */
+  ANDROID_TEST_VARIANT_MODEL(283),
+  /**
+   * <code>TEST_VARIANT_MODEL = 284;</code>
+   */
+  TEST_VARIANT_MODEL(284),
+  /**
+   * <code>UNIT_TEST_VARIANT_MODEL = 285;</code>
+   */
+  UNIT_TEST_VARIANT_MODEL(285),
+  /**
+   * <code>MODULE_VARIANT_MODEL = 286;</code>
+   */
+  MODULE_VARIANT_MODEL(286),
+  /**
+   * <code>TEST_MODULE_VARIANT_MODEL = 287;</code>
+   */
+  TEST_MODULE_VARIANT_MODEL(287),
+  /**
+   * <code>MANAGED_DEVICE_INSTRUMENTATION_TEST_RESULT_AGGREGATION = 288;</code>
+   */
+  MANAGED_DEVICE_INSTRUMENTATION_TEST_RESULT_AGGREGATION(288),
   UNRECOGNIZED(-1),
   ;
 
@@ -2257,6 +2293,42 @@ public enum GradleTaskExecutionType
    * <code>APPLICATION_VARIANT_MODEL = 279;</code>
    */
   public static final int APPLICATION_VARIANT_MODEL_VALUE = 279;
+  /**
+   * <code>ABSTRACT_VARIANT_MODEL = 280;</code>
+   */
+  public static final int ABSTRACT_VARIANT_MODEL_VALUE = 280;
+  /**
+   * <code>LIBRARY_VARIANT_MODEL = 281;</code>
+   */
+  public static final int LIBRARY_VARIANT_MODEL_VALUE = 281;
+  /**
+   * <code>DYNAMIC_FEATURE_VARIANT_MODEL = 282;</code>
+   */
+  public static final int DYNAMIC_FEATURE_VARIANT_MODEL_VALUE = 282;
+  /**
+   * <code>ANDROID_TEST_VARIANT_MODEL = 283;</code>
+   */
+  public static final int ANDROID_TEST_VARIANT_MODEL_VALUE = 283;
+  /**
+   * <code>TEST_VARIANT_MODEL = 284;</code>
+   */
+  public static final int TEST_VARIANT_MODEL_VALUE = 284;
+  /**
+   * <code>UNIT_TEST_VARIANT_MODEL = 285;</code>
+   */
+  public static final int UNIT_TEST_VARIANT_MODEL_VALUE = 285;
+  /**
+   * <code>MODULE_VARIANT_MODEL = 286;</code>
+   */
+  public static final int MODULE_VARIANT_MODEL_VALUE = 286;
+  /**
+   * <code>TEST_MODULE_VARIANT_MODEL = 287;</code>
+   */
+  public static final int TEST_MODULE_VARIANT_MODEL_VALUE = 287;
+  /**
+   * <code>MANAGED_DEVICE_INSTRUMENTATION_TEST_RESULT_AGGREGATION = 288;</code>
+   */
+  public static final int MANAGED_DEVICE_INSTRUMENTATION_TEST_RESULT_AGGREGATION_VALUE = 288;
 
 
   public final int getNumber() {
@@ -2563,6 +2635,15 @@ public enum GradleTaskExecutionType
       case 277: return LISTING_FILE_REDIRECT;
       case 278: return PREFAB_PACKAGE_CONFIGURATION;
       case 279: return APPLICATION_VARIANT_MODEL;
+      case 280: return ABSTRACT_VARIANT_MODEL;
+      case 281: return LIBRARY_VARIANT_MODEL;
+      case 282: return DYNAMIC_FEATURE_VARIANT_MODEL;
+      case 283: return ANDROID_TEST_VARIANT_MODEL;
+      case 284: return TEST_VARIANT_MODEL;
+      case 285: return UNIT_TEST_VARIANT_MODEL;
+      case 286: return MODULE_VARIANT_MODEL;
+      case 287: return TEST_MODULE_VARIANT_MODEL;
+      case 288: return MANAGED_DEVICE_INSTRUMENTATION_TEST_RESULT_AGGREGATION;
       default: return null;
     }
   }

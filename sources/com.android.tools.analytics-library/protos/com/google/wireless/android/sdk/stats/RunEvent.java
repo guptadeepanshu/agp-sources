@@ -20,6 +20,7 @@ private static final long serialVersionUID = 0L;
     executor_ = "";
     launchTaskDetail_ = java.util.Collections.emptyList();
     deployFailureId_ = "";
+    appComponentType_ = 0;
   }
 
   @java.lang.Override
@@ -184,6 +185,18 @@ private static final long serialVersionUID = 0L;
           case 192: {
             bitField0_ |= 0x00400000;
             runAlwaysInstallWithPm_ = input.readBool();
+            break;
+          }
+          case 200: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.RunEvent.AppComponent value = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(25, rawValue);
+            } else {
+              bitField0_ |= 0x00800000;
+              appComponentType_ = rawValue;
+            }
             break;
           }
           default: {
@@ -357,6 +370,129 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.RunEvent.Status)
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.RunEvent.AppComponent}
+   */
+  public enum AppComponent
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    UNKNOWN(0),
+    /**
+     * <code>ACTIVITY = 1;</code>
+     */
+    ACTIVITY(1),
+    /**
+     * <code>WATCH_FACE = 2;</code>
+     */
+    WATCH_FACE(2),
+    /**
+     * <code>TILE = 3;</code>
+     */
+    TILE(3),
+    /**
+     * <code>COMPLICATION = 4;</code>
+     */
+    COMPLICATION(4),
+    ;
+
+    /**
+     * <code>UNKNOWN = 0;</code>
+     */
+    public static final int UNKNOWN_VALUE = 0;
+    /**
+     * <code>ACTIVITY = 1;</code>
+     */
+    public static final int ACTIVITY_VALUE = 1;
+    /**
+     * <code>WATCH_FACE = 2;</code>
+     */
+    public static final int WATCH_FACE_VALUE = 2;
+    /**
+     * <code>TILE = 3;</code>
+     */
+    public static final int TILE_VALUE = 3;
+    /**
+     * <code>COMPLICATION = 4;</code>
+     */
+    public static final int COMPLICATION_VALUE = 4;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AppComponent valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static AppComponent forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN;
+        case 1: return ACTIVITY;
+        case 2: return WATCH_FACE;
+        case 3: return TILE;
+        case 4: return COMPLICATION;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AppComponent>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AppComponent> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AppComponent>() {
+            public AppComponent findValueByNumber(int number) {
+              return AppComponent.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.RunEvent.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final AppComponent[] VALUES = values();
+
+    public static AppComponent valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AppComponent(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.RunEvent.AppComponent)
   }
 
   private int bitField0_;
@@ -1050,6 +1186,33 @@ private static final long serialVersionUID = 0L;
     return runAlwaysInstallWithPm_;
   }
 
+  public static final int APP_COMPONENT_TYPE_FIELD_NUMBER = 25;
+  private int appComponentType_;
+  /**
+   * <pre>
+   * Type of AppComponent user wants to run
+   * </pre>
+   *
+   * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+   * @return Whether the appComponentType field is set.
+   */
+  public boolean hasAppComponentType() {
+    return ((bitField0_ & 0x00800000) != 0);
+  }
+  /**
+   * <pre>
+   * Type of AppComponent user wants to run
+   * </pre>
+   *
+   * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+   * @return The appComponentType.
+   */
+  public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);
+    return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1135,6 +1298,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00400000) != 0)) {
       output.writeBool(24, runAlwaysInstallWithPm_);
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      output.writeEnum(25, appComponentType_);
     }
     unknownFields.writeTo(output);
   }
@@ -1238,6 +1404,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00400000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(24, runAlwaysInstallWithPm_);
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(25, appComponentType_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1370,6 +1540,10 @@ private static final long serialVersionUID = 0L;
       if (getRunAlwaysInstallWithPm()
           != other.getRunAlwaysInstallWithPm()) return false;
     }
+    if (hasAppComponentType() != other.hasAppComponentType()) return false;
+    if (hasAppComponentType()) {
+      if (appComponentType_ != other.appComponentType_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1495,6 +1669,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + RUN_ALWAYS_INSTALL_WITH_PM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getRunAlwaysInstallWithPm());
+    }
+    if (hasAppComponentType()) {
+      hash = (37 * hash) + APP_COMPONENT_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + appComponentType_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1682,6 +1860,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00400000);
       runAlwaysInstallWithPm_ = false;
       bitField0_ = (bitField0_ & ~0x00800000);
+      appComponentType_ = 0;
+      bitField0_ = (bitField0_ & ~0x01000000);
       return this;
     }
 
@@ -1811,6 +1991,10 @@ private static final long serialVersionUID = 0L;
         result.runAlwaysInstallWithPm_ = runAlwaysInstallWithPm_;
         to_bitField0_ |= 0x00400000;
       }
+      if (((from_bitField0_ & 0x01000000) != 0)) {
+        to_bitField0_ |= 0x00800000;
+      }
+      result.appComponentType_ = appComponentType_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1958,6 +2142,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasRunAlwaysInstallWithPm()) {
         setRunAlwaysInstallWithPm(other.getRunAlwaysInstallWithPm());
+      }
+      if (other.hasAppComponentType()) {
+        setAppComponentType(other.getAppComponentType());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3619,6 +3806,64 @@ private static final long serialVersionUID = 0L;
     public Builder clearRunAlwaysInstallWithPm() {
       bitField0_ = (bitField0_ & ~0x00800000);
       runAlwaysInstallWithPm_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int appComponentType_ = 0;
+    /**
+     * <pre>
+     * Type of AppComponent user wants to run
+     * </pre>
+     *
+     * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+     * @return Whether the appComponentType field is set.
+     */
+    public boolean hasAppComponentType() {
+      return ((bitField0_ & 0x01000000) != 0);
+    }
+    /**
+     * <pre>
+     * Type of AppComponent user wants to run
+     * </pre>
+     *
+     * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+     * @return The appComponentType.
+     */
+    public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);
+      return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * Type of AppComponent user wants to run
+     * </pre>
+     *
+     * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+     * @param value The appComponentType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAppComponentType(com.google.wireless.android.sdk.stats.RunEvent.AppComponent value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x01000000;
+      appComponentType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Type of AppComponent user wants to run
+     * </pre>
+     *
+     * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAppComponentType() {
+      bitField0_ = (bitField0_ & ~0x01000000);
+      appComponentType_ = 0;
       onChanged();
       return this;
     }

@@ -501,4 +501,23 @@ public interface RunEventOrBuilder extends
    * @return The runAlwaysInstallWithPm.
    */
   boolean getRunAlwaysInstallWithPm();
+
+  /**
+   * <pre>
+   * Type of AppComponent user wants to run
+   * </pre>
+   *
+   * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+   * @return Whether the appComponentType field is set.
+   */
+  boolean hasAppComponentType();
+  /**
+   * <pre>
+   * Type of AppComponent user wants to run
+   * </pre>
+   *
+   * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
+   * @return The appComponentType.
+   */
+  com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType();
 }

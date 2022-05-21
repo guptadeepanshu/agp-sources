@@ -20,6 +20,7 @@ package com.android.ide.common.resources
 
 import java.io.File
 import java.io.IOException
+import java.nio.file.FileSystem
 import java.nio.file.FileSystems
 import kotlin.IllegalStateException
 
@@ -38,8 +39,8 @@ fun getRelativeSourceSetPath(resourceFile: File, moduleSourceSets: Map<String, S
         if (absoluteResFilePath.startsWith(absoluteSourceSetPath)) {
             val invariantFilePath = resourceFile.absoluteFile.invariantSeparatorsPath
             val resIndex = File(absoluteSourceSetPath).absoluteFile.invariantSeparatorsPath.length
-            val relativePathToSourceSet = invariantFilePath.substring(resIndex)
-            return "$identifier:$relativePathToSourceSet"
+            val relativePathToSourceSet = invariantFilePath.substring(resIndex + 1)
+            return "$identifier$separator$relativePathToSourceSet"
         }
     }
 
@@ -54,40 +55,59 @@ fun getRelativeSourceSetPath(resourceFile: File, moduleSourceSets: Map<String, S
  * path and then concatenated with the path after the separator.
  */
 fun relativeResourcePathToAbsolutePath(
-        relativePath: String,
-        sourceSetPathMap: Map<String, String>): String {
-    if (sourceSetPathMap.none()) {
-        throw IllegalStateException(
-                """Unable to get absolute path from $relativePath
-                   because no relative root paths are present.""")
-    }
-    val separatorIndex = relativePath.indexOf(separator)
-    if (separatorIndex == -1) {
-        throw IllegalArgumentException(
-                """Source set identifier and relative path must be separated by a "$separator".
-                   Relative path: $relativePath""")
-    }
-    val sourceSetPrefix = relativePath.substring(0, separatorIndex)
-    val resourcePathFromSourceSet =
-        relativePath.substring(separatorIndex + separator.lastIndex, relativePath.length)
-    val absolutePath = sourceSetPathMap[sourceSetPrefix]
-            ?: throw NoSuchElementException(
-                    """Unable to get absolute path from $relativePath
-                       because $sourceSetPrefix is not key in sourceSetPathMap.""")
+    relativePath: String,
+    sourceSetPathMap: Map<String, String>,
+    fileSystem: FileSystem = FileSystems.getDefault()): String {
+    return relativeResourcePathToAbsolutePath(sourceSetPathMap, fileSystem)(relativePath)
+}
 
-    return "$absolutePath$resourcePathFromSourceSet"
+fun relativeResourcePathToAbsolutePath(
+    sourceSetPathMap: Map<String, String>,
+    fileSystem: FileSystem = FileSystems.getDefault()
+): (String) -> String {
+    return { relativePath: String ->
+        if (sourceSetPathMap.none()) {
+            throw IllegalStateException(
+                """Unable to get absolute path from $relativePath
+                   because no relative root paths are present."""
+            )
+        }
+        val separatorIndex = relativePath.indexOf(separator)
+        if (separatorIndex == -1) {
+            throw IllegalArgumentException(
+                """Source set identifier and relative path must be separated by a "$separator".
+                   Relative path: $relativePath"""
+            )
+        }
+        val sourceSetPrefix = relativePath.substring(0, separatorIndex)
+        val resourcePathFromSourceSet =
+            relativePath.substring(separatorIndex + separator.lastIndex, relativePath.length)
+        val systemRelativePath = if ("/" != fileSystem.separator) {
+            resourcePathFromSourceSet.replace("/", fileSystem.separator)
+        } else {
+            resourcePathFromSourceSet
+        }
+        val absolutePath = sourceSetPathMap[sourceSetPrefix]
+            ?: throw NoSuchElementException(
+                """Unable to get absolute path from $relativePath
+                       because $sourceSetPrefix is not key in sourceSetPathMap."""
+            )
+        "$absolutePath$systemRelativePath"
+    }
 }
 
 /**
  * Parses identifier and file path into a map from a file
  * in the format 'packageName.projectName-sortedOrderPosition absolutePath'.
  */
-fun readFromSourceSetPathsFile(artifactFile: File) : Map<String, String> {
+fun readFromSourceSetPathsFile(artifactFile: File): Map<String, String> {
     if (!artifactFile.exists() || !artifactFile.isFile) {
         throw IOException("$artifactFile does not exist or is not a file.")
     }
-    return artifactFile.bufferedReader().lineSequence().associate {
-        it.substringBefore(" ") to it.substringAfter(" ")
+    return artifactFile.bufferedReader().use { bufferedReader ->
+        bufferedReader.lineSequence().associate {
+            it.substringBefore(" ") to it.substringAfter(" ")
+        }
     }
 }
 
@@ -98,11 +118,11 @@ fun readFromSourceSetPathsFile(artifactFile: File) : Map<String, String> {
 fun writeIdentifiedSourceSetsFile(
         resourceSourceSets: List<File>,
         namespace: String,
-        projectName: String,
+        projectPath: String,
         output: File
 ) {
     output.bufferedWriter().use { bw ->
-        getIdentifiedSourceSetMap(resourceSourceSets, namespace, projectName).forEach {
+        getIdentifiedSourceSetMap(resourceSourceSets, namespace, projectPath).forEach {
             bw.write("${it.key} ${it.value}\n")
         }
     }
@@ -125,20 +145,27 @@ fun mergeIdentifiedSourceSetFiles(sourceSetFiles: List<File>) : Map<String, Stri
 fun getIdentifiedSourceSetMap(
         resourceSourceSets: List<File>,
         namespace: String,
-        projectName: String) : Map<String, String> {
+        projectPath: String) : Map<String, String> {
+    val projectName = projectPath.substringAfterLast(":")
     var i = 0
     return resourceSourceSets
-            .asSequence()
-            .filterNotNull()
-            .distinctBy(File::invariantSeparatorsPath)
-            .sortedBy(File::invariantSeparatorsPath)
-            .associate { sourceSet ->
-                val sourceSetFolderName = sourceSet.parentFile.name
-                val appendProjectName =
-                        if (namespace.endsWith(projectName)) "" else ".$projectName"
-                val appId = "$namespace$appendProjectName-$sourceSetFolderName-${i++}"
-                appId to sourceSet.absolutePath
-            }
+        .asSequence()
+        .filterNotNull()
+        .distinctBy(File::invariantSeparatorsPath)
+        .sortedBy(File::invariantSeparatorsPath)
+        .associate { sourceSet ->
+            val sourceSetFolderName = sourceSet.parentFile.name
+            val appendProjectName =
+                if (namespace.endsWith(projectName)) "" else ".$projectName"
+            val appId = "$namespace$appendProjectName-$sourceSetFolderName-${i++}"
+            appId to sourceSet.absolutePath
+        }
 }
 
-fun relativeResourceSeparator(): String = separator
+/**
+ * Verifies if a string is relative resource sourceset filepath. This is for cases where it is
+ * not possible to determine if relative resource filepaths are enabled by default.
+ */
+fun isRelativeSourceSetResource(filepath: String) : Boolean {
+    return filepath.contains(separator)
+}

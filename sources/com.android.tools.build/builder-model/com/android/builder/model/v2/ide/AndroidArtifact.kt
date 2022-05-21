@@ -15,7 +15,6 @@
  */
 package com.android.builder.model.v2.ide
 
-import com.android.builder.model.v2.ModelSyncFile
 import com.android.builder.model.v2.AndroidModel
 import java.io.File
 
@@ -25,10 +24,8 @@ import java.io.File
  * This is the entry point for the output of a [Variant]. This can be more than one
  * output in the case of multi-apk where more than one APKs are generated from the same set
  * of sources.
- *
- * @since 4.2
  */
-interface AndroidArtifact : BaseArtifact, AndroidModel {
+interface AndroidArtifact : AbstractArtifact, AndroidModel {
 
     /**
      * The min SDK version of this artifact
@@ -70,6 +67,14 @@ interface AndroidArtifact : BaseArtifact, AndroidModel {
      * @return the name of the code generating task.
      */
     val sourceGenTaskName: String
+
+    /**
+     * The name of the task used to generate the resources. The actual value might
+     * depend on the build system front end.
+     *
+     * Maybe null if the artifact does not support Android resources
+     */
+    val resGenTaskName: String?
 
     /**
      * Returns all the resource folders that are generated. This is typically the renderscript
