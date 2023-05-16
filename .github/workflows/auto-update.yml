@@ -1,5 +1,6 @@
 name: auto-update
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '23 14 * * sat'
 
