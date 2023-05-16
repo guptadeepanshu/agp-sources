@@ -19,6 +19,7 @@ package com.android.build.gradle.internal.res.namespaced
 import com.android.build.api.artifact.Artifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.TaskFactory
@@ -50,7 +51,7 @@ class NamespacedResourcesTaskManager(
      */
     fun createNamespacedResourceTasks(
             packageOutputType: Artifact.Single<Directory>?,
-            baseName: String,
+            baseName: Provider<String>,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
 
         // Compile
@@ -64,9 +65,8 @@ class NamespacedResourcesTaskManager(
         taskFactory.register(LinkLibraryAndroidResourcesTask.CreationAction(creationConfig))
         // TODO: also generate a private R.jar holding private resources.
         taskFactory.register(GenerateNamespacedLibraryRFilesTask.CreationAction(creationConfig))
-        if (creationConfig.componentType.isTestComponent) {
-            val testedType = creationConfig.testedConfig?.componentType ?: throw RuntimeException("testedVariant is null")
-            if (testedType.isAar) {
+        if (creationConfig is TestComponentCreationConfig) {
+            if (creationConfig.mainVariant.componentType.isAar) {
                 createNamespacedLibraryTestProcessResourcesTask(
                     packageOutputType = packageOutputType
                 )
@@ -89,7 +89,7 @@ class NamespacedResourcesTaskManager(
 
     private fun createNamespacedAppProcessTask(
             packageOutputType: Artifact.Single<Directory>?,
-            baseName: String,
+            baseName: Provider<String>,
             useAaptToGenerateLegacyMultidexMainDexProguardRules: Boolean) {
         // TODO fix by using the right type for field componentProperties
        taskFactory.register(
@@ -118,11 +118,14 @@ class NamespacedResourcesTaskManager(
         // create a unique Task that uses workers for parallelization.
         creationConfig.sources.res.getVariantSources().get().forEach { dimensionSources ->
 
-            val providerList: List<Provider<Directory>> = dimensionSources.directoryEntries
+            val artifacts = creationConfig.services.fileCollection().also { fileCollection ->
+                    fileCollection.from( dimensionSources.directoryEntries
                 .filter { !it.isGenerated }
-                .map { it.asFiles(creationConfig.services::directoryProperty) }
-
-            val artifacts = creationConfig.services.fileCollection().from(providerList)
+                .map { it.asFiles(creationConfig.services.provider {
+ creationConfig.services.projectInfo.projectDirectory
+            }) }
+                    )
+                }
 
             val sourceSetName = dimensionSources.name
 

@@ -18,22 +18,23 @@ package com.android.build.gradle.tasks
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.impl.AssetSourceDirectoriesImpl
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
-import com.android.build.gradle.internal.component.LibraryCreationConfig
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ASSETS
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.Workers
+import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
-import com.android.builder.core.BuilderConstants
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.ANDROID_AAPT_IGNORE
 import com.android.ide.common.resources.AssetMerger
 import com.android.ide.common.resources.AssetSet
@@ -65,8 +66,10 @@ import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 import java.io.File
 import java.io.IOException
+import org.gradle.api.provider.Provider
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MISC, secondaryTaskCategories = [TaskCategory.SOURCE_PROCESSING, TaskCategory.MERGING])
 abstract class MergeSourceSetFolders : NewIncrementalTask() {
 
     @get:OutputDirectory
@@ -77,7 +80,7 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
 
     // supplier of the assets set, for execution only.
     @get:Internal("for testing")
-    internal abstract val assetSets: ListProperty<AssetSet>
+    internal abstract val assetSets: ListProperty<Provider<AssetSet>>
 
     // for the dependencies
     @get:Internal("for testing")
@@ -276,9 +279,17 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
      */
     @VisibleForTesting
     internal fun computeAssetSetList(): List<AssetSet> {
-        val assetSetList: List<AssetSet>
+        var assetSetList: MutableList<AssetSet>
 
-        val assetSets = assetSets.get()
+        val assetSetsMap = mutableMapOf<String, AssetSet>()
+        assetSets.get().forEach { assetSet ->
+            val combinedAssetSet = assetSetsMap.getOrPut(
+                assetSet.get().configName
+            ) { AssetSet(assetSet.get().configName, aaptEnv.orNull) }
+            combinedAssetSet.addSources(assetSet.get().sourceFiles)
+        }
+
+        val assetSets =  mutableListOf<AssetSet>().also { it.addAll(assetSetsMap.values) }
         val ignoreAssetsPatternsList = ignoreAssetsPatterns.orNull
         if (!shadersOutputDir.isPresent
             && !mlModelsOutputDir.isPresent
@@ -323,7 +334,6 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
 
             // add the generated files to the main set.
             val mainAssetSet = assetSets[0]
-            assert(mainAssetSet.configName == BuilderConstants.MAIN)
             mainAssetSet.addSources(generatedAssetFolders)
 
             assetSetList.addAll(assetSets)
@@ -375,7 +385,9 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
     open class MergeAssetBaseCreationAction(
         creationConfig: ComponentCreationConfig,
         private val includeDependencies: Boolean
-    ) : CreationAction(creationConfig) {
+    ) : CreationAction(creationConfig), AssetsTaskCreationAction by AssetsTaskCreationActionImpl(
+        creationConfig
+    ) {
 
         override val name: String
             get() = computeTaskName("merge", "Assets")
@@ -403,21 +415,9 @@ abstract class MergeSourceSetFolders : NewIncrementalTask() {
                 task.mlModelsOutputDir
             )
 
-            when (creationConfig) {
-                is ApkCreationConfig -> {
-                    task.ignoreAssetsPatterns.set(creationConfig.androidResources.ignoreAssetsPatterns)
-                }
-                is LibraryCreationConfig -> {
-                    // support ignoring asset patterns in library modules via DSL
-                    creationConfig.dslAndroidResources.ignoreAssetsPattern?.let {
-                        task.ignoreAssetsPatterns.set(it.split(':'))
-                    }
-                }
-                else -> {
-                    // do nothing, property locked below
-                }
-            }
-            task.ignoreAssetsPatterns.disallowChanges()
+            task.ignoreAssetsPatterns.setDisallowChanges(
+                assetsCreationConfig.androidResources.ignoreAssetsPatterns
+            )
 
             if (includeDependencies) {
                 task.libraryCollection = creationConfig.variantDependencies.getArtifactCollection(RUNTIME_CLASSPATH, ALL, ASSETS)

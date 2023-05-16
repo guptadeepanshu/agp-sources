@@ -16,9 +16,13 @@
 
 package com.android.build.gradle.tasks
 
+import com.android.SdkConstants
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.tasks.AarMetadataTask
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
@@ -27,6 +31,7 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.work.DisableCachingByDefault
 
 @DisableCachingByDefault(because = "Task does not calculate anything, only creates a jar.")
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.AAR_PACKAGING)
 abstract class FusedLibraryBundle: Jar() {
 
     // We have to explicitly repeat the output file as the artifacts API expects a
@@ -57,13 +62,14 @@ abstract class FusedLibraryBundle: Jar() {
 }
 
 @DisableCachingByDefault(because = "Task does not calculate anything, only creates a jar.")
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.AAR_PACKAGING)
 abstract class FusedLibraryBundleAar: FusedLibraryBundle() {
 
     class CreationAction(
         creationConfig: FusedLibraryVariantScope,
     ) : FusedLibraryBundle.CreationAction<FusedLibraryBundleAar>(
             creationConfig,
-            FusedLibraryInternalArtifactType.CLASSES_JAR,
+            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
     ) {
 
         override val name: String
@@ -75,21 +81,39 @@ abstract class FusedLibraryBundleAar: FusedLibraryBundle() {
             super.configure(task)
             task.archiveFileName.set("bundle.aar")
             task.from(
-                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.FINAL_CLASSES),
-                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.FUSED_R_CLASS)
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_MANIFEST),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_RES),
+
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_AIDL),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_RENDERSCRIPT_HEADERS),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_PREFAB_PACKAGE),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_PREFAB_PACKAGE_CONFIGURATION),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JNI),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_NAVIGATION_JSON),
             )
+
+            task.from(creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_AAR_METADATA)) {
+                it.rename(
+                        "aar_metadata",
+                        AarMetadataTask.AAR_METADATA_ENTRY_PATH
+                )
+            }
+            task.from(creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_ASSETS)) {
+                it.into(SdkConstants.FD_ASSETS)
+            }
         }
     }
 }
 
 @DisableCachingByDefault(because = "Task does not calculate anything, only creates a jar.")
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.ZIPPING])
 abstract class FusedLibraryBundleClasses: FusedLibraryBundle() {
 
     class CreationAction(
         creationConfig: FusedLibraryVariantScope,
     ): FusedLibraryBundle.CreationAction<FusedLibraryBundleClasses>(
             creationConfig,
-            FusedLibraryInternalArtifactType.BUNDLED_Library
+            FusedLibraryInternalArtifactType.CLASSES_JAR
     ) {
         override val name: String
             get() = "packageJar"
@@ -99,7 +123,11 @@ abstract class FusedLibraryBundleClasses: FusedLibraryBundle() {
         override fun configure(task: FusedLibraryBundleClasses) {
             super.configure(task)
             task.archiveFileName.set("classes.jar")
-            task.from(creationConfig.artifacts.get(FusedLibraryInternalArtifactType.CLASSES_JAR))
+            task.from(
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.CLASSES_WITH_REWRITTEN_R_CLASS_REFS),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.FUSED_R_CLASS),
+                creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+            )
         }
     }
 }

@@ -22,6 +22,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.Action
 import org.gradle.api.attributes.AttributeContainer
 import org.gradle.api.file.ConfigurableFileCollection
@@ -31,7 +32,6 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 
@@ -43,6 +43,7 @@ import org.gradle.work.DisableCachingByDefault
  * publish, we have to do this.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class PrepareLintJarForPublish : NonIncrementalGlobalTask() {
 
     @get:InputFiles

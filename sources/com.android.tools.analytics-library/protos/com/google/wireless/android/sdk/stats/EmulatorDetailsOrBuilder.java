@@ -885,4 +885,42 @@ public interface EmulatorDetailsOrBuilder extends
    * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
    */
   com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder();
+
+  /**
+   * <pre>
+   * Process ID of the emulator wrapper process.
+   * </pre>
+   *
+   * <code>optional int32 emu_pid = 37;</code>
+   * @return Whether the emuPid field is set.
+   */
+  boolean hasEmuPid();
+  /**
+   * <pre>
+   * Process ID of the emulator wrapper process.
+   * </pre>
+   *
+   * <code>optional int32 emu_pid = 37;</code>
+   * @return The emuPid.
+   */
+  int getEmuPid();
+
+  /**
+   * <pre>
+   * Process ID of the child qemu process that does the real job.
+   * </pre>
+   *
+   * <code>optional int32 qemu_pid = 38;</code>
+   * @return Whether the qemuPid field is set.
+   */
+  boolean hasQemuPid();
+  /**
+   * <pre>
+   * Process ID of the child qemu process that does the real job.
+   * </pre>
+   *
+   * <code>optional int32 qemu_pid = 38;</code>
+   * @return The qemuPid.
+   */
+  int getQemuPid();
 }

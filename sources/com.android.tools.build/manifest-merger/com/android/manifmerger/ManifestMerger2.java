@@ -18,10 +18,12 @@ package com.android.manifmerger;
 
 import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.ATTR_SPLIT;
+import static com.android.manifmerger.ManifestModel.NodeTypes.USES_SDK;
 import static com.android.manifmerger.PlaceholderHandler.APPLICATION_ID;
 import static com.android.manifmerger.PlaceholderHandler.KeyBasedValueResolver;
 import static com.android.manifmerger.PlaceholderHandler.PACKAGE_NAME;
 
+import com.android.AndroidXConstants;
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -155,7 +157,7 @@ public class ManifestMerger2 {
 
     /**
      * Perform high level ordering of files merging and delegates actual merging to {@link
-     * XmlDocument#merge(XmlDocument, MergingReport.Builder)}
+     * XmlDocument#merge}
      *
      * @return the merging activity report.
      * @throws MergeFailureException if the merging cannot be completed (for instance, if xml files
@@ -178,9 +180,10 @@ public class ManifestMerger2 {
 
         // perform all top-level verifications.
         if (!loadedMainManifestInfo
-                .getXmlDocument()
-                .checkTopLevelDeclarations(
-                        mPlaceHolderValues, mergingReportBuilder, mDocumentType)) {
+                        .getXmlDocument()
+                        .checkTopLevelDeclarations(
+                                mPlaceHolderValues, mergingReportBuilder, mDocumentType)
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             return mergingReportBuilder.build();
         }
 
@@ -269,7 +272,7 @@ public class ManifestMerger2 {
                                 ? String.format(
                                         "Overlay manifest:package attribute declared at %1$s value=(%2$s)\n"
                                                 + "\tdoes not match the module's namespace (%3$s).\n"
-                                                + "\tSuggestion: remove the overlay declaration at %4$s.\n"
+                                                + "\tSuggestion: remove the package=\"%2$s\" declaration at %4$s.\n"
                                                 + "\tIf you want to customize the applicationId for a "
                                                 + "buildType or productFlavor, consider setting "
                                                 + "applicationIdSuffix or using the Variant API.\n"
@@ -278,20 +281,22 @@ public class ManifestMerger2 {
                                         packageAttribute.get().printPosition(),
                                         packageAttribute.get().getValue(),
                                         loadedMainManifestInfo.getNamespace(),
-                                        packageAttribute.get().getSourceFile().print(true))
+                                        packageAttribute.get().getSourceFile().print(false))
                                 : String.format(
                                         "Overlay manifest:package attribute declared at %1$s value=(%2$s)\n"
                                                 + "\tdoes not match the module's namespace (%3$s).\n"
-                                                + "\tSuggestion: remove the overlay declaration at %4$s.",
+                                                + "\tSuggestion: remove the package=\"%2$s\" declaration at %4$s.",
                                         packageAttribute.get().printPosition(),
                                         packageAttribute.get().getValue(),
                                         loadedMainManifestInfo.getNamespace(),
-                                        packageAttribute.get().getSourceFile().print(true));
+                                        packageAttribute.get().getSourceFile().print(false));
                 mergingReportBuilder.addMessage(
                         overlayDocument.getXmlDocument().getSourceFile(),
                         MergingReport.Record.Severity.ERROR,
                         message);
-                return mergingReportBuilder.build();
+                if (!mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
+                    return mergingReportBuilder.build();
+                }
             }
 
             if (mainPackageAttribute.isPresent()) {
@@ -306,7 +311,8 @@ public class ManifestMerger2 {
 
             xmlDocumentOptional = newMergedDocument.orElse(null);
 
-            if (!newMergedDocument.isPresent()) {
+            if (!newMergedDocument.isPresent()
+                    && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
                 return mergingReportBuilder.build();
             }
         }
@@ -315,7 +321,8 @@ public class ManifestMerger2 {
         Optional<XmlDocument> newMergedDocument =
                 merge(xmlDocumentOptional, loadedMainManifestInfo, mergingReportBuilder);
 
-        if (!newMergedDocument.isPresent()) {
+        if (!newMergedDocument.isPresent()
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             return mergingReportBuilder.build();
         }
         xmlDocumentOptional = newMergedDocument.get();
@@ -336,7 +343,8 @@ public class ManifestMerger2 {
         for (LoadedManifestInfo libraryDocument : loadedLibraryDocuments) {
             mLogger.verbose("Merging library manifest " + libraryDocument.getLocation());
             newMergedDocument = merge(xmlDocumentOptional, libraryDocument, mergingReportBuilder);
-            if (!newMergedDocument.isPresent()) {
+            if (!newMergedDocument.isPresent()
+                    && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
                 return mergingReportBuilder.build();
             }
             xmlDocumentOptional = newMergedDocument.get();
@@ -352,12 +360,14 @@ public class ManifestMerger2 {
                             xmlDocumentOptional, loadedNavigationMap, mergingReportBuilder);
         }
 
-        if (mergingReportBuilder.hasErrors()) {
+        if (mergingReportBuilder.hasErrors()
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             return mergingReportBuilder.build();
         }
 
         ElementsTrimmer.trim(xmlDocumentOptional, mergingReportBuilder);
-        if (mergingReportBuilder.hasErrors()) {
+        if (mergingReportBuilder.hasErrors()
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             return mergingReportBuilder.build();
         }
 
@@ -367,7 +377,7 @@ public class ManifestMerger2 {
             // been overridden so the problem was transient. However, with the final document
             // ready, all placeholders values must have been provided.
             MergingReport.Record.Severity severity =
-                    mMergeType == MergeType.LIBRARY
+                    !mMergeType.isFullPlaceholderSubstitutionRequired()
                             ? MergingReport.Record.Severity.INFO
                             : MergingReport.Record.Severity.ERROR;
             performPlaceHolderSubstitution(
@@ -375,7 +385,8 @@ public class ManifestMerger2 {
                     originalMainManifestPackageName,
                     mergingReportBuilder,
                     severity);
-            if (mergingReportBuilder.hasErrors()) {
+            if (mergingReportBuilder.hasErrors()
+                    && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
                 return mergingReportBuilder.build();
             }
         }
@@ -383,11 +394,18 @@ public class ManifestMerger2 {
         // perform system property injection again.
         performSystemPropertiesInjection(mergingReportBuilder, xmlDocumentOptional);
 
+        // if it's a library of any kind - need to remove targetSdk
+        if (!mOptionalFeatures.contains(Invoker.Feature.DISABLE_STRIP_LIBRARY_TARGET_SDK)
+                && mMergeType != MergeType.APPLICATION) {
+            stripTargetSdk(xmlDocumentOptional);
+        }
+
         XmlDocument finalMergedDocument = xmlDocumentOptional;
 
         Optional<XmlAttribute> packageAttr = finalMergedDocument.getPackage();
-        // We allow single word package name for library... so far...
-        if (mMergeType != MergeType.LIBRARY && packageAttr.isPresent()) {
+        // We allow single word package name for library and fused libraries, the platform does
+        // not allow for single word application package names.
+        if (mMergeType == MergeType.APPLICATION && packageAttr.isPresent()) {
             XmlAttribute packageNameAttribute = packageAttr.get();
             String packageName = packageNameAttribute.getValue();
             // We accept absence of dot only if NO_PLACEHOLDER_REPLACEMENT is true and packageName
@@ -402,7 +420,9 @@ public class ManifestMerger2 {
                                 "Package name '%1$s' at position %2$s should contain at "
                                         + "least one '.' (dot) character",
                                 packageName, packageNameAttribute.printPosition()));
-                return mergingReportBuilder.build();
+                if (!mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
+                    return mergingReportBuilder.build();
+                }
             }
         }
 
@@ -417,7 +437,8 @@ public class ManifestMerger2 {
                 });
 
         PostValidator.validate(finalMergedDocument, mergingReportBuilder);
-        if (mergingReportBuilder.hasErrors()) {
+        if (mergingReportBuilder.hasErrors()
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             mergingReportBuilder.addMessage(
                     finalMergedDocument.getRootNode(),
                     MergingReport.Record.Severity.WARNING,
@@ -446,7 +467,8 @@ public class ManifestMerger2 {
         // output an error message to the user if android:exported is not explicitly specified
         checkExportedDeclaration(finalMergedDocument, mergingReportBuilder);
 
-        if (mergingReportBuilder.hasErrors()) {
+        if (mergingReportBuilder.hasErrors()
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             return mergingReportBuilder.build();
         }
 
@@ -563,7 +585,8 @@ public class ManifestMerger2 {
         }
 
         // perform tools: annotations removal if requested.
-        if (mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
+        if (mMergeType != MergeType.FUSED_LIBRARY
+                && mOptionalFeatures.contains(Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)) {
             ToolsInstructionsCleaner.cleanToolsReferences(mMergeType, document, mLogger);
         }
 
@@ -590,10 +613,12 @@ public class ManifestMerger2 {
 
         if (mOptionalFeatures.contains(
                 Invoker.Feature.ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME)) {
-            addMultiDexApplicationIfNoName(document, SdkConstants.MULTI_DEX_APPLICATION.newName());
+            addMultiDexApplicationIfNoName(
+                    document, AndroidXConstants.MULTI_DEX_APPLICATION.newName());
         } else if (mOptionalFeatures.contains(
                 Invoker.Feature.ADD_SUPPORT_MULTIDEX_APPLICATION_IF_NO_NAME)) {
-            addMultiDexApplicationIfNoName(document, SdkConstants.MULTI_DEX_APPLICATION.oldName());
+            addMultiDexApplicationIfNoName(
+                    document, AndroidXConstants.MULTI_DEX_APPLICATION.oldName());
         }
 
         if (mOptionalFeatures.contains(Invoker.Feature.ADD_DYNAMIC_FEATURE_ATTRIBUTES)) {
@@ -1047,7 +1072,7 @@ public class ManifestMerger2 {
         // perform place holder substitution, this is necessary to do so early in case placeholders
         // are used in key attributes.
         MergingReport.Record.Severity severity =
-                mMergeType == MergeType.LIBRARY
+                !mMergeType.isFullPlaceholderSubstitutionRequired()
                         ? MergingReport.Record.Severity.INFO
                         : MergingReport.Record.Severity.ERROR;
         performPlaceHolderSubstitution(
@@ -1103,9 +1128,11 @@ public class ManifestMerger2 {
             @NonNull LoadedManifestInfo lowerPriorityDocument,
             @NonNull MergingReport.Builder mergingReportBuilder) {
 
-        MergingReport.Result validationResult = PreValidator
-                .validate(mergingReportBuilder, lowerPriorityDocument.getXmlDocument());
-        if (validationResult == MergingReport.Result.ERROR) {
+        MergingReport.Result validationResult =
+                PreValidator.validate(mergingReportBuilder, lowerPriorityDocument.getXmlDocument());
+
+        if (validationResult == MergingReport.Result.ERROR
+                && !mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS)) {
             mergingReportBuilder.addMessage(
                     lowerPriorityDocument.getXmlDocument().getSourceFile(),
                     MergingReport.Record.Severity.ERROR,
@@ -1121,8 +1148,8 @@ public class ManifestMerger2 {
                             mergingReportBuilder,
                             !mOptionalFeatures.contains(
                                     Invoker.Feature.NO_IMPLICIT_PERMISSION_ADDITION),
-                            mOptionalFeatures.contains(
-                                    Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK));
+                            mOptionalFeatures.contains(Invoker.Feature.DISABLE_MINSDKLIBRARY_CHECK),
+                            mOptionalFeatures.contains(Invoker.Feature.KEEP_GOING_AFTER_ERRORS));
         } else {
             // exhaustiveSearch is true in recordAddedNodeAction() below because some of this
             // manifest's nodes might have already been recorded from the loading of
@@ -1299,7 +1326,7 @@ public class ManifestMerger2 {
          * libraries. The resulting merged android manifest is final and is not expected to be
          * imported in another application.
          */
-        APPLICATION,
+        APPLICATION(true, true),
 
         /**
          * Library merging type is used when packaging a library. The resulting android manifest
@@ -1307,7 +1334,44 @@ public class ManifestMerger2 {
          * annotations will not be removed as they can be useful when later importing the resulting
          * merged android manifest into an application.
          */
-        LIBRARY
+        LIBRARY(false, false),
+
+        /**
+         * Fused library merging type is similar to application manifest merging as library
+         * manifests are merged, however tools annotations are kept for application merging,
+         * placeholder replacements are non-exhaustive and final validation is not performed.
+         * merging.
+         */
+        FUSED_LIBRARY(false, false),
+
+        /**
+         * Privacy sandbox library merging similar to fused library merging except that resulting
+         * manifest is expected to be processed by aapt2 and shipped into an .asb file to the Play
+         * Store.
+         */
+        PRIVACY_SANDOX_LIBRARY(true, true);
+
+        private final boolean isKeepToolsAttributeRequired;
+        private final boolean isFullPlaceholderSubstitutionRequired;
+
+        /**
+         * Return true if the localName attribute should be removed from the node declaring it.
+         *
+         * @param localName the XML no namespace local name
+         */
+        public boolean isKeepToolsAttributeRequired(String localName) {
+            return isKeepToolsAttributeRequired
+                    && !NodeOperationType.LIST_OF_ALLOWED_RUNTIME_ATTRIBUTES.contains(localName);
+        }
+
+        public boolean isFullPlaceholderSubstitutionRequired() {
+            return isFullPlaceholderSubstitutionRequired;
+        }
+
+        MergeType(boolean isKeepToolsAttributeRequired, boolean isFullPlaceholderSubstitutionRequired) {
+            this.isKeepToolsAttributeRequired = isKeepToolsAttributeRequired;
+            this.isFullPlaceholderSubstitutionRequired = isFullPlaceholderSubstitutionRequired;
+        }
     }
 
     /**
@@ -1367,7 +1431,7 @@ public class ManifestMerger2 {
 
     private void checkExportedDeclaration(
             XmlDocument finalMergedDocument, MergingReport.Builder mergingReportBuilder) {
-        String targetSdkVersion = finalMergedDocument.getTargetSdkVersion();
+        String targetSdkVersion = finalMergedDocument.getTargetSdkVersion(mergingReportBuilder);
         int targetSdkApi =
                 Character.isDigit(targetSdkVersion.charAt(0))
                         ? Integer.parseInt(targetSdkVersion)
@@ -1412,6 +1476,17 @@ public class ManifestMerger2 {
                                 element.getId()));
             }
         }
+    }
+
+    private void stripTargetSdk(@NonNull XmlDocument xmlDocument) {
+        Optional<XmlElement> usesSdk = xmlDocument.getByTypeAndKey(USES_SDK, null);
+        usesSdk.ifPresent(
+                xmlElement ->
+                        xmlElement
+                                .getXml()
+                                .removeAttributeNS(
+                                        SdkConstants.ANDROID_URI,
+                                        SdkConstants.ATTR_TARGET_SDK_VERSION));
     }
 
     /**
@@ -1606,13 +1681,13 @@ public class ManifestMerger2 {
             HANDLE_VALUE_CONFLICTS_AUTOMATICALLY,
 
             /**
-             * Adds the AndroidX name of {@link SdkConstants#MULTI_DEX_APPLICATION} as application
-             * name if none is specified. Used for legacy multidex.
+             * Adds the AndroidX name of {@link AndroidXConstants#MULTI_DEX_APPLICATION} as
+             * application name if none is specified. Used for legacy multidex.
              */
             ADD_ANDROIDX_MULTIDEX_APPLICATION_IF_NO_NAME,
 
             /**
-             * Adds the pre-AndroidX name of {@link SdkConstants#MULTI_DEX_APPLICATION} as
+             * Adds the pre-AndroidX name of {@link AndroidXConstants#MULTI_DEX_APPLICATION} as
              * application name if none is specified. Used for legacy multidex.
              */
             ADD_SUPPORT_MULTIDEX_APPLICATION_IF_NO_NAME,
@@ -1637,7 +1712,16 @@ public class ManifestMerger2 {
              *
              * <p>This is used in AGP because users should migrate to the new namespace DSL.
              */
-            WARN_IF_PACKAGE_IN_SOURCE_MANIFEST
+            WARN_IF_PACKAGE_IN_SOURCE_MANIFEST,
+
+            /** Removes target SDK for library manifest */
+            DISABLE_STRIP_LIBRARY_TARGET_SDK,
+
+            /**
+             * If set, merger will continue merging after any errors, allowing to surface errors in
+             * the "merged manifest" editor view.
+             */
+            KEEP_GOING_AFTER_ERRORS
         }
 
         /**

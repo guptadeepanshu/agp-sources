@@ -17,27 +17,20 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.transform.QualifiedContent
 import com.android.build.api.variant.impl.getFeatureLevel
-import com.android.build.gradle.internal.InternalScope
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.dependency.BaseDexingTransform
 import com.android.build.gradle.internal.dependency.KEEP_RULES_FILE_NAME
 import com.android.build.gradle.internal.dexing.DexParameters
-import com.android.build.gradle.internal.pipeline.StreamFilter
-import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
-import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.SyncOptions
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils
 import org.gradle.api.artifacts.transform.CacheableTransform
@@ -78,6 +71,7 @@ import kotlin.math.max
  * that jar will be dex'ed.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.DEXING)
 abstract class DexArchiveBuilderTask : NewIncrementalTask() {
 
     @get:Incremental
@@ -101,40 +95,20 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
     @get:Classpath
     abstract val mixedScopeClasses: ConfigurableFileCollection
 
-    @get:OutputDirectory
-    abstract val projectOutputDex: DirectoryProperty
+    @get:Nested
+    abstract val projectOutputs: DexingOutputs
 
-    @get:Optional
-    @get:OutputDirectory
-    abstract val projectOutputKeepRules: DirectoryProperty
+    @get:Nested
+    abstract val subProjectOutputs: DexingOutputs
 
-    @get:OutputDirectory
-    abstract val subProjectOutputDex: DirectoryProperty
+    @get:Nested
+    abstract val externalLibsOutputs: DexingOutputs
 
-    @get:Optional
-    @get:OutputDirectory
-    abstract val subProjectOutputKeepRules: DirectoryProperty
+    @get:Nested
+    abstract val externalLibsFromArtifactTransformsOutputs: DexingOutputs
 
-    @get:OutputDirectory
-    abstract val externalLibsOutputDex: DirectoryProperty
-
-    @get:OutputDirectory
-    abstract val externalLibsFromAritfactTransformsDex: DirectoryProperty
-
-    @get:Optional
-    @get:OutputDirectory
-    abstract val externalLibsFromAritfactTransformsKeepRules: DirectoryProperty
-
-    @get:Optional
-    @get:OutputDirectory
-    abstract val externalLibsOutputKeepRules: DirectoryProperty
-
-    @get:OutputDirectory
-    abstract val mixedScopeOutputDex: DirectoryProperty
-
-    @get:Optional
-    @get:OutputDirectory
-    abstract val mixedScopeOutputKeepRules: DirectoryProperty
+    @get:Nested
+    abstract val mixedScopeOutputs: DexingOutputs
 
     @get:Nested
     abstract val dexParams: DexParameterInputs
@@ -210,8 +184,8 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             workerExecutor.noIsolation().submit(CopyDexOutput::class.java) {
                 it.initializeFromAndroidVariantTask(this)
                 it.inputDirs.from(externalLibDexFiles.files)
-                it.outputDexDir.set(externalLibsFromAritfactTransformsDex)
-                it.outputKeepRules.set(externalLibsFromAritfactTransformsKeepRules)
+                it.outputDexDir.set(externalLibsFromArtifactTransformsOutputs.dex)
+                it.outputKeepRules.set(externalLibsFromArtifactTransformsOutputs.keepRules)
             }
         }
 
@@ -227,14 +201,10 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             mixedScopeClasses = mixedScopeClasses.files,
             mixedScopeChangedClasses = getChanged(isIncremental, inputChanges, mixedScopeClasses),
 
-            projectOutputDex = projectOutputDex.asFile.get(),
-            projectOutputKeepRules = projectOutputKeepRules.asFile.orNull,
-            subProjectOutputDex = subProjectOutputDex.asFile.get(),
-            subProjectOutputKeepRules = subProjectOutputKeepRules.asFile.orNull,
-            externalLibsOutputDex = externalLibsOutputDex.asFile.get(),
-            externalLibsOutputKeepRules = externalLibsOutputKeepRules.asFile.orNull,
-            mixedScopeOutputDex = mixedScopeOutputDex.asFile.get(),
-            mixedScopeOutputKeepRules = mixedScopeOutputKeepRules.asFile.orNull,
+            projectOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(projectOutputs),
+            subProjectOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(subProjectOutputs),
+            externalLibsOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(externalLibsOutputs),
+            mixedScopeOutputs = DexArchiveBuilderTaskDelegate.DexingOutputs(mixedScopeOutputs),
 
             dexParams = dexParams.toDexParameters(),
 
@@ -245,7 +215,6 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             ),
             desugarGraphDir = desugarGraphDir.get().asFile.takeIf { dexParams.withDesugaring.get() },
 
-            projectVariant = projectVariant.get(),
             inputJarHashesFile = inputJarHashesFile.get().asFile,
             numberOfBuckets = numberOfBuckets.get(),
             workerExecutor = workerExecutor,
@@ -255,36 +224,9 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
         ).doProcess()
     }
 
-    /**
-     * Some files will be reported as both added and removed, as order of inputs may shift and we
-     * are using @Classpath on inputs. For those, ignore the removed change,
-     * and just handle them as added. For non-incremental builds return an empty set as dexing
-     * pipeline traverses directories and we'd like to avoid serializing this information to the
-     * worker action.
-     */
-    private fun getChanged(
-        canRunIncrementally: Boolean,
-        inputChanges: InputChanges,
-        input: FileCollection
-    ): Set<FileChange> {
-        if (!canRunIncrementally) {
-            return emptySet()
-        }
-        val fileChanges = mutableMapOf<File, FileChange>()
-
-        inputChanges.getFileChanges(input).forEach { change ->
-            val currentValue = fileChanges[change.file]
-            if (currentValue == null || (currentValue.changeType == ChangeType.REMOVED && change.changeType == ChangeType.ADDED)) {
-                fileChanges[change.file] = change
-            }
-        }
-        return fileChanges.values.toSet()
-    }
-
     class CreationAction(
         creationConfig: ApkCreationConfig,
-        enableDexingArtifactTransform: Boolean,
-        variantHasLegacyTransforms: Boolean
+        classesClasspathUtils: ClassesClasspathUtils,
     ) : VariantTaskCreationAction<DexArchiveBuilderTask, ApkCreationConfig>(
         creationConfig
     ) {
@@ -303,188 +245,14 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
         private val dexExternalLibsInArtifactTransform: Boolean
 
         init {
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
-            val classesFilter =
-                StreamFilter { types, _ -> com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES in types }
+            desugaringClasspathClasses = classesClasspathUtils.desugaringClasspathClasses
+            projectClasses = classesClasspathUtils.projectClasses
+            dexExternalLibsInArtifactTransform = classesClasspathUtils.dexExternalLibsInArtifactTransform
 
-            val transformManager = creationConfig.transformManager
-
-            val jacocoTransformEnabled =
-                creationConfig.isAndroidTestCoverageEnabled &&
-                        !creationConfig.componentType.isForTesting
-
-            val jacocoTransformWithLegacyTransformsRegistered =
-                jacocoTransformEnabled && variantHasLegacyTransforms
-
-
-            // The source of project classes depend on whether; Jacoco instrumentation is enabled,
-            // instrumentation is collected using an artifact transform and or
-            // the user registers a transform using the legacy Transform
-            // [com.android.build.api.transform.Transform].
-            //
-            // Cases:
-            // (1) Jacoco Transform is enabled and there are no registered transforms:
-            //     then: Provide the project classes from the artifacts produced by the JacocoTask
-            // (2) Jacoco Transform is enabled and a legacy transform is registered:
-            //     then: No project classes will be provided. Rather, artifacts produced by the
-            //           JacocoTask will be set as the mixed scope classes.
-            // (3) No Jacoco Transforms:
-            //      then: Provide the project classes from the legacy transform API classes.
-
-            projectClasses = if (jacocoTransformEnabled && !variantHasLegacyTransforms) {
-                creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.JACOCO_INSTRUMENTED_CLASSES
-                    ),
-                    creationConfig.services.fileCollection(
-                        creationConfig.artifacts.get(
-                            InternalArtifactType.JACOCO_INSTRUMENTED_JARS
-                        )
-                    ).asFileTree
-                )
-            }
-            else if (jacocoTransformWithLegacyTransformsRegistered) {
-                // Legacy support (b/195153220)
-                // Do not pass project classes if transform code coverage
-                // is enabled and a legacy transform is applied, the legacy transform supported
-                // JacocoTask artifacts will be passed via the mixed scope classes.
-                creationConfig.services.fileCollection()
-            }
-            else {
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
-                transformManager.getPipelineOutputAsFileCollection(
-                    StreamFilter { _, scopes -> scopes == setOf(QualifiedContent.Scope.PROJECT) },
-                    classesFilter
-                )
-            }
-
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
-            val desugaringClasspathScopes: MutableSet<com.android.build.api.transform.QualifiedContent.ScopeType> =
-                mutableSetOf(com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY)
-            if (enableDexingArtifactTransform) {
-                subProjectsClasses = creationConfig.services.fileCollection()
-                externalLibraryClasses = creationConfig.services.fileCollection()
-                mixedScopeClasses = creationConfig.services.fileCollection()
-                dexExternalLibsInArtifactTransform = false
-
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
-                run {
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
-                }
-            } else if (creationConfig.variantScope.consumesFeatureJars()) {
-                subProjectsClasses = creationConfig.services.fileCollection()
-                externalLibraryClasses = creationConfig.services.fileCollection()
-                dexExternalLibsInArtifactTransform = false
-
-                // Get all classes from the scopes we are interested in.
-                mixedScopeClasses = transformManager.getPipelineOutputAsFileCollection(
-                    { _, scopes ->
-                        scopes.isNotEmpty() && scopes.subtract(
-                            TransformManager.SCOPE_FULL_WITH_FEATURES
-                        ).isEmpty()
-                    },
-                    classesFilter
-                )
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
-                run {
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
-                    desugaringClasspathScopes.add(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
-                }
-                desugaringClasspathScopes.add(InternalScope.FEATURES)
-            }
-            else if (jacocoTransformWithLegacyTransformsRegistered) {
-                mixedScopeClasses = creationConfig.services.fileCollection(
-                    creationConfig.artifacts.get(
-                        InternalArtifactType.LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_CLASSES),
-                    creationConfig.services.fileCollection(
-                        creationConfig.artifacts.get(
-                            InternalArtifactType.LEGACY_TRANSFORMED_JACOCO_INSTRUMENTED_JARS
-                        )
-                    ).asFileTree
-                )
-                subProjectsClasses = creationConfig.services.fileCollection()
-                externalLibraryClasses = creationConfig.services.fileCollection()
-                dexExternalLibsInArtifactTransform =
-                    creationConfig.services.projectOptions[
-                            BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS]
-            }
-            else {
-                // legacy Transform API
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
-                subProjectsClasses =
-                    transformManager.getPipelineOutputAsFileCollection(
-                        { _, scopes -> scopes == setOf(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS) },
-                        classesFilter
-                    )
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
-                externalLibraryClasses =
-                    transformManager.getPipelineOutputAsFileCollection(
-                        { _, scopes -> scopes == setOf(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES) },
-                        classesFilter
-                    )
-                // Get all classes that have more than 1 scope. E.g. project & subproject, or
-                // project & subproject & external libs.
-                mixedScopeClasses = transformManager.getPipelineOutputAsFileCollection(
-                    { _, scopes -> scopes.size > 1 && scopes.subtract(TransformManager.SCOPE_FULL_PROJECT).isEmpty() },
-                    classesFilter
-                )
-                dexExternalLibsInArtifactTransform =
-                    creationConfig.services.projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS]
-            }
-
-            desugaringClasspathForArtifactTransforms = if (dexExternalLibsInArtifactTransform) {
-                val testedExternalLibs = creationConfig.onTestedConfig {
-                    it.variantDependencies.getArtifactCollection(
-                        ConsumedConfigType.RUNTIME_CLASSPATH,
-                        ArtifactScope.ALL,
-                        AndroidArtifacts.ArtifactType.CLASSES_JAR
-                    ).artifactFiles
-                } ?: creationConfig.services.fileCollection()
-
-                // Before b/115334911 was fixed, provided classpath did not contain the tested project.
-                // Because we do not want tested variant classes in the desugaring classpath for
-                // external libraries, we explicitly remove it.
-                val testedProject = this.creationConfig.onTestedConfig {
-                    val artifactType =
-                        it.variantScope.publishingSpec.getSpec(
-                            AndroidArtifacts.ArtifactType.CLASSES_JAR,
-                            AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS
-                        )!!.outputType
-                    creationConfig.services.fileCollection(
-                        it.artifacts.get(artifactType)
-                    )
-                } ?: creationConfig.services.fileCollection()
-
-                creationConfig.services.fileCollection(
-                    creationConfig.transformManager.getPipelineOutputAsFileCollection(
-                        { _, scopes ->
-                            scopes.subtract(desugaringClasspathScopes).isEmpty()
-                        },
-                        classesFilter
-                    ), testedExternalLibs, externalLibraryClasses
-                ).minus(testedProject)
-            } else {
-                creationConfig.services.fileCollection()
-            }
-
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
-            desugaringClasspathClasses =
-                creationConfig.transformManager.getPipelineOutputAsFileCollection(
-                    { _, scopes ->
-                        scopes.contains(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
-                                || scopes.subtract(desugaringClasspathScopes).isEmpty()
-                    },
-                    classesFilter
-                )
-
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
-            transformManager.consumeStreams(
-                TransformManager.SCOPE_FULL_WITH_FEATURES,
-                TransformManager.CONTENT_CLASS
-            )
+            subProjectsClasses = classesClasspathUtils.subProjectsClasses
+            externalLibraryClasses = classesClasspathUtils.externalLibraryClasses
+            mixedScopeClasses = classesClasspathUtils.mixedScopeClasses
+            desugaringClasspathForArtifactTransforms = classesClasspathUtils.desugaringClasspathForArtifactTransforms
         }
 
         override val type: Class<DexArchiveBuilderTask> = DexArchiveBuilderTask::class.java
@@ -493,25 +261,25 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             super.handleProvider(taskProvider)
 
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                DexArchiveBuilderTask::projectOutputDex
-            ).withName("out").withName("out").on(InternalArtifactType.PROJECT_DEX_ARCHIVE)
+                taskProvider
+            ) { it.projectOutputs.dex }
+                .withName("out").withName("out").on(InternalArtifactType.PROJECT_DEX_ARCHIVE)
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                DexArchiveBuilderTask::subProjectOutputDex
-            ).withName("out").withName("out").on(InternalArtifactType.SUB_PROJECT_DEX_ARCHIVE)
+                taskProvider
+            ) { it.subProjectOutputs.dex }
+                .withName("out").withName("out").on(InternalArtifactType.SUB_PROJECT_DEX_ARCHIVE)
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                DexArchiveBuilderTask::externalLibsOutputDex
-            ).withName("out").on(InternalArtifactType.EXTERNAL_LIBS_DEX_ARCHIVE)
+                taskProvider
+            ) { it.externalLibsOutputs.dex }
+                .withName("out").on(InternalArtifactType.EXTERNAL_LIBS_DEX_ARCHIVE)
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                DexArchiveBuilderTask::externalLibsFromAritfactTransformsDex
-            ).withName("out").on(InternalArtifactType.EXTERNAL_LIBS_DEX_ARCHIVE_WITH_ARTIFACT_TRANSFORMS)
+                taskProvider
+            ) { it.externalLibsFromArtifactTransformsOutputs.dex }
+                .withName("out").on(InternalArtifactType.EXTERNAL_LIBS_DEX_ARCHIVE_WITH_ARTIFACT_TRANSFORMS)
             creationConfig.artifacts.setInitialProvider(
-                taskProvider,
-                DexArchiveBuilderTask::mixedScopeOutputDex
-            ).withName("out").on(InternalArtifactType.MIXED_SCOPE_DEX_ARCHIVE)
+                taskProvider
+            ) { it.mixedScopeOutputs.dex }
+                .withName("out").on(InternalArtifactType.MIXED_SCOPE_DEX_ARCHIVE)
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 DexArchiveBuilderTask::inputJarHashesFile
@@ -526,25 +294,25 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             ).withName("out").on(InternalArtifactType.DEX_NUMBER_OF_BUCKETS_FILE)
             if (creationConfig.needsShrinkDesugarLibrary) {
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    DexArchiveBuilderTask::projectOutputKeepRules
-                ).withName("out").on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
+                    taskProvider
+                ) { it.projectOutputs.keepRules }
+                    .withName("out").on(InternalArtifactType.DESUGAR_LIB_PROJECT_KEEP_RULES)
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    DexArchiveBuilderTask::subProjectOutputKeepRules
-                ).withName("out").on(InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES)
+                    taskProvider
+                ) { it.subProjectOutputs.keepRules }
+                    .withName("out").on(InternalArtifactType.DESUGAR_LIB_SUBPROJECT_KEEP_RULES)
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    DexArchiveBuilderTask::externalLibsOutputKeepRules
-                ).withName("out").on(InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES)
+                    taskProvider
+                ) { it.externalLibsOutputs.keepRules }
+                    .withName("out").on(InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_KEEP_RULES)
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    DexArchiveBuilderTask::externalLibsFromAritfactTransformsKeepRules
-                ).withName("out").on(InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES)
+                    taskProvider
+                ) { it.externalLibsFromArtifactTransformsOutputs.keepRules }
+                    .withName("out").on(InternalArtifactType.DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES)
                 creationConfig.artifacts.setInitialProvider(
-                    taskProvider,
-                    DexArchiveBuilderTask::mixedScopeOutputKeepRules
-                ).withName("out").on(InternalArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES)
+                    taskProvider
+                ) { it.mixedScopeOutputs.keepRules }
+                    .withName("out").on(InternalArtifactType.DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES)
             }
         }
 
@@ -560,7 +328,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             val minSdkVersionForDexing = creationConfig.minSdkVersionForDexing.getFeatureLevel()
             task.dexParams.minSdkVersion.set(minSdkVersionForDexing)
             val languageDesugaring =
-                creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.D8
+                creationConfig.getJava8LangSupportType() == Java8LangSupport.D8
             task.dexParams.withDesugaring.set(languageDesugaring)
 
             // If min sdk version for dexing is >= N(24) then we can avoid adding extra classes to
@@ -598,7 +366,7 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
                 }
             )
             if (libraryDesugaring) {
-                task.dexParams.coreLibDesugarConfig.set(getDesugarLibConfig(task.project))
+                task.dexParams.coreLibDesugarConfig.set(getDesugarLibConfig(creationConfig.services))
             }
 
             if (dexExternalLibsInArtifactTransform) {
@@ -611,12 +379,13 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
 
         /** Creates a detached configuration and sets up artifact transform for dexing. */
         private fun getDexForExternalLibs(task: DexArchiveBuilderTask, inputType: String): FileCollection {
-            val project = creationConfig.services.projectInfo.getProject()
-            project.dependencies.registerTransform(
+            val services = creationConfig.services
+
+            services.dependencies.registerTransform(
                 DexingExternalLibArtifactTransform::class.java
             ) {
                 it.parameters.run {
-                    this.projectName.set(project.name)
+                    this.projectName.set(services.projectInfo.name)
                     this.minSdkVersion.set(task.dexParams.minSdkVersion)
                     this.debuggable.set(task.dexParams.debuggable)
                     this.bootClasspath.from(task.dexParams.desugarBootclasspath)
@@ -635,8 +404,8 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
                 it.to.attribute(Attribute.of("artifactType", String::class.java), "ext-dex-$name")
             }
 
-            val detachedExtConf = project.configurations.detachedConfiguration()
-            detachedExtConf.dependencies.add(project.dependencies.create(externalLibraryClasses))
+            val detachedExtConf = services.configurations.detachedConfiguration()
+            detachedExtConf.dependencies.add(services.dependencies.create(externalLibraryClasses))
 
             return detachedExtConf.incoming.artifactView {
                 it.attributes.attribute(
@@ -646,9 +415,49 @@ abstract class DexArchiveBuilderTask : NewIncrementalTask() {
             }.files
         }
     }
+
+    /** Outputs for dexing (with d8) */
+    abstract class DexingOutputs {
+
+        @get:OutputDirectory
+        abstract val dex: DirectoryProperty
+
+        /** Core library desugaring keep rules */
+        @get:Optional
+        @get:OutputDirectory
+        abstract val keepRules: DirectoryProperty
+    }
+
+    companion object {
+        /**
+         * Some files will be reported as both added and removed, as order of inputs may shift and we
+         * are using @Classpath on inputs. For those, ignore the removed change,
+         * and just handle them as added. For non-incremental builds return an empty set as dexing
+         * pipeline traverses directories and we'd like to avoid serializing this information to the
+         * worker action.
+         */
+        fun getChanged(
+            canRunIncrementally: Boolean,
+            inputChanges: InputChanges,
+            input: FileCollection
+        ): Set<FileChange> {
+            if (!canRunIncrementally) {
+                return emptySet()
+            }
+            val fileChanges = mutableMapOf<File, FileChange>()
+
+            inputChanges.getFileChanges(input).forEach { change ->
+                val currentValue = fileChanges[change.file]
+                if (currentValue == null || (currentValue.changeType == ChangeType.REMOVED && change.changeType == ChangeType.ADDED)) {
+                    fileChanges[change.file] = change
+                }
+            }
+            return fileChanges.values.toSet()
+        }
+    }
 }
 
-private val DEFAULT_NUM_BUCKETS = max(Runtime.getRuntime().availableProcessors() / 2, 1)
+val DEFAULT_NUM_BUCKETS = max(Runtime.getRuntime().availableProcessors() / 2, 1)
 
 /** Parameters required for dexing (with D8). */
 abstract class DexParameterInputs {

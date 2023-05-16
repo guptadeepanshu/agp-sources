@@ -499,6 +499,14 @@ private static final long serialVersionUID = 0L;
      * <code>TEST_FIXTURES = 10;</code>
      */
     TEST_FIXTURES(10),
+    /**
+     * <pre>
+     * main artifact of the privacy sandbox sdk bundle plugin
+     * </pre>
+     *
+     * <code>PRIVACY_SANDBOX_SDK = 11;</code>
+     */
+    PRIVACY_SANDBOX_SDK(11),
     ;
 
     /**
@@ -590,6 +598,14 @@ private static final long serialVersionUID = 0L;
      * <code>TEST_FIXTURES = 10;</code>
      */
     public static final int TEST_FIXTURES_VALUE = 10;
+    /**
+     * <pre>
+     * main artifact of the privacy sandbox sdk bundle plugin
+     * </pre>
+     *
+     * <code>PRIVACY_SANDBOX_SDK = 11;</code>
+     */
+    public static final int PRIVACY_SANDBOX_SDK_VALUE = 11;
 
 
     public final int getNumber() {
@@ -623,6 +639,7 @@ private static final long serialVersionUID = 0L;
         case 8: return TEST_APK;
         case 9: return JAVA_LIBRARY;
         case 10: return TEST_FIXTURES;
+        case 11: return PRIVACY_SANDBOX_SDK;
         default: return null;
       }
     }

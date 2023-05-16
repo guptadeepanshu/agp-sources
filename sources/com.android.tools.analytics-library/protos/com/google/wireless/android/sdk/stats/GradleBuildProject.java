@@ -367,12 +367,20 @@ private static final long serialVersionUID = 0L;
     DYNAMIC_FEATURE(7),
     /**
      * <pre>
-     * The 'com.android.fused-libraries' plugin
+     * The 'com.android.fused-library' plugin
      * </pre>
      *
      * <code>FUSED_LIBRARIES = 8;</code>
      */
     FUSED_LIBRARIES(8),
+    /**
+     * <pre>
+     * the 'com.android.privacy-sandbox-sdk' plugin
+     * </pre>
+     *
+     * <code>PRIVACY_SANDBOX_SDK = 9;</code>
+     */
+    PRIVACY_SANDBOX_SDK(9),
     ;
 
     /**
@@ -437,12 +445,20 @@ private static final long serialVersionUID = 0L;
     public static final int DYNAMIC_FEATURE_VALUE = 7;
     /**
      * <pre>
-     * The 'com.android.fused-libraries' plugin
+     * The 'com.android.fused-library' plugin
      * </pre>
      *
      * <code>FUSED_LIBRARIES = 8;</code>
      */
     public static final int FUSED_LIBRARIES_VALUE = 8;
+    /**
+     * <pre>
+     * the 'com.android.privacy-sandbox-sdk' plugin
+     * </pre>
+     *
+     * <code>PRIVACY_SANDBOX_SDK = 9;</code>
+     */
+    public static final int PRIVACY_SANDBOX_SDK_VALUE = 9;
 
 
     public final int getNumber() {
@@ -474,6 +490,7 @@ private static final long serialVersionUID = 0L;
         case 6: return FEATURE;
         case 7: return DYNAMIC_FEATURE;
         case 8: return FUSED_LIBRARIES;
+        case 9: return PRIVACY_SANDBOX_SDK;
         default: return null;
       }
     }

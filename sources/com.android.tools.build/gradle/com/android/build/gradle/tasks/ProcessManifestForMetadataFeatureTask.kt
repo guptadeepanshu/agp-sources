@@ -19,8 +19,11 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.XmlDocument
 import com.android.utils.PositionXmlParser
 import org.gradle.api.file.RegularFileProperty
@@ -41,6 +44,7 @@ import java.io.Serializable
 import javax.inject.Inject
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST)
 abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
 
     @get:OutputFile
@@ -52,6 +56,9 @@ abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
 
     @get:Input
     abstract val dynamicFeature: Property<Boolean>
+
+    @get:Input
+    abstract val namespace: Property<String>
 
     @TaskAction
     override fun doTaskAction() {
@@ -67,12 +74,14 @@ abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
         workerExecutor.noIsolation().submit(WorkItem::class.java) {
             it.inputXmlFile.set(bundleManifest)
             it.outputXmlFile.set(metadataFeatureManifestFile)
+            it.namespace.set(namespace)
         }
     }
 
     interface WorkItemParameters: WorkParameters, Serializable {
         val inputXmlFile: RegularFileProperty
         val outputXmlFile: RegularFileProperty
+        val namespace: Property<String>
     }
 
     abstract class WorkItem@Inject constructor(private val workItemParameters: WorkItemParameters)
@@ -87,6 +96,7 @@ abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
             }
             stripMinSdkFromFeatureManifest(xmlDocument)
             stripUsesSplitFromFeatureManifest(xmlDocument)
+            replacePackageNameInFeatureManifest(xmlDocument, workItemParameters.namespace.get())
             workItemParameters.outputXmlFile.get().asFile.writeText(
                 XmlDocument.prettyPrint(xmlDocument))
         }
@@ -118,6 +128,7 @@ abstract class ProcessManifestForMetadataFeatureTask : NonIncrementalTask() {
                 task.bundleManifest
             )
             task.dynamicFeature.set(creationConfig.componentType.isDynamicFeature)
+            task.namespace.setDisallowChanges(creationConfig.namespace)
         }
     }
 }

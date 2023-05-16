@@ -17,7 +17,6 @@
 package com.android.build.gradle.internal.tasks.factory
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
-import com.android.build.api.dsl.AdbOptions
 import com.android.build.api.dsl.Bundle
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.dsl.ComposeOptions
@@ -26,23 +25,24 @@ import com.android.build.api.dsl.ExternalNativeBuild
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.Lint
 import com.android.build.api.dsl.PrefabPackagingOptions
-import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.Splits
 import com.android.build.api.dsl.TestCoverage
 import com.android.build.api.dsl.TestOptions
 import com.android.build.api.transform.Transform
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
-import com.android.build.gradle.internal.profile.ProfilingMode
+import com.android.build.gradle.internal.packaging.JarCreatorType
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.builder.core.LibraryRequest
+import com.android.builder.internal.packaging.ApkCreatorType
 import com.android.builder.testing.api.DeviceProvider
 import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
-import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
-import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 
 /**
@@ -104,12 +104,16 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
 
     val hasNoBuildTypeMinified: Boolean
 
+    val manifestArtifactType: InternalArtifactType<Directory>
+
     // Internal Objects
-    //val sdkComponents: SdkComponents
+
     val globalArtifacts: ArtifactsImpl
     val services: BaseServices
 
     val createdBy: String
+
+    val asmApiVersion: Int
 
     /**
      * Queries the given configuration for platform attributes from the jar(s) in it.
@@ -129,4 +133,10 @@ interface GlobalTaskCreationConfig: BootClasspathConfig {
     val lintPublish: Configuration
     val lintChecks: Configuration
 
+    val jarCreatorType: JarCreatorType
+
+    val apkCreatorType: ApkCreatorType
+
+    // Options from the settings plugin
+    val settingsOptions: SettingsOptions
 }

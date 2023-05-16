@@ -99,6 +99,11 @@ data class CxxAbiModel(
     val fullConfigurationHash: String,
 
     /**
+     * The string value used to calculate [fullConfigurationHash]
+     */
+    val fullConfigurationHashKey: String,
+
+    /**
      * The inputs used to compute [fullConfigurationHash]
      */
     val configurationArguments: List<String>,
@@ -122,6 +127,7 @@ data class CxxAbiModel(
  * The model json
  *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/android_gradle_build.json
  */
+// TODO : rename to androidGradleBuildFile
 val CxxAbiModel.jsonFile: File
     get() = join(cxxBuildFolder, "android_gradle_build.json")
 
@@ -129,6 +135,7 @@ val CxxAbiModel.jsonFile: File
  * The json mini-config file contains a subset of the regular json file that is much smaller and
  * less memory-intensive to read.
  */
+// TODO : rename to androidGradleBuildMiniFile
 val CxxAbiModel.miniConfigFile: File
     get() = join(modelMetadataFolder, "android_gradle_build_mini.json")
 
@@ -145,6 +152,14 @@ private val CxxAbiModel.modelMetadataFolder: File
  */
 val CxxAbiModel.logsFolder: File
     get() = join(intermediatesParentFolder, "logs", abi.tag)
+
+
+/**
+ * A predictable location to republish files like compile_commands.json.
+ *   ex, $moduleRootFolder/.cxx/tools/debug/x86
+ */
+val CxxAbiModel.predictableRepublishFolder : File
+    get() = join(variant.predictableRepublishFolder, abi.tag)
 
 /**
  * Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
@@ -273,6 +288,14 @@ val CxxAbiModel.cmakeServerLogFile: File
  */
 val CxxAbiModel.prefabConfigFile: File
     get() = join(cxxBuildFolder, "prefab_config.json")
+
+/**
+ * File that contains fingerprints of files involved in the last C++ configure run.
+ *
+ *   ex, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/configure_fingerprint.bin
+ */
+val CxxAbiModel.lastConfigureFingerPrintFile: File
+    get() = join(cxxBuildFolder, "configure_fingerprint.bin")
 
 /**
  * compile_commands.json file for this ABI.
@@ -420,6 +443,13 @@ val CxxAbiModel.platformCode
                 .minByOrNull { (alias, _) -> alias.length }
                 ?.first
     } ?: ""
+
+/**
+ * File that holds the key for the hashed subfolder.
+ *   ex, $moduleRootFolder/.cxx/Debug/{hashcode}/hash_key.txt
+ */
+val CxxAbiModel.cxxBuildHashKeyFile : File get() =
+    cxxBuildFolder.parentFile.resolve("hash_key.txt")
 
 /**
  * Construct a ninja command-line with [args] at the end.

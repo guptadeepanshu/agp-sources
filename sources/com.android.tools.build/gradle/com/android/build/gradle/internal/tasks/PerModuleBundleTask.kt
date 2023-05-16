@@ -22,24 +22,31 @@ import com.android.SdkConstants.FD_ASSETS
 import com.android.SdkConstants.FD_DEX
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.dependency.AndroidAttributes
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.StreamFilter
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.MODULE_PATH
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MERGED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NATIVE_LIBS
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
+import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.files.NativeLibraryAbiPredicate
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarMerger
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
@@ -47,12 +54,14 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
+import org.gradle.api.tasks.IgnoreEmptyDirectories
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -71,11 +80,17 @@ import javax.inject.Inject
  *
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
 abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
     NonIncrementalTask() {
 
+    @get:Optional
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
+
+    @get:Optional
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -99,6 +114,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
 
     @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:IgnoreEmptyDirectories
     abstract val assetsFilesDirectory: DirectoryProperty
 
     @get:InputFiles
@@ -118,16 +134,24 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
     @get:Optional
     abstract val appMetadata: RegularFileProperty
 
+    @get:Optional
     @get:Input
     abstract val fileName: Property<String>
+
+    @get:Optional
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NAME_ONLY)
+    abstract val privacySandboxSdkRuntimeConfigFile: RegularFileProperty
 
     @get:Input
     val jarCreatorType: Property<JarCreatorType> = objects.property(JarCreatorType::class.java)
 
     public override fun doTaskAction() {
+        val outputPath =
+                (outputFile.orNull?.asFile ?: File(outputDir.get().asFile, fileName.get())).toPath()
         val jarCreator =
-            JarCreatorFactory.make(
-                jarFile = File(outputDir.get().asFile, fileName.get()).toPath(),
+                JarCreatorFactory.make(
+                        jarFile = outputPath,
                 type = jarCreatorType.get()
             )
 
@@ -144,15 +168,15 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
         // https://b.corp.google.com/issues/140219742
         val excludeJarManifest =
             Predicate { path: String ->
-                !path.toUpperCase(Locale.US).endsWith("MANIFEST.MF")
+                !path.uppercase(Locale.US).endsWith("MANIFEST.MF")
             }
 
         jarCreator.use {
             it.addDirectory(
-                assetsFilesDirectory.get().asFile.toPath(),
-                null,
-                null,
-                Relocator(FD_ASSETS)
+                    assetsFilesDirectory.get().asFile.toPath(),
+                    null,
+                    null,
+                    Relocator(FD_ASSETS)
             )
 
             it.addJar(resFiles.get().asFile.toPath(), excludeJarManifest, ResRelocator())
@@ -171,15 +195,21 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             // featureJavaResFiles.files.isNotEmpty() because we want to use featureJavaResFiles
             // even if it's empty (which will be the case when using proguard)
             val javaResFilesSet =
-                if (hasFeatureDexFiles()) featureJavaResFiles.files else javaResFiles.files
+                    if (hasFeatureDexFiles()) featureJavaResFiles.files else javaResFiles.files
             addHybridFolder(it, javaResFilesSet, Relocator("root"), JarMerger.EXCLUDE_CLASSES)
             addHybridFolder(
-                it,
-                appMetadata.orNull?.asFile?.let { metadataFile -> setOf(metadataFile) } ?: setOf(),
-                Relocator("root/META-INF/com/android/build/gradle"),
-                JarMerger.EXCLUDE_CLASSES)
+                    it,
+                    appMetadata.orNull?.asFile?.let { metadataFile -> setOf(metadataFile) }
+                            ?: setOf(),
+                    Relocator("root/META-INF/com/android/build/gradle"),
+                    JarMerger.EXCLUDE_CLASSES)
 
             addHybridFolder(it, nativeLibsFiles.files, fileFilter = abiFilter)
+
+            if (privacySandboxSdkRuntimeConfigFile.isPresent) {
+                it.addFile("runtime_enabled_sdk_config.pb",
+                        privacySandboxSdkRuntimeConfigFile.get().asFile.toPath())
+            }
         }
     }
 
@@ -213,6 +243,56 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
     }
 
     private fun hasFeatureDexFiles() = featureDexFiles.files.isNotEmpty()
+
+    class PrivacySandboxSdkCreationAction(
+        private val creationConfig: PrivacySandboxSdkVariantScope
+    ): TaskCreationAction<PerModuleBundleTask>() {
+
+        override val name: String = "buildModuleForBundle"
+        override val type: Class<PerModuleBundleTask> = PerModuleBundleTask::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<PerModuleBundleTask>) {
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                taskProvider,
+                PerModuleBundleTask::outputFile
+            ).withName("base.zip").on(PrivacySandboxSdkInternalArtifactType.MODULE_BUNDLE)
+        }
+
+        override fun configure(task: PerModuleBundleTask) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            task.dexFiles.fromDisallowChanges(
+                creationConfig.artifacts.get(
+                    PrivacySandboxSdkInternalArtifactType.DEX
+                )
+            )
+            task.assetsFilesDirectory.setDisallowChanges(
+                    creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_ASSETS)
+            )
+            task.resFiles.setDisallowChanges(
+                creationConfig.artifacts.get(
+                    PrivacySandboxSdkInternalArtifactType.LINKED_MERGE_RES_FOR_ASB
+                )
+            )
+            task.javaResFiles.fromDisallowChanges(
+                    creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+            )
+
+            // Not applicable
+            task.featureDexFiles.fromDisallowChanges()
+            task.featureJavaResFiles.fromDisallowChanges()
+            task.nativeLibsFiles.fromDisallowChanges()
+            task.abiFilters.setDisallowChanges(emptySet())
+
+            task.jarCreatorType.setDisallowChanges(
+                if (creationConfig.services.projectOptions.get(BooleanOption.USE_NEW_JAR_CREATOR)) {
+                    JarCreatorType.JAR_FLINGER
+                } else {
+                    JarCreatorType.JAR_MERGER
+                }
+            )
+        }
+    }
 
     class CreationAction(
         creationConfig: ApkCreationConfig
@@ -252,7 +332,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                 creationConfig.artifacts.get(SingleArtifact.ASSETS)
             )
 
-            val legacyShrinkerEnabled = creationConfig.useResourceShrinker() &&
+            val legacyShrinkerEnabled = creationConfig.androidResourcesCreationConfig?.useResourceShrinker == true &&
                 !creationConfig.services.projectOptions[BooleanOption.ENABLE_NEW_RESOURCE_SHRINKER]
             task.resFiles.set(
                 if (legacyShrinkerEnabled){
@@ -264,7 +344,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             task.resFiles.disallowChanges()
 
             task.dexFiles.from(
-                if (creationConfig.variantScope.consumesFeatureJars()) {
+                if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
                     artifacts.get(InternalArtifactType.BASE_DEX)
                 } else {
                     artifacts.getAll(InternalMultipleArtifactType.DEX)
@@ -289,7 +369,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                     creationConfig.services.fileCollection(
                         artifacts.get(InternalArtifactType.SHRUNK_JAVA_RES)
                     )
-                } else if (creationConfig.getNeedsMergedJavaResStream()) {
+                } else if (creationConfig.needsMergedJavaResStream) {
                     creationConfig.transformManager
                         .getPipelineOutputAsFileCollection(StreamFilter.RESOURCES)
                 } else {
@@ -331,8 +411,17 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                 )
             }
 
-            task.jarCreatorType.set(creationConfig.variantScope.jarCreatorType)
+            task.jarCreatorType.set(creationConfig.global.jarCreatorType)
             task.jarCreatorType.disallowChanges()
+            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] && creationConfig.componentType.isBaseModule) {
+                artifacts.setTaskInputToFinalProduct(
+                        InternalArtifactType.PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE,
+                        task.privacySandboxSdkRuntimeConfigFile
+                )
+            } else {
+                task.privacySandboxSdkRuntimeConfigFile.disallowChanges()
+            }
+
         }
     }
 }

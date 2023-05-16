@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.dependency
 
-import com.android.build.api.variant.impl.VariantImpl
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.ANDROID_RES
@@ -74,7 +74,7 @@ class VariantDependencies internal constructor(
     val annotationProcessorConfiguration: Configuration,
     private val reverseMetadataValuesConfiguration: Configuration?,
     val wearAppConfiguration: Configuration?,
-    private val testedVariant: VariantImpl?,
+    private val testedVariant: VariantCreationConfig?,
     private val project: Project,
     private val projectOptions: ProjectOptions,
     isSelfInstrumenting: Boolean,
@@ -117,28 +117,9 @@ class VariantDependencies internal constructor(
         scope: ArtifactScope,
         artifactType: AndroidArtifacts.ArtifactType,
         attributes: AndroidAttributes? = null
-    ): FileCollection {
-        if (configType.needsTestedComponents()) {
-            return getArtifactCollection(configType, scope, artifactType, attributes)
-                .artifactFiles
-        }
-
-        val artifacts = computeArtifactCollection(configType, scope, artifactType, attributes)
-
-        return if (configType == ConsumedConfigType.RUNTIME_CLASSPATH
-            && isArtifactTypeExcluded(artifactType)
-        ) {
-            val excludedDirectories = computeArtifactCollection(
-                ConsumedConfigType.PROVIDED_CLASSPATH, ArtifactScope.PROJECT,
-                PACKAGED_DEPENDENCIES,
-                attributes
-            ).artifactFiles
-            FilteringSpec(artifacts, excludedDirectories, project.objects)
-                .getFilteredFileCollection()
-        } else {
-            artifacts.artifactFiles
-        }
-    }
+    ): FileCollection = getArtifactCollection(
+        configType, scope, artifactType, attributes
+    ).artifactFiles
 
     @JvmOverloads
     fun getArtifactCollection(

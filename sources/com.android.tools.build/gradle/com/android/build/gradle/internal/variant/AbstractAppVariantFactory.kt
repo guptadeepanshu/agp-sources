@@ -18,20 +18,18 @@ package com.android.build.gradle.internal.variant
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.api.variant.impl.VariantBuilderImpl
-import com.android.build.api.variant.impl.VariantImpl
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.api.ApplicationVariantImpl
 import com.android.build.gradle.internal.api.BaseVariantImpl
-import com.android.build.gradle.internal.core.VariantDslInfo
-import com.android.build.gradle.internal.core.VariantSources
-import com.android.build.gradle.internal.dependency.VariantDependencies
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.core.dsl.VariantDslInfo
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.BuilderConstants
 import com.android.builder.errors.IssueReporter
@@ -43,31 +41,24 @@ import org.gradle.api.Project
  *
  * This can be an app project, or a test-only project, though the default behavior is app.
  */
-abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : VariantImpl>(
-    projectServices: ProjectServices,
-) : BaseVariantFactory<VariantBuilderT, VariantT>(
-    projectServices,
+abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilder, VariantDslInfoT: VariantDslInfo, VariantT : VariantCreationConfig>(
+    dslServices: DslServices,
+) : BaseVariantFactory<VariantBuilderT, VariantDslInfoT, VariantT>(
+    dslServices,
 ) {
 
     override fun createVariantData(
         componentIdentity: ComponentIdentity,
-        variantDslInfo: VariantDslInfo,
-        variantDependencies: VariantDependencies,
-        variantSources: VariantSources,
-        paths: VariantPathHelper,
         artifacts: ArtifactsImpl,
         services: VariantServices,
         taskContainer: MutableTaskContainer
     ): BaseVariantData {
         return ApplicationVariantData(
-                componentIdentity,
-                variantDslInfo,
-                variantDependencies,
-                variantSources,
-                paths,
-                artifacts,
-                services,
-                taskContainer)
+            componentIdentity,
+            artifacts,
+            services,
+            taskContainer
+        )
     }
 
     override val variantImplementationClass: Class<out BaseVariantImpl?>
@@ -87,7 +78,7 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilderImpl, V
         }
 
         // below is for dynamic-features only.
-        val issueReporter: IssueReporter = projectServices.issueReporter
+        val issueReporter: IssueReporter = dslServices.issueReporter
         for (buildType in model.buildTypes.values) {
             if (buildType.buildType.isMinifyEnabled) {
                 issueReporter.reportError(
@@ -153,7 +144,7 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilderImpl, V
 
     private fun validateVersionCodes(
             model: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>) {
-        val issueReporter: IssueReporter = projectServices.issueReporter
+        val issueReporter: IssueReporter = dslServices.issueReporter
         val versionCode = model.defaultConfigData.defaultConfig.versionCode
         if (versionCode != null && versionCode < 1) {
             issueReporter.reportError(

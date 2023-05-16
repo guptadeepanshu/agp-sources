@@ -152,6 +152,18 @@ private static final long serialVersionUID = 0L;
      * <code>LOCALE_TEXT = 7;</code>
      */
     LOCALE_TEXT(7),
+    /**
+     * <code>TEXT_FIELD_SIZE = 8;</code>
+     */
+    TEXT_FIELD_SIZE(8),
+    /**
+     * <code>BUTTON_SIZE = 9;</code>
+     */
+    BUTTON_SIZE(9),
+    /**
+     * <code>WEAR_MARGIN = 10;</code>
+     */
+    WEAR_MARGIN(10),
     ;
 
     /**
@@ -186,6 +198,18 @@ private static final long serialVersionUID = 0L;
      * <code>LOCALE_TEXT = 7;</code>
      */
     public static final int LOCALE_TEXT_VALUE = 7;
+    /**
+     * <code>TEXT_FIELD_SIZE = 8;</code>
+     */
+    public static final int TEXT_FIELD_SIZE_VALUE = 8;
+    /**
+     * <code>BUTTON_SIZE = 9;</code>
+     */
+    public static final int BUTTON_SIZE_VALUE = 9;
+    /**
+     * <code>WEAR_MARGIN = 10;</code>
+     */
+    public static final int WEAR_MARGIN_VALUE = 10;
 
 
     public final int getNumber() {
@@ -216,6 +240,9 @@ private static final long serialVersionUID = 0L;
         case 5: return LONG_TEXT;
         case 6: return ATF;
         case 7: return LOCALE_TEXT;
+        case 8: return TEXT_FIELD_SIZE;
+        case 9: return BUTTON_SIZE;
+        case 10: return WEAR_MARGIN;
         default: return null;
       }
     }
@@ -290,6 +317,30 @@ private static final long serialVersionUID = 0L;
      * <code>IGNORE_ISSUE = 3;</code>
      */
     IGNORE_ISSUE(3),
+    /**
+     * <code>ENABLE_RULE = 4;</code>
+     */
+    ENABLE_RULE(4),
+    /**
+     * <code>DISABLE_RULE = 5;</code>
+     */
+    DISABLE_RULE(5),
+    /**
+     * <code>ENABLE_BACKGROUND_RULE = 6;</code>
+     */
+    ENABLE_BACKGROUND_RULE(6),
+    /**
+     * <code>DISABLE_BACKGROUND_RULE = 7;</code>
+     */
+    DISABLE_BACKGROUND_RULE(7),
+    /**
+     * <code>CLICK_DOCUMENTATION_LINK = 8;</code>
+     */
+    CLICK_DOCUMENTATION_LINK(8),
+    /**
+     * <code>CANCEL_BACKGROUND_ANALYSIS = 9;</code>
+     */
+    CANCEL_BACKGROUND_ANALYSIS(9),
     ;
 
     /**
@@ -308,6 +359,30 @@ private static final long serialVersionUID = 0L;
      * <code>IGNORE_ISSUE = 3;</code>
      */
     public static final int IGNORE_ISSUE_VALUE = 3;
+    /**
+     * <code>ENABLE_RULE = 4;</code>
+     */
+    public static final int ENABLE_RULE_VALUE = 4;
+    /**
+     * <code>DISABLE_RULE = 5;</code>
+     */
+    public static final int DISABLE_RULE_VALUE = 5;
+    /**
+     * <code>ENABLE_BACKGROUND_RULE = 6;</code>
+     */
+    public static final int ENABLE_BACKGROUND_RULE_VALUE = 6;
+    /**
+     * <code>DISABLE_BACKGROUND_RULE = 7;</code>
+     */
+    public static final int DISABLE_BACKGROUND_RULE_VALUE = 7;
+    /**
+     * <code>CLICK_DOCUMENTATION_LINK = 8;</code>
+     */
+    public static final int CLICK_DOCUMENTATION_LINK_VALUE = 8;
+    /**
+     * <code>CANCEL_BACKGROUND_ANALYSIS = 9;</code>
+     */
+    public static final int CANCEL_BACKGROUND_ANALYSIS_VALUE = 9;
 
 
     public final int getNumber() {
@@ -334,6 +409,12 @@ private static final long serialVersionUID = 0L;
         case 1: return CREATE_ISSUE;
         case 2: return EXPAND_ISSUE;
         case 3: return IGNORE_ISSUE;
+        case 4: return ENABLE_RULE;
+        case 5: return DISABLE_RULE;
+        case 6: return ENABLE_BACKGROUND_RULE;
+        case 7: return DISABLE_BACKGROUND_RULE;
+        case 8: return CLICK_DOCUMENTATION_LINK;
+        case 9: return CANCEL_BACKGROUND_ANALYSIS;
         default: return null;
       }
     }

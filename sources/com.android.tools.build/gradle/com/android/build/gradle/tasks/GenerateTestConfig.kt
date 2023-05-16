@@ -25,9 +25,11 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.APK_FOR_LOCAL_TEST
 import com.android.build.gradle.internal.scope.InternalArtifactType.PACKAGED_MANIFESTS
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -67,6 +69,7 @@ import javax.inject.Inject
  * simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST, secondaryTaskCategories = [TaskCategory.METADATA])
 abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFactory) :
     NonIncrementalTask() {
 
@@ -159,16 +162,20 @@ abstract class GenerateTestConfig @Inject constructor(objectFactory: ObjectFacto
         val packageNameOfFinalRClass: Provider<String>
 
         init {
-            val testedVariant = creationConfig.testedConfig
-
             isUseRelativePathEnabled = creationConfig.services.projectOptions.get(
                 BooleanOption.USE_RELATIVE_PATH_IN_TEST_CONFIG
             )
             resourceApk = creationConfig.artifacts.get(APK_FOR_LOCAL_TEST)
-            mergedAssets = testedVariant.artifacts.get(SingleArtifact.ASSETS)
-            mergedManifest = testedVariant.artifacts.get(PACKAGED_MANIFESTS)
-            mainVariantOutput = testedVariant.outputs.getMainSplit()
-            packageNameOfFinalRClass = testedVariant.namespace
+            mergedAssets = creationConfig.mainVariant.artifacts.get(SingleArtifact.ASSETS)
+            mergedManifest = if (creationConfig.mainVariant.componentType.isApk) {
+                // for application
+                creationConfig.mainVariant.artifacts.get(PACKAGED_MANIFESTS)
+            } else {
+                creationConfig.artifacts.get(PACKAGED_MANIFESTS)
+            }
+
+            mainVariantOutput = creationConfig.mainVariant.outputs.getMainSplit()
+            packageNameOfFinalRClass = creationConfig.mainVariant.namespace
             buildDirectoryPath =
                     creationConfig.services.projectInfo.buildDirectory.get().asFile.toRelativeString(
                             creationConfig.services.projectInfo.projectDirectory.asFile)

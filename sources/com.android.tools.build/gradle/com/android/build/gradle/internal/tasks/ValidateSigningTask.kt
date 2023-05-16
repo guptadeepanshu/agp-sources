@@ -20,19 +20,27 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.SigningConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.packaging.createDefaultDebugStore
+import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.AndroidLocationsBuildService
+import com.android.build.gradle.internal.services.BaseServices
+import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.signing.SigningConfigData
+import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.BuilderConstants
 import com.android.builder.signing.DefaultSigningConfig
 import com.android.builder.utils.SynchronizedFile
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Preconditions.checkState
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskProvider
@@ -54,6 +62,7 @@ import java.util.concurrent.ExecutionException
  * disabled by default.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.VERIFICATION)
 abstract class ValidateSigningTask : NonIncrementalTask() {
 
     /**
@@ -200,6 +209,47 @@ abstract class ValidateSigningTask : NonIncrementalTask() {
                 }
             )
             task.defaultDebugKeystoreLocation.set(defaultDebugKeystoreLocation)
+            task.outputs.upToDateWhen { !task.forceRerun() }
+        }
+    }
+
+
+    class PrivacySandboxSdkCreationAction(
+            private val artifacts: ArtifactsImpl,
+            private val services: BaseServices
+    ) : TaskCreationAction<ValidateSigningTask>() {
+
+        constructor(config: GlobalTaskCreationConfig) : this(config.globalArtifacts, config.services)
+        constructor(scope: PrivacySandboxSdkVariantScope): this(scope.artifacts, scope.services)
+
+        override val name: String
+            get() = "validatePrivacySandboxSdkSigning"
+        override val type: Class<ValidateSigningTask>
+            get() = ValidateSigningTask::class.java
+
+        override fun handleProvider(
+                taskProvider: TaskProvider<ValidateSigningTask>
+        ) {
+            super.handleProvider(taskProvider)
+
+            artifacts.setInitialProvider(
+                    taskProvider,
+                    ValidateSigningTask::dummyOutputDirectory
+            ).on(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
+        }
+
+        override fun configure(
+                task: ValidateSigningTask
+        ) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
+
+
+            val signingConfigDataProvider: Provider<SigningConfigData> = getBuildService(
+                    services.buildServiceRegistry,
+                    AndroidLocationsBuildService::class.java
+            ).map { it.getDefaultDebugKeystoreSigningConfig() }
+            task.signingConfigData.set(signingConfigDataProvider)
+            task.defaultDebugKeystoreLocation.set(signingConfigDataProvider.map { it.storeFile!! })
             task.outputs.upToDateWhen { !task.forceRerun() }
         }
     }

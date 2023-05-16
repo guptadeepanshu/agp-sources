@@ -16,10 +16,12 @@
 
 package com.android.build.gradle.internal.api
 
+import com.android.build.api.variant.impl.FileBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.ProviderBasedDirectoryEntryImpl
 import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.api.AndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.artifact.SourceArtifactType
+import com.android.build.gradle.internal.scope.getDirectories
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.ImmutableSet
 import com.google.common.collect.Lists
@@ -63,9 +65,19 @@ class DefaultAndroidSourceDirectorySet(
     fun getSourceSetName() = name
 
     override fun srcDir(srcDir: Any): AndroidSourceDirectorySet {
+        if (srcDir is Iterable<*>) {
+            srcDir.forEach { src ->
+                src?.let { srcDir(it) }
+            }
+            return this
+        }
         source.add(srcDir)
         if (lateAdditionsDelegates.isNotEmpty()) {
-            val directoryEntry = ProviderBasedDirectoryEntryImpl(name, project.files(srcDir).elements)
+            val directoryEntry = ProviderBasedDirectoryEntryImpl(
+                name,
+                project.files(srcDir).getDirectories(project.layout.projectDirectory),
+                filter
+            )
             lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
         }
         return this
@@ -98,7 +110,11 @@ class DefaultAndroidSourceDirectorySet(
             val previousFiles = this.srcDirs
             val newFiles = project.files(srcDirs).files
             for (newFile in (newFiles - previousFiles)) {
-                val directoryEntry = ProviderBasedDirectoryEntryImpl(name, project.files(newFile).elements)
+                val directoryEntry = ProviderBasedDirectoryEntryImpl(
+                    name,
+                    project.files(newFile).getDirectories(project.layout.projectDirectory),
+                    filter
+                )
                 lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
             }
         }

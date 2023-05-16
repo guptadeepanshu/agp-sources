@@ -20,7 +20,6 @@ import com.android.build.api.component.analytics.AnalyticsEnabledLibraryVariant
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ConsumableCreationConfigImpl
 import com.android.build.api.component.impl.TestFixturesImpl
-import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AarMetadata
@@ -31,17 +30,19 @@ import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.LibraryCreationConfig
-import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
-import com.android.build.gradle.internal.dsl.InstrumentationImpl
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.Java8LangSupport
+import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
+import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_COMPILE_SDK_EXTENSION
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
@@ -50,30 +51,30 @@ import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
-open class  LibraryVariantImpl @Inject constructor(
+open class LibraryVariantImpl @Inject constructor(
     override val variantBuilder: LibraryVariantBuilderImpl,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    dslInfo: LibraryVariantDslInfo,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    variantScope: VariantScope,
     variantData: BaseVariantData,
+    taskContainer: MutableTaskContainer,
     transformManager: TransformManager,
     internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     globalTaskCreationConfig: GlobalTaskCreationConfig,
-) : VariantImpl(
+) : VariantImpl<LibraryVariantDslInfo>(
     variantBuilder,
     buildFeatureValues,
-    variantDslInfo,
+    dslInfo,
     variantDependencies,
     variantSources,
     paths,
     artifacts,
-    variantScope,
     variantData,
+    taskContainer,
     transformManager,
     internalServices,
     taskCreationServices,
@@ -87,50 +88,45 @@ open class  LibraryVariantImpl @Inject constructor(
     override val applicationId: Provider<String> =
         internalServices.newProviderBackingDeprecatedApi(
             type = String::class.java,
-            value = variantDslInfo.namespace
+            value = dslInfo.namespace
         )
-
-    override val instrumentation = InstrumentationImpl(
-        services,
-        internalServices,
-        isLibraryVariant = true
-    )
 
     override var androidTest: AndroidTestImpl? = null
 
     override var testFixtures: TestFixturesImpl? = null
 
     override val renderscript: Renderscript? by lazy {
-        delegate.renderscript(internalServices)
+        renderscriptCreationConfig?.renderscript
     }
 
     override val aarMetadata: AarMetadata =
         internalServices.newInstance(AarMetadata::class.java).also {
-            it.minCompileSdk.set(variantDslInfo.aarMetadata.minCompileSdk ?: 1)
+            it.minCompileSdk.set(dslInfo.aarMetadata.minCompileSdk ?: 1)
+            it.minCompileSdkExtension.set(
+                dslInfo.aarMetadata.minCompileSdkExtension ?: DEFAULT_MIN_COMPILE_SDK_EXTENSION
+            )
             it.minAgpVersion.set(
-                variantDslInfo.aarMetadata.minAgpVersion ?: DEFAULT_MIN_AGP_VERSION
+                dslInfo.aarMetadata.minAgpVersion ?: DEFAULT_MIN_AGP_VERSION
             )
         }
+
+    override val isMinifyEnabled: Boolean
+        get() = variantBuilder.isMinifyEnabled
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    override val dslAndroidResources: AndroidResources
-        get() = variantDslInfo.androidResources
-
-    private val delegate by lazy { ConsumableCreationConfigImpl(
-        this,
-        variantDslInfo) }
+    private val delegate by lazy { ConsumableCreationConfigImpl(this, dslInfo) }
 
     override val dexingType: DexingType
         get() = delegate.dexingType
 
     override val debuggable: Boolean
-        get() = variantDslInfo.isDebuggable
+        get() = dslInfo.isDebuggable
 
-    override val profileable: Boolean
-        get() = variantDslInfo.isProfileable
+    override val isCoreLibraryDesugaringEnabled: Boolean
+        get() = delegate.isCoreLibraryDesugaringEnabled
 
     override fun <T : Component> createUserVisibleVariantObject(
         projectServices: ProjectServices,
@@ -148,11 +144,16 @@ open class  LibraryVariantImpl @Inject constructor(
         }
 
     override val minifiedEnabled: Boolean
-        get() = variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()
+        get() = variantBuilder.isMinifyEnabled
+    override val resourcesShrink: Boolean
+        // need to return shrink flag for PostProcessing as this API has the flag for libraries
+        // return false otherwise
+        get() = dslInfo.postProcessingOptions
+            .let { it.hasPostProcessingConfiguration() && it.resourcesShrinkingEnabled() }
 
-    override fun getNeedsMergedJavaResStream(): Boolean = delegate.getNeedsMergedJavaResStream()
+    override val needsMergedJavaResStream: Boolean = delegate.getNeedsMergedJavaResStream()
 
-    override fun getJava8LangSupportType(): VariantScope.Java8LangSupport =
+    override fun getJava8LangSupportType(): Java8LangSupport =
         delegate.getJava8LangSupportType()
 
     override val needsShrinkDesugarLibrary: Boolean
@@ -162,5 +163,8 @@ open class  LibraryVariantImpl @Inject constructor(
         get() = delegate.minSdkVersionForDexing
 
     override val packageJacocoRuntime: Boolean
-        get() = variantDslInfo.isAndroidTestCoverageEnabled
+        get() = dslInfo.isAndroidTestCoverageEnabled
+
+    override val publishInfo: VariantPublishingInfo?
+        get() = dslInfo.publishInfo
 }

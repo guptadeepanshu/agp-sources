@@ -21,21 +21,27 @@ import static com.android.build.gradle.internal.dependency.VariantDependencies.C
 
 import com.android.annotations.NonNull;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.component.impl.AndroidTestImpl;
-import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.BuildFeatures;
 import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.dsl.DataBinding;
 import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestExtension;
 import com.android.build.api.variant.ComponentIdentity;
+import com.android.build.api.variant.TestVariantBuilder;
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig;
 import com.android.build.api.variant.impl.TestVariantBuilderImpl;
 import com.android.build.api.variant.impl.TestVariantImpl;
-import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
-import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
+import com.android.build.gradle.internal.component.TestVariantCreationConfig;
+import com.android.build.gradle.internal.component.UnitTestCreationConfig;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.VariantSources;
+import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo;
+import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
@@ -46,9 +52,9 @@ import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.plugins.DslContainerProvider;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl;
+import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl;
-import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.services.ProjectServices;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.services.TaskCreationServices;
 import com.android.build.gradle.internal.services.VariantBuilderServices;
 import com.android.build.gradle.internal.services.VariantServices;
@@ -64,69 +70,65 @@ import org.gradle.api.GradleException;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
-import org.jetbrains.annotations.NotNull;
 
 /** Customization of {@link AbstractAppVariantFactory} for test-only projects. */
 public class TestVariantFactory
-        extends AbstractAppVariantFactory<TestVariantBuilderImpl, TestVariantImpl> {
+        extends AbstractAppVariantFactory<
+                TestVariantBuilder, TestProjectVariantDslInfo, TestVariantCreationConfig> {
 
-    public TestVariantFactory(@NonNull ProjectServices projectServices) {
-        super(projectServices);
+    public TestVariantFactory(@NonNull DslServices dslServices) {
+        super(dslServices);
     }
 
     @NonNull
     @Override
-    public TestVariantBuilderImpl createVariantBuilder(
+    public TestVariantBuilder createVariantBuilder(
             @NonNull GlobalVariantBuilderConfig globalVariantBuilderConfig,
             @NonNull ComponentIdentity componentIdentity,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull TestProjectVariantDslInfo variantDslInfo,
             @NonNull VariantBuilderServices variantBuilderServices) {
-        return projectServices
-                .getObjectFactory()
-                .newInstance(
-                        TestVariantBuilderImpl.class,
-                        globalVariantBuilderConfig,
-                        variantDslInfo,
-                        componentIdentity,
-                        variantBuilderServices);
+        return dslServices.newInstance(
+                TestVariantBuilderImpl.class,
+                globalVariantBuilderConfig,
+                variantDslInfo,
+                componentIdentity,
+                variantBuilderServices);
     }
 
     @NonNull
     @Override
-    public TestVariantImpl createVariant(
-            @NonNull TestVariantBuilderImpl variantBuilder,
+    public TestVariantCreationConfig createVariant(
+            @NonNull TestVariantBuilder variantBuilder,
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull TestProjectVariantDslInfo variantDslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
             @NonNull BaseVariantData variantData,
+            @NonNull MutableTaskContainer taskContainer,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
 
         TestVariantImpl variant =
-                projectServices
-                        .getObjectFactory()
-                        .newInstance(
-                                TestVariantImpl.class,
-                                variantBuilder,
-                                buildFeatures,
-                                variantDslInfo,
-                                variantDependencies,
-                                variantSources,
-                                paths,
-                                artifacts,
-                                variantScope,
-                                variantData,
-                                transformManager,
-                                variantServices,
-                                taskCreationServices,
-                                globalConfig);
+                dslServices.newInstance(
+                        TestVariantImpl.class,
+                        variantBuilder,
+                        buildFeatures,
+                        variantDslInfo,
+                        variantDependencies,
+                        variantSources,
+                        paths,
+                        artifacts,
+                        variantData,
+                        taskContainer,
+                        transformManager,
+                        variantServices,
+                        taskCreationServices,
+                        globalConfig);
 
         // create default output
         variant.addVariantOutput(
@@ -170,26 +172,55 @@ public class TestVariantFactory
 
     @NonNull
     @Override
-    public BuildFeatureValues createTestBuildFeatureValues(
-            @NotNull BuildFeatures buildFeatures,
-            @NotNull DataBinding dataBinding,
-            @NotNull ProjectOptions projectOptions) {
+    public BuildFeatureValues createUnitTestBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures,
+            @NonNull DataBinding dataBinding,
+            @NonNull ProjectOptions projectOptions,
+            boolean includeAndroidResources) {
         throw new RuntimeException("cannot instantiate test build features in test plugin");
     }
 
     @NonNull
     @Override
-    public UnitTestImpl createUnitTest(
+    public BuildFeatureValues createAndroidTestBuildFeatureValues(
+            @NonNull BuildFeatures buildFeatures,
+            @NonNull DataBinding dataBinding,
+            @NonNull ProjectOptions projectOptions) {
+        throw new RuntimeException("cannot instantiate test build features in test plugin");
+    }
+
+    @NonNull
+    @Override
+    public TestFixturesCreationConfig createTestFixtures(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull TestFixturesComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig mainVariant,
+            @NonNull TransformManager transformManager,
+            @NonNull VariantServices variantServices,
+            @NonNull TaskCreationServices taskCreationServices,
+            @NonNull GlobalTaskCreationConfig globalConfig) {
+        throw new RuntimeException("cannot instantiate test-fixtures properties in test plugin");
+    }
+
+    @NonNull
+    @Override
+    public UnitTestCreationConfig createUnitTest(
+            @NonNull ComponentIdentity componentIdentity,
+            @NonNull BuildFeatureValues buildFeatures,
+            @NonNull UnitTestComponentDslInfo dslInfo,
+            @NonNull VariantDependencies variantDependencies,
+            @NonNull VariantSources variantSources,
+            @NonNull VariantPathHelper paths,
+            @NonNull ArtifactsImpl artifacts,
             @NonNull TestVariantData variantData,
-            @NonNull VariantImpl testedVariant,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
@@ -199,17 +230,17 @@ public class TestVariantFactory
 
     @NonNull
     @Override
-    public AndroidTestImpl createAndroidTest(
+    public AndroidTestCreationConfig createAndroidTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull AndroidTestComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
             @NonNull TestVariantData variantData,
-            @NonNull VariantImpl testedVariant,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,

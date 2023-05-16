@@ -18,17 +18,17 @@ package com.android.build.gradle.tasks
 
 import android.databinding.tool.util.Preconditions
 import com.android.build.gradle.internal.LoggerWrapper
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.MergingReport
 import com.google.common.base.Supplier
 import java.io.File
 import java.io.FileWriter
 import org.apache.tools.ant.BuildException
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
@@ -39,6 +39,7 @@ import org.gradle.work.DisableCachingByDefault
  * or overlay manifests
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class InvokeManifestMerger : NonIncrementalTask(), Supplier<File> {
 
     @get:InputFile

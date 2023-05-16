@@ -23,6 +23,7 @@ private static final long serialVersionUID = 0L;
   private MultiViewEvent() {
     type_ = 0;
     associatedSplitEditorMode_ = 0;
+    toggleIssuePanel_ = 0;
   }
 
   @java.lang.Override
@@ -77,6 +78,18 @@ private static final long serialVersionUID = 0L;
             } else {
               bitField0_ |= 0x00000002;
               associatedSplitEditorMode_ = rawValue;
+            }
+            break;
+          }
+          case 24: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel value = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(3, rawValue);
+            } else {
+              bitField0_ |= 0x00000004;
+              toggleIssuePanel_ = rawValue;
             }
             break;
           }
@@ -418,6 +431,127 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.MultiViewEvent.AssociatedSplitEditorMode)
   }
 
+  /**
+   * Protobuf enum {@code android_studio.MultiViewEvent.ToggleIssuePanel}
+   */
+  public enum ToggleIssuePanel
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_OPERATION = 0;</code>
+     */
+    UNKNOWN_OPERATION(0),
+    /**
+     * <pre>
+     * Open issue panel from Validation Tool
+     * </pre>
+     *
+     * <code>OPEN_ISSUE_PANEL = 1;</code>
+     */
+    OPEN_ISSUE_PANEL(1),
+    /**
+     * <pre>
+     * Close issue panel from Validation Tool
+     * </pre>
+     *
+     * <code>CLOSE_ISSUE_PANEL = 2;</code>
+     */
+    CLOSE_ISSUE_PANEL(2),
+    ;
+
+    /**
+     * <code>UNKNOWN_OPERATION = 0;</code>
+     */
+    public static final int UNKNOWN_OPERATION_VALUE = 0;
+    /**
+     * <pre>
+     * Open issue panel from Validation Tool
+     * </pre>
+     *
+     * <code>OPEN_ISSUE_PANEL = 1;</code>
+     */
+    public static final int OPEN_ISSUE_PANEL_VALUE = 1;
+    /**
+     * <pre>
+     * Close issue panel from Validation Tool
+     * </pre>
+     *
+     * <code>CLOSE_ISSUE_PANEL = 2;</code>
+     */
+    public static final int CLOSE_ISSUE_PANEL_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static ToggleIssuePanel valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static ToggleIssuePanel forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_OPERATION;
+        case 1: return OPEN_ISSUE_PANEL;
+        case 2: return CLOSE_ISSUE_PANEL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<ToggleIssuePanel>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ToggleIssuePanel> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<ToggleIssuePanel>() {
+            public ToggleIssuePanel findValueByNumber(int number) {
+              return ToggleIssuePanel.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.MultiViewEvent.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final ToggleIssuePanel[] VALUES = values();
+
+    public static ToggleIssuePanel valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private ToggleIssuePanel(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.MultiViewEvent.ToggleIssuePanel)
+  }
+
   private int bitField0_;
   public static final int TYPE_FIELD_NUMBER = 1;
   private int type_;
@@ -473,6 +607,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
   }
 
+  public static final int TOGGLE_ISSUE_PANEL_FIELD_NUMBER = 3;
+  private int toggleIssuePanel_;
+  /**
+   * <pre>
+   * The event of opening or closing the issue panel in Validation Tool
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+   * @return Whether the toggleIssuePanel field is set.
+   */
+  @java.lang.Override public boolean hasToggleIssuePanel() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <pre>
+   * The event of opening or closing the issue panel in Validation Tool
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+   * @return The toggleIssuePanel.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel getToggleIssuePanel() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.valueOf(toggleIssuePanel_);
+    return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.UNKNOWN_OPERATION : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -493,6 +654,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       output.writeEnum(2, associatedSplitEditorMode_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeEnum(3, toggleIssuePanel_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -509,6 +673,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, associatedSplitEditorMode_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(3, toggleIssuePanel_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -533,6 +701,10 @@ private static final long serialVersionUID = 0L;
     if (hasAssociatedSplitEditorMode()) {
       if (associatedSplitEditorMode_ != other.associatedSplitEditorMode_) return false;
     }
+    if (hasToggleIssuePanel() != other.hasToggleIssuePanel()) return false;
+    if (hasToggleIssuePanel()) {
+      if (toggleIssuePanel_ != other.toggleIssuePanel_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -551,6 +723,10 @@ private static final long serialVersionUID = 0L;
     if (hasAssociatedSplitEditorMode()) {
       hash = (37 * hash) + ASSOCIATED_SPLIT_EDITOR_MODE_FIELD_NUMBER;
       hash = (53 * hash) + associatedSplitEditorMode_;
+    }
+    if (hasToggleIssuePanel()) {
+      hash = (37 * hash) + TOGGLE_ISSUE_PANEL_FIELD_NUMBER;
+      hash = (53 * hash) + toggleIssuePanel_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -694,6 +870,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000001);
       associatedSplitEditorMode_ = 0;
       bitField0_ = (bitField0_ & ~0x00000002);
+      toggleIssuePanel_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -730,6 +908,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000002;
       }
       result.associatedSplitEditorMode_ = associatedSplitEditorMode_;
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        to_bitField0_ |= 0x00000004;
+      }
+      result.toggleIssuePanel_ = toggleIssuePanel_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -784,6 +966,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasAssociatedSplitEditorMode()) {
         setAssociatedSplitEditorMode(other.getAssociatedSplitEditorMode());
+      }
+      if (other.hasToggleIssuePanel()) {
+        setToggleIssuePanel(other.getToggleIssuePanel());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -929,6 +1114,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearAssociatedSplitEditorMode() {
       bitField0_ = (bitField0_ & ~0x00000002);
       associatedSplitEditorMode_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int toggleIssuePanel_ = 0;
+    /**
+     * <pre>
+     * The event of opening or closing the issue panel in Validation Tool
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+     * @return Whether the toggleIssuePanel field is set.
+     */
+    @java.lang.Override public boolean hasToggleIssuePanel() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * The event of opening or closing the issue panel in Validation Tool
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+     * @return The toggleIssuePanel.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel getToggleIssuePanel() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel result = com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.valueOf(toggleIssuePanel_);
+      return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel.UNKNOWN_OPERATION : result;
+    }
+    /**
+     * <pre>
+     * The event of opening or closing the issue panel in Validation Tool
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+     * @param value The toggleIssuePanel to set.
+     * @return This builder for chaining.
+     */
+    public Builder setToggleIssuePanel(com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000004;
+      toggleIssuePanel_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The event of opening or closing the issue panel in Validation Tool
+     * </pre>
+     *
+     * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearToggleIssuePanel() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      toggleIssuePanel_ = 0;
       onChanged();
       return this;
     }

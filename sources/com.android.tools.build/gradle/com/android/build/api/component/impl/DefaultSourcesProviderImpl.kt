@@ -27,7 +27,9 @@ import com.android.build.gradle.api.AndroidSourceDirectorySet
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.UnitTestCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.builder.compiling.BuildConfigType
@@ -37,7 +39,7 @@ import java.util.Collections
  * Computes the default sources for all [com.android.build.api.variant.impl.SourceType]s.
  */
 class DefaultSourcesProviderImpl(
-    val component: ComponentImpl,
+    val component: ComponentCreationConfig,
     val variantSources: VariantSources,
 ): DefaultSourcesProvider {
 
@@ -61,6 +63,7 @@ class DefaultSourcesProviderImpl(
     }
 
     override fun getRes(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries> = component.defaultResSources(lateAdditionsDelegate)
+    override fun getResources(lateAdditionsDelegate: FlatSourceDirectoriesImpl): List<DirectoryEntry>  = flattenSourceProviders(lateAdditionsDelegate) { sourceSet -> sourceSet.resources }
     override fun getAssets(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries> = defaultAssetsSources(lateAdditionsDelegate)
     override fun getJniLibs(lateAdditionsDelegate: LayeredSourceDirectoriesImpl): List<DirectoryEntries> =
             getSourceList(lateAdditionsDelegate, DefaultAndroidSourceSet::jniLibs)
@@ -109,7 +112,7 @@ class DefaultSourcesProviderImpl(
      *
      * Every entry is a ConfigurableFileTree instance to enable incremental java compilation.
      */
-    private fun ComponentImpl.defaultJavaSources(lateAdditionsDelegate: SourceDirectoriesImpl): List<DirectoryEntry> {
+    private fun ComponentCreationConfig.defaultJavaSources(lateAdditionsDelegate: SourceDirectoriesImpl): List<DirectoryEntry> {
         // Build the list of source folders.
         val sourceSets = mutableListOf<DirectoryEntry>()
 
@@ -119,7 +122,7 @@ class DefaultSourcesProviderImpl(
         )
 
         // for the other, there's no duplicate so no issue.
-        if (buildConfigEnabled && getBuildConfigType() == BuildConfigType.JAVA_SOURCE) {
+        if (buildConfigCreationConfig?.buildConfigType == BuildConfigType.JAVA_SOURCE) {
             sourceSets.add(
                 TaskProviderBasedDirectoryEntryImpl(
                     "generated_build_config",
@@ -136,7 +139,14 @@ class DefaultSourcesProviderImpl(
             )
         }
         if (buildFeatures.dataBinding || buildFeatures.viewBinding) {
-            addDataBindingSources(sourceSets)
+            if (this !is UnitTestCreationConfig) {
+                sourceSets.add(
+                    TaskProviderBasedDirectoryEntryImpl(
+                        "databinding_generated",
+                        artifacts.get(InternalArtifactType.DATA_BINDING_BASE_CLASS_SOURCE_OUT),
+                        )
+                )
+            }
         }
         if (buildFeatures.mlModelBinding) {
             sourceSets.add(
@@ -149,7 +159,7 @@ class DefaultSourcesProviderImpl(
         return sourceSets
     }
 
-    private fun ComponentImpl.defaultResSources(lateAdditionsDelegate: SourceDirectoriesImpl): List<DirectoryEntries> {
+    private fun ComponentCreationConfig.defaultResSources(lateAdditionsDelegate: SourceDirectoriesImpl): List<DirectoryEntries> {
         val sourceDirectories = mutableListOf<DirectoryEntries>()
 
         sourceDirectories.addAll(

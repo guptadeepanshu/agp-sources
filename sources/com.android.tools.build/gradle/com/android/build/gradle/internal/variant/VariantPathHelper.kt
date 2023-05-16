@@ -18,14 +18,15 @@ package com.android.build.gradle.internal.variant
 
 import com.android.SdkConstants
 import com.android.build.api.dsl.ProductFlavor
-import com.android.build.gradle.internal.core.VariantDslInfo
-import com.android.build.gradle.internal.core.VariantDslInfoBuilder
-import com.android.build.gradle.internal.core.VariantDslInfoImpl
+import com.android.build.api.variant.ComponentIdentity
+import com.android.build.gradle.internal.core.dsl.ApkProducingComponentDslInfo
+import com.android.build.gradle.internal.core.dsl.ComponentDslInfo
 import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.options.IntegerOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.core.BuilderConstants
 import com.android.builder.core.ComponentType
+import com.android.utils.appendCapitalized
 import com.android.utils.combineAsCamelCase
 import com.android.utils.toStrings
 import com.google.common.base.Joiner
@@ -37,9 +38,84 @@ import java.io.File
 
 class VariantPathHelper(
     val buildDirectory: DirectoryProperty,
-    private val variantDslInfo: VariantDslInfo,
+    private val dslInfo: ComponentDslInfo,
     private val dslServices: DslServices
 ) {
+
+    companion object {
+        /**
+         * Returns the full, unique name of the variant, including BuildType, flavors and test, dash
+         * separated. (similar to full name but with dashes)
+         *
+         * @return the name of the variant
+         */
+        @JvmStatic
+        fun computeBaseName(
+            dimensionCombination: DimensionCombination,
+            componentType: ComponentType) : String {
+            val sb = StringBuilder()
+            if (dimensionCombination.productFlavors.isNotEmpty()) {
+                for ((_, name) in dimensionCombination.productFlavors) {
+                    if (sb.isNotEmpty()) {
+                        sb.append('-')
+                    }
+                    sb.append(name)
+                }
+            }
+
+            dimensionCombination.buildType?.let {
+                if (sb.isNotEmpty()) {
+                    sb.append('-')
+                }
+                sb.append(it)
+            }
+
+            if (componentType.isNestedComponent) {
+                if (sb.isNotEmpty()) {
+                    sb.append('-')
+                }
+                sb.append(componentType.prefix)
+            }
+
+            if (sb.isEmpty()) {
+                sb.append("main")
+            }
+
+            return sb.toString()
+        }
+
+        /**
+         * Returns a full name that includes the given splits name.
+         *
+         * @param splitName the split name
+         * @return a unique name made up of the variant and split names.
+         */
+        @JvmStatic
+        fun computeFullNameWithSplits(
+            variantConfiguration: ComponentIdentity,
+            componentType: ComponentType,
+            splitName: String): String {
+            val sb = StringBuilder()
+
+            val flavorName = variantConfiguration.flavorName
+
+            if (!flavorName.isNullOrEmpty()) {
+                sb.append(flavorName)
+                sb.appendCapitalized(splitName)
+            } else {
+                sb.append(splitName)
+            }
+
+            variantConfiguration.buildType?.let {
+                sb.appendCapitalized(it)
+            }
+
+            if (componentType.isNestedComponent) {
+                sb.append(componentType.suffix)
+            }
+            return sb.toString()
+        }
+    }
 
     /**
      * Returns a unique directory name (can include multiple folders) for the variant, based on
@@ -64,17 +140,17 @@ class VariantPathHelper(
     val directorySegments: Collection<String?> by lazy {
         val builder =
             ImmutableList.builder<String>()
-        if (variantDslInfo.componentType.isNestedComponent) {
-            builder.add(variantDslInfo.componentType.prefix)
+        if (dslInfo.componentType.isNestedComponent) {
+            builder.add(dslInfo.componentType.prefix)
         }
-        if (variantDslInfo.productFlavorList.isNotEmpty()) {
+        if (dslInfo.productFlavorList.isNotEmpty()) {
             builder.add(
                 combineAsCamelCase(
-                    variantDslInfo.productFlavorList, ProductFlavor::getName
+                    dslInfo.productFlavorList, ProductFlavor::getName
                 )
             )
         }
-        builder.add((variantDslInfo as VariantDslInfoImpl).buildTypeObj.name)
+        builder.add(dslInfo.buildType!!)
         builder.build()
     }
 
@@ -88,7 +164,8 @@ class VariantPathHelper(
         // we only know if it is signed during configuration, if it's the base module.
         // Otherwise, don't differentiate between signed and unsigned.
         val suffix =
-            if (variantDslInfo.isSigningReady || !variantDslInfo.componentType.isBaseModule)
+            if ((dslInfo as? ApkProducingComponentDslInfo)?.isSigningReady == true
+                || !dslInfo.componentType.isBaseModule)
                 SdkConstants.DOT_ANDROID_PACKAGE
             else "-unsigned.apk"
         return "$archivesBaseName-$baseName$suffix"
@@ -101,9 +178,9 @@ class VariantPathHelper(
      * @return a unique name made up of the variant and split names.
      */
     fun computeFullNameWithSplits(splitName: String): String {
-        return VariantDslInfoBuilder.computeFullNameWithSplits(
-            variantDslInfo.componentIdentity,
-            variantDslInfo.componentType,
+        return computeFullNameWithSplits(
+            dslInfo.componentIdentity,
+            dslInfo.componentType,
             splitName
         )
     }
@@ -115,9 +192,9 @@ class VariantPathHelper(
      * @return the name of the variant
      */
     val baseName: String by lazy {
-        VariantDslInfoBuilder.computeBaseName(
-            variantDslInfo as VariantDslInfoImpl,
-            variantDslInfo.componentType
+        computeBaseName(
+            dslInfo,
+            dslInfo.componentType
         )
     }
 
@@ -129,15 +206,15 @@ class VariantPathHelper(
      */
     fun computeBaseNameWithSplits(splitName: String): String {
         val sb = StringBuilder()
-        if (variantDslInfo.productFlavorList.isNotEmpty()) {
-            for (pf in variantDslInfo.productFlavorList) {
+        if (dslInfo.productFlavorList.isNotEmpty()) {
+            for (pf in dslInfo.productFlavorList) {
                 sb.append(pf.name).append('-')
             }
         }
         sb.append(splitName).append('-')
-        sb.append((variantDslInfo as VariantDslInfoImpl).buildTypeObj.name)
-        if (variantDslInfo.componentType.isNestedComponent) {
-            sb.append('-').append(variantDslInfo.componentType.prefix)
+        sb.append(dslInfo.buildType!!)
+        if (dslInfo.componentType.isNestedComponent) {
+            sb.append('-').append(dslInfo.componentType.prefix)
         }
         return sb.toString()
     }
@@ -214,7 +291,7 @@ class VariantPathHelper(
 
     val manifestOutputDirectory: Provider<Directory>
         get() {
-            val componentType: ComponentType = variantDslInfo.componentType
+            val componentType: ComponentType = dslInfo.componentType
             if (componentType.isTestComponent) {
                 if (componentType.isApk) { // ANDROID_TEST
                     return intermediatesDir("manifest", dirName)

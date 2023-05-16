@@ -21,19 +21,23 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.DataBinding
 import com.android.build.api.dsl.DynamicFeatureBuildFeatures
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.DynamicFeatureVariantBuilder
 import com.android.build.api.variant.impl.DynamicFeatureVariantBuilderImpl
 import com.android.build.api.variant.impl.DynamicFeatureVariantImpl
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
-import com.android.build.gradle.internal.core.VariantDslInfo
+import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.scope.AndroidTestBuildFeatureValuesImpl
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.BuildFeatureValuesImpl
+import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesImpl
-import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.scope.UnitTestBuildFeaturesValuesImpl
+import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -42,19 +46,18 @@ import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.ComponentTypeImpl
 
 internal class DynamicFeatureVariantFactory(
-    projectServices: ProjectServices,
-) : AbstractAppVariantFactory<DynamicFeatureVariantBuilderImpl, DynamicFeatureVariantImpl>(
-    projectServices,
+    dslServices: DslServices,
+) : AbstractAppVariantFactory<DynamicFeatureVariantBuilder, DynamicFeatureVariantDslInfo, DynamicFeatureCreationConfig>(
+    dslServices,
 ) {
 
     override fun createVariantBuilder(
         globalVariantBuilderConfig: GlobalVariantBuilderConfig,
         componentIdentity: ComponentIdentity,
-        variantDslInfo: VariantDslInfo,
+        variantDslInfo: DynamicFeatureVariantDslInfo,
         variantBuilderServices: VariantBuilderServices
-    ): DynamicFeatureVariantBuilderImpl {
-        return projectServices
-            .objectFactory
+    ): DynamicFeatureVariantBuilder {
+        return dslServices
             .newInstance(
                 DynamicFeatureVariantBuilderImpl::class.java,
                 globalVariantBuilderConfig,
@@ -65,23 +68,22 @@ internal class DynamicFeatureVariantFactory(
     }
 
     override fun createVariant(
-        variantBuilder: DynamicFeatureVariantBuilderImpl,
+        variantBuilder: DynamicFeatureVariantBuilder,
         componentIdentity: ComponentIdentity,
         buildFeatures: BuildFeatureValues,
-        variantDslInfo: VariantDslInfo,
+        variantDslInfo: DynamicFeatureVariantDslInfo,
         variantDependencies: VariantDependencies,
         variantSources: VariantSources,
         paths: VariantPathHelper,
         artifacts: ArtifactsImpl,
-        variantScope: VariantScope,
         variantData: BaseVariantData,
+        taskContainer: MutableTaskContainer,
         transformManager: TransformManager,
         variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
-        ): DynamicFeatureVariantImpl {
-        val variantProperties = projectServices
-            .objectFactory
+        ): DynamicFeatureCreationConfig {
+        val variantProperties = dslServices
             .newInstance(
                 DynamicFeatureVariantImpl::class.java,
                 variantBuilder,
@@ -91,8 +93,8 @@ internal class DynamicFeatureVariantFactory(
                 variantSources,
                 paths,
                 artifacts,
-                variantScope,
                 variantData,
+                taskContainer,
                 transformManager,
                 variantServices,
                 taskCreationServices,
@@ -132,7 +134,29 @@ internal class DynamicFeatureVariantFactory(
         )
     }
 
-    override fun createTestBuildFeatureValues(
+    override fun createUnitTestBuildFeatureValues(
+        buildFeatures: BuildFeatures,
+        dataBinding: DataBinding,
+        projectOptions: ProjectOptions,
+        includeAndroidResources: Boolean
+    ): BuildFeatureValues {
+        buildFeatures as? DynamicFeatureBuildFeatures
+            ?: throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
+
+        return UnitTestBuildFeaturesValuesImpl(
+            buildFeatures,
+            projectOptions,
+            dataBindingOverride = if (!dataBinding.isEnabledForTests) {
+                false
+            } else {
+                null // means whatever is default.
+            },
+            mlModelBindingOverride = false,
+            includeAndroidResources = includeAndroidResources
+        )
+    }
+
+    override fun createAndroidTestBuildFeatureValues(
         buildFeatures: BuildFeatures,
         dataBinding: DataBinding,
         projectOptions: ProjectOptions
@@ -140,7 +164,7 @@ internal class DynamicFeatureVariantFactory(
         buildFeatures as? DynamicFeatureBuildFeatures
             ?: throw RuntimeException("buildFeatures not of type DynamicFeatureBuildFeatures")
 
-        return BuildFeatureValuesImpl(
+        return AndroidTestBuildFeatureValuesImpl(
             buildFeatures,
             projectOptions,
             dataBindingOverride = if (!dataBinding.isEnabledForTests) {

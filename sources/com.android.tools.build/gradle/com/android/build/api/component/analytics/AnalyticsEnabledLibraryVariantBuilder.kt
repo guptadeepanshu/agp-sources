@@ -50,4 +50,11 @@ open class AnalyticsEnabledLibraryVariantBuilder @Inject constructor(
             stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.TEST_FIXTURES_ENABLED_VALUE
             delegate.enableTestFixtures = value
         }
+
+    override var isMinifyEnabled: Boolean
+        get() = delegate.isMinifyEnabled
+        set(value) {
+            stats.variantApiAccessBuilder.addVariantAccessBuilder().type = VariantMethodType.CODE_MINIFICATION_VALUE_VALUE
+            delegate.isMinifyEnabled = value
+        }
 }

@@ -20,10 +20,12 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.DokkaParallelBuildService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logging
@@ -58,6 +60,7 @@ import java.util.function.BiConsumer
  * Generate Java docs for java & kotlin sources using dokka.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.JAVA_DOC)
 abstract class JavaDocGenerationTask : NonIncrementalTask() {
 
     @get:Input
@@ -228,8 +231,11 @@ abstract class JavaDocGenerationTask : NonIncrementalTask() {
         override fun configure(task: JavaDocGenerationTask) {
             super.configure(task)
 
-            val dokkaParallelBuildService = getBuildService<DokkaParallelBuildService>(
-                creationConfig.services.buildServiceRegistry)
+            val dokkaParallelBuildService =
+                getBuildService(
+                    creationConfig.services.buildServiceRegistry,
+                    DokkaParallelBuildService::class.java
+                )
             task.usesService(dokkaParallelBuildService)
 
             task.moduleVersion.setDisallowChanges(task.project.version.toString())

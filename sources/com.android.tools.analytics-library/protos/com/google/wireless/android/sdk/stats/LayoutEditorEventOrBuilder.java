@@ -322,4 +322,34 @@ public interface LayoutEditorEventOrBuilder extends
    * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
    */
   com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder();
+
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * @return Whether the universalProblemsPanelEvent field is set.
+   */
+  boolean hasUniversalProblemsPanelEvent();
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * @return The universalProblemsPanelEvent.
+   */
+  com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent getUniversalProblemsPanelEvent();
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   */
+  com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder();
 }

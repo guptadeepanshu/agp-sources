@@ -17,7 +17,7 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.artifact.Artifact
-import com.android.build.api.component.impl.ComponentImpl
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 
 class ArtifactMetadataProcessor {
@@ -31,13 +31,13 @@ class ArtifactMetadataProcessor {
          *
          * There is a test that will ensure that all annotated types are present in this list.
          */
-        val internalTypesFinalizingArtifacts = listOf(
+        val internalTypesFinalizingArtifacts: List<InternalArtifactType<*>> = listOf(
             InternalArtifactType.APK_IDE_REDIRECT_FILE,
             InternalArtifactType.BUNDLE_IDE_REDIRECT_FILE,
             InternalArtifactType.APK_FROM_BUNDLE_IDE_REDIRECT_FILE
         )
 
-        fun wireAllFinalizedBy(variant: ComponentImpl) {
+        fun wireAllFinalizedBy(variant: ComponentCreationConfig) {
             val allComponents = mutableListOf(variant)
             if (variant is HasAndroidTest) {
                 variant.androidTest?.let { allComponents.add(it) }
@@ -53,7 +53,7 @@ class ArtifactMetadataProcessor {
         }
 
         private fun handleFinalizedByForType(
-            variant: ComponentImpl,
+            variant: ComponentCreationConfig,
             artifact: InternalArtifactType<*>
         ) {
             artifact.finalizingArtifact.forEach { artifactFinalizedBy ->

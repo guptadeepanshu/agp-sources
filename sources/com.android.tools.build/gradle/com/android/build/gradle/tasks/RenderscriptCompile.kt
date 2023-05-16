@@ -16,10 +16,10 @@
 
 package com.android.build.gradle.tasks
 
-import com.android.build.api.variant.Renderscript
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.dsl.CoreNdkOptions
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.RENDERSCRIPT
@@ -28,13 +28,17 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_LIB
 import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NdkTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.RenderscriptTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.RenderscriptTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.Version
 import com.android.builder.internal.compiler.DirectoryWalker
 import com.android.builder.internal.compiler.RenderScriptProcessor
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.ide.common.process.ProcessOutputHandler
 import com.android.repository.Revision
@@ -72,6 +76,7 @@ import kotlin.math.min
 
 /** Task to compile Renderscript files. Supports incremental update. */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.RENDERSCRIPT, secondaryTaskCategories = [TaskCategory.COMPILATION])
 abstract class RenderscriptCompile : NdkTask() {
 
     // ----- PUBLIC TASK API -----
@@ -292,10 +297,10 @@ abstract class RenderscriptCompile : NdkTask() {
 
     class CreationAction(
         creationConfig: ConsumableCreationConfig,
-        val renderscript: Renderscript
+        private val ndkConfig: CoreNdkOptions
     ) : VariantTaskCreationAction<RenderscriptCompile, ConsumableCreationConfig>(
         creationConfig
-    ) {
+    ), RenderscriptTaskCreationAction by RenderscriptTaskCreationActionImpl(creationConfig) {
 
         override val name: String
             get() = computeTaskName("compile", "Renderscript")
@@ -330,12 +335,14 @@ abstract class RenderscriptCompile : NdkTask() {
         ) {
             super.configure(task)
 
-            task.targetApi.setDisallowChanges(creationConfig.renderscriptTargetApi)
+            task.targetApi.setDisallowChanges(renderscriptCreationConfig.renderscriptTargetApi)
 
-            task.supportMode.setDisallowChanges(renderscript.supportModeEnabled)
+            task.supportMode.setDisallowChanges(
+                renderscriptCreationConfig.renderscript.supportModeEnabled
+            )
             task.useAndroidX = creationConfig.services.projectOptions.get(BooleanOption.USE_ANDROID_X)
-            task.ndkMode.setDisallowChanges(renderscript.ndkModeEnabled)
-            task.optimLevel.setDisallowChanges(renderscript.optimLevel)
+            task.ndkMode.setDisallowChanges(renderscriptCreationConfig.renderscript.ndkModeEnabled)
+            task.optimLevel.setDisallowChanges(renderscriptCreationConfig.renderscript.optimLevel)
 
             task.sourceDirs =
                 creationConfig.services.fileCollection(Callable {
@@ -346,7 +353,7 @@ abstract class RenderscriptCompile : NdkTask() {
 
             task.objOutputDir = creationConfig.paths.renderscriptObjOutputDir
 
-            task.ndkConfig = creationConfig.ndkConfig
+            task.ndkConfig = ndkConfig
 
             task.buildToolsRevision.setDisallowChanges(creationConfig.global.buildToolsRevision)
             task.compileSdkVersion.setDisallowChanges(creationConfig.global.compileSdkHashString)

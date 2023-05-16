@@ -17,11 +17,14 @@
 package com.android.build.gradle.tasks.sync
 
 import com.android.build.gradle.internal.component.LibraryCreationConfig
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.build.filebasedproperties.variant.VariantProperties
 import org.gradle.work.DisableCachingByDefault
 
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.SYNC)
 abstract class LibraryVariantModelTask: ModuleVariantModelTask() {
 
     override fun addVariantContent(variant: VariantProperties.Builder) {

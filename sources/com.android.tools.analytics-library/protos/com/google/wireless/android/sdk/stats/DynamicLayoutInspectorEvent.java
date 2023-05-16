@@ -105,6 +105,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000008;
             break;
           }
+          case 42: {
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000010) != 0)) {
+              subBuilder = autoConnectInfo_.toBuilder();
+            }
+            autoConnectInfo_ = input.readMessage(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(autoConnectInfo_);
+              autoConnectInfo_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000010;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -282,6 +295,14 @@ private static final long serialVersionUID = 0L;
      * <code>ATTACH_CANCELLED = 17;</code>
      */
     ATTACH_CANCELLED(17),
+    /**
+     * <pre>
+     * Info about auto-connect to foreground process
+     * </pre>
+     *
+     * <code>AUTO_CONNECT_INFO = 18;</code>
+     */
+    AUTO_CONNECT_INFO(18),
     ;
 
     /**
@@ -424,6 +445,14 @@ private static final long serialVersionUID = 0L;
      * <code>ATTACH_CANCELLED = 17;</code>
      */
     public static final int ATTACH_CANCELLED_VALUE = 17;
+    /**
+     * <pre>
+     * Info about auto-connect to foreground process
+     * </pre>
+     *
+     * <code>AUTO_CONNECT_INFO = 18;</code>
+     */
+    public static final int AUTO_CONNECT_INFO_VALUE = 18;
 
 
     public final int getNumber() {
@@ -464,6 +493,7 @@ private static final long serialVersionUID = 0L;
         case 15: return SNAPSHOT_CANCELLED;
         case 16: return ATTACH_ERROR;
         case 17: return ATTACH_CANCELLED;
+        case 18: return AUTO_CONNECT_INFO;
         default: return null;
       }
     }
@@ -655,6 +685,44 @@ private static final long serialVersionUID = 0L;
     return errorInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDefaultInstance() : errorInfo_;
   }
 
+  public static final int AUTO_CONNECT_INFO_FIELD_NUMBER = 5;
+  private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo autoConnectInfo_;
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * @return Whether the autoConnectInfo field is set.
+   */
+  @java.lang.Override
+  public boolean hasAutoConnectInfo() {
+    return ((bitField0_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * @return The autoConnectInfo.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo getAutoConnectInfo() {
+    return autoConnectInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance() : autoConnectInfo_;
+  }
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder() {
+    return autoConnectInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance() : autoConnectInfo_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -681,6 +749,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       output.writeMessage(4, getErrorInfo());
     }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      output.writeMessage(5, getAutoConnectInfo());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -705,6 +776,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(4, getErrorInfo());
+    }
+    if (((bitField0_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, getAutoConnectInfo());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -740,6 +815,11 @@ private static final long serialVersionUID = 0L;
       if (!getErrorInfo()
           .equals(other.getErrorInfo())) return false;
     }
+    if (hasAutoConnectInfo() != other.hasAutoConnectInfo()) return false;
+    if (hasAutoConnectInfo()) {
+      if (!getAutoConnectInfo()
+          .equals(other.getAutoConnectInfo())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -766,6 +846,10 @@ private static final long serialVersionUID = 0L;
     if (hasErrorInfo()) {
       hash = (37 * hash) + ERROR_INFO_FIELD_NUMBER;
       hash = (53 * hash) + getErrorInfo().hashCode();
+    }
+    if (hasAutoConnectInfo()) {
+      hash = (37 * hash) + AUTO_CONNECT_INFO_FIELD_NUMBER;
+      hash = (53 * hash) + getAutoConnectInfo().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -902,6 +986,7 @@ private static final long serialVersionUID = 0L;
         getSessionFieldBuilder();
         getSnapshotInfoFieldBuilder();
         getErrorInfoFieldBuilder();
+        getAutoConnectInfoFieldBuilder();
       }
     }
     @java.lang.Override
@@ -927,6 +1012,12 @@ private static final long serialVersionUID = 0L;
         errorInfoBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000008);
+      if (autoConnectInfoBuilder_ == null) {
+        autoConnectInfo_ = null;
+      } else {
+        autoConnectInfoBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000010);
       return this;
     }
 
@@ -982,6 +1073,14 @@ private static final long serialVersionUID = 0L;
           result.errorInfo_ = errorInfoBuilder_.build();
         }
         to_bitField0_ |= 0x00000008;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        if (autoConnectInfoBuilder_ == null) {
+          result.autoConnectInfo_ = autoConnectInfo_;
+        } else {
+          result.autoConnectInfo_ = autoConnectInfoBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000010;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1043,6 +1142,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasErrorInfo()) {
         mergeErrorInfo(other.getErrorInfo());
+      }
+      if (other.hasAutoConnectInfo()) {
+        mergeAutoConnectInfo(other.getAutoConnectInfo());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1599,6 +1701,162 @@ private static final long serialVersionUID = 0L;
         errorInfo_ = null;
       }
       return errorInfoBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo autoConnectInfo_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder> autoConnectInfoBuilder_;
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * @return Whether the autoConnectInfo field is set.
+     */
+    public boolean hasAutoConnectInfo() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     * @return The autoConnectInfo.
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo getAutoConnectInfo() {
+      if (autoConnectInfoBuilder_ == null) {
+        return autoConnectInfo_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance() : autoConnectInfo_;
+      } else {
+        return autoConnectInfoBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public Builder setAutoConnectInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo value) {
+      if (autoConnectInfoBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        autoConnectInfo_ = value;
+        onChanged();
+      } else {
+        autoConnectInfoBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public Builder setAutoConnectInfo(
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder builderForValue) {
+      if (autoConnectInfoBuilder_ == null) {
+        autoConnectInfo_ = builderForValue.build();
+        onChanged();
+      } else {
+        autoConnectInfoBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public Builder mergeAutoConnectInfo(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo value) {
+      if (autoConnectInfoBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0) &&
+            autoConnectInfo_ != null &&
+            autoConnectInfo_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance()) {
+          autoConnectInfo_ =
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.newBuilder(autoConnectInfo_).mergeFrom(value).buildPartial();
+        } else {
+          autoConnectInfo_ = value;
+        }
+        onChanged();
+      } else {
+        autoConnectInfoBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000010;
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public Builder clearAutoConnectInfo() {
+      if (autoConnectInfoBuilder_ == null) {
+        autoConnectInfo_ = null;
+        onChanged();
+      } else {
+        autoConnectInfoBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000010);
+      return this;
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder getAutoConnectInfoBuilder() {
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return getAutoConnectInfoFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder() {
+      if (autoConnectInfoBuilder_ != null) {
+        return autoConnectInfoBuilder_.getMessageOrBuilder();
+      } else {
+        return autoConnectInfo_ == null ?
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.getDefaultInstance() : autoConnectInfo_;
+      }
+    }
+    /**
+     * <pre>
+     * Extra info about auto connect to foreground process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder> 
+        getAutoConnectInfoFieldBuilder() {
+      if (autoConnectInfoBuilder_ == null) {
+        autoConnectInfoBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder>(
+                getAutoConnectInfo(),
+                getParentForChildren(),
+                isClean());
+        autoConnectInfo_ = null;
+      }
+      return autoConnectInfoBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

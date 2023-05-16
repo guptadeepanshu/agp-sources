@@ -4,6 +4,11 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Session data for dynamic layout inspector (inspector v2) around hiding of
+ * system nodes
+ * </pre>
+ *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorSystemNode}
  */
 public final class DynamicLayoutInspectorSystemNode extends
@@ -323,6 +328,11 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Session data for dynamic layout inspector (inspector v2) around hiding of
+   * system nodes
+   * </pre>
+   *
    * Protobuf type {@code android_studio.DynamicLayoutInspectorSystemNode}
    */
   public static final class Builder extends

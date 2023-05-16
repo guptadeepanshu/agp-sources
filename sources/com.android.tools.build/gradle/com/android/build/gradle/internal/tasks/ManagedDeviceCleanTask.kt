@@ -24,7 +24,9 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.google.common.annotations.VisibleForTesting
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
@@ -36,6 +38,7 @@ import org.gradle.work.DisableCachingByDefault
  * Task for clearing the gradle avd folder of avd devices.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class ManagedDeviceCleanTask: NonIncrementalGlobalTask() {
     @get: Internal
     abstract val avdService: Property<AvdComponentsBuildService>
@@ -65,9 +68,11 @@ abstract class ManagedDeviceCleanTask: NonIncrementalGlobalTask() {
     abstract class ManagedDeviceCleanRunnable : ProfileAwareWorkAction<ManagedDeviceCleanParams>() {
         override fun run() {
             val allAvds = parameters.avdService.get().allAvds()
-            parameters.avdService.get().deleteAvds(allAvds.filterNot {
+            val avdsRemoved = parameters.avdService.get().deleteAvds(allAvds.filterNot {
                 parameters.ignoredDevices.get().contains(it)
             })
+            Logging.getLogger(ManagedDeviceCleanTask::class.java)
+                .lifecycle("Successfully deleted ${avdsRemoved.size} managed devices.")
             parameters.avdService.get().deleteLegacyGradleManagedDeviceAvdDirectory()
         }
     }

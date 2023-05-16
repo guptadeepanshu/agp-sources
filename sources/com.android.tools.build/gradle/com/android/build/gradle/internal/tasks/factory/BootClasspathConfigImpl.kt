@@ -20,7 +20,8 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.BootClasspathBuilder
-import com.android.build.gradle.internal.services.BaseServices
+import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.services.TaskCreationServicesImpl
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.google.common.collect.ImmutableList
 import org.gradle.api.Action
@@ -33,9 +34,10 @@ import org.gradle.api.provider.Provider
 
 class BootClasspathConfigImpl(
     project: Project,
-    private val services: BaseServices,
+    private val projectServices: ProjectServices,
     private val versionedSdkLoaderService: VersionedSdkLoaderService,
-    private val extension: CommonExtensionImpl<*,*,*,*>,
+    // TODO: Remove dependency on common extension
+    private val extension: CommonExtensionImpl<*,*,*,*>?,
     private val forUnitTest: Boolean
 ): BootClasspathConfig {
 
@@ -49,12 +51,14 @@ class BootClasspathConfigImpl(
         val property = project.objects.listProperty(RegularFile::class.java)
         val versionedSdkLoader = versionedSdkLoaderService.versionedSdkLoader
 
+        // we need to get a TaskCreationService to call computeClasspath
+        // TODO refactor what we need out of TaskCreationServices? (creating yet another service class would not be great)
+        val taskService = TaskCreationServicesImpl(projectServices)
+
         property.set(
             BootClasspathBuilder.computeClasspath(
-                project.layout,
-                project.providers,
+                taskService,
                 project.objects,
-                services.issueReporter,
                 versionedSdkLoader
                     .flatMap(
                         SdkComponentsBuildService.VersionedSdkLoader::targetBootClasspathProvider
@@ -98,12 +102,14 @@ class BootClasspathConfigImpl(
         val property = project.objects.listProperty(RegularFile::class.java)
         val versionedSdkLoader = versionedSdkLoaderService.versionedSdkLoader
 
+        // we need to get a TaskCreationService to call computeClasspath
+        // TODO refactor what we need out of TaskCreationServices? (creating yet another service class would not be great)
+        val taskService = TaskCreationServicesImpl(projectServices)
+
         property.set(
             BootClasspathBuilder.computeClasspath(
-                project.layout,
-                project.providers,
+                taskService,
                 project.objects,
-                services.issueReporter,
                 versionedSdkLoader.flatMap(
                     SdkComponentsBuildService.VersionedSdkLoader::targetBootClasspathProvider
                 ),
@@ -120,7 +126,7 @@ class BootClasspathConfigImpl(
                     SdkComponentsBuildService.VersionedSdkLoader::annotationsJarProvider
                 ),
                 false,
-                ImmutableList.copyOf(extension.libraryRequests)
+                ImmutableList.copyOf(extension?.libraryRequests ?: emptyList())
             )
         )
 
@@ -146,7 +152,7 @@ class BootClasspathConfigImpl(
         val versionedSdkLoader = versionedSdkLoaderService.versionedSdkLoader
 
         property.addAll(filteredBootClasspath)
-        if (extension.compileOptions.targetCompatibility.isJava8Compatible) {
+        if (extension?.compileOptions?.targetCompatibility?.isJava8Compatible != false) {
             property.add(
                 versionedSdkLoader
                     .flatMap(
@@ -182,7 +188,7 @@ class BootClasspathConfigImpl(
                     )
                     .attribute(
                         AndroidArtifacts.MOCKABLE_JAR_RETURN_DEFAULT_VALUES,
-                        extension.testOptions.unitTests.isReturnDefaultValues
+                        extension?.testOptions?.unitTests?.isReturnDefaultValues ?: false
                     )
             }
         androidJar

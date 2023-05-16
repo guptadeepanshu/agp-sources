@@ -27,11 +27,14 @@ import com.android.build.gradle.internal.cxx.logging.errorln
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.CxxVariantModel
 import com.android.build.gradle.internal.cxx.model.objFolder
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.errors.DefaultIssueReporter
+import com.android.utils.cxx.CxxDiagnosticCode.CONFIGURE_MORE_THAN_ONE_SO_FOLDER
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.process.ExecOperations
@@ -43,6 +46,7 @@ import org.gradle.api.file.DirectoryProperty
  * Task that performs a C/C++ build action or refers to a build from a different task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE)
 abstract class ExternalNativeBuildTask :
         UnsafeOutputsTask("External Native Build task is always run as incrementality is left to the external build system.") {
 
@@ -99,7 +103,7 @@ fun createRepublishCxxBuildTask(
             .map { it.soRepublishFolder.parentFile }
             .distinct()
         if (soParentFolders.size != 1) {
-            errorln("More than one SO folder: ${soParentFolders.joinToString { it.path }}")
+            errorln(CONFIGURE_MORE_THAN_ONE_SO_FOLDER, "More than one SO folder: ${soParentFolders.joinToString { it.path }}")
         }
         val objFolders = allAbis
             .map { it.intermediatesParentFolder }

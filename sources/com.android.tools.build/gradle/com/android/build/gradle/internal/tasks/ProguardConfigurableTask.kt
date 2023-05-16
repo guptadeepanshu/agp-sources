@@ -16,11 +16,15 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.variant.ScopedArtifacts.Scope
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.internal.InternalScope
 import com.android.build.gradle.internal.PostprocessingFeatures
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.pipeline.StreamFilter
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
@@ -34,6 +38,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_PROGUARD_FILE
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.ComponentType
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.google.common.base.Preconditions
 import com.google.common.collect.Sets
 import org.gradle.api.artifacts.ArtifactCollection
@@ -65,6 +70,7 @@ import java.io.File
  * code.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION)
 abstract class ProguardConfigurableTask(
     private val projectLayout: ProjectLayout
 ) : NonIncrementalTask() {
@@ -115,6 +121,9 @@ abstract class ProguardConfigurableTask(
     @get:OutputFile
     abstract val mappingFile: RegularFileProperty
 
+    @get:Input
+    abstract val hasAllAccessTransformers: Property<Boolean>
+
     /**
      * Users can have access to the default proguard file location through the
      * VariantDimension.getDefaultProguardFile API.
@@ -164,9 +173,10 @@ abstract class ProguardConfigurableTask(
         creationConfig
     ) {
 
-        private val includeFeaturesInScopes: Boolean = creationConfig.variantScope.consumesFeatureJars()
+        private val includeFeaturesInScopes: Boolean = (creationConfig as? ApplicationCreationConfig)
+            ?.consumesFeatureJars == true
         protected val componentType: ComponentType = creationConfig.componentType
-        private val testedConfig = creationConfig.testedConfig
+        private val testedConfig = (creationConfig as? TestComponentCreationConfig)?.mainVariant
 
         // Override to make this true in proguard
         protected open val defaultObfuscate: Boolean = false
@@ -180,7 +190,7 @@ abstract class ProguardConfigurableTask(
 
         private val resources: FileCollection
 
-        @Suppress("DEPRECATION") // Legacy support (b/195153220)
+        @Suppress("DEPRECATION") // Legacy support
         protected val inputScopes: MutableSet<com.android.build.api.transform.QualifiedContent.ScopeType> =
             when {
                 componentType.isAar -> mutableSetOf(
@@ -201,7 +211,7 @@ abstract class ProguardConfigurableTask(
             }
 
         init {
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             val referencedScopes: Set<com.android.build.api.transform.QualifiedContent.Scope> = run {
                 val set = Sets.newHashSetWithExpectedSize<com.android.build.api.transform.QualifiedContent.Scope>(5)
                 if (componentType.isAar) {
@@ -229,25 +239,25 @@ abstract class ProguardConfigurableTask(
             )
 
             val transformManager = creationConfig.transformManager
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             classes = transformManager
                 .getPipelineOutputAsFileCollection(createStreamFilter(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES, inputScopes))
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             resources = transformManager
                 .getPipelineOutputAsFileCollection(createStreamFilter(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES, inputScopes))
 
             // Consume non referenced inputs
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             transformManager.consumeStreams(inputScopes, setOf(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES, com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES))
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             referencedClasses = transformManager
                 .getPipelineOutputAsFileCollection(
                     createStreamFilter(com.android.build.api.transform.QualifiedContent.DefaultContentType.CLASSES, referencedScopes.toMutableSet())
                 )
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             referencedResources = transformManager
                 .getPipelineOutputAsFileCollection(
                     createStreamFilter(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES, referencedScopes.toMutableSet())
@@ -290,14 +300,26 @@ abstract class ProguardConfigurableTask(
 
             task.includeFeaturesInScopes.set(includeFeaturesInScopes)
 
-            task.classes.from(classes)
+            val hasAllAccessTransformers = creationConfig.artifacts.forScope(Scope.ALL)
+                .getScopedArtifactsContainer(ScopedArtifact.CLASSES).artifactsAltered.get()
 
-            if (addCompileRClass) {
-                task.classes.from(
-                        creationConfig
-                                .artifacts
-                                .get(InternalArtifactType.COMPILE_R_CLASS_JAR)
+            task.hasAllAccessTransformers.set(hasAllAccessTransformers)
+
+            // if some external plugin altered the ALL scoped classes, use that.
+            if (hasAllAccessTransformers) {
+                task.classes.setFrom(
+                    creationConfig.artifacts.forScope(Scope.ALL)
+                        .getFinalArtifacts(ScopedArtifact.CLASSES)
                 )
+            } else {
+                task.classes.from(classes)
+                if (addCompileRClass) {
+                    task.classes.from(
+                        creationConfig
+                            .artifacts
+                            .get(InternalArtifactType.COMPILE_R_CLASS_JAR)
+                    )
+                }
             }
 
             task.resources.from(resources)
@@ -376,7 +398,7 @@ abstract class ProguardConfigurableTask(
             task: ProguardConfigurableTask,
             creationConfig: ConsumableCreationConfig
         ) {
-            val postprocessingFeatures = creationConfig.variantScope.postprocessingFeatures
+            val postprocessingFeatures = creationConfig.postProcessingFeatures
             postprocessingFeatures?.let { setActions(postprocessingFeatures) }
 
             val aaptProguardFile =
@@ -441,7 +463,7 @@ abstract class ProguardConfigurableTask(
          *  Convenience function. Returns a StreamFilter that checks for the given contentType and a
          *  nonempty intersection with the given set of Scopes .
          */
-        @Suppress("DEPRECATION") // Legacy support (b/195153220)
+        @Suppress("DEPRECATION") // Legacy support
         private fun createStreamFilter(
             desiredType: com.android.build.api.transform.QualifiedContent.ContentType,
             desiredScopes: MutableSet<in com.android.build.api.transform.QualifiedContent.ScopeType>

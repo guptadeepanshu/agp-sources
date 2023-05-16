@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_DBG
 import com.android.SdkConstants.DOT_SYM
-import com.android.build.api.variant.impl.ApplicationVariantImpl
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -26,6 +26,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.ConfigurableFileCollection
@@ -52,6 +53,7 @@ import java.io.File
  * simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE, secondaryTaskCategories = [TaskCategory.METADATA, TaskCategory.MERGING])
 abstract class MergeNativeDebugMetadataTask : NonIncrementalTask() {
 
     @get:SkipWhenEmpty
@@ -99,7 +101,7 @@ abstract class MergeNativeDebugMetadataTask : NonIncrementalTask() {
         }
 
         fun getNativeDebugMetadataFiles(
-            variant: ApplicationVariantImpl
+            variant: ApplicationCreationConfig
         ): FileCollection {
             val nativeDebugMetadataDirs = variant.services.fileCollection()
             when (variant.nativeDebugSymbolLevel) {
@@ -140,8 +142,8 @@ abstract class MergeNativeDebugMetadataTask : NonIncrementalTask() {
         private val patternSet = PatternSet().include("**/*$DOT_DBG").include("**/*$DOT_SYM")
     }
 
-    class CreationAction(componentProperties: ApplicationVariantImpl) :
-        VariantTaskCreationAction<MergeNativeDebugMetadataTask, ApplicationVariantImpl>(
+    class CreationAction(componentProperties: ApplicationCreationConfig) :
+        VariantTaskCreationAction<MergeNativeDebugMetadataTask, ApplicationCreationConfig>(
             componentProperties
         ) {
         override val name: String

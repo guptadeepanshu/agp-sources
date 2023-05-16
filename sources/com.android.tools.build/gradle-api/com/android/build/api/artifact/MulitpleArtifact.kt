@@ -45,31 +45,30 @@ sealed class MultipleArtifact<FileTypeT : FileSystemLocation>(
      */
     object MULTIDEX_KEEP_PROGUARD:
             MultipleArtifact<RegularFile>(FILE, Category.SOURCES),
-            Transformable,
-            Replaceable
+            Replaceable,
+            Transformable
 
     /**
-     * Classes that will eventually be dex'ed for this module, that were generated, or processed
-     * as directories.
-     *
-     * This is not the whole list of classes as some are generated, or processed as jars. In order
-     * to process all classes, one should also consume [ALL_CLASSES_JARS]
+     * This artifact type is deprecated, use [Artifacts.forScope] API instead.
      */
+    @Deprecated(
+        message = "Use Artifacts.forScope APIs.",
+    )
     object ALL_CLASSES_DIRS:
-            MultipleArtifact<Directory>(DIRECTORY),
-            Appendable,
-            Transformable,
-            Replaceable
+        MultipleArtifact<Directory>(DIRECTORY),
+        Appendable,
+        Replaceable,
+        Transformable
+
     /**
-     * Classes that will eventually be dex'ed for this module, that were generated, or processed
-     * as jar files.
-     *
-     * This is not the whole list of classes as some are generated, or processed as directories.
-     * In order to process all classes, one should also consume [ALL_CLASSES_DIRS]
+     * This artifact type is deprecated, use [Artifacts.forScope] API instead.
      */
+    @Deprecated(
+        message = "Use Artifacts.forScope APIs.",
+    )
     object ALL_CLASSES_JARS:
         MultipleArtifact<RegularFile>(FILE),
         Appendable,
-        Transformable,
-        Replaceable
+        Replaceable,
+        Transformable
 }

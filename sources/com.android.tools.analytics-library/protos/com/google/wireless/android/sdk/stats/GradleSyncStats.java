@@ -25,6 +25,9 @@ private static final long serialVersionUID = 0L;
     actualSyncType_ = 0;
     lastKnownAndroidGradlePluginVersion_ = "";
     androidGradlePluginVersion_ = "";
+    syncExecutionType_ = 0;
+    userRequestedSyncType_ = 0;
+    studioRequestedSyncType_ = 0;
   }
 
   @java.lang.Override
@@ -134,6 +137,42 @@ private static final long serialVersionUID = 0L;
           case 88: {
             bitField0_ |= 0x00000400;
             usesBuildGradleKts_ = input.readBool();
+            break;
+          }
+          case 96: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType value = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(12, rawValue);
+            } else {
+              bitField0_ |= 0x00000800;
+              syncExecutionType_ = rawValue;
+            }
+            break;
+          }
+          case 104: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution value = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(13, rawValue);
+            } else {
+              bitField0_ |= 0x00001000;
+              userRequestedSyncType_ = rawValue;
+            }
+            break;
+          }
+          case 112: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution value = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(14, rawValue);
+            } else {
+              bitField0_ |= 0x00002000;
+              studioRequestedSyncType_ = rawValue;
+            }
             break;
           }
           default: {
@@ -916,6 +955,14 @@ private static final long serialVersionUID = 0L;
      * <code>TRIGGER_AGP_VERSION_UPDATED = 4501;</code>
      */
     TRIGGER_AGP_VERSION_UPDATED(4501),
+    /**
+     * <pre>
+     * Rollback of Android Gradle plugin update was requested
+     * </pre>
+     *
+     * <code>TRIGGER_AGP_VERSION_UPDATE_ROLLED_BACK = 4502;</code>
+     */
+    TRIGGER_AGP_VERSION_UPDATE_ROLLED_BACK(4502),
     /**
      * <pre>
      * Last marker for changes in Android Gradle Plugin
@@ -1795,6 +1842,14 @@ private static final long serialVersionUID = 0L;
     public static final int TRIGGER_AGP_VERSION_UPDATED_VALUE = 4501;
     /**
      * <pre>
+     * Rollback of Android Gradle plugin update was requested
+     * </pre>
+     *
+     * <code>TRIGGER_AGP_VERSION_UPDATE_ROLLED_BACK = 4502;</code>
+     */
+    public static final int TRIGGER_AGP_VERSION_UPDATE_ROLLED_BACK_VALUE = 4502;
+    /**
+     * <pre>
      * Last marker for changes in Android Gradle Plugin
      * </pre>
      *
@@ -2042,6 +2097,7 @@ private static final long serialVersionUID = 0L;
         case 4299: return TRIGGER_RUN_LAST_MARKER;
         case 4500: return TRIGGER_AGP_FIRST_MARKER;
         case 4501: return TRIGGER_AGP_VERSION_UPDATED;
+        case 4502: return TRIGGER_AGP_VERSION_UPDATE_ROLLED_BACK;
         case 4599: return TRIGGER_AGP_LAST_MARKER;
         case 4800: return TRIGGER_PROJECT_LOADED_FIRST_MARKER;
         case 4801: return TRIGGER_PROJECT_NEW;
@@ -2290,6 +2346,366 @@ private static final long serialVersionUID = 0L;
     }
 
     // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.GradleSyncType)
+  }
+
+  /**
+   * <pre>
+   * Deprecated: use StudioRequestedExecution and UserRequestedExecution.
+   * Sync execution type: whether Sync fetches model builders in parallel or
+   * sequentially
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.GradleSyncStats.GradleSyncExecutionType}
+   */
+  @java.lang.Deprecated public enum GradleSyncExecutionType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * Gradle sync runs sequentially
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_RUNS_SEQUENTIALLY = 0;</code>
+     */
+    GRADLE_SYNC_RUNS_SEQUENTIALLY(0),
+    /**
+     * <pre>
+     * Gradle sync runs in parallel
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_RUNS_IN_PARALLEL = 1;</code>
+     */
+    GRADLE_SYNC_RUNS_IN_PARALLEL(1),
+    ;
+
+    /**
+     * <pre>
+     * Gradle sync runs sequentially
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_RUNS_SEQUENTIALLY = 0;</code>
+     */
+    public static final int GRADLE_SYNC_RUNS_SEQUENTIALLY_VALUE = 0;
+    /**
+     * <pre>
+     * Gradle sync runs in parallel
+     * </pre>
+     *
+     * <code>GRADLE_SYNC_RUNS_IN_PARALLEL = 1;</code>
+     */
+    public static final int GRADLE_SYNC_RUNS_IN_PARALLEL_VALUE = 1;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static GradleSyncExecutionType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static GradleSyncExecutionType forNumber(int value) {
+      switch (value) {
+        case 0: return GRADLE_SYNC_RUNS_SEQUENTIALLY;
+        case 1: return GRADLE_SYNC_RUNS_IN_PARALLEL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<GradleSyncExecutionType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        GradleSyncExecutionType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<GradleSyncExecutionType>() {
+            public GradleSyncExecutionType findValueByNumber(int number) {
+              return GradleSyncExecutionType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.GradleSyncStats.getDescriptor().getEnumTypes().get(2);
+    }
+
+    private static final GradleSyncExecutionType[] VALUES = values();
+
+    public static GradleSyncExecutionType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private GradleSyncExecutionType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.GradleSyncExecutionType)
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.GradleSyncStats.UserRequestedExecution}
+   */
+  public enum UserRequestedExecution
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_USER_REQUESTED_EXECUTION_TYPE = 0;</code>
+     */
+    UNKNOWN_USER_REQUESTED_EXECUTION_TYPE(0),
+    /**
+     * <pre>
+     * User requested sequential sync.
+     * </pre>
+     *
+     * <code>USER_REQUESTED_SEQUENTIAL = 1;</code>
+     */
+    USER_REQUESTED_SEQUENTIAL(1),
+    /**
+     * <pre>
+     * User requested parallel sync.
+     * </pre>
+     *
+     * <code>USER_REQUESTED_PARALLEL = 2;</code>
+     */
+    USER_REQUESTED_PARALLEL(2),
+    ;
+
+    /**
+     * <code>UNKNOWN_USER_REQUESTED_EXECUTION_TYPE = 0;</code>
+     */
+    public static final int UNKNOWN_USER_REQUESTED_EXECUTION_TYPE_VALUE = 0;
+    /**
+     * <pre>
+     * User requested sequential sync.
+     * </pre>
+     *
+     * <code>USER_REQUESTED_SEQUENTIAL = 1;</code>
+     */
+    public static final int USER_REQUESTED_SEQUENTIAL_VALUE = 1;
+    /**
+     * <pre>
+     * User requested parallel sync.
+     * </pre>
+     *
+     * <code>USER_REQUESTED_PARALLEL = 2;</code>
+     */
+    public static final int USER_REQUESTED_PARALLEL_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static UserRequestedExecution valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static UserRequestedExecution forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_USER_REQUESTED_EXECUTION_TYPE;
+        case 1: return USER_REQUESTED_SEQUENTIAL;
+        case 2: return USER_REQUESTED_PARALLEL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<UserRequestedExecution>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        UserRequestedExecution> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<UserRequestedExecution>() {
+            public UserRequestedExecution findValueByNumber(int number) {
+              return UserRequestedExecution.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.GradleSyncStats.getDescriptor().getEnumTypes().get(3);
+    }
+
+    private static final UserRequestedExecution[] VALUES = values();
+
+    public static UserRequestedExecution valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private UserRequestedExecution(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.UserRequestedExecution)
+  }
+
+  /**
+   * Protobuf enum {@code android_studio.GradleSyncStats.StudioRequestedExecution}
+   */
+  public enum StudioRequestedExecution
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE = 0;</code>
+     */
+    UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE(0),
+    /**
+     * <pre>
+     * Studio requested sequential sync.
+     * </pre>
+     *
+     * <code>STUDIO_REQUESTD_SEQUENTIAL = 1;</code>
+     */
+    STUDIO_REQUESTD_SEQUENTIAL(1),
+    /**
+     * <pre>
+     * Studio requested parallel sync.
+     * </pre>
+     *
+     * <code>STUDIO_REQUESTD_PARALLEL = 2;</code>
+     */
+    STUDIO_REQUESTD_PARALLEL(2),
+    ;
+
+    /**
+     * <code>UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE = 0;</code>
+     */
+    public static final int UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE_VALUE = 0;
+    /**
+     * <pre>
+     * Studio requested sequential sync.
+     * </pre>
+     *
+     * <code>STUDIO_REQUESTD_SEQUENTIAL = 1;</code>
+     */
+    public static final int STUDIO_REQUESTD_SEQUENTIAL_VALUE = 1;
+    /**
+     * <pre>
+     * Studio requested parallel sync.
+     * </pre>
+     *
+     * <code>STUDIO_REQUESTD_PARALLEL = 2;</code>
+     */
+    public static final int STUDIO_REQUESTD_PARALLEL_VALUE = 2;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static StudioRequestedExecution valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static StudioRequestedExecution forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE;
+        case 1: return STUDIO_REQUESTD_SEQUENTIAL;
+        case 2: return STUDIO_REQUESTD_PARALLEL;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<StudioRequestedExecution>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        StudioRequestedExecution> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<StudioRequestedExecution>() {
+            public StudioRequestedExecution findValueByNumber(int number) {
+              return StudioRequestedExecution.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.GradleSyncStats.getDescriptor().getEnumTypes().get(4);
+    }
+
+    private static final StudioRequestedExecution[] VALUES = values();
+
+    public static StudioRequestedExecution valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private StudioRequestedExecution(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.GradleSyncStats.StudioRequestedExecution)
   }
 
   private int bitField0_;
@@ -2659,6 +3075,97 @@ private static final long serialVersionUID = 0L;
     return usesBuildGradleKts_;
   }
 
+  public static final int SYNC_EXECUTION_TYPE_FIELD_NUMBER = 12;
+  private int syncExecutionType_;
+  /**
+   * <pre>
+   * Deprecated.
+   * Use user_requested_sync_type and studio_requested_sync_execution_type.
+   * The Sync execution type: whether it uses Sequential or parallel model
+   * fetching.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+   * @return Whether the syncExecutionType field is set.
+   */
+  @java.lang.Override @java.lang.Deprecated public boolean hasSyncExecutionType() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * Deprecated.
+   * Use user_requested_sync_type and studio_requested_sync_execution_type.
+   * The Sync execution type: whether it uses Sequential or parallel model
+   * fetching.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+   * @return The syncExecutionType.
+   */
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(syncExecutionType_);
+    return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.GRADLE_SYNC_RUNS_SEQUENTIALLY : result;
+  }
+
+  public static final int USER_REQUESTED_SYNC_TYPE_FIELD_NUMBER = 13;
+  private int userRequestedSyncType_;
+  /**
+   * <pre>
+   * The type of sync execution user requested. Note that this may be overridden
+   * by [sync_execution_type] property.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+   * @return Whether the userRequestedSyncType field is set.
+   */
+  @java.lang.Override public boolean hasUserRequestedSyncType() {
+    return ((bitField0_ & 0x00001000) != 0);
+  }
+  /**
+   * <pre>
+   * The type of sync execution user requested. Note that this may be overridden
+   * by [sync_execution_type] property.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+   * @return The userRequestedSyncType.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution getUserRequestedSyncType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(userRequestedSyncType_);
+    return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.UNKNOWN_USER_REQUESTED_EXECUTION_TYPE : result;
+  }
+
+  public static final int STUDIO_REQUESTED_SYNC_TYPE_FIELD_NUMBER = 14;
+  private int studioRequestedSyncType_;
+  /**
+   * <pre>
+   * The type of sync execution Studio requested. Note that e.g. even if
+   * parallel is requested, Gradle may decide to run it sequentially.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+   * @return Whether the studioRequestedSyncType field is set.
+   */
+  @java.lang.Override public boolean hasStudioRequestedSyncType() {
+    return ((bitField0_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * The type of sync execution Studio requested. Note that e.g. even if
+   * parallel is requested, Gradle may decide to run it sequentially.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+   * @return The studioRequestedSyncType.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(studioRequestedSyncType_);
+    return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2705,6 +3212,15 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000400) != 0)) {
       output.writeBool(11, usesBuildGradleKts_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      output.writeEnum(12, syncExecutionType_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      output.writeEnum(13, userRequestedSyncType_);
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      output.writeEnum(14, studioRequestedSyncType_);
     }
     unknownFields.writeTo(output);
   }
@@ -2756,6 +3272,18 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000400) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(11, usesBuildGradleKts_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(12, syncExecutionType_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(13, userRequestedSyncType_);
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(14, studioRequestedSyncType_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2824,6 +3352,18 @@ private static final long serialVersionUID = 0L;
       if (getUsesBuildGradleKts()
           != other.getUsesBuildGradleKts()) return false;
     }
+    if (hasSyncExecutionType() != other.hasSyncExecutionType()) return false;
+    if (hasSyncExecutionType()) {
+      if (syncExecutionType_ != other.syncExecutionType_) return false;
+    }
+    if (hasUserRequestedSyncType() != other.hasUserRequestedSyncType()) return false;
+    if (hasUserRequestedSyncType()) {
+      if (userRequestedSyncType_ != other.userRequestedSyncType_) return false;
+    }
+    if (hasStudioRequestedSyncType() != other.hasStudioRequestedSyncType()) return false;
+    if (hasStudioRequestedSyncType()) {
+      if (studioRequestedSyncType_ != other.studioRequestedSyncType_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -2884,6 +3424,18 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + USES_BUILD_GRADLE_KTS_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getUsesBuildGradleKts());
+    }
+    if (hasSyncExecutionType()) {
+      hash = (37 * hash) + SYNC_EXECUTION_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + syncExecutionType_;
+    }
+    if (hasUserRequestedSyncType()) {
+      hash = (37 * hash) + USER_REQUESTED_SYNC_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + userRequestedSyncType_;
+    }
+    if (hasStudioRequestedSyncType()) {
+      hash = (37 * hash) + STUDIO_REQUESTED_SYNC_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + studioRequestedSyncType_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3044,6 +3596,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000200);
       usesBuildGradleKts_ = false;
       bitField0_ = (bitField0_ & ~0x00000400);
+      syncExecutionType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000800);
+      userRequestedSyncType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00001000);
+      studioRequestedSyncType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00002000);
       return this;
     }
 
@@ -3116,6 +3674,18 @@ private static final long serialVersionUID = 0L;
         result.usesBuildGradleKts_ = usesBuildGradleKts_;
         to_bitField0_ |= 0x00000400;
       }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        to_bitField0_ |= 0x00000800;
+      }
+      result.syncExecutionType_ = syncExecutionType_;
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        to_bitField0_ |= 0x00001000;
+      }
+      result.userRequestedSyncType_ = userRequestedSyncType_;
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        to_bitField0_ |= 0x00002000;
+      }
+      result.studioRequestedSyncType_ = studioRequestedSyncType_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3201,6 +3771,15 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasUsesBuildGradleKts()) {
         setUsesBuildGradleKts(other.getUsesBuildGradleKts());
+      }
+      if (other.hasSyncExecutionType()) {
+        setSyncExecutionType(other.getSyncExecutionType());
+      }
+      if (other.hasUserRequestedSyncType()) {
+        setUserRequestedSyncType(other.getUserRequestedSyncType());
+      }
+      if (other.hasStudioRequestedSyncType()) {
+        setStudioRequestedSyncType(other.getStudioRequestedSyncType());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3957,6 +4536,203 @@ private static final long serialVersionUID = 0L;
     public Builder clearUsesBuildGradleKts() {
       bitField0_ = (bitField0_ & ~0x00000400);
       usesBuildGradleKts_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int syncExecutionType_ = 0;
+    /**
+     * <pre>
+     * Deprecated.
+     * Use user_requested_sync_type and studio_requested_sync_execution_type.
+     * The Sync execution type: whether it uses Sequential or parallel model
+     * fetching.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+     * @return Whether the syncExecutionType field is set.
+     */
+    @java.lang.Override @java.lang.Deprecated public boolean hasSyncExecutionType() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * Deprecated.
+     * Use user_requested_sync_type and studio_requested_sync_execution_type.
+     * The Sync execution type: whether it uses Sequential or parallel model
+     * fetching.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+     * @return The syncExecutionType.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.valueOf(syncExecutionType_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType.GRADLE_SYNC_RUNS_SEQUENTIALLY : result;
+    }
+    /**
+     * <pre>
+     * Deprecated.
+     * Use user_requested_sync_type and studio_requested_sync_execution_type.
+     * The Sync execution type: whether it uses Sequential or parallel model
+     * fetching.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+     * @param value The syncExecutionType to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setSyncExecutionType(com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000800;
+      syncExecutionType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Deprecated.
+     * Use user_requested_sync_type and studio_requested_sync_execution_type.
+     * The Sync execution type: whether it uses Sequential or parallel model
+     * fetching.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder clearSyncExecutionType() {
+      bitField0_ = (bitField0_ & ~0x00000800);
+      syncExecutionType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int userRequestedSyncType_ = 0;
+    /**
+     * <pre>
+     * The type of sync execution user requested. Note that this may be overridden
+     * by [sync_execution_type] property.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+     * @return Whether the userRequestedSyncType field is set.
+     */
+    @java.lang.Override public boolean hasUserRequestedSyncType() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * The type of sync execution user requested. Note that this may be overridden
+     * by [sync_execution_type] property.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+     * @return The userRequestedSyncType.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution getUserRequestedSyncType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.valueOf(userRequestedSyncType_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution.UNKNOWN_USER_REQUESTED_EXECUTION_TYPE : result;
+    }
+    /**
+     * <pre>
+     * The type of sync execution user requested. Note that this may be overridden
+     * by [sync_execution_type] property.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+     * @param value The userRequestedSyncType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setUserRequestedSyncType(com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00001000;
+      userRequestedSyncType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The type of sync execution user requested. Note that this may be overridden
+     * by [sync_execution_type] property.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearUserRequestedSyncType() {
+      bitField0_ = (bitField0_ & ~0x00001000);
+      userRequestedSyncType_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int studioRequestedSyncType_ = 0;
+    /**
+     * <pre>
+     * The type of sync execution Studio requested. Note that e.g. even if
+     * parallel is requested, Gradle may decide to run it sequentially.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+     * @return Whether the studioRequestedSyncType field is set.
+     */
+    @java.lang.Override public boolean hasStudioRequestedSyncType() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * The type of sync execution Studio requested. Note that e.g. even if
+     * parallel is requested, Gradle may decide to run it sequentially.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+     * @return The studioRequestedSyncType.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution result = com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.valueOf(studioRequestedSyncType_);
+      return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution.UNKNOWN_STUDIO_REQUESTED_EXECUTION_TYPE : result;
+    }
+    /**
+     * <pre>
+     * The type of sync execution Studio requested. Note that e.g. even if
+     * parallel is requested, Gradle may decide to run it sequentially.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+     * @param value The studioRequestedSyncType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setStudioRequestedSyncType(com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00002000;
+      studioRequestedSyncType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The type of sync execution Studio requested. Note that e.g. even if
+     * parallel is requested, Gradle may decide to run it sequentially.
+     * </pre>
+     *
+     * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearStudioRequestedSyncType() {
+      bitField0_ = (bitField0_ & ~0x00002000);
+      studioRequestedSyncType_ = 0;
       onChanged();
       return this;
     }

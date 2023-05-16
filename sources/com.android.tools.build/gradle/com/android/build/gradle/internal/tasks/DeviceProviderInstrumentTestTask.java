@@ -16,16 +16,29 @@
 
 package com.android.build.gradle.internal.tasks;
 
+import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
+import static com.android.build.gradle.internal.testing.utp.UtpTestUtilsKt.shouldEnableUtp;
+import static com.android.builder.core.BuilderConstants.CONNECTED;
+import static com.android.builder.core.BuilderConstants.DEVICE;
+import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
+import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
+import static com.android.builder.core.BuilderConstants.FD_FLAVORS;
+import static com.android.builder.core.BuilderConstants.FD_REPORTS;
+import static com.android.builder.model.TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR;
+import static com.android.builder.model.TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR;
+
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.artifact.ScopedArtifact;
 import com.android.build.api.dsl.Installation;
 import com.android.build.api.dsl.TestOptions;
+import com.android.build.api.variant.ScopedArtifacts;
 import com.android.build.gradle.internal.BuildToolsExecutableInput;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.SdkComponentsKt;
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots;
@@ -59,6 +72,7 @@ import com.android.builder.model.TestOptions.Execution;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
 import com.android.builder.testing.api.DeviceProvider;
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.ide.common.workers.ExecutorServiceAdapter;
 import com.android.utils.FileUtils;
 import com.android.utils.StringHelper;
@@ -67,6 +81,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.Project;
@@ -96,31 +121,9 @@ import org.gradle.process.ExecOperations;
 import org.gradle.work.DisableCachingByDefault;
 import org.gradle.workers.WorkerExecutor;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-
-import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
-import static com.android.build.gradle.internal.testing.utp.UtpTestUtilsKt.shouldEnableUtp;
-import static com.android.builder.core.BuilderConstants.CONNECTED;
-import static com.android.builder.core.BuilderConstants.DEVICE;
-import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
-import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
-import static com.android.builder.core.BuilderConstants.FD_FLAVORS;
-import static com.android.builder.core.BuilderConstants.FD_REPORTS;
-import static com.android.builder.model.TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR;
-import static com.android.builder.model.TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR;
-
 /** Run instrumentation tests for a given variant */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTask
         implements AndroidTestTask {
 
@@ -719,7 +722,11 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             ProjectOptions projectOptions = creationConfig.getServices().getProjectOptions();
 
             // this can be null for test plugin
-            VariantCreationConfig testedConfig = creationConfig.getTestedConfig();
+            VariantCreationConfig testedConfig = null;
+
+            if (creationConfig instanceof AndroidTestCreationConfig) {
+                testedConfig = ((AndroidTestCreationConfig) creationConfig).getMainVariant();
+            }
 
             ComponentType componentType =
                     testedConfig != null
@@ -867,16 +874,31 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             // This task should never be UP-TO-DATE as we don't model the device state as input yet.
             task.getOutputs().upToDateWhen(it -> false);
 
-            task.getClasses().from(creationConfig.getArtifacts().getAllClasses());
-            task.getClasses().disallowChanges();
-            task.getBuildConfigClasses()
-                    .from(((ComponentImpl) creationConfig).getCompiledBuildConfig());
-            task.getBuildConfigClasses().disallowChanges();
-            task.getRClasses()
+            task.getClasses()
                     .from(
-                            ((ComponentImpl) creationConfig)
-                                    .getCompiledRClasses(
-                                            AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH));
+                            creationConfig
+                                    .getArtifacts()
+                                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                                    .getFinalArtifacts$gradle_core(
+                                            ScopedArtifact.CLASSES.INSTANCE));
+            task.getClasses().disallowChanges();
+            if (creationConfig.getBuildConfigCreationConfig() != null) {
+                task.getBuildConfigClasses()
+                        .from(
+                                creationConfig
+                                        .getBuildConfigCreationConfig()
+                                        .getCompiledBuildConfig());
+            }
+            task.getBuildConfigClasses().disallowChanges();
+            if (creationConfig.getAndroidResourcesCreationConfig() != null) {
+                task.getRClasses()
+                        .from(
+                                creationConfig
+                                        .getAndroidResourcesCreationConfig()
+                                        .getCompiledRClasses(
+                                                AndroidArtifacts.ConsumedConfigType
+                                                        .RUNTIME_CLASSPATH));
+            }
             task.getRClasses().disallowChanges();
         }
     }

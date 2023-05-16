@@ -135,6 +135,14 @@ private static final long serialVersionUID = 0L;
      * <code>ANNOTATION_PROCESSOR = 2;</code>
      */
     ANNOTATION_PROCESSOR(2),
+    /**
+     * <pre>
+     * From KSP
+     * </pre>
+     *
+     * <code>KSP = 3;</code>
+     */
+    KSP(3),
     ;
 
     /**
@@ -161,6 +169,14 @@ private static final long serialVersionUID = 0L;
      * <code>ANNOTATION_PROCESSOR = 2;</code>
      */
     public static final int ANNOTATION_PROCESSOR_VALUE = 2;
+    /**
+     * <pre>
+     * From KSP
+     * </pre>
+     *
+     * <code>KSP = 3;</code>
+     */
+    public static final int KSP_VALUE = 3;
 
 
     public final int getNumber() {
@@ -186,6 +202,7 @@ private static final long serialVersionUID = 0L;
         case 0: return APT;
         case 1: return COMPILE_CLASSPATH;
         case 2: return ANNOTATION_PROCESSOR;
+        case 3: return KSP;
         default: return null;
       }
     }

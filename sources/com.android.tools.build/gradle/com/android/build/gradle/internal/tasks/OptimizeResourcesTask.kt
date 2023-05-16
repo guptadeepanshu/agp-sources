@@ -24,10 +24,13 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.getAapt2Executable
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.workeractions.DecoratedWorkParameters
 import com.android.build.gradle.internal.workeractions.WorkActionAdapter
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.BaseProcessOutputHandler
 import com.android.ide.common.process.CachedProcessOutputHandler
 import com.android.ide.common.process.DefaultProcessExecutor
@@ -60,6 +63,7 @@ import javax.inject.Inject
  * the optimized resources content is made identical to [InternalArtifactType.PROCESSED_RES].
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION, secondaryTaskCategories = [TaskCategory.ANDROID_RESOURCES])
 abstract class OptimizeResourcesTask : NonIncrementalTask() {
 
     @get:InputDirectory
@@ -117,7 +121,8 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
 
     class CreateAction(
             creationConfig: ComponentCreationConfig
-    ) : VariantTaskCreationAction<OptimizeResourcesTask, ComponentCreationConfig>(creationConfig) {
+    ) : VariantTaskCreationAction<OptimizeResourcesTask, ComponentCreationConfig>(creationConfig),
+        AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(creationConfig) {
         override val name: String
             get() = computeTaskName("optimize", "Resources")
         override val type: Class<OptimizeResourcesTask>
@@ -128,7 +133,7 @@ abstract class OptimizeResourcesTask : NonIncrementalTask() {
 
         override fun handleProvider(taskProvider: TaskProvider<OptimizeResourcesTask>) {
             super.handleProvider(taskProvider)
-            val resourceShrinkingEnabled = creationConfig.useResourceShrinker()
+            val resourceShrinkingEnabled = androidResourcesCreationConfig.useResourceShrinker
             val operationRequest = creationConfig.artifacts.use(taskProvider).wiredWithDirectories(
                     OptimizeResourcesTask::inputProcessedRes,
                     OptimizeResourcesTask::optimizedProcessedRes)

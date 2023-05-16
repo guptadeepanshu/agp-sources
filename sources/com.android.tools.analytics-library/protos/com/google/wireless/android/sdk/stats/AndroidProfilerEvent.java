@@ -344,6 +344,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00400000;
             break;
           }
+          case 194: {
+            com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder subBuilder = null;
+            if (((bitField0_ & 0x00800000) != 0)) {
+              subBuilder = runWithProfilingMetadata_.toBuilder();
+            }
+            runWithProfilingMetadata_ = input.readMessage(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(runWithProfilingMetadata_);
+              runWithProfilingMetadata_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00800000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -4365,6 +4378,44 @@ private static final long serialVersionUID = 0L;
     return loading_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance() : loading_;
   }
 
+  public static final int RUN_WITH_PROFILING_METADATA_FIELD_NUMBER = 24;
+  private com.google.wireless.android.sdk.stats.RunWithProfilingMetadata runWithProfilingMetadata_;
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * @return Whether the runWithProfilingMetadata field is set.
+   */
+  @java.lang.Override
+  public boolean hasRunWithProfilingMetadata() {
+    return ((bitField0_ & 0x00800000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * @return The runWithProfilingMetadata.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata getRunWithProfilingMetadata() {
+    return runWithProfilingMetadata_ == null ? com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.getDefaultInstance() : runWithProfilingMetadata_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder() {
+    return runWithProfilingMetadata_ == null ? com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.getDefaultInstance() : runWithProfilingMetadata_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -4447,6 +4498,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00400000) != 0)) {
       output.writeMessage(23, getLoading());
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      output.writeMessage(24, getRunWithProfilingMetadata());
     }
     unknownFields.writeTo(output);
   }
@@ -4548,6 +4602,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00400000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(23, getLoading());
+    }
+    if (((bitField0_ & 0x00800000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(24, getRunWithProfilingMetadata());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -4676,6 +4734,11 @@ private static final long serialVersionUID = 0L;
       if (!getLoading()
           .equals(other.getLoading())) return false;
     }
+    if (hasRunWithProfilingMetadata() != other.hasRunWithProfilingMetadata()) return false;
+    if (hasRunWithProfilingMetadata()) {
+      if (!getRunWithProfilingMetadata()
+          .equals(other.getRunWithProfilingMetadata())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -4778,6 +4841,10 @@ private static final long serialVersionUID = 0L;
     if (hasLoading()) {
       hash = (37 * hash) + LOADING_FIELD_NUMBER;
       hash = (53 * hash) + getLoading().hashCode();
+    }
+    if (hasRunWithProfilingMetadata()) {
+      hash = (37 * hash) + RUN_WITH_PROFILING_METADATA_FIELD_NUMBER;
+      hash = (53 * hash) + getRunWithProfilingMetadata().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -4930,6 +4997,7 @@ private static final long serialVersionUID = 0L;
         getBoxSelectionMetadataFieldBuilder();
         getTrackGroupMetadataFieldBuilder();
         getLoadingFieldBuilder();
+        getRunWithProfilingMetadataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -5057,6 +5125,12 @@ private static final long serialVersionUID = 0L;
         loadingBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00400000);
+      if (runWithProfilingMetadataBuilder_ == null) {
+        runWithProfilingMetadata_ = null;
+      } else {
+        runWithProfilingMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00800000);
       return this;
     }
 
@@ -5253,6 +5327,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00400000;
       }
+      if (((from_bitField0_ & 0x00800000) != 0)) {
+        if (runWithProfilingMetadataBuilder_ == null) {
+          result.runWithProfilingMetadata_ = runWithProfilingMetadata_;
+        } else {
+          result.runWithProfilingMetadata_ = runWithProfilingMetadataBuilder_.build();
+        }
+        to_bitField0_ |= 0x00800000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -5370,6 +5452,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasLoading()) {
         mergeLoading(other.getLoading());
+      }
+      if (other.hasRunWithProfilingMetadata()) {
+        mergeRunWithProfilingMetadata(other.getRunWithProfilingMetadata());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -8604,6 +8689,162 @@ private static final long serialVersionUID = 0L;
         loading_ = null;
       }
       return loadingBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.RunWithProfilingMetadata runWithProfilingMetadata_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.RunWithProfilingMetadata, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder, com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder> runWithProfilingMetadataBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * @return Whether the runWithProfilingMetadata field is set.
+     */
+    public boolean hasRunWithProfilingMetadata() {
+      return ((bitField0_ & 0x00800000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     * @return The runWithProfilingMetadata.
+     */
+    public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata getRunWithProfilingMetadata() {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        return runWithProfilingMetadata_ == null ? com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.getDefaultInstance() : runWithProfilingMetadata_;
+      } else {
+        return runWithProfilingMetadataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public Builder setRunWithProfilingMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata value) {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        runWithProfilingMetadata_ = value;
+        onChanged();
+      } else {
+        runWithProfilingMetadataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public Builder setRunWithProfilingMetadata(
+        com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder builderForValue) {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        runWithProfilingMetadata_ = builderForValue.build();
+        onChanged();
+      } else {
+        runWithProfilingMetadataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public Builder mergeRunWithProfilingMetadata(com.google.wireless.android.sdk.stats.RunWithProfilingMetadata value) {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        if (((bitField0_ & 0x00800000) != 0) &&
+            runWithProfilingMetadata_ != null &&
+            runWithProfilingMetadata_ != com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.getDefaultInstance()) {
+          runWithProfilingMetadata_ =
+            com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.newBuilder(runWithProfilingMetadata_).mergeFrom(value).buildPartial();
+        } else {
+          runWithProfilingMetadata_ = value;
+        }
+        onChanged();
+      } else {
+        runWithProfilingMetadataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00800000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public Builder clearRunWithProfilingMetadata() {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        runWithProfilingMetadata_ = null;
+        onChanged();
+      } else {
+        runWithProfilingMetadataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00800000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder getRunWithProfilingMetadataBuilder() {
+      bitField0_ |= 0x00800000;
+      onChanged();
+      return getRunWithProfilingMetadataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    public com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder() {
+      if (runWithProfilingMetadataBuilder_ != null) {
+        return runWithProfilingMetadataBuilder_.getMessageOrBuilder();
+      } else {
+        return runWithProfilingMetadata_ == null ?
+            com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.getDefaultInstance() : runWithProfilingMetadata_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |RUN_WITH_PROFILING|
+     * </pre>
+     *
+     * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.RunWithProfilingMetadata, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder, com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder> 
+        getRunWithProfilingMetadataFieldBuilder() {
+      if (runWithProfilingMetadataBuilder_ == null) {
+        runWithProfilingMetadataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.RunWithProfilingMetadata, com.google.wireless.android.sdk.stats.RunWithProfilingMetadata.Builder, com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder>(
+                getRunWithProfilingMetadata(),
+                getParentForChildren(),
+                isClean());
+        runWithProfilingMetadata_ = null;
+      }
+      return runWithProfilingMetadataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

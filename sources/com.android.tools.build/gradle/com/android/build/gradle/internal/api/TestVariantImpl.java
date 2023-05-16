@@ -18,12 +18,12 @@ package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.TestVariant;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
-import com.android.build.gradle.internal.services.VariantServices;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -50,9 +50,9 @@ public class TestVariantImpl extends ApkVariantImpl implements TestVariant {
     @Inject
     public TestVariantImpl(
             @NonNull TestVariantData variantData,
-            @NonNull ComponentImpl component,
+            @NonNull ComponentCreationConfig component,
             @NonNull BaseVariant testedVariantData,
-            @NonNull VariantServices services,
+            @NonNull DslServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
         super(component, services, readOnlyObjectProvider, outputs);

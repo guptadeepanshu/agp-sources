@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.scope
 
+import com.android.SdkConstants
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
 import com.android.build.api.artifact.SingleArtifact
@@ -36,6 +37,7 @@ InternalArtifactType<T : FileSystemLocation>(
     kind: ArtifactKind<T>,
     category: Category = Category.INTERMEDIATES,
     private val folderName: String? = null,
+    private val fileName: String? = null,
     val finalizingArtifact: List<Artifact<*>> = listOf(),
 ) : Artifact.Single<T>(kind, category) {
 
@@ -116,7 +118,7 @@ InternalArtifactType<T : FileSystemLocation>(
     // are for the external libraries that are dex'ed using Gradle artifact transforms.
     object DESUGAR_LIB_EXTERNAL_LIBS_ARTIFACT_TRANSFORM_KEEP_RULES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     object DESUGAR_LIB_MIXED_SCOPE_KEEP_RULES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    object DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES: InternalArtifactType<RegularFile>(FILE), Replaceable
+    object DESUGAR_LIB_EXTERNAL_FILE_LIB_KEEP_RULES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // Keep rules for core library desugaring that are generated and merged from dynamic feature
     // modules
     object DESUGAR_LIB_MERGED_KEEP_RULES: InternalArtifactType<RegularFile>(FILE), Replaceable
@@ -286,7 +288,7 @@ InternalArtifactType<T : FileSystemLocation>(
     object MERGED_NATIVE_DEBUG_METADATA: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS, "native-debug-symbols"), Replaceable
 
     // Partial prefab directory without libraries built yet.
-    object PREFAB_PACKAGE_CONFIGURATION: InternalArtifactType<Directory>(DIRECTORY), Replaceable
+    object PREFAB_PACKAGE_CONFIGURATION: InternalArtifactType<RegularFile>(FILE), Replaceable
     // Assembled prefab directory to be packaged in the AAR.
     object PREFAB_PACKAGE: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
@@ -436,10 +438,14 @@ InternalArtifactType<T : FileSystemLocation>(
     object APKS_FROM_BUNDLE: InternalArtifactType<RegularFile>(FILE), Replaceable
     // output of ExtractApks applied to APKS_FROM_BUNDLE and a device config.
     object EXTRACTED_APKS: InternalArtifactType<Directory>(DIRECTORY), Replaceable, ContainsMany
-    // Universal APK from the bundle
-    object UNIVERSAL_APK: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS)
     // The manifest meant to be consumed by the bundle.
     object BUNDLE_MANIFEST: InternalArtifactType<RegularFile>(FILE), Replaceable
+
+    object EXTRACTED_APKS_FROM_PRIVACY_SANDBOX_SDKs: InternalArtifactType<Directory>(DIRECTORY), ContainsMany
+    object EXTRACTED_APKS_FROM_PRIVACY_SANDBOX_SDKs_IDE_MODEL: InternalArtifactType<RegularFile>(FILE)
+
+    // The proto passed to bundle tool to instruct which privacy sandbox SDKs are used
+    object PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE: InternalArtifactType<RegularFile>(FILE)
 
     // file containing the metadata for the full feature set. This contains the feature names: InternalArtifactType<RegularFile>(FILE), Replaceable
     // the res ID offset: InternalArtifactType<RegularFile>(FILE), Replaceable both tied to the feature module path. Published by the base for the
@@ -559,17 +565,39 @@ InternalArtifactType<T : FileSystemLocation>(
     object MICRO_APK_RES: InternalArtifactType<Directory>(DIRECTORY)
 
     // Human readable Art profile artifacts
-    object MERGED_ART_PROFILE: InternalArtifactType<RegularFile>(FILE)
-    object LIBRARY_ART_PROFILE: InternalArtifactType<RegularFile>(FILE)
+    object MERGED_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_ART_PROFILE
+    )
+    object LIBRARY_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_ART_PROFILE
+    )
 
     // binary art profile artifacts.
-    object BINARY_ART_PROFILE: InternalArtifactType<RegularFile>(FILE)
-    object BINARY_ART_PROFILE_METADATA: InternalArtifactType<RegularFile>(FILE)
-
+    object BINARY_ART_PROFILE: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_BINARY_ART_PROFILE
+    )
+    object BINARY_ART_PROFILE_METADATA: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = SdkConstants.FN_BINARY_ART_PROFILE_METADATA
+    )
 
     // Sync dynamic properties file artifacts
-    object VARIANT_MODEL: InternalArtifactType<RegularFile>(FILE)
-    object APP_ID_LIST_MODEL: InternalArtifactType<RegularFile>(FILE)
+    object VARIANT_MODEL: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = "variant_model.json",
+    )
+
+    object APP_ID_LIST_MODEL: InternalArtifactType<RegularFile>(
+        FILE,
+        fileName = "app_id_list.json"
+    )
+
+    override fun getFileSystemLocationName(): String {
+        return fileName ?: super.getFileSystemLocationName()
+    }
 
     override fun getFolderName(): String {
         return folderName ?: super.getFolderName()

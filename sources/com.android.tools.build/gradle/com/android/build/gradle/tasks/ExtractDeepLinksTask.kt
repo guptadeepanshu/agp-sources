@@ -20,9 +20,12 @@ import com.android.SdkConstants.FD_RES_NAVIGATION
 import com.android.SdkConstants.FN_NAVIGATION_JSON
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.blame.SourceFilePosition
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.manifmerger.NavigationXmlDocumentData
 import com.android.manifmerger.NavigationXmlLoader
 import com.android.utils.FileUtils
@@ -49,6 +52,7 @@ private val DOT_XML_EXT = Regex("\\.xml$")
  * deep link data needed for any downstream app manifest merging.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES)
 abstract class ExtractDeepLinksTask: NonIncrementalTask() {
 
     @get:InputFiles
@@ -152,7 +156,12 @@ abstract class ExtractDeepLinksTask: NonIncrementalTask() {
                     }
                 }
             )
-            task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
+            task.manifestPlaceholders.setDisallowChanges(
+                creationConfig.manifestPlaceholdersCreationConfig?.placeholders,
+                handleNullable = {
+                    empty()
+                }
+            )
             task.forAar.set(forAar)
         }
     }

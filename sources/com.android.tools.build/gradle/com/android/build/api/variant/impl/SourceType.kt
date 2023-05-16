@@ -16,8 +16,7 @@
 
 package com.android.build.api.variant.impl
 
-enum class SourceType(name: String) {
-
+enum class SourceType(val folder: String) {
     AIDL("aidl"),
     ASSETS("assets"),
     KOTLIN("kotlin"),
@@ -27,4 +26,5 @@ enum class SourceType(name: String) {
     RENDERSCRIPT("renderscript"),
     RES("res"),
     SHADERS("shaders"),
+    JAVA_RESOURCES("resources"),
 }

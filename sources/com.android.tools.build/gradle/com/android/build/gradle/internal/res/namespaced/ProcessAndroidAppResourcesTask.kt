@@ -23,15 +23,17 @@ import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
-import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getErrorFormatMode
 import com.android.build.gradle.internal.services.registerAaptService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.collect.ImmutableList
 import org.gradle.api.file.Directory
@@ -61,6 +63,7 @@ import java.io.File
  * as well as the generated R classes for this app that can be compiled against.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES)
 abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
 
     @get:InputFiles @get:Optional @get:PathSensitive(PathSensitivity.RELATIVE) lateinit var aaptFriendlyManifestFileDirectory: Provider<Directory> private set
@@ -115,6 +118,8 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
     class CreationAction(creationConfig: ComponentCreationConfig) :
         VariantTaskCreationAction<ProcessAndroidAppResourcesTask, ComponentCreationConfig>(
             creationConfig
+        ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
+            creationConfig
         ) {
 
         override val name: String
@@ -146,7 +151,7 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
                 artifacts.get(InternalArtifactType.AAPT_FRIENDLY_MERGED_MANIFESTS)
 
             task.manifestFileDirectory =
-                artifacts.get(creationConfig.manifestArtifactType)
+                artifacts.get(creationConfig.global.manifestArtifactType)
 
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.RES_STATIC_LIBRARY,
@@ -169,7 +174,7 @@ abstract class ProcessAndroidAppResourcesTask : NonIncrementalTask() {
 
             task.androidJarInput.initialize(creationConfig)
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.set(creationConfig.androidResources.noCompress)
+                task.noCompress.set(androidResourcesCreationConfig.androidResources.noCompress)
             }
             task.noCompress.disallowChanges()
             creationConfig.services.initializeAapt2Input(task.aapt2)

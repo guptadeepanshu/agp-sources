@@ -24,11 +24,13 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.LIBRARY_AND_LOCAL_JARS_JNI
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.tasks.AarMetadataTask
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.testFixtures.testFixturesClassifier
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.BuilderConstants
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.Action
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.CopySpec
@@ -48,6 +50,7 @@ import java.util.Locale
 
 /** Custom Zip task to allow archive name to be set lazily. */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.AAR_PACKAGING)
 abstract class BundleAar : Zip(), VariantAwareTask {
 
     @Internal
@@ -129,7 +132,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             task.isReproducibleFileOrder = true
             task.isPreserveFileTimestamps = false
 
-            if (buildFeatures.dataBinding && creationConfig.androidResourcesEnabled) {
+            if (buildFeatures.dataBinding && buildFeatures.androidResources) {
                 task.from(
                     task.project.provider {
                         creationConfig.artifacts.get(InternalArtifactType.DATA_BINDING_ARTIFACT) },
@@ -139,8 +142,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                     creationConfig.artifacts.get(
                         InternalArtifactType.DATA_BINDING_BASE_CLASS_LOG_ARTIFACT),
                     prependToCopyPath(
-                        DataBindingBuilder.DATA_BINDING_CLASS_LOG_ROOT_FOLDER_IN_AAR
-                    )
+                            DataBindingBuilder.DATA_BINDING_CLASS_LOG_ROOT_FOLDER_IN_AAR)
                 )
             }
 
@@ -161,7 +163,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                     InternalArtifactType.NON_NAMESPACED_LIBRARY_MANIFEST))
                 task.from(artifacts.get(InternalArtifactType.RES_STATIC_LIBRARY))
             }
-            if (creationConfig.androidResourcesEnabled) {
+            if (buildFeatures.androidResources) {
                 task.from(artifacts.get(InternalArtifactType.PUBLIC_RES))
                 task.from(artifacts.get(InternalArtifactType.NAVIGATION_JSON_FOR_AAR))
             }
@@ -183,8 +185,8 @@ abstract class BundleAar : Zip(), VariantAwareTask {
                 )
             }
             task.localAarDeps.from(
-                creationConfig.variantScope.getLocalFileDependencies {
-                    it.name.toLowerCase(Locale.US).endsWith(SdkConstants.DOT_AAR)
+                creationConfig.computeLocalFileDependencies {
+                    it.name.lowercase(Locale.US).endsWith(SdkConstants.DOT_AAR)
                 }
             )
             task.projectPath = task.project.path
@@ -260,7 +262,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             task.entryCompression = ZipEntryCompression.STORED
 
             // Need R.jar in case a consuming module uses import alias for R class (Issue 188871862)
-            if (creationConfig.androidResourcesEnabled) {
+            if (creationConfig.buildFeatures.androidResources) {
                 task.from(
                     creationConfig.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR),
                     prependToCopyPath(SdkConstants.LIBS_FOLDER)
@@ -303,7 +305,7 @@ abstract class BundleAar : Zip(), VariantAwareTask {
             task.entryCompression = ZipEntryCompression.STORED
 
             // Need R.jar in case a consuming module uses import alias for R class (Issue 188871862)
-            if (creationConfig.androidResourcesEnabled) {
+            if (creationConfig.buildFeatures.androidResources) {
                 task.from(
                     creationConfig.artifacts.get(InternalArtifactType.COMPILE_R_CLASS_JAR),
                     prependToCopyPath(SdkConstants.LIBS_FOLDER)
@@ -391,11 +393,14 @@ abstract class BundleAar : Zip(), VariantAwareTask {
     }
 
     companion object {
-        private fun prependToCopyPath(pathSegment: String) = Action { copySpec: CopySpec ->
-            copySpec.eachFile { fileCopyDetails: FileCopyDetails ->
-                fileCopyDetails.relativePath =
-                    fileCopyDetails.relativePath.prepend(pathSegment)
-            }
-        }
+
+        private fun prependToCopyPath(pathSegment: String, includeEmptyDirs: Boolean = false) =
+                Action { copySpec: CopySpec ->
+                    copySpec.includeEmptyDirs = includeEmptyDirs
+                    copySpec.eachFile { fileCopyDetails: FileCopyDetails ->
+                        fileCopyDetails.relativePath =
+                                fileCopyDetails.relativePath.prepend(pathSegment)
+                    }
+                }
     }
 }

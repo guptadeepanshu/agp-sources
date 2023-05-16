@@ -16,14 +16,15 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.TestComponentImpl
-import com.android.build.api.component.impl.TestFixturesImpl
-import com.android.build.api.variant.impl.ApplicationVariantBuilderImpl
-import com.android.build.api.variant.impl.ApplicationVariantImpl
+import com.android.build.api.component.impl.isTestApk
+import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.AbstractAppTaskManager
 import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.component.TestComponentCreationConfig
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig
 import com.android.build.gradle.internal.dsl.AbstractPublishing
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.PublishedConfigType
@@ -37,6 +38,7 @@ import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWr
 import com.android.build.gradle.internal.variant.ComponentInfo
 import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.tasks.BuildPrivacySandboxSdkApks
 import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
 import com.android.build.gradle.tasks.sync.AppIdListTask
 import com.android.builder.core.ComponentType
@@ -49,13 +51,13 @@ import org.gradle.api.file.FileCollection
 
 class ApplicationTaskManager(
     project: Project,
-    private val variants: Collection<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>,
-    testComponents: Collection<TestComponentImpl>,
-    testFixturesComponents: Collection<TestFixturesImpl>,
+    private val variants: Collection<ComponentInfo<ApplicationVariantBuilder, ApplicationCreationConfig>>,
+    testComponents: Collection<TestComponentCreationConfig>,
+    testFixturesComponents: Collection<TestFixturesCreationConfig>,
     globalConfig: GlobalTaskCreationConfig,
     localConfig: TaskManagerConfig,
     extension: BaseExtension,
-) : AbstractAppTaskManager<ApplicationVariantBuilderImpl, ApplicationVariantImpl>(
+) : AbstractAppTaskManager<ApplicationVariantBuilder, ApplicationCreationConfig>(
     project,
     variants,
     testComponents,
@@ -78,7 +80,7 @@ class ApplicationTaskManager(
     }
 
     override fun doCreateTasksForVariant(
-        variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>
+        variantInfo: ComponentInfo<ApplicationVariantBuilder, ApplicationCreationConfig>
     ) {
         createCommonTasks(variantInfo)
 
@@ -138,7 +140,7 @@ class ApplicationTaskManager(
     }
 
     /** Configure variantData to generate embedded wear application.  */
-    private fun handleMicroApp(appVariant: ApplicationVariantImpl) {
+    private fun handleMicroApp(appVariant: ApplicationCreationConfig) {
         val componentType = appVariant.componentType
         if (componentType.isBaseModule) {
             val unbundledWearApp: Boolean? = appVariant.isWearAppUnbundled
@@ -184,7 +186,7 @@ class ApplicationTaskManager(
      * if null this will trigger the unbundled mode.
      */
     private fun createGenerateMicroApkDataTask(
-        appVariant: ApplicationVariantImpl,
+        appVariant: ApplicationCreationConfig,
         config: FileCollection? = null
     ) {
         val generateMicroApkTask =
@@ -197,7 +199,7 @@ class ApplicationTaskManager(
         )
     }
 
-    private fun createAssetPackTasks(appVariant: ApplicationVariantImpl) {
+    private fun createAssetPackTasks(appVariant: ApplicationCreationConfig) {
         val assetPackFilesConfiguration =
             project.configurations.maybeCreate("assetPackFiles")
         val assetPackManifestConfiguration =
@@ -236,7 +238,7 @@ class ApplicationTaskManager(
         }
     }
 
-    private fun createDynamicBundleTask(variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>) {
+    private fun createDynamicBundleTask(variantInfo: ComponentInfo<ApplicationVariantBuilder, ApplicationCreationConfig>) {
         val variant = variantInfo.variant
 
         // If namespaced resources are enabled, LINKED_RES_FOR_BUNDLE is not generated,
@@ -267,6 +269,11 @@ class ApplicationTaskManager(
                 }
             }
             taskFactory.register(FinalizeBundleTask.CreationAction(variant))
+            if (variant.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+                taskFactory.register(
+                        GeneratePrivacySandboxSdkRuntimeConfigFile.CreationAction(variant))
+            }
+
             taskFactory.register(BundleIdeModelProducerTask.CreationAction(variant))
             taskFactory.register(
                 ListingFileRedirectTask.CreationAction(
@@ -302,7 +309,7 @@ class ApplicationTaskManager(
     }
 
     private fun createSoftwareComponent(
-        appVariant: ApplicationVariantImpl,
+        appVariant: ApplicationCreationConfig,
         componentName: String,
         publication: PublishedConfigType
     ) {
@@ -313,6 +320,13 @@ class ApplicationTaskManager(
     }
 
     override fun createInstallTask(creationConfig: ApkCreationConfig) {
+        if ( globalConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT] && !creationConfig.componentType.isForTesting) {
+            taskFactory.register(BuildPrivacySandboxSdkApks.CreationAction(creationConfig))
+            // TODO(b/235469089): register installation of the privacy sandbox sdk too.
+            // Force installation via the bundle for now, until the fast path is implemented.
+            taskFactory.register(InstallVariantViaBundleTask.CreationAction(creationConfig))
+            return
+        }
         if (!globalConfig.hasDynamicFeatures ||
             creationConfig is AndroidTestCreationConfig
         ) {

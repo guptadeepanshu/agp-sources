@@ -19,66 +19,90 @@ package com.android.build.api.component.impl
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.TestComponent
-import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
-import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.TestComponentDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
+import com.android.utils.appendCapitalized
 import javax.inject.Inject
 
-abstract class TestComponentImpl @Inject constructor(
+abstract class TestComponentImpl<DslInfoT: TestComponentDslInfo> @Inject constructor(
     componentIdentity: ComponentIdentity,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    dslInfo: DslInfoT,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    variantScope: VariantScope,
     variantData: BaseVariantData,
-    val testedVariant: VariantImpl,
+    taskContainer: MutableTaskContainer,
+    override val mainVariant: VariantCreationConfig,
     transformManager: TransformManager,
     variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig,
-) : ComponentImpl(
+) : ComponentImpl<DslInfoT>(
     componentIdentity,
     buildFeatureValues,
-    variantDslInfo,
+    dslInfo,
     variantDependencies,
     variantSources,
     paths,
     artifacts,
-    variantScope,
     variantData,
+    taskContainer,
     transformManager,
     variantServices,
     taskCreationServices,
     global
 ), TestComponent, TestComponentCreationConfig {
 
-    // map the internal getter to the impl of the external variant object
-    override val testedConfig: VariantCreationConfig
-        get() = testedVariant
-
     // Only include the jacoco agent if coverage is enabled in library test components
     // as in apps it will have already been included in the tested application.
     override val packageJacocoRuntime: Boolean
-        get() = variantDslInfo.isAndroidTestCoverageEnabled && testedVariant.componentType.isAar
+        get() = dslInfo.isAndroidTestCoverageEnabled && mainVariant.componentType.isAar
 
-    override val namespaceForR: Provider<String> = variantDslInfo.namespaceForR
+    override val description: String
+        get() {
+            val componentType = dslInfo.componentType
 
-    override val pseudoLocalesEnabled: Property<Boolean> =
-            internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, variantDslInfo.isPseudoLocalesEnabled)
+            val prefix = if (componentType.isApk) {
+                "android (on device) tests"
+            } else {
+                "unit tests"
+            }
+
+            return if (componentIdentity.productFlavors.isNotEmpty()) {
+                val sb = StringBuilder(50)
+                sb.append(prefix)
+                sb.append(" for the ")
+                componentIdentity.flavorName?.let { sb.appendCapitalized(it) }
+                componentIdentity.buildType?.let { sb.appendCapitalized(it) }
+                sb.append(" build")
+                sb.toString()
+            } else {
+                val sb = StringBuilder(50)
+                sb.append(prefix)
+                sb.append(" for the ")
+                sb.appendCapitalized(componentIdentity.buildType!!)
+                sb.append(" build")
+                sb.toString()
+            }
+        }
+
+    override fun <T> onTestedVariant(action: (VariantCreationConfig) -> T): T {
+        return action(mainVariant)
+    }
+
+    override val supportedAbis: Set<String>
+        get() = mainVariant.supportedAbis
 }

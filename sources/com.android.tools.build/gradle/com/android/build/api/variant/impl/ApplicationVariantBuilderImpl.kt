@@ -20,7 +20,7 @@ import com.android.build.api.variant.ApplicationVariantBuilder
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.DependenciesInfoBuilder
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.gradle.internal.core.VariantDslInfo
+import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.VariantBuilderServices
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -28,18 +28,18 @@ import javax.inject.Inject
 
 open class ApplicationVariantBuilderImpl @Inject constructor(
     globalVariantBuilderConfig: GlobalVariantBuilderConfig,
-    variantDslInfo: VariantDslInfo,
+    dslInfo: ApplicationVariantDslInfo,
     componentIdentity: ComponentIdentity,
     variantBuilderServices: VariantBuilderServices
 ) : VariantBuilderImpl(
     globalVariantBuilderConfig,
-    variantDslInfo,
+    dslInfo,
     componentIdentity,
     variantBuilderServices
 ), ApplicationVariantBuilder {
 
     override val debuggable: Boolean
-        get() = variantDslInfo.isDebuggable
+        get() = (dslInfo as ApplicationVariantDslInfo).isDebuggable
 
     override var androidTestEnabled: Boolean
         get() = enableAndroidTest
@@ -49,7 +49,7 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
 
     override var enableAndroidTest: Boolean = true
 
-    override var enableTestFixtures: Boolean = variantDslInfo.testFixtures.enable
+    override var enableTestFixtures: Boolean = dslInfo.testFixtures.enable
 
     // only instantiate this if this is needed. This allows non-built variant to not do too much work.
     override val dependenciesInfo: DependenciesInfoBuilder by lazy {
@@ -62,8 +62,9 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T: VariantBuilder> createUserVisibleVariantObject(
-            projectServices: ProjectServices,
-            stats: GradleBuildVariant.Builder?,): T =
+        projectServices: ProjectServices,
+        stats: GradleBuildVariant.Builder?,
+    ): T =
         if (stats == null) {
             this as T
         } else {
@@ -73,4 +74,13 @@ open class ApplicationVariantBuilderImpl @Inject constructor(
                 stats
             ) as T
         }
+
+    override var isMinifyEnabled: Boolean =
+        dslInfo.postProcessingOptions.codeShrinkerEnabled()
+        set(value) = setMinificationIfPossible("minifyEnabled", value){ field = it }
+
+    override var shrinkResources: Boolean =
+        dslInfo.postProcessingOptions.resourcesShrinkingEnabled()
+        set(value) = setMinificationIfPossible("shrinkResources", value){ field = it }
+
 }

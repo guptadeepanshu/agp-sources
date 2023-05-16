@@ -41,6 +41,10 @@ import java.nio.file.Files.deleteIfExists
 import java.nio.file.Files.isSameFile
 import java.nio.file.Path
 
+// If a hard-linking isn't available and the file is greater than this size, then
+// we issue a warning when we fall back to file copy.
+private const val SLOW_COPY_FILE_WARNING_THRESHOLD_BYTES : Long = 100 * (1 shl 20)
+
 /**
  * Makes [destination] content the same as [source] either by hard linking
  * or by physically copying the file when hard linking isn't available.
@@ -93,7 +97,9 @@ fun synchronizeFile(
                 } catch (e: IOException) {
                     // This can happen when hard linking from one drive to another on Windows
                     // In this case, copy the file instead.
-                    warnln("Hard link from '$source' to '$destination' failed. Doing a slower copy instead.")
+                    if (source.length() > SLOW_COPY_FILE_WARNING_THRESHOLD_BYTES) {
+                        warnln("Hard link from '$source' to '$destination' failed. Doing a slower copy instead.")
+                    }
                     source.copyTo(destination, overwrite = true)
                     COPIED_FROM_SOURCE_TO_DESTINATION
                 }
@@ -193,6 +199,36 @@ fun removeDuplicateFiles(files : List<File>): List<File> {
         seen.add(file)
     }
     return seen
+}
+
+/**
+ * Write a file only if that file's contents is different.
+ * Return true iff the content of the file changed.
+ */
+fun File.writeTextIfDifferent(text : String) : Boolean {
+    if (containsExactText(text)) return false
+    parentFile.mkdirs()
+    writeText(text)
+    return true
+}
+
+/**
+ * Return true if the file contains [text] exactly.
+ */
+fun File.containsExactText(text : String) = isFile && text == readText()
+
+/**
+ * Create a finger print record for this file. It contains the size, last modified stamp, and
+ * whether the file exist
+ */
+val File.fingerPrint : FileFingerPrint get() {
+    val fingerPrint = FileFingerPrint.newBuilder()
+    fingerPrint.fileName = path
+    fingerPrint.isFile = isFile
+    if (!isFile) return fingerPrint.build()
+    fingerPrint.lastModified = lastModified()
+    fingerPrint.length = length()
+    return fingerPrint.build()
 }
 
 private val SynchronizeFile.Comparison.areSameFileOrContent : Boolean

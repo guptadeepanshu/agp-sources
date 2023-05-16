@@ -20,10 +20,9 @@ import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.AssetPackBundleExtension
-import com.android.build.api.variant.impl.ApplicationVariantImpl
 import com.android.build.api.variant.impl.MetadataRecord
 import com.android.build.api.variant.impl.getFeatureLevel
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -36,6 +35,7 @@ import com.android.build.gradle.options.BooleanOption
 import com.android.builder.internal.packaging.IncrementalPackager.APP_METADATA_FILE_NAME
 import com.android.builder.packaging.PackagingUtils
 import com.android.bundle.Config
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.build.bundletool.commands.BuildBundleCommand
 import com.android.utils.FileUtils
 import com.google.common.base.Preconditions
@@ -47,7 +47,6 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -67,6 +66,7 @@ import java.nio.file.Path
  * Task that generates the bundle (.aab) with all the modules.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
 abstract class PackageBundleTask : NonIncrementalTask() {
 
     // Android Gradle plugin supports two kinds of bundle:
@@ -512,8 +512,8 @@ abstract class PackageBundleTask : NonIncrementalTask() {
     /**
      * CreateAction for a Task that will pack the bundle artifact.
      */
-    class CreationAction(private val componentProperties: ApplicationVariantImpl) :
-        VariantTaskCreationAction<PackageBundleTask, ApplicationVariantImpl>(
+    class CreationAction(private val componentProperties: ApplicationCreationConfig) :
+        VariantTaskCreationAction<PackageBundleTask, ApplicationCreationConfig>(
             componentProperties
         ) {
 
@@ -573,7 +573,10 @@ abstract class PackageBundleTask : NonIncrementalTask() {
 
             task.abiFilters.setDisallowChanges(creationConfig.supportedAbis)
 
-            task.aaptOptionsNoCompress.setDisallowChanges(creationConfig.androidResources.noCompress)
+            task.aaptOptionsNoCompress.setDisallowChanges(
+                creationConfig.androidResourcesCreationConfig?.androidResources?.noCompress,
+                handleNullable = { empty() }
+            )
 
             task.bundleOptions = creationConfig.global.bundleOptions.convert()
 

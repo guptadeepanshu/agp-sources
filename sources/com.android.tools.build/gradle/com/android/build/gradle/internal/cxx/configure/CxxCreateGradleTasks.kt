@@ -16,10 +16,11 @@
 
 package com.android.build.gradle.internal.cxx.configure
 
-import com.android.build.api.component.impl.ComponentBuilderImpl
-import com.android.build.api.variant.impl.LibraryVariantImpl
-import com.android.build.api.variant.impl.VariantImpl
+import com.android.build.api.variant.ComponentBuilder
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.LibraryCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.core.Abi
 import com.android.build.gradle.internal.cxx.configure.CxxGradleTaskModel.Build
 import com.android.build.gradle.internal.cxx.configure.CxxGradleTaskModel.BuildGroup
@@ -35,16 +36,16 @@ import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.cxx.model.createCxxAbiModel
 import com.android.build.gradle.internal.cxx.model.createCxxModuleModel
 import com.android.build.gradle.internal.cxx.model.createCxxVariantModel
+import com.android.build.gradle.internal.cxx.prefab.PrefabPublication
+import com.android.build.gradle.internal.cxx.prefab.PrefabPublicationType.HeaderOnly
+import com.android.build.gradle.internal.cxx.prefab.createPrefabPublication
+import com.android.build.gradle.internal.cxx.prefab.writePublicationFile
 import com.android.build.gradle.tasks.PrefabPackageConfigurationTask
 import com.android.build.gradle.tasks.PrefabPackageTask
-import com.android.build.gradle.internal.cxx.prefab.prefabConfigurePackageTaskName
-import com.android.build.gradle.internal.cxx.prefab.prefabPackageConfigurationData
-import com.android.build.gradle.internal.cxx.prefab.prefabPackageConfigurationLocation
-import com.android.build.gradle.internal.cxx.prefab.prefabPackageLocation
-import com.android.build.gradle.internal.cxx.prefab.prefabPackageTaskName
 import com.android.build.gradle.internal.cxx.settings.calculateConfigurationArguments
 import com.android.build.gradle.internal.cxx.timing.TimingEnvironment
 import com.android.build.gradle.internal.cxx.timing.time
+import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.JNI
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH
@@ -62,15 +63,14 @@ import com.android.utils.appendCapitalized
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PREFAB_PACKAGE
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.PREFAB_PACKAGE_CONFIGURATION
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.tasks.ExternalNativeBuildTask
-import org.gradle.api.Project
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
+import java.io.File
 
 /**
  * Create just the externalNativeBuild per-variant task.
@@ -78,7 +78,7 @@ import org.gradle.api.provider.ProviderFactory
  */
 fun createCxxVariantBuildTask(
     taskFactory: TaskFactory,
-    variant: VariantImpl,
+    variant: VariantCreationConfig,
     providers: ProviderFactory,
     layout: ProjectLayout) {
     val configuration = tryCreateConfigurationParameters(
@@ -92,6 +92,7 @@ fun createCxxVariantBuildTask(
         sdkComponentsBuildService.get(),
         androidLocationBuildService.get(),
         listOf(configuration),
+        providers.createConfigurationTimeVersionExecutor(),
         providers,
         layout
     ).toConfigurationModel()
@@ -109,7 +110,7 @@ fun createCxxVariantBuildTask(
 /**
  * Construct gradle tasks for C/C++ configuration and build.
  */
-fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTasks(
+fun <VariantBuilderT : ComponentBuilder, VariantT : VariantCreationConfig> createCxxTasks(
         androidLocationsProvider: AndroidLocationsProvider,
         sdkComponents: SdkComponentsBuildService,
         issueReporter: IssueReporter,
@@ -135,6 +136,7 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                 createInitialCxxModel(sdkComponents,
                         androidLocationsProvider,
                         configurationParameters,
+                        providers.createConfigurationTimeVersionExecutor(),
                         providers,
                         layout
                 )
@@ -159,7 +161,7 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                             variant.variantDependencies.getArtifactCollection(
                                 COMPILE_CLASSPATH,
                                 ALL,
-                                PREFAB_PACKAGE_CONFIGURATION
+                                AndroidArtifacts.ArtifactType.PREFAB_PACKAGE_CONFIGURATION
                             ).artifactFiles
                         )
                         configureTask.dependsOn(variant.taskContainer.preBuildTask)
@@ -172,11 +174,16 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                         val variant = variantMap.getValue(configuration.variant.variantName)
                         val configureTask = taskFactory.register(name)
                         // Add prefab configure task
-                        if (variant is LibraryVariantImpl &&
+                        if (variant is LibraryCreationConfig &&
                             variant.buildFeatures.prefabPublishing) {
+                            val publication = createPrefabPublication(configuration, variant)
+                            if (configuration.variant.module.project.isBuildOnlyTargetAbiEnabled) {
+                                // Write the header-only publication only if this is an IDE build.
+                                HeaderOnly.writePublicationFile(publication)
+                            }
                             createPrefabConfigurePackageTask(
                                 taskFactory,
-                                configuration,
+                                publication,
                                 configureTask,
                                 variant)
                         }
@@ -214,11 +221,13 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
                         taskFactory.named("clean").dependsOn(cleanTask)
 
                         // Add prefab package task
-                        if (variant is LibraryVariantImpl &&
+                        if (variant is LibraryCreationConfig &&
                             variant.buildFeatures.prefabPublishing) {
+                            val publication = createPrefabPublication(configuration, variant)
+
                             createPrefabPackageTask(
                                 taskFactory,
-                                configuration,
+                                publication,
                                 buildTask,
                                 variant)
                         }
@@ -236,40 +245,33 @@ fun <VariantBuilderT : ComponentBuilderImpl, VariantT : VariantImpl> createCxxTa
 
 private fun createPrefabConfigurePackageTask(
     taskFactory: TaskFactory,
-    configurationModel: CxxConfigurationModel,
+    publication: PrefabPublication,
     configureTask: TaskProvider<Task>,
-    libraryVariant: LibraryVariantImpl) {
-    val modules = libraryVariant.prefabPackageConfigurationData()
-    if (modules.isNotEmpty()) {
-        val configurePackageTask = taskFactory.register(
+    libraryVariant: LibraryCreationConfig) {
+    if (publication.packageInfo.modules.isNotEmpty()) {
+        val task = taskFactory.register(
             PrefabPackageConfigurationTask.CreationAction(
+                publication,
                 libraryVariant.prefabConfigurePackageTaskName(),
-                libraryVariant.prefabPackageConfigurationLocation(),
-                modules,
-                configurationModel,
                 libraryVariant))
-        configurePackageTask
-            .get()
-            .dependsOn(configureTask)
+        task.dependsOn(configureTask)
     }
 }
 
 private fun createPrefabPackageTask(
     taskFactory: TaskFactory,
-    configurationModel: CxxConfigurationModel,
+    publication: PrefabPublication,
     buildTask: TaskProvider<out ExternalNativeBuildTask>,
-    libraryVariant: LibraryVariantImpl) {
-    val modules = libraryVariant.prefabPackageConfigurationData()
-    if (modules.isNotEmpty()) {
+    libraryVariant: LibraryCreationConfig) {
+    if (publication.packageInfo.modules.isNotEmpty()) {
         val packageTask = taskFactory.register(
             PrefabPackageTask.CreationAction(
+                publication,
                 libraryVariant.prefabPackageTaskName(),
-                libraryVariant.prefabPackageLocation(),
-                modules,
-                configurationModel,
                 libraryVariant))
         packageTask
             .get()
+            .dependsOn(libraryVariant.prefabConfigurePackageTaskName())
             .dependsOn(buildTask)
     }
 }
@@ -334,12 +336,18 @@ fun createInitialCxxModel(
     sdkComponents: SdkComponentsBuildService,
     androidLocationsProvider: AndroidLocationsProvider,
     configurationParameters: List<CxxConfigurationParameters>,
+    versionExecutor: (File) -> String,
     providers: ProviderFactory,
     layout: ProjectLayout
 ) : List<CxxAbiModel> {
+
     return configurationParameters.flatMap { parameters ->
         val module = time("create-module-model") {
-            createCxxModuleModel(sdkComponents, androidLocationsProvider, parameters)
+            createCxxModuleModel(
+                sdkComponents,
+                androidLocationsProvider,
+                versionExecutor,
+                parameters)
         }
         val variant = time("create-variant-model") {
             createCxxVariantModel(parameters, module)
@@ -353,7 +361,11 @@ fun createInitialCxxModel(
     }
 }
 
-fun CxxAbiModel.toConfigurationModel() = listOf(this).toConfigurationModel()
+private fun ProviderFactory.createConfigurationTimeVersionExecutor() : (File) -> String = { exe ->
+    exec { spec ->
+        spec.commandLine(exe.path, "--version")
+    }.standardOutput.asText.get()
+}
 
 private fun List<CxxAbiModel>.toConfigurationModel() =
         CxxConfigurationModel(
@@ -361,3 +373,15 @@ private fun List<CxxAbiModel>.toConfigurationModel() =
                 activeAbis = filter { it.isActiveAbi },
                 unusedAbis = filter { !it.isActiveAbi },
         )
+
+/**
+ * Return the name of the prefab[Variant]Package task.
+ */
+private fun ComponentCreationConfig.prefabPackageTaskName() =
+    computeTaskName("prefab", "Package")
+
+/**
+ * Return the name of the prefab[ConfigurePackage]Package task.
+ */
+private fun ComponentCreationConfig.prefabConfigurePackageTaskName() =
+    computeTaskName("prefab", "ConfigurePackage")

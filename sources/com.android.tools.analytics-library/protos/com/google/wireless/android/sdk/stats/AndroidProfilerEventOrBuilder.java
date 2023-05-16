@@ -598,4 +598,31 @@ public interface AndroidProfilerEventOrBuilder extends
    * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
    */
   com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder();
+
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * @return Whether the runWithProfilingMetadata field is set.
+   */
+  boolean hasRunWithProfilingMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   * @return The runWithProfilingMetadata.
+   */
+  com.google.wireless.android.sdk.stats.RunWithProfilingMetadata getRunWithProfilingMetadata();
+  /**
+   * <pre>
+   * Set if |type| is |RUN_WITH_PROFILING|
+   * </pre>
+   *
+   * <code>optional .android_studio.RunWithProfilingMetadata run_with_profiling_metadata = 24;</code>
+   */
+  com.google.wireless.android.sdk.stats.RunWithProfilingMetadataOrBuilder getRunWithProfilingMetadataOrBuilder();
 }

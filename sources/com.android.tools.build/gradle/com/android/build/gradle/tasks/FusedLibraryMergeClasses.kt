@@ -18,8 +18,13 @@ package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
+import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
+import com.android.build.gradle.internal.tasks.TaskCategory
+import com.android.utils.FileUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
@@ -40,6 +45,7 @@ import java.util.jar.JarFile
  * merge classes.jar coming from included libraries in fused libraries  plugin.
  */
 @DisableCachingByDefault(because = "No calculation is made, merging classes. ")
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.MERGING, TaskCategory.FUSING])
 abstract class FusedLibraryMergeClasses: DefaultTask() {
 
     @get:OutputDirectory
@@ -51,15 +57,16 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
 
     @TaskAction
     fun taskAction() {
+        FileUtils.cleanOutputDir(outputDirectory.get().asFile)
 
         incoming.files.forEach { file ->
-            println("Merging file: ${file.absolutePath}")
+            logger.info("Merging file: ${file.absolutePath}")
             JarFile(file).use { jarFile ->
                 jarFile.entries().asSequence().forEach { jarEntry ->
                     jarFile.getInputStream(jarEntry).use { inputStream ->
                         val outputDir = outputDirectory.get().dir(jarEntry.name.substringBeforeLast('/'))
                         val fileName = jarEntry.name.substringAfterLast('/')
-                        if (fileName.endsWith((".class"))) {
+                        if (CLASS_MATCHER.test(fileName)) {
                             val outputFile = File(outputDir.asFile, fileName)
                             if (outputFile.exists()) {
                                 throw DuplicateFileCopyingException(
@@ -76,7 +83,7 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
         }
     }
 
-    class CreationAction(val creationConfig: FusedLibraryVariantScope) :
+    class FusedLibraryCreationAction(val creationConfig: FusedLibraryVariantScope) :
         TaskCreationAction<FusedLibraryMergeClasses>() {
         override val name: String
             get() = "mergeClasses"
@@ -97,6 +104,31 @@ abstract class FusedLibraryMergeClasses: DefaultTask() {
                     Usage.JAVA_RUNTIME,
                     creationConfig.mergeSpec,
                     AndroidArtifacts.ArtifactType.CLASSES_JAR)
+            )
+        }
+    }
+
+    class PrivacySandboxSdkCreationAction(val creationConfig: PrivacySandboxSdkVariantScope) :
+            TaskCreationAction<FusedLibraryMergeClasses>() {
+        override val name: String
+            get() = "mergeClasses"
+        override val type: Class<FusedLibraryMergeClasses>
+            get() = FusedLibraryMergeClasses::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<FusedLibraryMergeClasses>) {
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    FusedLibraryMergeClasses::outputDirectory
+            ).on(FusedLibraryInternalArtifactType.MERGED_CLASSES)
+        }
+
+        override fun configure(task: FusedLibraryMergeClasses) {
+            task.incoming.setFrom(
+                    creationConfig.dependencies.getArtifactFileCollection(
+                            Usage.JAVA_RUNTIME,
+                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ArtifactType.CLASSES_JAR)
             )
         }
     }

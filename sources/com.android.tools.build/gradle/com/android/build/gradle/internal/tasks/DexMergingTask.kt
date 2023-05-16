@@ -35,6 +35,7 @@ import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_ALL
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_EXTERNAL_LIBS
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_LIBRARY_PROJECTS
 import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_PROJECT
+import com.android.build.gradle.internal.tasks.DexMergingAction.MERGE_TRANSFORMED_CLASSES
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
@@ -53,7 +54,7 @@ import com.android.builder.dexing.getSortedFilesInDir
 import com.android.builder.dexing.getSortedRelativePathsInJar
 import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableFileChanges
-import com.android.sdklib.AndroidVersion
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.base.Throwables
@@ -107,6 +108,7 @@ import kotlin.math.min
  *      the impacted buckets (those containing changed input dex files).
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.DEXING, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class DexMergingTask : NewIncrementalTask() {
 
     /**
@@ -222,7 +224,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
         workerExecutor.noIsolation().submit(DexMergingTaskDelegate::class.java) {
             it.initializeFromAndroidVariantTask(this)
             it.initialize(
-                sharedParams, numberOfBuckets, dexDirsOrJars, outputDir, inputChanges.isIncremental,
+                sharedParams, numberOfBuckets.get(), dexDirsOrJars, outputDir, inputChanges.isIncremental,
                 fileChanges?.toSerializable(),
                 mainDexListOutput = mainDexListOutput
             )
@@ -243,6 +245,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
             MERGE_EXTERNAL_LIBS -> creationConfig.computeTaskName("mergeExtDex")
             MERGE_PROJECT -> creationConfig.computeTaskName("mergeProjectDex")
             MERGE_ALL -> creationConfig.computeTaskName("mergeDex")
+            MERGE_TRANSFORMED_CLASSES -> creationConfig.computeTaskName("mergeDex")
         }
 
         override val name = internalName
@@ -390,25 +393,10 @@ abstract class DexMergingTask : NewIncrementalTask() {
                         }
                     }
                     MERGE_PROJECT -> {
-                        val files =
-                            creationConfig.services.fileCollection(
-                                creationConfig.artifacts.get(InternalArtifactType.PROJECT_DEX_ARCHIVE),
-                                creationConfig.artifacts.get(InternalArtifactType.MIXED_SCOPE_DEX_ARCHIVE)
-                            )
-
-                        val componentType = creationConfig.componentType
-                        if (componentType.isApk) {
-                            creationConfig.onTestedConfig {
-                                if (dexingUsingArtifactTransforms && it.componentType.isAar) {
-                                    // If dexing using artifact transforms, library production code will
-                                    // be dex'ed in a task, so we need to fetch the output directly.
-                                    // Otherwise, it will be in the dex'ed in the dex builder transform.
-                                    files.from(it.artifacts.getAll(InternalMultipleArtifactType.DEX))
-                                }
-                            }
-                        }
-
-                        return files
+                        return creationConfig.services.fileCollection(
+                            creationConfig.artifacts.get(InternalArtifactType.PROJECT_DEX_ARCHIVE),
+                            creationConfig.artifacts.get(InternalArtifactType.MIXED_SCOPE_DEX_ARCHIVE)
+                        )
                     }
                     MERGE_ALL -> {
                         // technically, the Provider<> may not be needed, but the code would
@@ -426,6 +414,15 @@ abstract class DexMergingTask : NewIncrementalTask() {
                             }
                         )
                     }
+                    MERGE_TRANSFORMED_CLASSES -> {
+                        // when the variant API is used to transform ALL scoped classes, the
+                        // result transformed content is a single project scoped jar file that gets
+                        // dexed individually and registered under the project scope, while all
+                        // other sources like mixed scope and external scope are empty.
+                        return creationConfig.services.fileCollection(
+                            creationConfig.artifacts.get(InternalArtifactType.PROJECT_DEX_ARCHIVE),
+                        )
+                    }
                 }
             }
 
@@ -434,7 +431,7 @@ abstract class DexMergingTask : NewIncrementalTask() {
 
         private fun getNumberOfBuckets(projectOptions: ProjectOptions): Int {
             return when (action) {
-                MERGE_ALL, MERGE_EXTERNAL_LIBS -> 1 // No bucketing
+                MERGE_ALL, MERGE_EXTERNAL_LIBS, MERGE_TRANSFORMED_CLASSES -> 1 // No bucketing
                 MERGE_PROJECT, MERGE_LIBRARY_PROJECTS -> {
                     check(dexingType == NATIVE_MULTIDEX)
 
@@ -545,12 +542,14 @@ enum class DexMergingAction {
     MERGE_PROJECT,
     /** Merge external libraries, library projects, and project dex files. */
     MERGE_ALL,
+    /** Merge ALL scoped transformed classes (using the public variant API).  */
+    MERGE_TRANSFORMED_CLASSES,
 }
 
 @VisibleForTesting
 abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDelegate.Params>() {
 
-    abstract class Params : ProfileAwareWorkAction.Parameters() {
+    abstract class Params : Parameters() {
 
         abstract val sharedParams: Property<DexMergingTask.SharedParams>
         abstract val numberOfBuckets: Property<Int>
@@ -563,12 +562,12 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
 
         fun initialize(
             sharedParams: DexMergingTask.SharedParams,
-            numberOfBuckets: Property<Int>,
+            numberOfBuckets: Int,
             dexDirsOrJars: List<File>,
             outputDir: DirectoryProperty,
             incremental: Boolean,
             fileChanges: SerializableFileChanges?,
-            mainDexListOutput: RegularFileProperty
+            mainDexListOutput: RegularFileProperty?
         ) {
             this.sharedParams.set(sharedParams)
             this.numberOfBuckets.set(numberOfBuckets)
@@ -576,7 +575,7 @@ abstract class DexMergingTaskDelegate : ProfileAwareWorkAction<DexMergingTaskDel
             this.outputDir.set(outputDir)
             this.incremental.set(incremental)
             this.fileChanges.set(fileChanges)
-            this.mainDexListOutput.set(mainDexListOutput)
+            mainDexListOutput?.let { this.mainDexListOutput.set(it) }
         }
     }
 

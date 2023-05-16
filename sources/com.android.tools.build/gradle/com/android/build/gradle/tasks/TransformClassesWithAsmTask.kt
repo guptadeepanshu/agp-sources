@@ -19,11 +19,12 @@ package com.android.build.gradle.tasks
 import com.android.SdkConstants.DOT_CLASS
 import com.android.SdkConstants.DOT_JAR
 import com.android.SdkConstants.DOT_JSON
-import com.android.build.api.artifact.MultipleArtifact
-import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.instrumentation.AsmInstrumentationManager
 import com.android.build.gradle.internal.instrumentation.ClassesHierarchyResolver
 import com.android.build.gradle.internal.instrumentation.loadClassData
@@ -31,16 +32,21 @@ import com.android.build.gradle.internal.instrumentation.saveClassData
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.scope.getDirectories
+import com.android.build.gradle.internal.scope.getRegularFiles
 import com.android.build.gradle.internal.services.ClassesHierarchyBuildService
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.JarsClasspathInputsWithIdentity
 import com.android.build.gradle.internal.tasks.JarsIdentityMapping
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import com.android.build.gradle.options.BooleanOption
 import com.android.builder.files.SerializableFileChanges
 import com.android.builder.utils.isValidZipEntryName
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
 import com.google.common.io.ByteStreams
@@ -74,6 +80,7 @@ import java.util.zip.ZipInputStream
  * A task that instruments the project classes with the asm visitors registered via the DSL.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.SOURCE_PROCESSING])
 abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
 
     @get:Input
@@ -453,10 +460,10 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
     }
 
     class CreationAction(
-        component: ComponentImpl
-    ) : VariantTaskCreationAction<TransformClassesWithAsmTask, ComponentImpl>(
+        component: ComponentCreationConfig
+    ) : VariantTaskCreationAction<TransformClassesWithAsmTask, ComponentCreationConfig>(
         component
-    ) {
+    ), InstrumentationTaskCreationAction by InstrumentationTaskCreationActionImpl(component) {
 
         override val name: String = computeTaskName("transform", "ClassesWithAsm")
         override val type: Class<TransformClassesWithAsmTask> =
@@ -479,26 +486,34 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
             super.configure(task)
             task.incrementalFolder = creationConfig.paths.getIncrementalDir(task.name)
 
-            task.visitorsList.setDisallowChanges(creationConfig.registeredProjectClassesVisitors)
-
-            task.framesComputationMode.setDisallowChanges(creationConfig.asmFramesComputationMode)
-
-            task.asmApiVersion.setDisallowChanges(creationConfig.asmApiVersion)
-
-            task.excludes.setDisallowChanges(creationConfig.instrumentation.excludes)
-
-            task.inputClassesDir.from(
-                creationConfig.artifacts.getAll(MultipleArtifact.ALL_CLASSES_DIRS)
+            task.visitorsList.setDisallowChanges(
+                instrumentationCreationConfig.registeredProjectClassesVisitors
             )
+
+            task.framesComputationMode.setDisallowChanges(
+                instrumentationCreationConfig.asmFramesComputationMode
+            )
+
+            task.asmApiVersion.setDisallowChanges(creationConfig.global.asmApiVersion)
+
+            task.excludes.setDisallowChanges(instrumentationCreationConfig.instrumentation.excludes)
+
+            val projectClasses = creationConfig.artifacts.forScope(ScopedArtifacts.Scope.PROJECT)
+                .getFinalArtifacts(ScopedArtifact.CLASSES)
+            task.inputClassesDir.from(
+                projectClasses.getDirectories(creationConfig.services.projectInfo.projectDirectory)
+            )
+            task.inputClassesDir.disallowChanges()
 
             task.inputJarsWithIdentity.inputJars.from(
-                creationConfig.artifacts.getAll(MultipleArtifact.ALL_CLASSES_JARS)
+                projectClasses.getRegularFiles(creationConfig.services.projectInfo.projectDirectory)
             )
+            task.inputJarsWithIdentity.inputJars.disallowChanges()
 
             task.bootClasspath.from(creationConfig.global.bootClasspath)
+            task.bootClasspath.disallowChanges()
 
-            task.runtimeClasspath.from(creationConfig.variantScope.providedOnlyClasspath)
-
+            task.runtimeClasspath.from(creationConfig.providedOnlyClasspath)
 
             task.runtimeClasspath.from(
                     creationConfig.variantDependencies.getArtifactFileCollection(
@@ -512,6 +527,7 @@ abstract class TransformClassesWithAsmTask : NewIncrementalTask() {
                         }
                     )
             )
+            task.runtimeClasspath.disallowChanges()
 
             task.classesHierarchyBuildService.setDisallowChanges(
                     getBuildService(creationConfig.services.buildServiceRegistry)

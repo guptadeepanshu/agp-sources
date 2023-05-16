@@ -25,14 +25,14 @@ import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.ma
 import com.android.build.gradle.internal.lint.LintTaskManager.Companion.isLintStderr
 import com.android.build.gradle.internal.lint.LintTaskManager.Companion.isLintStdout
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.utils.setDisallowChanges
-import org.gradle.api.Project
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Property
@@ -52,6 +52,7 @@ import java.io.File
  * up-to-date.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
 
     @get:InputFile
@@ -95,8 +96,9 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
             }
             val returnValue = returnValueFile.readText().toInt()
             if (returnValue in HANDLED_ERRORS) {
+                val abbreviatedLintOutput = abbreviateLintTextFile(textReportInputFile.get().asFile)
                 if (outputStream.get() == OutputStream.ABBREVIATED) {
-                    logger.lifecycle(abbreviateLintTextFile(textReportInputFile.get().asFile))
+                    logger.lifecycle(abbreviatedLintOutput)
                 }
                 if (returnValue == ERRNO_ERRORS && !abortOnError.get()) {
                     return
@@ -105,7 +107,8 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
                     returnValue,
                     android.get(),
                     fatalOnly.get(),
-                    lintMode = LintMode.REPORTING
+                    lintMode = LintMode.REPORTING,
+                    abbreviatedLintOutput
                 )
             }
         }
@@ -165,19 +168,13 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
             task.description = "Print text output from the corresponding lint report task"
             task.android.setDisallowChanges(true)
             task.initializeCommonInputs(
-                creationConfig.services.projectInfo.getProject(),
-                creationConfig.artifacts,
-                creationConfig.global.lintOptions,
-                fatalOnly
+                creationConfig.artifacts, creationConfig.global.lintOptions, fatalOnly
             )
         }
     }
 
     internal fun initializeCommonInputs(
-        project: Project,
-        artifacts: ArtifactsImpl,
-        lintOptions: Lint,
-        fatalOnly: Boolean
+        artifacts: ArtifactsImpl, lintOptions: Lint, fatalOnly: Boolean
     ) {
         textReportInputFile.setDisallowChanges(
             artifacts.get(
@@ -206,8 +203,6 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
                 outputStream.setDisallowChanges(OutputStream.STDOUT)
             else -> outputStream.setDisallowChanges(OutputStream.ABBREVIATED)
         }
-        val locationsBuildService =
-            getBuildService<AndroidLocationsBuildService>(project.gradle.sharedServices)
     }
 
     internal fun configureForStandalone(
@@ -216,17 +211,12 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         lintOptions: Lint,
         fatalOnly: Boolean = false
     ) {
-        analyticsService.setDisallowChanges(getBuildService(project.gradle.sharedServices))
+        analyticsService.setDisallowChanges(getBuildService(taskCreationServices.buildServiceRegistry))
         group = JavaBasePlugin.VERIFICATION_GROUP
         description = "Print text output from the corresponding lint report task"
         android.setDisallowChanges(false)
         variantName = ""
-        initializeCommonInputs(
-            taskCreationServices.projectInfo.getProject(),
-            artifacts,
-            lintOptions,
-            fatalOnly
-        )
+        initializeCommonInputs(artifacts, lintOptions, fatalOnly)
     }
 
     enum class OutputStream {

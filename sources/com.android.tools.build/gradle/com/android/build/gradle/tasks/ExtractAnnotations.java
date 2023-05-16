@@ -16,10 +16,10 @@
 
 package com.android.build.gradle.tasks;
 
+import static com.android.AndroidXConstants.INT_DEF_ANNOTATION;
+import static com.android.AndroidXConstants.LONG_DEF_ANNOTATION;
+import static com.android.AndroidXConstants.STRING_DEF_ANNOTATION;
 import static com.android.SdkConstants.DOT_JAVA;
-import static com.android.SdkConstants.INT_DEF_ANNOTATION;
-import static com.android.SdkConstants.LONG_DEF_ANNOTATION;
-import static com.android.SdkConstants.STRING_DEF_ANNOTATION;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.EXTERNAL;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.CLASSES_JAR;
 import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH;
@@ -34,10 +34,12 @@ import com.android.build.gradle.internal.lint.LintTool;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.services.BuildServicesKt;
 import com.android.build.gradle.internal.services.LintClassLoaderBuildService;
+import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.NonIncrementalTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.internal.utils.AndroidXDependency;
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.utils.FileUtils;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
@@ -94,6 +96,7 @@ import org.gradle.api.tasks.TaskProvider;
  * where ProGuarding is enabled.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = {TaskCategory.SOURCE_PROCESSING})
 public abstract class ExtractAnnotations extends NonIncrementalTask {
 
     @NonNull

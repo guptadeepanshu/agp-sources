@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private DynamicLayoutInspectorErrorInfo() {
     attachErrorState_ = 0;
+    attachErrorCode_ = 0;
   }
 
   @java.lang.Override
@@ -63,6 +64,18 @@ private static final long serialVersionUID = 0L;
             } else {
               bitField0_ |= 0x00000001;
               attachErrorState_ = rawValue;
+            }
+            break;
+          }
+          case 16: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode value = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(2, rawValue);
+            } else {
+              bitField0_ |= 0x00000002;
+              attachErrorCode_ = rawValue;
             }
             break;
           }
@@ -545,6 +558,301 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorState)
   }
 
+  /**
+   * <pre>
+   * The error code encountered
+   * </pre>
+   *
+   * Protobuf enum {@code android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode}
+   */
+  public enum AttachErrorCode
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <pre>
+     * Unknown error code
+     * </pre>
+     *
+     * <code>UNKNOWN_ERROR_CODE = 0;</code>
+     */
+    UNKNOWN_ERROR_CODE(0),
+    /**
+     * <pre>
+     * Api lower than 29
+     * </pre>
+     *
+     * <code>LOW_API_LEVEL = 1;</code>
+     */
+    LOW_API_LEVEL(1),
+    /**
+     * <pre>
+     * Timeout with fallback to Legacy mode
+     * </pre>
+     *
+     * <code>CONNECT_TIMEOUT = 2;</code>
+     */
+    CONNECT_TIMEOUT(2),
+    /**
+     * <code>UNKNOWN_VIEW_AGENT_ERROR = 101;</code>
+     */
+    UNKNOWN_VIEW_AGENT_ERROR(101),
+    /**
+     * <pre>
+     * No hardware acceleration
+     * </pre>
+     *
+     * <code>NO_HARDWARE_ACCELERATION = 102;</code>
+     */
+    NO_HARDWARE_ACCELERATION(102),
+    /**
+     * <pre>
+     * The app seems to have no UI
+     * </pre>
+     *
+     * <code>NO_ROOT_VIEWS_FOUND = 103;</code>
+     */
+    NO_ROOT_VIEWS_FOUND(103),
+    /**
+     * <pre>
+     * General fallback if we were unable to map the app inspection exception
+     * </pre>
+     *
+     * <code>UNKNOWN_APP_INSPECTION_ERROR = 201;</code>
+     */
+    UNKNOWN_APP_INSPECTION_ERROR(201),
+    /**
+     * <pre>
+     * The device in not found among the ABD devices
+     * </pre>
+     *
+     * <code>APP_INSPECTION_CANNOT_FIND_DEVICE = 202;</code>
+     */
+    APP_INSPECTION_CANNOT_FIND_DEVICE(202),
+    /**
+     * <pre>
+     * The process is no longer found
+     * </pre>
+     *
+     * <code>APP_INSPECTION_PROCESS_NO_LONGER_EXISTS = 203;</code>
+     */
+    APP_INSPECTION_PROCESS_NO_LONGER_EXISTS(203),
+    /**
+     * <pre>
+     * The inspector is incompatible with the library in the running app
+     * </pre>
+     *
+     * <code>APP_INSPECTION_INCOMPATIBLE_VERSION = 204;</code>
+     */
+    APP_INSPECTION_INCOMPATIBLE_VERSION(204),
+    /**
+     * <pre>
+     * The targeted library does not exist in the app
+     * </pre>
+     *
+     * <code>APP_INSPECTION_MISSING_LIBRARY = 205;</code>
+     */
+    APP_INSPECTION_MISSING_LIBRARY(205),
+    /**
+     * <pre>
+     * The target app is proguarded
+     * </pre>
+     *
+     * <code>APP_INSPECTION_PROGUARDED_APP = 206;</code>
+     */
+    APP_INSPECTION_PROGUARDED_APP(206),
+    /**
+     * <pre>
+     * An inspector artifact can't be resolved
+     * </pre>
+     *
+     * <code>APP_INSPECTION_ARTIFACT_NOT_FOUND = 207;</code>
+     */
+    APP_INSPECTION_ARTIFACT_NOT_FOUND(207),
+    ;
+
+    /**
+     * <pre>
+     * Unknown error code
+     * </pre>
+     *
+     * <code>UNKNOWN_ERROR_CODE = 0;</code>
+     */
+    public static final int UNKNOWN_ERROR_CODE_VALUE = 0;
+    /**
+     * <pre>
+     * Api lower than 29
+     * </pre>
+     *
+     * <code>LOW_API_LEVEL = 1;</code>
+     */
+    public static final int LOW_API_LEVEL_VALUE = 1;
+    /**
+     * <pre>
+     * Timeout with fallback to Legacy mode
+     * </pre>
+     *
+     * <code>CONNECT_TIMEOUT = 2;</code>
+     */
+    public static final int CONNECT_TIMEOUT_VALUE = 2;
+    /**
+     * <code>UNKNOWN_VIEW_AGENT_ERROR = 101;</code>
+     */
+    public static final int UNKNOWN_VIEW_AGENT_ERROR_VALUE = 101;
+    /**
+     * <pre>
+     * No hardware acceleration
+     * </pre>
+     *
+     * <code>NO_HARDWARE_ACCELERATION = 102;</code>
+     */
+    public static final int NO_HARDWARE_ACCELERATION_VALUE = 102;
+    /**
+     * <pre>
+     * The app seems to have no UI
+     * </pre>
+     *
+     * <code>NO_ROOT_VIEWS_FOUND = 103;</code>
+     */
+    public static final int NO_ROOT_VIEWS_FOUND_VALUE = 103;
+    /**
+     * <pre>
+     * General fallback if we were unable to map the app inspection exception
+     * </pre>
+     *
+     * <code>UNKNOWN_APP_INSPECTION_ERROR = 201;</code>
+     */
+    public static final int UNKNOWN_APP_INSPECTION_ERROR_VALUE = 201;
+    /**
+     * <pre>
+     * The device in not found among the ABD devices
+     * </pre>
+     *
+     * <code>APP_INSPECTION_CANNOT_FIND_DEVICE = 202;</code>
+     */
+    public static final int APP_INSPECTION_CANNOT_FIND_DEVICE_VALUE = 202;
+    /**
+     * <pre>
+     * The process is no longer found
+     * </pre>
+     *
+     * <code>APP_INSPECTION_PROCESS_NO_LONGER_EXISTS = 203;</code>
+     */
+    public static final int APP_INSPECTION_PROCESS_NO_LONGER_EXISTS_VALUE = 203;
+    /**
+     * <pre>
+     * The inspector is incompatible with the library in the running app
+     * </pre>
+     *
+     * <code>APP_INSPECTION_INCOMPATIBLE_VERSION = 204;</code>
+     */
+    public static final int APP_INSPECTION_INCOMPATIBLE_VERSION_VALUE = 204;
+    /**
+     * <pre>
+     * The targeted library does not exist in the app
+     * </pre>
+     *
+     * <code>APP_INSPECTION_MISSING_LIBRARY = 205;</code>
+     */
+    public static final int APP_INSPECTION_MISSING_LIBRARY_VALUE = 205;
+    /**
+     * <pre>
+     * The target app is proguarded
+     * </pre>
+     *
+     * <code>APP_INSPECTION_PROGUARDED_APP = 206;</code>
+     */
+    public static final int APP_INSPECTION_PROGUARDED_APP_VALUE = 206;
+    /**
+     * <pre>
+     * An inspector artifact can't be resolved
+     * </pre>
+     *
+     * <code>APP_INSPECTION_ARTIFACT_NOT_FOUND = 207;</code>
+     */
+    public static final int APP_INSPECTION_ARTIFACT_NOT_FOUND_VALUE = 207;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static AttachErrorCode valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static AttachErrorCode forNumber(int value) {
+      switch (value) {
+        case 0: return UNKNOWN_ERROR_CODE;
+        case 1: return LOW_API_LEVEL;
+        case 2: return CONNECT_TIMEOUT;
+        case 101: return UNKNOWN_VIEW_AGENT_ERROR;
+        case 102: return NO_HARDWARE_ACCELERATION;
+        case 103: return NO_ROOT_VIEWS_FOUND;
+        case 201: return UNKNOWN_APP_INSPECTION_ERROR;
+        case 202: return APP_INSPECTION_CANNOT_FIND_DEVICE;
+        case 203: return APP_INSPECTION_PROCESS_NO_LONGER_EXISTS;
+        case 204: return APP_INSPECTION_INCOMPATIBLE_VERSION;
+        case 205: return APP_INSPECTION_MISSING_LIBRARY;
+        case 206: return APP_INSPECTION_PROGUARDED_APP;
+        case 207: return APP_INSPECTION_ARTIFACT_NOT_FOUND;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<AttachErrorCode>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AttachErrorCode> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<AttachErrorCode>() {
+            public AttachErrorCode findValueByNumber(int number) {
+              return AttachErrorCode.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final AttachErrorCode[] VALUES = values();
+
+    public static AttachErrorCode valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private AttachErrorCode(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode)
+  }
+
   private int bitField0_;
   public static final int ATTACH_ERROR_STATE_FIELD_NUMBER = 1;
   private int attachErrorState_;
@@ -575,6 +883,33 @@ private static final long serialVersionUID = 0L;
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorState.UNKNOWN_ATTACH_ERROR_STATE : result;
   }
 
+  public static final int ATTACH_ERROR_CODE_FIELD_NUMBER = 2;
+  private int attachErrorCode_;
+  /**
+   * <pre>
+   * The error encountered to abort the attach attempt
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+   * @return Whether the attachErrorCode field is set.
+   */
+  @java.lang.Override public boolean hasAttachErrorCode() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <pre>
+   * The error encountered to abort the attach attempt
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+   * @return The attachErrorCode.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getAttachErrorCode() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(attachErrorCode_);
+    return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -592,6 +927,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       output.writeEnum(1, attachErrorState_);
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeEnum(2, attachErrorCode_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -604,6 +942,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(1, attachErrorState_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(2, attachErrorCode_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -624,6 +966,10 @@ private static final long serialVersionUID = 0L;
     if (hasAttachErrorState()) {
       if (attachErrorState_ != other.attachErrorState_) return false;
     }
+    if (hasAttachErrorCode() != other.hasAttachErrorCode()) return false;
+    if (hasAttachErrorCode()) {
+      if (attachErrorCode_ != other.attachErrorCode_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -638,6 +984,10 @@ private static final long serialVersionUID = 0L;
     if (hasAttachErrorState()) {
       hash = (37 * hash) + ATTACH_ERROR_STATE_FIELD_NUMBER;
       hash = (53 * hash) + attachErrorState_;
+    }
+    if (hasAttachErrorCode()) {
+      hash = (37 * hash) + ATTACH_ERROR_CODE_FIELD_NUMBER;
+      hash = (53 * hash) + attachErrorCode_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -778,6 +1128,8 @@ private static final long serialVersionUID = 0L;
       super.clear();
       attachErrorState_ = 0;
       bitField0_ = (bitField0_ & ~0x00000001);
+      attachErrorCode_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000002);
       return this;
     }
 
@@ -810,6 +1162,10 @@ private static final long serialVersionUID = 0L;
         to_bitField0_ |= 0x00000001;
       }
       result.attachErrorState_ = attachErrorState_;
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        to_bitField0_ |= 0x00000002;
+      }
+      result.attachErrorCode_ = attachErrorCode_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -861,6 +1217,9 @@ private static final long serialVersionUID = 0L;
       if (other == com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.getDefaultInstance()) return this;
       if (other.hasAttachErrorState()) {
         setAttachErrorState(other.getAttachErrorState());
+      }
+      if (other.hasAttachErrorCode()) {
+        setAttachErrorCode(other.getAttachErrorCode());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -951,6 +1310,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearAttachErrorState() {
       bitField0_ = (bitField0_ & ~0x00000001);
       attachErrorState_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int attachErrorCode_ = 0;
+    /**
+     * <pre>
+     * The error encountered to abort the attach attempt
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+     * @return Whether the attachErrorCode field is set.
+     */
+    @java.lang.Override public boolean hasAttachErrorCode() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * The error encountered to abort the attach attempt
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+     * @return The attachErrorCode.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getAttachErrorCode() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.valueOf(attachErrorCode_);
+      return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode.UNKNOWN_ERROR_CODE : result;
+    }
+    /**
+     * <pre>
+     * The error encountered to abort the attach attempt
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+     * @param value The attachErrorCode to set.
+     * @return This builder for chaining.
+     */
+    public Builder setAttachErrorCode(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000002;
+      attachErrorCode_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The error encountered to abort the attach attempt
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAttachErrorCode() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      attachErrorCode_ = 0;
       onChanged();
       return this;
     }

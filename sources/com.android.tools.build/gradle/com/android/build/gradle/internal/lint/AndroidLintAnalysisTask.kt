@@ -26,23 +26,25 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.services.getLintParallelBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
-import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.logging.configuration.ShowStacktrace
 import org.gradle.api.plugins.JavaBasePlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -62,6 +64,7 @@ import java.util.Collections
 
 /** Task to invoke lint with the --analyze-only flag, producing partial results. */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
 
     @get:Nested
@@ -263,7 +266,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.description = description
 
             task.initializeGlobalInputs(
-                variant.main.services.projectInfo.getProject(),
+                services = variant.main.services,
                 isAndroid = true
             )
             task.lintModelDirectory.set(variant.main.paths.getIncrementalDir(task.name))
@@ -303,7 +306,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             task.lintTool.initialize(creationConfig.services)
             task.desugaredMethodsFiles.from(
                 getDesugaredMethods(
-                    task.project,
+                    creationConfig.services,
                     creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled,
                     creationConfig.minSdkVersion,
                     creationConfig.global.compileSdkHashString,
@@ -315,13 +318,13 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
     }
 
     private fun initializeGlobalInputs(
-        project: Project,
+        services: TaskCreationServices,
         isAndroid: Boolean
     ) {
-        val buildServiceRegistry = project.gradle.sharedServices
+        val buildServiceRegistry = services.buildServiceRegistry
         this.androidGradlePluginVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
         val sdkComponentsBuildService =
-            getBuildService<SdkComponentsBuildService>(buildServiceRegistry)
+            getBuildService(buildServiceRegistry, SdkComponentsBuildService::class.java)
 
         this.android.setDisallowChanges(isAndroid)
         if(isAndroid) {
@@ -352,16 +355,22 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         }
         systemPropertyInputs.initialize(project.providers, LintMode.ANALYSIS)
         environmentVariableInputs.initialize(project.providers, LintMode.ANALYSIS)
+        this.usesService(
+            services.buildServiceRegistry.getLintParallelBuildService(services.projectOptions)
+        )
     }
 
     fun configureForStandalone(
         taskCreationServices: TaskCreationServices,
-        javaPluginConvention: JavaPluginConvention,
+        javaPluginExtension: JavaPluginExtension,
         customLintChecksConfig: FileCollection,
         lintOptions: Lint,
         fatalOnly: Boolean = false
     ) {
-        initializeGlobalInputs(project = project, isAndroid = false)
+        initializeGlobalInputs(
+            services = taskCreationServices,
+            isAndroid = false
+        )
         this.group = JavaBasePlugin.VERIFICATION_GROUP
         this.variantName = ""
         this.analyticsService.setDisallowChanges(getBuildService(taskCreationServices.buildServiceRegistry))
@@ -371,14 +380,14 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         this.projectInputs
             .initializeForStandalone(
                 project,
-                javaPluginConvention,
+                javaPluginExtension,
                 lintOptions,
                 LintMode.ANALYSIS
             )
         this.variantInputs
             .initializeForStandalone(
                 project,
-                javaPluginConvention,
+                javaPluginExtension,
                 taskCreationServices.projectOptions,
                 fatalOnly,
                 checkDependencies = false,

@@ -19,6 +19,7 @@
 package com.android.build.gradle.internal.utils
 
 import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
@@ -33,16 +34,15 @@ import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.SourceDirectorySet
-import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.tasks.ClasspathNormalizer
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.plugin.KotlinBasePluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 const val KOTLIN_ANDROID_PLUGIN_ID = "org.jetbrains.kotlin.android"
 const val KOTLIN_KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+const val KSP_PLUGIN_ID = "com.google.devtools.ksp"
 private val KOTLIN_MPP_PLUGIN_IDS = listOf("kotlin-multiplatform", "org.jetbrains.kotlin.multiplatform")
 
 private val irBackendByDefault = KotlinVersion(1, 5)
@@ -99,7 +99,10 @@ fun getKotlinPluginVersion(project: Project): String? {
     val plugin = project.plugins.findPlugin("kotlin-android") ?: return null
     return try {
         // No null checks below because we're catching all exceptions.
-        val method = plugin.javaClass.getMethod("getKotlinPluginVersion")
+        // KGP 1.7.0+ has getPluginVersion and older version have getKotlinPluginVersion
+        val method = plugin.javaClass.methods.first {
+            it.name == "getKotlinPluginVersion" || it.name == "getPluginVersion"
+        }
         method.isAccessible = true
         method.invoke(plugin).toString()
     } catch (e: Throwable) {
@@ -115,25 +118,40 @@ fun isKotlinAndroidPluginApplied(project: Project) =
 fun isKotlinKaptPluginApplied(project: Project) =
         project.pluginManager.hasPlugin(KOTLIN_KAPT_PLUGIN_ID)
 
-fun getKotlinCompile(project: Project, creationConfig: ComponentCreationConfig): TaskProvider<Task> =
-        project.tasks.named(creationConfig.computeTaskName("compile", "Kotlin"))
+fun isKspPluginApplied(project: Project) =
+    project.pluginManager.hasPlugin(KSP_PLUGIN_ID)
+
+/** Configure Kotlin compile tasks for the current project and the current variant. */
+fun configureKotlinCompileForProject(
+    project: Project,
+    creationConfig: ComponentCreationConfig,
+    action: (KotlinCompile) -> Unit
+) {
+    // KGP has names like compileDebugKotlin but KMP may create compileDebugKotlinAndroid
+    // so make sure to match both.
+    val expectedTaskNameOrPrefix = creationConfig.computeTaskName("compile", "Kotlin")
+    project.tasks.withType(KotlinCompile::class.java).configureEach {
+        if (it.project == project && it.name.startsWith(expectedTaskNameOrPrefix)) {
+            action(it)
+        }
+    }
+}
 
 /* Record information if IR backend is enabled. */
 fun recordIrBackendForAnalytics(allPropertiesList: List<ComponentCreationConfig>, extension: BaseExtension, project: Project, composeIsEnabled: Boolean) {
     for (creationConfig in allPropertiesList) {
         try {
-            val compileKotlin = getKotlinCompile(project, creationConfig)
-            compileKotlin.configure { task: Task ->
+            configureKotlinCompileForProject(project, creationConfig) { task: KotlinCompile ->
                 try {
                     // Enabling compose forces IR, so handle that case.
                     if (composeIsEnabled) {
                         setIrUsedInAnalytics(creationConfig, project)
-                        return@configure
+                        return@configureKotlinCompileForProject
                     }
 
                     val kotlinVersion = getProjectKotlinPluginKotlinVersion(project)
                     val irBackendEnabled = when {
-                        kotlinVersion == null -> return@configure
+                        kotlinVersion == null -> return@configureKotlinCompileForProject
                         kotlinVersion >= irBackendByDefault -> {
                             !getKotlinOptionsValueIfSet(task, extension, "getUseOldBackend", false)
                         }
@@ -169,6 +187,15 @@ private fun getKotlinOptionsValueIfSet(task: Task, extension: BaseExtension, met
     return defaultValue
 }
 
+/** User reflection as API has been removed in newer KGP versions. */
+private fun enableUseIr(task: Task) {
+    // We need reflection because AGP and KGP can be in different class loaders.
+    val getKotlinOptions = task.javaClass.getMethod("getKotlinOptions")
+    val kotlinOptions = getKotlinOptions.invoke(task)
+    val method = kotlinOptions.javaClass.getMethod("setUseIR", Boolean::class.java)
+    method.invoke(kotlinOptions, true)
+}
+
 private fun setIrUsedInAnalytics(creationConfig: ComponentCreationConfig, project: Project) {
     val buildService: AnalyticsConfiguratorService =
             getBuildService(
@@ -182,19 +209,11 @@ private fun setIrUsedInAnalytics(creationConfig: ComponentCreationConfig, projec
 
 /** Add compose compiler extension args to Kotlin compile task. */
 fun addComposeArgsToKotlinCompile(
-        task: Task,
-        creationConfig: ComponentCreationConfig,
-        compilerExtension: FileCollection,
-        useLiveLiterals: Boolean) {
-    task as KotlinCompile
-    // Add as input
-    task.inputs.files(compilerExtension)
-            .withPropertyName("composeCompilerExtension")
-            .withNormalizer(ClasspathNormalizer::class.java)
-
-    // Add useLiveLiterals as an input
-    task.inputs.property("useLiveLiterals", useLiveLiterals)
-
+    task: KotlinCompile,
+    creationConfig: ComponentCreationConfig,
+    compilerExtension: FileCollection,
+    useLiveLiterals: Boolean
+) {
     val debuggable = if (creationConfig is ApkCreationConfig || creationConfig is LibraryCreationConfig) {
         creationConfig.debuggable
     } else {
@@ -202,68 +221,127 @@ fun addComposeArgsToKotlinCompile(
     }
 
     val kotlinVersion = getProjectKotlinPluginKotlinVersion(task.project)
-    task.doFirst {
-        it as KotlinCompile
-        kotlinVersion?.let { version ->
-            when {
-                version >= irBackendByDefault -> return@let // IR is enabled by default
-                version >= irBackendIntroduced -> it.kotlinOptions.useIR = true
-            }
+    kotlinVersion?.let { version ->
+        when {
+            version >= irBackendByDefault -> return@let // IR is enabled by default
+            version >= irBackendIntroduced -> enableUseIr(task)
         }
-        val extraFreeCompilerArgs = mutableListOf(
-                "-Xplugin=${compilerExtension.files.first().absolutePath}",
-                "-P", "plugin:androidx.compose.plugins.idea:enabled=true",
-                "-Xallow-unstable-dependencies"
-        )
-        if (debuggable) {
-            extraFreeCompilerArgs += listOf(
-                    "-P",
-                    "plugin:androidx.compose.compiler.plugins.kotlin:sourceInformation=true")
-
-            if (useLiveLiterals) {
-                extraFreeCompilerArgs += listOf(
-                        "-P",
-                        "plugin:androidx.compose.compiler.plugins.kotlin:liveLiterals=true")
-            }
-        }
-        it.kotlinOptions.freeCompilerArgs += extraFreeCompilerArgs
     }
+
+    task.addPluginClasspath(kotlinVersion, compilerExtension)
+
+    task.addPluginOption("androidx.compose.plugins.idea", "enabled", "true")
+    if (debuggable) {
+        task.addPluginOption("androidx.compose.compiler.plugins.kotlin", "sourceInformation", "true")
+        if (useLiveLiterals) {
+            task.addPluginOption("androidx.compose.compiler.plugins.kotlin", "liveLiterals", "true")
+        }
+    }
+
+    task.kotlinOptions.freeCompilerArgs += "-Xallow-unstable-dependencies"
+}
+
+private fun KotlinCompile.addPluginClasspath(
+    kotlinVersion: KotlinVersion?, compilerExtension: FileCollection
+) {
+    // If kotlinVersion == null, it's likely a newer Kotlin version
+    if (kotlinVersion == null || kotlinVersion.isAtLeast(1, 7)) {
+        pluginClasspath.from(compilerExtension)
+    } else {
+        inputs.files(compilerExtension)
+            .withPropertyName("composeCompilerExtension")
+            .withNormalizer(ClasspathNormalizer::class.java)
+        doFirst {
+            (it as KotlinCompile).kotlinOptions.freeCompilerArgs +=
+                "-Xplugin=${compilerExtension.files.single().path}"
+        }
+    }
+}
+
+private fun KotlinCompile.addPluginOption(pluginId: String, key: String, value: String) {
+    // Once https://youtrack.jetbrains.com/issue/KT-54160 is fixed, we will be able to use the new
+    // API to add plugin options as follows:
+    //     // If kotlinVersion == null, it's likely a newer Kotlin version
+    //     if (kotlinVersion == null || kotlinVersion.isAtLeast(X, Y)) {
+    //         pluginOptions.add(CompilerPluginConfig().apply {
+    //             addPluginArgument(pluginId, SubpluginOption(key, value))
+    //         })
+    //     } else { ... }
+    // For now, continue to use the old way to add plugin options.
+    kotlinOptions.freeCompilerArgs += listOf("-P", "plugin:$pluginId:$key=$value")
 }
 
 /**
  * Get information about Kotlin sources from KGP, until there is a KGP version that can work
  * with AGP which supports Kotlin source directories.
  */
-fun syncAgpAndKgpSources(project: Project, sourceSets: NamedDomainObjectContainer<out com.android.build.gradle.api.AndroidSourceSet>) {
+@Suppress("UNCHECKED_CAST")
+fun syncAgpAndKgpSources(
+    project: Project, sourceSets: NamedDomainObjectContainer<out AndroidSourceSet>
+) {
     val hasMpp = KOTLIN_MPP_PLUGIN_IDS.any { project.pluginManager.hasPlugin(it) }
-    sourceSets.all {
-        val kotlinConvention = (it as HasConvention).convention.plugins["kotlin"]
-        if (kotlinConvention!=null) {
-            val sourceDir =
-                    kotlinConvention::class.java.getMethod("getKotlin")
-                            .invoke(kotlinConvention) as SourceDirectorySet
+    // TODO(b/246910305): Remove once it is gone from Gradle
+    val hasConventionSupport = try {
+        Class.forName("org.gradle.api.internal.HasConvention")
+        true
+    } catch (ignored: Throwable) {
+        false
+    }
 
-            if (!hasMpp) {
-                sourceDir.srcDirs((it.kotlin as DefaultAndroidSourceDirectorySet).srcDirs)
+    val kotlinSourceSets by lazy {
+        val kotlinExtension = project.extensions.findByName("kotlin") ?: return@lazy null
+
+        kotlinExtension::class.java.getMethod("getSourceSets")
+            .invoke(kotlinExtension) as NamedDomainObjectContainer<Any>
+    }
+
+    fun AndroidSourceSet.findKotlinSourceSet(): SourceDirectorySet? {
+        if (hasMpp) {
+            if (!hasConventionSupport) {
+                // Newer versions of MPP will invoke AGP APIs to add the kotlin src dirs,
+                // so we can skip doing that.
+                return null
             }
-            it.kotlin.setSrcDirs(sourceDir.srcDirs)
+            val convention = this::class.java.getMethod("getConvention").invoke(this)
+            val plugins =
+                convention::class.java.getMethod("getPlugins")
+                    .invoke(convention) as Map<String, Any>
+            val kotlinConvention = plugins["kotlin"] ?: return null
+
+            return kotlinConvention::class.java.getMethod("getKotlin")
+                .invoke(kotlinConvention) as SourceDirectorySet
+        } else {
+            val kotlinSourceSet: Any = kotlinSourceSets?.findByName(this.name) ?: return null
+
+            return kotlinSourceSet::class.java.getMethod("getKotlin")
+                .invoke(kotlinSourceSet) as SourceDirectorySet
+        }
+    }
+
+    sourceSets.all {
+        val kotlinSourceSet = it.findKotlinSourceSet()
+        if (kotlinSourceSet != null) {
+            if (!hasMpp) {
+                kotlinSourceSet.srcDirs((it.kotlin as DefaultAndroidSourceDirectorySet).srcDirs)
+            }
+            it.kotlin.setSrcDirs(kotlinSourceSet.srcDirs)
         }
     }
 }
 
 /**
- * Attempts to find the corresponding `kapt` configurations for the source sets of the given
- * variant. The returned list may be incomplete or empty if unsuccessful.
+ * Attempts to find the corresponding `kapt` or `ksp` configurations for the source sets of the
+ * given variant. The returned list may be incomplete or empty if unsuccessful.
  */
-fun findKaptConfigurationsForVariant(
-    project: Project,
-    creationConfig: ComponentCreationConfig
+fun findKaptOrKspConfigurationsForVariant(
+    creationConfig: ComponentCreationConfig,
+    kaptOrKsp: String
 ): List<Configuration> {
     return creationConfig.variantSources.sortedSourceProviders.mapNotNull { sourceSet ->
-        val kaptConfigurationName = if (sourceSet.name != SourceSet.MAIN_SOURCE_SET_NAME)
-            "kapt".appendCapitalized(sourceSet.name)
+        val configurationName = if (sourceSet.name != SourceSet.MAIN_SOURCE_SET_NAME)
+            kaptOrKsp.appendCapitalized(sourceSet.name)
         else
-            "kapt"
-        project.configurations.findByName(kaptConfigurationName)
+            kaptOrKsp
+        creationConfig.services.configurations.findByName(configurationName)
     }
 }

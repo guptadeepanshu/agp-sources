@@ -22,17 +22,24 @@ import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.packaging.defaultExcludes
 import com.android.build.gradle.internal.pipeline.StreamFilter.PROJECT_RESOURCES
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVAC
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
 import com.android.build.gradle.internal.scope.InternalArtifactType.RUNTIME_R_CLASS_CLASSES
+import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.tasks.getChangesInSerializableForm
 import com.android.builder.files.SerializableInputChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
+import org.gradle.api.attributes.Usage
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
@@ -61,6 +68,7 @@ import javax.inject.Inject
  * Task to merge java resources from multiple modules
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.JAVA_RESOURCES, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeJavaResourceTask
 @Inject constructor(objects: ObjectFactory) : NewIncrementalTask() {
 
@@ -91,7 +99,7 @@ abstract class MergeJavaResourceTask
     abstract val featureJavaRes: ConfigurableFileCollection
 
     @get:Input
-    @Suppress("DEPRECATION") // Legacy support (b/195153220)
+    @Suppress("DEPRECATION") // Legacy support
     lateinit var mergeScopes: Collection<com.android.build.api.transform.QualifiedContent.ScopeType>
         private set
 
@@ -193,7 +201,7 @@ abstract class MergeJavaResourceTask
     }
 
     class CreationAction(
-        @Suppress("DEPRECATION") // Legacy support (b/195153220)
+        @Suppress("DEPRECATION") // Legacy support
         private val mergeScopes: Collection<com.android.build.api.transform.QualifiedContent.ScopeType>,
         creationConfig: ConsumableCreationConfig
     ) : VariantTaskCreationAction<MergeJavaResourceTask, ConsumableCreationConfig>(
@@ -209,7 +217,7 @@ abstract class MergeJavaResourceTask
             get() = MergeJavaResourceTask::class.java
 
         init {
-            if (creationConfig.variantScope.needsJavaResStreams) {
+            if (creationConfig.needsJavaResStreams) {
                 // Because ordering matters for Transform pipeline, we need to fetch the java res
                 // as soon as this creation action is instantiated, if needed.
                 projectJavaResFromStreams =
@@ -217,7 +225,7 @@ abstract class MergeJavaResourceTask
                         .getPipelineOutputAsFileCollection(PROJECT_RESOURCES)
                 // We must also consume corresponding streams to avoid duplicates; any downstream
                 // transforms will use the merged-java-res stream instead.
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
+                @Suppress("DEPRECATION") // Legacy support
                 creationConfig.transformManager
                     .consumeStreams(mutableSetOf(com.android.build.api.transform.QualifiedContent.Scope.PROJECT), setOf(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES))
             } else {
@@ -258,7 +266,7 @@ abstract class MergeJavaResourceTask
             }
             task.projectJavaRes.disallowChanges()
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             run {
                 if (mergeScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)) {
                     task.subProjectJavaRes.fromDisallowChanges(
@@ -301,10 +309,125 @@ abstract class MergeJavaResourceTask
             task.cacheDir = File(task.intermediateDir, "zip-cache")
             task.incrementalStateFile = File(task.intermediateDir, "merge-state")
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.set(creationConfig.androidResources.noCompress)
+                creationConfig.androidResourcesCreationConfig?.let {
+                    task.noCompress.set(it.androidResources.noCompress)
+                } ?: run {
+                    task.noCompress.set(emptyList())
+                }
             }
             task.noCompress.disallowChanges()
         }
+    }
+
+    class FusedLibraryCreationAction(
+            val creationConfig: FusedLibraryVariantScope
+    ) : TaskCreationAction<MergeJavaResourceTask>() {
+
+        override val name: String
+            get() = "mergeLibraryJavaResources"
+        override val type: Class<MergeJavaResourceTask>
+            get() = MergeJavaResourceTask::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<MergeJavaResourceTask>) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    MergeJavaResourceTask::outputFile
+            ).withName("base.jar").on(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+        }
+
+        override fun configure(task: MergeJavaResourceTask) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            task.subProjectJavaRes.from(
+                    creationConfig.dependencies.getArtifactFileCollection(
+                            Usage.JAVA_RUNTIME,
+                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ArtifactType.JAVA_RES
+                    )
+            )
+
+            // For configuring the merging rules (we may want to add DSL for this in the future.
+            task.excludes.setDisallowChanges(defaultExcludes)
+            task.pickFirsts.setDisallowChanges(emptySet())
+            task.merges.setDisallowChanges(emptySet())
+
+            task.intermediateDir = creationConfig.layout.buildDirectory
+                    .dir(SdkConstants.FD_INTERMEDIATES)
+                    .map { it.dir("mergeJavaRes") }.get().asFile
+            task.cacheDir = File(task.intermediateDir, "zip-cache")
+            task.incrementalStateFile = File(task.intermediateDir, "merge-state")
+
+            // External libraries can just be consumed via the subProjectJavaRes (the inputs are
+            // only intended for finer grain incremental runs.
+            task.externalLibJavaRes.disallowChanges()
+
+            // No sources in fused library projects, so none of the below need set.
+            task.projectJavaRes.disallowChanges()
+            task.projectJavaResAsJars.disallowChanges()
+            task.unfilteredProjectJavaRes = task.project.files()
+            task.featureJavaRes.disallowChanges()
+
+            // mergeScopes is unused by the task.
+            task.mergeScopes = setOf()
+        }
+
+    }
+
+
+    class PrivacySandboxSdkCreationAction(
+            val creationConfig: PrivacySandboxSdkVariantScope
+    ) : TaskCreationAction<MergeJavaResourceTask>() {
+
+        override val name: String
+            get() = "mergeLibraryJavaResources"
+        override val type: Class<MergeJavaResourceTask>
+            get() = MergeJavaResourceTask::class.java
+
+        override fun handleProvider(taskProvider: TaskProvider<MergeJavaResourceTask>) {
+            super.handleProvider(taskProvider)
+
+            creationConfig.artifacts.setInitialProvider(
+                    taskProvider,
+                    MergeJavaResourceTask::outputFile
+            ).withName("base.jar").on(FusedLibraryInternalArtifactType.MERGED_JAVA_RES)
+        }
+
+        override fun configure(task: MergeJavaResourceTask) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
+            task.subProjectJavaRes.from(
+                    creationConfig.dependencies.getArtifactFileCollection(
+                            Usage.JAVA_RUNTIME,
+                            creationConfig.mergeSpec,
+                            AndroidArtifacts.ArtifactType.JAVA_RES
+                    )
+            )
+
+            // For configuring the merging rules (we may want to add DSL for this in the future.
+            task.excludes.setDisallowChanges(defaultExcludes)
+            task.pickFirsts.setDisallowChanges(emptySet())
+            task.merges.setDisallowChanges(emptySet())
+
+            task.intermediateDir = creationConfig.layout.buildDirectory
+                    .dir(SdkConstants.FD_INTERMEDIATES)
+                    .map { it.dir("mergeJavaRes") }.get().asFile
+            task.cacheDir = File(task.intermediateDir, "zip-cache")
+            task.incrementalStateFile = File(task.intermediateDir, "merge-state")
+
+            // External libraries can just be consumed via the subProjectJavaRes (the inputs are
+            // only intended for finer grain incremental runs.
+            task.externalLibJavaRes.disallowChanges()
+
+            // No sources in fused library projects, so none of the below need set.
+            task.projectJavaRes.disallowChanges()
+            task.projectJavaResAsJars.disallowChanges()
+            task.unfilteredProjectJavaRes = task.project.files()
+            task.featureJavaRes.disallowChanges()
+
+            // mergeScopes is unused by the task.
+            task.mergeScopes = setOf()
+        }
+
     }
 
     companion object {
@@ -343,8 +466,12 @@ fun getProjectJavaRes(
             }
         }
     )
-    javaRes.from(creationConfig.variantData.allPreJavacGeneratedBytecode)
-    javaRes.from(creationConfig.variantData.allPostJavacGeneratedBytecode)
+    creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode?.let {
+        javaRes.from(it)
+    }
+    creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode?.let {
+        javaRes.from(it)
+    }
     if (creationConfig.global.namespacedAndroidResources) {
         javaRes.from(creationConfig.artifacts.get(RUNTIME_R_CLASS_CLASSES))
     }
@@ -356,11 +483,11 @@ fun getProjectJavaRes(
 
 private fun getExternalLibJavaRes(
     creationConfig: ComponentCreationConfig,
-    @Suppress("DEPRECATION") // Legacy support (b/195153220)
+    @Suppress("DEPRECATION") // Legacy support
     mergeScopes: Collection<com.android.build.api.transform.QualifiedContent.ScopeType>
 ): FileCollection {
     val externalLibJavaRes = creationConfig.services.fileCollection()
-    @Suppress("DEPRECATION") // Legacy support (b/195153220)
+    @Suppress("DEPRECATION") // Legacy support
     if (mergeScopes.contains(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)) {
         externalLibJavaRes.from(
             creationConfig.variantDependencies.getArtifactFileCollection(
@@ -371,7 +498,7 @@ private fun getExternalLibJavaRes(
         )
     }
     if (mergeScopes.contains(LOCAL_DEPS)) {
-        externalLibJavaRes.from(creationConfig.variantScope.localPackagedJars)
+        externalLibJavaRes.from(creationConfig.computeLocalPackagedJars())
     }
     return externalLibJavaRes
 }

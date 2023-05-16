@@ -28,6 +28,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarMerger
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.lint.typedefs.TypedefRemover
 import com.android.utils.FileUtils
 import org.gradle.api.file.ConfigurableFileCollection
@@ -64,6 +65,7 @@ import java.util.zip.Deflater
 
 // TODO(b/132975663): add workers
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.AAR_PACKAGING, secondaryTaskCategories = [TaskCategory.ZIPPING])
 abstract class LibraryAarJarsTask : NonIncrementalTask() {
     @get:Nested
     @get:Optional
@@ -319,7 +321,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             )
 
             task.namespace.setDisallowChanges(creationConfig.namespace)
-            task.jarCreatorType.setDisallowChanges(creationConfig.variantScope.jarCreatorType)
+            task.jarCreatorType.setDisallowChanges(creationConfig.global.jarCreatorType)
             task.debugBuild.setDisallowChanges(creationConfig.debuggable)
 
             /*
@@ -336,7 +338,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_CLASSES)
                 } else {
-                    @Suppress("DEPRECATION") // Legacy support (b/195153220)
+                    @Suppress("DEPRECATION") // Legacy support
                     creationConfig.transformManager
                         .getPipelineOutputAsFileCollection(
                             { contentTypes, scopes ->
@@ -358,7 +360,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
                     creationConfig.artifacts
                         .get(InternalArtifactType.SHRUNK_JAVA_RES)
                 } else {
-                    @Suppress("DEPRECATION") // Legacy support (b/195153220)
+                    @Suppress("DEPRECATION") // Legacy support
                     creationConfig.transformManager
                         .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                             contentTypes.contains(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)
@@ -368,7 +370,7 @@ abstract class LibraryAarJarsTask : NonIncrementalTask() {
             )
             task.mainScopeResourceFiles.disallowChanges()
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             task.localScopeInputFiles.from(
                 creationConfig.transformManager
                     .getPipelineOutputAsFileCollection { contentTypes, scopes ->

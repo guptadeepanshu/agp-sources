@@ -16,21 +16,31 @@
 
 package com.android.build.gradle.internal.plugins
 
+import com.android.build.api.artifact.Artifact
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.BuildTypeAttr
 import com.android.build.api.dsl.FusedLibraryExtension
-import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.dsl.FusedLibraryExtensionImpl
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryInternalArtifactType
 import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
+import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScopeImpl
 import com.android.build.gradle.internal.fusedlibrary.SegregatingConstraintHandler
+import com.android.build.gradle.internal.fusedlibrary.configureTransforms
+import com.android.build.gradle.internal.fusedlibrary.createTasks
+import com.android.build.gradle.internal.fusedlibrary.getDslServices
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.services.DslServicesImpl
-import com.android.build.gradle.internal.tasks.factory.TaskFactoryImpl
+import com.android.build.gradle.internal.services.DslServices
+import com.android.build.gradle.internal.tasks.MergeJavaResourceTask
 import com.android.build.gradle.tasks.FusedLibraryBundleAar
 import com.android.build.gradle.tasks.FusedLibraryBundleClasses
-import com.android.build.gradle.tasks.FusedLibraryMergeClasses
 import com.android.build.gradle.tasks.FusedLibraryClassesRewriteTask
+import com.android.build.gradle.tasks.FusedLibraryManifestMergerTask
+import com.android.build.gradle.tasks.FusedLibraryMergeArtifactTask
+import com.android.build.gradle.tasks.FusedLibraryMergeClasses
+import com.android.build.gradle.tasks.FusedLibraryMergeResourcesTask
 import com.google.wireless.android.sdk.stats.GradleBuildProject
+import groovy.namespace.QName
+import groovy.util.Node
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactCollection
@@ -38,9 +48,12 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.component.LibraryBinaryIdentifier
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
+import org.gradle.api.attributes.Bundling
+import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.component.SoftwareComponentFactory
-import org.gradle.api.provider.Provider
+import org.gradle.api.file.RegularFile
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPom
 import org.gradle.api.publish.maven.MavenPublication
@@ -50,20 +63,25 @@ import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 class FusedLibraryPlugin @Inject constructor(
-    private val softwareComponentFactory: SoftwareComponentFactory,
-    listenerRegistry: BuildEventsListenerRegistry,
-): AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
+        private val softwareComponentFactory: SoftwareComponentFactory,
+        listenerRegistry: BuildEventsListenerRegistry,
+) : AndroidPluginBaseServices(listenerRegistry), Plugin<Project> {
 
-    // so far, there is only one variant.
-    private val variantScope by lazy {
+    val dslServices: DslServices by lazy(LazyThreadSafetyMode.NONE) {
+        withProject("dslServices") { project ->
+            getDslServices(project, projectServices)
+        }
+    }
+
+    private val variantScope: FusedLibraryVariantScope by lazy(LazyThreadSafetyMode.NONE) {
         withProject("variantScope") { project ->
-            FusedLibraryVariantScope(
-                project
+            FusedLibraryVariantScopeImpl(
+                    project
             ) { extension }
         }
     }
 
-    private val extension: FusedLibraryExtension by lazy {
+    private val extension: FusedLibraryExtension by lazy(LazyThreadSafetyMode.NONE) {
         withProject("extension") { project ->
             instantiateExtension(project)
         }
@@ -78,229 +96,136 @@ class FusedLibraryPlugin @Inject constructor(
 
     private fun instantiateExtension(project: Project): FusedLibraryExtension {
 
-        val sdkComponentsBuildService: Provider<SdkComponentsBuildService> =
-            SdkComponentsBuildService.RegistrationAction(project, projectServices.projectOptions)
-                .execute()
-
-        val dslServices = DslServicesImpl(
-            projectServices,
-            sdkComponentsBuildService
-        )
-
-        val fusedLibraryExtensionImpl= dslServices.newDecoratedInstance(
-            FusedLibraryExtensionImpl::class.java,
-            dslServices,
+        val fusedLibraryExtensionImpl = dslServices.newDecoratedInstance(
+                FusedLibraryExtensionImpl::class.java,
+                dslServices,
         )
 
         abstract class Extension(
-            val publicExtensionImpl: FusedLibraryExtensionImpl,
+                val publicExtensionImpl: FusedLibraryExtensionImpl,
         ): FusedLibraryExtension by publicExtensionImpl
 
         return project.extensions.create(
-            FusedLibraryExtension::class.java,
-            "android",
-            Extension::class.java,
-            fusedLibraryExtensionImpl
+                FusedLibraryExtension::class.java,
+                "android",
+                Extension::class.java,
+                fusedLibraryExtensionImpl
         )
 
     }
 
-    override fun createTasks(project: Project) {
-        TaskFactoryImpl(project.tasks).let { taskFactory ->
-            listOf(
-                    FusedLibraryClassesRewriteTask.CreateAction::class.java,
-                    FusedLibraryMergeClasses.CreationAction::class.java,
-                    FusedLibraryBundleClasses.CreationAction::class.java,
-                    FusedLibraryBundleAar.CreationAction::class.java,
-            ).forEach { creationAction ->
-                taskFactory.register(
-                    creationAction
-                        .getConstructor(FusedLibraryVariantScope::class.java)
-                        .newInstance(variantScope)
-                )
+    private fun maybePublishToMaven(
+            project: Project,
+            includeApiElements: Configuration,
+            includeRuntimeElements: Configuration,
+            includeRuntimeUnmerged: Configuration
+    ) {
+        val bundleTaskProvider = variantScope
+                .artifacts
+                .getArtifactContainer(FusedLibraryInternalArtifactType.BUNDLED_LIBRARY)
+                .getTaskProviders()
+                .last()
+
+        val apiPublication = project.configurations.create("apiPublication").also {
+            it.isCanBeConsumed = false
+            it.isCanBeResolved = false
+            it.isVisible = false
+            it.attributes.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, Usage.JAVA_API)
+            )
+            it.attributes.attribute(
+                    Bundling.BUNDLING_ATTRIBUTE,
+                    project.objects.named(Bundling::class.java, Bundling.EXTERNAL)
+            )
+            it.attributes.attribute(
+                    Category.CATEGORY_ATTRIBUTE,
+                    project.objects.named(Category::class.java, Category.LIBRARY)
+            )
+            it.attributes.attribute(
+                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                    project.objects.named(
+                            LibraryElements::class.java,
+                            AndroidArtifacts.ArtifactType.AAR.type
+                    )
+            )
+            it.attributes.attribute(
+                    BuildTypeAttr.ATTRIBUTE,
+                    project.objects.named(BuildTypeAttr::class.java, "debug")
+            )
+            it.extendsFrom(includeApiElements)
+            variantScope.outgoingConfigurations.addConfiguration(it)
+            it.outgoing.artifact(bundleTaskProvider) { artifact ->
+                artifact.type = AndroidArtifacts.ArtifactType.AAR.type
             }
         }
 
-        // create anchor tasks
-
-        project.tasks.register("assemble") {
-            it.dependsOn(variantScope.artifacts.get(FusedLibraryInternalArtifactType.BUNDLED_Library))
+        val runtimePublication = project.configurations.create("runtimePublication").also {
+            it.isCanBeConsumed = false
+            it.isCanBeResolved = false
+            it.isVisible = false
+            it.attributes.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+            )
+            it.attributes.attribute(
+                    Bundling.BUNDLING_ATTRIBUTE,
+                    project.objects.named(Bundling::class.java, Bundling.EXTERNAL)
+            )
+            it.attributes.attribute(
+                    Category.CATEGORY_ATTRIBUTE,
+                    project.objects.named(Category::class.java, Category.LIBRARY)
+            )
+            it.attributes.attribute(
+                    LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE,
+                    project.objects.named(
+                            LibraryElements::class.java,
+                            AndroidArtifacts.ArtifactType.AAR.type
+                    )
+            )
+            it.attributes.attribute(
+                    BuildTypeAttr.ATTRIBUTE,
+                    project.objects.named(BuildTypeAttr::class.java, "debug")
+            )
+            it.extendsFrom(includeRuntimeElements)
+            variantScope.outgoingConfigurations.addConfiguration(it)
+            it.outgoing.artifact(bundleTaskProvider) { artifact ->
+                artifact.type = AndroidArtifacts.ArtifactType.AAR.type
+            }
         }
-    }
-
-    override fun getAnalyticsPluginType(): GradleBuildProject.PluginType  =
-        GradleBuildProject.PluginType.FUSED_LIBRARIES
-
-    override fun apply(project: Project) {
-        super.basePluginApply(project)
 
         // create an adhoc component, this will be used for publication
         val adhocComponent = softwareComponentFactory.adhoc("fusedLibraryComponent")
         // add it to the list of components that this project declares
         project.components.add(adhocComponent)
 
-        // so far by default, we consume and publish only 'debug' variant
-
-        // 'include' is the configuration that users will use to indicate which dependencies should
-        // be fused.
-        val includeConfigurations = project.configurations.create("include").also {
-            it.isCanBeConsumed = false
-            val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
-            it.attributes.attribute(
-                BuildTypeAttr.ATTRIBUTE,
-                buildType,
-            )
-        }
-
-        // This is the internal configuration that will be used to feed tasks that require access
-        // to the resolved 'include' dependency. It is for JAVA_API usage which mean all transitive
-        // dependencies that are implementation() scoped will not be included.
-        val includeApiClasspath = project.configurations.create("includeApiClasspath").also {
-            it.isCanBeConsumed = true
-            initConfiguration(it)
-            it.attributes.attribute(
-                Usage.USAGE_ATTRIBUTE,
-                project.objects.named(Usage::class.java, Usage.JAVA_API)
-            )
-            val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
-            it.attributes.attribute(
-                BuildTypeAttr.ATTRIBUTE,
-                buildType,
-            )
-            it.extendsFrom(includeConfigurations)
-        }
-        variantScope.incomingConfigurations.addConfiguration(includeApiClasspath)
-
-        // This is the configuration that will contain all the JAVA_API dependencies that are not
-        // fused in the resulting aar library.
-        val includedApiUnmerged = project.configurations.create("includeApiUnmerged").also {
-            it.isCanBeConsumed = true
-            it.isCanBeResolved = true
-            initConfiguration(it)
-            it.incoming.beforeResolve(
-                SegregatingConstraintHandler(
-                    includeApiClasspath,
-                    it,
-                    variantScope.mergeSpec,
-                    project,
-                )
-            )
-        }
-
-        // This is the internal configuration that will be used to feed tasks that require access
-        // to the resolved 'include' dependency. It is for JAVA_RUNTIME usage which mean all transitive
-        // dependencies that are implementation() scoped will  be included.
-        val includeRuntimeClasspath = project.configurations.create("includeRuntimeClasspath").also {
-            it.isCanBeConsumed = true
-
-            initConfiguration(it)
-            it.attributes.attribute(
-                Usage.USAGE_ATTRIBUTE,
-                project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
-            )
-            val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
-            it.attributes.attribute(
-                BuildTypeAttr.ATTRIBUTE,
-                buildType,
-            )
-
-            it.extendsFrom(includeConfigurations)
-        }
-        variantScope.incomingConfigurations.addConfiguration(includeRuntimeClasspath)
-
-        // This is the configuration that will contain all the JAVA_RUNTIME dependencies that are
-        // not fused in the resulting aar library.
-        val includeRuntimeUnmerged = project.configurations.create("includeRuntimeUnmerged").also {
-            it.isCanBeConsumed = true
-            it.isCanBeResolved = true
-            initConfiguration(it)
-            it.incoming.beforeResolve(
-                SegregatingConstraintHandler(
-                    includeConfigurations,
-                    it,
-                    variantScope.mergeSpec,
-                    project,
-                )
-            )
-        }
-
-        // we are only interested in the last provider in the chain of transformers for this bundle.
-        // Obviously, this is theoretical at this point since there is no variant API to replace
-        // artifacts, there is always only one.
-        val bundleTaskProvider =
-            variantScope
-                .artifacts
-                .getArtifactContainer(FusedLibraryInternalArtifactType.BUNDLED_Library)
-                .getTaskProviders()
-                .last()
-
-        // this is the outgoing configuration for JAVA_API scoped declarations, it will contain
-        // this module and all transitive non merged dependencies
-        val includeApiElements = project.configurations.create("apiElements") {
-            it.isCanBeConsumed = true
-            it.isCanBeResolved = false
-            it.isTransitive = true
-            initConfiguration(it)
-            it.attributes.attribute(
-                Usage.USAGE_ATTRIBUTE,
-                project.objects.named(Usage::class.java, Usage.JAVA_API)
-            )
-            it.extendsFrom(includedApiUnmerged)
-            it.outgoing.artifact(bundleTaskProvider)
-        }
-
-        // this is the outgoing configuration for JAVA_RUNTIME scoped declarations, it will contain
-        // this module and all transitive non merged dependencies
-        val includeRuntimeElements = project.configurations.create("runtimeElements") {
-            it.isCanBeConsumed = true
-            it.isCanBeResolved = false
-            it.isTransitive = true
-            initConfiguration( it)
-            it.attributes.attribute(
-                Usage.USAGE_ATTRIBUTE,
-                project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
-            )
-            it.extendsFrom(includeRuntimeUnmerged)
-            it.outgoing.artifact(bundleTaskProvider)
-        }
-
-        adhocComponent.addVariantsFromConfiguration(includeApiElements) {
+        adhocComponent.addVariantsFromConfiguration(apiPublication) {
             it.mapToMavenScope("compile")
         }
-        adhocComponent.addVariantsFromConfiguration(includeRuntimeElements) {
+        adhocComponent.addVariantsFromConfiguration(runtimePublication) {
             it.mapToMavenScope("runtime")
         }
 
         project.afterEvaluate {
             project.extensions.findByType(PublishingExtension::class.java)?.also {
                 component(
-                    it.publications.create("maven", MavenPublication::class.java).also { mavenPublication ->
-                        mavenPublication.from(adhocComponent)
-                    }, includeRuntimeUnmerged.incoming.artifacts
+                        it.publications.create("maven", MavenPublication::class.java)
+                                .also { mavenPublication ->
+                                    mavenPublication.from(adhocComponent)
+                                }, includeRuntimeUnmerged.incoming.artifacts
                 )
             }
         }
     }
 
-    private fun initConfiguration(configuration: Configuration) {
-        configuration.attributes.attribute(
-            AndroidArtifacts.ARTIFACT_TYPE,
-            AndroidArtifacts.ArtifactType.CLASSES_JAR.type
-        )
-        configuration.attributes.attribute(
-            AndroidArtifacts.ARTIFACT_TYPE,
-            AndroidArtifacts.ArtifactType.JAR.type
-        )
-    }
-
-    fun component(
-        publication: MavenPublication,
-        unmergedArtifacts: ArtifactCollection,
-    ) {
-
-        publication.pom {  pom: MavenPom ->
+    fun component(publication: MavenPublication, unmergedArtifacts: ArtifactCollection) {
+        publication.pom { pom: MavenPom ->
             pom.withXml { xml ->
-                val dependenciesNode = xml.asNode().appendNode("dependencies")
+                val dependenciesNode = xml.asNode().let {
+                    it.children().firstOrNull { node ->
+                        ((node as Node).name() as QName).qualifiedName == "dependencies"
+                    } ?: it.appendNode("dependencies")
+                } as Node
 
                 unmergedArtifacts.forEach { artifact ->
                     if (artifact.id is ModuleComponentArtifactIdentifier) {
@@ -324,4 +249,175 @@ class FusedLibraryPlugin @Inject constructor(
         }
     }
 
+    override fun createTasks(project: Project) {
+        configureTransforms(project, projectServices)
+        createTasks(
+                project,
+                variantScope.artifacts,
+                FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
+                listOf(
+                        FusedLibraryClassesRewriteTask.CreationAction(variantScope),
+                        FusedLibraryManifestMergerTask.CreationAction(variantScope),
+                        FusedLibraryMergeResourcesTask.CreationAction(variantScope),
+                        FusedLibraryMergeClasses.FusedLibraryCreationAction(variantScope),
+                        FusedLibraryBundleClasses.CreationAction(variantScope),
+                        FusedLibraryBundleAar.CreationAction(variantScope),
+                        MergeJavaResourceTask.FusedLibraryCreationAction(variantScope)
+                ) + FusedLibraryMergeArtifactTask.getCreationActions(variantScope),
+        )
+    }
+
+    override fun getAnalyticsPluginType(): GradleBuildProject.PluginType =
+            GradleBuildProject.PluginType.FUSED_LIBRARIES
+
+    override fun apply(project: Project) {
+        super.basePluginApply(project)
+
+        // so far by default, we consume and publish only 'debug' variant
+
+        // 'include' is the configuration that users will use to indicate which dependencies should
+        // be fused.
+        val includeConfigurations = project.configurations.create("include").also {
+            it.isCanBeConsumed = false
+            val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
+            it.attributes.attribute(
+                    BuildTypeAttr.ATTRIBUTE,
+                    buildType,
+            )
+        }
+        // This is the internal configuration that will be used to feed tasks that require access
+        // to the resolved 'include' dependency. It is for JAVA_API usage which mean all transitive
+        // dependencies that are implementation() scoped will not be included.
+        val includeApiClasspath = project.configurations.create("includeApiClasspath").also {
+            it.isCanBeConsumed = false
+            it.attributes.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, Usage.JAVA_API)
+            )
+            val buildType: BuildTypeAttr = project.objects.named(BuildTypeAttr::class.java, "debug")
+            it.attributes.attribute(
+                    BuildTypeAttr.ATTRIBUTE,
+                    buildType,
+            )
+            it.extendsFrom(includeConfigurations)
+        }
+        // This is the configuration that will contain all the JAVA_API dependencies that are not
+        // fused in the resulting aar library.
+        val includedApiUnmerged = project.configurations.create("includeApiUnmerged").also {
+            it.isCanBeConsumed = true
+            it.isCanBeResolved = true
+            it.incoming.beforeResolve(
+                    SegregatingConstraintHandler(
+                            includeApiClasspath,
+                            it,
+                            variantScope.mergeSpec,
+                            project,
+                    )
+            )
+        }
+        // This is the internal configuration that will be used to feed tasks that require access
+        // to the resolved 'include' dependency. It is for JAVA_RUNTIME usage which mean all transitive
+        // dependencies that are implementation() scoped will  be included.
+        val includeRuntimeClasspath =
+                project.configurations.create("includeRuntimeClasspath").also {
+                    it.isCanBeConsumed = false
+                    it.isCanBeResolved = true
+
+                    it.attributes.attribute(
+                            Usage.USAGE_ATTRIBUTE,
+                            project.objects.named(Usage::class.java, Usage.JAVA_RUNTIME)
+                    )
+                    val buildType: BuildTypeAttr =
+                            project.objects.named(BuildTypeAttr::class.java, "debug")
+                    it.attributes.attribute(
+                            BuildTypeAttr.ATTRIBUTE,
+                            buildType,
+                    )
+
+                    it.extendsFrom(includeConfigurations)
+                }
+        // This is the configuration that will contain all the JAVA_RUNTIME dependencies that are
+        // not fused in the resulting aar library.
+        val includeRuntimeUnmerged = project.configurations.create("includeRuntimeUnmerged").also {
+            it.isCanBeConsumed = false
+            it.isCanBeResolved = true
+            it.incoming.beforeResolve(
+                    SegregatingConstraintHandler(
+                            includeConfigurations,
+                            it,
+                            variantScope.mergeSpec,
+                            project,
+                    )
+            )
+        }
+        // this is the outgoing configuration for JAVA_API scoped declarations, it will contain
+        // this module and all transitive non merged dependencies
+        fun configureElements(
+                elements: Configuration,
+                usage: String,
+                artifacts: ArtifactsImpl,
+                publicationArtifact: Artifact.Single<RegularFile>,
+                publicationArtifactType: AndroidArtifacts.ArtifactType
+        ) {
+            // we are only interested in the last provider in the chain of transformers for this bundle.
+            // Obviously, this is theoretical at this point since there is no variant API to replace
+            // artifacts, there is always only one.
+            val bundleTaskProvider = publicationArtifact.let {
+                artifacts
+                        .getArtifactContainer(it)
+                        .getTaskProviders()
+                        .last()
+            }
+            elements.attributes.attribute(
+                    Usage.USAGE_ATTRIBUTE,
+                    project.objects.named(Usage::class.java, usage)
+            )
+            elements.isCanBeResolved = false
+            elements.isCanBeConsumed = true
+            elements.isTransitive = true
+
+            elements.outgoing.variants { variants ->
+                variants.create(publicationArtifactType.type) { variant ->
+                    variant.artifact(bundleTaskProvider) { artifact ->
+                        artifact.type = publicationArtifactType.type
+                    }
+                }
+            }
+        }
+
+        val includeApiElements =
+                project.configurations.create("apiElements") { apiElements ->
+                    configureElements(
+                            apiElements,
+                            Usage.JAVA_API,
+                            variantScope.artifacts,
+                            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
+                            AndroidArtifacts.ArtifactType.AAR)
+
+                    apiElements.extendsFrom(includedApiUnmerged)
+                }
+        // this is the outgoing configuration for JAVA_RUNTIME scoped declarations, it will contain
+        // this module and all transitive non merged dependencies
+        val includeRuntimeElements =
+                project.configurations.create("runtimeElements") { runtimeElements ->
+                    configureElements(
+                            runtimeElements,
+                            Usage.JAVA_RUNTIME,
+                            variantScope.artifacts,
+                            FusedLibraryInternalArtifactType.BUNDLED_LIBRARY,
+                            AndroidArtifacts.ArtifactType.AAR)
+                    runtimeElements.extendsFrom(includeRuntimeUnmerged)
+                }
+
+        val configurationsToAdd = listOf(includeApiClasspath, includeRuntimeClasspath)
+        configurationsToAdd.forEach { configuration ->
+                variantScope.incomingConfigurations.addConfiguration(configuration)
+        }
+        maybePublishToMaven(
+                project,
+                includeApiElements,
+                includeRuntimeElements,
+                includeRuntimeUnmerged
+        )
+    }
 }

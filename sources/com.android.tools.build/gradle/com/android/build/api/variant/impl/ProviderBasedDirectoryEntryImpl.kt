@@ -18,35 +18,53 @@ package com.android.build.api.variant.impl
 
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
+import org.gradle.api.tasks.util.PatternSet
 
 class ProviderBasedDirectoryEntryImpl(
     override val name: String,
-    val elements: Provider<Set<FileSystemLocation>>,
-    override val filter: PatternFilterable? = null
+    val elements: Provider<List<Directory>>,
+    override val filter: PatternFilterable?
 ): DirectoryEntry  {
 
     override val isGenerated: Boolean = true
     override val isUserAdded: Boolean = true
     override val shouldBeAddedToIdeModel: Boolean = true
 
-    override fun asFiles(directoryPropertyCreator: () -> DirectoryProperty): Provider<Directory> {
-        return elements.flatMap {
-            if (it.size > 1) {
-                throw RuntimeException("There are more than one element in $name\n" +
-                        "${it.map { it.asFile.absolutePath }}")
-            }
-            directoryPropertyCreator().also { directoryProperty ->
-                directoryProperty.set(it.single().asFile)
-            }
+    override fun asFiles(
+        projectDir: Provider<Directory>
+    ): Provider<out Collection<Directory>> {
+        return elements
+    }
+
+    override fun asFileTree(
+            fileTreeCreator: () -> ConfigurableFileTree
+    ): Provider<List<ConfigurableFileTree>> {
+        return elements.map {
+            asConfigurableFileTrees(fileTreeCreator, it)
         }
     }
 
-    override fun asFileTree(fileTreeCreator: () -> ConfigurableFileTree): ConfigurableFileTree =
-        fileTreeCreator().from(elements).builtBy(elements)
+    override fun asFileTreeWithoutTaskDependency(
+            fileTreeCreator: () -> ConfigurableFileTree,
+    ): List<ConfigurableFileTree> =
+            asConfigurableFileTrees(
+                    fileTreeCreator,
+                    elements.get(),
+            )
 
-
+    private fun asConfigurableFileTrees(
+            fileTreeCreator: () -> ConfigurableFileTree,
+            directories: List<Directory>
+    ) = directories.map { directory ->
+        fileTreeCreator()
+                .from(directory)
+                .also { configurableFileTree ->
+                    if (filter != null) {
+                        configurableFileTree.include((filter as PatternSet).asIncludeSpec)
+                        configurableFileTree.exclude(filter.asExcludeSpec)
+                    }
+                }
+    }
 }

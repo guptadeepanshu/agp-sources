@@ -26,6 +26,7 @@ import com.android.build.gradle.options.Version.VERSION_7_0
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_8_0
 import com.android.build.gradle.options.Version.VERSION_7_2
 import com.android.build.gradle.options.Version.VERSION_7_3
+import com.android.build.gradle.options.Version.VERSION_7_4
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
 import com.android.builder.model.AndroidProject
 import com.android.builder.model.AndroidProject.PROPERTY_BUILD_MODEL_ONLY
@@ -117,6 +118,7 @@ enum class BooleanOption(
      */
 
     BUILD_FEATURE_MLMODELBINDING("android.defaults.buildfeatures.mlmodelbinding", false, ApiStage.Experimental),
+    ENABLE_DEFAULT_DEBUG_SIGNING_CONFIG("android.experimental.useDefaultDebugSigningConfigForProfileableBuildtypes", false, ApiStage.Experimental),
     ENABLE_PROFILE_JSON("android.enableProfileJson", false, FeatureStage.Experimental),
     DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION("android.dependencyResolutionAtConfigurationTime.disallow", false, FeatureStage.Experimental),
     ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Experimental),
@@ -201,6 +203,7 @@ enum class BooleanOption(
             FeatureStage.Experimental
     ),
 
+    BUILD_ANALYZER_TASK_LABELS("android.experimental.buildanalyzer.tasklabels.enable", false, FeatureStage.Experimental),
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
      */
@@ -582,6 +585,14 @@ enum class BooleanOption(
             false,
             FeatureStage.Removed(VERSION_7_0, "Desugar tool has been removed from AGP.")
     ),
+
+    PRIVACY_SANDBOX_SDK_SUPPORT(
+        "android.experimental.privacysandboxsdk.enable",
+        false,
+        FeatureStage.Removed(
+            VERSION_7_4,
+            "Privacy Sandbox SDKs are not supported in Android Gradle plugin 7.4.x.\n\n" +
+                    "To build or consume privacy sandbox SDKs, please use Android Gradle plugin 8.0.0-alpha01 or later.")),
 
     ; // end of enums
 

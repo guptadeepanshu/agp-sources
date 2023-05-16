@@ -18,10 +18,12 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.SdkConstants.FN_EMULATOR
-import com.android.build.api.component.impl.ComponentImpl
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.AvdComponentsBuildService
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.computeAbiFromArchitecture
 import com.android.build.gradle.internal.computeAvdName
@@ -50,6 +52,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.IntegerOption
 import com.android.builder.model.TestOptions
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.repository.Revision
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
@@ -84,6 +87,7 @@ import org.gradle.workers.WorkerExecutor
  * Runs instrumentation tests of a variant on a device defined in the DSL.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), AndroidTestTask {
 
     abstract class TestRunnerFactory {
@@ -121,7 +125,8 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
         @get:Input
         abstract val showEmulatorKernelLoggingFlag: Property<Boolean>
 
-        fun createTestRunner(workerExecutor: WorkerExecutor): ManagedDeviceTestRunner {
+        fun createTestRunner(
+            workerExecutor: WorkerExecutor, numShards: Int?): ManagedDeviceTestRunner {
 
             Preconditions.checkArgument(
                     unifiedTestPlatform.get(),
@@ -139,7 +144,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                 sdkBuildService.get().sdkLoader(compileSdkVersion, buildToolsRevision),
                 retentionConfig.get(),
                 useOrchestrator,
-                testShardsSize.getOrNull(),
+                numShards,
                 emulatorGpuFlag.get(),
                 showEmulatorKernelLoggingFlag.get(),
                 utpLoggingLevel.get()
@@ -274,8 +279,18 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             true
         } else {
             try {
-                val runner = testRunnerFactory.createTestRunner(workerExecutor)
-                runner.runTests(
+                val numShardsRequested = testRunnerFactory.testShardsSize.getOrNull()
+                avdComponents.get().lockManager.lock(numShardsRequested ?: 1).use { lock ->
+                    val devicesAcquired = lock.lockCount
+                    if (devicesAcquired != (numShardsRequested ?: 1) ) {
+                        logger.warn("Unable to retrieve $numShardsRequested devices, only " +
+                                "$devicesAcquired available. Proceeding to run tests on " +
+                                "$devicesAcquired shards.")
+                    }
+                    val runner = testRunnerFactory.createTestRunner(
+                        workerExecutor,
+                        if (numShardsRequested == null) null else devicesAcquired)
+                    runner.runTests(
                         managedDevice,
                         resultsOutDir,
                         codeCoverageOutDir,
@@ -286,7 +301,8 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                         installOptions.getOrElse(listOf()),
                         buddyApks.files,
                         LoggerWrapper(logger)
-                )
+                    )
+                }
             } catch (e: Exception) {
                 recordCrashedInstrumentedTestRun(
                         dependencies,
@@ -386,7 +402,7 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
             val globalConfig = creationConfig.global
             val projectOptions = creationConfig.services.projectOptions
 
-            val testedConfig = creationConfig.testedConfig
+            val testedConfig = (creationConfig as? AndroidTestCreationConfig)?.mainVariant
 
             val variantName = testedConfig?.name ?: creationConfig.name
 
@@ -494,12 +510,21 @@ abstract class ManagedDeviceInstrumentationTestTask: NonIncrementalTask(), Andro
                     task.buddyApks.from(it)
                 }
 
-            task.classes.from(creationConfig.artifacts.getAllClasses())
+            task.classes.from(
+                creationConfig.artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+            )
             task.classes.disallowChanges()
-            task.buildConfigClasses.from((creationConfig as ComponentImpl).getCompiledBuildConfig())
+            creationConfig.buildConfigCreationConfig?.let {
+                task.buildConfigClasses.from(it.compiledBuildConfig)
+            }
             task.buildConfigClasses.disallowChanges()
-            task.rClasses.from((creationConfig as ComponentImpl).getCompiledRClasses(
-                AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH))
+            creationConfig.androidResourcesCreationConfig?.let {
+                task.rClasses.from(
+                    it.getCompiledRClasses(AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH)
+                )
+            }
             task.rClasses.disallowChanges()
         }
     }

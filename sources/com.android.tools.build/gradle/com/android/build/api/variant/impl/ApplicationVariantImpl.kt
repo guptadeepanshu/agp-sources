@@ -21,6 +21,8 @@ import com.android.build.api.component.analytics.AnalyticsEnabledApplicationVari
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ApkCreationConfigImpl
 import com.android.build.api.component.impl.TestFixturesImpl
+import com.android.build.api.component.impl.getAndroidResources
+import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
@@ -34,14 +36,16 @@ import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
-import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.ApplicationVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.dsl.NdkOptions
 import com.android.build.gradle.internal.dsl.NdkOptions.DebugSymbolLevel
 import com.android.build.gradle.internal.pipeline.TransformManager
+import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.Java8LangSupport
+import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -58,28 +62,28 @@ import javax.inject.Inject
 open class ApplicationVariantImpl @Inject constructor(
     override val variantBuilder: ApplicationVariantBuilderImpl,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    dslInfo: ApplicationVariantDslInfo,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    variantScope: VariantScope,
     variantData: BaseVariantData,
+    taskContainer: MutableTaskContainer,
     dependenciesInfoBuilder: DependenciesInfoBuilder,
     transformManager: TransformManager,
     internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
-    globalTaskCreationConfig: GlobalTaskCreationConfig,
-) : VariantImpl(
+    globalTaskCreationConfig: GlobalTaskCreationConfig
+) : VariantImpl<ApplicationVariantDslInfo>(
     variantBuilder,
     buildFeatureValues,
-    variantDslInfo,
+    dslInfo,
     variantDependencies,
     variantSources,
     paths,
     artifacts,
-    variantScope,
     variantData,
+    taskContainer,
     transformManager,
     internalServices,
     taskCreationServices,
@@ -88,10 +92,10 @@ open class ApplicationVariantImpl @Inject constructor(
 
     val delegate by lazy { ApkCreationConfigImpl(
         this,
-        variantDslInfo) }
+        dslInfo) }
 
     init {
-        variantDslInfo.multiDexKeepProguard?.let {
+        dslInfo.multiDexKeepProguard?.let {
             artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 .addInitialProvider(null, internalServices.toRegularFileProvider(it))
         }
@@ -101,10 +105,10 @@ open class ApplicationVariantImpl @Inject constructor(
     // PUBLIC API
     // ---------------------------------------------------------------------------------------------
 
-    override val applicationId: Property<String> = variantDslInfo.applicationId
+    override val applicationId: Property<String> = dslInfo.applicationId
 
     override val embedsMicroApp: Boolean
-        get() = variantDslInfo.isEmbedMicroApp
+        get() = dslInfo.isEmbedMicroApp
 
     override val dependenciesInfo: DependenciesInfo by lazy {
         DependenciesInfoImpl(
@@ -114,7 +118,7 @@ open class ApplicationVariantImpl @Inject constructor(
     }
 
     override val androidResources: AndroidResources by lazy {
-        initializeAaptOptionsFromDsl(variantDslInfo.androidResources, internalServices)
+        getAndroidResources()
     }
 
     override val signingConfigImpl: SigningConfigImpl? by lazy {
@@ -123,7 +127,7 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val signingConfig: SigningConfigImpl by lazy {
         SigningConfigImpl(
-            variantDslInfo.signingConfig,
+            dslInfo.signingConfig,
             internalServices,
             minSdkVersion.apiLevel,
             internalServices.projectOptions.get(IntegerOption.IDE_TARGET_DEVICE_API)
@@ -132,29 +136,40 @@ open class ApplicationVariantImpl @Inject constructor(
 
     override val packaging: ApkPackaging by lazy {
         ApkPackagingImpl(
-            variantDslInfo.packaging,
+            dslInfo.packaging,
             internalServices,
             minSdkVersion.apiLevel
         )
     }
 
+    override val publishInfo: VariantPublishingInfo?
+        get() = dslInfo.publishInfo
+
     override val minifiedEnabled: Boolean
-        get() = variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()
+        get() = variantBuilder.isMinifyEnabled
+    override val resourcesShrink: Boolean
+        get() = variantBuilder.shrinkResources
 
     override var androidTest: AndroidTestImpl? = null
 
     override var testFixtures: TestFixturesImpl? = null
 
     override val renderscript: Renderscript? by lazy {
-        delegate.renderscript(internalServices)
+        renderscriptCreationConfig?.renderscript
     }
+
+    override val isMinifyEnabled: Boolean
+        get() = variantBuilder.isMinifyEnabled
+
+    override val shrinkResources: Boolean
+        get() = variantBuilder.shrinkResources
 
     // ---------------------------------------------------------------------------------------------
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
     override val testOnlyApk: Boolean
-        get() = variantScope.isTestOnly(this)
+        get() = isTestApk()
 
     override val needAssetPackTasks: Boolean
         get() = global.assetPacks.isNotEmpty()
@@ -164,7 +179,9 @@ open class ApplicationVariantImpl @Inject constructor(
     override val debuggable: Boolean
         get() = delegate.isDebuggable
     override val profileable: Boolean
-        get() = delegate.isProfileable
+        get() = dslInfo.isProfileable
+    override val isCoreLibraryDesugaringEnabled: Boolean
+        get() = delegate.isCoreLibraryDesugaringEnabled
 
     override val shouldPackageProfilerDependencies: Boolean
         get() = advancedProfilingTransforms.isNotEmpty()
@@ -180,43 +197,35 @@ open class ApplicationVariantImpl @Inject constructor(
         get() {
             val debugSymbolLevelOrNull =
                 NdkOptions.DEBUG_SYMBOL_LEVEL_CONVERTER.convert(
-                    variantDslInfo.ndkConfig.debugSymbolLevel
+                    dslInfo.ndkConfig.debugSymbolLevel
                 )
             return debugSymbolLevelOrNull ?: if (debuggable) DebugSymbolLevel.NONE else DebugSymbolLevel.SYMBOL_TABLE
         }
 
     // ---------------------------------------------------------------------------------------------
-    // DO NOT USE, only present for old variant API.
-    // ---------------------------------------------------------------------------------------------
-    override val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig? =
-        variantDslInfo.signingConfig
-
-    // ---------------------------------------------------------------------------------------------
     // DO NOT USE, Deprecated DSL APIs.
     // ---------------------------------------------------------------------------------------------
 
-    override val multiDexKeepFile = variantDslInfo.multiDexKeepFile
+    override val multiDexKeepFile = dslInfo.multiDexKeepFile
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
     // ---------------------------------------------------------------------------------------------
 
+    override val consumesFeatureJars: Boolean =
+        minifiedEnabled && global.hasDynamicFeatures
+
     override fun createVersionNameProperty(): Property<String?> =
         internalServices.newNullablePropertyBackingDeprecatedApi(
             String::class.java,
-            variantDslInfo.versionName,
+            dslInfo.versionName,
         )
 
     override fun createVersionCodeProperty() : Property<Int?> =
         internalServices.newNullablePropertyBackingDeprecatedApi(
             Int::class.java,
-            variantDslInfo.versionCode,
+            dslInfo.versionCode,
         )
-
-    override val renderscriptTargetApi: Int
-        get() {
-            return variantBuilder.renderscriptTargetApi
-        }
 
     override val dexingType: DexingType
         get() = delegate.dexingType
@@ -239,16 +248,16 @@ open class ApplicationVariantImpl @Inject constructor(
     override val minSdkVersionForDexing: AndroidVersion
         get() = delegate.minSdkVersionForDexing
 
-    override fun getNeedsMergedJavaResStream(): Boolean = delegate.getNeedsMergedJavaResStream()
+    override val needsMergedJavaResStream: Boolean = delegate.getNeedsMergedJavaResStream()
 
-    override fun getJava8LangSupportType(): VariantScope.Java8LangSupport = delegate.getJava8LangSupportType()
+    override fun getJava8LangSupportType(): Java8LangSupport = delegate.getJava8LangSupportType()
 
     override val needsShrinkDesugarLibrary: Boolean
         get() = delegate.needsShrinkDesugarLibrary
 
     // Apps include the jacoco agent if test coverage is enabled
     override val packageJacocoRuntime: Boolean
-        get() = variantDslInfo.isAndroidTestCoverageEnabled
+        get() = dslInfo.isAndroidTestCoverageEnabled
 
     override val bundleConfig: BundleConfigImpl = BundleConfigImpl(
         CodeTransparencyImpl(
@@ -256,6 +265,10 @@ open class ApplicationVariantImpl @Inject constructor(
         ),
         internalServices,
     )
+
     override val useJacocoTransformInstrumentation: Boolean
         get() = isAndroidTestCoverageEnabled
+
+    override val isWearAppUnbundled: Boolean?
+        get() = dslInfo.isWearAppUnbundled
 }

@@ -358,6 +358,9 @@ fun isRosetta() : Boolean {
   catch (e: ClassNotFoundException) {
     return false
   }
+  catch(e: NoClassDefFoundError) {
+    return false
+  }
 
   val instanceField = try {
     clazz.getField("INSTANCE")

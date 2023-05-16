@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.tasks
 
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 
@@ -34,6 +35,7 @@ import org.gradle.work.DisableCachingByDefault
  * in that case.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.HELP)
 abstract class UnsafeOutputsTask(reasonToLog: String) : AndroidVariantTask() {
 
     init {

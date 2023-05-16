@@ -19,21 +19,18 @@ import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.impl.AndroidVersionImpl
 import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ApkCreationConfig
-import com.android.build.gradle.internal.core.VariantDslInfo
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.core.dsl.ApkProducingComponentDslInfo
+import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.sdklib.AndroidVersion.VersionCodes
 import kotlin.math.max
 
 open class ApkCreationConfigImpl<T: ApkCreationConfig>(
     config: T,
-    dslInfo: VariantDslInfo
+    override val dslInfo: ApkProducingComponentDslInfo
 ): ConsumableCreationConfigImpl<T>(config, dslInfo) {
 
     val isDebuggable: Boolean
-        get() = variantDslInfo.isDebuggable
-
-    val isProfileable: Boolean
-        get() = variantDslInfo.isProfileable
+        get() = dslInfo.isDebuggable
 
     override val needsShrinkDesugarLibrary: Boolean
         get() {
@@ -42,7 +39,7 @@ open class ApkCreationConfigImpl<T: ApkCreationConfig>(
             }
             // Assume Java8LangSupport is either D8 or R8 as we checked that in
             // isCoreLibraryDesugaringEnabled()
-            return !(getJava8LangSupportType() == VariantScope.Java8LangSupport.D8 && config.debuggable)
+            return !(getJava8LangSupportType() == Java8LangSupport.D8 && config.debuggable)
         }
 
     /**
@@ -57,7 +54,7 @@ open class ApkCreationConfigImpl<T: ApkCreationConfig>(
      */
     override val minSdkVersionForDexing: AndroidVersion
         get() {
-            val targetDeployApiFromIDE = variantDslInfo.targetDeployApiFromIDE ?: 1
+            val targetDeployApiFromIDE = dslInfo.targetDeployApiFromIDE ?: 1
 
             val minForDexing = if (targetDeployApiFromIDE >= VersionCodes.N) {
                     max(24, config.minSdkVersion.getFeatureLevel())

@@ -33,6 +33,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.RENDERSCRIPT
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.merge.DuplicateRelativeFileException
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import org.gradle.api.GradleException
 import org.gradle.api.file.ConfigurableFileCollection
@@ -68,6 +69,7 @@ import org.gradle.work.DisableCachingByDefault
  * Task to merge native libs from a project and possibly its dependencies
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeNativeLibsTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -295,7 +297,7 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
                 .from(getProjectNativeLibs(
                     creationConfig,
                     task.buildTools,
-                    creationConfig.renderscript
+                    creationConfig.renderscriptCreationConfig?.renderscript
                 ).asFileTree.matching(patternSet))
                 .disallowChanges()
 
@@ -315,8 +317,8 @@ abstract class MergeNativeLibsTask : NonIncrementalTask() {
                 .from(getProjectNativeLibs(
                     creationConfig,
                     task.buildTools,
-                    creationConfig.renderscript)
-                ).disallowChanges()
+                    creationConfig.renderscriptCreationConfig?.renderscript
+                )).disallowChanges()
         }
     }
 

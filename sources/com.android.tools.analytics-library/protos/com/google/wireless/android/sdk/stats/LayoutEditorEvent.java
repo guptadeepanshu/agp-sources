@@ -209,6 +209,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000800;
             break;
           }
+          case 106: {
+            com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder subBuilder = null;
+            if (((bitField0_ & 0x00001000) != 0)) {
+              subBuilder = universalProblemsPanelEvent_.toBuilder();
+            }
+            universalProblemsPanelEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(universalProblemsPanelEvent_);
+              universalProblemsPanelEvent_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00001000;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -458,6 +471,10 @@ private static final long serialVersionUID = 0L;
      * <code>VISUAL_LINT = 52;</code>
      */
     VISUAL_LINT(52),
+    /**
+     * <code>UNIVERSAL_PROBLEMS_PANEL = 53;</code>
+     */
+    UNIVERSAL_PROBLEMS_PANEL(53),
     ;
 
     /**
@@ -672,6 +689,10 @@ private static final long serialVersionUID = 0L;
      * <code>VISUAL_LINT = 52;</code>
      */
     public static final int VISUAL_LINT_VALUE = 52;
+    /**
+     * <code>UNIVERSAL_PROBLEMS_PANEL = 53;</code>
+     */
+    public static final int UNIVERSAL_PROBLEMS_PANEL_VALUE = 53;
 
 
     public final int getNumber() {
@@ -747,6 +768,7 @@ private static final long serialVersionUID = 0L;
         case 50: return UNDO_APPLIED_ATF_FIX;
         case 51: return ANIMATION_PREVIEW;
         case 52: return VISUAL_LINT;
+        case 53: return UNIVERSAL_PROBLEMS_PANEL;
         default: return null;
       }
     }
@@ -1242,6 +1264,47 @@ private static final long serialVersionUID = 0L;
     return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
   }
 
+  public static final int UNIVERSAL_PROBLEMS_PANEL_EVENT_FIELD_NUMBER = 13;
+  private com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent universalProblemsPanelEvent_;
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * @return Whether the universalProblemsPanelEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasUniversalProblemsPanelEvent() {
+    return ((bitField0_ & 0x00001000) != 0);
+  }
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   * @return The universalProblemsPanelEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent getUniversalProblemsPanelEvent() {
+    return universalProblemsPanelEvent_ == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance() : universalProblemsPanelEvent_;
+  }
+  /**
+   * <pre>
+   * Details related to universal problems panel (type =
+   * UNIVERSAL_PROBLEMS_PANEL)
+   * </pre>
+   *
+   * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder() {
+    return universalProblemsPanelEvent_ == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance() : universalProblemsPanelEvent_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1291,6 +1354,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000800) != 0)) {
       output.writeMessage(12, getVisualLintEvent());
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      output.writeMessage(13, getUniversalProblemsPanelEvent());
     }
     unknownFields.writeTo(output);
   }
@@ -1348,6 +1414,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000800) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(12, getVisualLintEvent());
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(13, getUniversalProblemsPanelEvent());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1423,6 +1493,11 @@ private static final long serialVersionUID = 0L;
       if (!getVisualLintEvent()
           .equals(other.getVisualLintEvent())) return false;
     }
+    if (hasUniversalProblemsPanelEvent() != other.hasUniversalProblemsPanelEvent()) return false;
+    if (hasUniversalProblemsPanelEvent()) {
+      if (!getUniversalProblemsPanelEvent()
+          .equals(other.getUniversalProblemsPanelEvent())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1481,6 +1556,10 @@ private static final long serialVersionUID = 0L;
     if (hasVisualLintEvent()) {
       hash = (37 * hash) + VISUAL_LINT_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getVisualLintEvent().hashCode();
+    }
+    if (hasUniversalProblemsPanelEvent()) {
+      hash = (37 * hash) + UNIVERSAL_PROBLEMS_PANEL_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getUniversalProblemsPanelEvent().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1625,6 +1704,7 @@ private static final long serialVersionUID = 0L;
         getUndoAppliedAtfFixEventFieldBuilder();
         getAnimationPreviewEventFieldBuilder();
         getVisualLintEventFieldBuilder();
+        getUniversalProblemsPanelEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1698,6 +1778,12 @@ private static final long serialVersionUID = 0L;
         visualLintEventBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000800);
+      if (universalProblemsPanelEventBuilder_ == null) {
+        universalProblemsPanelEvent_ = null;
+      } else {
+        universalProblemsPanelEventBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00001000);
       return this;
     }
 
@@ -1818,6 +1904,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000800;
       }
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        if (universalProblemsPanelEventBuilder_ == null) {
+          result.universalProblemsPanelEvent_ = universalProblemsPanelEvent_;
+        } else {
+          result.universalProblemsPanelEvent_ = universalProblemsPanelEventBuilder_.build();
+        }
+        to_bitField0_ |= 0x00001000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -1902,6 +1996,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasVisualLintEvent()) {
         mergeVisualLintEvent(other.getVisualLintEvent());
+      }
+      if (other.hasUniversalProblemsPanelEvent()) {
+        mergeUniversalProblemsPanelEvent(other.getUniversalProblemsPanelEvent());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -3706,6 +3803,171 @@ private static final long serialVersionUID = 0L;
         visualLintEvent_ = null;
       }
       return visualLintEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent universalProblemsPanelEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder> universalProblemsPanelEventBuilder_;
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * @return Whether the universalProblemsPanelEvent field is set.
+     */
+    public boolean hasUniversalProblemsPanelEvent() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     * @return The universalProblemsPanelEvent.
+     */
+    public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent getUniversalProblemsPanelEvent() {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        return universalProblemsPanelEvent_ == null ? com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance() : universalProblemsPanelEvent_;
+      } else {
+        return universalProblemsPanelEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public Builder setUniversalProblemsPanelEvent(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent value) {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        universalProblemsPanelEvent_ = value;
+        onChanged();
+      } else {
+        universalProblemsPanelEventBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public Builder setUniversalProblemsPanelEvent(
+        com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder builderForValue) {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        universalProblemsPanelEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        universalProblemsPanelEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public Builder mergeUniversalProblemsPanelEvent(com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent value) {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        if (((bitField0_ & 0x00001000) != 0) &&
+            universalProblemsPanelEvent_ != null &&
+            universalProblemsPanelEvent_ != com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance()) {
+          universalProblemsPanelEvent_ =
+            com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.newBuilder(universalProblemsPanelEvent_).mergeFrom(value).buildPartial();
+        } else {
+          universalProblemsPanelEvent_ = value;
+        }
+        onChanged();
+      } else {
+        universalProblemsPanelEventBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public Builder clearUniversalProblemsPanelEvent() {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        universalProblemsPanelEvent_ = null;
+        onChanged();
+      } else {
+        universalProblemsPanelEventBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00001000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder getUniversalProblemsPanelEventBuilder() {
+      bitField0_ |= 0x00001000;
+      onChanged();
+      return getUniversalProblemsPanelEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder getUniversalProblemsPanelEventOrBuilder() {
+      if (universalProblemsPanelEventBuilder_ != null) {
+        return universalProblemsPanelEventBuilder_.getMessageOrBuilder();
+      } else {
+        return universalProblemsPanelEvent_ == null ?
+            com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.getDefaultInstance() : universalProblemsPanelEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * Details related to universal problems panel (type =
+     * UNIVERSAL_PROBLEMS_PANEL)
+     * </pre>
+     *
+     * <code>optional .android_studio.UniversalProblemsPanelEvent universal_problems_panel_event = 13;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder> 
+        getUniversalProblemsPanelEventFieldBuilder() {
+      if (universalProblemsPanelEventBuilder_ == null) {
+        universalProblemsPanelEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEvent.Builder, com.google.wireless.android.sdk.stats.UniversalProblemsPanelEventOrBuilder>(
+                getUniversalProblemsPanelEvent(),
+                getParentForChildren(),
+                isClean());
+        universalProblemsPanelEvent_ = null;
+      }
+      return universalProblemsPanelEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

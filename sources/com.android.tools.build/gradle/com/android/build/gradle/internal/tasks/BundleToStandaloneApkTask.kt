@@ -17,6 +17,7 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
@@ -52,6 +53,7 @@ import java.util.zip.ZipInputStream
  * Task that generates the standalone from a bundle.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.APK_PACKAGING)
 abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -188,8 +190,12 @@ abstract class BundleToStandaloneApkTask : NonIncrementalTask() {
                 taskProvider,
                 BundleToStandaloneApkTask::outputFile
             )
-                .withName("${creationConfig.services.projectInfo.getProjectBaseName()}-${creationConfig.baseName}-universal$suffix")
-                .on(InternalArtifactType.UNIVERSAL_APK)
+                .withName(
+                    creationConfig.services.projectInfo.getProjectBaseName().map {
+                        "$it-${creationConfig.baseName}-universal$suffix"
+                    }
+                )
+                .on(SingleArtifact.APK_FROM_BUNDLE)
         }
 
         override fun configure(

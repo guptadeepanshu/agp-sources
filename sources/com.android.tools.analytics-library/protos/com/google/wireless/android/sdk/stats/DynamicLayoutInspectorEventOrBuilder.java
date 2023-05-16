@@ -106,4 +106,31 @@ public interface DynamicLayoutInspectorEventOrBuilder extends
    * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo error_info = 4;</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfoOrBuilder getErrorInfoOrBuilder();
+
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * @return Whether the autoConnectInfo field is set.
+   */
+  boolean hasAutoConnectInfo();
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   * @return The autoConnectInfo.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfo getAutoConnectInfo();
+  /**
+   * <pre>
+   * Extra info about auto connect to foreground process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAutoConnectInfo auto_connect_info = 5;</code>
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAutoConnectInfoOrBuilder getAutoConnectInfoOrBuilder();
 }

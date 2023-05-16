@@ -39,7 +39,6 @@ sealed class SingleArtifact<T : FileSystemLocation>(
     override fun getFileSystemLocationName(): String {
         return fileName ?: ""
     }
-
     /**
      * Directory where APK files will be located. Some builds can be optimized for testing when
      * invoked from Android Studio. In such cases, the APKs are not suitable for deployment to
@@ -47,9 +46,10 @@ sealed class SingleArtifact<T : FileSystemLocation>(
      */
     object APK:
         SingleArtifact<Directory>(DIRECTORY),
-        Transformable,
+        ContainsMany,
         Replaceable,
-        ContainsMany
+        Transformable
+
 
     /**
      * Merged manifest file that will be used in the APK, Bundle and InstantApp packages.
@@ -112,7 +112,10 @@ sealed class SingleArtifact<T : FileSystemLocation>(
      */
 
     @Incubating
-    object METADATA_LIBRARY_DEPENDENCIES_REPORT: SingleArtifact<RegularFile>(FILE), Replaceable, Transformable
+    object METADATA_LIBRARY_DEPENDENCIES_REPORT: SingleArtifact<RegularFile>(FILE),
+        Replaceable,
+        Transformable
+
 
     /**
      * Assets that will be packaged in the resulting APK or Bundle.
@@ -125,6 +128,21 @@ sealed class SingleArtifact<T : FileSystemLocation>(
     @Incubating
     object ASSETS:
         SingleArtifact<Directory>(DIRECTORY),
-        Transformable,
-        Replaceable
+        Replaceable,
+        Transformable
+
+    /**
+     *  Universal APK that contains assets for all screen densities.
+     *  It is not optimized for particular phone and is much bigger than regular APKs.
+     *  Build creates a bundle file first and then generates Universal APK from it.
+     *
+     *  It's <i>not efficient</i> to use [APK_FROM_BUNDLE] because of size and because
+     *  it creates a Bundle (.aab) file first and finally extracts the APK from it.
+     *  These steps will slow your build flow. Thus, unless your intent is to
+     *  check the universal APK as produced from a .aab file, prefer [APK].
+     */
+    @Incubating
+    object APK_FROM_BUNDLE:
+        SingleArtifact<RegularFile>(FILE, Category.OUTPUTS),
+        Transformable
 }

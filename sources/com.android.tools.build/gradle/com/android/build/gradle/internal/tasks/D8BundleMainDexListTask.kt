@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.SyncOptions
 import com.android.builder.multidex.D8MainDexList
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFile
@@ -50,6 +51,7 @@ import java.io.File
  * A task calculating the main dex list for bundle using D8.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.DEXING)
 abstract class D8BundleMainDexListTask : NonIncrementalTask() {
 
     @get:Input
@@ -151,13 +153,13 @@ abstract class D8BundleMainDexListTask : NonIncrementalTask() {
         private val libraryClasses: FileCollection
 
         init {
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             val libraryScopes = setOf(
                 com.android.build.api.transform.QualifiedContent.Scope.PROVIDED_ONLY,
                 com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE
             )
 
-            @Suppress("DEPRECATION") // Legacy support (b/195153220)
+            @Suppress("DEPRECATION") // Legacy support
             libraryClasses = creationConfig.transformManager
                 .getPipelineOutputAsFileCollection { contentTypes, scopes ->
                     contentTypes.contains(

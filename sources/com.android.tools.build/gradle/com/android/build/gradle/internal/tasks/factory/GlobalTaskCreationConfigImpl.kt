@@ -34,16 +34,20 @@ import com.android.build.api.dsl.TestOptions
 import com.android.build.api.transform.Transform
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.SdkComponentsBuildService
+import com.android.build.gradle.internal.core.SettingsOptions
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.LanguageSplitOptions
+import com.android.build.gradle.internal.instrumentation.ASM_API_VERSION_FOR_INSTRUMENTATION
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
-import com.android.build.gradle.internal.profile.ProfilingMode
+import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
+import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.options.StringOption
+import com.android.build.gradle.options.BooleanOption
 import com.android.builder.core.LibraryRequest
+import com.android.builder.internal.packaging.ApkCreatorType
 import com.android.builder.testing.api.DeviceProvider
 import com.android.builder.testing.api.TestServer
 import com.android.repository.Revision
@@ -52,6 +56,7 @@ import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.attributes.AttributeContainer
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 
@@ -64,7 +69,8 @@ class GlobalTaskCreationConfigImpl(
     bootClasspathConfig: BootClasspathConfigImpl,
     override val lintPublish: Configuration,
     override val lintChecks: Configuration,
-    private val androidJar: Configuration
+    private val androidJar: Configuration,
+    override val settingsOptions: SettingsOptions
 ) : GlobalTaskCreationConfig, BootClasspathConfig by bootClasspathConfig {
 
     companion object {
@@ -190,12 +196,19 @@ class GlobalTaskCreationConfigImpl(
 
     override val legacyLanguageSplitOptions: LanguageSplitOptions
         get() = oldExtension.splits.language
+    override val manifestArtifactType: InternalArtifactType<Directory>
+        get() = if (services.projectOptions[BooleanOption.IDE_DEPLOY_AS_INSTANT_APP])
+            InternalArtifactType.INSTANT_APP_MANIFEST
+        else
+            InternalArtifactType.PACKAGED_MANIFESTS
 
     // Internal Objects
 
     override val globalArtifacts: ArtifactsImpl = ArtifactsImpl(project, "global")
 
     override val createdBy: String = "Android Gradle ${Version.ANDROID_GRADLE_PLUGIN_VERSION}"
+
+    override val asmApiVersion = ASM_API_VERSION_FOR_INSTRUMENTATION
 
     // Utility methods
 
@@ -222,8 +235,22 @@ class GlobalTaskCreationConfigImpl(
         get() = versionedSdkLoaderService.versionedSdkLoader
 
     override val versionedNdkHandler: SdkComponentsBuildService.VersionedNdkHandler by lazy {
-        getBuildService<SdkComponentsBuildService>(services.buildServiceRegistry)
+        getBuildService(services.buildServiceRegistry, SdkComponentsBuildService::class.java)
             .get()
             .versionedNdkHandler(compileSdkHashString, ndkVersion, ndkPath)
     }
+
+    override val jarCreatorType: JarCreatorType
+        get() = if (services.projectOptions.get(BooleanOption.USE_NEW_JAR_CREATOR)) {
+            JarCreatorType.JAR_FLINGER
+        } else {
+            JarCreatorType.JAR_MERGER
+        }
+
+    override val apkCreatorType: ApkCreatorType
+        get() = if (services.projectOptions.get(BooleanOption.USE_NEW_APK_CREATOR)) {
+            ApkCreatorType.APK_FLINGER
+        } else {
+            ApkCreatorType.APK_Z_FILE_CREATOR
+        }
 }

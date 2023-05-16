@@ -427,6 +427,16 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x40000000;
             break;
           }
+          case 296: {
+            bitField0_ |= 0x80000000;
+            emuPid_ = input.readInt32();
+            break;
+          }
+          case 304: {
+            bitField1_ |= 0x00000001;
+            qemuPid_ = input.readInt32();
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1329,6 +1339,7 @@ private static final long serialVersionUID = 0L;
   }
 
   private int bitField0_;
+  private int bitField1_;
   public static final int GUEST_ARCH_FIELD_NUMBER = 1;
   private int guestArch_;
   /**
@@ -2594,6 +2605,60 @@ private static final long serialVersionUID = 0L;
     return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
   }
 
+  public static final int EMU_PID_FIELD_NUMBER = 37;
+  private int emuPid_;
+  /**
+   * <pre>
+   * Process ID of the emulator wrapper process.
+   * </pre>
+   *
+   * <code>optional int32 emu_pid = 37;</code>
+   * @return Whether the emuPid field is set.
+   */
+  @java.lang.Override
+  public boolean hasEmuPid() {
+    return ((bitField0_ & 0x80000000) != 0);
+  }
+  /**
+   * <pre>
+   * Process ID of the emulator wrapper process.
+   * </pre>
+   *
+   * <code>optional int32 emu_pid = 37;</code>
+   * @return The emuPid.
+   */
+  @java.lang.Override
+  public int getEmuPid() {
+    return emuPid_;
+  }
+
+  public static final int QEMU_PID_FIELD_NUMBER = 38;
+  private int qemuPid_;
+  /**
+   * <pre>
+   * Process ID of the child qemu process that does the real job.
+   * </pre>
+   *
+   * <code>optional int32 qemu_pid = 38;</code>
+   * @return Whether the qemuPid field is set.
+   */
+  @java.lang.Override
+  public boolean hasQemuPid() {
+    return ((bitField1_ & 0x00000001) != 0);
+  }
+  /**
+   * <pre>
+   * Process ID of the child qemu process that does the real job.
+   * </pre>
+   *
+   * <code>optional int32 qemu_pid = 38;</code>
+   * @return The qemuPid.
+   */
+  @java.lang.Override
+  public int getQemuPid() {
+    return qemuPid_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -2712,6 +2777,12 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x40000000) != 0)) {
       output.writeMessage(36, getResizableDisplay());
+    }
+    if (((bitField0_ & 0x80000000) != 0)) {
+      output.writeInt32(37, emuPid_);
+    }
+    if (((bitField1_ & 0x00000001) != 0)) {
+      output.writeInt32(38, qemuPid_);
     }
     unknownFields.writeTo(output);
   }
@@ -2860,6 +2931,14 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x40000000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(36, getResizableDisplay());
+    }
+    if (((bitField0_ & 0x80000000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(37, emuPid_);
+    }
+    if (((bitField1_ & 0x00000001) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt32Size(38, qemuPid_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -3034,6 +3113,16 @@ private static final long serialVersionUID = 0L;
       if (!getResizableDisplay()
           .equals(other.getResizableDisplay())) return false;
     }
+    if (hasEmuPid() != other.hasEmuPid()) return false;
+    if (hasEmuPid()) {
+      if (getEmuPid()
+          != other.getEmuPid()) return false;
+    }
+    if (hasQemuPid() != other.hasQemuPid()) return false;
+    if (hasQemuPid()) {
+      if (getQemuPid()
+          != other.getQemuPid()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -3192,6 +3281,14 @@ private static final long serialVersionUID = 0L;
     if (hasResizableDisplay()) {
       hash = (37 * hash) + RESIZABLE_DISPLAY_FIELD_NUMBER;
       hash = (53 * hash) + getResizableDisplay().hashCode();
+    }
+    if (hasEmuPid()) {
+      hash = (37 * hash) + EMU_PID_FIELD_NUMBER;
+      hash = (53 * hash) + getEmuPid();
+    }
+    if (hasQemuPid()) {
+      hash = (37 * hash) + QEMU_PID_FIELD_NUMBER;
+      hash = (53 * hash) + getQemuPid();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3505,6 +3602,10 @@ private static final long serialVersionUID = 0L;
         resizableDisplayBuilder_.clear();
       }
       bitField1_ = (bitField1_ & ~0x00000004);
+      emuPid_ = 0;
+      bitField1_ = (bitField1_ & ~0x00000008);
+      qemuPid_ = 0;
+      bitField1_ = (bitField1_ & ~0x00000010);
       return this;
     }
 
@@ -3534,6 +3635,7 @@ private static final long serialVersionUID = 0L;
       int from_bitField0_ = bitField0_;
       int from_bitField1_ = bitField1_;
       int to_bitField0_ = 0;
+      int to_bitField1_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         to_bitField0_ |= 0x00000001;
       }
@@ -3762,7 +3864,16 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x40000000;
       }
+      if (((from_bitField1_ & 0x00000008) != 0)) {
+        result.emuPid_ = emuPid_;
+        to_bitField0_ |= 0x80000000;
+      }
+      if (((from_bitField1_ & 0x00000010) != 0)) {
+        result.qemuPid_ = qemuPid_;
+        to_bitField1_ |= 0x00000001;
+      }
       result.bitField0_ = to_bitField0_;
+      result.bitField1_ = to_bitField1_;
       onBuilt();
       return result;
     }
@@ -4009,6 +4120,12 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasResizableDisplay()) {
         mergeResizableDisplay(other.getResizableDisplay());
+      }
+      if (other.hasEmuPid()) {
+        setEmuPid(other.getEmuPid());
+      }
+      if (other.hasQemuPid()) {
+        setQemuPid(other.getQemuPid());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -8674,6 +8791,116 @@ private static final long serialVersionUID = 0L;
         resizableDisplay_ = null;
       }
       return resizableDisplayBuilder_;
+    }
+
+    private int emuPid_ ;
+    /**
+     * <pre>
+     * Process ID of the emulator wrapper process.
+     * </pre>
+     *
+     * <code>optional int32 emu_pid = 37;</code>
+     * @return Whether the emuPid field is set.
+     */
+    @java.lang.Override
+    public boolean hasEmuPid() {
+      return ((bitField1_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Process ID of the emulator wrapper process.
+     * </pre>
+     *
+     * <code>optional int32 emu_pid = 37;</code>
+     * @return The emuPid.
+     */
+    @java.lang.Override
+    public int getEmuPid() {
+      return emuPid_;
+    }
+    /**
+     * <pre>
+     * Process ID of the emulator wrapper process.
+     * </pre>
+     *
+     * <code>optional int32 emu_pid = 37;</code>
+     * @param value The emuPid to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEmuPid(int value) {
+      bitField1_ |= 0x00000008;
+      emuPid_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Process ID of the emulator wrapper process.
+     * </pre>
+     *
+     * <code>optional int32 emu_pid = 37;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEmuPid() {
+      bitField1_ = (bitField1_ & ~0x00000008);
+      emuPid_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int qemuPid_ ;
+    /**
+     * <pre>
+     * Process ID of the child qemu process that does the real job.
+     * </pre>
+     *
+     * <code>optional int32 qemu_pid = 38;</code>
+     * @return Whether the qemuPid field is set.
+     */
+    @java.lang.Override
+    public boolean hasQemuPid() {
+      return ((bitField1_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Process ID of the child qemu process that does the real job.
+     * </pre>
+     *
+     * <code>optional int32 qemu_pid = 38;</code>
+     * @return The qemuPid.
+     */
+    @java.lang.Override
+    public int getQemuPid() {
+      return qemuPid_;
+    }
+    /**
+     * <pre>
+     * Process ID of the child qemu process that does the real job.
+     * </pre>
+     *
+     * <code>optional int32 qemu_pid = 38;</code>
+     * @param value The qemuPid to set.
+     * @return This builder for chaining.
+     */
+    public Builder setQemuPid(int value) {
+      bitField1_ |= 0x00000010;
+      qemuPid_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Process ID of the child qemu process that does the real job.
+     * </pre>
+     *
+     * <code>optional int32 qemu_pid = 38;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearQemuPid() {
+      bitField1_ = (bitField1_ & ~0x00000010);
+      qemuPid_ = 0;
+      onChanged();
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

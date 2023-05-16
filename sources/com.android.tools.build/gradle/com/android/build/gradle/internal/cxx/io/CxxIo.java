@@ -24,6 +24,16 @@ public final class CxxIo {
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_EncodedSynchronizeFile_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_FileFingerPrint_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_FileFingerPrint_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_EncodedFileFingerPrint_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_EncodedFileFingerPrint_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -58,8 +68,13 @@ public final class CxxIo {
       "\033\n\023destination_file_id\030\003 \001(\005\022<\n\027initial_" +
       "file_comparison\030\004 \001(\0162\033.SynchronizeFile." +
       "Comparison\022)\n\007outcome\030\005 \001(\0162\030.Synchroniz" +
-      "eFile.OutcomeB,\n(com.android.build.gradl" +
-      "e.internal.cxx.ioP\001b\006proto3"
+      "eFile.Outcome\"\\\n\017FileFingerPrint\022\021\n\tfile" +
+      "_name\030\001 \001(\t\022\017\n\007is_file\030\002 \001(\010\022\016\n\006length\030\003" +
+      " \001(\003\022\025\n\rlast_modified\030\004 \001(\003\"c\n\026EncodedFi" +
+      "leFingerPrint\022\021\n\tfile_name\030\001 \001(\005\022\017\n\007is_f" +
+      "ile\030\002 \001(\010\022\016\n\006length\030\003 \001(\003\022\025\n\rlast_modifi" +
+      "ed\030\004 \001(\003B,\n(com.android.build.gradle.int" +
+      "ernal.cxx.ioP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -77,6 +92,18 @@ public final class CxxIo {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_EncodedSynchronizeFile_descriptor,
         new java.lang.String[] { "WorkingDirectoryId", "SourceFileId", "DestinationFileId", "InitialFileComparison", "Outcome", });
+    internal_static_FileFingerPrint_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_FileFingerPrint_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_FileFingerPrint_descriptor,
+        new java.lang.String[] { "FileName", "IsFile", "Length", "LastModified", });
+    internal_static_EncodedFileFingerPrint_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_EncodedFileFingerPrint_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_EncodedFileFingerPrint_descriptor,
+        new java.lang.String[] { "FileName", "IsFile", "Length", "LastModified", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

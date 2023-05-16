@@ -16,11 +16,17 @@
 
 package com.android.build.gradle.tasks.factory;
 
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
+import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
+
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
+import com.android.build.api.artifact.ScopedArtifact;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.dsl.TestOptions;
+import com.android.build.api.variant.ScopedArtifacts;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
 import com.android.build.gradle.internal.component.UnitTestCreationConfig;
@@ -29,6 +35,7 @@ import com.android.build.gradle.internal.dsl.TestOptions.UnitTestOptions;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.tasks.BuildAnalyzer;
 import com.android.build.gradle.internal.tasks.VariantAwareTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.options.BooleanOption;
@@ -36,7 +43,11 @@ import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.AndroidAnalyticsTestListener;
 import com.android.build.gradle.tasks.GenerateTestConfig;
 import com.android.builder.core.ComponentType;
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.google.common.collect.ImmutableList;
+import java.io.File;
+import java.io.Serializable;
+import java.util.concurrent.Callable;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
@@ -48,6 +59,7 @@ import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.Optional;
+import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.testing.Test;
@@ -56,16 +68,9 @@ import org.gradle.testing.jacoco.plugins.JacocoPlugin;
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.Serializable;
-import java.util.concurrent.Callable;
-
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType;
-import static com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH;
-
 /** Patched version of {@link Test} that we need to use for local unit tests support. */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
 
     private String variantName;
@@ -94,15 +99,15 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         return testConfigInputs;
     }
 
-    @Internal
-    abstract RegularFileProperty getJacocoCoverageOutputFile();
+    @OutputFile
+    @Optional
+    public abstract RegularFileProperty getJacocoCoverageOutputFile();
 
     @Override
     @TaskAction
     public void executeTests() {
         // Get the Jacoco extension to determine later if we have cove coverage enabled.
         JacocoTaskExtension jcoExtension = getExtensions().findByType(JacocoTaskExtension.class);
-
         AndroidAnalyticsTestListener testListener =
                 new AndroidAnalyticsTestListener(
                         dependencies,
@@ -153,7 +158,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
         @Override
         public void configure(@NonNull AndroidUnitTest task) {
             super.configure(task);
-            unitTestCreationConfig.onTestedConfig(
+            unitTestCreationConfig.onTestedVariant(
                     testedConfig -> {
                         if (unitTestCreationConfig.isTestCoverageEnabled()) {
                             task.getProject()
@@ -173,7 +178,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                         return null;
                     });
 
-            VariantCreationConfig testedVariant = creationConfig.getTestedConfig();
+            VariantCreationConfig testedVariant = unitTestCreationConfig.getMainVariant();
 
             TestOptions testOptions = creationConfig.getGlobal().getTestOptions();
 
@@ -193,7 +198,11 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             task.setGroup(JavaBasePlugin.VERIFICATION_GROUP);
             task.setDescription("Run unit tests for the " + testedVariant.getName() + " build.");
 
-            task.setTestClassesDirs(creationConfig.getArtifacts().getAllClasses());
+            task.setTestClassesDirs(
+                    creationConfig
+                            .getArtifacts()
+                            .forScope(ScopedArtifacts.Scope.PROJECT)
+                            .getFinalArtifacts$gradle_core(ScopedArtifact.CLASSES.INSTANCE));
             task.setClasspath(computeClasspath(creationConfig, includeAndroidResources));
 
             if (includeAndroidResources) {
@@ -264,13 +273,36 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             }
 
             // 2. the test creationConfig classes and java_res
-            collection.from(creationConfig.getAllProjectClassesPostAsmInstrumentation());
+            if (creationConfig.getInstrumentationCreationConfig() != null) {
+                collection.from(
+                        creationConfig
+                                .getInstrumentationCreationConfig()
+                                .getProjectClassesPostInstrumentation());
+            } else {
+                collection.from(
+                        artifacts
+                                .forScope(ScopedArtifacts.Scope.PROJECT)
+                                .getFinalArtifacts$gradle_core(ScopedArtifact.CLASSES.INSTANCE));
+            }
             // TODO is this the right thing? this doesn't include the res merging via transform
             // AFAIK
             collection.from(artifacts.get(InternalArtifactType.JAVA_RES.INSTANCE));
 
             // 3. the runtime dependencies for both CLASSES and JAVA_RES type
-            collection.from(creationConfig.getDependenciesClassesJarsPostAsmInstrumentation(ALL));
+            if (creationConfig.getInstrumentationCreationConfig() != null) {
+                collection.from(
+                        creationConfig
+                                .getInstrumentationCreationConfig()
+                                .getDependenciesClassesJarsPostInstrumentation(ALL));
+            } else {
+                collection.from(
+                        creationConfig
+                                .getVariantDependencies()
+                                .getArtifactFileCollection(
+                                        RUNTIME_CLASSPATH,
+                                        ALL,
+                                        AndroidArtifacts.ArtifactType.CLASSES_JAR));
+            }
             collection.from(
                     creationConfig
                             .getVariantDependencies()
@@ -278,9 +310,12 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                                     RUNTIME_CLASSPATH, ALL, ArtifactType.JAVA_RES));
 
             // 4. The separately compile R class, if applicable.
-            if (creationConfig.getBuildFeatures().getAndroidResources()
+            if (creationConfig.getAndroidResourcesCreationConfig() != null
                     && !creationConfig.getGlobal().getNamespacedAndroidResources()) {
-                collection.from(creationConfig.getVariantScope().getRJarForUnitTests());
+                collection.from(
+                        creationConfig
+                                .getAndroidResourcesCreationConfig()
+                                .getCompiledRClassArtifact());
             }
 
             // 5. Any additional or requested optional libraries
@@ -314,16 +349,7 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
                                                                 .get();
                                         return BootClasspathBuilder.INSTANCE
                                                 .computeAdditionalAndRequestedOptionalLibraries(
-                                                        creationConfig
-                                                                .getServices()
-                                                                .getProjectInfo()
-                                                                .getProject()
-                                                                .getLayout(),
-                                                        creationConfig
-                                                                .getServices()
-                                                                .getProjectInfo()
-                                                                .getProject()
-                                                                .getProviders(),
+                                                        creationConfig.getServices(),
                                                         versionedSdkLoader
                                                                 .getAdditionalLibrariesProvider()
                                                                 .get(),

@@ -171,12 +171,13 @@ class VariantServicesImpl(
     override fun <K, V> mapPropertyOf(
         keyType: Class<K>,
         valueType: Class<V>,
-        value: Map<K, V>
+        value: Map<K, V>,
+        disallowUnsafeRead: Boolean,
     ): MapProperty<K, V> {
         return projectServices.objectFactory.mapProperty(keyType, valueType).also {
             it.set(value)
             it.finalizeValueOnRead()
-            if (!forUnitTesting) {
+            if (disallowUnsafeRead && !forUnitTesting) {
                 it.disallowUnsafeRead()
             }
             delayedLock(it)
@@ -324,8 +325,6 @@ class VariantServicesImpl(
 
     override fun <T : Named> named(type: Class<T>, name: String): T =
         projectServices.objectFactory.named(type, name)
-
-    override fun file(file: Any): File = projectServices.fileResolver.invoke(file)
 
     override fun fileCollection(): ConfigurableFileCollection =
         projectServices.objectFactory.fileCollection()

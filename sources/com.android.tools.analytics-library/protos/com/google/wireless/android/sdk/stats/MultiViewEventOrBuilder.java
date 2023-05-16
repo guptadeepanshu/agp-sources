@@ -44,4 +44,23 @@ public interface MultiViewEventOrBuilder extends
    * @return The associatedSplitEditorMode.
    */
   com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode();
+
+  /**
+   * <pre>
+   * The event of opening or closing the issue panel in Validation Tool
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+   * @return Whether the toggleIssuePanel field is set.
+   */
+  boolean hasToggleIssuePanel();
+  /**
+   * <pre>
+   * The event of opening or closing the issue panel in Validation Tool
+   * </pre>
+   *
+   * <code>optional .android_studio.MultiViewEvent.ToggleIssuePanel toggle_issue_panel = 3;</code>
+   * @return The toggleIssuePanel.
+   */
+  com.google.wireless.android.sdk.stats.MultiViewEvent.ToggleIssuePanel getToggleIssuePanel();
 }

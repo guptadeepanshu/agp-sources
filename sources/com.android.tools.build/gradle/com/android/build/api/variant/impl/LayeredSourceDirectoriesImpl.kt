@@ -55,7 +55,13 @@ open class LayeredSourceDirectoriesImpl(
     override fun addSource(directoryEntry: DirectoryEntry) {
         variantSources.add(DirectoryEntries(directoryEntry.name, listOf(directoryEntry)))
         variantServices.newListPropertyForInternalUse(Directory::class.java).also {
-            it.add(directoryEntry.asFiles(variantServices::directoryProperty))
+            it.addAll(
+                directoryEntry.asFiles(
+                  variantServices.provider {
+                      variantServices.projectInfo.projectDirectory
+                  }
+                )
+            )
             directories.add(it)
         }
     }
@@ -64,7 +70,13 @@ open class LayeredSourceDirectoriesImpl(
         variantSources.add(sources)
         variantServices.newListPropertyForInternalUse(Directory::class.java).also {
             sources.directoryEntries.forEach { directoryEntry ->
-                it.add(directoryEntry.asFiles(variantServices::directoryProperty))
+                it.addAll(
+                    directoryEntry.asFiles(
+                      variantServices.provider {
+                          variantServices.projectInfo.projectDirectory
+                      }
+                    )
+                )
             }
             directories.add(it)
         }
@@ -82,7 +94,11 @@ open class LayeredSourceDirectoriesImpl(
                 directoryEntries.name to
                         variantServices.fileCollection(directoryEntries.directoryEntries
                             .filterNot { it.isUserAdded || it.isGenerated}
-                            .map { it.asFiles(variantServices::directoryProperty) }
+                            .map { it.asFiles(
+                              variantServices.provider {
+                                  variantServices.projectInfo.projectDirectory
+                              })
+                            }
                         )
             }
         }
@@ -97,9 +113,19 @@ open class LayeredSourceDirectoriesImpl(
             .flatten()
             .filter { filter.invoke(it) }
             .forEach {
-                val asDirectoryProperty = it.asFiles(variantServices::directoryProperty)
-                if (asDirectoryProperty.isPresent) {
-                    files.add(asDirectoryProperty.get().asFile)
+                if (it is TaskProviderBasedDirectoryEntryImpl) {
+                    files.add(it.directoryProvider.get().asFile)
+                } else {
+                    val asDirectoriesProperty = it.asFiles(
+                      variantServices.provider {
+                          variantServices.projectInfo.projectDirectory
+                      }
+                    )
+                    if (asDirectoriesProperty.isPresent) {
+                        files.addAll(asDirectoriesProperty.get().map { directory ->
+                            directory.asFile
+                        })
+                    }
                 }
             }
         return files

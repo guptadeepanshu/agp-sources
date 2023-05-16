@@ -21,6 +21,8 @@ import com.android.SdkConstants.APP_METADATA_VERSION_PROPERTY
 import com.android.Version
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.gradle.internal.component.ApplicationCreationConfig
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkInternalArtifactType
+import com.android.build.gradle.internal.privaysandboxsdk.PrivacySandboxSdkVariantScope
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
@@ -28,6 +30,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
 import com.android.builder.internal.packaging.IncrementalPackager.APP_METADATA_FILE_NAME
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.io.Files
 import java.io.File
@@ -48,6 +51,7 @@ import org.gradle.work.DisableCachingByDefault
  * simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.METADATA)
 abstract class AppMetadataTask : NonIncrementalTask() {
 
     @get:OutputFile abstract val outputFile: RegularFileProperty
@@ -88,6 +92,26 @@ abstract class AppMetadataTask : NonIncrementalTask() {
 
         override fun configure(task: AppMetadataTask) {
             super.configure(task)
+            task.configureTaskInputs(creationConfig.services.projectOptions)
+        }
+    }
+
+    class PrivacySandboxSdkCreationAction(
+        private val creationConfig: PrivacySandboxSdkVariantScope
+    ) : TaskCreationAction<AppMetadataTask>() {
+        override val type = AppMetadataTask::class.java
+        override val name = "writeAppMetadata"
+
+        override fun handleProvider(taskProvider: TaskProvider<AppMetadataTask>) {
+            super.handleProvider(taskProvider)
+            creationConfig.artifacts
+                .setInitialProvider(taskProvider, AppMetadataTask::outputFile)
+                .withName(APP_METADATA_FILE_NAME)
+                .on(PrivacySandboxSdkInternalArtifactType.APP_METADATA)
+        }
+
+        override fun configure(task: AppMetadataTask) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
             task.configureTaskInputs(creationConfig.services.projectOptions)
         }
     }

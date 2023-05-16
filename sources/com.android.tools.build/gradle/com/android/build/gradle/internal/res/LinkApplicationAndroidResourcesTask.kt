@@ -26,12 +26,13 @@ import com.android.build.api.variant.impl.BuiltArtifactImpl
 import com.android.build.api.variant.impl.BuiltArtifactsImpl
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
+import com.android.build.api.variant.impl.getFilter
 import com.android.build.gradle.internal.AndroidJarInput
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
-import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
@@ -46,7 +47,10 @@ import com.android.build.gradle.internal.services.SymbolTableBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.services.getErrorFormatMode
 import com.android.build.gradle.internal.services.getLeasingAapt2
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -58,6 +62,7 @@ import com.android.builder.core.ComponentType
 import com.android.builder.internal.aapt.AaptOptions
 import com.android.builder.internal.aapt.AaptPackageConfig
 import com.android.builder.internal.aapt.v2.Aapt2
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.process.ProcessException
 import com.android.ide.common.resources.mergeIdentifiedSourceSetFiles
 import com.android.ide.common.symbols.SymbolIo
@@ -100,6 +105,7 @@ import java.nio.file.Files
 import javax.inject.Inject
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.LINKING])
 abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: ObjectFactory) :
     ProcessAndroidResources() {
 
@@ -201,8 +207,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     abstract val resPackageOutputFolder: DirectoryProperty
 
     @get:Input
-    lateinit var projectBaseName: String
-        private set
+    abstract val projectBaseName: Property<String>
 
     @get:Input
     lateinit var taskInputType: InternalArtifactType<Directory>
@@ -443,11 +448,11 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     abstract class BaseCreationAction(
         creationConfig: ComponentCreationConfig,
         private val generateLegacyMultidexMainDexProguardRules: Boolean,
-        private val baseName: String?,
+        private val baseName: Provider<String>,
         private val isLibrary: Boolean
     ) : VariantTaskCreationAction<LinkApplicationAndroidResourcesTask, ComponentCreationConfig>(
         creationConfig
-    ) {
+    ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(creationConfig) {
 
         override val name: String
             get() = computeTaskName("process", "Resources")
@@ -504,7 +509,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             task.resourceConfigs.setDisallowChanges(
                 if (creationConfig.componentType.canHaveSplits) {
-                    creationConfig.resourceConfigurations
+                    androidResourcesCreationConfig.resourceConfigurations
                 } else {
                     ImmutableSet.of()
                 }
@@ -512,7 +517,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             task.mainSplit = creationConfig.outputs.getMainSplitOrNull()
             task.namespace.setDisallowChanges(
-                if (creationConfig is TestComponentCreationConfig) {
+                if (creationConfig is AndroidTestCreationConfig) {
                     // TODO(b/176931684) Use creationConfig.namespace instead after we stop
                     //  supporting using applicationId to namespace the test component R class.
                     creationConfig.namespaceForR
@@ -521,7 +526,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
                 }
             )
 
-            task.taskInputType = creationConfig.manifestArtifactType
+            task.taskInputType = creationConfig.global.manifestArtifactType
             creationConfig.artifacts.setTaskInputToFinalProduct(
                 InternalArtifactType.AAPT_FRIENDLY_MERGED_MANIFESTS, task.aaptFriendlyManifestFiles
             )
@@ -534,8 +539,10 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
 
             task.setType(creationConfig.componentType)
             if (creationConfig is ApkCreationConfig) {
-                task.noCompress.set(creationConfig.androidResources.noCompress)
-                task.aaptAdditionalParameters.set(creationConfig.androidResources.aaptAdditionalParameters)
+                task.noCompress.set(androidResourcesCreationConfig.androidResources.noCompress)
+                task.aaptAdditionalParameters.set(
+                    androidResourcesCreationConfig.androidResources.aaptAdditionalParameters
+                )
             }
             task.noCompress.disallowChanges()
             task.aaptAdditionalParameters.disallowChanges()
@@ -581,7 +588,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
                 task.resOffset.disallowChanges()
             }
 
-            task.projectBaseName = baseName!!
+            task.projectBaseName.setDisallowChanges(baseName)
             task.isLibrary = isLibrary
 
             task.useFinalIds = !projectOptions.get(BooleanOption.USE_NON_FINAL_RES_IDS)
@@ -607,7 +614,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
         creationConfig: ComponentCreationConfig,
         generateLegacyMultidexMainDexProguardRules: Boolean,
         private val sourceArtifactType: TaskManager.MergeType,
-        baseName: String,
+        baseName: Provider<String>,
         isLibrary: Boolean
     ) : BaseCreationAction(
         creationConfig,
@@ -679,7 +686,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
                 task.inputResourcesDir
             )
 
-            if (creationConfig.isPrecompileDependenciesResourcesEnabled) {
+            if (androidResourcesCreationConfig.isPrecompileDependenciesResourcesEnabled) {
                 task.compiledDependenciesResources.fromDisallowChanges(
                     creationConfig.variantDependencies.getArtifactFileCollection(
                         RUNTIME_CLASSPATH,
@@ -699,7 +706,7 @@ abstract class LinkApplicationAndroidResourcesTask @Inject constructor(objects: 
     class NamespacedCreationAction(
         creationConfig: ApkCreationConfig,
         generateLegacyMultidexMainDexProguardRules: Boolean,
-        baseName: String?
+        baseName: Provider<String>
     ) : BaseCreationAction(
         creationConfig,
         generateLegacyMultidexMainDexProguardRules,

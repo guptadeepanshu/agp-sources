@@ -16,14 +16,14 @@
 
 package com.android.build.gradle.internal
 
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.attributes.AgpVersionAttr
 import com.android.build.api.attributes.BuildTypeAttr.Companion.ATTRIBUTE
 import com.android.build.api.attributes.ProductFlavorAttr
-import com.android.build.api.component.impl.ComponentImpl
-import com.android.build.api.variant.impl.VariantBuilderImpl
-import com.android.build.api.variant.impl.VariantImpl
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
 import com.android.build.gradle.internal.coverage.JacocoOptions
 import com.android.build.gradle.internal.dependency.AarResourcesCompilerTransform
@@ -61,12 +61,17 @@ import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.DefaultConfig
 import com.android.build.gradle.internal.dsl.ProductFlavor
 import com.android.build.gradle.internal.dsl.SigningConfig
+import com.android.build.gradle.internal.packaging.getDefaultDebugKeystoreSigningConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.AutoNamespacePreProcessTransform
 import com.android.build.gradle.internal.res.namespaced.AutoNamespaceTransform
+import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.getBuildService
-import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.tasks.AsarToApksTransform
+import com.android.build.gradle.internal.tasks.AsarToManifestSnippetTransform
+import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig
 import com.android.build.gradle.internal.utils.getDesugarLibConfig
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.variant.ComponentInfo
@@ -91,14 +96,11 @@ import org.gradle.api.internal.artifacts.ArtifactAttributes
  */
 class DependencyConfigurator(
     private val project: Project,
-    private val projectName: String,
-    private val globalConfig: GlobalTaskCreationConfig,
-    private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
     private val projectServices: ProjectServices
 ) {
     fun configureDependencySubstitutions(): DependencyConfigurator {
         // If Jetifier is enabled, replace old support libraries with AndroidX.
-        if (globalConfig.services.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
+        if (projectServices.projectOptions.get(BooleanOption.ENABLE_JETIFIER)) {
             replaceOldSupportLibraries(
                 project,
                 // Inline the property name for a slight memory improvement (so that the JVM doesn't
@@ -110,8 +112,8 @@ class DependencyConfigurator(
     }
 
     fun configureDependencyChecks(): DependencyConfigurator {
-        val useAndroidX = globalConfig.services.projectOptions.get(BooleanOption.USE_ANDROID_X)
-        val enableJetifier = globalConfig.services.projectOptions.get(BooleanOption.ENABLE_JETIFIER)
+        val useAndroidX = projectServices.projectOptions.get(BooleanOption.USE_ANDROID_X)
+        val enableJetifier = projectServices.projectOptions.get(BooleanOption.ENABLE_JETIFIER)
 
         when {
             !useAndroidX && !enableJetifier -> {
@@ -119,7 +121,7 @@ class DependencyConfigurator(
                     if (configuration.isCanBeResolved) {
                         configuration.incoming.afterResolve(
                                 AndroidXDependencyCheck.AndroidXDisabledJetifierDisabled(
-                                        project, configuration.name, globalConfig.services.issueReporter
+                                        project, configuration.name, projectServices.issueReporter
                                 )
                         )
                     }
@@ -130,7 +132,7 @@ class DependencyConfigurator(
                     if (configuration.isCanBeResolved) {
                         configuration.incoming.afterResolve(
                                 AndroidXDependencyCheck.AndroidXEnabledJetifierDisabled(
-                                        project, configuration.name, globalConfig.services.issueReporter
+                                        project, configuration.name, projectServices.issueReporter
                                 )
                         )
                     }
@@ -141,15 +143,17 @@ class DependencyConfigurator(
         return this
     }
 
-    fun configureGeneralTransforms(): DependencyConfigurator {
+    fun configureGeneralTransforms(
+            namespacedAndroidResources: Boolean,
+    ): DependencyConfigurator {
         val dependencies: DependencyHandler = project.dependencies
 
-        val projectOptions = globalConfig.services.projectOptions
+        val projectOptions = projectServices.projectOptions
 
         // The aars/jars may need to be processed (e.g., jetified to AndroidX) before they can be
         // used
         val autoNamespaceDependencies =
-            globalConfig.namespacedAndroidResources && projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]
+            namespacedAndroidResources && projectOptions[BooleanOption.CONVERT_NON_NAMESPACED_DEPENDENCIES]
 
         val jetifiedAarOutputType = if (autoNamespaceDependencies) {
             AndroidArtifacts.ArtifactType.MAYBE_NON_NAMESPACED_PROCESSED_AAR
@@ -199,7 +203,7 @@ class DependencyConfigurator(
             MockableJarTransform::class.java
         ) { spec: TransformSpec<MockableJarTransform.Parameters> ->
             // Query for JAR instead of PROCESSED_JAR as android.jar doesn't need processing
-            spec.parameters.projectName.set(projectName)
+            spec.parameters.projectName.set(project.name)
             spec.parameters.returnDefaultValues.set(true)
             spec.from.attribute(
                 ArtifactAttributes.ARTIFACT_FORMAT,
@@ -222,7 +226,7 @@ class DependencyConfigurator(
             MockableJarTransform::class.java
         ) { spec: TransformSpec<MockableJarTransform.Parameters> ->
             // Query for JAR instead of PROCESSED_JAR as android.jar doesn't need processing
-            spec.parameters.projectName.set(projectName)
+            spec.parameters.projectName.set(project.name)
             spec.parameters.returnDefaultValues.set(false)
             spec.from.attribute(
                 ArtifactAttributes.ARTIFACT_FORMAT,
@@ -331,33 +335,6 @@ class DependencyConfigurator(
             }
         }
 
-        val jacocoTransformParametersConfig: (JacocoTransform.Params) -> Unit = {
-            val jacocoVersion = JacocoOptions.DEFAULT_VERSION
-            val jacocoConfiguration = JacocoConfigurations
-                .getJacocoAntTaskConfiguration(project, jacocoVersion)
-            it.jacocoInstrumentationService
-                .set(getBuildService(projectServices.buildServiceRegistry))
-            it.jacocoConfiguration.from(jacocoConfiguration)
-            it.jacocoVersion.setDisallowChanges(jacocoVersion)
-        }
-        registerTransform(
-            JacocoTransform::class.java,
-            AndroidArtifacts.ArtifactType.CLASSES,
-            AndroidArtifacts.ArtifactType.JACOCO_CLASSES,
-            jacocoTransformParametersConfig
-        )
-        registerTransform(
-            JacocoTransform::class.java,
-            AndroidArtifacts.ArtifactType.CLASSES_JAR,
-            AndroidArtifacts.ArtifactType.JACOCO_CLASSES_JAR,
-            jacocoTransformParametersConfig
-        )
-        registerTransform(
-            JacocoTransform::class.java,
-            AndroidArtifacts.ArtifactType.ASM_INSTRUMENTED_JARS,
-            AndroidArtifacts.ArtifactType.JACOCO_ASM_INSTRUMENTED_JARS,
-            jacocoTransformParametersConfig
-        )
         if (projectOptions[BooleanOption.ENABLE_PROGUARD_RULES_EXTRACTION]) {
             registerTransform(
                 ExtractProGuardRulesTransform::class.java,
@@ -460,13 +437,73 @@ class DependencyConfigurator(
             AndroidArtifacts.ArtifactType.JAR_CLASS_LIST
         )
 
-        registerGlobalRecalculateStackFramesTransform(
-            projectName,
-            dependencies,
-            globalConfig.fullBootClasspathProvider,
-            projectServices.buildServiceRegistry
-        )
 
+        if (projectOptions.get(BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT)) {
+            registerTransform(
+                    AsarToApksTransform::class.java,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                    AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_APKS
+            ) { params ->
+                projectServices.initializeAapt2Input(params.aapt2)
+                params.signingConfigData.set(
+                        getBuildService(
+                                projectServices.buildServiceRegistry,
+                                AndroidLocationsBuildService::class.java
+                        ).map { it.getDefaultDebugKeystoreSigningConfig() }
+                )
+                params.signingConfigValidationResultDir.set(
+                        ArtifactsImpl(project, "global").get(InternalArtifactType.VALIDATE_SIGNING_CONFIG)
+                )
+            }
+            registerTransform(
+                AsarToManifestSnippetTransform::class.java,
+                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_ARCHIVE,
+                AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_EXTRACTED_MANIFEST_SNIPPET
+            )
+        }
+
+        return this
+    }
+
+    fun configureCalculateStackFramesTransforms(
+            bootClasspathConfig: BootClasspathConfig) : DependencyConfigurator {
+        registerGlobalRecalculateStackFramesTransform(
+                project.name,
+                project.dependencies,
+                bootClasspathConfig.fullBootClasspathProvider,
+                projectServices.buildServiceRegistry
+        )
+        return this
+    }
+
+    fun configureJacocoTransforms() : DependencyConfigurator {
+        val jacocoTransformParametersConfig: (JacocoTransform.Params) -> Unit = {
+            val jacocoVersion = JacocoOptions.DEFAULT_VERSION
+            val jacocoConfiguration = JacocoConfigurations
+                    .getJacocoAntTaskConfiguration(project, jacocoVersion)
+            it.jacocoInstrumentationService
+                    .set(getBuildService(projectServices.buildServiceRegistry))
+            it.jacocoConfiguration.from(jacocoConfiguration)
+            it.jacocoVersion.setDisallowChanges(jacocoVersion)
+        }
+        registerTransform(
+                JacocoTransform::class.java,
+                AndroidArtifacts.ArtifactType.CLASSES,
+                AndroidArtifacts.ArtifactType.JACOCO_CLASSES,
+                jacocoTransformParametersConfig
+        )
+        registerTransform(
+                JacocoTransform::class.java,
+                AndroidArtifacts.ArtifactType.CLASSES_JAR,
+                AndroidArtifacts.ArtifactType.JACOCO_CLASSES_JAR,
+                jacocoTransformParametersConfig
+        )
+        registerTransform(
+                JacocoTransform::class.java,
+                AndroidArtifacts.ArtifactType.ASM_INSTRUMENTED_JARS,
+                AndroidArtifacts.ArtifactType.JACOCO_ASM_INSTRUMENTED_JARS,
+                jacocoTransformParametersConfig
+        )
         return this
     }
 
@@ -495,24 +532,29 @@ class DependencyConfigurator(
         ) { spec: TransformSpec<T> ->
             spec.from.attribute(ArtifactAttributes.ARTIFACT_FORMAT, fromArtifactType)
             spec.to.attribute(ArtifactAttributes.ARTIFACT_FORMAT, toArtifactType)
-            spec.parameters.projectName.setDisallowChanges(projectName)
+            spec.parameters.projectName.setDisallowChanges(project.name)
             parametersSetter?.let { it(spec.parameters) }
         }
     }
 
-    fun configureAttributeMatchingStrategies(): DependencyConfigurator {
+    fun configureAttributeMatchingStrategies(
+            variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    ): DependencyConfigurator {
         val schema = project.dependencies.attributesSchema
 
         // custom strategy for build-type and product-flavor.
-        setBuildTypeStrategy(schema)
-        setupFlavorStrategy(schema)
+        setBuildTypeStrategy(schema, variantInputModel)
+        setupFlavorStrategy(schema, variantInputModel)
         setupModelStrategy(schema)
         setUpAgpVersionStrategy(schema)
 
         return this
     }
 
-    private fun setBuildTypeStrategy(schema: AttributesSchema) {
+    private fun setBuildTypeStrategy(
+            schema: AttributesSchema,
+            variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    ) {
         // this is ugly but because the getter returns a very base class we have no choices.
         val dslBuildTypes = variantInputModel.buildTypes.values.map { it.buildType }
 
@@ -553,7 +595,10 @@ class DependencyConfigurator(
         }
     }
 
-    private fun setupFlavorStrategy(schema: AttributesSchema) {
+    private fun setupFlavorStrategy(
+            schema: AttributesSchema,
+            variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
+    ) {
         // this is ugly but because the getter returns a very base class we have no choices.
         val flavors = variantInputModel.productFlavors.values.map { it.productFlavor }
 
@@ -607,43 +652,48 @@ class DependencyConfigurator(
     }
 
     /** Configure artifact transforms that require variant-specific attribute information.  */
-    fun <VariantBuilderT : VariantBuilderImpl, VariantT : VariantImpl>
+    fun <VariantBuilderT : VariantBuilder, VariantT : VariantCreationConfig>
             configureVariantTransforms(
         variants: List<ComponentInfo<VariantBuilderT, VariantT>>,
-        nestedComponents: List<ComponentImpl>
-    ): DependencyConfigurator {
+        nestedComponents: List<ComponentCreationConfig>,
+        bootClasspathConfig: BootClasspathConfig
+            ): DependencyConfigurator {
         val allComponents: List<ComponentCreationConfig> =
             variants.map { it.variant }.plus(nestedComponents)
 
         val dependencies = project.dependencies
-        val projectOptions = globalConfig.services.projectOptions
+        val projectOptions = projectServices.projectOptions
 
         for (component in allComponents) {
             registerAsmTransformForComponent(
-                projectName,
+                project.name,
                 dependencies,
-                component as ComponentImpl
+                component
             )
 
             registerRecalculateStackFramesTransformForComponent(
-                projectName,
+                project.name,
                 dependencies,
                 component
             )
         }
         if (allComponents.isNotEmpty()) {
-            val bootClasspath = project.files(globalConfig.bootClasspath)
+            val bootClasspath = project.files(bootClasspathConfig.bootClasspath)
             if (projectOptions[BooleanOption.ENABLE_DEXING_ARTIFACT_TRANSFORM]) {
-                for (artifactConfiguration in getDexingArtifactConfigurations(
-                    allComponents
-                )) {
-                    artifactConfiguration.registerTransform(
-                        projectName,
-                        dependencies,
-                        bootClasspath,
-                        getDesugarLibConfig(project),
-                        SyncOptions.getErrorFormatMode(projectOptions),
-                    )
+                if (allComponents.isNotEmpty()) {
+                    val services = allComponents.first().services
+
+                    for (artifactConfiguration in getDexingArtifactConfigurations(
+                        allComponents
+                    )) {
+                        artifactConfiguration.registerTransform(
+                            project.name,
+                            dependencies,
+                            bootClasspath,
+                            getDesugarLibConfig(services),
+                            SyncOptions.getErrorFormatMode(projectOptions),
+                        )
+                    }
                 }
             }
         }

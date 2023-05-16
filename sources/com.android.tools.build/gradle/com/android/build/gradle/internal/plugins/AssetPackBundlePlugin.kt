@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven
+import com.android.build.gradle.internal.profile.AnalyticsConfiguratorService
 import com.android.build.gradle.internal.profile.AnalyticsService
 import com.android.build.gradle.internal.profile.NoOpAnalyticsService
 import com.android.build.gradle.internal.res.Aapt2FromMaven.Companion.create
@@ -33,7 +34,6 @@ import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.DslServicesImpl
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.services.getBuildServiceName
 import com.android.build.gradle.internal.tasks.AppMetadataTask
 import com.android.build.gradle.internal.tasks.AssetPackPreBundleTask
 import com.android.build.gradle.internal.tasks.FinalizeBundleTask
@@ -51,7 +51,8 @@ import com.android.builder.errors.IssueReporter
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import java.io.File
+import org.gradle.build.event.BuildEventsListenerRegistry
+import javax.inject.Inject
 
 /**
  * Plugin that allows to build asset-pack bundles.
@@ -64,7 +65,11 @@ import java.io.File
  * valuable for game developers who whom updating assets (new levels, new textures) is more
  * frequent than code updates.
  */
-class AssetPackBundlePlugin : Plugin<Project> {
+abstract class AssetPackBundlePlugin : Plugin<Project> {
+
+    @Suppress("UnstableApiUsage")
+    @get:Inject
+    abstract val listenerRegistry: BuildEventsListenerRegistry
 
     override fun apply(project: Project) {
         val projectOptions = ProjectOptionService.RegistrationAction(project)
@@ -91,10 +96,13 @@ class AssetPackBundlePlugin : Plugin<Project> {
             projectOptions,
             project.gradle.sharedServices,
             LintFromMaven.from(project, projectOptions, syncIssueHandler),
-            create(project, projectOptions),
+            create(project, projectOptions::get),
             project.gradle.startParameter.maxWorkerCount,
             ProjectInfo(project),
-            project::file
+            project::file,
+            project.configurations,
+            project.dependencies,
+            project.extensions.extraProperties
         )
         registerServices(project, projectOptions)
 
@@ -114,12 +122,12 @@ class AssetPackBundlePlugin : Plugin<Project> {
 
     private fun registerServices(project: Project, projectOptions: ProjectOptions) {
         if (projectOptions.isAnalyticsEnabled) {
-            AnalyticsService.RegistrationAction(project).execute()
+            val configuratorService =
+                AnalyticsConfiguratorService.RegistrationAction(project).execute().get()
+            AnalyticsService.RegistrationAction(project, configuratorService, listenerRegistry)
+                .execute()
         } else {
-            project.gradle.sharedServices.registerIfAbsent(
-                getBuildServiceName(AnalyticsService::class.java),
-                NoOpAnalyticsService::class.java,
-            ) {}
+            NoOpAnalyticsService.RegistrationAction(project).execute()
         }
         Aapt2ThreadPoolBuildService.RegistrationAction(project, projectOptions).execute()
         Aapt2DaemonBuildService.RegistrationAction(project, projectOptions).execute()

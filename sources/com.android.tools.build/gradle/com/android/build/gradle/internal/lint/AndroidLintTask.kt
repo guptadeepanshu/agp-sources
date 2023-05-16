@@ -29,16 +29,17 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
-import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -47,7 +48,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.configuration.ShowStacktrace
 import org.gradle.api.plugins.JavaBasePlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -72,6 +73,7 @@ import javax.inject.Inject
 
 /** Task to invoke lint in a process isolated worker passing in the new lint models. */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class AndroidLintTask : NonIncrementalTask() {
 
     @get:Nested
@@ -574,7 +576,6 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             task.description = description
 
             task.initializeGlobalInputs(
-                project = creationConfig.services.projectInfo.getProject(),
                 isAndroid = true,
                 lintMode
             )
@@ -613,8 +614,10 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             task.projectInputs.initialize(variant, lintMode)
             task.outputs.upToDateWhen {
                 // Workaround for b/193244776
-                // Ensure the task runs if baselineFile is set and the file doesn't exist
+                // Ensure the task runs if inputBaselineFile is set and the file doesn't exist,
+                // unless missingBaselineIsEmptyBaseline is true.
                 task.projectInputs.lintOptions.inputBaselineFile.orNull?.asFile?.exists() ?: true
+                        || task.missingBaselineIsEmptyBaseline.get()
             }
             val hasDynamicFeatures = creationConfig.global.hasDynamicFeatures
             task.variantInputs.initialize(
@@ -794,7 +797,6 @@ abstract class AndroidLintTask : NonIncrementalTask() {
     }
 
     private fun initializeGlobalInputs(
-        project: Project,
         isAndroid: Boolean,
         lintMode: LintMode
     ) {
@@ -803,7 +805,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         this.android.setDisallowChanges(isAndroid)
         if(isAndroid){
             val sdkComponentsBuildService =
-                getBuildService<SdkComponentsBuildService>(buildServiceRegistry)
+                getBuildService(buildServiceRegistry, SdkComponentsBuildService::class.java)
             this.androidSdkHome.set(sdkComponentsBuildService.flatMap { it.sdkDirectoryProvider }.map { it.asFile.absolutePath })
         }
         this.androidSdkHome.disallowChanges()
@@ -831,7 +833,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
 
     fun configureForStandalone(
         taskCreationServices: TaskCreationServices,
-        javaPluginConvention: JavaPluginConvention,
+        javaPluginExtension: JavaPluginExtension,
         customLintChecksConfig: FileCollection,
         lintOptions: Lint,
         partialResults: Provider<Directory>,
@@ -840,9 +842,8 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         fatalOnly: Boolean = false,
         autoFix: Boolean = false,
     ) {
-        val project = taskCreationServices.projectInfo.getProject()
+        val projectInfo = taskCreationServices.projectInfo
         initializeGlobalInputs(
-            project,
             isAndroid = false,
             lintMode
         )
@@ -862,17 +863,19 @@ abstract class AndroidLintTask : NonIncrementalTask() {
         this.checkOnly.setDisallowChanges(lintOptions.checkOnly)
         this.lintTool.initialize(taskCreationServices)
         this.projectInputs
-            .initializeForStandalone(project, javaPluginConvention, lintOptions, lintMode)
+            .initializeForStandalone(project, javaPluginExtension, lintOptions, lintMode)
         this.outputs.upToDateWhen {
             // Workaround for b/193244776
-            // Ensure the task runs if inputBaselineFile is set and the file doesn't exist
+            // Ensure the task runs if inputBaselineFile is set and the file doesn't exist, unless
+            // missingBaselineIsEmptyBaseline is true.
             this.projectInputs.lintOptions.inputBaselineFile.orNull?.asFile?.exists() ?: true
+                    || this.missingBaselineIsEmptyBaseline.get()
         }
         // Do not support check dependencies in the standalone lint plugin
         this.variantInputs
             .initializeForStandalone(
                 project,
-                javaPluginConvention,
+                javaPluginExtension,
                 taskCreationServices.projectOptions,
                 fatalOnly,
                 checkDependencies = false,
@@ -880,7 +883,7 @@ abstract class AndroidLintTask : NonIncrementalTask() {
             )
         this.lintRuleJars.fromDisallowChanges(customLintChecksConfig)
         this.lintModelDirectory.setDisallowChanges(
-            project.layout.buildDirectory.dir("intermediates/${this.name}/android-lint-model")
+            projectInfo.buildDirectory.dir("intermediates/${this.name}/android-lint-model")
         )
         this.partialResults.setDisallowChanges(partialResults)
         this.lintModelWriterTaskOutputPath.setDisallowChanges(

@@ -16,7 +16,8 @@
 package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
-import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.coverage.JacocoConfigurations
@@ -27,6 +28,7 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.files.SerializableChange
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.android.utils.PathUtils
 import com.google.common.base.Preconditions
@@ -66,6 +68,7 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class JacocoTask : NewIncrementalTask() {
 
     @get:Classpath
@@ -366,19 +369,18 @@ abstract class JacocoTask : NewIncrementalTask() {
 
         override fun configure(task: JacocoTask) {
             super.configure(task)
+            val projectClasses = creationConfig.artifacts
+                .forScope(ScopedArtifacts.Scope.PROJECT)
+                .getFinalArtifacts(ScopedArtifact.CLASSES)
+
             task.jarsWithIdentity
                 .inputJars
-                .from(
-                    creationConfig
-                        .artifacts
-                        .getAll(MultipleArtifact.ALL_CLASSES_JARS)
+                .from(projectClasses
+                        .getRegularFiles(creationConfig.services.projectInfo.projectDirectory)
                 )
             task.classesDir
-                .from(
-                    creationConfig
-                        .artifacts
-                        .getAll(MultipleArtifact.ALL_CLASSES_DIRS)
-                )
+                .from(projectClasses
+                    .getDirectories(creationConfig.services.projectInfo.projectDirectory))
         }
     }
 

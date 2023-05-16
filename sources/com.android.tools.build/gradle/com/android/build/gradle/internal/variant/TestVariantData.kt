@@ -17,12 +17,8 @@ package com.android.build.gradle.internal.variant
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.variant.ComponentIdentity
-import com.android.build.gradle.internal.core.VariantDslInfo
-import com.android.build.gradle.internal.core.VariantSources
-import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.VariantServices
-import com.android.utils.appendCapitalized
 
 /**
  * Data about a test component in a normal plugin
@@ -32,51 +28,12 @@ import com.android.utils.appendCapitalized
  */
 class TestVariantData(
     componentIdentity: ComponentIdentity,
-    variantDslInfo: VariantDslInfo,
-    variantDependencies: VariantDependencies,
-    variantSources: VariantSources,
-    paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    val testedVariantData: TestedVariantData,
     services: VariantServices,
     taskContainer: MutableTaskContainer
 ) : ApkVariantData(
     componentIdentity,
-    variantDslInfo,
-    variantDependencies,
-    variantSources,
-    paths,
     artifacts,
     services,
     taskContainer
-) {
-
-    override val description: String
-        get() {
-            val componentType = variantDslInfo.componentType
-
-            val prefix = if (componentType.isApk) {
-                "android (on device) tests"
-            } else {
-                "unit tests"
-            }
-
-            return if (componentIdentity.productFlavors.isNotEmpty()) {
-                val sb = StringBuilder(50)
-                sb.append(prefix)
-                sb.append(" for the ")
-                componentIdentity.flavorName?.let { sb.appendCapitalized(it) }
-                componentIdentity.buildType?.let { sb.appendCapitalized(it) }
-                sb.append(" build")
-                sb.toString()
-            } else {
-                val sb = StringBuilder(50)
-                sb.append(prefix)
-                sb.append(" for the ")
-                sb.appendCapitalized(componentIdentity.buildType!!)
-                sb.append(" build")
-                sb.toString()
-            }
-        }
-
-}
+)

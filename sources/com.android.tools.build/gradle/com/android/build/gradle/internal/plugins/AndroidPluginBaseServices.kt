@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.plugins
 
 import com.android.Version
 import com.android.build.gradle.internal.attribution.BuildAttributionService
-import com.android.build.gradle.internal.attribution.BuildAttributionService.Companion.init
 import com.android.build.gradle.internal.errors.DeprecationReporterImpl
 import com.android.build.gradle.internal.errors.SyncIssueReporterImpl
 import com.android.build.gradle.internal.lint.LintFromMaven.Companion.from
@@ -32,7 +31,6 @@ import com.android.build.gradle.internal.res.Aapt2FromMaven.Companion.create
 import com.android.build.gradle.internal.scope.ProjectInfo
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.services.getBuildServiceName
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.ProjectOptions
@@ -85,10 +83,13 @@ abstract class AndroidPluginBaseServices(
                 projectOptions,
                 project.gradle.sharedServices,
                 from(project, projectOptions, syncIssueReporter),
-                create(project, projectOptions),
+                create(project, projectOptions::get),
                 project.gradle.startParameter.maxWorkerCount,
-                ProjectInfo(project)
-            ) { o: Any -> project.file(o) }
+                ProjectInfo(project),
+                { o: Any -> project.file(o) },
+                project.configurations,
+                project.dependencies,
+                project.extensions.extraProperties)
         }
     }
 
@@ -98,10 +99,7 @@ abstract class AndroidPluginBaseServices(
             if (projectOptions.isAnalyticsEnabled) {
                 AnalyticsConfiguratorService.RegistrationAction(project).execute().get()
             } else {
-                project.gradle.sharedServices.registerIfAbsent(
-                    getBuildServiceName(AnalyticsConfiguratorService::class.java),
-                    NoOpAnalyticsConfiguratorService::class.java
-                ) { }.get()
+                NoOpAnalyticsConfiguratorService.RegistrationAction(project).execute().get()
             }
         }
     }
@@ -112,27 +110,31 @@ abstract class AndroidPluginBaseServices(
 
         this.project = project
         AndroidLocationsBuildService.RegistrationAction(project).execute()
+
         checkMinJvmVersion()
         val projectOptions: ProjectOptions = projectServices.projectOptions
         if (projectOptions.isAnalyticsEnabled) {
-            AnalyticsService.RegistrationAction(project).execute()
+            AnalyticsService.RegistrationAction(project, configuratorService, listenerRegistry)
+                .execute()
         } else {
-            project.gradle.sharedServices.registerIfAbsent(
-                getBuildServiceName(AnalyticsService::class.java),
-                NoOpAnalyticsService::class.java
-            ) { }
+            NoOpAnalyticsService.RegistrationAction(project).execute()
         }
+
+        SyncIssueReporterImpl.GlobalSyncIssueService.RegistrationAction(
+            project,
+            SyncOptions.getModelQueryMode(projectOptions),
+            SyncOptions.getErrorFormatMode(projectOptions)
+        ).execute()
+
         registerDependencyCheck(project, projectOptions)
         checkPathForErrors()
         val attributionFileLocation =
             projectOptions.get(StringOption.IDE_ATTRIBUTION_FILE_LOCATION)
         if (attributionFileLocation != null) {
-            BuildAttributionService.RegistrationAction(project).execute()
-            init(
+            BuildAttributionService.RegistrationAction(
                 project, attributionFileLocation, listenerRegistry
-            )
+            ).execute()
         }
-        configuratorService.createAnalyticsService(project, listenerRegistry)
         configuratorService.getProjectBuilder(project.path)?.let {
             it
                 .setAndroidPluginVersion(Version.ANDROID_GRADLE_PLUGIN_VERSION)

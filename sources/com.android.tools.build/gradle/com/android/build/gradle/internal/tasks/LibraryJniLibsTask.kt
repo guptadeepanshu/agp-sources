@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.STRIPPED_NAT
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.utils.isValidZipEntryName
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import com.google.common.base.Preconditions
@@ -61,6 +62,7 @@ private val pattern = Pattern.compile("lib/[^/]+/[^/]+\\.so")
  * simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE)
 abstract class LibraryJniLibsTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -181,7 +183,7 @@ abstract class LibraryJniLibsTask : NonIncrementalTask() {
             task.projectNativeLibs.setDisallowChanges(
                 creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS)
             )
-            task.localJarsNativeLibs = creationConfig.variantScope.localPackagedJars
+            task.localJarsNativeLibs = creationConfig.computeLocalPackagedJars()
         }
     }
 }

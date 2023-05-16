@@ -16,13 +16,16 @@
 package com.android.build.gradle.internal.coverage
 
 import com.android.Version
-import com.android.build.api.component.impl.TestComponentImpl
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.TestComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.core.BuilderConstants
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.usLocaleCapitalize
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.ImmutableList
@@ -67,12 +70,14 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.UncheckedIOException
 import java.util.Locale
+import org.gradle.api.provider.Provider
 
 /**
  * For generating unit test coverage reports using jacoco. Provides separate CreateActions for
  * generating unit test and connected test reports.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class JacocoReportTask : NonIncrementalTask() {
 
     // PathSensitivity.NONE since only the contents of the files under the directory matter as input
@@ -97,7 +102,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val javaSources: ListProperty<ConfigurableFileTree>
+    abstract val javaSources: ListProperty<Provider<List<ConfigurableFileTree>>>
 
     @get:Internal
     abstract val tabWidth: Property<Int>
@@ -126,7 +131,9 @@ abstract class JacocoReportTask : NonIncrementalTask() {
 
         // Jacoco requires source set directory roots rather than source files to produce
         // source code highlighting in reports.
-        val sourceFolders = javaSources.get().map(ConfigurableFileTree::getDir)
+        val sourceFolders: List<File> = javaSources.get().map {
+            it.get().map(ConfigurableFileTree::getDir)
+        }.flatten()
 
         workerExecutor
             .classLoaderIsolation { classpath: ClassLoaderWorkerSpec ->
@@ -170,11 +177,15 @@ abstract class JacocoReportTask : NonIncrementalTask() {
                 task.outputReportDir.set(creationConfig.paths.coverageReportDir)
             }
             task.outputReportDir.disallowChanges()
-            task.reportName.setDisallowChanges(creationConfig.testedConfig.name)
+            task.reportName.setDisallowChanges(creationConfig.mainVariant.name)
             task.tabWidth.setDisallowChanges(4)
 
-            task.classFileCollection.setFrom(creationConfig.testedConfig.artifacts.getAllClasses())
-            task.javaSources.setDisallowChanges(creationConfig.testedConfig.sources.java.getAsFileTrees())
+            task.classFileCollection.setFrom(
+                creationConfig.mainVariant.artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+            )
+            task.javaSources.setDisallowChanges(creationConfig.mainVariant.sources.java.getAsFileTrees())
         }
     }
 
@@ -195,7 +206,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
     }
 
     class CreationActionConnectedTest(
-        testComponentProperties: TestComponentImpl,
+        testComponentProperties: TestComponentCreationConfig,
         override val jacocoAntConfiguration: Configuration
     ) : BaseCreationAction(
         testComponentProperties, jacocoAntConfiguration, BuilderConstants.CONNECTED) {
@@ -214,7 +225,7 @@ abstract class JacocoReportTask : NonIncrementalTask() {
     }
 
     class CreationActionManagedDeviceTest(
-        testComponentProperties: TestComponentImpl,
+        testComponentProperties: TestComponentCreationConfig,
         override val jacocoAntConfiguration: Configuration
     ) : BaseCreationAction(
         testComponentProperties, jacocoAntConfiguration, BuilderConstants.MANAGED_DEVICE) {

@@ -16,7 +16,6 @@
 
 package com.android.build.gradle.internal.dependency
 
-import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.instrumentation.AsmClassVisitorFactory
 import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.gradle.internal.component.ApkCreationConfig
@@ -63,21 +62,23 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
         fun registerAsmTransformForComponent(
             projectName: String,
             dependencyHandler: DependencyHandler,
-            creationConfig: ComponentImpl
+            creationConfig: ComponentCreationConfig
         ) {
-            if (creationConfig.dependenciesClassesAreInstrumented) {
+            val instrumentationCreationConfig = creationConfig.instrumentationCreationConfig
+                ?: return
+            if (instrumentationCreationConfig.dependenciesClassesAreInstrumented) {
                 dependencyHandler.registerTransform(AsmClassesTransform::class.java) { spec ->
                     spec.parameters { parameters ->
                         parameters.projectName.set(projectName)
-                        parameters.asmApiVersion.set(creationConfig.asmApiVersion)
+                        parameters.asmApiVersion.set(creationConfig.global.asmApiVersion)
                         parameters.framesComputationMode.set(
-                            creationConfig.asmFramesComputationMode
+                            instrumentationCreationConfig.asmFramesComputationMode
                         )
                         parameters.excludes.set(
-                            creationConfig.instrumentation.excludes
+                            instrumentationCreationConfig.instrumentation.excludes
                         )
                         parameters.visitorsList.set(
-                            creationConfig.registeredDependenciesClassesVisitors
+                            instrumentationCreationConfig.registeredDependenciesClassesVisitors
                         )
                         parameters.bootClasspath.set(creationConfig.global.fullBootClasspathProvider)
                         parameters.classesHierarchyBuildService.set(
@@ -100,7 +101,7 @@ abstract class AsmClassesTransform : TransformAction<AsmClassesTransform.Paramet
                     )
 
                     getAttributesForConfig(creationConfig)
-                        .stringAttributes?.forEach { name, value ->
+                        .stringAttributes?.forEach { (name, value) ->
                             spec.from.attribute(name, value)
                             spec.to.attribute(name, value)
                         }

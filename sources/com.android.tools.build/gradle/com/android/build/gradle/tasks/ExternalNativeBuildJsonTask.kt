@@ -23,10 +23,12 @@ import com.android.build.gradle.internal.cxx.gradle.generator.createCxxMetadataG
 import com.android.build.gradle.internal.cxx.logging.IssueReporterLoggingEnvironment
 import com.android.build.gradle.internal.cxx.model.CxxAbiModel
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.UnsafeOutputsTask
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.builder.errors.DefaultIssueReporter
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.InputFiles
@@ -40,6 +42,7 @@ import javax.inject.Inject
 
 /** Task wrapper around [CxxMetadataGenerator].  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE, secondaryTaskCategories = [TaskCategory.METADATA])
 abstract class ExternalNativeBuildJsonTask @Inject constructor(
         @get:Internal val ops: ExecOperations) :
         UnsafeOutputsTask("C/C++ Configuration is always run.") {
@@ -66,7 +69,7 @@ abstract class ExternalNativeBuildJsonTask @Inject constructor(
                     abi,
                     analyticsService = analyticsService.get()
                 )
-            generator.generate(ops, false)
+            generator.configure(ops, false)
         }
     }
 }
@@ -86,7 +89,7 @@ fun createCxxConfigureTask(
         super.configure(task)
         task.abi = abi
         task.variantName = abi.variant.variantName
-        if (creationConfig.renderscriptNdkModeEnabled) {
+        if (creationConfig.renderscriptCreationConfig?.dslRenderscriptNdkModeEnabled == true) {
             creationConfig
                 .artifacts
                 .setTaskInputToFinalProduct(

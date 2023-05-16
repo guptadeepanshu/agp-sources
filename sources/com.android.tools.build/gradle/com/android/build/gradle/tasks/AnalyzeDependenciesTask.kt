@@ -18,14 +18,18 @@ package com.android.build.gradle.tasks
 
 import com.android.SdkConstants
 import com.android.build.api.artifact.SingleArtifact
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.SourceProvider
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.Configuration
@@ -43,11 +47,11 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.work.DisableCachingByDefault
 import java.io.File
-import java.util.concurrent.Callable
 import java.util.function.Function
 
 // TODO: Make incremental
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.HELP)
 abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -197,7 +201,11 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
             super.configure(task)
             val resDirFunction = Function<SourceProvider, Collection<File>> { it.resDirectories }
 
-            task.variantArtifact.from(creationConfig.artifacts.getAllClasses())
+            task.variantArtifact.from(
+                creationConfig.artifacts
+                    .forScope(ScopedArtifacts.Scope.PROJECT)
+                    .getFinalArtifacts(ScopedArtifact.CLASSES)
+            )
 
             task.resourceSymbolsArtifactCollection = creationConfig
                 .variantDependencies.getArtifactCollection(

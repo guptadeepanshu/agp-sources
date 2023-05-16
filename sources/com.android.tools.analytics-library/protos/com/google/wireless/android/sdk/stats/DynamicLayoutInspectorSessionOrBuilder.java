@@ -168,4 +168,31 @@ public interface DynamicLayoutInspectorSessionOrBuilder extends
    * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder();
+
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * @return Whether the attach field is set.
+   */
+  boolean hasAttach();
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * @return The attach.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess getAttach();
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder();
 }

@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.cxx.configure
 
-import com.android.build.gradle.internal.component.ComponentCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import java.io.File
 
 /**
@@ -73,7 +73,7 @@ data class CoreExternalNativeNinjaOptions(
 /**
  * Planned as field in  com.android.build.api.dsl.ExternalNativeBuild
  */
-val ComponentCreationConfig.ninja : Ninja get() = externalNativeExperimentalProperties.ninja
+val VariantCreationConfig.ninja : Ninja get() = externalNativeExperimentalProperties.ninja
 
 val Map<String, Any>.ninja : Ninja get() = Ninja(
     path = propertyAsFile("ninja.path"),
@@ -84,7 +84,7 @@ val Map<String, Any>.ninja : Ninja get() = Ninja(
 /**
  * Planned as field in com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
  */
-val ComponentCreationConfig.externalNativeNinjaOptions get() = CoreExternalNativeNinjaOptions(
+val VariantCreationConfig.externalNativeNinjaOptions get() = CoreExternalNativeNinjaOptions(
     abiFilters = externalNativeExperimentalProperties.propertyAsSet("ninja.abiFilters"),
     arguments = externalNativeExperimentalProperties.propertyAsList("ninja.arguments"),
     cFlags = externalNativeExperimentalProperties.propertyAsList("ninja.cFlags"),
@@ -121,9 +121,42 @@ private fun Map<String, Any>.propertyAsSet(name : String) : Set<String> {
  */
 private fun Map<String, Any>.propertyAsList(name : String) : List<String> {
     val value = get(name) ?: return listOf()
+    return propertyValueAsList(value)
+}
+
+/**
+ * Convert [Any] from Gradle DSL to a List<String>.
+ */
+private fun propertyValueAsList(value : Any) : List<String> {
     return when (value) {
         is List<*> -> value.map { "$it" }
         is Set<*> -> value.map { "$it" }
-        else -> error("${value.javaClass}")
+        else -> error("Could not convert from ${value.javaClass} to List<String>")
     }
+}
+
+/**
+ * This is the experimental flag analog of [com.android.build.api.dsl.PrefabPackagingOptions].
+ */
+data class PrefabExperimentalPackagingOptions(
+    /**
+     * export_libraries may specify either literal arguments to be used as-is, intra-package
+     * references, or inter-package references. This field is optional.
+     */
+    val exportLibraries : List<String>?
+)
+
+/**
+ * Retrieve user's experimental settings for an individual Prefab publishing module.
+ */
+fun VariantCreationConfig.getPrefabExperimentalPackagingOptions(module : String)
+    : PrefabExperimentalPackagingOptions {
+    var exportLibraries : List<String>? = null
+    for((key, value) in externalNativeExperimentalProperties) {
+        if (key != "prefab.${module}.exportLibraries") continue
+        exportLibraries = propertyValueAsList(value)
+    }
+    return PrefabExperimentalPackagingOptions(
+        exportLibraries = exportLibraries
+    )
 }

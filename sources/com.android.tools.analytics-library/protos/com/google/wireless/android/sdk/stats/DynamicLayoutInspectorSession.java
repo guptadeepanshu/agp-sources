@@ -131,6 +131,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000020;
             break;
           }
+          case 58: {
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000040) != 0)) {
+              subBuilder = attach_.toBuilder();
+            }
+            attach_ = input.readMessage(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(attach_);
+              attach_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000040;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -392,6 +405,44 @@ private static final long serialVersionUID = 0L;
     return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
   }
 
+  public static final int ATTACH_FIELD_NUMBER = 7;
+  private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess attach_;
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * @return Whether the attach field is set.
+   */
+  @java.lang.Override
+  public boolean hasAttach() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   * @return The attach.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess getAttach() {
+    return attach_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance() : attach_;
+  }
+  /**
+   * <pre>
+   * Session data around attachment to process
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder() {
+    return attach_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance() : attach_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -423,6 +474,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000020) != 0)) {
       output.writeMessage(6, getGotoDeclaration());
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeMessage(7, getAttach());
     }
     unknownFields.writeTo(output);
   }
@@ -456,6 +510,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(6, getGotoDeclaration());
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(7, getAttach());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -502,6 +560,11 @@ private static final long serialVersionUID = 0L;
       if (!getGotoDeclaration()
           .equals(other.getGotoDeclaration())) return false;
     }
+    if (hasAttach() != other.hasAttach()) return false;
+    if (hasAttach()) {
+      if (!getAttach()
+          .equals(other.getAttach())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -536,6 +599,10 @@ private static final long serialVersionUID = 0L;
     if (hasGotoDeclaration()) {
       hash = (37 * hash) + GOTO_DECLARATION_FIELD_NUMBER;
       hash = (53 * hash) + getGotoDeclaration().hashCode();
+    }
+    if (hasAttach()) {
+      hash = (37 * hash) + ATTACH_FIELD_NUMBER;
+      hash = (53 * hash) + getAttach().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -675,6 +742,7 @@ private static final long serialVersionUID = 0L;
         getComposeFieldBuilder();
         getSystemFieldBuilder();
         getGotoDeclarationFieldBuilder();
+        getAttachFieldBuilder();
       }
     }
     @java.lang.Override
@@ -716,6 +784,12 @@ private static final long serialVersionUID = 0L;
         gotoDeclarationBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000020);
+      if (attachBuilder_ == null) {
+        attach_ = null;
+      } else {
+        attachBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -792,6 +866,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000020;
       }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        if (attachBuilder_ == null) {
+          result.attach_ = attach_;
+        } else {
+          result.attach_ = attachBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000040;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -858,6 +940,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasGotoDeclaration()) {
         mergeGotoDeclaration(other.getGotoDeclaration());
+      }
+      if (other.hasAttach()) {
+        mergeAttach(other.getAttach());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1823,6 +1908,162 @@ private static final long serialVersionUID = 0L;
         gotoDeclaration_ = null;
       }
       return gotoDeclarationBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess attach_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder> attachBuilder_;
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * @return Whether the attach field is set.
+     */
+    public boolean hasAttach() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     * @return The attach.
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess getAttach() {
+      if (attachBuilder_ == null) {
+        return attach_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance() : attach_;
+      } else {
+        return attachBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public Builder setAttach(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess value) {
+      if (attachBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        attach_ = value;
+        onChanged();
+      } else {
+        attachBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000040;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public Builder setAttach(
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder builderForValue) {
+      if (attachBuilder_ == null) {
+        attach_ = builderForValue.build();
+        onChanged();
+      } else {
+        attachBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000040;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public Builder mergeAttach(com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess value) {
+      if (attachBuilder_ == null) {
+        if (((bitField0_ & 0x00000040) != 0) &&
+            attach_ != null &&
+            attach_ != com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance()) {
+          attach_ =
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.newBuilder(attach_).mergeFrom(value).buildPartial();
+        } else {
+          attach_ = value;
+        }
+        onChanged();
+      } else {
+        attachBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000040;
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public Builder clearAttach() {
+      if (attachBuilder_ == null) {
+        attach_ = null;
+        onChanged();
+      } else {
+        attachBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000040);
+      return this;
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder getAttachBuilder() {
+      bitField0_ |= 0x00000040;
+      onChanged();
+      return getAttachFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder getAttachOrBuilder() {
+      if (attachBuilder_ != null) {
+        return attachBuilder_.getMessageOrBuilder();
+      } else {
+        return attach_ == null ?
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.getDefaultInstance() : attach_;
+      }
+    }
+    /**
+     * <pre>
+     * Session data around attachment to process
+     * </pre>
+     *
+     * <code>optional .android_studio.DynamicLayoutInspectorAttachToProcess attach = 7;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder> 
+        getAttachFieldBuilder() {
+      if (attachBuilder_ == null) {
+        attachBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcess.Builder, com.google.wireless.android.sdk.stats.DynamicLayoutInspectorAttachToProcessOrBuilder>(
+                getAttach(),
+                getParentForChildren(),
+                isClean());
+        attach_ = null;
+      }
+      return attachBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -34,6 +34,8 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileTree
 import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -42,6 +44,7 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.util.PatternSet
+import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.process.CommandLineArgumentProvider
 
 /**
@@ -52,13 +55,13 @@ import org.gradle.process.CommandLineArgumentProvider
  * Kotlin-Java projects), [JavaCompile] performs compilation only, without annotation processing.
  */
 class JavaCompileCreationAction(
-    private val creationConfig: ComponentCreationConfig, private val usingKapt: Boolean
+    private val creationConfig: ComponentCreationConfig,
+    objectFactory: ObjectFactory,
+    private val usingKapt: Boolean
 ) : TaskCreationAction<JavaCompile>() {
 
-    private val project = creationConfig.services.projectInfo.getProject()
-
-    private val dataBindingArtifactDir = project.objects.directoryProperty()
-    private val dataBindingExportClassListFile = project.objects.fileProperty()
+    private val dataBindingArtifactDir = objectFactory.directoryProperty()
+    private val dataBindingExportClassListFile = objectFactory.fileProperty()
 
     override val name: String
         get() = creationConfig.computeTaskName("compile", "JavaWithJavac")
@@ -109,6 +112,15 @@ class JavaCompileCreationAction(
         task.dependsOn(creationConfig.taskContainer.preBuildTask)
         task.extensions.add(PROPERTY_VARIANT_NAME_KEY, creationConfig.name)
 
+        // Use Gradle toolchain configured via java extension
+        task.project.extensions.getByType(JavaPluginExtension::class.java).let {
+            if (it.toolchain.languageVersion.isPresent) {
+                val toolchainService =
+                    task.project.extensions.getByType(JavaToolchainService::class.java)
+                task.javaCompiler.set(toolchainService.compilerFor(it.toolchain))
+            }
+        }
+
         task.configureProperties(creationConfig, task)
         // Set up the annotation processor classpath even when Kapt is used, because Java compiler
         // plugins like ErrorProne share their classpath with annotation processors (see
@@ -116,7 +128,7 @@ class JavaCompileCreationAction(
         // Lombok want to run via JavaCompile (see https://youtrack.jetbrains.com/issue/KT-7112).
         task.configurePropertiesForAnnotationProcessing(creationConfig)
 
-        task.source = computeJavaSource(creationConfig, task.project)
+        task.source = computeJavaSourceWithoutDependencies(creationConfig)
 
         task.options.compilerArgumentProviders.add(
             JavaCompileOptionsForRoom(
@@ -225,7 +237,7 @@ private fun JavaCompile.recordAnnotationProcessors(
         val annotationProcessors =
             readAnnotationProcessorsFromJsonFile(processorListFile.get().asFile)
         val nonIncrementalAPs =
-            annotationProcessors.filter { it.value == java.lang.Boolean.FALSE }
+            annotationProcessors.filter { it.value == ProcessorInfo.NON_INCREMENTAL_AP }
         val allAPsAreIncremental = nonIncrementalAPs.isEmpty()
 
         // Warn users about non-incremental annotation processors
@@ -248,12 +260,28 @@ private fun JavaCompile.recordAnnotationProcessors(
     }
 }
 
-fun computeJavaSource(creationConfig: ComponentCreationConfig, project: Project): FileTree {
-    // do not resolve the provider before execution phase, b/117161463.
-    val sourcesToCompile = creationConfig.sources.java.getAsFileTrees()
+fun computeJavaSourceWithoutDependencies(creationConfig: ComponentCreationConfig): FileTree {
     // Include only java sources, otherwise we hit b/144249620.
     val javaSourcesFilter = PatternSet().include("**/*.java")
-    return project.files(sourcesToCompile).asFileTree.matching(javaSourcesFilter)
+    return creationConfig.services.fileCollection().also { fileCollection ->
+        // do not resolve the provider before execution phase, b/117161463.
+       // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
+       // configuration time which requires us to pass the old variant API version.
+       // see b/259343260
+       fileCollection.from(creationConfig.sources.java.getAsFileTreesForOldVariantAPI())
+    }.asFileTree.matching(javaSourcesFilter)
+}
+
+fun computeJavaSource(creationConfig: ComponentCreationConfig, project: Project): FileTree {
+    // Include only java sources, otherwise we hit b/144249620.
+    val javaSourcesFilter = PatternSet().include("**/*.java")
+    return creationConfig.services.fileCollection().also { fileCollection ->
+        // do not resolve the provider before execution phase, b/117161463.
+        // the KAPT plugin is looking up the JavaCompile.sources and resolving it at
+        // configuration time which requires us to pass the old variant API version.
+        // see b/259343260
+        fileCollection.from(creationConfig.sources.java.getAsFileTrees())
+    }.asFileTree.matching(javaSourcesFilter)
 }
 
 private const val AP_GENERATED_SOURCES_DIR_NAME = "out"

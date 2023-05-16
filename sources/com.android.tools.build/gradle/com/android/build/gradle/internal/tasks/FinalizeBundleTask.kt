@@ -24,7 +24,6 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.signing.SigningConfigData
 import com.android.build.gradle.internal.signing.SigningConfigDataProvider
 import com.android.build.gradle.internal.signing.SigningConfigProviderParams
@@ -64,6 +63,7 @@ import org.gradle.work.DisableCachingByDefault
  * </ul>
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.BUNDLE_PACKAGING)
 abstract class FinalizeBundleTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -174,7 +174,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                         )
                     AabFlinger(
                         outputFile = parameters.finalBundleFile.asFile.get(),
-                        signerName = it.keyAlias.toUpperCase(Locale.US),
+                        signerName = it.keyAlias.uppercase(Locale.US),
                         privateKey = certificateInfo.key,
                         certificates = listOf(certificateInfo.certificate),
                         minSdkVersion = 18 // So that RSA + SHA256 are used
@@ -211,11 +211,12 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
         ) {
             super.handleProvider(taskProvider)
 
-            val bundleName = "${projectServices.projectInfo.getProjectBaseName()}.aab"
+            val bundleNameProvider =
+                projectServices.projectInfo.getProjectBaseName().map { "$it.aab" }
             val location = SingleArtifact.BUNDLE.getOutputPath(artifacts.buildDirectory, "")
             artifacts.setInitialProvider(taskProvider, FinalizeBundleTask::finalBundleFile)
                 .atLocation(location.absolutePath)
-                .withName(bundleName)
+                .withName(bundleNameProvider)
                 .on(SingleArtifact.BUNDLE)
         }
 
@@ -261,15 +262,17 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
         ) {
             super.handleProvider(taskProvider)
 
-            val bundleName =
-                "${creationConfig.services.projectInfo.getProjectBaseName()}-${creationConfig.baseName}.aab"
+            val bundleNameProvider =
+                creationConfig.services.projectInfo.getProjectBaseName().map {
+                    "$it-${creationConfig.baseName}.aab"
+                }
             val apkLocationOverride =
                 creationConfig.services.projectOptions.get(StringOption.IDE_APK_LOCATION)
             if (apkLocationOverride == null) {
                 creationConfig.artifacts.setInitialProvider(
                     taskProvider,
                     FinalizeBundleTask::finalBundleFile
-                ).withName(bundleName).on(SingleArtifact.BUNDLE)
+                ).withName(bundleNameProvider).on(SingleArtifact.BUNDLE)
             } else {
                 creationConfig.artifacts.setInitialProvider(
                     taskProvider,
@@ -281,7 +284,7 @@ abstract class FinalizeBundleTask : NonIncrementalTask() {
                             creationConfig.dirName
                         ).absolutePath
                     )
-                    .withName(bundleName)
+                    .withName(bundleNameProvider)
                     .on(SingleArtifact.BUNDLE)
             }
         }

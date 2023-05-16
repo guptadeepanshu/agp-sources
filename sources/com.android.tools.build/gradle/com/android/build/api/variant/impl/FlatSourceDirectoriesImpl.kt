@@ -33,7 +33,7 @@ import java.io.File
  * the is no variant specific source directory.
  */
 class FlatSourceDirectoriesImpl(
-    private val _name: String,
+    _name: String,
     private val variantServices: VariantServices,
     variantDslFilters: PatternFilterable?
 ): SourceDirectoriesImpl(_name, variantServices, variantDslFilters),
@@ -58,16 +58,38 @@ class FlatSourceDirectoriesImpl(
 
     override fun addSource(directoryEntry: DirectoryEntry) {
         variantSources.add(directoryEntry)
-        directories.add(directoryEntry.asFiles(variantServices::directoryProperty))
+        directories.addAll(
+            directoryEntry.asFiles(
+                variantServices.provider {
+                    variantServices.projectInfo.projectDirectory
+                }
+            )
+        )
     }
 
 
-    internal fun getAsFileTrees(): Provider<List<ConfigurableFileTree>> =
+    internal fun getAsFileTrees(): Provider<List<Provider<List<ConfigurableFileTree>>>> =
             variantSources.map { entries: MutableList<DirectoryEntry> ->
                 entries.map { sourceDirectory ->
                     sourceDirectory.asFileTree(variantServices::fileTree)
                 }
             }
+
+    /**
+     * version of the [getAsFileTrees] for consumers that are resolving the content during
+     * configuration time, see b/259343260
+     *
+     * New code MUST NOT call this method.
+     *
+     */
+    internal fun getAsFileTreesForOldVariantAPI(): Provider<List<ConfigurableFileTree>> =
+        variantSources.map { entries: MutableList<DirectoryEntry> ->
+            entries.map { sourceDirectory ->
+                sourceDirectory.asFileTreeWithoutTaskDependency(
+                        variantServices::fileTree
+                )
+            }.flatten()
+        }
 
     internal fun addSources(sourceDirectories: Iterable<DirectoryEntry>) {
         sourceDirectories.forEach(::addSource)
@@ -81,9 +103,17 @@ class FlatSourceDirectoriesImpl(
         variantSources.get()
             .filter { filter.invoke(it) }
             .forEach {
-                val asDirectoryProperty = it.asFiles(variantServices::directoryProperty)
-                if (asDirectoryProperty.isPresent) {
-                    files.add(asDirectoryProperty.get().asFile)
+                if (it is TaskProviderBasedDirectoryEntryImpl) {
+                    files.add(it.directoryProvider.get().asFile)
+                } else {
+                    val asDirectoryProperties = it.asFiles(
+                        variantServices.provider {
+                            variantServices.projectInfo.projectDirectory
+                        }
+                    )
+                    asDirectoryProperties.get().forEach { directory ->
+                        files.add(directory.asFile)
+                    }
                 }
             }
         return files

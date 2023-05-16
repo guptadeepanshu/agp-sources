@@ -27,6 +27,7 @@ import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.tasks.PackageAndroidArtifact
 import com.android.builder.packaging.DexFileComparator
 import com.android.builder.packaging.DexFileNameSupplier
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.profgen.ArtProfile
 import com.android.tools.profgen.ArtProfileSerializer
 import com.android.tools.profgen.DexFile
@@ -49,6 +50,7 @@ import java.lang.RuntimeException
  * inside an APK or a Bundle.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ART_PROFILE, secondaryTaskCategories = [TaskCategory.COMPILATION])
 abstract class CompileArtProfileTask: NonIncrementalTask() {
 
     @get: [InputFiles Optional PathSensitive(PathSensitivity.RELATIVE)]
@@ -144,13 +146,11 @@ abstract class CompileArtProfileTask: NonIncrementalTask() {
             creationConfig.artifacts.setInitialProvider(
                     taskProvider,
                     CompileArtProfileTask::binaryArtProfile
-            ).withName(SdkConstants.FN_BINARY_ART_PROFILE
             ).on(InternalArtifactType.BINARY_ART_PROFILE)
 
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 CompileArtProfileTask::binaryArtProfileMetadata
-            ).withName(SdkConstants.FN_BINARY_ART_PROFILE_METADATA
             ).on(InternalArtifactType.BINARY_ART_PROFILE_METADATA)
         }
 

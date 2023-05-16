@@ -25,9 +25,10 @@ import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.builder.dexing.ClassFileInput.CLASS_MATCHER
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -45,11 +46,11 @@ import java.util.zip.Deflater
  * classes to the correct APKs via the Dex Splitter.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeClassesTask : NonIncrementalTask() {
 
     @get:Classpath
-    abstract var inputFiles: FileCollection
-        protected set
+    abstract val inputFiles: ConfigurableFileCollection
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -105,7 +106,7 @@ abstract class MergeClassesTask : NonIncrementalTask() {
 
         // Because ordering matters for the transform pipeline, we need to fetch the classes as soon
         // as this creation action is instantiated.
-        @Suppress("DEPRECATION") // Legacy support (b/195153220)
+        @Suppress("DEPRECATION") // Legacy support
         private val inputFiles =
             creationConfig
                 .transformManager
@@ -132,8 +133,8 @@ abstract class MergeClassesTask : NonIncrementalTask() {
             task: MergeClassesTask
         ) {
             super.configure(task)
-            task.inputFiles = inputFiles
-            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
+            task.inputFiles.fromDisallowChanges(inputFiles)
+            task.jarCreatorType = creationConfig.global.jarCreatorType
         }
     }
 }

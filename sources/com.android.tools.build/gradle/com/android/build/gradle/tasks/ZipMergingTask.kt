@@ -21,8 +21,10 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.RegularFileProperty
@@ -39,6 +41,7 @@ import java.util.zip.Deflater
 
 /** Task to merge the res/classes intermediate jars from a library into a single one  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MISC, secondaryTaskCategories = [TaskCategory.ZIPPING, TaskCategory.MERGING])
 abstract class ZipMergingTask : NonIncrementalTask() {
 
     @get:InputFiles
@@ -120,7 +123,7 @@ abstract class ZipMergingTask : NonIncrementalTask() {
                 InternalArtifactType.LIBRARY_JAVA_RES,
                 task.javaResInputFile
             )
-            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
+            task.jarCreatorType = creationConfig.global.jarCreatorType
         }
     }
 }

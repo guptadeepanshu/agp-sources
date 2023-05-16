@@ -22,6 +22,8 @@ import com.android.build.api.component.analytics.AnalyticsEnabledDynamicFeatureV
 import com.android.build.api.component.impl.AndroidTestImpl
 import com.android.build.api.component.impl.ApkCreationConfigImpl
 import com.android.build.api.component.impl.TestFixturesImpl
+import com.android.build.api.component.impl.getAndroidResources
+import com.android.build.api.component.impl.isTestApk
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
@@ -33,15 +35,16 @@ import com.android.build.api.variant.Renderscript
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
-import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.core.dsl.DynamicFeatureVariantDslInfo
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.BuildFeatureValues
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.Java8LangSupport
+import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.VariantServices
@@ -50,9 +53,9 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.dexing.DexingType
+import com.android.builder.errors.IssueReporter
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
@@ -61,27 +64,27 @@ import javax.inject.Inject
 open class DynamicFeatureVariantImpl @Inject constructor(
     override val variantBuilder: DynamicFeatureVariantBuilderImpl,
     buildFeatureValues: BuildFeatureValues,
-    variantDslInfo: VariantDslInfo,
+    dslInfo: DynamicFeatureVariantDslInfo,
     variantDependencies: VariantDependencies,
     variantSources: VariantSources,
     paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    variantScope: VariantScope,
     variantData: BaseVariantData,
+    taskContainer: MutableTaskContainer,
     transformManager: TransformManager,
     internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     globalTaskCreationConfig: GlobalTaskCreationConfig,
-) : VariantImpl(
+) : VariantImpl<DynamicFeatureVariantDslInfo>(
     variantBuilder,
     buildFeatureValues,
-    variantDslInfo,
+    dslInfo,
     variantDependencies,
     variantSources,
     paths,
     artifacts,
-    variantScope,
     variantData,
+    taskContainer,
     transformManager,
     internalServices,
     taskCreationServices,
@@ -89,7 +92,18 @@ open class DynamicFeatureVariantImpl @Inject constructor(
 ), DynamicFeatureVariant, DynamicFeatureCreationConfig, HasAndroidTest, HasTestFixtures {
 
     init {
-        variantDslInfo.multiDexKeepProguard?.let {
+        // TODO: Should be removed once we stop implementing all build type interfaces in one class
+        if (dslInfo.isMultiDexSetFromDsl) {
+            services.issueReporter
+                .reportWarning(
+                    IssueReporter.Type.GENERIC,
+                    "Native multidex is always used for dynamic features. Please " +
+                            "remove 'multiDexEnabled true|false' from your " +
+                            "build.gradle file."
+                )
+        }
+
+        dslInfo.multiDexKeepProguard?.let {
             artifacts.getArtifactContainer(MultipleArtifact.MULTIDEX_KEEP_PROGUARD)
                 .addInitialProvider(null, internalServices.toRegularFileProvider(it))
         }
@@ -97,7 +111,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
 
     private val delegate by lazy { ApkCreationConfigImpl(
         this,
-        variantDslInfo) }
+        dslInfo) }
 
     /*
      * Providers of data coming from the base modules. These are loaded just once and finalized.
@@ -113,15 +127,12 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         internalServices.providerOf(String::class.java, baseModuleMetadata.map { it.applicationId })
 
     override val androidResources: AndroidResources by lazy {
-        initializeAaptOptionsFromDsl(variantDslInfo.androidResources, internalServices)
+        getAndroidResources()
     }
-
-    override val minifiedEnabled: Boolean
-        get() = variantDslInfo.getPostProcessingOptions().codeShrinkerEnabled()
 
     override val packaging: ApkPackaging by lazy {
         ApkPackagingImpl(
-            variantDslInfo.packaging,
+            dslInfo.packaging,
             internalServices,
             minSdkVersion.apiLevel
         )
@@ -132,7 +143,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override var testFixtures: TestFixturesImpl? = null
 
     override val renderscript: Renderscript? by lazy {
-        delegate.renderscript(internalServices)
+        renderscriptCreationConfig?.renderscript
     }
 
 // ---------------------------------------------------------------------------------------------
@@ -144,7 +155,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         get() = false
 
     override val testOnlyApk: Boolean
-        get() = variantScope.isTestOnly(this)
+        get() = isTestApk()
 
     override val baseModuleDebuggable: Provider<Boolean> = internalServices.providerOf(
         Boolean::class.java,
@@ -172,8 +183,8 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val shouldPackageDesugarLibDex: Boolean = false
     override val debuggable: Boolean
         get() = delegate.isDebuggable
-    override val profileable: Boolean
-        get() = delegate.isProfileable
+    override val isCoreLibraryDesugaringEnabled: Boolean
+        get() = delegate.isCoreLibraryDesugaringEnabled
 
     override val shouldPackageProfilerDependencies: Boolean = false
 
@@ -187,19 +198,13 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val signingConfigImpl: SigningConfigImpl? = null
 
     override val useJacocoTransformInstrumentation: Boolean
-        get() = variantDslInfo.isAndroidTestCoverageEnabled
-
-    // ---------------------------------------------------------------------------------------------
-    // DO NOT USE, only present for old variant API.
-    // ---------------------------------------------------------------------------------------------
-    override val dslSigningConfig: com.android.build.gradle.internal.dsl.SigningConfig? =
-        variantDslInfo.signingConfig
+        get() = dslInfo.isAndroidTestCoverageEnabled
 
     // ---------------------------------------------------------------------------------------------
     // DO NOT USE, Deprecated DSL APIs.
     // ---------------------------------------------------------------------------------------------
 
-    override val multiDexKeepFile = variantDslInfo.multiDexKeepFile
+    override val multiDexKeepFile = dslInfo.multiDexKeepFile
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff
@@ -267,6 +272,13 @@ open class DynamicFeatureVariantImpl @Inject constructor(
             it.finalizeValueOnRead()
         }
 
+
+    override val minifiedEnabled: Boolean
+        get() = false
+
+    override val resourcesShrink: Boolean
+        get() = false
+
     override val dexingType: DexingType
         get() = delegate.dexingType
 
@@ -288,9 +300,9 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val minSdkVersionForDexing: AndroidVersion
         get() = delegate.minSdkVersionForDexing
 
-    override fun getNeedsMergedJavaResStream(): Boolean = delegate.getNeedsMergedJavaResStream()
+    override val needsMergedJavaResStream: Boolean = delegate.getNeedsMergedJavaResStream()
 
-    override fun getJava8LangSupportType(): VariantScope.Java8LangSupport = delegate.getJava8LangSupportType()
+    override fun getJava8LangSupportType(): Java8LangSupport = delegate.getJava8LangSupportType()
 
     override val needsShrinkDesugarLibrary: Boolean
         get() = delegate.needsShrinkDesugarLibrary

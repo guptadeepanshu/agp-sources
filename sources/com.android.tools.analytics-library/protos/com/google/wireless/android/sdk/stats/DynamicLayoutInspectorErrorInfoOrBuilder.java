@@ -27,4 +27,23 @@ public interface DynamicLayoutInspectorErrorInfoOrBuilder extends
    * @return The attachErrorState.
    */
   com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorState getAttachErrorState();
+
+  /**
+   * <pre>
+   * The error encountered to abort the attach attempt
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+   * @return Whether the attachErrorCode field is set.
+   */
+  boolean hasAttachErrorCode();
+  /**
+   * <pre>
+   * The error encountered to abort the attach attempt
+   * </pre>
+   *
+   * <code>optional .android_studio.DynamicLayoutInspectorErrorInfo.AttachErrorCode attach_error_code = 2;</code>
+   * @return The attachErrorCode.
+   */
+  com.google.wireless.android.sdk.stats.DynamicLayoutInspectorErrorInfo.AttachErrorCode getAttachErrorCode();
 }

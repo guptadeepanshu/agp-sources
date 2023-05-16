@@ -169,6 +169,10 @@ public enum StringOption
    * <code>GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE = 39;</code>
    */
   GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE(39),
+  /**
+   * <code>EXECUTION_PROFILE_SELECTION = 40;</code>
+   */
+  EXECUTION_PROFILE_SELECTION(40),
   UNRECOGNIZED(-1),
   ;
 
@@ -332,6 +336,10 @@ public enum StringOption
    * <code>GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE = 39;</code>
    */
   public static final int GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE_VALUE = 39;
+  /**
+   * <code>EXECUTION_PROFILE_SELECTION = 40;</code>
+   */
+  public static final int EXECUTION_PROFILE_SELECTION_VALUE = 40;
 
 
   public final int getNumber() {
@@ -398,6 +406,7 @@ public enum StringOption
       case 37: return IDE_AGDE_VERSION;
       case 38: return PROFILING_MODE;
       case 39: return GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE;
+      case 40: return EXECUTION_PROFILE_SELECTION;
       default: return null;
     }
   }

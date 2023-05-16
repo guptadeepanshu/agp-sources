@@ -23,12 +23,16 @@ import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.services.Aapt2Input
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.builder.files.SerializableInputChanges
 import com.android.builder.internal.aapt.v2.Aapt2RenamingConventions
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.resources.CompileResourceRequest
 import com.android.ide.common.resources.FileStatus
 import com.android.utils.FileUtils
@@ -52,6 +56,7 @@ import java.io.File
 import javax.inject.Inject
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.COMPILATION])
 abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
 
     @get:InputFiles
@@ -249,6 +254,8 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
         creationConfig: ComponentCreationConfig
     ) : VariantTaskCreationAction<CompileLibraryResourcesTask, ComponentCreationConfig>(
         creationConfig
+    ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
+        creationConfig
     ) {
         override val name: String
             get() = computeTaskName("compile", "LibraryResources")
@@ -287,10 +294,11 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
                     creationConfig.services.fileCollection(packagedRes)
                 )
             }
-            task.pseudoLocalesEnabled.setDisallowChanges(creationConfig
-                .pseudoLocalesEnabled)
+            task.pseudoLocalesEnabled.setDisallowChanges(
+                creationConfig.androidResourcesCreationConfig!!.pseudoLocalesEnabled
+            )
 
-            task.crunchPng.setDisallowChanges(creationConfig.variantScope.isCrunchPngs)
+            task.crunchPng.setDisallowChanges(androidResourcesCreationConfig.isCrunchPngs)
             task.excludeValuesFiles.setDisallowChanges(true)
             creationConfig.services.initializeAapt2Input(task.aapt2)
             task.partialRDirectory.disallowChanges()
@@ -303,6 +311,8 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
         private val inputDirectories: FileCollection,
         creationConfig: ComponentCreationConfig
     ) : VariantTaskCreationAction<CompileLibraryResourcesTask, ComponentCreationConfig>(
+        creationConfig
+    ), AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
         creationConfig
     ) {
 
@@ -337,8 +347,10 @@ abstract class CompileLibraryResourcesTask : NewIncrementalTask() {
                 task.inputDirectoriesAsAbsolute.from(inputDirectories)
             }
             task.inputDirectoriesAsAbsolute.from(inputDirectories)
-            task.crunchPng.setDisallowChanges(creationConfig.variantScope.isCrunchPngs)
-            task.pseudoLocalesEnabled.setDisallowChanges(creationConfig.pseudoLocalesEnabled)
+            task.crunchPng.setDisallowChanges(androidResourcesCreationConfig.isCrunchPngs)
+            task.pseudoLocalesEnabled.setDisallowChanges(
+                androidResourcesCreationConfig.pseudoLocalesEnabled
+            )
             task.relativeResourcePathsEnabled.setDisallowChanges(useRelativeInputDirectories)
             task.excludeValuesFiles.set(false)
             task.dependsOn(creationConfig.taskContainer.resourceGenTask)

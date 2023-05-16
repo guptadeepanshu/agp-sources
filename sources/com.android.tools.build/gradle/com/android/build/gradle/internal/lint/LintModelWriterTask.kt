@@ -24,14 +24,16 @@ import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.lint.model.LintModelModule
 import com.android.tools.lint.model.LintModelSerialization
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.plugins.JavaBasePlugin
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -47,6 +49,7 @@ import java.io.File
  * read by Lint in consuming projects to get all the information about this variant in project.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.LINT)
 abstract class LintModelWriterTask : NonIncrementalTask() {
 
     @get:Nested
@@ -89,7 +92,7 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
 
     internal fun configureForStandalone(
         taskCreationServices: TaskCreationServices,
-        javaConvention: JavaPluginConvention,
+        javaExtension: JavaPluginExtension,
         lintOptions: Lint,
         partialResultsDir: File
     ) {
@@ -99,12 +102,12 @@ abstract class LintModelWriterTask : NonIncrementalTask() {
             getBuildService(taskCreationServices.buildServiceRegistry)
         )
         this.projectInputs
-            .initializeForStandalone(project, javaConvention, lintOptions, LintMode.MODEL_WRITING)
+            .initializeForStandalone(project, javaExtension, lintOptions, LintMode.MODEL_WRITING)
         // The artifact produced is only used by lint tasks with checkDependencies=true
         this.variantInputs
             .initializeForStandalone(
                 project,
-                javaConvention,
+                javaExtension,
                 taskCreationServices.projectOptions,
                 fatalOnly = false,
                 checkDependencies = true,

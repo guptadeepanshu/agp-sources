@@ -461,14 +461,14 @@ public final class JvmWideVariable<T> {
     private AtomicReference<T> getVariable() {
         Verify.verify(
                 !unregistered,
-                String.format(
-                        "This JwmWideVariable instance was used to access JVM-wide variable %s,"
-                                + " but has already been unregistered",
-                        fullName));
+                "This JwmWideVariable instance was used to access JVM-wide variable %s,"
+                        + " but has already been unregistered",
+                fullName);
         //noinspection unchecked
         return Verify.verifyNotNull(
                 (AtomicReference<T>) variableTable.get(fullName),
-                String.format("JVM-wide variable %s has already been unregistered", fullName));
+                "JVM-wide variable %s has already been unregistered",
+                fullName);
     }
 
     /** Returns the current value of this JVM-wide variable. */
@@ -550,13 +550,13 @@ public final class JvmWideVariable<T> {
     public void unregister() {
         Verify.verify(
                 !unregistered,
-                String.format(
-                        "This JwmWideVariable instance was used to access JVM-wide variable %s,"
-                                + " but has already been unregistered",
-                        fullName));
+                "This JwmWideVariable instance was used to access JVM-wide variable %s,"
+                        + " but has already been unregistered",
+                fullName);
         Verify.verifyNotNull(
                 variableTable.remove(fullName),
-                String.format("JVM-wide variable %s has already been unregistered", fullName));
+                "JVM-wide variable %s has already been unregistered",
+                fullName);
         unregistered = true;
     }
 

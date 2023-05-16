@@ -238,4 +238,71 @@ public interface GradleSyncStatsOrBuilder extends
    * @return The usesBuildGradleKts.
    */
   boolean getUsesBuildGradleKts();
+
+  /**
+   * <pre>
+   * Deprecated.
+   * Use user_requested_sync_type and studio_requested_sync_execution_type.
+   * The Sync execution type: whether it uses Sequential or parallel model
+   * fetching.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+   * @return Whether the syncExecutionType field is set.
+   */
+  @java.lang.Deprecated boolean hasSyncExecutionType();
+  /**
+   * <pre>
+   * Deprecated.
+   * Use user_requested_sync_type and studio_requested_sync_execution_type.
+   * The Sync execution type: whether it uses Sequential or parallel model
+   * fetching.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.GradleSyncExecutionType sync_execution_type = 12 [deprecated = true];</code>
+   * @return The syncExecutionType.
+   */
+  @java.lang.Deprecated com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncExecutionType getSyncExecutionType();
+
+  /**
+   * <pre>
+   * The type of sync execution user requested. Note that this may be overridden
+   * by [sync_execution_type] property.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+   * @return Whether the userRequestedSyncType field is set.
+   */
+  boolean hasUserRequestedSyncType();
+  /**
+   * <pre>
+   * The type of sync execution user requested. Note that this may be overridden
+   * by [sync_execution_type] property.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.UserRequestedExecution user_requested_sync_type = 13;</code>
+   * @return The userRequestedSyncType.
+   */
+  com.google.wireless.android.sdk.stats.GradleSyncStats.UserRequestedExecution getUserRequestedSyncType();
+
+  /**
+   * <pre>
+   * The type of sync execution Studio requested. Note that e.g. even if
+   * parallel is requested, Gradle may decide to run it sequentially.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+   * @return Whether the studioRequestedSyncType field is set.
+   */
+  boolean hasStudioRequestedSyncType();
+  /**
+   * <pre>
+   * The type of sync execution Studio requested. Note that e.g. even if
+   * parallel is requested, Gradle may decide to run it sequentially.
+   * </pre>
+   *
+   * <code>optional .android_studio.GradleSyncStats.StudioRequestedExecution studio_requested_sync_type = 14;</code>
+   * @return The studioRequestedSyncType.
+   */
+  com.google.wireless.android.sdk.stats.GradleSyncStats.StudioRequestedExecution getStudioRequestedSyncType();
 }

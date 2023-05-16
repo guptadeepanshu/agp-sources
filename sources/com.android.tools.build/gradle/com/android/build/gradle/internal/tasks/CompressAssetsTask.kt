@@ -19,15 +19,17 @@ import com.android.SdkConstants.DOT_JAR
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AssetsTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.files.KeyedFileCache
 import com.android.builder.packaging.PackagingUtils
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.zipflinger.BytesSource
 import com.android.zipflinger.ZipArchive
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileType
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -64,6 +66,7 @@ import javax.inject.Inject
  * corresponding asset's relative path in the input directory + ".jar".
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.APK_PACKAGING)
 abstract class CompressAssetsTask: NewIncrementalTask() {
 
     @get:Incremental
@@ -94,7 +97,7 @@ abstract class CompressAssetsTask: NewIncrementalTask() {
         creationConfig: ApkCreationConfig
     ) : VariantTaskCreationAction<CompressAssetsTask, ApkCreationConfig>(
         creationConfig
-    ) {
+    ), AssetsTaskCreationAction by AssetsTaskCreationActionImpl(creationConfig) {
 
         override val name: String
             get() = computeTaskName("compress", "Assets")
@@ -119,7 +122,7 @@ abstract class CompressAssetsTask: NewIncrementalTask() {
             super.configure(task)
 
             task.inputDirs.set(creationConfig.artifacts.get(SingleArtifact.ASSETS))
-            task.noCompress.setDisallowChanges(creationConfig.androidResources.noCompress)
+            task.noCompress.setDisallowChanges(assetsCreationConfig.androidResources.noCompress)
             task.compressionLevel.setDisallowChanges(
                 if (creationConfig.debuggable) {
                     BEST_SPEED

@@ -118,7 +118,7 @@ public class ToolsInstructionsCleaner {
                     } else {
                         // anything else, we just clean the attribute unless we are merging for
                         // libraries.
-                        if (mergeType != ManifestMerger2.MergeType.LIBRARY) {
+                        if (mergeType.isKeepToolsAttributeRequired(attribute.getLocalName())) {
                             element.removeAttributeNS(
                                     attribute.getNamespaceURI(), attribute.getLocalName());
                         }
@@ -127,7 +127,7 @@ public class ToolsInstructionsCleaner {
                 // this could also be the xmlns:tools declaration.
                 if (attribute.getNodeName().startsWith(SdkConstants.XMLNS_PREFIX)
                     && SdkConstants.TOOLS_URI.equals(attribute.getNodeValue())
-                        && mergeType != ManifestMerger2.MergeType.LIBRARY) {
+                        && mergeType == ManifestMerger2.MergeType.APPLICATION) {
                     element.removeAttribute(attribute.getNodeName());
                 }
             }

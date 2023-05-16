@@ -21,20 +21,26 @@ import com.android.annotations.Nullable;
 import com.android.build.VariantOutput;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
 import com.android.build.api.component.impl.AndroidTestImpl;
-import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.component.impl.UnitTestImpl;
 import com.android.build.api.dsl.CommonExtension;
 import com.android.build.api.variant.ComponentIdentity;
-import com.android.build.api.variant.impl.VariantBuilderImpl;
-import com.android.build.api.variant.impl.VariantImpl;
+import com.android.build.api.variant.VariantBuilder;
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl;
 import com.android.build.gradle.internal.BuildTypeData;
 import com.android.build.gradle.internal.ProductFlavorData;
 import com.android.build.gradle.internal.api.BaseVariantImpl;
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
-import com.android.build.gradle.internal.core.VariantDslInfo;
+import com.android.build.gradle.internal.component.AndroidTestCreationConfig;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
+import com.android.build.gradle.internal.component.UnitTestCreationConfig;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.VariantSources;
+import com.android.build.gradle.internal.core.dsl.AndroidTestComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.TestFixturesComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.UnitTestComponentDslInfo;
+import com.android.build.gradle.internal.core.dsl.VariantDslInfo;
 import com.android.build.gradle.internal.dependency.VariantDependencies;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
@@ -42,13 +48,11 @@ import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.pipeline.TransformManager;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
+import com.android.build.gradle.internal.scope.MutableTaskContainer;
 import com.android.build.gradle.internal.scope.UnitTestBuildFeatureValuesImpl;
-import com.android.build.gradle.internal.scope.VariantScope;
-import com.android.build.gradle.internal.services.BaseServices;
-import com.android.build.gradle.internal.services.ProjectServices;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.services.TaskCreationServices;
 import com.android.build.gradle.internal.services.VariantServices;
-import com.android.build.gradle.internal.services.VariantServicesImpl;
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.core.BuilderConstants;
@@ -59,104 +63,101 @@ import org.gradle.api.Project;
 
 /** Common superclass for all {@link VariantFactory} implementations. */
 public abstract class BaseVariantFactory<
-                VariantBuilderT extends VariantBuilderImpl, VariantT extends VariantImpl>
-        implements VariantFactory<VariantBuilderT, VariantT> {
+                VariantBuilderT extends VariantBuilder,
+                VariantDslInfoT extends VariantDslInfo,
+                VariantT extends VariantCreationConfig>
+        implements VariantFactory<VariantBuilderT, VariantDslInfoT, VariantT> {
 
     private static final String ANDROID_APT_PLUGIN_NAME = "com.neenbedankt.android-apt";
 
-    @NonNull protected final ProjectServices projectServices;
+    @NonNull protected final DslServices dslServices;
 
-    @Deprecated @NonNull private final VariantServices servicesForOldVariantObjectsOnly;
-
-    public BaseVariantFactory(@NonNull ProjectServices projectServices) {
-        this.projectServices = projectServices;
-        servicesForOldVariantObjectsOnly = new VariantServicesImpl(projectServices, false);
+    public BaseVariantFactory(@NonNull DslServices dslServices) {
+        this.dslServices = dslServices;
     }
 
     @NonNull
     @Override
-    public TestFixturesImpl createTestFixtures(
+    public TestFixturesCreationConfig createTestFixtures(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull TestFixturesComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
-            @NonNull TestFixturesVariantData variantData,
-            @NonNull VariantImpl mainVariant,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig mainVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
         TestFixturesImpl testFixturesComponent =
-                projectServices
-                        .getObjectFactory()
-                        .newInstance(
-                                TestFixturesImpl.class,
-                                componentIdentity,
-                                buildFeatures,
-                                variantDslInfo,
-                                variantDependencies,
-                                variantSources,
-                                paths,
-                                artifacts,
-                                variantScope,
-                                variantData,
-                                mainVariant,
-                                transformManager,
-                                variantServices,
-                                taskCreationServices,
-                                globalConfig);
+                dslServices.newInstance(
+                        TestFixturesImpl.class,
+                        componentIdentity,
+                        buildFeatures,
+                        dslInfo,
+                        variantDependencies,
+                        variantSources,
+                        paths,
+                        artifacts,
+                        taskContainer,
+                        mainVariant,
+                        transformManager,
+                        variantServices,
+                        taskCreationServices,
+                        globalConfig);
         // create default output
-        String name =
-                testFixturesComponent.getServices().getProjectInfo().getProjectBaseName()
-                        + "-"
+        String outputFileNameSuffix =
+                "-"
                         + testFixturesComponent.getBaseName()
                         + "-testFixtures."
                         + BuilderConstants.EXT_LIB_ARCHIVE;
         testFixturesComponent.addVariantOutput(
-                new VariantOutputConfigurationImpl(false, ImmutableList.of()), name);
+                new VariantOutputConfigurationImpl(false, ImmutableList.of()),
+                testFixturesComponent
+                        .getServices()
+                        .getProjectInfo()
+                        .getProjectBaseName()
+                        .map(it -> it + outputFileNameSuffix));
         return testFixturesComponent;
     }
 
     @NonNull
     @Override
-    public UnitTestImpl createUnitTest(
+    public UnitTestCreationConfig createUnitTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull UnitTestComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
             @NonNull TestVariantData variantData,
-            @NonNull VariantImpl testedVariant,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
         UnitTestImpl unitTestProperties =
-                projectServices
-                        .getObjectFactory()
-                        .newInstance(
-                                UnitTestImpl.class,
-                                componentIdentity,
-                                createUnitTestBuildFeatures(buildFeatures),
-                                variantDslInfo,
-                                variantDependencies,
-                                variantSources,
-                                paths,
-                                artifacts,
-                                variantScope,
-                                variantData,
-                                testedVariant,
-                                transformManager,
-                                variantServices,
-                                taskCreationServices,
-                                globalConfig);
+                dslServices.newInstance(
+                        UnitTestImpl.class,
+                        componentIdentity,
+                        createUnitTestBuildFeatures(buildFeatures),
+                        dslInfo,
+                        variantDependencies,
+                        variantSources,
+                        paths,
+                        artifacts,
+                        variantData,
+                        taskContainer,
+                        testedVariant,
+                        transformManager,
+                        variantServices,
+                        taskCreationServices,
+                        globalConfig);
 
         unitTestProperties.addVariantOutput(
                 new VariantOutputConfigurationImpl(false, ImmutableList.of()), null);
@@ -166,40 +167,38 @@ public abstract class BaseVariantFactory<
 
     @NonNull
     @Override
-    public AndroidTestImpl createAndroidTest(
+    public AndroidTestCreationConfig createAndroidTest(
             @NonNull ComponentIdentity componentIdentity,
             @NonNull BuildFeatureValues buildFeatures,
-            @NonNull VariantDslInfo variantDslInfo,
+            @NonNull AndroidTestComponentDslInfo dslInfo,
             @NonNull VariantDependencies variantDependencies,
             @NonNull VariantSources variantSources,
             @NonNull VariantPathHelper paths,
             @NonNull ArtifactsImpl artifacts,
-            @NonNull VariantScope variantScope,
             @NonNull TestVariantData variantData,
-            @NonNull VariantImpl testedVariant,
+            @NonNull MutableTaskContainer taskContainer,
+            @NonNull VariantCreationConfig testedVariant,
             @NonNull TransformManager transformManager,
             @NonNull VariantServices variantServices,
             @NonNull TaskCreationServices taskCreationServices,
             @NonNull GlobalTaskCreationConfig globalConfig) {
         AndroidTestImpl androidTestProperties =
-                projectServices
-                        .getObjectFactory()
-                        .newInstance(
-                                AndroidTestImpl.class,
-                                componentIdentity,
-                                buildFeatures,
-                                variantDslInfo,
-                                variantDependencies,
-                                variantSources,
-                                paths,
-                                artifacts,
-                                variantScope,
-                                variantData,
-                                testedVariant,
-                                transformManager,
-                                variantServices,
-                                taskCreationServices,
-                                globalConfig);
+                dslServices.newInstance(
+                        AndroidTestImpl.class,
+                        componentIdentity,
+                        buildFeatures,
+                        dslInfo,
+                        variantDependencies,
+                        variantSources,
+                        paths,
+                        artifacts,
+                        variantData,
+                        taskContainer,
+                        testedVariant,
+                        transformManager,
+                        variantServices,
+                        taskCreationServices,
+                        globalConfig);
 
         androidTestProperties.addVariantOutput(
                 new VariantOutputConfigurationImpl(false, ImmutableList.of()), null);
@@ -207,33 +206,22 @@ public abstract class BaseVariantFactory<
         return androidTestProperties;
     }
 
-    @Override
     @Nullable
+    @Override
     public BaseVariantImpl createVariantApi(
-            @NonNull ComponentImpl component,
+            @NonNull ComponentCreationConfig component,
             @NonNull BaseVariantData variantData,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider) {
         Class<? extends BaseVariantImpl> implementationClass =
                 getVariantImplementationClass();
 
-        return projectServices
-                .getObjectFactory()
-                .newInstance(
-                        implementationClass,
-                        variantData,
-                        component,
-                        servicesForOldVariantObjectsOnly,
-                        readOnlyObjectProvider,
-                        projectServices
-                                .getProjectInfo()
-                                .getProject()
-                                .container(VariantOutput.class));
-    }
-
-    @Deprecated
-    @NonNull
-    public BaseServices getServicesForOldVariantObjectsOnly() {
-        return servicesForOldVariantObjectsOnly;
+        return dslServices.newInstance(
+                implementationClass,
+                variantData,
+                component,
+                dslServices,
+                readOnlyObjectProvider,
+                dslServices.domainObjectContainer(VariantOutput.class));
     }
 
     @Override
@@ -244,7 +232,7 @@ public abstract class BaseVariantFactory<
                     VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>
                             model) {
         if (project.getPluginManager().hasPlugin(ANDROID_APT_PLUGIN_NAME)) {
-            projectServices
+            dslServices
                     .getIssueReporter()
                     .reportError(
                             Type.INCOMPATIBLE_PLUGIN,
@@ -264,13 +252,11 @@ public abstract class BaseVariantFactory<
             @Nullable Boolean buildConfig) {
         if (buildConfig == null) {
             buildConfig =
-                    projectServices
-                            .getProjectOptions()
-                            .get(BooleanOption.BUILD_FEATURE_BUILDCONFIG);
+                    dslServices.getProjectOptions().get(BooleanOption.BUILD_FEATURE_BUILDCONFIG);
         }
 
         if (!buildConfig) {
-            IssueReporter issueReporter = projectServices.getIssueReporter();
+            IssueReporter issueReporter = dslServices.getIssueReporter();
 
             if (!model.getDefaultConfigData().getDefaultConfig().getBuildConfigFields().isEmpty()) {
                 issueReporter.reportError(
@@ -306,12 +292,11 @@ public abstract class BaseVariantFactory<
                     VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig> model,
             @Nullable Boolean resValues) {
         if (resValues == null) {
-            resValues =
-                    projectServices.getProjectOptions().get(BooleanOption.BUILD_FEATURE_RESVALUES);
+            resValues = dslServices.getProjectOptions().get(BooleanOption.BUILD_FEATURE_RESVALUES);
         }
 
         if (!resValues) {
-            IssueReporter issueReporter = projectServices.getIssueReporter();
+            IssueReporter issueReporter = dslServices.getIssueReporter();
 
             if (!model.getDefaultConfigData().getDefaultConfig().getResValues().isEmpty()) {
                 issueReporter.reportError(

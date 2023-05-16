@@ -16,10 +16,11 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.api.component.impl.ComponentImpl
-import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.internal.AndroidDependenciesRenderer
+import com.android.build.gradle.internal.component.NestedComponentCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.ide.dependencies.MavenCoordinatesCacheBuildService
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.DefaultTask
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -30,15 +31,16 @@ import org.gradle.work.DisableCachingByDefault
 import java.io.IOException
 
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.HELP)
 abstract class DependencyReportTask : DefaultTask() {
 
     @get:Internal
     abstract val mavenCoordinateCache: Property<MavenCoordinatesCacheBuildService>
 
     @get:Internal
-    abstract val variants: ListProperty<VariantImpl>
+    abstract val variants: ListProperty<VariantCreationConfig>
     @get:Internal
-    abstract val nestedComponents: ListProperty<ComponentImpl>
+    abstract val nestedComponents: ListProperty<NestedComponentCreationConfig>
 
     @TaskAction
     @Throws(IOException::class)

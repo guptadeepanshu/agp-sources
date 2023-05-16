@@ -31,11 +31,11 @@ import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.testing.utp.ManagedDeviceImageSuggestionGenerator
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.repository.Revision
 import com.android.testing.utils.computeSystemImageHashFromDsl
 import com.android.testing.utils.isWearTvOrAutoDevice
 import com.android.testing.utils.isWearTvOrAutoSource
-import com.android.utils.CpuArchitecture
 import com.android.utils.osArchitecture
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.provider.Property
@@ -61,6 +61,7 @@ private val loggerWrapper = LoggerWrapper.getLogger(ManagedDeviceSetupTask::clas
  * device.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class ManagedDeviceSetupTask: NonIncrementalGlobalTask() {
 
     @get: Internal

@@ -33,6 +33,7 @@ import com.android.server.adb.protos.AppProcessesProto;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.google.protobuf.InvalidProtocolBufferException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -48,6 +49,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -61,8 +63,23 @@ import java.util.concurrent.TimeUnit;
  *
  * <p>Note that this class tracks {@link com.android.ddmlib.Client}s for all devices tied to an adb
  * host. Devices are keyed off of the given {@link Socketchannel} connection.
+ *
+ * <p>Depending on the version of the device being monitored, different ADB services are used. - For
+ * pre-S (API 31), "track-jdwp" is used. This service only retrieves the debuggable apps and only
+ * returns the PIDs. The application ID of the app process is retrieved later when the VM sends an
+ * APNM packets.
+ *
+ * <p>- S and post-S devices use "track-app" service. On top of the pid, the debuggable and
+ * profileable status are also returned. The VM does NOT send an APNM packet to declare its
+ * application ID. This information is retrieved via a separate command sent for each PID "cat
+ * /proc/XXX/cmdline".
  */
 class DeviceClientMonitorTask implements Runnable {
+
+    // Every times the selector triggers, we read as much as possible from the socket and hand it
+    // over to the Processor associated with it.
+    private final ByteBuffer mBuffer = ByteBuffer.allocate(1 << 16);
+
     private volatile boolean mQuit;
     @NonNull private final Selector mSelector;
     // Note that mChannelsToRegister is not synchronized other than through the compute* interface.
@@ -243,31 +260,51 @@ class DeviceClientMonitorTask implements Runnable {
                 }
 
                 Processor processor = (Processor) attachment;
-                SocketChannel socket = processor.getSocket();
+                SocketChannel socket = (SocketChannel) key.channel();
                 if (socket == null) {
                     continue;
                 }
 
                 try {
-                    processor.processIncomingData();
+                    // This socket has data available. Read as much as we can from it, and hand it
+                    // over to the processor.
+                    mBuffer.clear();
+                    int read = socket.read(mBuffer);
+
+                    // The inputstream has been closed
+                    if (read == -1) {
+                        closeProcessor(processor, socket);
+                        continue;
+                    }
+
+                    mBuffer.flip();
+                    processor.onBytesReceived(mBuffer);
                 } catch (IOException ioe) {
                     Log.d(
                             "DeviceClientMonitorTask",
                             "Error reading incoming data: " + ioe.getMessage());
-                    try {
-                        socket.close();
-                    } catch (IOException ignored) {
-                    }
-                    if (processor instanceof TrackServiceProcessor) {
-                        // For TrackServiceProcessor, the socket is for "track-app" or
-                        // "track-jdwp". Reopen them if the device is still connected.
-                        mChannelsToRegister.remove(socket);
-                        DeviceImpl device = processor.getDevice();
-                        device.getClientTracker().trackDeviceToDropAndReopen(device);
-                    }
+                    closeProcessor(processor, socket);
                 }
             }
         } while (!mQuit);
+        Log.d("DeviceClientMonitorTask", "Exiting loop");
+    }
+
+    public void closeProcessor(@NonNull Processor processor, @NonNull SocketChannel socket) {
+        try (Processor p = processor;
+                SocketChannel c = socket) {
+        } catch (IOException ignored) {
+            // ignored
+        }
+
+        // When does this occurs?
+        if (processor instanceof TrackServiceProcessor) {
+            // For TrackServiceProcessor, the socket is for "track-app" or
+            // "track-jdwp". Reopen them if the device is still connected.
+            mChannelsToRegister.remove(socket);
+            DeviceImpl device = processor.getDevice();
+            device.getClientTracker().trackDeviceToDropAndReopen(device);
+        }
     }
 
     public void stop() {
@@ -442,13 +479,35 @@ class DeviceClientMonitorTask implements Runnable {
      * <p>Another type of Processor is {@link CmdlineFileProcessor} which is created to run an adb
      * shell command to read the /proc/<PID>/cmdline file for the name of a given process.
      */
-    private abstract class Processor {
+    private abstract static class Processor implements AutoCloseable {
 
+        @NonNull ProcessorStream mStream;
         @NonNull final DeviceImpl mDevice;
 
         Processor(@NonNull DeviceImpl device) {
             mDevice = device;
+            mStream = new ProcessorStream();
         }
+
+        public void onBytesReceived(@NonNull ByteBuffer buffer) throws IOException {
+            // Append the incoming byte to the Processor local stream.
+            mStream.append(buffer);
+
+            // Check if the processor has received one or more full messages. In which case,
+            // request it to be processed and discard the used bytes.
+            for (Optional<ByteBuffer> message = parseMessage();
+                    message.isPresent();
+                    message = parseMessage()) {
+                onMessage(message.get());
+                mStream.consume(message.get().limit());
+            }
+        }
+
+        // Check if the Processor stream contains a fully usable message and wrap it in a ByteBuffer
+        protected abstract Optional<ByteBuffer> parseMessage() throws IOException;
+
+        // Process the message contained in the Bytebuffer (guaranteed to contain a single message)
+        protected abstract void onMessage(ByteBuffer message) throws IOException;
 
         @NonNull
         DeviceImpl getDevice() {
@@ -458,13 +517,39 @@ class DeviceClientMonitorTask implements Runnable {
         @Nullable
         abstract SocketChannel getSocket();
 
-        abstract void processIncomingData() throws IOException;
+        public abstract void close() throws IOException;
     }
 
-    private abstract class TrackServiceProcessor extends Processor {
+    abstract static class TrackServiceProcessor extends Processor {
+
+        private static final int HEADER_SIZE = 4;
 
         TrackServiceProcessor(@NonNull DeviceImpl device) {
             super(device);
+        }
+
+        @Override
+        protected Optional<ByteBuffer> parseMessage() throws IOException {
+            if (mStream.size() < HEADER_SIZE) {
+                return Optional.empty();
+            }
+
+            String textSize = new String(mStream.buf(), 0, HEADER_SIZE, AdbHelper.DEFAULT_CHARSET);
+            int paydloadSize;
+            try {
+                paydloadSize = Integer.parseInt(textSize, 16);
+            } catch (NumberFormatException e) {
+                throw new IOException("Bad message size =" + textSize, e);
+            }
+
+            // We don't have enough data yet.
+            if (mStream.size() < HEADER_SIZE + paydloadSize) {
+                return Optional.empty();
+            }
+
+            ByteBuffer message = ByteBuffer.wrap(mStream.buf(), 0, paydloadSize + HEADER_SIZE);
+            message.getInt(); // Skip the first four bytes containing the length.
+            return Optional.of(message);
         }
 
         @Override
@@ -474,7 +559,10 @@ class DeviceClientMonitorTask implements Runnable {
         }
 
         @NonNull
-        abstract String getCommand();
+        protected abstract String getCommand();
+
+        @Override
+        public void close() {}
     }
 
     private class TrackAppProcessor extends TrackServiceProcessor {
@@ -485,24 +573,20 @@ class DeviceClientMonitorTask implements Runnable {
 
         @Override
         @NonNull
-        String getCommand() {
+        protected String getCommand() {
             return "track-app";
         }
 
         @Override
-        void processIncomingData() throws IOException {
-            if (getSocket() == null) {
-                return;
-            }
-            final byte[] lengthBuffer = new byte[4];
-            int length = AdbSocketUtils.readLength(getSocket(), lengthBuffer);
-            if (length < 0) {
-                return;
+        protected void onMessage(ByteBuffer message) throws IOException {
+            AppProcessesProto.AppProcesses processes;
+
+            try {
+                processes = AppProcessesProto.AppProcesses.parseFrom(message);
+            } catch (InvalidProtocolBufferException e) {
+                throw new IOException(e);
             }
 
-            ByteBuffer buffer = AdbSocketUtils.read(getSocket(), length);
-            AppProcessesProto.AppProcesses processes =
-                    AppProcessesProto.AppProcesses.parseFrom(buffer);
             Set<Integer> newJdwpPids = new HashSet<Integer>();
             // Map from pid to the associated data.
             Map<Integer, ProfileableClientImpl> newProfileable = new HashMap<>();
@@ -531,7 +615,7 @@ class DeviceClientMonitorTask implements Runnable {
                 @NonNull Map<Integer, ProfileableClientImpl> currentProfileable) {
             // Map from pid to the associated data, for profileable apps discovered before.
             Map<Integer, ProfileableClientImpl> previousProfileable = new HashMap<>();
-            for (ProfileableClientImpl client : device.getProfileableClients()) {
+            for (ProfileableClientImpl client : device.getProfileableClientImpls()) {
                 previousProfileable.put(client.getProfileableClientData().getPid(), client);
             }
             Set<Integer> addPids =
@@ -608,56 +692,63 @@ class DeviceClientMonitorTask implements Runnable {
 
         @Override
         @NonNull
-        String getCommand() {
+        protected String getCommand() {
             return "track-jdwp";
         }
 
         @Override
-        void processIncomingData() throws IOException {
-            if (getSocket() == null) {
-                return;
-            }
-            final byte[] lengthBuffer = new byte[4];
-            int length = AdbSocketUtils.readLength(getSocket(), lengthBuffer);
-
-            // The following reads |length| bytes from the socket channel.
-            // These bytes correspond to the pids of the current set of processes on the device.
+        protected void onMessage(@NonNull ByteBuffer message) throws IOException {
+            // The [message] bytes correspond to the pids of the current set of processes on the
+            // device.
             // It takes this set of pids and compares them with the existing set of clients
             // for the device. Clients that correspond to pids that are not alive anymore are
             // dropped, and new clients are created for pids that don't have a corresponding Client.
 
-            if (length >= 0) {
-                // array for the current pids.
-                Set<Integer> newPids = new HashSet<Integer>();
+            // array for the current pids.
+            Set<Integer> newPids = new HashSet<>();
 
-                // get the string data if there are any
-                if (length > 0) {
-                    byte[] buffer = new byte[length];
-                    String result = AdbSocketUtils.read(getSocket(), buffer);
+            // get the string data if there are any
+            String result =
+                    new String(
+                            message.array(),
+                            message.position(),
+                            message.remaining(),
+                            AdbHelper.DEFAULT_CHARSET);
 
-                    // split each line in its own list and create an array of integer pid
-                    String[] pids = result.split("\n"); // $NON-NLS-1$
+            // split each line in its own list and create an array of integer pid
+            String[] pids = result.split("\n"); // $NON-NLS-1$
 
-                    for (String pid : pids) {
-                        try {
-                            newPids.add(Integer.valueOf(pid));
+            for (String pid : pids) {
+                try {
+                    newPids.add(Integer.valueOf(pid));
                         } catch (NumberFormatException nfe) {
                             // looks like this pid is not really a number. Lets ignore it.
                         }
-                    }
                 }
                 updateJdwpClients(getDevice(), newPids);
-            }
         }
     }
 
     private class CmdlineFileProcessor extends Processor {
+
+        // CmdlineFileProcessor is peculiar since contrary to TrackServiceProcessor it tap into a
+        // source that does not prefix its message with their size (it runs a bash command). Also
+        // the source does not send several messages, it returns a single message made fo the whole
+        // update of the bash command.
+        //
+        // To be compliant with the parseMessage/onMessage system, it always return false on
+        // parseMessage() until the Processor is closed. After that parseMessage returns true once
+        // and then false each subsequent calls.
+
+        private boolean messageReceived = false;
 
         private final int mPid;
 
         private int mRetryCount; // The number of attempts left to read the cmdline file.
 
         @NonNull SocketChannel mSocket; // Socket to execute the adb shell command.
+
+        boolean mSocketConnected = true;
 
         CmdlineFileProcessor(@NonNull DeviceImpl device, int pid) {
             // For each pid, make up to 5 attempts to read the cmdline file to get the name.
@@ -668,6 +759,16 @@ class DeviceClientMonitorTask implements Runnable {
             super(device);
             mPid = pid;
             mRetryCount = retryCount;
+        }
+
+        @Override
+        protected Optional<ByteBuffer> parseMessage() {
+            if (mSocketConnected || messageReceived) {
+                return Optional.empty();
+            }
+
+            messageReceived = true;
+            return Optional.of(ByteBuffer.wrap(mStream.buf(), 0, mStream.size()));
         }
 
         void connect() {
@@ -683,10 +784,7 @@ class DeviceClientMonitorTask implements Runnable {
             } catch (AdbCommandRejectedException | TimeoutException | IOException e) {
                 // ignore
             }
-            if (mSocket == null) {
-                Log.w("DeviceClientMonitorTask", "Cannot register null socket for PID " + mPid);
-                return;
-            }
+
             try {
                 mSocket.register(mSelector, SelectionKey.OP_READ, this);
             } catch (ClosedChannelException e) {
@@ -703,12 +801,20 @@ class DeviceClientMonitorTask implements Runnable {
         }
 
         @Override
-        void processIncomingData() throws IOException {
-            if (mSocket == null) {
+        protected void onMessage(ByteBuffer message) throws IOException {
+            String name =
+                    new String(
+                            message.array(),
+                            message.position(),
+                            message.remaining(),
+                            AdbHelper.DEFAULT_CHARSET);
+
+            message.position(message.remaining());
+            name = name.trim();
+            if (name.isEmpty()) {
                 return;
             }
-            String name = AdbSocketUtils.readNullTerminatedString(mSocket);
-            mSocket.close();
+
             if (name.equals("<pre-initialized>")) {
                 // The cmdline file hasn't been initialized when it's read.
                 // Create another processor to read the same file, and register its own socket
@@ -722,6 +828,12 @@ class DeviceClientMonitorTask implements Runnable {
             }
             getDevice().updateProfileableClientName(mPid, name);
             AndroidDebugBridge.deviceChanged(getDevice(), IDevice.CHANGE_PROFILEABLE_CLIENT_LIST);
+        }
+
+        @Override
+        public void close() throws IOException {
+            mSocketConnected = false;
+            onBytesReceived(ByteBuffer.wrap(new byte[0]));
         }
     }
 }

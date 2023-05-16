@@ -23,7 +23,10 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.services.ClassesHierarchyBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.InstrumentationTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -44,6 +47,7 @@ import org.gradle.work.InputChanges
  * mode is [FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES].
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.SOURCE_PROCESSING])
 abstract class RecalculateStackFramesTask : NewIncrementalTask() {
 
     @get:Classpath
@@ -94,10 +98,11 @@ abstract class RecalculateStackFramesTask : NewIncrementalTask() {
 
     class CreationAction(
         creationConfig: ComponentCreationConfig
-    ) :
-        VariantTaskCreationAction<RecalculateStackFramesTask, ComponentCreationConfig>(
-            creationConfig
-        ) {
+    ): VariantTaskCreationAction<RecalculateStackFramesTask, ComponentCreationConfig>(
+        creationConfig
+    ), InstrumentationTaskCreationAction by InstrumentationTaskCreationActionImpl(
+        creationConfig
+    ) {
 
         override val name = computeTaskName("fixInstrumented", "ClassesStackFrames")
         override val type = RecalculateStackFramesTask::class.java
@@ -135,9 +140,9 @@ abstract class RecalculateStackFramesTask : NewIncrementalTask() {
             task.bootClasspath.from(creationConfig.global.bootClasspath).disallowChanges()
 
             task.referencedClasses
-                .from(creationConfig.variantScope.providedOnlyClasspath)
+                .from(creationConfig.providedOnlyClasspath)
                 .from(
-                    creationConfig.getDependenciesClassesJarsPostAsmInstrumentation(
+                    instrumentationCreationConfig.getDependenciesClassesJarsPostInstrumentation(
                         AndroidArtifacts.ArtifactScope.ALL
                     )
                 ).disallowChanges()

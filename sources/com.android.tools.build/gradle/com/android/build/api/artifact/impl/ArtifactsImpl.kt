@@ -24,8 +24,9 @@ import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.artifact.Artifacts
 import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.variant.BuiltArtifactsLoader
+import com.android.build.api.artifact.ScopedArtifact
+import com.android.build.api.variant.ScopedArtifacts
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
-import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
 import com.android.build.gradle.internal.scope.getIntermediateOutputPath
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.utils.setDisallowChanges
@@ -34,7 +35,6 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileSystemLocation
 import org.gradle.api.file.FileSystemLocationProperty
 import org.gradle.api.provider.Property
@@ -66,9 +66,44 @@ class ArtifactsImpl(
         return BuiltArtifactsLoaderImpl()
     }
 
+    private val projectScopedArtifacts = ScopedArtifactsImpl(
+        ScopedArtifacts.Scope.PROJECT,
+        identifier,
+        project.layout,
+        project::files,
+    ).also {
+        // provide the initial content of the CLASSES Scoped artifact using the deprecated
+        // public artifact type in case some third-party is appending/transforming using those
+        // types.
+        it.setInitialContent(
+            ScopedArtifact.CLASSES,
+            project.files().also { configurableFileCollection ->
+                @Suppress("DEPRECATION")
+                configurableFileCollection.from(
+                    getAll(MultipleArtifact.ALL_CLASSES_DIRS),
+                    getAll(MultipleArtifact.ALL_CLASSES_JARS),
+                )
+            }
+        )
+    }
+
+    private val allScopedArtifacts = ScopedArtifactsImpl(
+        ScopedArtifacts.Scope.ALL,
+        identifier,
+        project.layout,
+        project::files,
+    )
+
+    override fun forScope(scope: ScopedArtifacts.Scope): ScopedArtifactsImpl =
+        when(scope) {
+            ScopedArtifacts.Scope.PROJECT -> projectScopedArtifacts
+            ScopedArtifacts.Scope.ALL -> allScopedArtifacts
+            else -> throw IllegalArgumentException("Not implemented yet !")
+        }
+
     override fun <FILE_TYPE : FileSystemLocation> get(
         type: SingleArtifact<FILE_TYPE>
-    ): Provider<FILE_TYPE> = getArtifactContainer(type).get()
+    ): Provider<FILE_TYPE>  = getArtifactContainer(type).get()
 
     fun <FILE_TYPE : FileSystemLocation> get(
         type: Single<FILE_TYPE>
@@ -103,14 +138,13 @@ class ArtifactsImpl(
 
     fun calculateOutputPath(type: Single<*>, taskProvider: Task): File {
         with(getArtifactContainer(type)) {
-            val fileName = calculateFileName(type)
+            val fileName = finalFilename?.orNull ?: calculateFileName(type)
             return if (getFinalProvider() == null || taskProvider.name == getFinalProvider()?.name) {
-                val finalName = finalFilename?.orNull ?: fileName
                 if (buildOutputLocation?.isPresent == true)
                     //final transformer with
-                    FileUtils.join(buildOutputLocation!!.get().asFile, finalName)
+                    FileUtils.join(buildOutputLocation!!.get().asFile, fileName)
                 else
-                    getOutputPath(type, forceFilename = finalName)
+                    getOutputPath(type, forceFilename = fileName)
             } else getIntermediateOutputPath(
                 type,
                 taskProvider.name,
@@ -281,6 +315,19 @@ class ArtifactsImpl(
     fun <T: FileSystemLocation> appendTo(type: Multiple<T>, from: Single<T>) {
         getArtifactContainer(type).transferFrom(this, from)
     }
+
+    /**
+     * Appends a single [Provider] of [T] to a [ScopedArtifact] under the
+     * [ScopedArtifacts.Scope.PROJECT] scope.
+     *
+     * @param type the multiple type to append to.
+     * @param from the element to add.
+     */
+    fun <T: FileSystemLocation> appendTo(type: ScopedArtifact, from: Single<T>) {
+        forScope(ScopedArtifacts.Scope.PROJECT)
+            .setInitialContent(type, this, from)
+    }
+
     /**
      * Appends a [List] of [Provider] of [T] to a [MultipleArtifactType] of <T>
      *
@@ -291,18 +338,6 @@ class ArtifactsImpl(
         getArtifactContainer(type).addInitialProvider(listOf(), elements);
     }
 
-    private val allClasses = project.files().from(
-        getAll(MultipleArtifact.ALL_CLASSES_DIRS),
-        getAll(MultipleArtifact.ALL_CLASSES_JARS)
-    )
-
-    /**
-     * The current [FileCollection] for [InternalMultipleArtifactType.ALL_CLASSES_JARS]
-     * and [InternalMultipleArtifactType.ALL_CLASSES_DIRS]
-     * The returned file collection is final but its content can change.
-     */
-    fun getAllClasses(): FileCollection = allClasses
-
     fun addRequest(request: ArtifactOperationRequest) {
         outstandingRequests.add(request)
     }
@@ -311,7 +346,15 @@ class ArtifactsImpl(
         outstandingRequests.remove(request)
     }
 
-    fun ensureAllOperationsAreSatisfied() {
+    /**
+     * Finalize the artifact's container.
+     *
+     * Make sure all pending requests have been fully configured.
+     * Finalize all artifact type.
+     * TODO: lock the container so users cannot invoke any of the variant API methods on the
+     * artifacts.
+     */
+    internal fun finalizeAndLock() {
         if (outstandingRequests.isEmpty()) return
         throw RuntimeException(outstandingRequests.joinToString(
             separator = "\n\t",
@@ -379,7 +422,7 @@ internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSyste
         return this
     }
 
-    fun withName(nameProperty: Property<String>): SingleInitialProviderRequestImpl<TASK, FILE_TYPE> {
+    fun withName(nameProperty: Provider<String>): SingleInitialProviderRequestImpl<TASK, FILE_TYPE> {
         fileName.set(nameProperty)
         return this
     }
@@ -417,4 +460,4 @@ internal class SingleInitialProviderRequestImpl<TASK: Task, FILE_TYPE: FileSyste
     }
 }
 
-const val DEFAULT_FILE_NAME_OF_REGULAR_FILE_ARTIFACTS = "out"
+const val DEFAULT_FILE_NAME_OF_REGULAR_FILE_ARTIFACTS = "out.jar"

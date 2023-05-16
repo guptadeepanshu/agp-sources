@@ -19,14 +19,17 @@ package com.android.build.gradle.internal.transforms
 import com.android.build.api.artifact.SingleArtifact
 import com.android.build.api.variant.VariantOutput
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.res.shrinker.LinkedResourcesFormat
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalMultipleArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.ResourceUsageAnalyzer
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
@@ -53,6 +56,7 @@ import javax.xml.parsers.ParserConfigurationException
  * Enabled when android.experimental.enableNewResourceShrinker=false.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION, secondaryTaskCategories = [TaskCategory.ANDROID_RESOURCES])
 abstract class LegacyShrinkBundleModuleResourcesTask : NonIncrementalTask() {
 
     @get:OutputFile
@@ -213,7 +217,7 @@ abstract class LegacyShrinkBundleModuleResourcesTask : NonIncrementalTask() {
             task.mainSplit = creationConfig.outputs.getMainSplit()
 
             task.dex = creationConfig.services.fileCollection(
-                if (creationConfig.variantScope.consumesFeatureJars()) {
+                if ((creationConfig as? ApplicationCreationConfig)?.consumesFeatureJars == true) {
                     creationConfig.artifacts.get(InternalArtifactType.BASE_DEX)
                 } else {
                     artifacts.getAll(InternalMultipleArtifactType.DEX)

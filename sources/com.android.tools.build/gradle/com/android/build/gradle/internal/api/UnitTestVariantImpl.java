@@ -17,10 +17,10 @@
 package com.android.build.gradle.internal.api;
 
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.ComponentImpl;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.UnitTestVariant;
-import com.android.build.gradle.internal.services.VariantServices;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.TestVariantData;
 import javax.inject.Inject;
@@ -39,9 +39,9 @@ public class UnitTestVariantImpl extends BaseVariantImpl implements UnitTestVari
     @Inject
     public UnitTestVariantImpl(
             @NonNull TestVariantData variantData,
-            @NonNull ComponentImpl component,
+            @NonNull ComponentCreationConfig component,
             @NonNull TestedVariant testedVariant,
-            @NonNull VariantServices services,
+            @NonNull DslServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
         super(component, services, readOnlyObjectProvider, outputs);

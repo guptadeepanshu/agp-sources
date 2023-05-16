@@ -27,10 +27,12 @@ internal const val WILDCARD_Q = '?'
 internal const val COMMENT_START = '#'
 internal const val JAVA_CLASS_START = 'L'
 internal const val JAVA_CLASS_END = ';'
+internal const val JAVA_CLASS_ARRAY_START = '['
 internal const val OPEN_PAREN = '('
 internal const val CLOSE_PAREN = ')'
 internal const val METHOD_SEPARATOR_START = '-'
 internal const val METHOD_SEPARATOR_END = '>'
+internal const val INLINE_CACHE_SEPARATOR = '+'
 
 /**
  * The in-memory representation of a human-readable set of profile rules.
@@ -293,8 +295,12 @@ internal fun parseRule(
     }
     var i = 0
     try {
-        if (line[i] == COMMENT_START) {
+        if (line[0] == COMMENT_START) {
             // If the line starts with a comment, the entire line gets skipped
+            return null
+        }
+        if (line[0] == JAVA_CLASS_ARRAY_START) {
+            // Line starts with class array from Android S+ which isn't supported by profgen
             return null
         }
         val flags = Flags().apply { i = parseFlags(line, i) }
@@ -325,6 +331,10 @@ internal fun parseRule(
         i = fragmentParser.parseReturnType(line, i)
         val returnType = fragmentParser.build()
         if (i != line.length) {
+            if (line[i] == INLINE_CACHE_SEPARATOR) {
+                // Profgen doesn't support inline cache encoding from Android S+.
+                return null
+            }
             if (line.substring(i).isNotBlank()) {
                 throw ParsingException(i, unexpectedTextAfterRule(line.substring(i)))
             }
@@ -477,6 +487,7 @@ private fun RuleFragmentParser.parseReturnType(line: String, start: Int): Int {
                 i++
                 break
             }
+            INLINE_CACHE_SEPARATOR -> break
             OPEN_PAREN,
             CLOSE_PAREN,
             COMMENT_START -> illegalToken(line, i)

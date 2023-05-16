@@ -18,10 +18,12 @@ package com.android.build.gradle.internal.coverage
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.pipeline.OriginalStream
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.utils.zipEntry
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskProvider
@@ -42,6 +44,7 @@ import java.util.jar.JarOutputStream
  *  simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.TEST)
 abstract class JacocoPropertiesTask : NonIncrementalTask() {
 
     @get:OutputFile
@@ -80,10 +83,10 @@ abstract class JacocoPropertiesTask : NonIncrementalTask() {
 
         init {
             // Do immediately as transform API is sensitive to the execution order.
-            if (creationConfig.variantScope.needsJavaResStreams) {
+            if (creationConfig.needsJavaResStreams) {
                 val taskOutput =
                     creationConfig.artifacts.get(InternalArtifactType.JACOCO_CONFIG_RESOURCES_JAR)
-                @Suppress("DEPRECATION") // Legacy support (b/195153220)
+                @Suppress("DEPRECATION") // Legacy support
                 creationConfig.transformManager.addStream(
                     OriginalStream.builder("jacoco-properties-file")
                         .addContentType(com.android.build.api.transform.QualifiedContent.DefaultContentType.RESOURCES)

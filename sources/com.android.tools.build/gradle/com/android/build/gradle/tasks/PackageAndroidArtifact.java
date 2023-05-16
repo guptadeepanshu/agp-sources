@@ -32,17 +32,20 @@ import com.android.annotations.Nullable;
 import com.android.build.api.artifact.Artifact;
 import com.android.build.api.artifact.ArtifactTransformationRequest;
 import com.android.build.api.artifact.impl.ArtifactsImpl;
-import com.android.build.api.component.impl.TestComponentImpl;
 import com.android.build.api.variant.BuiltArtifact;
 import com.android.build.api.variant.FilterConfiguration;
 import com.android.build.api.variant.impl.BuiltArtifactImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsImpl;
 import com.android.build.api.variant.impl.BuiltArtifactsLoaderImpl;
+import com.android.build.api.variant.impl.VariantOutputConfigurationImplKt;
 import com.android.build.api.variant.impl.VariantOutputImpl;
 import com.android.build.api.variant.impl.VariantOutputListKt;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.component.ApplicationCreationConfig;
+import com.android.build.gradle.internal.component.NestedComponentCreationConfig;
+import com.android.build.gradle.internal.component.TestComponentCreationConfig;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.core.Abi;
 import com.android.build.gradle.internal.dependency.AndroidAttributes;
 import com.android.build.gradle.internal.manifest.ManifestData;
@@ -256,16 +259,12 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
     @Input
     public abstract Property<Boolean> getDexUseLegacyPackaging();
 
-    protected String projectBaseName;
-
     @Nullable protected String buildTargetAbi;
 
     @Nullable protected String buildTargetDensity;
 
     @Input
-    public String getProjectBaseName() {
-        return projectBaseName;
-    }
+    public abstract Property<String> getProjectBaseName();
 
     /**
      * Name of directory, inside the intermediate directory, where zip caches are kept.
@@ -943,10 +942,9 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
      */
     private static Set<String> getAcceptedAbis(@NonNull SplitterParams params) {
         FilterConfiguration splitAbiFilter =
-                params.getVariantOutput()
-                        .get()
-                        .getVariantOutputConfiguration()
-                        .getFilter(FilterConfiguration.FilterType.ABI);
+                VariantOutputConfigurationImplKt.getFilter(
+                        params.getVariantOutput().get().getVariantOutputConfiguration(),
+                        FilterConfiguration.FilterType.ABI);
         final Set<String> acceptedAbis =
                 splitAbiFilter != null
                         ? ImmutableSet.of(splitAbiFilter.getIdentifier())
@@ -1140,16 +1138,13 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
             extends VariantTaskCreationAction<TaskT, ApkCreationConfig> {
 
         @NonNull protected final Provider<Directory> manifests;
-        protected boolean useResourceShrinker;
         @NonNull private final Artifact<Directory> manifestType;
 
         public CreationAction(
                 @NonNull ApkCreationConfig creationConfig,
-                boolean useResourceShrinker,
                 @NonNull Provider<Directory> manifests,
                 @NonNull Artifact<Directory> manifestType) {
             super(creationConfig);
-            this.useResourceShrinker = useResourceShrinker;
             this.manifests = manifests;
             this.manifestType = manifestType;
         }
@@ -1181,9 +1176,17 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                                             .getIncrementalDir(packageAndroidArtifact.getName()),
                                     "tmp"));
 
-            packageAndroidArtifact
-                    .getAaptOptionsNoCompress()
-                    .set(creationConfig.getAndroidResources().getNoCompress());
+            if (creationConfig.getAndroidResourcesCreationConfig() != null) {
+                packageAndroidArtifact
+                        .getAaptOptionsNoCompress()
+                        .set(
+                                creationConfig
+                                        .getAndroidResourcesCreationConfig()
+                                        .getAndroidResources()
+                                        .getNoCompress());
+            } else {
+                packageAndroidArtifact.getAaptOptionsNoCompress().set(Collections.emptySet());
+            }
             packageAndroidArtifact.getAaptOptionsNoCompress().disallowChanges();
 
             packageAndroidArtifact
@@ -1260,12 +1263,23 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
             packageAndroidArtifact
                     .getAssets()
                     .set(creationConfig.getArtifacts().get(COMPRESSED_ASSETS.INSTANCE));
-            packageAndroidArtifact.setJniDebugBuild(creationConfig.isJniDebuggable());
+            boolean isJniDebuggable;
+            if (creationConfig instanceof NestedComponentCreationConfig) {
+                isJniDebuggable =
+                        ((NestedComponentCreationConfig) creationConfig)
+                                .getMainVariant()
+                                .isJniDebuggable();
+            } else {
+                isJniDebuggable = ((VariantCreationConfig) creationConfig).isJniDebuggable();
+            }
+            packageAndroidArtifact.setJniDebugBuild(isJniDebuggable);
             packageAndroidArtifact.getDebugBuild().set(creationConfig.getDebuggable());
             packageAndroidArtifact.getDebugBuild().disallowChanges();
 
-            packageAndroidArtifact.projectBaseName =
-                    creationConfig.getServices().getProjectInfo().getProjectBaseName();
+            packageAndroidArtifact
+                    .getProjectBaseName()
+                    .set(creationConfig.getServices().getProjectInfo().getProjectBaseName());
+            packageAndroidArtifact.getProjectBaseName().disallowChanges();
             packageAndroidArtifact.manifestType = manifestType;
             packageAndroidArtifact.buildTargetAbi =
                     creationConfig.getGlobal().getSplits().getAbi().isEnable()
@@ -1281,9 +1295,10 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                                                 COMPILE_CLASSPATH, PROJECT, BASE_MODULE_METADATA));
             }
             packageAndroidArtifact.getBaseModuleMetadata().disallowChanges();
-            if (!creationConfig.getSupportedAbis().isEmpty()) {
+            Set<String> supportedAbis = creationConfig.getSupportedAbis();
+            if (!supportedAbis.isEmpty()) {
                 // If the build author has set the supported Abis that is respected
-                packageAndroidArtifact.getAbiFilters().set(creationConfig.getSupportedAbis());
+                packageAndroidArtifact.getAbiFilters().set(supportedAbis);
             } else {
                 // Otherwise, use the injected Abis if set.
                 packageAndroidArtifact
@@ -1301,8 +1316,7 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
                             ? projectOptions.get(StringOption.IDE_BUILD_TARGET_DENSITY)
                             : null;
 
-            packageAndroidArtifact.apkCreatorType =
-                    creationConfig.getVariantScope().getApkCreatorType();
+            packageAndroidArtifact.apkCreatorType = creationConfig.getGlobal().getApkCreatorType();
 
             packageAndroidArtifact.getCreatedBy().set(creationConfig.getGlobal().getCreatedBy());
 
@@ -1321,9 +1335,9 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
             // If we're in a dynamic feature, we use FEATURE_SIGNING_CONFIG_VERSIONS, published from
             // the base. Otherwise, we use the SIGNING_CONFIG_VERSIONS internal artifact.
             if (creationConfig.getComponentType().isDynamicFeature()
-                    || (creationConfig instanceof TestComponentImpl
-                            && creationConfig
-                                    .getTestedConfig()
+                    || (creationConfig instanceof TestComponentCreationConfig
+                            && ((TestComponentCreationConfig) creationConfig)
+                                    .getMainVariant()
                                     .getComponentType()
                                     .isDynamicFeature())) {
                 packageAndroidArtifact
@@ -1380,7 +1394,8 @@ public abstract class PackageAndroidArtifact extends NewIncrementalTask {
         @NonNull
         public static FileCollection getDexFolders(@NonNull ApkCreationConfig creationConfig) {
             ArtifactsImpl artifacts = creationConfig.getArtifacts();
-            if (creationConfig.getVariantScope().consumesFeatureJars()) {
+            if (creationConfig instanceof ApplicationCreationConfig
+                    && ((ApplicationCreationConfig) creationConfig).getConsumesFeatureJars()) {
                 return creationConfig
                         .getServices()
                         .fileCollection(artifacts.get(InternalArtifactType.BASE_DEX.INSTANCE))

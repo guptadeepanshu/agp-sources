@@ -158,4 +158,137 @@ public interface DynamicLayoutInspectorComposeOrBuilder extends
    * @return The recompositionResetClicks.
    */
   int getRecompositionResetClicks();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were shown
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+   * @return Whether the framesWithRecompositionCountsOn field is set.
+   */
+  boolean hasFramesWithRecompositionCountsOn();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were shown
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+   * @return The framesWithRecompositionCountsOn.
+   */
+  int getFramesWithRecompositionCountsOn();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in red
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+   * @return Whether the framesWithRecompositionColorRed field is set.
+   */
+  boolean hasFramesWithRecompositionColorRed();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in red
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+   * @return The framesWithRecompositionColorRed.
+   */
+  int getFramesWithRecompositionColorRed();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in blue
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+   * @return Whether the framesWithRecompositionColorBlue field is set.
+   */
+  boolean hasFramesWithRecompositionColorBlue();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in blue
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+   * @return The framesWithRecompositionColorBlue.
+   */
+  int getFramesWithRecompositionColorBlue();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in green
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+   * @return Whether the framesWithRecompositionColorGreen field is set.
+   */
+  boolean hasFramesWithRecompositionColorGreen();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in green
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+   * @return The framesWithRecompositionColorGreen.
+   */
+  int getFramesWithRecompositionColorGreen();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in yellow
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+   * @return Whether the framesWithRecompositionColorYellow field is set.
+   */
+  boolean hasFramesWithRecompositionColorYellow();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in yellow
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+   * @return The framesWithRecompositionColorYellow.
+   */
+  int getFramesWithRecompositionColorYellow();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in purple
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+   * @return Whether the framesWithRecompositionColorPurple field is set.
+   */
+  boolean hasFramesWithRecompositionColorPurple();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in purple
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+   * @return The framesWithRecompositionColorPurple.
+   */
+  int getFramesWithRecompositionColorPurple();
+
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in orange
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+   * @return Whether the framesWithRecompositionColorOrange field is set.
+   */
+  boolean hasFramesWithRecompositionColorOrange();
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in orange
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+   * @return The framesWithRecompositionColorOrange.
+   */
+  int getFramesWithRecompositionColorOrange();
 }

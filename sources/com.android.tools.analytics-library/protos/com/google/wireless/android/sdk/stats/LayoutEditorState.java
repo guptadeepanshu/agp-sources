@@ -308,6 +308,14 @@ private static final long serialVersionUID = 0L;
      * <code>CUSTOM_VIEWS = 6;</code>
      */
     CUSTOM_VIEWS(6),
+    /**
+     * <code>GLANCE_WEAR_TILE = 7;</code>
+     */
+    GLANCE_WEAR_TILE(7),
+    /**
+     * <code>GLANCE_APP_WIDGET = 8;</code>
+     */
+    GLANCE_APP_WIDGET(8),
     ;
 
     /**
@@ -338,6 +346,14 @@ private static final long serialVersionUID = 0L;
      * <code>CUSTOM_VIEWS = 6;</code>
      */
     public static final int CUSTOM_VIEWS_VALUE = 6;
+    /**
+     * <code>GLANCE_WEAR_TILE = 7;</code>
+     */
+    public static final int GLANCE_WEAR_TILE_VALUE = 7;
+    /**
+     * <code>GLANCE_APP_WIDGET = 8;</code>
+     */
+    public static final int GLANCE_APP_WIDGET_VALUE = 8;
 
 
     public final int getNumber() {
@@ -367,6 +383,8 @@ private static final long serialVersionUID = 0L;
         case 4: return PREFERENCE_SCREEN;
         case 5: return COMPOSE;
         case 6: return CUSTOM_VIEWS;
+        case 7: return GLANCE_WEAR_TILE;
+        case 8: return GLANCE_APP_WIDGET;
         default: return null;
       }
     }

@@ -549,6 +549,42 @@ public enum VariantPropertiesMethodType
    * <code>COMPONENTS = 123;</code>
    */
   COMPONENTS(123),
+  /**
+   * <code>VARIANT_AAR_METADATA_MIN_COMPILE_SDK_EXTENSION = 124;</code>
+   */
+  VARIANT_AAR_METADATA_MIN_COMPILE_SDK_EXTENSION(124),
+  /**
+   * <code>FOR_SCOPE = 125;</code>
+   */
+  FOR_SCOPE(125),
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_GET = 126;</code>
+   */
+  SCOPED_ARTIFACTS_TO_GET(126),
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_TRANSFORM = 127;</code>
+   */
+  SCOPED_ARTIFACTS_TO_TRANSFORM(127),
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_REPLACE = 128;</code>
+   */
+  SCOPED_ARTIFACTS_TO_REPLACE(128),
+  /**
+   * <code>SCOPED_ARTIFACTS_APPEND = 129;</code>
+   */
+  SCOPED_ARTIFACTS_APPEND(129),
+  /**
+   * <code>CODE_MINIFICATION = 130;</code>
+   */
+  CODE_MINIFICATION(130),
+  /**
+   * <code>SHRINK_RESOURCES = 131;</code>
+   */
+  SHRINK_RESOURCES(131),
+  /**
+   * <code>SOURCES_RESOURCES_ACCESS = 132;</code>
+   */
+  SOURCES_RESOURCES_ACCESS(132),
   UNRECOGNIZED(-1),
   ;
 
@@ -1092,6 +1128,42 @@ public enum VariantPropertiesMethodType
    * <code>COMPONENTS = 123;</code>
    */
   public static final int COMPONENTS_VALUE = 123;
+  /**
+   * <code>VARIANT_AAR_METADATA_MIN_COMPILE_SDK_EXTENSION = 124;</code>
+   */
+  public static final int VARIANT_AAR_METADATA_MIN_COMPILE_SDK_EXTENSION_VALUE = 124;
+  /**
+   * <code>FOR_SCOPE = 125;</code>
+   */
+  public static final int FOR_SCOPE_VALUE = 125;
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_GET = 126;</code>
+   */
+  public static final int SCOPED_ARTIFACTS_TO_GET_VALUE = 126;
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_TRANSFORM = 127;</code>
+   */
+  public static final int SCOPED_ARTIFACTS_TO_TRANSFORM_VALUE = 127;
+  /**
+   * <code>SCOPED_ARTIFACTS_TO_REPLACE = 128;</code>
+   */
+  public static final int SCOPED_ARTIFACTS_TO_REPLACE_VALUE = 128;
+  /**
+   * <code>SCOPED_ARTIFACTS_APPEND = 129;</code>
+   */
+  public static final int SCOPED_ARTIFACTS_APPEND_VALUE = 129;
+  /**
+   * <code>CODE_MINIFICATION = 130;</code>
+   */
+  public static final int CODE_MINIFICATION_VALUE = 130;
+  /**
+   * <code>SHRINK_RESOURCES = 131;</code>
+   */
+  public static final int SHRINK_RESOURCES_VALUE = 131;
+  /**
+   * <code>SOURCES_RESOURCES_ACCESS = 132;</code>
+   */
+  public static final int SOURCES_RESOURCES_ACCESS_VALUE = 132;
 
 
   public final int getNumber() {
@@ -1242,6 +1314,15 @@ public enum VariantPropertiesMethodType
       case 121: return SOURCES_KOTLIN_ACCESS;
       case 122: return CONFIGURATIONS;
       case 123: return COMPONENTS;
+      case 124: return VARIANT_AAR_METADATA_MIN_COMPILE_SDK_EXTENSION;
+      case 125: return FOR_SCOPE;
+      case 126: return SCOPED_ARTIFACTS_TO_GET;
+      case 127: return SCOPED_ARTIFACTS_TO_TRANSFORM;
+      case 128: return SCOPED_ARTIFACTS_TO_REPLACE;
+      case 129: return SCOPED_ARTIFACTS_APPEND;
+      case 130: return CODE_MINIFICATION;
+      case 131: return SHRINK_RESOURCES;
+      case 132: return SOURCES_RESOURCES_ACCESS;
       default: return null;
     }
   }

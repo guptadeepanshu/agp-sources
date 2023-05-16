@@ -1207,6 +1207,62 @@ public enum GradleTaskExecutionType
    * <code>NON_INCREMENTAL_TRANSFORM = 297;</code>
    */
   NON_INCREMENTAL_TRANSFORM(297),
+  /**
+   * <code>FUSED_LIBRARY_MANIFEST_MERGER = 298;</code>
+   */
+  FUSED_LIBRARY_MANIFEST_MERGER(298),
+  /**
+   * <code>FUSED_LIBRARY_MERGE_RESOURCES = 299;</code>
+   */
+  FUSED_LIBRARY_MERGE_RESOURCES(299),
+  /**
+   * <code>FUSED_LIBRARY_MERGE_ARTIFACT = 300;</code>
+   */
+  FUSED_LIBRARY_MERGE_ARTIFACT(300),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MAIN_MANIFEST_GENERATOR = 301;</code>
+   */
+  PRIVACY_SANDBOX_SDK_MAIN_MANIFEST_GENERATOR(301),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MANIFEST_MERGER = 302;</code>
+   */
+  PRIVACY_SANDBOX_SDK_MANIFEST_MERGER(302),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MANIFEST_GENERATOR = 303;</code>
+   */
+  PRIVACY_SANDBOX_SDK_MANIFEST_GENERATOR(303),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_LINK_ANDROID_RESOURCES = 304;</code>
+   */
+  PRIVACY_SANDBOX_SDK_LINK_ANDROID_RESOURCES(304),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MERGE_RESOURCES = 305;</code>
+   */
+  PRIVACY_SANDBOX_SDK_MERGE_RESOURCES(305),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_DEX = 306;</code>
+   */
+  PRIVACY_SANDBOX_SDK_DEX(306),
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MERGE_DEX = 307;</code>
+   */
+  PRIVACY_SANDBOX_SDK_MERGE_DEX(307),
+  /**
+   * <code>PACKAGE_PRIVACY_SANDBOX_SDK_BUNDLE = 308;</code>
+   */
+  PACKAGE_PRIVACY_SANDBOX_SDK_BUNDLE(308),
+  /**
+   * <code>BUILD_PRIVACY_SANDBOX_SDK_APKS = 309;</code>
+   */
+  BUILD_PRIVACY_SANDBOX_SDK_APKS(309),
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_ASAR = 310;</code>
+   */
+  GENERATE_PRIVACY_SANDBOX_ASAR(310),
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE = 311;</code>
+   */
+  GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE(311),
   UNRECOGNIZED(-1),
   ;
 
@@ -2402,6 +2458,62 @@ public enum GradleTaskExecutionType
    * <code>NON_INCREMENTAL_TRANSFORM = 297;</code>
    */
   public static final int NON_INCREMENTAL_TRANSFORM_VALUE = 297;
+  /**
+   * <code>FUSED_LIBRARY_MANIFEST_MERGER = 298;</code>
+   */
+  public static final int FUSED_LIBRARY_MANIFEST_MERGER_VALUE = 298;
+  /**
+   * <code>FUSED_LIBRARY_MERGE_RESOURCES = 299;</code>
+   */
+  public static final int FUSED_LIBRARY_MERGE_RESOURCES_VALUE = 299;
+  /**
+   * <code>FUSED_LIBRARY_MERGE_ARTIFACT = 300;</code>
+   */
+  public static final int FUSED_LIBRARY_MERGE_ARTIFACT_VALUE = 300;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MAIN_MANIFEST_GENERATOR = 301;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_MAIN_MANIFEST_GENERATOR_VALUE = 301;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MANIFEST_MERGER = 302;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_MANIFEST_MERGER_VALUE = 302;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MANIFEST_GENERATOR = 303;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_MANIFEST_GENERATOR_VALUE = 303;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_LINK_ANDROID_RESOURCES = 304;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_LINK_ANDROID_RESOURCES_VALUE = 304;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MERGE_RESOURCES = 305;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_MERGE_RESOURCES_VALUE = 305;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_DEX = 306;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_DEX_VALUE = 306;
+  /**
+   * <code>PRIVACY_SANDBOX_SDK_MERGE_DEX = 307;</code>
+   */
+  public static final int PRIVACY_SANDBOX_SDK_MERGE_DEX_VALUE = 307;
+  /**
+   * <code>PACKAGE_PRIVACY_SANDBOX_SDK_BUNDLE = 308;</code>
+   */
+  public static final int PACKAGE_PRIVACY_SANDBOX_SDK_BUNDLE_VALUE = 308;
+  /**
+   * <code>BUILD_PRIVACY_SANDBOX_SDK_APKS = 309;</code>
+   */
+  public static final int BUILD_PRIVACY_SANDBOX_SDK_APKS_VALUE = 309;
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_ASAR = 310;</code>
+   */
+  public static final int GENERATE_PRIVACY_SANDBOX_ASAR_VALUE = 310;
+  /**
+   * <code>GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE = 311;</code>
+   */
+  public static final int GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE_VALUE = 311;
 
 
   public final int getNumber() {
@@ -2726,6 +2838,20 @@ public enum GradleTaskExecutionType
       case 295: return FUSED_LIBRARY_CLASSES_REWRITE;
       case 296: return INCREMENTAL_TRANSFORM;
       case 297: return NON_INCREMENTAL_TRANSFORM;
+      case 298: return FUSED_LIBRARY_MANIFEST_MERGER;
+      case 299: return FUSED_LIBRARY_MERGE_RESOURCES;
+      case 300: return FUSED_LIBRARY_MERGE_ARTIFACT;
+      case 301: return PRIVACY_SANDBOX_SDK_MAIN_MANIFEST_GENERATOR;
+      case 302: return PRIVACY_SANDBOX_SDK_MANIFEST_MERGER;
+      case 303: return PRIVACY_SANDBOX_SDK_MANIFEST_GENERATOR;
+      case 304: return PRIVACY_SANDBOX_SDK_LINK_ANDROID_RESOURCES;
+      case 305: return PRIVACY_SANDBOX_SDK_MERGE_RESOURCES;
+      case 306: return PRIVACY_SANDBOX_SDK_DEX;
+      case 307: return PRIVACY_SANDBOX_SDK_MERGE_DEX;
+      case 308: return PACKAGE_PRIVACY_SANDBOX_SDK_BUNDLE;
+      case 309: return BUILD_PRIVACY_SANDBOX_SDK_APKS;
+      case 310: return GENERATE_PRIVACY_SANDBOX_ASAR;
+      case 311: return GENERATE_PRIVACY_SANDBOX_SDK_RUNTIME_CONFIG_FILE;
       default: return null;
     }
   }

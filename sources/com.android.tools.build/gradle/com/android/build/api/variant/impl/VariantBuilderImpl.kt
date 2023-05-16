@@ -20,16 +20,15 @@ import com.android.build.api.component.impl.ComponentBuilderImpl
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ComponentIdentity
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.gradle.internal.core.VariantDslInfo
-import com.android.build.gradle.internal.services.ProjectServices
+import com.android.build.gradle.internal.core.dsl.VariantDslInfo
 import com.android.build.gradle.internal.services.VariantBuilderServices
-import com.google.wireless.android.sdk.stats.GradleBuildVariant
+import com.android.builder.errors.IssueReporter
 
 abstract class VariantBuilderImpl(
     globalVariantBuilderConfig: GlobalVariantBuilderConfig,
     variantDslInfo: VariantDslInfo,
     componentIdentity: ComponentIdentity,
-    variantBuilderServices: VariantBuilderServices
+    variantBuilderServices: VariantBuilderServices,
 ) :
     ComponentBuilderImpl(
         globalVariantBuilderConfig,
@@ -37,7 +36,7 @@ abstract class VariantBuilderImpl(
         componentIdentity,
         variantBuilderServices
     ),
-    VariantBuilder {
+    VariantBuilder, InternalVariantBuilder {
 
     /**
      * MinSdkVersion usable in the Variant API
@@ -116,16 +115,12 @@ abstract class VariantBuilderImpl(
 
     override var maxSdk: Int? = variantDslInfo.maxSdkVersion
 
-    abstract fun <T: VariantBuilder> createUserVisibleVariantObject(
-            projectServices: ProjectServices,
-            stats: GradleBuildVariant.Builder?): T
-
     override var renderscriptTargetApi: Int = -1
         get() {
             // if the field has been set, always use  that value, otherwise, calculate it each
             // time in case minSdkVersion changes.
             if (field != -1) return field
-            val targetApi = variantDslInfo.renderscriptTarget
+            val targetApi = (dslInfo as VariantDslInfo).renderscriptTarget
             // default to -1 if not in build.gradle file.
             val minSdk = mutableMinSdk.getFeatureLevel()
             return if (targetApi > minSdk) targetApi else minSdk
@@ -152,4 +147,18 @@ abstract class VariantBuilderImpl(
             registeredExtensionDelegate.value
         else null
 
+    internal fun setMinificationIfPossible(
+        varName: String,
+        newValue: Boolean,
+        setter: (Boolean) -> Unit
+    ) {
+        if (dslInfo.postProcessingOptions.hasPostProcessingConfiguration())
+            variantBuilderServices.issueReporter.reportWarning(
+                IssueReporter.Type.GENERIC,
+                "You cannot set $varName via Variant API as build uses postprocessing{...} " +
+                        "instead of buildTypes{...}"
+            )
+        else
+            setter(newValue)
+    }
 }

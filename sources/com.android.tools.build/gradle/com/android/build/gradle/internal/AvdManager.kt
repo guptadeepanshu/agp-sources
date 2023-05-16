@@ -52,7 +52,8 @@ class AvdManager(
     private val versionedSdkLoader: Provider<SdkComponentsBuildService.VersionedSdkLoader>,
     private val sdkHandler: AndroidSdkHandler,
     private val androidLocationsProvider: AndroidLocationsProvider,
-    private val snapshotHandler: AvdSnapshotHandler
+    private val snapshotHandler: AvdSnapshotHandler,
+    val deviceLockManager: ManagedVirtualDeviceLockManager
 ) {
 
     private val sdkDirectory: File
@@ -85,7 +86,7 @@ class AvdManager(
         // It fails to generate a snapshot image if you try to create two AVDs with a same name
         // simultaneously. https://issuetracker.google.com/issues/206798666
         return runWithMultiProcessLocking(deviceName) {
-            avdManager.reloadAvds(logger)
+            avdManager.reloadAvds()
             val info = avdManager.getAvd(deviceName, false)
             info?.let {
                 if (info.status == AvdStatus.OK) {
@@ -167,8 +168,7 @@ class AvdManager(
                 device.bootProps,
                 device.hasPlayStore(),
                 false,
-                false,
-                logger
+                false
         )
     }
 
@@ -215,15 +215,17 @@ class AvdManager(
 
             val adbExecutable = versionedSdkLoader.get().adbExecutableProvider.get().asFile
 
-            logger.verbose("Creating snapshot for $deviceName")
-            snapshotHandler.generateSnapshot(
-                deviceName,
-                emulatorExecutable,
-                adbExecutable,
-                avdFolder,
-                emulatorGpuFlag,
-                logger
-            )
+            deviceLockManager.lock(1).use {
+                logger.verbose("Creating snapshot for $deviceName")
+                snapshotHandler.generateSnapshot(
+                    deviceName,
+                    emulatorExecutable,
+                    adbExecutable,
+                    avdFolder,
+                    emulatorGpuFlag,
+                    logger
+                )
+            }
 
             if (snapshotHandler.checkSnapshotLoadable(
                     deviceName,
@@ -248,7 +250,7 @@ class AvdManager(
      * Returns the names of all avds currently in the shared avd folder.
      */
     fun allAvds(): List<String> {
-        avdManager.reloadAvds(logger)
+        avdManager.reloadAvds()
         return avdManager.allAvds.map {
             it.name
         }
@@ -260,16 +262,21 @@ class AvdManager(
      * This will delete the specified avds from the shared avd folder and update the avd cache.
      *
      * @param avds names of the avds to be deleted.
+     * @return the list of avds that were actually deleted.
      */
-    fun deleteAvds(avds: List<String>) {
-        avdManager.reloadAvds(logger)
-        for(avdName in avds) {
+    fun deleteAvds(avds: List<String>): List<String> {
+        avdManager.reloadAvds()
+        return avds.filter { avdName ->
             val avdInfo = avdManager.getAvd(avdName, false)
-            if (avdInfo != null) {
-                avdManager.deleteAvd(avdInfo, logger)
+            val isDeleted = if (avdInfo != null) {
+                avdManager.deleteAvd(avdInfo)
             } else {
+                false
+            }
+            if (!isDeleted) {
                 logger.warning("Failed to delete avd: $avdName.")
             }
+            isDeleted
         }
     }
 

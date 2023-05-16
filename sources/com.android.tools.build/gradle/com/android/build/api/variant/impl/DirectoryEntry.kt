@@ -18,7 +18,6 @@ package com.android.build.api.variant.impl
 
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
 
@@ -52,13 +51,27 @@ interface DirectoryEntry {
      * Return the source folder as a [Provider] of [Directory], with appropriate
      * [org.gradle.api.Task] dependency if there is one. Can be used as a task input directly.
      */
-    fun asFiles(directoryPropertyCreator: () -> DirectoryProperty): Provider<Directory>
+    fun asFiles(
+        projectDir: Provider<Directory>,
+    ): Provider<out Collection<Directory>>
 
     /**
      * Return the source folder as a [ConfigurableFileTree] which can be used as
      * [org.gradle.api.Task] input.
      */
-    fun asFileTree(fileTreeCreator: () -> ConfigurableFileTree): ConfigurableFileTree
+    fun asFileTree(
+            fileTreeCreator: () -> ConfigurableFileTree
+    ): Provider<List<ConfigurableFileTree>>
+
+    /**
+     * Return the source folders as a [List] of [ConfigurableFileTree] which CANNOT be used as
+     * [org.gradle.api.Task] input. This method must only be called by
+     * [FlatSourceDirectoriesImpl.getAsFileTreesForOldVariantAPI], all new usages should use
+     * [asFiles] or [asFileTree]
+     */
+    fun asFileTreeWithoutTaskDependency(
+            fileTreeCreator: () -> ConfigurableFileTree
+    ): List<ConfigurableFileTree>
 
     /**
      * Optional filter associated with this source folder.

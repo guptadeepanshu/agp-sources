@@ -20,6 +20,8 @@ import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.dsl.CoreNdkOptions;
 import java.util.List;
 import java.util.Set;
+
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
@@ -27,6 +29,7 @@ import org.gradle.work.DisableCachingByDefault;
 
 /** Base task for tasks that require an NdkConfig */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.NATIVE)
 public abstract class NdkTask extends NonIncrementalTask {
 
     @Nullable

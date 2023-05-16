@@ -23,9 +23,11 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ARTIFACT_TYPE
 import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.utils.FileUtils
 import com.google.common.base.Joiner
 import org.gradle.api.Action
@@ -35,6 +37,7 @@ import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
 import org.gradle.api.attributes.AttributeContainer
+import org.gradle.api.capabilities.Capability
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -52,6 +55,7 @@ private val aarOrJarType = Action { container: AttributeContainer ->
 
 /** Task to write the list of transitive dependencies.  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.METADATA)
 abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
 
     @get:OutputFile
@@ -157,7 +161,7 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
                     val projectId = "${creationConfig.services.projectInfo.path}::${task.variantName}"
                     capabilitiesList.map { capabilities ->
                         encodeCapabilitiesInId(projectId) {
-                            capabilities.joinToString(";") { it.toString() }
+                            capabilities.joinToString(";") { it.convertToString() }
                         }
                     }.distinct()
                 }
@@ -182,8 +186,21 @@ abstract class PackagedDependenciesWriterTask : NonIncrementalTask() {
 fun ResolvedArtifactResult.toIdString(): String {
     return id.componentIdentifier.toIdString(
         variantProvider = { variant.attributes.getAttribute(VariantAttr.ATTRIBUTE)?.name },
-        capabilitiesProvider = { variant.capabilities.joinToString(";") { it.toString() } },
+        capabilitiesProvider = { variant.capabilities.joinToString(";") {
+            it.convertToString()
+        } },
     )
+}
+
+/**
+ * Converts the capability object to a string. We intentionally leave out the version, which is not
+ * a part of the capability identity, to not repackage the same dependency if the versions don't
+ * match.
+ * TODO(b/185161615): We still have a problem in that case as currently the artifact that will be
+ *   used to build the dynamic feature module will not be the one that ends up in the base apk.
+ */
+fun Capability.convertToString(): String {
+    return "Capability: group='$group', name='$name'"
 }
 
 private fun ComponentIdentifier.toIdString(

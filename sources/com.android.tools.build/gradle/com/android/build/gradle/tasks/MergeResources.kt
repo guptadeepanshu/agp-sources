@@ -40,14 +40,18 @@ import com.android.build.gradle.internal.services.Aapt2Input
 import com.android.build.gradle.internal.services.Aapt2ThreadPoolBuildService
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.Blocks
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NewIncrementalTask
 import com.android.build.gradle.internal.tasks.Workers.withGradleWorkers
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.factory.features.AndroidResourcesTaskCreationActionImpl
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.options.SyncOptions.ErrorFormatMode
 import com.android.builder.png.VectorDrawableRenderer
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.blame.MergingLog
 import com.android.ide.common.resources.ANDROID_AAPT_IGNORE
 import com.android.ide.common.resources.CopyToOutputDirectoryResourceCompilationService
@@ -96,8 +100,10 @@ import java.util.Locale
 import java.util.function.Supplier
 import java.util.stream.Collectors
 import javax.xml.bind.JAXBException
+import javax.xml.parsers.DocumentBuilderFactory
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.ANDROID_RESOURCES, secondaryTaskCategories = [TaskCategory.MERGING])
 abstract class MergeResources : NewIncrementalTask() {
     // ----- PUBLIC TASK API -----
     /** Directory to write the merged resources to  */
@@ -212,7 +218,8 @@ abstract class MergeResources : NewIncrementalTask() {
         val resourceSets = getConfiguredResourceSets(preprocessor, aaptEnv.orNull)
 
         // create a new merger and populate it with the sets.
-        val merger = ResourceMerger(minSdk.get())
+        val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+        val merger = ResourceMerger(minSdk.get(), documentBuilderFactory)
         var mergingLog: MergingLog? = null
         if (blameLogOutputFolder.isPresent) {
             val blameLogFolder = blameLogOutputFolder.get().asFile
@@ -769,7 +776,10 @@ abstract class MergeResources : NewIncrementalTask() {
         private val processResources: Boolean,
         flags: Set<Flag>,
         isLibrary: Boolean
-    ) : VariantTaskCreationAction<MergeResources, ComponentCreationConfig>(creationConfig) {
+    ) : VariantTaskCreationAction<MergeResources, ComponentCreationConfig>(creationConfig),
+        AndroidResourcesTaskCreationAction by AndroidResourcesTaskCreationActionImpl(
+            creationConfig
+        ) {
         private val processVectorDrawables: Boolean
         private val flags: Set<Flag>
         private val isLibrary: Boolean
@@ -781,7 +791,7 @@ abstract class MergeResources : NewIncrementalTask() {
         }
 
         override val name: String
-            get() = computeTaskName(mergeType.name.toLowerCase(Locale.ENGLISH), "Resources")
+            get() = computeTaskName(mergeType.name.lowercase(Locale.ENGLISH), "Resources")
         override val type: Class<MergeResources>
             get() = MergeResources::class.java
 
@@ -822,7 +832,7 @@ abstract class MergeResources : NewIncrementalTask() {
                 .use(taskProvider)
                 .wiredWith { obj: MergeResources -> obj.incrementalFolder }
                 .toCreate(MERGED_RES_INCREMENTAL_FOLDER)
-            val vectorDrawablesOptions = creationConfig.vectorDrawables
+            val vectorDrawablesOptions = androidResourcesCreationConfig.vectorDrawables
             val disableVectorDrawables = (!processVectorDrawables
                     || vectorDrawablesOptions.generatedDensities == null)
             if (!disableVectorDrawables) {
@@ -841,15 +851,14 @@ abstract class MergeResources : NewIncrementalTask() {
 
         override fun configure(task: MergeResources) {
             super.configure(task)
-            val variantScope = creationConfig.variantScope
             task.namespace.setDisallowChanges(creationConfig.namespace)
             task.minSdk
                 .setDisallowChanges(
                     task.project
                         .provider { creationConfig.minSdkVersion.apiLevel })
             task.processResources = processResources
-            task.crunchPng = variantScope.isCrunchPngs
-            val vectorDrawablesOptions = creationConfig.vectorDrawables
+            task.crunchPng = androidResourcesCreationConfig.isCrunchPngs
+            val vectorDrawablesOptions = androidResourcesCreationConfig.vectorDrawables
             task.generatedDensities = vectorDrawablesOptions.generatedDensities
             if (task.generatedDensities == null) {
                 task.generatedDensities = emptySet()
@@ -902,14 +911,16 @@ abstract class MergeResources : NewIncrementalTask() {
                 )
             }
             task.mergedNotCompiledResourcesOutputDirectory = mergedNotCompiledOutputDirectory
-            task.pseudoLocalesEnabled.setDisallowChanges(creationConfig.pseudoLocalesEnabled)
+            task.pseudoLocalesEnabled.setDisallowChanges(
+                androidResourcesCreationConfig.pseudoLocalesEnabled
+            )
             task.flags = flags
             task.errorFormatMode = SyncOptions.getErrorFormatMode(
                 creationConfig.services.projectOptions
             )
             task.precompileDependenciesResources =
                 (mergeType == TaskManager.MergeType.MERGE && !isLibrary
-                        && creationConfig.isPrecompileDependenciesResourcesEnabled)
+                        && androidResourcesCreationConfig.isPrecompileDependenciesResourcesEnabled)
             task.resourceDirsOutsideRootProjectDir
                 .set(
                     task.project

@@ -231,10 +231,28 @@ abstract class DependencyResourcesComputer {
         }
         resources.disallowChanges()
 
-        extraGeneratedResFolders.fromDisallowChanges(
-            creationConfig.variantData.extraGeneratedResFolders
-        )
+        // Add the user added generated directories to the extraGeneratedResFolders.
+        // this should be cleaned up once the old variant API is removed.
+        creationConfig.sources.res.getVariantSources().get().forEach { directoryEntries ->
+            directoryEntries.directoryEntries
+                .filter {
+                    it.isUserAdded && it.isGenerated
+                }
+                .forEach {
+                    extraGeneratedResFolders.from(
+                        it.asFiles(
+                          creationConfig.services.provider {
+                              creationConfig.services.projectInfo.projectDirectory
+                          }
+                        )
+                    )
+                }
+        }
 
+        creationConfig.oldVariantApiLegacySupport?.variantData?.extraGeneratedResFolders?.let {
+            extraGeneratedResFolders.from(it)
+        }
+        extraGeneratedResFolders.disallowChanges()
 
         if (creationConfig.artifacts.get(InternalArtifactType.GENERATED_RES).isPresent) {
             generatedResOutputDir.fromDisallowChanges(

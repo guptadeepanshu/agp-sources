@@ -72,6 +72,10 @@ public enum IntegerOption
    * <code>GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES = 15;</code>
    */
   GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES(15),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES = 16;</code>
+   */
+  GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES(16),
   UNRECOGNIZED(-1),
   ;
 
@@ -139,6 +143,10 @@ public enum IntegerOption
    * <code>GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES = 15;</code>
    */
   public static final int GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES_VALUE = 15;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES = 16;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES_VALUE = 16;
 
 
   public final int getNumber() {
@@ -181,6 +189,7 @@ public enum IntegerOption
       case 13: return MANAGED_DEVICE_SHARD_POOL_SIZE;
       case 14: return R8_MAX_WORKERS;
       case 15: return GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES;
+      case 16: return GRADLE_MANAGED_DEVICE_MAX_CONCURRENT_DEVICES;
       default: return null;
     }
   }

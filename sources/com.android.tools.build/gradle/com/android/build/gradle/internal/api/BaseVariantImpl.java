@@ -19,21 +19,23 @@ package com.android.build.gradle.internal.api;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.api.artifact.SingleArtifact;
-import com.android.build.api.component.impl.ComponentImpl;
+import com.android.build.api.component.impl.ComponentUtils;
 import com.android.build.api.variant.ResValue;
 import com.android.build.api.variant.impl.ConfigurableFileTreeBasedDirectoryEntryImpl;
 import com.android.build.api.variant.impl.ResValueKeyImpl;
 import com.android.build.api.variant.impl.TaskProviderBasedDirectoryEntryImpl;
-import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.api.JavaCompileOptions;
 import com.android.build.gradle.api.SourceKind;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.ConsumableCreationConfig;
+import com.android.build.gradle.internal.component.legacy.OldVariantApiLegacySupport;
 import com.android.build.gradle.internal.core.InternalBaseVariant;
 import com.android.build.gradle.internal.errors.DeprecationReporter;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.MutableTaskContainer;
-import com.android.build.gradle.internal.services.VariantServices;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.tasks.factory.TaskFactoryUtils;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.options.BooleanOption;
@@ -86,22 +88,25 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     public static final String USE_PROPERTIES_DEPRECATION_URL =
             "https://d.android.com/r/tools/use-properties";
 
-    @NonNull protected final ComponentImpl component;
-    @NonNull protected final VariantServices services;
+    @NonNull protected final ComponentCreationConfig component;
+    @NonNull protected final DslServices services;
 
     @NonNull protected final ReadOnlyObjectProvider readOnlyObjectProvider;
 
     @NonNull protected final NamedDomainObjectContainer<BaseVariantOutput> outputs;
 
+    @NonNull private final OldVariantApiLegacySupport oldVariantApiLegacySupport;
+
     BaseVariantImpl(
-            @NonNull ComponentImpl component,
-            @NonNull VariantServices services,
+            @NonNull ComponentCreationConfig component,
+            @NonNull DslServices services,
             @NonNull ReadOnlyObjectProvider readOnlyObjectProvider,
             @NonNull NamedDomainObjectContainer<BaseVariantOutput> outputs) {
         this.component = component;
         this.services = services;
         this.readOnlyObjectProvider = readOnlyObjectProvider;
         this.outputs = outputs;
+        this.oldVariantApiLegacySupport = component.getOldVariantApiLegacySupport();
     }
 
     @NonNull
@@ -120,7 +125,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     @NonNull
     public String getDescription() {
-        return getVariantData().getDescription();
+        return component.getDescription();
     }
 
     @Override
@@ -152,14 +157,14 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     public BuildType getBuildType() {
         // this is to be removed when we can get rid of the old API.
         return readOnlyObjectProvider.getBuildType(
-                (BuildType) component.getOldVariantApiLegacySupport().getBuildTypeObj());
+                (BuildType) oldVariantApiLegacySupport.getBuildTypeObj());
     }
 
     @Override
     @NonNull
     public List<ProductFlavor> getProductFlavors() {
         List<ProductFlavor> flavors =
-                component.getOldVariantApiLegacySupport().getProductFlavorList().stream()
+                oldVariantApiLegacySupport.getProductFlavorList().stream()
                         .map(it -> (ProductFlavor) it)
                         .collect(Collectors.toList());
         return new ImmutableFlavorList(flavors, readOnlyObjectProvider);
@@ -169,13 +174,13 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @NonNull
     public MergedFlavor getMergedFlavor() {
         // this is to be removed when we can get rid of the old API.
-        return component.getOldVariantApiLegacySupport().getMergedFlavor();
+        return oldVariantApiLegacySupport.getMergedFlavor();
     }
 
     @NonNull
     @Override
     public JavaCompileOptions getJavaCompileOptions() {
-        return component.getOldVariantApiLegacySupport().getJavaCompileOptions();
+        return oldVariantApiLegacySupport.getOldVariantApiJavaCompileOptions();
     }
 
     @NonNull
@@ -189,7 +194,11 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     public List<ConfigurableFileTree> getSourceFolders(@NonNull SourceKind folderType) {
         switch (folderType) {
             case JAVA:
-                return component.getSources().getJava().getAsFileTrees$gradle_core().get();
+                return component
+                        .getSources()
+                        .getJava()
+                        .getAsFileTreesForOldVariantAPI$gradle_core()
+                        .get();
             default:
                 services.getIssueReporter()
                         .reportError(
@@ -203,19 +212,19 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @NonNull
     @Override
     public Configuration getCompileConfiguration() {
-        return getVariantData().getVariantDependencies().getCompileClasspath();
+        return component.getVariantDependencies().getCompileClasspath();
     }
 
     @NonNull
     @Override
     public Configuration getRuntimeConfiguration() {
-        return getVariantData().getVariantDependencies().getRuntimeClasspath();
+        return component.getVariantDependencies().getRuntimeClasspath();
     }
 
     @NonNull
     @Override
     public Configuration getAnnotationProcessorConfiguration() {
-        return getVariantData().getVariantDependencies().getAnnotationProcessorConfiguration();
+        return component.getVariantDependencies().getAnnotationProcessorConfiguration();
     }
 
     @Override
@@ -235,7 +244,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                             IssueReporter.Type.GENERIC,
                             new RuntimeException(
                                     "Access to applicationId via deprecated Variant API requires compatibility mode.\n"
-                                            + ComponentImpl.Companion.getENABLE_LEGACY_API()));
+                                            + ComponentUtils.getENABLE_LEGACY_API()));
             // return default value during sync
             return "";
         }
@@ -248,10 +257,10 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     public TextResource getApplicationIdTextResource() {
         services.getDeprecationReporter()
                 .reportDeprecatedApi(
-                        "VariantProperties.applicationId",
+                        "ApplicationVariant.applicationId",
                         "BaseVariant.getApplicationIdTextResource",
                         "TBD",
-                        DeprecationReporter.DeprecationTarget.VERSION_8_0);
+                        DeprecationReporter.DeprecationTarget.VERSION_9_0);
         return getVariantData().applicationIdTextResource;
     }
 
@@ -363,7 +372,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
 
         //noinspection unchecked
         return (TaskProvider<RenderscriptCompile>)
-                getVariantData().getTaskContainer().getRenderscriptCompileTask();
+                component.getTaskContainer().getRenderscriptCompileTask();
     }
 
     @Override
@@ -400,7 +409,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     public TaskProvider<MergeSourceSetFolders> getMergeAssetsProvider() {
         //noinspection unchecked
         return (TaskProvider<MergeSourceSetFolders>)
-                getVariantData().getTaskContainer().getMergeAssetsTask();
+                component.getTaskContainer().getMergeAssetsTask();
     }
 
     @Override
@@ -438,7 +447,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     public TaskProvider<JavaCompile> getJavaCompileProvider() {
         //noinspection unchecked
-        return (TaskProvider<JavaCompile>) getVariantData().getTaskContainer().getJavacTask();
+        return (TaskProvider<JavaCompile>) component.getTaskContainer().getJavacTask();
     }
 
     @NonNull
@@ -544,9 +553,9 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     public TaskProvider<AbstractCopyTask> getProcessJavaResourcesProvider() {
         // Double cast needed to satisfy the compiler
-        //noinspection unchecked
+        //noinspection unchecked,RedundantCast
         return (TaskProvider<AbstractCopyTask>)
-                (TaskProvider<?>) getVariantData().getTaskContainer().getProcessJavaResourcesTask();
+                (TaskProvider<?>) component.getTaskContainer().getProcessJavaResourcesTask();
     }
 
     @Override
@@ -618,6 +627,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
                             new TaskProviderBasedDirectoryEntryImpl(
                                     "legacy_" + taskProvider.getName(),
                                     mappedDirectory,
+
                                     true, /* isGenerated */
                                     true, /*isUserProvided */
                                     true /* shouldBeAddedToIdeModel */));
@@ -680,17 +690,20 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @NonNull
     @Override
     public ArtifactCollection getCompileClasspathArtifacts(@Nullable Object generatorKey) {
-        return component.getJavaClasspathArtifacts(
-                AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
-                AndroidArtifacts.ArtifactType.CLASSES_JAR,
-                generatorKey);
+        return component
+                .getOldVariantApiLegacySupport()
+                .getJavaClasspathArtifacts(
+                        AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH,
+                        AndroidArtifacts.ArtifactType.CLASSES_JAR,
+                        generatorKey);
     }
 
     @Override
     public void buildConfigField(
             @NonNull String type, @NonNull String name, @NonNull String value) {
-        if (component instanceof VariantImpl) {
-            ((VariantImpl) component)
+        if (component instanceof ConsumableCreationConfig) {
+            component
+                    .getOldVariantApiLegacySupport()
                     .addBuildConfigField(type, name, value, "Field from the variant API");
         } else {
             throw new RuntimeException(
@@ -702,10 +715,15 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
 
     @Override
     public void resValue(@NonNull String type, @NonNull String name, @NonNull String value) {
-        if (component instanceof VariantImpl) {
-            ((VariantImpl) component).getResValues().put(
-                    new ResValueKeyImpl(type, name),
-                    new ResValue(value,  "Value from the variant"));
+        if (component instanceof ConsumableCreationConfig) {
+            if (component.getResValuesCreationConfig() != null) {
+                component
+                        .getResValuesCreationConfig()
+                        .getResValues()
+                        .put(
+                                new ResValueKeyImpl(type, name),
+                                new ResValue(value, "Value from the variant"));
+            }
         } else {
             throw new RuntimeException(
                     "Variant "
@@ -717,19 +735,22 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @Override
     public void missingDimensionStrategy(
             @NonNull String dimension, @NonNull String requestedValue) {
-        component.handleMissingDimensionStrategy(dimension, ImmutableList.of(requestedValue));
+        oldVariantApiLegacySupport.handleMissingDimensionStrategy(
+                dimension, ImmutableList.of(requestedValue));
     }
 
     @Override
     public void missingDimensionStrategy(
             @NonNull String dimension, @NonNull String... requestedValues) {
-        component.handleMissingDimensionStrategy(dimension, ImmutableList.copyOf(requestedValues));
+        oldVariantApiLegacySupport.handleMissingDimensionStrategy(
+                dimension, ImmutableList.copyOf(requestedValues));
     }
 
     @Override
     public void missingDimensionStrategy(
             @NonNull String dimension, @NonNull List<String> requestedValues) {
-        component.handleMissingDimensionStrategy(dimension, ImmutableList.copyOf(requestedValues));
+        oldVariantApiLegacySupport.handleMissingDimensionStrategy(
+                dimension, ImmutableList.copyOf(requestedValues));
     }
 
     @Override
@@ -745,7 +766,7 @@ public abstract class BaseVariantImpl implements BaseVariant, InternalBaseVarian
     @NonNull
     @Override
     public FileCollection getAllRawAndroidResources() {
-        return component.getAllRawAndroidResources$gradle_core();
+        return oldVariantApiLegacySupport.getAllRawAndroidResources(component);
     }
 
     @Override

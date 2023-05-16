@@ -80,6 +80,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000004;
             break;
           }
+          case 34: {
+            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000008) != 0)) {
+              subBuilder = r8FullModeDefaultSettings_.toBuilder();
+            }
+            r8FullModeDefaultSettings_ = input.readMessage(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(r8FullModeDefaultSettings_);
+              r8FullModeDefaultSettings_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000008;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -201,6 +214,26 @@ private static final long serialVersionUID = 0L;
      * <code>ANDROID_MANIFEST_PACKAGE = 20;</code>
      */
     ANDROID_MANIFEST_PACKAGE(20),
+    /**
+     * <code>R8_FULL_MODE_DEFAULT = 21;</code>
+     */
+    R8_FULL_MODE_DEFAULT(21),
+    /**
+     * <code>RENDER_SCRIPT_DEFAULT = 22;</code>
+     */
+    RENDER_SCRIPT_DEFAULT(22),
+    /**
+     * <code>NON_TRANSITIVE_R_CLASS_DEFAULT = 23;</code>
+     */
+    NON_TRANSITIVE_R_CLASS_DEFAULT(23),
+    /**
+     * <code>AIDL_DEFAULT = 24;</code>
+     */
+    AIDL_DEFAULT(24),
+    /**
+     * <code>BUILD_CONFIG_DEFAULT = 25;</code>
+     */
+    BUILD_CONFIG_DEFAULT(25),
     ;
 
     /**
@@ -287,6 +320,26 @@ private static final long serialVersionUID = 0L;
      * <code>ANDROID_MANIFEST_PACKAGE = 20;</code>
      */
     public static final int ANDROID_MANIFEST_PACKAGE_VALUE = 20;
+    /**
+     * <code>R8_FULL_MODE_DEFAULT = 21;</code>
+     */
+    public static final int R8_FULL_MODE_DEFAULT_VALUE = 21;
+    /**
+     * <code>RENDER_SCRIPT_DEFAULT = 22;</code>
+     */
+    public static final int RENDER_SCRIPT_DEFAULT_VALUE = 22;
+    /**
+     * <code>NON_TRANSITIVE_R_CLASS_DEFAULT = 23;</code>
+     */
+    public static final int NON_TRANSITIVE_R_CLASS_DEFAULT_VALUE = 23;
+    /**
+     * <code>AIDL_DEFAULT = 24;</code>
+     */
+    public static final int AIDL_DEFAULT_VALUE = 24;
+    /**
+     * <code>BUILD_CONFIG_DEFAULT = 25;</code>
+     */
+    public static final int BUILD_CONFIG_DEFAULT_VALUE = 25;
 
 
     public final int getNumber() {
@@ -330,6 +383,11 @@ private static final long serialVersionUID = 0L;
         case 18: return REWRITE_DEPRECATED_OPERATORS;
         case 19: return REDUNDANT_PROPERTIES;
         case 20: return ANDROID_MANIFEST_PACKAGE;
+        case 21: return R8_FULL_MODE_DEFAULT;
+        case 22: return RENDER_SCRIPT_DEFAULT;
+        case 23: return NON_TRANSITIVE_R_CLASS_DEFAULT;
+        case 24: return AIDL_DEFAULT;
+        case 25: return BUILD_CONFIG_DEFAULT;
         default: return null;
       }
     }
@@ -1018,6 +1076,645 @@ private static final long serialVersionUID = 0L;
 
   }
 
+  public interface R8FullModeDefaultProcessorSettingsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+     * @return Whether the noPropertyPresentAction field is set.
+     */
+    boolean hasNoPropertyPresentAction();
+    /**
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+     * @return The noPropertyPresentAction.
+     */
+    com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction getNoPropertyPresentAction();
+  }
+  /**
+   * Protobuf type {@code android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings}
+   */
+  public static final class R8FullModeDefaultProcessorSettings extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)
+      R8FullModeDefaultProcessorSettingsOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use R8FullModeDefaultProcessorSettings.newBuilder() to construct.
+    private R8FullModeDefaultProcessorSettings(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private R8FullModeDefaultProcessorSettings() {
+      noPropertyPresentAction_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new R8FullModeDefaultProcessorSettings();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private R8FullModeDefaultProcessorSettings(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction value = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                noPropertyPresentAction_ = rawValue;
+              }
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentInfo_R8FullModeDefaultProcessorSettings_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentInfo_R8FullModeDefaultProcessorSettings_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.class, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction}
+     */
+    public enum NoPropertyPresentAction
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNKNOWN_NO_PROPERTY_PRESENT_ACTION = 0;</code>
+       */
+      UNKNOWN_NO_PROPERTY_PRESENT_ACTION(0),
+      /**
+       * <code>ACCEPT_NEW_DEFAULT = 1;</code>
+       */
+      ACCEPT_NEW_DEFAULT(1),
+      /**
+       * <code>INSERT_OLD_DEFAULT = 2;</code>
+       */
+      INSERT_OLD_DEFAULT(2),
+      ;
+
+      /**
+       * <code>UNKNOWN_NO_PROPERTY_PRESENT_ACTION = 0;</code>
+       */
+      public static final int UNKNOWN_NO_PROPERTY_PRESENT_ACTION_VALUE = 0;
+      /**
+       * <code>ACCEPT_NEW_DEFAULT = 1;</code>
+       */
+      public static final int ACCEPT_NEW_DEFAULT_VALUE = 1;
+      /**
+       * <code>INSERT_OLD_DEFAULT = 2;</code>
+       */
+      public static final int INSERT_OLD_DEFAULT_VALUE = 2;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static NoPropertyPresentAction valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static NoPropertyPresentAction forNumber(int value) {
+        switch (value) {
+          case 0: return UNKNOWN_NO_PROPERTY_PRESENT_ACTION;
+          case 1: return ACCEPT_NEW_DEFAULT;
+          case 2: return INSERT_OLD_DEFAULT;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<NoPropertyPresentAction>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          NoPropertyPresentAction> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<NoPropertyPresentAction>() {
+              public NoPropertyPresentAction findValueByNumber(int number) {
+                return NoPropertyPresentAction.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final NoPropertyPresentAction[] VALUES = values();
+
+      public static NoPropertyPresentAction valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private NoPropertyPresentAction(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction)
+    }
+
+    private int bitField0_;
+    public static final int NO_PROPERTY_PRESENT_ACTION_FIELD_NUMBER = 1;
+    private int noPropertyPresentAction_;
+    /**
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+     * @return Whether the noPropertyPresentAction field is set.
+     */
+    @java.lang.Override public boolean hasNoPropertyPresentAction() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+     * @return The noPropertyPresentAction.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction getNoPropertyPresentAction() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction.valueOf(noPropertyPresentAction_);
+      return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction.UNKNOWN_NO_PROPERTY_PRESENT_ACTION : result;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, noPropertyPresentAction_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, noPropertyPresentAction_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings other = (com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings) obj;
+
+      if (hasNoPropertyPresentAction() != other.hasNoPropertyPresentAction()) return false;
+      if (hasNoPropertyPresentAction()) {
+        if (noPropertyPresentAction_ != other.noPropertyPresentAction_) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasNoPropertyPresentAction()) {
+        hash = (37 * hash) + NO_PROPERTY_PRESENT_ACTION_FIELD_NUMBER;
+        hash = (53 * hash) + noPropertyPresentAction_;
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentInfo_R8FullModeDefaultProcessorSettings_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentInfo_R8FullModeDefaultProcessorSettings_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.class, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        noPropertyPresentAction_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_UpgradeAssistantComponentInfo_R8FullModeDefaultProcessorSettings_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings build() {
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings buildPartial() {
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings result = new com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.noPropertyPresentAction_ = noPropertyPresentAction_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings other) {
+        if (other == com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance()) return this;
+        if (other.hasNoPropertyPresentAction()) {
+          setNoPropertyPresentAction(other.getNoPropertyPresentAction());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int noPropertyPresentAction_ = 0;
+      /**
+       * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+       * @return Whether the noPropertyPresentAction field is set.
+       */
+      @java.lang.Override public boolean hasNoPropertyPresentAction() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+       * @return The noPropertyPresentAction.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction getNoPropertyPresentAction() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction.valueOf(noPropertyPresentAction_);
+        return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction.UNKNOWN_NO_PROPERTY_PRESENT_ACTION : result;
+      }
+      /**
+       * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+       * @param value The noPropertyPresentAction to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNoPropertyPresentAction(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        noPropertyPresentAction_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.NoPropertyPresentAction no_property_present_action = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNoPropertyPresentAction() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        noPropertyPresentAction_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings)
+    private static final com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings();
+    }
+
+    public static com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<R8FullModeDefaultProcessorSettings>
+        PARSER = new com.google.protobuf.AbstractParser<R8FullModeDefaultProcessorSettings>() {
+      @java.lang.Override
+      public R8FullModeDefaultProcessorSettings parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new R8FullModeDefaultProcessorSettings(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<R8FullModeDefaultProcessorSettings> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<R8FullModeDefaultProcessorSettings> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int KIND_FIELD_NUMBER = 1;
   private int kind_;
@@ -1114,6 +1811,47 @@ private static final long serialVersionUID = 0L;
     return java8DefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.getDefaultInstance() : java8DefaultSettings_;
   }
 
+  public static final int R8_FULL_MODE_DEFAULT_SETTINGS_FIELD_NUMBER = 4;
+  private com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8FullModeDefaultSettings_;
+  /**
+   * <pre>
+   * Settings of the processor.  Will be set if kind is
+   * R8_FULL_MODE_DEFAULT.
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * @return Whether the r8FullModeDefaultSettings field is set.
+   */
+  @java.lang.Override
+  public boolean hasR8FullModeDefaultSettings() {
+    return ((bitField0_ & 0x00000008) != 0);
+  }
+  /**
+   * <pre>
+   * Settings of the processor.  Will be set if kind is
+   * R8_FULL_MODE_DEFAULT.
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   * @return The r8FullModeDefaultSettings.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getR8FullModeDefaultSettings() {
+    return r8FullModeDefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance() : r8FullModeDefaultSettings_;
+  }
+  /**
+   * <pre>
+   * Settings of the processor.  Will be set if kind is
+   * R8_FULL_MODE_DEFAULT.
+   * </pre>
+   *
+   * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder getR8FullModeDefaultSettingsOrBuilder() {
+    return r8FullModeDefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance() : r8FullModeDefaultSettings_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1137,6 +1875,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeMessage(3, getJava8DefaultSettings());
     }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      output.writeMessage(4, getR8FullModeDefaultSettings());
+    }
     unknownFields.writeTo(output);
   }
 
@@ -1157,6 +1898,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000004) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(3, getJava8DefaultSettings());
+    }
+    if (((bitField0_ & 0x00000008) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, getR8FullModeDefaultSettings());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -1187,6 +1932,11 @@ private static final long serialVersionUID = 0L;
       if (!getJava8DefaultSettings()
           .equals(other.getJava8DefaultSettings())) return false;
     }
+    if (hasR8FullModeDefaultSettings() != other.hasR8FullModeDefaultSettings()) return false;
+    if (hasR8FullModeDefaultSettings()) {
+      if (!getR8FullModeDefaultSettings()
+          .equals(other.getR8FullModeDefaultSettings())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -1210,6 +1960,10 @@ private static final long serialVersionUID = 0L;
     if (hasJava8DefaultSettings()) {
       hash = (37 * hash) + JAVA8_DEFAULT_SETTINGS_FIELD_NUMBER;
       hash = (53 * hash) + getJava8DefaultSettings().hashCode();
+    }
+    if (hasR8FullModeDefaultSettings()) {
+      hash = (37 * hash) + R8_FULL_MODE_DEFAULT_SETTINGS_FIELD_NUMBER;
+      hash = (53 * hash) + getR8FullModeDefaultSettings().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -1340,6 +2094,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessageV3
               .alwaysUseFieldBuilders) {
         getJava8DefaultSettingsFieldBuilder();
+        getR8FullModeDefaultSettingsFieldBuilder();
       }
     }
     @java.lang.Override
@@ -1355,6 +2110,12 @@ private static final long serialVersionUID = 0L;
         java8DefaultSettingsBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000004);
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        r8FullModeDefaultSettings_ = null;
+      } else {
+        r8FullModeDefaultSettingsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000008);
       return this;
     }
 
@@ -1398,6 +2159,14 @@ private static final long serialVersionUID = 0L;
           result.java8DefaultSettings_ = java8DefaultSettingsBuilder_.build();
         }
         to_bitField0_ |= 0x00000004;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        if (r8FullModeDefaultSettingsBuilder_ == null) {
+          result.r8FullModeDefaultSettings_ = r8FullModeDefaultSettings_;
+        } else {
+          result.r8FullModeDefaultSettings_ = r8FullModeDefaultSettingsBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000008;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -1456,6 +2225,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasJava8DefaultSettings()) {
         mergeJava8DefaultSettings(other.getJava8DefaultSettings());
+      }
+      if (other.hasR8FullModeDefaultSettings()) {
+        mergeR8FullModeDefaultSettings(other.getR8FullModeDefaultSettings());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1764,6 +2536,171 @@ private static final long serialVersionUID = 0L;
         java8DefaultSettings_ = null;
       }
       return java8DefaultSettingsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8FullModeDefaultSettings_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder> r8FullModeDefaultSettingsBuilder_;
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * @return Whether the r8FullModeDefaultSettings field is set.
+     */
+    public boolean hasR8FullModeDefaultSettings() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     * @return The r8FullModeDefaultSettings.
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings getR8FullModeDefaultSettings() {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        return r8FullModeDefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance() : r8FullModeDefaultSettings_;
+      } else {
+        return r8FullModeDefaultSettingsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public Builder setR8FullModeDefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings value) {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        r8FullModeDefaultSettings_ = value;
+        onChanged();
+      } else {
+        r8FullModeDefaultSettingsBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000008;
+      return this;
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public Builder setR8FullModeDefaultSettings(
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder builderForValue) {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        r8FullModeDefaultSettings_ = builderForValue.build();
+        onChanged();
+      } else {
+        r8FullModeDefaultSettingsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000008;
+      return this;
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public Builder mergeR8FullModeDefaultSettings(com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings value) {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0) &&
+            r8FullModeDefaultSettings_ != null &&
+            r8FullModeDefaultSettings_ != com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance()) {
+          r8FullModeDefaultSettings_ =
+            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.newBuilder(r8FullModeDefaultSettings_).mergeFrom(value).buildPartial();
+        } else {
+          r8FullModeDefaultSettings_ = value;
+        }
+        onChanged();
+      } else {
+        r8FullModeDefaultSettingsBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000008;
+      return this;
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public Builder clearR8FullModeDefaultSettings() {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        r8FullModeDefaultSettings_ = null;
+        onChanged();
+      } else {
+        r8FullModeDefaultSettingsBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000008);
+      return this;
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder getR8FullModeDefaultSettingsBuilder() {
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return getR8FullModeDefaultSettingsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder getR8FullModeDefaultSettingsOrBuilder() {
+      if (r8FullModeDefaultSettingsBuilder_ != null) {
+        return r8FullModeDefaultSettingsBuilder_.getMessageOrBuilder();
+      } else {
+        return r8FullModeDefaultSettings_ == null ?
+            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.getDefaultInstance() : r8FullModeDefaultSettings_;
+      }
+    }
+    /**
+     * <pre>
+     * Settings of the processor.  Will be set if kind is
+     * R8_FULL_MODE_DEFAULT.
+     * </pre>
+     *
+     * <code>optional .android_studio.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings r8_full_mode_default_settings = 4;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder> 
+        getR8FullModeDefaultSettingsFieldBuilder() {
+      if (r8FullModeDefaultSettingsBuilder_ == null) {
+        r8FullModeDefaultSettingsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettings.Builder, com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.R8FullModeDefaultProcessorSettingsOrBuilder>(
+                getR8FullModeDefaultSettings(),
+                getParentForChildren(),
+                isClean());
+        r8FullModeDefaultSettings_ = null;
+      }
+      return r8FullModeDefaultSettingsBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

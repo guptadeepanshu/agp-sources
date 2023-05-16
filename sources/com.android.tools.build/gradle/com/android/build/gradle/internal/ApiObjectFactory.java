@@ -21,8 +21,6 @@ import static com.android.builder.core.ComponentTypeImpl.UNIT_TEST;
 
 import com.android.annotations.NonNull;
 import com.android.build.VariantOutput;
-import com.android.build.api.component.impl.ComponentImpl;
-import com.android.build.api.variant.impl.VariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestedAndroidConfig;
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl;
@@ -32,9 +30,11 @@ import com.android.build.gradle.internal.api.ReadOnlyObjectProvider;
 import com.android.build.gradle.internal.api.TestVariantImpl;
 import com.android.build.gradle.internal.api.TestedVariant;
 import com.android.build.gradle.internal.api.UnitTestVariantImpl;
+import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.crash.ExternalApiUsageException;
 import com.android.build.gradle.internal.dsl.VariantOutputFactory;
-import com.android.build.gradle.internal.services.BaseServices;
+import com.android.build.gradle.internal.services.DslServices;
 import com.android.build.gradle.internal.variant.BaseVariantData;
 import com.android.build.gradle.internal.variant.VariantFactory;
 
@@ -43,19 +43,23 @@ import com.android.build.gradle.internal.variant.VariantFactory;
  */
 public class ApiObjectFactory {
     @NonNull private final BaseExtension extension;
-    @NonNull private final VariantFactory<?, ?> variantFactory;
+    @NonNull private final VariantFactory<?, ?, ?> variantFactory;
+    @NonNull private final DslServices dslServices;
 
     @NonNull
     private final ReadOnlyObjectProvider readOnlyObjectProvider = new ReadOnlyObjectProvider();
 
     public ApiObjectFactory(
-            @NonNull BaseExtension extension, @NonNull VariantFactory<?, ?> variantFactory) {
+            @NonNull BaseExtension extension,
+            @NonNull VariantFactory<?, ?, ?> variantFactory,
+            @NonNull DslServices dslServices) {
         this.extension = extension;
         this.variantFactory = variantFactory;
+        this.dslServices = dslServices;
     }
 
-    public BaseVariantImpl create(@NonNull VariantImpl variant) {
-        BaseVariantData variantData = variant.getVariantData();
+    public BaseVariantImpl create(@NonNull VariantCreationConfig variant) {
+        BaseVariantData variantData = variant.getOldVariantApiLegacySupport().getVariantData();
 
         BaseVariantImpl variantApi =
                 variantFactory.createVariantApi(variant, variantData, readOnlyObjectProvider);
@@ -64,43 +68,43 @@ public class ApiObjectFactory {
         }
 
         if (variantFactory.getComponentType().getHasTestComponents()) {
-            BaseServices services = variantFactory.getServicesForOldVariantObjectsOnly();
 
-            ComponentImpl androidTestVariantProperties =
+            ComponentCreationConfig androidTestVariantProperties =
                     variant.getTestComponents().get(ANDROID_TEST);
 
             if (androidTestVariantProperties != null) {
                 TestVariantImpl androidTestVariant =
-                        services.newInstance(
+                        dslServices.newInstance(
                                 TestVariantImpl.class,
-                                androidTestVariantProperties.getVariantData(),
+                                androidTestVariantProperties
+                                        .getOldVariantApiLegacySupport()
+                                        .getVariantData(),
                                 androidTestVariantProperties,
                                 variantApi,
-                                services,
+                                dslServices,
                                 readOnlyObjectProvider,
-                                services.getProjectInfo()
-                                        .getProject()
-                                        .container(VariantOutput.class));
+                                dslServices.domainObjectContainer(VariantOutput.class));
                 createVariantOutput(androidTestVariantProperties, androidTestVariant);
 
                 ((TestedAndroidConfig) extension).getTestVariants().add(androidTestVariant);
                 ((TestedVariant) variantApi).setTestVariant(androidTestVariant);
             }
 
-            ComponentImpl unitTestVariantProperties = variant.getTestComponents().get(UNIT_TEST);
+            ComponentCreationConfig unitTestVariantProperties =
+                    variant.getTestComponents().get(UNIT_TEST);
 
             if (unitTestVariantProperties != null) {
                 UnitTestVariantImpl unitTestVariant =
-                        services.newInstance(
+                        dslServices.newInstance(
                                 UnitTestVariantImpl.class,
-                                unitTestVariantProperties.getVariantData(),
+                                unitTestVariantProperties
+                                        .getOldVariantApiLegacySupport()
+                                        .getVariantData(),
                                 unitTestVariantProperties,
                                 variantApi,
-                                services,
+                                dslServices,
                                 readOnlyObjectProvider,
-                                services.getProjectInfo()
-                                        .getProject()
-                                        .container(VariantOutput.class));
+                                dslServices.domainObjectContainer(VariantOutput.class));
 
                 ((TestedAndroidConfig) extension).getUnitTestVariants().add(unitTestVariant);
                 ((TestedVariant) variantApi).setUnitTestVariant(unitTestVariant);
@@ -122,15 +126,14 @@ public class ApiObjectFactory {
     }
 
     private void createVariantOutput(
-            @NonNull ComponentImpl component, @NonNull BaseVariantImpl variantApi) {
+            @NonNull ComponentCreationConfig component, @NonNull BaseVariantImpl variantApi) {
 
-        final BaseServices services = variantFactory.getServicesForOldVariantObjectsOnly();
         VariantOutputFactory variantOutputFactory =
                 new VariantOutputFactory(
                         (component.getComponentType().isAar())
                                 ? LibraryVariantOutputImpl.class
                                 : ApkVariantOutputImpl.class,
-                        services,
+                        dslServices,
                         extension,
                         variantApi,
                         component.getComponentType(),

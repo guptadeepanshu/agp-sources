@@ -68,6 +68,14 @@ public enum VariantMethodType
    * <code>TEST_FIXTURES_ENABLED = 13;</code>
    */
   TEST_FIXTURES_ENABLED(13),
+  /**
+   * <code>CODE_MINIFICATION_VALUE = 14;</code>
+   */
+  CODE_MINIFICATION_VALUE(14),
+  /**
+   * <code>SHRINK_RESOURCES_VALUE = 15;</code>
+   */
+  SHRINK_RESOURCES_VALUE(15),
   UNRECOGNIZED(-1),
   ;
 
@@ -131,6 +139,14 @@ public enum VariantMethodType
    * <code>TEST_FIXTURES_ENABLED = 13;</code>
    */
   public static final int TEST_FIXTURES_ENABLED_VALUE = 13;
+  /**
+   * <code>CODE_MINIFICATION_VALUE = 14;</code>
+   */
+  public static final int CODE_MINIFICATION_VALUE_VALUE = 14;
+  /**
+   * <code>SHRINK_RESOURCES_VALUE = 15;</code>
+   */
+  public static final int SHRINK_RESOURCES_VALUE_VALUE = 15;
 
 
   public final int getNumber() {
@@ -171,6 +187,8 @@ public enum VariantMethodType
       case 11: return TARGET_SDK_PREVIEW;
       case 12: return VARIANT_BUILDER_DEPENDENCIES_INFO;
       case 13: return TEST_FIXTURES_ENABLED;
+      case 14: return CODE_MINIFICATION_VALUE;
+      case 15: return SHRINK_RESOURCES_VALUE;
       default: return null;
     }
   }

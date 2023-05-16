@@ -4048,4 +4048,226 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
    */
   com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder getComposeMultiPreviewEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = LIVE_EDIT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   * @return Whether the liveEditEvent field is set.
+   */
+  boolean hasLiveEditEvent();
+  /**
+   * <pre>
+   * set when kind = LIVE_EDIT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   * @return The liveEditEvent.
+   */
+  com.google.wireless.android.sdk.stats.LiveEditEvent getLiveEditEvent();
+  /**
+   * <pre>
+   * set when kind = LIVE_EDIT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.LiveEditEvent live_edit_event = 145;</code>
+   */
+  com.google.wireless.android.sdk.stats.LiveEditEventOrBuilder getLiveEditEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = STOP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   * @return Whether the stopEvent field is set.
+   */
+  boolean hasStopEvent();
+  /**
+   * <pre>
+   * set when kind = STOP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   * @return The stopEvent.
+   */
+  com.google.wireless.android.sdk.stats.StopEvent getStopEvent();
+  /**
+   * <pre>
+   * set when kind = STOP_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.StopEvent stop_event = 146;</code>
+   */
+  com.google.wireless.android.sdk.stats.StopEventOrBuilder getStopEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = APP_QUALITY_INSIGHTS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   * @return Whether the appQualityInsightsUsageEvent field is set.
+   */
+  boolean hasAppQualityInsightsUsageEvent();
+  /**
+   * <pre>
+   * set when kind = APP_QUALITY_INSIGHTS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   * @return The appQualityInsightsUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEvent getAppQualityInsightsUsageEvent();
+  /**
+   * <pre>
+   * set when kind = APP_QUALITY_INSIGHTS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.AppQualityInsightsUsageEvent app_quality_insights_usage_event = 147;</code>
+   */
+  com.google.wireless.android.sdk.stats.AppQualityInsightsUsageEventOrBuilder getAppQualityInsightsUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = GOOGLE_LOGIN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   * @return Whether the googleLoginEvent field is set.
+   */
+  boolean hasGoogleLoginEvent();
+  /**
+   * <pre>
+   * set when kind = GOOGLE_LOGIN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   * @return The googleLoginEvent.
+   */
+  com.google.wireless.android.sdk.stats.GoogleLoginPluginEvent getGoogleLoginEvent();
+  /**
+   * <pre>
+   * set when kind = GOOGLE_LOGIN_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.GoogleLoginPluginEvent google_login_event = 148;</code>
+   */
+  com.google.wireless.android.sdk.stats.GoogleLoginPluginEventOrBuilder getGoogleLoginEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_SESSION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   * @return Whether the deviceMirroringSession field is set.
+   */
+  boolean hasDeviceMirroringSession();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_SESSION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   * @return The deviceMirroringSession.
+   */
+  com.google.wireless.android.sdk.stats.DeviceMirroringSession getDeviceMirroringSession();
+  /**
+   * <pre>
+   * set when kind = DEVICE_MIRRORING_SESSION
+   * </pre>
+   *
+   * <code>optional .android_studio.DeviceMirroringSession device_mirroring_session = 149;</code>
+   */
+  com.google.wireless.android.sdk.stats.DeviceMirroringSessionOrBuilder getDeviceMirroringSessionOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = FAST_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   * @return Whether the fastPreviewEvent field is set.
+   */
+  boolean hasFastPreviewEvent();
+  /**
+   * <pre>
+   * set when kind = FAST_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   * @return The fastPreviewEvent.
+   */
+  com.google.wireless.android.sdk.stats.FastPreviewEvent getFastPreviewEvent();
+  /**
+   * <pre>
+   * set when kind = FAST_PREVIEW_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.FastPreviewEvent fast_preview_event = 150;</code>
+   */
+  com.google.wireless.android.sdk.stats.FastPreviewEventOrBuilder getFastPreviewEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = MEMORY_USAGE_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   * @return Whether the memoryUsageReportEvent field is set.
+   */
+  boolean hasMemoryUsageReportEvent();
+  /**
+   * <pre>
+   * set when kind = MEMORY_USAGE_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   * @return The memoryUsageReportEvent.
+   */
+  com.google.wireless.android.sdk.stats.MemoryUsageReportEvent getMemoryUsageReportEvent();
+  /**
+   * <pre>
+   * set when kind = MEMORY_USAGE_REPORT_EVENT
+   * </pre>
+   *
+   * <code>optional .android_studio.MemoryUsageReportEvent memory_usage_report_event = 151;</code>
+   */
+  com.google.wireless.android.sdk.stats.MemoryUsageReportEventOrBuilder getMemoryUsageReportEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_LOADED_CORRECTLY
+   * or kind = SDK_INDEX_CACHING_ERROR
+   * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   * @return Whether the sdkIndexLoadingDetails field is set.
+   */
+  boolean hasSdkIndexLoadingDetails();
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_LOADED_CORRECTLY
+   * or kind = SDK_INDEX_CACHING_ERROR
+   * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   * @return The sdkIndexLoadingDetails.
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexLoadingDetails getSdkIndexLoadingDetails();
+  /**
+   * <pre>
+   * set when kind = SDK_INDEX_LOADED_CORRECTLY
+   * or kind = SDK_INDEX_CACHING_ERROR
+   * or kind = SDK_INDEX_DEFAULT_DATA_ERROR
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLoadingDetails sdk_index_loading_details = 152;</code>
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexLoadingDetailsOrBuilder getSdkIndexLoadingDetailsOrBuilder();
 }

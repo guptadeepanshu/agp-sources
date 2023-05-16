@@ -16,6 +16,7 @@
 
 package com.android.build.api.variant.impl
 
+import com.android.SdkConstants
 import com.android.build.api.variant.SourceDirectories
 import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.Task
@@ -51,14 +52,16 @@ abstract class SourceDirectoriesImpl(
         }
         taskProvider.configure { task ->
             wiredWith.invoke(task).set(
-                variantServices.projectInfo.buildDirectory.dir("$name/${taskProvider.name}")
+                variantServices.projectInfo.buildDirectory.dir("${SdkConstants.FD_GENERATED}/$_name/${taskProvider.name}")
             )
         }
         addSource(
             TaskProviderBasedDirectoryEntryImpl(
-                "$name-${taskProvider.name}",
+                "$_name-${taskProvider.name}",
                 mappedValue,
+                isGenerated = true,
                 isUserAdded = true,
+                shouldBeAddedToIdeModel = true
             )
         )
     }
@@ -75,7 +78,8 @@ abstract class SourceDirectoriesImpl(
                 name = "variant",
                 directory = directory.asFile,
                 filter = filter,
-                isUserAdded = true
+                isUserAdded = true,
+                shouldBeAddedToIdeModel = true
             )
         )
     }

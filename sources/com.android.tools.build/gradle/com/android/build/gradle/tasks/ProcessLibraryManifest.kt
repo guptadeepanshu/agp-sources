@@ -28,10 +28,12 @@ import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MERGE_REPORT
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.MergingReport
 import com.android.utils.FileUtils
@@ -44,7 +46,6 @@ import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -60,6 +61,7 @@ import java.io.UncheckedIOException
 
 /** a Task that only merge a single manifest with its overlays.  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST)
 abstract class ProcessLibraryManifest : ManifestProcessorTask() {
 
     @get:OutputFile
@@ -113,10 +115,10 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.aaptFriendlyManifestOutputFile.set(aaptFriendlyManifestOutputFile)
             it.namespaced.set(isNamespaced)
             it.mainManifest.set(
-                    if (mainManifest.isPresent()) {
-                        mainManifest.get()
+                    if (mainManifest.get().asFile.isFile) {
+                        mainManifest.get().asFile
                     } else {
-                        createTempLibraryManifest()
+                        createTempLibraryManifest(tmpDir.get().asFile, namespace.orNull)
                     }
             )
             it.manifestOverlays.set(manifestOverlays)
@@ -134,15 +136,6 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
             it.tmpDir.set(tmpDir.get())
             it.disableMinSdkversionCheck.set(disableMinSdkVersionCheck)
         }
-    }
-
-    private fun createTempLibraryManifest(): File {
-        val manifestFile = File.createTempFile("tempAndroidManifest", ".xml", FileUtils.mkdirs(tmpDir.get().asFile))
-        val content = """<?xml version="1.0" encoding="utf-8"?>
-            <manifest xmlns:android="http://schemas.android.com/apk/res/android"/>
-            """.trimIndent()
-        manifestFile.writeText(content)
-        return manifestFile
     }
 
     abstract class ProcessLibParams: ProfileAwareWorkAction.Parameters() {
@@ -256,10 +249,9 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     @get:Input
     abstract val maxSdkVersion: Property<Int?>
 
-    @get:PathSensitive(PathSensitivity.RELATIVE)
-    @get:InputFile
-    @get:Optional
-    abstract val mainManifest: Property<File>
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:InputFiles // Use InputFiles rather than InputFile to allow the file not to exist
+    abstract val mainManifest: RegularFileProperty
 
     @get:Optional
     @get:Input
@@ -344,7 +336,9 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 task.manifestPlaceholders.setDisallowChanges(it)
             }
             task.mainManifest
-                .set(creationConfig.services.provider(variantSources::mainManifestIfExists))
+                .fileProvider(
+                    creationConfig.services.provider(variantSources::mainManifestFilePath)
+                )
             task.mainManifest.disallowChanges()
             task.manifestOverlays.set(
                 task.project.provider(variantSources::manifestOverlays)
@@ -360,4 +354,14 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                     creationConfig.services.projectOptions[BooleanOption.DISABLE_MINSDKLIBRARY_CHECK])
         }
     }
+}
+
+fun createTempLibraryManifest(tempDir: File, namespace: String?): File {
+    Preconditions.checkNotNull(namespace, "namespace cannot be null.")
+    val manifestFile = File.createTempFile("tempAndroidManifest", ".xml", FileUtils.mkdirs(tempDir))
+    val content = """<?xml version="1.0" encoding="utf-8"?>
+            <manifest xmlns:android="http://schemas.android.com/apk/res/android"/>
+            """.trimIndent()
+    manifestFile.writeText(content)
+    return manifestFile
 }

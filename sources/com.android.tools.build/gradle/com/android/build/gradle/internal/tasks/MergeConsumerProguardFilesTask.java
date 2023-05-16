@@ -26,6 +26,8 @@ import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.HasConfigurableValuesKt;
 import com.android.builder.errors.EvalIssueException;
 import java.io.IOException;
+
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.tasks.Input;
@@ -44,6 +46,7 @@ import org.gradle.work.DisableCachingByDefault;
  * @see MergeFileTask
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.OPTIMIZATION)
 public abstract class MergeConsumerProguardFilesTask extends MergeFileTask {
 
     private boolean isDynamicFeature;
@@ -120,8 +123,7 @@ public abstract class MergeConsumerProguardFilesTask extends MergeFileTask {
             task.isBaseModule = creationConfig.getComponentType().isBaseModule();
             task.isDynamicFeature = creationConfig.getComponentType().isDynamicFeature();
 
-            task.getConsumerProguardFiles()
-                    .from(creationConfig.getVariantScope().getConsumerProguardFilesForFeatures());
+            task.getConsumerProguardFiles().from(creationConfig.getConsumerProguardFiles());
 
             ConfigurableFileCollection inputFiles =
                     creationConfig

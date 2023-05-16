@@ -26,7 +26,6 @@ import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.NamedDomainObjectFactory
 import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.file.Directory
-import java.io.File
 
 /**
  * Implementation of [Sources] for a particular source type like java, kotlin, etc...
@@ -48,19 +47,20 @@ class SourcesImpl(
 
     override val java: FlatSourceDirectoriesImpl =
         FlatSourceDirectoriesImpl(
-            SourceType.JAVA.name,
+            SourceType.JAVA.folder,
             variantServices,
             variantSourceSet?.java?.filter
         ).also { sourceDirectoriesImpl ->
+
             defaultSourceProvider.getJava(sourceDirectoriesImpl).run {
                 sourceDirectoriesImpl.addSources(this)
             }
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.java)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.java)
         }
 
     override val kotlin: FlatSourceDirectoriesImpl =
         FlatSourceDirectoriesImpl(
-            SourceType.KOTLIN.name,
+            SourceType.KOTLIN.folder,
             variantServices,
             null,
         ).also { sourceDirectoriesImpl ->
@@ -68,14 +68,14 @@ class SourcesImpl(
             defaultSourceProvider.getKotlin(sourceDirectoriesImpl).run {
                 sourceDirectoriesImpl.addSources(this)
             }
-            resetVariantSourceSet(
+            updateSourceDirectories(
                 sourceDirectoriesImpl,
                 variantSourceSet?.kotlin as DefaultAndroidSourceDirectorySet?)
         }
 
     override val res: ResSourceDirectoriesImpl =
         ResSourceDirectoriesImpl(
-            SourceType.RES.name,
+            SourceType.RES.folder,
             variantServices,
             variantSourceSet?.res?.filter
         ).also { sourceDirectoriesImpl ->
@@ -84,12 +84,25 @@ class SourcesImpl(
                     sourceDirectoriesImpl.addSources(it)
                 }
             }
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.res)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.res)
+        }
+
+    override val resources: FlatSourceDirectoriesImpl =
+        FlatSourceDirectoriesImpl(
+            SourceType.JAVA_RESOURCES.name,
+            variantServices,
+            variantSourceSet?.resources?.filter,
+        ).also { sourceDirectoriesImpl ->
+
+            defaultSourceProvider.getResources(sourceDirectoriesImpl).run {
+                sourceDirectoriesImpl.addSources(this)
+            }
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.resources)
         }
 
     override val assets: AssetSourceDirectoriesImpl =
         AssetSourceDirectoriesImpl(
-            SourceType.ASSETS.name,
+            SourceType.ASSETS.folder,
             variantServices,
             variantSourceSet?.assets?.filter
         ).also { sourceDirectoriesImpl ->
@@ -99,12 +112,12 @@ class SourcesImpl(
                     sourceDirectoriesImpl.addSources(it)
                 }
             }
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.assets)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.assets)
         }
 
     override val jniLibs: AssetSourceDirectoriesImpl =
         AssetSourceDirectoriesImpl(
-            SourceType.JNI_LIBS.name,
+            SourceType.JNI_LIBS.folder,
             variantServices,
             variantSourceSet?.jniLibs?.filter
         ).also { sourceDirectoriesImpl ->
@@ -114,12 +127,12 @@ class SourcesImpl(
                     sourceDirectoriesImpl.addSources(it)
                 }
             }
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.jniLibs)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.jniLibs)
         }
 
     override val shaders: AssetSourceDirectoriesImpl? =
             AssetSourceDirectoriesImpl(
-                SourceType.SHADERS.name,
+                SourceType.SHADERS.folder,
                 variantServices,
                 variantSourceSet?.shaders?.filter
             ).let { sourceDirectoriesImpl ->
@@ -130,13 +143,13 @@ class SourcesImpl(
                         sourceDirectoriesImpl.addSources(it)
                     }
                 }
-                resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.shaders)
+                updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.shaders)
                 return@let sourceDirectoriesImpl
             }
 
     override val mlModels: AssetSourceDirectoriesImpl =
         AssetSourceDirectoriesImpl(
-            SourceType.ML_MODELS.name,
+            SourceType.ML_MODELS.folder,
             variantServices,
             variantSourceSet?.mlModels?.filter
         ).also { sourceDirectoriesImpl ->
@@ -145,28 +158,27 @@ class SourcesImpl(
                     sourceDirectoriesImpl.addSources(it)
                 }
             }
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.mlModels)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.mlModels)
         }
-
 
     override val aidl: SourceDirectories.Flat? by lazy(LazyThreadSafetyMode.NONE) {
         FlatSourceDirectoriesImpl(
-                SourceType.AIDL.name,
+                SourceType.AIDL.folder,
                 variantServices,
                 variantSourceSet?.aidl?.filter
         ).let { sourceDirectoriesImpl ->
             val defaultAidlDirectories =
                     defaultSourceProvider.getAidl(sourceDirectoriesImpl) ?: return@let null
             sourceDirectoriesImpl.addSources(defaultAidlDirectories)
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.aidl)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.aidl)
             return@let sourceDirectoriesImpl
         }
     }
 
-    @Deprecated("renderscript is deprecated and will be removed in a future release.")
+
     override val renderscript: SourceDirectories.Flat? by lazy(LazyThreadSafetyMode.NONE) {
         FlatSourceDirectoriesImpl(
-                SourceType.RENDERSCRIPT.name,
+                SourceType.RENDERSCRIPT.folder,
                 variantServices,
                 variantSourceSet?.renderscript?.filter
         ).let { sourceDirectoriesImpl ->
@@ -174,7 +186,7 @@ class SourcesImpl(
                     defaultSourceProvider.getRenderscript(sourceDirectoriesImpl) ?: return@let null
 
             sourceDirectoriesImpl.addSources(defaultRenderscriptDirectories)
-            resetVariantSourceSet(sourceDirectoriesImpl, variantSourceSet?.renderscript)
+            updateSourceDirectories(sourceDirectoriesImpl, variantSourceSet?.renderscript)
             return@let sourceDirectoriesImpl
         }
     }
@@ -205,13 +217,13 @@ class SourcesImpl(
     }
 
     /**
-     * reset the original variant specific source set in
+     * Update SourceDirectories with the original variant specific source set from
      * [com.android.build.gradle.internal.core.VariantSources] since the variant
      * specific folders are owned by this abstraction (so users can add it if needed).
      * TODO, make the VariantSources unavailable to other components in
      * AGP as they should all use this [SourcesImpl] from now on.
      */
-    private fun resetVariantSourceSet(
+    private fun updateSourceDirectories(
         target: SourceDirectoriesImpl,
         sourceSet: AndroidSourceDirectorySet?,
     ) {
@@ -229,7 +241,6 @@ class SourcesImpl(
                     )
                 )
             }
-            sourceSet.setSrcDirs(emptyList<File>())
         }
     }
 }

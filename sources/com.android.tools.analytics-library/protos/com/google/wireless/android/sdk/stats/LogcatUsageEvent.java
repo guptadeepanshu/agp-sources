@@ -3841,6 +3841,71 @@ private static final long serialVersionUID = 0L;
      * @return The isFavorite.
      */
     boolean getIsFavorite();
+
+    /**
+     * <pre>
+     * Number of 'is:crash' search terms.
+     * </pre>
+     *
+     * <code>optional int32 crash_terms = 14;</code>
+     * @return Whether the crashTerms field is set.
+     */
+    boolean hasCrashTerms();
+    /**
+     * <pre>
+     * Number of 'is:crash' search terms.
+     * </pre>
+     *
+     * <code>optional int32 crash_terms = 14;</code>
+     * @return The crashTerms.
+     */
+    int getCrashTerms();
+
+    /**
+     * <pre>
+     * Number of 'is:stacktrace' search terms.
+     * </pre>
+     *
+     * <code>optional int32 stacktrace_terms = 15;</code>
+     * @return Whether the stacktraceTerms field is set.
+     */
+    boolean hasStacktraceTerms();
+    /**
+     * <pre>
+     * Number of 'is:stacktrace' search terms.
+     * </pre>
+     *
+     * <code>optional int32 stacktrace_terms = 15;</code>
+     * @return The stacktraceTerms.
+     */
+    int getStacktraceTerms();
+
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * @return Whether the processTerms field is set.
+     */
+    boolean hasProcessTerms();
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * @return The processTerms.
+     */
+    com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getProcessTerms();
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     */
+    com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder();
   }
   /**
    * <pre>
@@ -3989,6 +4054,29 @@ private static final long serialVersionUID = 0L;
             case 104: {
               bitField0_ |= 0x00001000;
               isFavorite_ = input.readBool();
+              break;
+            }
+            case 112: {
+              bitField0_ |= 0x00002000;
+              crashTerms_ = input.readInt32();
+              break;
+            }
+            case 120: {
+              bitField0_ |= 0x00004000;
+              stacktraceTerms_ = input.readInt32();
+              break;
+            }
+            case 130: {
+              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder subBuilder = null;
+              if (((bitField0_ & 0x00008000) != 0)) {
+                subBuilder = processTerms_.toBuilder();
+              }
+              processTerms_ = input.readMessage(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(processTerms_);
+                processTerms_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00008000;
               break;
             }
             default: {
@@ -5379,6 +5467,98 @@ private static final long serialVersionUID = 0L;
       return isFavorite_;
     }
 
+    public static final int CRASH_TERMS_FIELD_NUMBER = 14;
+    private int crashTerms_;
+    /**
+     * <pre>
+     * Number of 'is:crash' search terms.
+     * </pre>
+     *
+     * <code>optional int32 crash_terms = 14;</code>
+     * @return Whether the crashTerms field is set.
+     */
+    @java.lang.Override
+    public boolean hasCrashTerms() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * Number of 'is:crash' search terms.
+     * </pre>
+     *
+     * <code>optional int32 crash_terms = 14;</code>
+     * @return The crashTerms.
+     */
+    @java.lang.Override
+    public int getCrashTerms() {
+      return crashTerms_;
+    }
+
+    public static final int STACKTRACE_TERMS_FIELD_NUMBER = 15;
+    private int stacktraceTerms_;
+    /**
+     * <pre>
+     * Number of 'is:stacktrace' search terms.
+     * </pre>
+     *
+     * <code>optional int32 stacktrace_terms = 15;</code>
+     * @return Whether the stacktraceTerms field is set.
+     */
+    @java.lang.Override
+    public boolean hasStacktraceTerms() {
+      return ((bitField0_ & 0x00004000) != 0);
+    }
+    /**
+     * <pre>
+     * Number of 'is:stacktrace' search terms.
+     * </pre>
+     *
+     * <code>optional int32 stacktrace_terms = 15;</code>
+     * @return The stacktraceTerms.
+     */
+    @java.lang.Override
+    public int getStacktraceTerms() {
+      return stacktraceTerms_;
+    }
+
+    public static final int PROCESS_TERMS_FIELD_NUMBER = 16;
+    private com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants processTerms_;
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * @return Whether the processTerms field is set.
+     */
+    @java.lang.Override
+    public boolean hasProcessTerms() {
+      return ((bitField0_ & 0x00008000) != 0);
+    }
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     * @return The processTerms.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getProcessTerms() {
+      return processTerms_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance() : processTerms_;
+    }
+    /**
+     * <pre>
+     * Summary of search terms pertaining to the log entry 'process' field
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder() {
+      return processTerms_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance() : processTerms_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5431,6 +5611,15 @@ private static final long serialVersionUID = 0L;
       }
       if (((bitField0_ & 0x00001000) != 0)) {
         output.writeBool(13, isFavorite_);
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        output.writeInt32(14, crashTerms_);
+      }
+      if (((bitField0_ & 0x00004000) != 0)) {
+        output.writeInt32(15, stacktraceTerms_);
+      }
+      if (((bitField0_ & 0x00008000) != 0)) {
+        output.writeMessage(16, getProcessTerms());
       }
       unknownFields.writeTo(output);
     }
@@ -5492,6 +5681,18 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00001000) != 0)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(13, isFavorite_);
+      }
+      if (((bitField0_ & 0x00002000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(14, crashTerms_);
+      }
+      if (((bitField0_ & 0x00004000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(15, stacktraceTerms_);
+      }
+      if (((bitField0_ & 0x00008000) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(16, getProcessTerms());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5573,6 +5774,21 @@ private static final long serialVersionUID = 0L;
         if (getIsFavorite()
             != other.getIsFavorite()) return false;
       }
+      if (hasCrashTerms() != other.hasCrashTerms()) return false;
+      if (hasCrashTerms()) {
+        if (getCrashTerms()
+            != other.getCrashTerms()) return false;
+      }
+      if (hasStacktraceTerms() != other.hasStacktraceTerms()) return false;
+      if (hasStacktraceTerms()) {
+        if (getStacktraceTerms()
+            != other.getStacktraceTerms()) return false;
+      }
+      if (hasProcessTerms() != other.hasProcessTerms()) return false;
+      if (hasProcessTerms()) {
+        if (!getProcessTerms()
+            .equals(other.getProcessTerms())) return false;
+      }
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5637,6 +5853,18 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + IS_FAVORITE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
             getIsFavorite());
+      }
+      if (hasCrashTerms()) {
+        hash = (37 * hash) + CRASH_TERMS_FIELD_NUMBER;
+        hash = (53 * hash) + getCrashTerms();
+      }
+      if (hasStacktraceTerms()) {
+        hash = (37 * hash) + STACKTRACE_TERMS_FIELD_NUMBER;
+        hash = (53 * hash) + getStacktraceTerms();
+      }
+      if (hasProcessTerms()) {
+        hash = (37 * hash) + PROCESS_TERMS_FIELD_NUMBER;
+        hash = (53 * hash) + getProcessTerms().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -5776,6 +6004,7 @@ private static final long serialVersionUID = 0L;
           getPackageTermsFieldBuilder();
           getMessageTermsFieldBuilder();
           getLineTermsFieldBuilder();
+          getProcessTermsFieldBuilder();
         }
       }
       @java.lang.Override
@@ -5823,6 +6052,16 @@ private static final long serialVersionUID = 0L;
         bitField0_ = (bitField0_ & ~0x00000800);
         isFavorite_ = false;
         bitField0_ = (bitField0_ & ~0x00001000);
+        crashTerms_ = 0;
+        bitField0_ = (bitField0_ & ~0x00002000);
+        stacktraceTerms_ = 0;
+        bitField0_ = (bitField0_ & ~0x00004000);
+        if (processTermsBuilder_ == null) {
+          processTerms_ = null;
+        } else {
+          processTermsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
         return this;
       }
 
@@ -5919,6 +6158,22 @@ private static final long serialVersionUID = 0L;
           result.isFavorite_ = isFavorite_;
           to_bitField0_ |= 0x00001000;
         }
+        if (((from_bitField0_ & 0x00002000) != 0)) {
+          result.crashTerms_ = crashTerms_;
+          to_bitField0_ |= 0x00002000;
+        }
+        if (((from_bitField0_ & 0x00004000) != 0)) {
+          result.stacktraceTerms_ = stacktraceTerms_;
+          to_bitField0_ |= 0x00004000;
+        }
+        if (((from_bitField0_ & 0x00008000) != 0)) {
+          if (processTermsBuilder_ == null) {
+            result.processTerms_ = processTerms_;
+          } else {
+            result.processTerms_ = processTermsBuilder_.build();
+          }
+          to_bitField0_ |= 0x00008000;
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -6006,6 +6261,15 @@ private static final long serialVersionUID = 0L;
         }
         if (other.hasIsFavorite()) {
           setIsFavorite(other.getIsFavorite());
+        }
+        if (other.hasCrashTerms()) {
+          setCrashTerms(other.getCrashTerms());
+        }
+        if (other.hasStacktraceTerms()) {
+          setStacktraceTerms(other.getStacktraceTerms());
+        }
+        if (other.hasProcessTerms()) {
+          mergeProcessTerms(other.getProcessTerms());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7162,6 +7426,272 @@ private static final long serialVersionUID = 0L;
         isFavorite_ = false;
         onChanged();
         return this;
+      }
+
+      private int crashTerms_ ;
+      /**
+       * <pre>
+       * Number of 'is:crash' search terms.
+       * </pre>
+       *
+       * <code>optional int32 crash_terms = 14;</code>
+       * @return Whether the crashTerms field is set.
+       */
+      @java.lang.Override
+      public boolean hasCrashTerms() {
+        return ((bitField0_ & 0x00002000) != 0);
+      }
+      /**
+       * <pre>
+       * Number of 'is:crash' search terms.
+       * </pre>
+       *
+       * <code>optional int32 crash_terms = 14;</code>
+       * @return The crashTerms.
+       */
+      @java.lang.Override
+      public int getCrashTerms() {
+        return crashTerms_;
+      }
+      /**
+       * <pre>
+       * Number of 'is:crash' search terms.
+       * </pre>
+       *
+       * <code>optional int32 crash_terms = 14;</code>
+       * @param value The crashTerms to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCrashTerms(int value) {
+        bitField0_ |= 0x00002000;
+        crashTerms_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of 'is:crash' search terms.
+       * </pre>
+       *
+       * <code>optional int32 crash_terms = 14;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCrashTerms() {
+        bitField0_ = (bitField0_ & ~0x00002000);
+        crashTerms_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int stacktraceTerms_ ;
+      /**
+       * <pre>
+       * Number of 'is:stacktrace' search terms.
+       * </pre>
+       *
+       * <code>optional int32 stacktrace_terms = 15;</code>
+       * @return Whether the stacktraceTerms field is set.
+       */
+      @java.lang.Override
+      public boolean hasStacktraceTerms() {
+        return ((bitField0_ & 0x00004000) != 0);
+      }
+      /**
+       * <pre>
+       * Number of 'is:stacktrace' search terms.
+       * </pre>
+       *
+       * <code>optional int32 stacktrace_terms = 15;</code>
+       * @return The stacktraceTerms.
+       */
+      @java.lang.Override
+      public int getStacktraceTerms() {
+        return stacktraceTerms_;
+      }
+      /**
+       * <pre>
+       * Number of 'is:stacktrace' search terms.
+       * </pre>
+       *
+       * <code>optional int32 stacktrace_terms = 15;</code>
+       * @param value The stacktraceTerms to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStacktraceTerms(int value) {
+        bitField0_ |= 0x00004000;
+        stacktraceTerms_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of 'is:stacktrace' search terms.
+       * </pre>
+       *
+       * <code>optional int32 stacktrace_terms = 15;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStacktraceTerms() {
+        bitField0_ = (bitField0_ & ~0x00004000);
+        stacktraceTerms_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants processTerms_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> processTermsBuilder_;
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * @return Whether the processTerms field is set.
+       */
+      public boolean hasProcessTerms() {
+        return ((bitField0_ & 0x00008000) != 0);
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       * @return The processTerms.
+       */
+      public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants getProcessTerms() {
+        if (processTermsBuilder_ == null) {
+          return processTerms_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance() : processTerms_;
+        } else {
+          return processTermsBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public Builder setProcessTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
+        if (processTermsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          processTerms_ = value;
+          onChanged();
+        } else {
+          processTermsBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public Builder setProcessTerms(
+          com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder builderForValue) {
+        if (processTermsBuilder_ == null) {
+          processTerms_ = builderForValue.build();
+          onChanged();
+        } else {
+          processTermsBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public Builder mergeProcessTerms(com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants value) {
+        if (processTermsBuilder_ == null) {
+          if (((bitField0_ & 0x00008000) != 0) &&
+              processTerms_ != null &&
+              processTerms_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance()) {
+            processTerms_ =
+              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.newBuilder(processTerms_).mergeFrom(value).buildPartial();
+          } else {
+            processTerms_ = value;
+          }
+          onChanged();
+        } else {
+          processTermsBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00008000;
+        return this;
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public Builder clearProcessTerms() {
+        if (processTermsBuilder_ == null) {
+          processTerms_ = null;
+          onChanged();
+        } else {
+          processTermsBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00008000);
+        return this;
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder getProcessTermsBuilder() {
+        bitField0_ |= 0x00008000;
+        onChanged();
+        return getProcessTermsFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      public com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder getProcessTermsOrBuilder() {
+        if (processTermsBuilder_ != null) {
+          return processTermsBuilder_.getMessageOrBuilder();
+        } else {
+          return processTerms_ == null ?
+              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.getDefaultInstance() : processTerms_;
+        }
+      }
+      /**
+       * <pre>
+       * Summary of search terms pertaining to the log entry 'process' field
+       * </pre>
+       *
+       * <code>optional .android_studio.LogcatUsageEvent.LogcatFilterEvent.TermVariants process_terms = 16;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder> 
+          getProcessTermsFieldBuilder() {
+        if (processTermsBuilder_ == null) {
+          processTermsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariants.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEvent.LogcatFilterEvent.TermVariantsOrBuilder>(
+                  getProcessTerms(),
+                  getParentForChildren(),
+                  isClean());
+          processTerms_ = null;
+        }
+        return processTermsBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(

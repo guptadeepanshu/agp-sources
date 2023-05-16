@@ -31,10 +31,8 @@ import com.android.builder.dexing.ClassFileInput
 import com.android.builder.dexing.DirectoryBucketGroup
 import com.android.builder.dexing.JarBucketGroup
 import com.android.builder.dexing.r8.ClassFileProviderFactory
-import com.android.ide.common.internal.WaitableExecutor
 import com.android.utils.FileUtils
 import com.google.common.base.Throwables
-import com.google.common.collect.Iterables
 import com.google.common.collect.Lists
 import com.google.common.hash.Hashing
 import com.google.common.io.Closer
@@ -49,7 +47,6 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.nio.file.Path
 import java.util.ArrayList
-import java.util.function.Supplier
 
 /**
  * Delegate for the [DexArchiveBuilderTask]. This is where the actual processing happens. Using the
@@ -72,18 +69,10 @@ class DexArchiveBuilderTaskDelegate(
     private val mixedScopeClasses: Set<File>,
     private val mixedScopeChangedClasses: Set<FileChange> = emptySet(),
 
-    // Output directories for dex files and keep rules
-    private val projectOutputDex: File,
-    private val projectOutputKeepRules: File?,
-
-    private val subProjectOutputDex: File,
-    private val subProjectOutputKeepRules: File?,
-
-    private val externalLibsOutputDex: File,
-    private val externalLibsOutputKeepRules: File?,
-
-    private val mixedScopeOutputDex: File,
-    private val mixedScopeOutputKeepRules: File?,
+    private val projectOutputs: DexingOutputs,
+    private val subProjectOutputs: DexingOutputs?,
+    private val externalLibsOutputs: DexingOutputs?,
+    private val mixedScopeOutputs: DexingOutputs?,
 
     // Dex parameters
     private val dexParams: DexParameters,
@@ -98,11 +87,9 @@ class DexArchiveBuilderTaskDelegate(
     private val desugarGraphDir: File?,
 
     // Other info
-    projectVariant: String,
     private val inputJarHashesFile: File,
     private val numberOfBuckets: Int,
     private val workerExecutor: WorkerExecutor,
-    private val executor: WaitableExecutor = WaitableExecutor.useGlobalSharedThreadPool(),
     private val projectPath: Provider<String>,
     private val taskPath: String,
     private val analyticsService: Provider<AnalyticsService>
@@ -111,8 +98,8 @@ class DexArchiveBuilderTaskDelegate(
 
     //(b/141854812) Temporarily disable incremental support when core library desugaring enabled in release build
     private val isIncremental =
-        isIncremental && projectOutputKeepRules == null && subProjectOutputKeepRules == null
-                && externalLibsOutputKeepRules == null && mixedScopeOutputKeepRules == null
+        isIncremental && projectOutputs.keepRules == null && subProjectOutputs?.keepRules == null
+                && externalLibsOutputs?.keepRules == null && mixedScopeOutputs?.keepRules == null
                 && outputMapping.canProcessIncrementally
 
     private val changedFiles =
@@ -196,31 +183,37 @@ class DexArchiveBuilderTaskDelegate(
                 processInputType(
                     projectClasses,
                     projectChangedClasses,
-                    projectOutputDex,
-                    projectOutputKeepRules,
+                    projectOutputs.dex,
+                    projectOutputs.keepRules,
                     desugarGraphDir?.resolve("currentProject")
                 )
-                processInputType(
-                    subProjectClasses,
-                    subProjectChangedClasses,
-                    subProjectOutputDex,
-                    subProjectOutputKeepRules,
-                    desugarGraphDir?.resolve("otherProjects")
-                )
-                processInputType(
-                    mixedScopeClasses,
-                    mixedScopeChangedClasses,
-                    mixedScopeOutputDex,
-                    mixedScopeOutputKeepRules,
-                    desugarGraphDir?.resolve("mixedScopes")
-                )
-                processInputType(
-                    externalLibClasses,
-                    externalLibChangedClasses,
-                    externalLibsOutputDex,
-                    externalLibsOutputKeepRules,
-                    desugarGraphDir?.resolve("externalLibs")
-                )
+                subProjectOutputs?.let {
+                    processInputType(
+                        subProjectClasses,
+                        subProjectChangedClasses,
+                        subProjectOutputs.dex,
+                        subProjectOutputs.keepRules,
+                        desugarGraphDir?.resolve("otherProjects")
+                    )
+                }
+                mixedScopeOutputs?.let {
+                    processInputType(
+                        mixedScopeClasses,
+                        mixedScopeChangedClasses,
+                        mixedScopeOutputs.dex,
+                        mixedScopeOutputs.keepRules,
+                        desugarGraphDir?.resolve("mixedScopes")
+                    )
+                }
+                externalLibsOutputs?.let {
+                    processInputType(
+                        externalLibClasses,
+                        externalLibChangedClasses,
+                        externalLibsOutputs.dex,
+                        externalLibsOutputs.keepRules,
+                        desugarGraphDir?.resolve("externalLibs")
+                    )
+                }
 
                 // all work items have been submitted, now wait for completion.
                 // TODO (gavra): use build services in worker actions so ClassFileProviderFactory are not closed too early
@@ -353,6 +346,15 @@ class DexArchiveBuilderTaskDelegate(
                 outputKeepRulesDir = outputKeepRulesDir
             )
         }
+    }
+
+    /**  Output directories for dex files and keep rules. */
+    class DexingOutputs(
+        val dex: File,
+        val keepRules: File?
+    ) {
+        constructor(outputs: DexArchiveBuilderTask.DexingOutputs)
+                : this(outputs.dex.asFile.get(), outputs.keepRules.asFile.orNull)
     }
 
     private fun convertToDexArchive(

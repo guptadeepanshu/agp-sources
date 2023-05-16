@@ -18,7 +18,6 @@ package com.android.build.api.variant.impl
 
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.file.Directory
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
 import org.gradle.api.tasks.util.PatternSet
@@ -41,19 +40,33 @@ class FileBasedDirectoryEntryImpl(
     override val shouldBeAddedToIdeModel: Boolean = false,
 ): DirectoryEntry {
 
-    override fun asFiles(directoryPropertyCreator: () -> DirectoryProperty): Provider<Directory> {
-        return directoryPropertyCreator().also {
-            it.set(directory)
+    override fun asFiles(
+        projectDir: Provider<Directory>
+    ): Provider<out Collection<Directory>> =
+        projectDir.map {
+            setOf(it.dir(directory.absolutePath))
         }
-    }
 
     override val isGenerated: Boolean = false
 
-    override fun asFileTree(fileTreeCreator: () -> ConfigurableFileTree): ConfigurableFileTree =
-        fileTreeCreator().setDir(directory).also {
-            if (filter != null) {
-                it.include((filter as PatternSet).asIncludeSpec)
-                it.exclude(filter.asExcludeSpec)
-            }
+    override fun asFileTree(
+            fileTreeCreator: () -> ConfigurableFileTree
+    ): Provider<List<ConfigurableFileTree>> =
+        getFileTree(fileTreeCreator).run {
+            elements.map { listOf(this)}
         }
+
+    override fun asFileTreeWithoutTaskDependency(
+            fileTreeCreator: () -> ConfigurableFileTree,
+    ): List<ConfigurableFileTree> = listOf(getFileTree(fileTreeCreator))
+
+    private fun getFileTree(
+            fileTreeCreator: () -> ConfigurableFileTree,
+    ): ConfigurableFileTree =
+            fileTreeCreator().setDir(directory).also {
+                if (filter != null) {
+                    it.include((filter as PatternSet).asIncludeSpec)
+                    it.exclude(filter.asExcludeSpec)
+                }
+            }
 }

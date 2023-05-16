@@ -23,24 +23,25 @@ import com.android.tools.build.apkzlib.sign.SigningOptions
 import com.android.tools.build.apkzlib.zfile.ApkCreator
 import com.android.tools.build.apkzlib.zfile.ApkCreatorFactory
 import com.android.tools.build.apkzlib.zfile.NativeLibrariesPackagingMode
-import com.android.zipflinger.Source
+import com.android.zipflinger.Entry
+import com.android.zipflinger.Source.NO_ALIGNMENT
 import com.android.zipflinger.Sources
 import com.android.zipflinger.StableArchive
 import com.android.zipflinger.SynchronizedArchive
 import com.android.zipflinger.Zip64
 import com.android.zipflinger.ZipArchive
 import com.android.zipflinger.ZipSource
+import com.android.zipflinger.ZipSource.COMPRESSION_NO_CHANGE
 import com.google.common.base.Function
 import com.google.common.base.Preconditions
 import com.google.common.base.Predicate
 import java.io.File
 import java.io.IOException
-import java.nio.file.Files
 import java.nio.file.InvalidPathException
 import java.util.concurrent.Callable
 import java.util.concurrent.ForkJoinPool
 import java.util.concurrent.ForkJoinTask
-import java.util.zip.Deflater
+import java.util.zip.Deflater.NO_COMPRESSION
 
 // TODO ensure that all input zip entries have desired compression -
 //  https://issuetracker.google.com/135275558
@@ -163,16 +164,23 @@ class ApkFlinger(
             if (entry.isDirectory || ignorePredicate.apply(entry.name)) {
                 continue
             }
-            val name = transform?.apply(entry.name) ?: entry.name
-            if (name.contains("../")) {
-                throw InvalidPathException(name, "Entry name contains invalid characters")
+            // newName is the entry's name in the destination archive.
+            val newName = transform?.apply(entry.name) ?: entry.name
+            if (newName.contains("../")) {
+                throw InvalidPathException(newName, "Entry name contains invalid characters")
             }
-            val alignment = when {
-                !entry.isCompressed && pageAlignPredicate.apply(name) -> PAGE_ALIGNMENT
-                !entry.isCompressed -> DEFAULT_ALIGNMENT
-                else -> Source.NO_ALIGNMENT
-            }
-            zipSource.select(entry.name, name, ZipSource.COMPRESSION_NO_CHANGE, alignment)
+            // newCompressionLevel is the entry's compression level in the destination archive, or
+            //  COMPRESSION_NO_CHANGE if it's the same compression level as the source entry.
+            val newCompressionLevel =
+                if (entry.isCompressed && noCompressPredicate.apply(newName)) {
+                    NO_COMPRESSION
+                } else {
+                    COMPRESSION_NO_CHANGE
+                }
+            // newAlignment is the entry's alignment in the destination archive.
+            val newAlignment =
+                getNewAlignment(entry, newName, newCompressionLevel, pageAlignPredicate)
+            zipSource.select(entry.name, newName, newCompressionLevel, newAlignment)
         }
         archive.add(zipSource)
     }
@@ -195,7 +203,7 @@ class ApkFlinger(
             forkJoinPool.submit(
                 Callable<Unit> {
                     val mayCompress = !noCompressPredicate.apply(apkPath)
-                    val source = Sources.from(inputFile, apkPath, if (mayCompress) compressionLevel else Deflater.NO_COMPRESSION)
+                    val source = Sources.from(inputFile, apkPath, if (mayCompress) compressionLevel else NO_COMPRESSION)
                     if (!mayCompress) {
                         if (pageAlignPredicate.apply(apkPath)) {
                             source.align(PAGE_ALIGNMENT)
@@ -235,6 +243,42 @@ class ApkFlinger(
     override fun close() {
         subTasks.forEach { it.join() }
         archive.close()
+    }
+
+    companion object {
+
+        /**
+         * Calculate an [entry]'s alignment in the destination archive.
+         *
+         * @param entry the entry from the source archive
+         * @param newName the new name of the entry in the destination archive
+         * @param newCompressionLevel the compression level of the entry in the destination archive
+         * @param pageAlignPredicate the predicate defining which files should be page aligned
+         */
+        private fun getNewAlignment(
+            entry: Entry,
+            newName: String,
+            newCompressionLevel: Int,
+            pageAlignPredicate: Predicate<String>
+        ): Long {
+            val isNewEntryCompressed =
+                when (newCompressionLevel) {
+                    COMPRESSION_NO_CHANGE -> entry.isCompressed
+                    NO_COMPRESSION -> false
+                    else -> true
+                }
+            // No alignment needed for compressed entries
+            if (isNewEntryCompressed) {
+                return NO_ALIGNMENT
+            }
+            // For uncompressed entries, use PAGE_ALIGNMENT when required, otherwise use
+            // DEFAULT_ALIGNMENT
+            return if (pageAlignPredicate.apply(newName)) {
+                PAGE_ALIGNMENT
+            } else {
+                DEFAULT_ALIGNMENT
+            }
+        }
     }
 }
 

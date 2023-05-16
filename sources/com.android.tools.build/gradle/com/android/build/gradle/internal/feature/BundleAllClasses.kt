@@ -24,9 +24,11 @@ import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.tasks.TaskCategory
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileVisitDetails
 import org.gradle.api.file.RegularFileProperty
@@ -54,6 +56,7 @@ import java.util.zip.Deflater
  * simply executing the task.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.ZIPPING])
 abstract class BundleAllClasses : NonIncrementalTask() {
 
     @get:OutputFile
@@ -169,8 +172,8 @@ abstract class BundleAllClasses : NonIncrementalTask() {
             super.configure(task)
             // Only add the instrumented classes to the runtime jar
             if (publishedType == AndroidArtifacts.PublishedConfigType.RUNTIME_ELEMENTS &&
-                creationConfig.projectClassesAreInstrumented) {
-                if (creationConfig.asmFramesComputationMode ==
+                creationConfig.instrumentationCreationConfig?.projectClassesAreInstrumented == true) {
+                if (creationConfig.instrumentationCreationConfig?.asmFramesComputationMode ==
                     FramesComputationMode.COMPUTE_FRAMES_FOR_ALL_CLASSES) {
                     task.inputDirs.from(
                         creationConfig.artifacts.get(
@@ -200,9 +203,11 @@ abstract class BundleAllClasses : NonIncrementalTask() {
                 }
             } else {
                 task.inputDirs.from(
-                    creationConfig.artifacts.get(InternalArtifactType.JAVAC),
-                    creationConfig.variantData.allPreJavacGeneratedBytecode,
-                    creationConfig.variantData.allPostJavacGeneratedBytecode
+                    listOfNotNull(
+                        creationConfig.artifacts.get(InternalArtifactType.JAVAC),
+                        creationConfig.oldVariantApiLegacySupport?.variantData?.allPreJavacGeneratedBytecode,
+                        creationConfig.oldVariantApiLegacySupport?.variantData?.allPostJavacGeneratedBytecode
+                    )
                 )
                 if (creationConfig.global.namespacedAndroidResources) {
                     task.inputJars.fromDisallowChanges(
@@ -219,7 +224,7 @@ abstract class BundleAllClasses : NonIncrementalTask() {
                 }
             }
             task.modulePath = task.project.path
-            task.jarCreatorType = creationConfig.variantScope.jarCreatorType
+            task.jarCreatorType = creationConfig.global.jarCreatorType
         }
     }
 }

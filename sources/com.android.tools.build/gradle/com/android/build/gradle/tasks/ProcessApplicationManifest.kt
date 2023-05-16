@@ -20,24 +20,28 @@ import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
+import com.android.build.gradle.internal.component.ApplicationCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dependency.ArtifactCollectionWithExtraArtifact.ExtraComponentIdentifier
+import com.android.build.gradle.internal.ide.dependencies.getIdString
+import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.MANIFEST_MERGE_REPORT
 import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_JSON
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.tasks.manifest.ManifestProviderImpl
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
-import com.android.build.gradle.internal.ide.dependencies.getIdString
-import com.android.build.gradle.internal.profile.ProfilingMode
+import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
-import com.android.build.gradle.tasks.ProcessApplicationManifest.CreationAction.ManifestProviderImpl
 import com.android.builder.dexing.DexingType
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.manifmerger.ManifestMerger2
 import com.android.manifmerger.ManifestMerger2.Invoker
 import com.android.manifmerger.ManifestMerger2.WEAR_APP_SUB_MANIFEST
@@ -49,6 +53,7 @@ import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier
 import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.gradle.api.artifacts.result.ResolvedArtifactResult
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
@@ -70,11 +75,11 @@ import org.gradle.internal.component.local.model.OpaqueComponentArtifactIdentifi
 import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
-import java.util.ArrayList
 import java.util.EnumSet
 
 /** A task that processes the manifest  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.MANIFEST)
 abstract class ProcessApplicationManifest : ManifestProcessorTask() {
 
     private var manifests: ArtifactCollection? = null
@@ -94,6 +99,11 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Optional
     @get:InputFiles
     abstract val microApkManifest: RegularFileProperty
+
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:Optional
+    @get:InputFiles
+    abstract val privacySandboxSdkManifestSnippets: ConfigurableFileCollection
 
     @get:Optional
     @get:Input
@@ -203,10 +213,10 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         val providers = mutableListOf<ManifestProvider>()
         for (artifact in artifacts) {
             providers.add(
-                ManifestProviderImpl(
-                    artifact.file,
-                    getArtifactName(artifact)
-                )
+                    ManifestProviderImpl(
+                            artifact.file,
+                            getArtifactName(artifact)
+                    )
             )
         }
         if (microApkManifest.isPresent) {
@@ -216,12 +226,16 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             val microManifest = microApkManifest.get().asFile
             if (microManifest.isFile) {
                 providers.add(
-                    ManifestProviderImpl(
-                        microManifest, WEAR_APP_SUB_MANIFEST
-                    )
+                        ManifestProviderImpl(
+                                microManifest, WEAR_APP_SUB_MANIFEST
+                        )
                 )
             }
         }
+        privacySandboxSdkManifestSnippets.forEach {
+            providers.add(ManifestProviderImpl(it, it.name))
+        }
+
         if (featureManifests != null) {
             providers.addAll(computeProviders(featureManifests!!.artifacts))
         }
@@ -370,6 +384,18 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         task.microApkManifest
                 )
             }
+            if (creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT]) {
+                task.privacySandboxSdkManifestSnippets.fromDisallowChanges(
+                    creationConfig.variantDependencies.getArtifactFileCollection(
+                        ConsumedConfigType.RUNTIME_CLASSPATH,
+                        ArtifactScope.ALL,
+                        AndroidArtifacts.ArtifactType.ANDROID_PRIVACY_SANDBOX_SDK_EXTRACTED_MANIFEST_SNIPPET
+                    )
+                )
+            } else {
+                task.privacySandboxSdkManifestSnippets.disallowChanges()
+            }
+
             task.applicationId.set(creationConfig.applicationId)
             task.applicationId.disallowChanges()
             task.componentType.set(creationConfig.componentType.toString())
@@ -431,7 +457,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             }
             task.packageOverride.setDisallowChanges(creationConfig.applicationId)
             task.namespace.setDisallowChanges(creationConfig.namespace)
-            task.profileable.setDisallowChanges(creationConfig.profileable)
+            task.profileable.setDisallowChanges(
+                (creationConfig as? ApplicationCreationConfig)?.profileable ?: false
+            )
             task.testOnly.setDisallowChanges(
                 ProfilingMode.getProfilingModeType(
                     creationConfig.services.projectOptions[StringOption.PROFILING_MODE]
@@ -448,24 +476,6 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             task.projectBuildFile.set(task.project.buildFile)
             task.projectBuildFile.disallowChanges()
             // TODO: here in the "else" block should be the code path for the namespaced pipeline
-        }
-
-        /**
-         * Implementation of AndroidBundle that only contains a manifest.
-         *
-         * This is used to pass to the merger manifest snippet that needs to be added during
-         * merge.
-         */
-        class ManifestProviderImpl(private val manifest: File, private val name: String) :
-            ManifestProvider {
-            override fun getManifest(): File {
-                return manifest
-            }
-
-            override fun getName(): String {
-                return name
-            }
-
         }
 
     }

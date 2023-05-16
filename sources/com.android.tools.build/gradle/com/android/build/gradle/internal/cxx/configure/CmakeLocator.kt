@@ -129,7 +129,7 @@ enum class CMakeVersion(val version: String, val sdkFolderName: String) {
     /**
      * The latest version of CMake that uses the CMake file API.
      */
-    LATEST_WITH_FILE_API("3.18.1", "3.18.1");
+    LATEST_WITH_FILE_API("3.22.1", "3.22.1");
 
     companion object {
         /**
@@ -227,15 +227,15 @@ private fun getSdkCmakePackages(
     return packages.getLocalPackagesForPrefix(FD_CMAKE).toList()
 }
 
-private fun getCmakeRevisionFromExecutable(cmakeFolder: File): Revision? {
+private fun getCmakeRevisionFromExecutable(cmakeFolder: File, versionExecutor: (File) -> String): Revision? {
     if (!cmakeFolder.exists()) {
         return null
     }
     val cmakeExecutable = File(cmakeFolder, "cmake$exe")
-    if (!cmakeExecutable.exists()) {
+    if (!cmakeExecutable.isFile()) {
         return null
     }
-    return CmakeUtils.getVersion(cmakeFolder)
+    return CmakeUtils.getVersion(cmakeFolder, versionExecutor)
 }
 
 /**
@@ -481,6 +481,7 @@ class CmakeLocator {
         cmakeFile: File?,
         androidLocationsProvider: AndroidLocationsProvider,
         sdkFolder: File?,
+        versionExecutor: (File) -> String,
         downloader: Consumer<String>): File? {
         PassThroughDeduplicatingLoggingEnvironment().use {
             return findCmakePathLogic(
@@ -489,7 +490,7 @@ class CmakeLocator {
                     downloader,
                     { getEnvironmentPaths() },
                     { getSdkCmakeFolders(sdkFolder) },
-                    { folder -> getCmakeRevisionFromExecutable(folder) },
+                    { folder -> getCmakeRevisionFromExecutable(folder, versionExecutor) },
                     { getSdkCmakePackages(androidLocationsProvider, sdkFolder) })
         }
     }

@@ -277,6 +277,14 @@ private static final long serialVersionUID = 0L;
      * <code>LIBRARY = 2;</code>
      */
     LIBRARY(2),
+    /**
+     * <pre>
+     * Project files only
+     * </pre>
+     *
+     * <code>PROJECT = 3;</code>
+     */
+    PROJECT(3),
     ;
 
     /**
@@ -299,6 +307,14 @@ private static final long serialVersionUID = 0L;
      * <code>LIBRARY = 2;</code>
      */
     public static final int LIBRARY_VALUE = 2;
+    /**
+     * <pre>
+     * Project files only
+     * </pre>
+     *
+     * <code>PROJECT = 3;</code>
+     */
+    public static final int PROJECT_VALUE = 3;
 
 
     public final int getNumber() {
@@ -324,6 +340,7 @@ private static final long serialVersionUID = 0L;
         case 0: return UNKNOWN_SCOPE;
         case 1: return ALL;
         case 2: return LIBRARY;
+        case 3: return PROJECT;
         default: return null;
       }
     }

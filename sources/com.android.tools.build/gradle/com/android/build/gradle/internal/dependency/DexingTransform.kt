@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.dexing.readDesugarGraph
 import com.android.build.gradle.internal.dexing.writeDesugarGraph
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
-import com.android.build.gradle.internal.scope.VariantScope
+import com.android.build.gradle.internal.scope.Java8LangSupport
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.dexing.ClassFileEntry
@@ -332,11 +332,15 @@ fun getDexingArtifactConfiguration(creationConfig: ApkCreationConfig): DexingArt
         minSdk = creationConfig.minSdkVersionForDexing.getFeatureLevel(),
         isDebuggable = creationConfig.debuggable,
         enableDesugaring =
-            creationConfig.getJava8LangSupportType() == VariantScope.Java8LangSupport.D8,
+            creationConfig.getJava8LangSupportType() == Java8LangSupport.D8,
         enableCoreLibraryDesugaring = creationConfig.isCoreLibraryDesugaringEnabled,
         needsShrinkDesugarLibrary = creationConfig.needsShrinkDesugarLibrary,
         asmTransformedVariant =
-            if (creationConfig.dependenciesClassesAreInstrumented) creationConfig.name else null,
+            if (creationConfig.instrumentationCreationConfig?.dependenciesClassesAreInstrumented == true) {
+                creationConfig.name
+            } else {
+                null
+            },
         useJacocoTransformInstrumentation = creationConfig.useJacocoTransformInstrumentation
     )
 }

@@ -18,8 +18,6 @@ package com.android.build.gradle.internal.plugins;
 
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.dsl.SdkComponents;
 import com.android.build.api.dsl.TestBuildFeatures;
 import com.android.build.api.dsl.TestBuildType;
@@ -31,13 +29,15 @@ import com.android.build.api.variant.AndroidComponentsExtension;
 import com.android.build.api.variant.TestAndroidComponentsExtension;
 import com.android.build.api.variant.TestVariant;
 import com.android.build.api.variant.TestVariantBuilder;
-import com.android.build.api.variant.impl.TestVariantBuilderImpl;
-import com.android.build.api.variant.impl.TestVariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.TestExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.TestApplicationTaskManager;
+import com.android.build.gradle.internal.component.TestComponentCreationConfig;
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
+import com.android.build.gradle.internal.component.TestVariantCreationConfig;
+import com.android.build.gradle.internal.core.dsl.TestProjectVariantDslInfo;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.ProductFlavor;
@@ -45,7 +45,6 @@ import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.dsl.TestExtensionImpl;
 import com.android.build.gradle.internal.services.DslServices;
-import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfigImpl;
@@ -56,9 +55,7 @@ import com.android.build.gradle.internal.variant.TestVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
-
 import java.util.Collection;
-import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -70,14 +67,16 @@ import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
 /** Gradle plugin class for 'test' projects. */
 public class TestPlugin
         extends BasePlugin<
-                    TestBuildFeatures,
-                    TestBuildType,
-                    TestDefaultConfig,
-                    TestProductFlavor,
-                    com.android.build.api.dsl.TestExtension,
-                    TestAndroidComponentsExtension,
-                    TestVariantBuilderImpl,
-                    TestVariantImpl> {
+                TestBuildFeatures,
+                TestBuildType,
+                TestDefaultConfig,
+                TestProductFlavor,
+                com.android.build.api.dsl.TestExtension,
+                TestAndroidComponentsExtension,
+                TestVariantBuilder,
+                TestProjectVariantDslInfo,
+                TestVariantCreationConfig,
+                TestVariant> {
     @Inject
     public TestPlugin(
             ToolingModelBuilderRegistry registry,
@@ -121,7 +120,7 @@ public class TestPlugin
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
                         project,
-                        dslServices,
+                        getProjectServices(),
                         versionedSdkLoaderService,
                         testExtension,
                         forUnitTesting);
@@ -146,10 +145,12 @@ public class TestPlugin
                                             testExtension);
             project.getExtensions()
                     .add(TestExtension.class, "_internal_legacy_android_extension", android);
+
+            initExtensionFromSettings(testExtension);
             return new ExtensionData<>(android, testExtension, bootClasspathConfig);
         }
 
-        return new ExtensionData<>(
+        TestExtension android =
                 project.getExtensions()
                         .create(
                                 "android",
@@ -159,9 +160,9 @@ public class TestPlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                testExtension),
-                testExtension,
-                bootClasspathConfig);
+                                testExtension);
+        initExtensionFromSettings(android);
+        return new ExtensionData<>(android, testExtension, bootClasspathConfig);
     }
 
     /**
@@ -196,8 +197,8 @@ public class TestPlugin
             @NonNull
                     VariantApiOperationsRegistrar<
                                     com.android.build.api.dsl.TestExtension,
-                                    TestVariantBuilderImpl,
-                                    TestVariantImpl>
+                                    TestVariantBuilder,
+                                    TestVariant>
                             variantApiOperationsRegistrar,
             @NonNull BootClasspathConfig bootClasspathConfig) {
         SdkComponents sdkComponents =
@@ -241,9 +242,14 @@ public class TestPlugin
     @Override
     protected TestApplicationTaskManager createTaskManager(
             @NonNull Project project,
-            @NonNull Collection<? extends ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>> variants,
-            @NonNull Collection<? extends TestComponentImpl> testComponents,
-            @NonNull Collection<? extends TestFixturesImpl> testFixturesComponents,
+            @NonNull
+                    Collection<
+                                    ? extends
+                                            ComponentInfo<
+                                                    TestVariantBuilder, TestVariantCreationConfig>>
+                            variants,
+            @NonNull Collection<? extends TestComponentCreationConfig> testComponents,
+            @NonNull Collection<? extends TestFixturesCreationConfig> testFixturesComponents,
             @NonNull GlobalTaskCreationConfig globalTaskCreationConfig,
             @NonNull TaskManagerConfig localConfig,
             @NonNull BaseExtension extension) {
@@ -264,7 +270,7 @@ public class TestPlugin
 
     @NonNull
     @Override
-    protected TestVariantFactory createVariantFactory(@NonNull ProjectServices projectServices) {
-        return new TestVariantFactory(projectServices);
+    protected TestVariantFactory createVariantFactory() {
+        return new TestVariantFactory(getDslServices());
     }
 }

@@ -30,7 +30,7 @@ internal val StartParameter.isConfigurationCache : Boolean?
             (this as StartParameterInternal).configurationCache.get() || this.isolatedProjects.get()
         } catch (e : Throwable) {
             Logging.getLogger("StartParameterUtils")
-                .warn("Unable to decide if config caching is enabled", e)
+                .debug("Unable to decide if config caching is enabled")
             return null
         }
     }
@@ -41,7 +41,7 @@ internal val StartParameter.isProjectIsolation: Boolean?
             (this as StartParameterInternal).isolatedProjects.get()
         } catch (e: Throwable) {
             Logging.getLogger("StartParameterUtils")
-                .warn("Unable to decide if project isolation is enabled", e)
+                .debug("Unable to decide if project isolation is enabled")
             return null
         }
     }

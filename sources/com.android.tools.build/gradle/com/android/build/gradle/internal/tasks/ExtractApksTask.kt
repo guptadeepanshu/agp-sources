@@ -28,6 +28,7 @@ import com.android.build.gradle.internal.utils.toImmutableSet
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.bundle.Devices.DeviceSpec
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.tools.build.bundletool.commands.ExtractApksCommand
 import com.android.utils.FileUtils
 import com.google.gson.stream.JsonReader
@@ -55,6 +56,7 @@ import java.nio.file.Files
  * info file indicate which APKs to extract. Only APKs for that particular device are extracted.
  */
 @DisableCachingByDefault
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.APK_PACKAGING)
 abstract class ExtractApksTask : NonIncrementalTask() {
 
     companion object {
@@ -94,6 +96,9 @@ abstract class ExtractApksTask : NonIncrementalTask() {
     @get:Input
     abstract val setIncludeMetadata: Property<Boolean>
 
+    @get:Input
+    abstract val enablePrivacySandboxSdkConsumption: Property<Boolean>
+
     override fun doTaskAction() {
         workerExecutor.noIsolation().submit(BundleToolRunnable::class.java) {
             it.initializeFromAndroidVariantTask(this)
@@ -109,6 +114,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
             it.variantName.set(variantName)
             it.optionalListOfDynamicModulesToInstall.set(dynamicModulesToInstall.orElse(listOf()))
             it.setIncludeMetadata.set(setIncludeMetadata)
+            it.enablePrivacySandboxSdkConsumption.set(enablePrivacySandboxSdkConsumption)
         }
     }
 
@@ -122,6 +128,8 @@ abstract class ExtractApksTask : NonIncrementalTask() {
         abstract val variantName: Property<String>
         abstract val optionalListOfDynamicModulesToInstall: ListProperty<String>
         abstract val setIncludeMetadata: Property<Boolean>
+        abstract val enablePrivacySandboxSdkConsumption: Property<Boolean>
+
     }
 
     abstract class BundleToolRunnable : ProfileAwareWorkAction<Params>() {
@@ -133,6 +141,12 @@ abstract class ExtractApksTask : NonIncrementalTask() {
 
             Files.newBufferedReader(parameters.deviceConfig.get().toPath(), Charsets.UTF_8).use {
                 JsonFormat.parser().merge(it, builder)
+            }
+            if (parameters.enablePrivacySandboxSdkConsumption.get() && builder.codename == "TiramisuPrivacySandbox" && builder.sdkVersion == 32) {
+                // Bundle tool changed this behavior to use the 'feature version', but Studio
+                // doesn't use bundle tool to generate the device config
+                // so to unblock b/235469089 just hard code this special case
+                builder.sdkVersion = 33
             }
 
             val command = ExtractApksCommand
@@ -252,6 +266,7 @@ abstract class ExtractApksTask : NonIncrementalTask() {
             }
             task.dynamicModulesToInstall.disallowChanges()
             task.setIncludeMetadata.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.ENABLE_LOCAL_TESTING])
+            task.enablePrivacySandboxSdkConsumption.setDisallowChanges(creationConfig.services.projectOptions[BooleanOption.PRIVACY_SANDBOX_SDK_SUPPORT])
         }
     }
 }

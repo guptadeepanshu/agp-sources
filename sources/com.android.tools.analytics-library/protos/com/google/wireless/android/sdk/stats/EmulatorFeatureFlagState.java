@@ -337,9 +337,10 @@ private static final long serialVersionUID = 0L;
      */
     SYSTEM_AS_ROOT(20),
     /**
-     * <code>IGNORE_HOST_OPENGL_ERRORS = 21;</code>
+     * <code>DEPRECATED_IGNORE_HOST_OPENGL_ERRORS = 21 [deprecated = true];</code>
      */
-    IGNORE_HOST_OPENGL_ERRORS(21),
+    @java.lang.Deprecated
+    DEPRECATED_IGNORE_HOST_OPENGL_ERRORS(21),
     /**
      * <code>GENERIC_SNAPSHOTS_UI = 22;</code>
      */
@@ -422,13 +423,205 @@ private static final long serialVersionUID = 0L;
      */
     VULKAN(41),
     /**
-     * <pre>
-     * Next tag: 43
-     * </pre>
-     *
      * <code>MACRO_UI = 42;</code>
      */
     MACRO_UI(42),
+    /**
+     * <code>CAR_VHAL_TABLE = 43;</code>
+     */
+    CAR_VHAL_TABLE(43),
+    /**
+     * <code>DYNAMIC_PARTITION = 44;</code>
+     */
+    DYNAMIC_PARTITION(44),
+    /**
+     * <code>IP_DISCONNECT_ON_LOAD = 45;</code>
+     */
+    IP_DISCONNECT_ON_LOAD(45),
+    /**
+     * <code>VULKAN_SNAPSHOTS = 46;</code>
+     */
+    VULKAN_SNAPSHOTS(46),
+    /**
+     * <code>VIRTIO_INPUT = 47;</code>
+     */
+    VIRTIO_INPUT(47),
+    /**
+     * <code>MULTI_DISPLAY = 48;</code>
+     */
+    MULTI_DISPLAY(48),
+    /**
+     * <code>VULKAN_NULL_OPTIONAL_STRINGS = 49;</code>
+     */
+    VULKAN_NULL_OPTIONAL_STRINGS(49),
+    /**
+     * <code>DYNAMIC_MEDIA_PROFILE = 50;</code>
+     */
+    DYNAMIC_MEDIA_PROFILE(50),
+    /**
+     * <code>YUV420_888_to_NV21 = 51;</code>
+     */
+    YUV420_888_to_NV21(51),
+    /**
+     * <code>YUV_Cache = 52;</code>
+     */
+    YUV_Cache(52),
+    /**
+     * <code>KEYCODE_FORWARDING = 53;</code>
+     */
+    KEYCODE_FORWARDING(53),
+    /**
+     * <code>VULKAN_IGNORED_HANDLES = 54;</code>
+     */
+    VULKAN_IGNORED_HANDLES(54),
+    /**
+     * <code>VIRTIO_GPU_NEXT = 55;</code>
+     */
+    VIRTIO_GPU_NEXT(55),
+    /**
+     * <code>MAC80211HWSIM_USERSPACE_MANAGED = 56;</code>
+     */
+    MAC80211HWSIM_USERSPACE_MANAGED(56),
+    /**
+     * <code>HAS_SHARED_SLOTS_HOST_MEMORY_ALLOCATOR = 57;</code>
+     */
+    HAS_SHARED_SLOTS_HOST_MEMORY_ALLOCATOR(57),
+    /**
+     * <code>CAR_VHAL_REPLAY = 58;</code>
+     */
+    CAR_VHAL_REPLAY(58),
+    /**
+     * <code>CAR_ASSIST_BUTTON = 59;</code>
+     */
+    CAR_ASSIST_BUTTON(59),
+    /**
+     * <code>HARDWARE_DECODER = 60;</code>
+     */
+    HARDWARE_DECODER(60),
+    /**
+     * <code>NO_DELAY_CLOSE_COLOR_BUFFER = 61;</code>
+     */
+    NO_DELAY_CLOSE_COLOR_BUFFER(61),
+    /**
+     * <code>NO_DEVICE_FRAME = 62;</code>
+     */
+    NO_DEVICE_FRAME(62),
+    /**
+     * <code>VIRTIO_GPU_NATIVE_SYNC = 63;</code>
+     */
+    VIRTIO_GPU_NATIVE_SYNC(63),
+    /**
+     * <code>VIRTIO_WIFI = 64;</code>
+     */
+    VIRTIO_WIFI(64),
+    /**
+     * <code>VULKAN_SHADER_FLOAT16_INT8 = 65;</code>
+     */
+    VULKAN_SHADER_FLOAT16_INT8(65),
+    /**
+     * <code>CAR_ROTARY = 66;</code>
+     */
+    CAR_ROTARY(66),
+    /**
+     * <code>MODEM_SIMULATOR = 67;</code>
+     */
+    MODEM_SIMULATOR(67),
+    /**
+     * <code>TV_REMOTE = 68;</code>
+     */
+    TV_REMOTE(68),
+    /**
+     * <code>NATIVE_TEXTURE_DECOMPRESSION = 69;</code>
+     */
+    NATIVE_TEXTURE_DECOMPRESSION(69),
+    /**
+     * <code>BPTC_TEXTURE_SUPPORT = 70;</code>
+     */
+    BPTC_TEXTURE_SUPPORT(70),
+    /**
+     * <code>GUEST_USES_ANGLE = 71;</code>
+     */
+    GUEST_USES_ANGLE(71),
+    /**
+     * <code>VIRTIO_VSOCK_PIPE = 72;</code>
+     */
+    VIRTIO_VSOCK_PIPE(72),
+    /**
+     * <code>S3TC_TEXTURE_SUPPORT = 73;</code>
+     */
+    S3TC_TEXTURE_SUPPORT(73),
+    /**
+     * <code>VIRTIO_MOUSE = 74;</code>
+     */
+    VIRTIO_MOUSE(74),
+    /**
+     * <code>VIRTCONSOLE_LOGCAT = 75;</code>
+     */
+    VIRTCONSOLE_LOGCAT(75),
+    /**
+     * <code>VULKAN_QUEUE_SUBMIT_WITH_COMMANDS = 76;</code>
+     */
+    VULKAN_QUEUE_SUBMIT_WITH_COMMANDS(76),
+    /**
+     * <code>VULKAN_BATCHED_DESCRIPTOR_SET_UPDATE = 77;</code>
+     */
+    VULKAN_BATCHED_DESCRIPTOR_SET_UPDATE(77),
+    /**
+     * <code>MINIGBM = 78;</code>
+     */
+    MINIGBM(78),
+    /**
+     * <code>NO_DRAW = 79;</code>
+     */
+    NO_DRAW(79),
+    /**
+     * <code>GNSS_GRPC_V1 = 80;</code>
+     */
+    GNSS_GRPC_V1(80),
+    /**
+     * <code>MIGRATABLE_SNAPSHOT_SAVE = 81;</code>
+     */
+    MIGRATABLE_SNAPSHOT_SAVE(81),
+    /**
+     * <code>ANDROIDBOOT_PROPS = 82;</code>
+     */
+    ANDROIDBOOT_PROPS(82),
+    /**
+     * <code>DEVICESKINOVERLAY = 83;</code>
+     */
+    DEVICESKINOVERLAY(83),
+    /**
+     * <code>ANDROIDBOOT_PROPS2 = 84;</code>
+     */
+    ANDROIDBOOT_PROPS2(84),
+    /**
+     * <code>BLUETOOTH_EMULATION = 85;</code>
+     */
+    BLUETOOTH_EMULATION(85),
+    /**
+     * <code>DEVICESTATE_ON_BOOT = 86;</code>
+     */
+    DEVICESTATE_ON_BOOT(86),
+    /**
+     * <code>HWC_MULTI_CONFIGS = 87;</code>
+     */
+    HWC_MULTI_CONFIGS(87),
+    /**
+     * <code>ASYNC_COMPOSE_SUPPORT = 88;</code>
+     */
+    ASYNC_COMPOSE_SUPPORT(88),
+    /**
+     * <code>VIRTIO_SND_CARD = 89;</code>
+     */
+    VIRTIO_SND_CARD(89),
+    /**
+     * <pre>
+     * Next tag: 91
+     * </pre>
+     *
+     * <code>VIRTIO_TABLET = 90;</code>
+     */
+    VIRTIO_TABLET(90),
     ;
 
     /**
@@ -520,9 +713,9 @@ private static final long serialVersionUID = 0L;
      */
     public static final int SYSTEM_AS_ROOT_VALUE = 20;
     /**
-     * <code>IGNORE_HOST_OPENGL_ERRORS = 21;</code>
+     * <code>DEPRECATED_IGNORE_HOST_OPENGL_ERRORS = 21 [deprecated = true];</code>
      */
-    public static final int IGNORE_HOST_OPENGL_ERRORS_VALUE = 21;
+    @java.lang.Deprecated public static final int DEPRECATED_IGNORE_HOST_OPENGL_ERRORS_VALUE = 21;
     /**
      * <code>GENERIC_SNAPSHOTS_UI = 22;</code>
      */
@@ -604,13 +797,205 @@ private static final long serialVersionUID = 0L;
      */
     public static final int VULKAN_VALUE = 41;
     /**
-     * <pre>
-     * Next tag: 43
-     * </pre>
-     *
      * <code>MACRO_UI = 42;</code>
      */
     public static final int MACRO_UI_VALUE = 42;
+    /**
+     * <code>CAR_VHAL_TABLE = 43;</code>
+     */
+    public static final int CAR_VHAL_TABLE_VALUE = 43;
+    /**
+     * <code>DYNAMIC_PARTITION = 44;</code>
+     */
+    public static final int DYNAMIC_PARTITION_VALUE = 44;
+    /**
+     * <code>IP_DISCONNECT_ON_LOAD = 45;</code>
+     */
+    public static final int IP_DISCONNECT_ON_LOAD_VALUE = 45;
+    /**
+     * <code>VULKAN_SNAPSHOTS = 46;</code>
+     */
+    public static final int VULKAN_SNAPSHOTS_VALUE = 46;
+    /**
+     * <code>VIRTIO_INPUT = 47;</code>
+     */
+    public static final int VIRTIO_INPUT_VALUE = 47;
+    /**
+     * <code>MULTI_DISPLAY = 48;</code>
+     */
+    public static final int MULTI_DISPLAY_VALUE = 48;
+    /**
+     * <code>VULKAN_NULL_OPTIONAL_STRINGS = 49;</code>
+     */
+    public static final int VULKAN_NULL_OPTIONAL_STRINGS_VALUE = 49;
+    /**
+     * <code>DYNAMIC_MEDIA_PROFILE = 50;</code>
+     */
+    public static final int DYNAMIC_MEDIA_PROFILE_VALUE = 50;
+    /**
+     * <code>YUV420_888_to_NV21 = 51;</code>
+     */
+    public static final int YUV420_888_to_NV21_VALUE = 51;
+    /**
+     * <code>YUV_Cache = 52;</code>
+     */
+    public static final int YUV_Cache_VALUE = 52;
+    /**
+     * <code>KEYCODE_FORWARDING = 53;</code>
+     */
+    public static final int KEYCODE_FORWARDING_VALUE = 53;
+    /**
+     * <code>VULKAN_IGNORED_HANDLES = 54;</code>
+     */
+    public static final int VULKAN_IGNORED_HANDLES_VALUE = 54;
+    /**
+     * <code>VIRTIO_GPU_NEXT = 55;</code>
+     */
+    public static final int VIRTIO_GPU_NEXT_VALUE = 55;
+    /**
+     * <code>MAC80211HWSIM_USERSPACE_MANAGED = 56;</code>
+     */
+    public static final int MAC80211HWSIM_USERSPACE_MANAGED_VALUE = 56;
+    /**
+     * <code>HAS_SHARED_SLOTS_HOST_MEMORY_ALLOCATOR = 57;</code>
+     */
+    public static final int HAS_SHARED_SLOTS_HOST_MEMORY_ALLOCATOR_VALUE = 57;
+    /**
+     * <code>CAR_VHAL_REPLAY = 58;</code>
+     */
+    public static final int CAR_VHAL_REPLAY_VALUE = 58;
+    /**
+     * <code>CAR_ASSIST_BUTTON = 59;</code>
+     */
+    public static final int CAR_ASSIST_BUTTON_VALUE = 59;
+    /**
+     * <code>HARDWARE_DECODER = 60;</code>
+     */
+    public static final int HARDWARE_DECODER_VALUE = 60;
+    /**
+     * <code>NO_DELAY_CLOSE_COLOR_BUFFER = 61;</code>
+     */
+    public static final int NO_DELAY_CLOSE_COLOR_BUFFER_VALUE = 61;
+    /**
+     * <code>NO_DEVICE_FRAME = 62;</code>
+     */
+    public static final int NO_DEVICE_FRAME_VALUE = 62;
+    /**
+     * <code>VIRTIO_GPU_NATIVE_SYNC = 63;</code>
+     */
+    public static final int VIRTIO_GPU_NATIVE_SYNC_VALUE = 63;
+    /**
+     * <code>VIRTIO_WIFI = 64;</code>
+     */
+    public static final int VIRTIO_WIFI_VALUE = 64;
+    /**
+     * <code>VULKAN_SHADER_FLOAT16_INT8 = 65;</code>
+     */
+    public static final int VULKAN_SHADER_FLOAT16_INT8_VALUE = 65;
+    /**
+     * <code>CAR_ROTARY = 66;</code>
+     */
+    public static final int CAR_ROTARY_VALUE = 66;
+    /**
+     * <code>MODEM_SIMULATOR = 67;</code>
+     */
+    public static final int MODEM_SIMULATOR_VALUE = 67;
+    /**
+     * <code>TV_REMOTE = 68;</code>
+     */
+    public static final int TV_REMOTE_VALUE = 68;
+    /**
+     * <code>NATIVE_TEXTURE_DECOMPRESSION = 69;</code>
+     */
+    public static final int NATIVE_TEXTURE_DECOMPRESSION_VALUE = 69;
+    /**
+     * <code>BPTC_TEXTURE_SUPPORT = 70;</code>
+     */
+    public static final int BPTC_TEXTURE_SUPPORT_VALUE = 70;
+    /**
+     * <code>GUEST_USES_ANGLE = 71;</code>
+     */
+    public static final int GUEST_USES_ANGLE_VALUE = 71;
+    /**
+     * <code>VIRTIO_VSOCK_PIPE = 72;</code>
+     */
+    public static final int VIRTIO_VSOCK_PIPE_VALUE = 72;
+    /**
+     * <code>S3TC_TEXTURE_SUPPORT = 73;</code>
+     */
+    public static final int S3TC_TEXTURE_SUPPORT_VALUE = 73;
+    /**
+     * <code>VIRTIO_MOUSE = 74;</code>
+     */
+    public static final int VIRTIO_MOUSE_VALUE = 74;
+    /**
+     * <code>VIRTCONSOLE_LOGCAT = 75;</code>
+     */
+    public static final int VIRTCONSOLE_LOGCAT_VALUE = 75;
+    /**
+     * <code>VULKAN_QUEUE_SUBMIT_WITH_COMMANDS = 76;</code>
+     */
+    public static final int VULKAN_QUEUE_SUBMIT_WITH_COMMANDS_VALUE = 76;
+    /**
+     * <code>VULKAN_BATCHED_DESCRIPTOR_SET_UPDATE = 77;</code>
+     */
+    public static final int VULKAN_BATCHED_DESCRIPTOR_SET_UPDATE_VALUE = 77;
+    /**
+     * <code>MINIGBM = 78;</code>
+     */
+    public static final int MINIGBM_VALUE = 78;
+    /**
+     * <code>NO_DRAW = 79;</code>
+     */
+    public static final int NO_DRAW_VALUE = 79;
+    /**
+     * <code>GNSS_GRPC_V1 = 80;</code>
+     */
+    public static final int GNSS_GRPC_V1_VALUE = 80;
+    /**
+     * <code>MIGRATABLE_SNAPSHOT_SAVE = 81;</code>
+     */
+    public static final int MIGRATABLE_SNAPSHOT_SAVE_VALUE = 81;
+    /**
+     * <code>ANDROIDBOOT_PROPS = 82;</code>
+     */
+    public static final int ANDROIDBOOT_PROPS_VALUE = 82;
+    /**
+     * <code>DEVICESKINOVERLAY = 83;</code>
+     */
+    public static final int DEVICESKINOVERLAY_VALUE = 83;
+    /**
+     * <code>ANDROIDBOOT_PROPS2 = 84;</code>
+     */
+    public static final int ANDROIDBOOT_PROPS2_VALUE = 84;
+    /**
+     * <code>BLUETOOTH_EMULATION = 85;</code>
+     */
+    public static final int BLUETOOTH_EMULATION_VALUE = 85;
+    /**
+     * <code>DEVICESTATE_ON_BOOT = 86;</code>
+     */
+    public static final int DEVICESTATE_ON_BOOT_VALUE = 86;
+    /**
+     * <code>HWC_MULTI_CONFIGS = 87;</code>
+     */
+    public static final int HWC_MULTI_CONFIGS_VALUE = 87;
+    /**
+     * <code>ASYNC_COMPOSE_SUPPORT = 88;</code>
+     */
+    public static final int ASYNC_COMPOSE_SUPPORT_VALUE = 88;
+    /**
+     * <code>VIRTIO_SND_CARD = 89;</code>
+     */
+    public static final int VIRTIO_SND_CARD_VALUE = 89;
+    /**
+     * <pre>
+     * Next tag: 91
+     * </pre>
+     *
+     * <code>VIRTIO_TABLET = 90;</code>
+     */
+    public static final int VIRTIO_TABLET_VALUE = 90;
 
 
     public final int getNumber() {
@@ -654,7 +1039,7 @@ private static final long serialVersionUID = 0L;
         case 18: return SCREEN_RECORDING;
         case 19: return VIRTUAL_SCENE;
         case 20: return SYSTEM_AS_ROOT;
-        case 21: return IGNORE_HOST_OPENGL_ERRORS;
+        case 21: return DEPRECATED_IGNORE_HOST_OPENGL_ERRORS;
         case 22: return GENERIC_SNAPSHOTS_UI;
         case 23: return ALLOW_SNAPSHOT_MIGRATION;
         case 24: return DEPRECATED_GENERIC_INCREMENTAL_SNAPSHOT;
@@ -676,6 +1061,54 @@ private static final long serialVersionUID = 0L;
         case 40: return VIDEO_PLAYBACK;
         case 41: return VULKAN;
         case 42: return MACRO_UI;
+        case 43: return CAR_VHAL_TABLE;
+        case 44: return DYNAMIC_PARTITION;
+        case 45: return IP_DISCONNECT_ON_LOAD;
+        case 46: return VULKAN_SNAPSHOTS;
+        case 47: return VIRTIO_INPUT;
+        case 48: return MULTI_DISPLAY;
+        case 49: return VULKAN_NULL_OPTIONAL_STRINGS;
+        case 50: return DYNAMIC_MEDIA_PROFILE;
+        case 51: return YUV420_888_to_NV21;
+        case 52: return YUV_Cache;
+        case 53: return KEYCODE_FORWARDING;
+        case 54: return VULKAN_IGNORED_HANDLES;
+        case 55: return VIRTIO_GPU_NEXT;
+        case 56: return MAC80211HWSIM_USERSPACE_MANAGED;
+        case 57: return HAS_SHARED_SLOTS_HOST_MEMORY_ALLOCATOR;
+        case 58: return CAR_VHAL_REPLAY;
+        case 59: return CAR_ASSIST_BUTTON;
+        case 60: return HARDWARE_DECODER;
+        case 61: return NO_DELAY_CLOSE_COLOR_BUFFER;
+        case 62: return NO_DEVICE_FRAME;
+        case 63: return VIRTIO_GPU_NATIVE_SYNC;
+        case 64: return VIRTIO_WIFI;
+        case 65: return VULKAN_SHADER_FLOAT16_INT8;
+        case 66: return CAR_ROTARY;
+        case 67: return MODEM_SIMULATOR;
+        case 68: return TV_REMOTE;
+        case 69: return NATIVE_TEXTURE_DECOMPRESSION;
+        case 70: return BPTC_TEXTURE_SUPPORT;
+        case 71: return GUEST_USES_ANGLE;
+        case 72: return VIRTIO_VSOCK_PIPE;
+        case 73: return S3TC_TEXTURE_SUPPORT;
+        case 74: return VIRTIO_MOUSE;
+        case 75: return VIRTCONSOLE_LOGCAT;
+        case 76: return VULKAN_QUEUE_SUBMIT_WITH_COMMANDS;
+        case 77: return VULKAN_BATCHED_DESCRIPTOR_SET_UPDATE;
+        case 78: return MINIGBM;
+        case 79: return NO_DRAW;
+        case 80: return GNSS_GRPC_V1;
+        case 81: return MIGRATABLE_SNAPSHOT_SAVE;
+        case 82: return ANDROIDBOOT_PROPS;
+        case 83: return DEVICESKINOVERLAY;
+        case 84: return ANDROIDBOOT_PROPS2;
+        case 85: return BLUETOOTH_EMULATION;
+        case 86: return DEVICESTATE_ON_BOOT;
+        case 87: return HWC_MULTI_CONFIGS;
+        case 88: return ASYNC_COMPOSE_SUPPORT;
+        case 89: return VIRTIO_SND_CARD;
+        case 90: return VIRTIO_TABLET;
         default: return null;
       }
     }

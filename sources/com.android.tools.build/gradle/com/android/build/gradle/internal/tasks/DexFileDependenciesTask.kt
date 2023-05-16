@@ -30,11 +30,11 @@ import com.android.builder.dexing.ClassFileInputs
 import com.android.builder.dexing.DexArchiveBuilder
 import com.android.builder.dexing.DexParameters
 import com.android.builder.dexing.r8.ClassFileProviderFactory
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.sdklib.AndroidVersion
 import com.google.common.io.Closer
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
@@ -48,6 +48,7 @@ import org.gradle.api.tasks.TaskProvider
 import java.io.File
 
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.DEXING)
 abstract class DexFileDependenciesTask: NonIncrementalTask() {
 
     @get:OutputDirectory
@@ -55,7 +56,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
 
     @get:Optional
     @get:OutputFile
-    abstract val outputKeepRules: RegularFileProperty
+    abstract val outputKeepRules: DirectoryProperty
 
     @get:Classpath
     abstract val classes: ConfigurableFileCollection
@@ -95,7 +96,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                 it.outputFile.set(outputDirectory.dir("${index}_${input.name}"))
                 it.errorFormatMode.set(errorFormatMode)
                 it.libConfiguration.set(libConfiguration)
-                it.outputKeepRules.set(outputKeepRules)
+                it.outputKeepRules.set(outputKeepRules.dir("${index}_${input.name}"))
             }
         }
     }
@@ -109,7 +110,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
         abstract val outputFile: DirectoryProperty
         abstract val errorFormatMode: Property<SyncOptions.ErrorFormatMode>
         abstract val libConfiguration: Property<String>
-        abstract val outputKeepRules: RegularFileProperty
+        abstract val outputKeepRules: DirectoryProperty
     }
 
     abstract class DexFileDependenciesWorkerAction : ProfileAwareWorkAction<WorkerActionParams>() {
@@ -208,7 +209,7 @@ abstract class DexFileDependenciesTask: NonIncrementalTask() {
                 SyncOptions.getErrorFormatMode(creationConfig.services.projectOptions)
 
             if (creationConfig.isCoreLibraryDesugaringEnabled) {
-                task.libConfiguration.set(getDesugarLibConfig(creationConfig.services.projectInfo.getProject()))
+                task.libConfiguration.set(getDesugarLibConfig(creationConfig.services))
                 task.bootClasspath.from(creationConfig.global.bootClasspath)
             }
 

@@ -22,12 +22,13 @@ import com.android.build.gradle.internal.fusedlibrary.FusedLibraryVariantScope
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.res.namespaced.NamespaceRewriter
 import com.android.build.gradle.internal.services.SymbolTableBuildService
-import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.internal.tasks.BuildAnalyzer
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
+import com.android.build.gradle.internal.tasks.configureVariantProperties
 import com.android.build.gradle.internal.tasks.factory.TaskCreationAction
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.internal.utils.toImmutableList
-import com.android.ide.common.symbols.SymbolIo
+import com.android.build.gradle.internal.tasks.TaskCategory
 import com.android.ide.common.symbols.SymbolTable
 import com.android.utils.FileUtils
 import org.gradle.api.attributes.Usage
@@ -44,7 +45,6 @@ import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.configurationcache.extensions.serviceOf
 import java.io.File
 
 /*
@@ -57,6 +57,7 @@ import java.io.File
    the fused library R class rather than the library's local R class.
  */
 @CacheableTask
+@BuildAnalyzer(primaryTaskCategory = TaskCategory.COMPILED_CLASSES, secondaryTaskCategories = [TaskCategory.SOURCE_PROCESSING])
 abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
 
     @get:OutputDirectory
@@ -123,7 +124,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
             .addAll(dependencySymbolTables.flatMap { it.symbols.values() }.toSet()).build()
     }
 
-    class CreateAction(val creationConfig: FusedLibraryVariantScope) :
+    class CreationAction(val creationConfig: FusedLibraryVariantScope) :
         TaskCreationAction<FusedLibraryClassesRewriteTask>() {
 
         override val name: String
@@ -136,7 +137,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 FusedLibraryClassesRewriteTask::rewrittenClassesDirectory
-            ).on(FusedLibraryInternalArtifactType.FINAL_CLASSES)
+            ).on(FusedLibraryInternalArtifactType.CLASSES_WITH_REWRITTEN_R_CLASS_REFS)
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 FusedLibraryClassesRewriteTask::fusedLibraryRClass
@@ -145,6 +146,7 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
         }
 
         override fun configure(task: FusedLibraryClassesRewriteTask) {
+            task.configureVariantProperties("", task.project.gradle.sharedServices)
             task.fusedLibraryNamespace.setDisallowChanges(
                 creationConfig.extension.namespace
             )
@@ -158,14 +160,9 @@ abstract class FusedLibraryClassesRewriteTask : NonIncrementalTask() {
             task.mergedClasses.setFrom(
                 creationConfig.artifacts.get(FusedLibraryInternalArtifactType.MERGED_CLASSES)
             )
-            task.symbolTableBuildService
-                .setDisallowChanges(
-                    task.project.gradle.sharedServices
-                        .registerIfAbsent(
-                            "fusedLibraryClassesRewriteTask-symbolTableBuildService",
-                            SymbolTableBuildService::class.java
-                        ) {}
-                )
+            task.symbolTableBuildService.setDisallowChanges(
+                SymbolTableBuildService.RegistrationAction(task.project).execute()
+            )
         }
     }
 }

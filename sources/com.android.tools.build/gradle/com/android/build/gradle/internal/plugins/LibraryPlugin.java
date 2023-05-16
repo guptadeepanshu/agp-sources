@@ -17,13 +17,8 @@ package com.android.build.gradle.internal.plugins;
 
 import com.android.AndroidProjectTypes;
 import com.android.annotations.NonNull;
-import com.android.build.api.component.impl.TestComponentImpl;
-import com.android.build.api.component.impl.TestFixturesImpl;
 import com.android.build.api.dsl.LibraryBuildFeatures;
-import com.android.build.api.dsl.LibraryBuildType;
-import com.android.build.api.dsl.LibraryDefaultConfig;
 import com.android.build.api.dsl.LibraryExtension;
-import com.android.build.api.dsl.LibraryProductFlavor;
 import com.android.build.api.dsl.SdkComponents;
 import com.android.build.api.extension.impl.LibraryAndroidComponentsExtensionImpl;
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar;
@@ -31,13 +26,15 @@ import com.android.build.api.variant.AndroidComponentsExtension;
 import com.android.build.api.variant.LibraryAndroidComponentsExtension;
 import com.android.build.api.variant.LibraryVariant;
 import com.android.build.api.variant.LibraryVariantBuilder;
-import com.android.build.api.variant.impl.LibraryVariantBuilderImpl;
-import com.android.build.api.variant.impl.LibraryVariantImpl;
 import com.android.build.gradle.BaseExtension;
 import com.android.build.gradle.api.BaseVariantOutput;
 import com.android.build.gradle.internal.ExtraModelInfo;
 import com.android.build.gradle.internal.LibraryTaskManager;
 import com.android.build.gradle.internal.TaskManager;
+import com.android.build.gradle.internal.component.LibraryCreationConfig;
+import com.android.build.gradle.internal.component.TestComponentCreationConfig;
+import com.android.build.gradle.internal.component.TestFixturesCreationConfig;
+import com.android.build.gradle.internal.core.dsl.LibraryVariantDslInfo;
 import com.android.build.gradle.internal.dsl.BuildType;
 import com.android.build.gradle.internal.dsl.DefaultConfig;
 import com.android.build.gradle.internal.dsl.LibraryExtensionImpl;
@@ -45,7 +42,6 @@ import com.android.build.gradle.internal.dsl.ProductFlavor;
 import com.android.build.gradle.internal.dsl.SdkComponentsImpl;
 import com.android.build.gradle.internal.dsl.SigningConfig;
 import com.android.build.gradle.internal.services.DslServices;
-import com.android.build.gradle.internal.services.ProjectServices;
 import com.android.build.gradle.internal.services.VersionedSdkLoaderService;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfig;
 import com.android.build.gradle.internal.tasks.factory.BootClasspathConfigImpl;
@@ -56,9 +52,7 @@ import com.android.build.gradle.internal.variant.LibraryVariantFactory;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.builder.model.v2.ide.ProjectType;
 import com.google.wireless.android.sdk.stats.GradleBuildProject;
-
 import java.util.Collection;
-import java.util.List;
 import javax.inject.Inject;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Project;
@@ -66,7 +60,6 @@ import org.gradle.api.component.SoftwareComponentFactory;
 import org.gradle.api.reflect.TypeOf;
 import org.gradle.build.event.BuildEventsListenerRegistry;
 import org.gradle.tooling.provider.model.ToolingModelBuilderRegistry;
-import org.jetbrains.annotations.NotNull;
 
 /** Gradle plugin class for 'library' projects. */
 public class LibraryPlugin
@@ -77,8 +70,10 @@ public class LibraryPlugin
                 com.android.build.api.dsl.LibraryProductFlavor,
                 LibraryExtension,
                 LibraryAndroidComponentsExtension,
-                LibraryVariantBuilderImpl,
-                LibraryVariantImpl> {
+                LibraryVariantBuilder,
+                LibraryVariantDslInfo,
+                LibraryCreationConfig,
+                LibraryVariant> {
 
     @Inject
     public LibraryPlugin(
@@ -113,7 +108,7 @@ public class LibraryPlugin
         BootClasspathConfigImpl bootClasspathConfig =
                 new BootClasspathConfigImpl(
                         project,
-                        dslServices,
+                        getProjectServices(),
                         versionedSdkLoaderService,
                         libraryExtension,
                         forUnitTesting);
@@ -143,10 +138,13 @@ public class LibraryPlugin
                             com.android.build.gradle.LibraryExtension.class,
                             "_internal_legacy_android_extension",
                             android);
+
+            initExtensionFromSettings(libraryExtension);
+
             return new ExtensionData<>(android, libraryExtension, bootClasspathConfig);
         }
 
-        return new ExtensionData<>(
+        com.android.build.gradle.LibraryExtension android =
                 project.getExtensions()
                         .create(
                                 "android",
@@ -156,9 +154,10 @@ public class LibraryPlugin
                                 buildOutputs,
                                 dslContainers.getSourceSetManager(),
                                 extraModelInfo,
-                                libraryExtension),
-                libraryExtension,
-                bootClasspathConfig);
+                                libraryExtension);
+        initExtensionFromSettings(android);
+
+        return new ExtensionData<>(android, libraryExtension, bootClasspathConfig);
     }
 
     /**
@@ -173,13 +172,13 @@ public class LibraryPlugin
                     LibraryExtension, LibraryVariantBuilder, LibraryVariant> {
 
         public LibraryAndroidComponentsExtensionImplCompat(
-                @NotNull DslServices dslServices,
-                @NotNull SdkComponents sdkComponents,
-                @NotNull
+                @NonNull DslServices dslServices,
+                @NonNull SdkComponents sdkComponents,
+                @NonNull
                         VariantApiOperationsRegistrar<
                                         LibraryExtension, LibraryVariantBuilder, LibraryVariant>
                                 variantApiOperations,
-                @NotNull com.android.build.gradle.LibraryExtension libraryExtension) {
+                @NonNull com.android.build.gradle.LibraryExtension libraryExtension) {
             super(dslServices, sdkComponents, variantApiOperations, libraryExtension);
         }
     }
@@ -190,7 +189,7 @@ public class LibraryPlugin
             @NonNull DslServices dslServices,
             @NonNull
                     VariantApiOperationsRegistrar<
-                                    LibraryExtension, LibraryVariantBuilderImpl, LibraryVariantImpl>
+                                    LibraryExtension, LibraryVariantBuilder, LibraryVariant>
                             variantApiOperationsRegistrar,
             @NonNull BootClasspathConfig bootClasspathConfig) {
 
@@ -232,8 +231,8 @@ public class LibraryPlugin
 
     @NonNull
     @Override
-    protected LibraryVariantFactory createVariantFactory(@NonNull ProjectServices projectServices) {
-        return new LibraryVariantFactory(projectServices);
+    protected LibraryVariantFactory createVariantFactory() {
+        return new LibraryVariantFactory(getDslServices());
     }
 
     @Override
@@ -246,16 +245,21 @@ public class LibraryPlugin
         return ProjectType.LIBRARY;
     }
 
-    @NotNull
+    @NonNull
     @Override
-    protected TaskManager<LibraryVariantBuilderImpl, LibraryVariantImpl> createTaskManager(
-            @NotNull Project project,
-            @NotNull Collection<? extends ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
-            @NotNull Collection<? extends TestComponentImpl> testComponents,
-            @NotNull Collection<? extends TestFixturesImpl> testFixturesComponents,
-            @NotNull GlobalTaskCreationConfig globalTaskCreationConfig,
-            @NotNull TaskManagerConfig localConfig,
-            @NotNull BaseExtension extension) {
+    protected TaskManager<LibraryVariantBuilder, LibraryCreationConfig> createTaskManager(
+            @NonNull Project project,
+            @NonNull
+                    Collection<
+                                    ? extends
+                                            ComponentInfo<
+                                                    LibraryVariantBuilder, LibraryCreationConfig>>
+                            variants,
+            @NonNull Collection<? extends TestComponentCreationConfig> testComponents,
+            @NonNull Collection<? extends TestFixturesCreationConfig> testFixturesComponents,
+            @NonNull GlobalTaskCreationConfig globalTaskCreationConfig,
+            @NonNull TaskManagerConfig localConfig,
+            @NonNull BaseExtension extension) {
         return new LibraryTaskManager(
                 project,
                 variants,

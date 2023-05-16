@@ -4,6 +4,11 @@
 package com.google.wireless.android.sdk.stats;
 
 /**
+ * <pre>
+ * Session data for dynamic layout inspector (inspector v2) around the system
+ * view toggle
+ * </pre>
+ *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorCompose}
  */
 public final class DynamicLayoutInspectorCompose extends
@@ -87,6 +92,41 @@ private static final long serialVersionUID = 0L;
           case 64: {
             bitField0_ |= 0x00000080;
             recompositionResetClicks_ = input.readUInt32();
+            break;
+          }
+          case 72: {
+            bitField0_ |= 0x00000100;
+            framesWithRecompositionCountsOn_ = input.readUInt32();
+            break;
+          }
+          case 80: {
+            bitField0_ |= 0x00000200;
+            framesWithRecompositionColorRed_ = input.readUInt32();
+            break;
+          }
+          case 88: {
+            bitField0_ |= 0x00000400;
+            framesWithRecompositionColorBlue_ = input.readUInt32();
+            break;
+          }
+          case 96: {
+            bitField0_ |= 0x00000800;
+            framesWithRecompositionColorGreen_ = input.readUInt32();
+            break;
+          }
+          case 104: {
+            bitField0_ |= 0x00001000;
+            framesWithRecompositionColorYellow_ = input.readUInt32();
+            break;
+          }
+          case 112: {
+            bitField0_ |= 0x00002000;
+            framesWithRecompositionColorPurple_ = input.readUInt32();
+            break;
+          }
+          case 120: {
+            bitField0_ |= 0x00004000;
+            framesWithRecompositionColorOrange_ = input.readUInt32();
             break;
           }
           default: {
@@ -338,6 +378,195 @@ private static final long serialVersionUID = 0L;
     return recompositionResetClicks_;
   }
 
+  public static final int FRAMES_WITH_RECOMPOSITION_COUNTS_ON_FIELD_NUMBER = 9;
+  private int framesWithRecompositionCountsOn_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were shown
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+   * @return Whether the framesWithRecompositionCountsOn field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionCountsOn() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were shown
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+   * @return The framesWithRecompositionCountsOn.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionCountsOn() {
+    return framesWithRecompositionCountsOn_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_RED_FIELD_NUMBER = 10;
+  private int framesWithRecompositionColorRed_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in red
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+   * @return Whether the framesWithRecompositionColorRed field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorRed() {
+    return ((bitField0_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in red
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+   * @return The framesWithRecompositionColorRed.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorRed() {
+    return framesWithRecompositionColorRed_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_BLUE_FIELD_NUMBER = 11;
+  private int framesWithRecompositionColorBlue_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in blue
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+   * @return Whether the framesWithRecompositionColorBlue field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorBlue() {
+    return ((bitField0_ & 0x00000400) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in blue
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+   * @return The framesWithRecompositionColorBlue.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorBlue() {
+    return framesWithRecompositionColorBlue_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_GREEN_FIELD_NUMBER = 12;
+  private int framesWithRecompositionColorGreen_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in green
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+   * @return Whether the framesWithRecompositionColorGreen field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorGreen() {
+    return ((bitField0_ & 0x00000800) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in green
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+   * @return The framesWithRecompositionColorGreen.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorGreen() {
+    return framesWithRecompositionColorGreen_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_YELLOW_FIELD_NUMBER = 13;
+  private int framesWithRecompositionColorYellow_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in yellow
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+   * @return Whether the framesWithRecompositionColorYellow field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorYellow() {
+    return ((bitField0_ & 0x00001000) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in yellow
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+   * @return The framesWithRecompositionColorYellow.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorYellow() {
+    return framesWithRecompositionColorYellow_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_PURPLE_FIELD_NUMBER = 14;
+  private int framesWithRecompositionColorPurple_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in purple
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+   * @return Whether the framesWithRecompositionColorPurple field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorPurple() {
+    return ((bitField0_ & 0x00002000) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in purple
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+   * @return The framesWithRecompositionColorPurple.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorPurple() {
+    return framesWithRecompositionColorPurple_;
+  }
+
+  public static final int FRAMES_WITH_RECOMPOSITION_COLOR_ORANGE_FIELD_NUMBER = 15;
+  private int framesWithRecompositionColorOrange_;
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in orange
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+   * @return Whether the framesWithRecompositionColorOrange field is set.
+   */
+  @java.lang.Override
+  public boolean hasFramesWithRecompositionColorOrange() {
+    return ((bitField0_ & 0x00004000) != 0);
+  }
+  /**
+   * <pre>
+   * Number of frames received where the recomposition counts were in orange
+   * </pre>
+   *
+   * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+   * @return The framesWithRecompositionColorOrange.
+   */
+  @java.lang.Override
+  public int getFramesWithRecompositionColorOrange() {
+    return framesWithRecompositionColorOrange_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -375,6 +604,27 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeUInt32(8, recompositionResetClicks_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeUInt32(9, framesWithRecompositionCountsOn_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      output.writeUInt32(10, framesWithRecompositionColorRed_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      output.writeUInt32(11, framesWithRecompositionColorBlue_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      output.writeUInt32(12, framesWithRecompositionColorGreen_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      output.writeUInt32(13, framesWithRecompositionColorYellow_);
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      output.writeUInt32(14, framesWithRecompositionColorPurple_);
+    }
+    if (((bitField0_ & 0x00004000) != 0)) {
+      output.writeUInt32(15, framesWithRecompositionColorOrange_);
     }
     unknownFields.writeTo(output);
   }
@@ -416,6 +666,34 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(8, recompositionResetClicks_);
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(9, framesWithRecompositionCountsOn_);
+    }
+    if (((bitField0_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(10, framesWithRecompositionColorRed_);
+    }
+    if (((bitField0_ & 0x00000400) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(11, framesWithRecompositionColorBlue_);
+    }
+    if (((bitField0_ & 0x00000800) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(12, framesWithRecompositionColorGreen_);
+    }
+    if (((bitField0_ & 0x00001000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(13, framesWithRecompositionColorYellow_);
+    }
+    if (((bitField0_ & 0x00002000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(14, framesWithRecompositionColorPurple_);
+    }
+    if (((bitField0_ & 0x00004000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeUInt32Size(15, framesWithRecompositionColorOrange_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -473,6 +751,41 @@ private static final long serialVersionUID = 0L;
       if (getRecompositionResetClicks()
           != other.getRecompositionResetClicks()) return false;
     }
+    if (hasFramesWithRecompositionCountsOn() != other.hasFramesWithRecompositionCountsOn()) return false;
+    if (hasFramesWithRecompositionCountsOn()) {
+      if (getFramesWithRecompositionCountsOn()
+          != other.getFramesWithRecompositionCountsOn()) return false;
+    }
+    if (hasFramesWithRecompositionColorRed() != other.hasFramesWithRecompositionColorRed()) return false;
+    if (hasFramesWithRecompositionColorRed()) {
+      if (getFramesWithRecompositionColorRed()
+          != other.getFramesWithRecompositionColorRed()) return false;
+    }
+    if (hasFramesWithRecompositionColorBlue() != other.hasFramesWithRecompositionColorBlue()) return false;
+    if (hasFramesWithRecompositionColorBlue()) {
+      if (getFramesWithRecompositionColorBlue()
+          != other.getFramesWithRecompositionColorBlue()) return false;
+    }
+    if (hasFramesWithRecompositionColorGreen() != other.hasFramesWithRecompositionColorGreen()) return false;
+    if (hasFramesWithRecompositionColorGreen()) {
+      if (getFramesWithRecompositionColorGreen()
+          != other.getFramesWithRecompositionColorGreen()) return false;
+    }
+    if (hasFramesWithRecompositionColorYellow() != other.hasFramesWithRecompositionColorYellow()) return false;
+    if (hasFramesWithRecompositionColorYellow()) {
+      if (getFramesWithRecompositionColorYellow()
+          != other.getFramesWithRecompositionColorYellow()) return false;
+    }
+    if (hasFramesWithRecompositionColorPurple() != other.hasFramesWithRecompositionColorPurple()) return false;
+    if (hasFramesWithRecompositionColorPurple()) {
+      if (getFramesWithRecompositionColorPurple()
+          != other.getFramesWithRecompositionColorPurple()) return false;
+    }
+    if (hasFramesWithRecompositionColorOrange() != other.hasFramesWithRecompositionColorOrange()) return false;
+    if (hasFramesWithRecompositionColorOrange()) {
+      if (getFramesWithRecompositionColorOrange()
+          != other.getFramesWithRecompositionColorOrange()) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -517,6 +830,34 @@ private static final long serialVersionUID = 0L;
     if (hasRecompositionResetClicks()) {
       hash = (37 * hash) + RECOMPOSITION_RESET_CLICKS_FIELD_NUMBER;
       hash = (53 * hash) + getRecompositionResetClicks();
+    }
+    if (hasFramesWithRecompositionCountsOn()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COUNTS_ON_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionCountsOn();
+    }
+    if (hasFramesWithRecompositionColorRed()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_RED_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorRed();
+    }
+    if (hasFramesWithRecompositionColorBlue()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_BLUE_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorBlue();
+    }
+    if (hasFramesWithRecompositionColorGreen()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_GREEN_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorGreen();
+    }
+    if (hasFramesWithRecompositionColorYellow()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_YELLOW_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorYellow();
+    }
+    if (hasFramesWithRecompositionColorPurple()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_PURPLE_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorPurple();
+    }
+    if (hasFramesWithRecompositionColorOrange()) {
+      hash = (37 * hash) + FRAMES_WITH_RECOMPOSITION_COLOR_ORANGE_FIELD_NUMBER;
+      hash = (53 * hash) + getFramesWithRecompositionColorOrange();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -614,6 +955,11 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
+   * <pre>
+   * Session data for dynamic layout inspector (inspector v2) around the system
+   * view toggle
+   * </pre>
+   *
    * Protobuf type {@code android_studio.DynamicLayoutInspectorCompose}
    */
   public static final class Builder extends
@@ -667,6 +1013,20 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
       recompositionResetClicks_ = 0;
       bitField0_ = (bitField0_ & ~0x00000080);
+      framesWithRecompositionCountsOn_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000100);
+      framesWithRecompositionColorRed_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000200);
+      framesWithRecompositionColorBlue_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000400);
+      framesWithRecompositionColorGreen_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000800);
+      framesWithRecompositionColorYellow_ = 0;
+      bitField0_ = (bitField0_ & ~0x00001000);
+      framesWithRecompositionColorPurple_ = 0;
+      bitField0_ = (bitField0_ & ~0x00002000);
+      framesWithRecompositionColorOrange_ = 0;
+      bitField0_ = (bitField0_ & ~0x00004000);
       return this;
     }
 
@@ -726,6 +1086,34 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000080) != 0)) {
         result.recompositionResetClicks_ = recompositionResetClicks_;
         to_bitField0_ |= 0x00000080;
+      }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        result.framesWithRecompositionCountsOn_ = framesWithRecompositionCountsOn_;
+        to_bitField0_ |= 0x00000100;
+      }
+      if (((from_bitField0_ & 0x00000200) != 0)) {
+        result.framesWithRecompositionColorRed_ = framesWithRecompositionColorRed_;
+        to_bitField0_ |= 0x00000200;
+      }
+      if (((from_bitField0_ & 0x00000400) != 0)) {
+        result.framesWithRecompositionColorBlue_ = framesWithRecompositionColorBlue_;
+        to_bitField0_ |= 0x00000400;
+      }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.framesWithRecompositionColorGreen_ = framesWithRecompositionColorGreen_;
+        to_bitField0_ |= 0x00000800;
+      }
+      if (((from_bitField0_ & 0x00001000) != 0)) {
+        result.framesWithRecompositionColorYellow_ = framesWithRecompositionColorYellow_;
+        to_bitField0_ |= 0x00001000;
+      }
+      if (((from_bitField0_ & 0x00002000) != 0)) {
+        result.framesWithRecompositionColorPurple_ = framesWithRecompositionColorPurple_;
+        to_bitField0_ |= 0x00002000;
+      }
+      if (((from_bitField0_ & 0x00004000) != 0)) {
+        result.framesWithRecompositionColorOrange_ = framesWithRecompositionColorOrange_;
+        to_bitField0_ |= 0x00004000;
       }
       result.bitField0_ = to_bitField0_;
       onBuilt();
@@ -799,6 +1187,27 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasRecompositionResetClicks()) {
         setRecompositionResetClicks(other.getRecompositionResetClicks());
+      }
+      if (other.hasFramesWithRecompositionCountsOn()) {
+        setFramesWithRecompositionCountsOn(other.getFramesWithRecompositionCountsOn());
+      }
+      if (other.hasFramesWithRecompositionColorRed()) {
+        setFramesWithRecompositionColorRed(other.getFramesWithRecompositionColorRed());
+      }
+      if (other.hasFramesWithRecompositionColorBlue()) {
+        setFramesWithRecompositionColorBlue(other.getFramesWithRecompositionColorBlue());
+      }
+      if (other.hasFramesWithRecompositionColorGreen()) {
+        setFramesWithRecompositionColorGreen(other.getFramesWithRecompositionColorGreen());
+      }
+      if (other.hasFramesWithRecompositionColorYellow()) {
+        setFramesWithRecompositionColorYellow(other.getFramesWithRecompositionColorYellow());
+      }
+      if (other.hasFramesWithRecompositionColorPurple()) {
+        setFramesWithRecompositionColorPurple(other.getFramesWithRecompositionColorPurple());
+      }
+      if (other.hasFramesWithRecompositionColorOrange()) {
+        setFramesWithRecompositionColorOrange(other.getFramesWithRecompositionColorOrange());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1266,6 +1675,391 @@ private static final long serialVersionUID = 0L;
     public Builder clearRecompositionResetClicks() {
       bitField0_ = (bitField0_ & ~0x00000080);
       recompositionResetClicks_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionCountsOn_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were shown
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+     * @return Whether the framesWithRecompositionCountsOn field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionCountsOn() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were shown
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+     * @return The framesWithRecompositionCountsOn.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionCountsOn() {
+      return framesWithRecompositionCountsOn_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were shown
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+     * @param value The framesWithRecompositionCountsOn to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionCountsOn(int value) {
+      bitField0_ |= 0x00000100;
+      framesWithRecompositionCountsOn_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were shown
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_counts_on = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionCountsOn() {
+      bitField0_ = (bitField0_ & ~0x00000100);
+      framesWithRecompositionCountsOn_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorRed_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in red
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+     * @return Whether the framesWithRecompositionColorRed field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorRed() {
+      return ((bitField0_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in red
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+     * @return The framesWithRecompositionColorRed.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorRed() {
+      return framesWithRecompositionColorRed_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in red
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+     * @param value The framesWithRecompositionColorRed to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorRed(int value) {
+      bitField0_ |= 0x00000200;
+      framesWithRecompositionColorRed_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in red
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_red = 10;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorRed() {
+      bitField0_ = (bitField0_ & ~0x00000200);
+      framesWithRecompositionColorRed_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorBlue_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in blue
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+     * @return Whether the framesWithRecompositionColorBlue field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorBlue() {
+      return ((bitField0_ & 0x00000400) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in blue
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+     * @return The framesWithRecompositionColorBlue.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorBlue() {
+      return framesWithRecompositionColorBlue_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in blue
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+     * @param value The framesWithRecompositionColorBlue to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorBlue(int value) {
+      bitField0_ |= 0x00000400;
+      framesWithRecompositionColorBlue_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in blue
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_blue = 11;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorBlue() {
+      bitField0_ = (bitField0_ & ~0x00000400);
+      framesWithRecompositionColorBlue_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorGreen_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in green
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+     * @return Whether the framesWithRecompositionColorGreen field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorGreen() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in green
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+     * @return The framesWithRecompositionColorGreen.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorGreen() {
+      return framesWithRecompositionColorGreen_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in green
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+     * @param value The framesWithRecompositionColorGreen to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorGreen(int value) {
+      bitField0_ |= 0x00000800;
+      framesWithRecompositionColorGreen_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in green
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_green = 12;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorGreen() {
+      bitField0_ = (bitField0_ & ~0x00000800);
+      framesWithRecompositionColorGreen_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorYellow_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in yellow
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+     * @return Whether the framesWithRecompositionColorYellow field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorYellow() {
+      return ((bitField0_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in yellow
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+     * @return The framesWithRecompositionColorYellow.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorYellow() {
+      return framesWithRecompositionColorYellow_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in yellow
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+     * @param value The framesWithRecompositionColorYellow to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorYellow(int value) {
+      bitField0_ |= 0x00001000;
+      framesWithRecompositionColorYellow_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in yellow
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_yellow = 13;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorYellow() {
+      bitField0_ = (bitField0_ & ~0x00001000);
+      framesWithRecompositionColorYellow_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorPurple_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in purple
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+     * @return Whether the framesWithRecompositionColorPurple field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorPurple() {
+      return ((bitField0_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in purple
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+     * @return The framesWithRecompositionColorPurple.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorPurple() {
+      return framesWithRecompositionColorPurple_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in purple
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+     * @param value The framesWithRecompositionColorPurple to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorPurple(int value) {
+      bitField0_ |= 0x00002000;
+      framesWithRecompositionColorPurple_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in purple
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_purple = 14;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorPurple() {
+      bitField0_ = (bitField0_ & ~0x00002000);
+      framesWithRecompositionColorPurple_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private int framesWithRecompositionColorOrange_ ;
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in orange
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+     * @return Whether the framesWithRecompositionColorOrange field is set.
+     */
+    @java.lang.Override
+    public boolean hasFramesWithRecompositionColorOrange() {
+      return ((bitField0_ & 0x00004000) != 0);
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in orange
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+     * @return The framesWithRecompositionColorOrange.
+     */
+    @java.lang.Override
+    public int getFramesWithRecompositionColorOrange() {
+      return framesWithRecompositionColorOrange_;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in orange
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+     * @param value The framesWithRecompositionColorOrange to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFramesWithRecompositionColorOrange(int value) {
+      bitField0_ |= 0x00004000;
+      framesWithRecompositionColorOrange_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Number of frames received where the recomposition counts were in orange
+     * </pre>
+     *
+     * <code>optional uint32 frames_with_recomposition_color_orange = 15;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFramesWithRecompositionColorOrange() {
+      bitField0_ = (bitField0_ & ~0x00004000);
+      framesWithRecompositionColorOrange_ = 0;
       onChanged();
       return this;
     }
