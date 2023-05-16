@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EnergyRangeMetadata}
  */
-public  final class EnergyRangeMetadata extends
+public final class EnergyRangeMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EnergyRangeMetadata)
     EnergyRangeMetadataOrBuilder {
@@ -99,12 +99,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EnergyEventCount event_counts = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EnergyEventCount> getEventCountsList() {
     return eventCounts_;
   }
   /**
    * <code>repeated .android_studio.EnergyEventCount event_counts = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EnergyEventCountOrBuilder> 
       getEventCountsOrBuilderList() {
     return eventCounts_;
@@ -112,18 +114,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EnergyEventCount event_counts = 1;</code>
    */
+  @java.lang.Override
   public int getEventCountsCount() {
     return eventCounts_.size();
   }
   /**
    * <code>repeated .android_studio.EnergyEventCount event_counts = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEventCount getEventCounts(int index) {
     return eventCounts_.get(index);
   }
   /**
    * <code>repeated .android_studio.EnergyEventCount event_counts = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEventCountOrBuilder getEventCountsOrBuilder(
       int index) {
     return eventCounts_.get(index);

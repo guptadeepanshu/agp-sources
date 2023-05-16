@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.RunFinishData}
  */
-public  final class RunFinishData extends
+public final class RunFinishData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.RunFinishData)
     RunFinishDataOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_ms = 1;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_activity = 2;</code>
    * @return Whether the ideActivity field is set.
    */
+  @java.lang.Override
   public boolean hasIdeActivity() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_activity = 2;</code>
    * @return The ideActivity.
    */
+  @java.lang.Override
   public int getIdeActivity() {
     return ideActivity_;
   }
@@ -499,6 +503,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -510,6 +515,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 1;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -552,6 +558,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_activity = 2;</code>
      * @return Whether the ideActivity field is set.
      */
+    @java.lang.Override
     public boolean hasIdeActivity() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -563,6 +570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_activity = 2;</code>
      * @return The ideActivity.
      */
+    @java.lang.Override
     public int getIdeActivity() {
       return ideActivity_;
     }

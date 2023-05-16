@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.LayoutFavoriteAttributeChangeEvent}
  */
-public  final class LayoutFavoriteAttributeChangeEvent extends
+public final class LayoutFavoriteAttributeChangeEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutFavoriteAttributeChangeEvent)
     LayoutFavoriteAttributeChangeEventOrBuilder {
@@ -131,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute added = 1;</code>
    * @return Whether the added field is set.
    */
+  @java.lang.Override
   public boolean hasAdded() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -142,6 +143,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute added = 1;</code>
    * @return The added.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttribute getAdded() {
     return added_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : added_;
   }
@@ -152,6 +154,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidAttribute added = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAddedOrBuilder() {
     return added_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : added_;
   }
@@ -166,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
    * @return Whether the removed field is set.
    */
+  @java.lang.Override
   public boolean hasRemoved() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -177,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
    * @return The removed.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttribute getRemoved() {
     return removed_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : removed_;
   }
@@ -187,6 +192,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidAttribute removed = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getRemovedOrBuilder() {
     return removed_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : removed_;
   }
@@ -200,6 +206,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidAttribute active = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AndroidAttribute> getActiveList() {
     return active_;
   }
@@ -210,6 +217,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidAttribute active = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder> 
       getActiveOrBuilderList() {
     return active_;
@@ -221,6 +229,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidAttribute active = 3;</code>
    */
+  @java.lang.Override
   public int getActiveCount() {
     return active_.size();
   }
@@ -231,6 +240,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidAttribute active = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttribute getActive(int index) {
     return active_.get(index);
   }
@@ -241,6 +251,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidAttribute active = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getActiveOrBuilder(
       int index) {
     return active_.get(index);

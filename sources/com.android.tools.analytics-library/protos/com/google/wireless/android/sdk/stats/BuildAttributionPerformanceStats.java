@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildAttributionPerformanceStats}
  */
-public  final class BuildAttributionPerformanceStats extends
+public final class BuildAttributionPerformanceStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildAttributionPerformanceStats)
     BuildAttributionPerformanceStatsOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 post_build_analysis_duration_ms = 1;</code>
    * @return Whether the postBuildAnalysisDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasPostBuildAnalysisDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -124,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 post_build_analysis_duration_ms = 1;</code>
    * @return The postBuildAnalysisDurationMs.
    */
+  @java.lang.Override
   public long getPostBuildAnalysisDurationMs() {
     return postBuildAnalysisDurationMs_;
   }
@@ -138,6 +140,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ui_creation_duration_ms = 2;</code>
    * @return Whether the uiCreationDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasUiCreationDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -149,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ui_creation_duration_ms = 2;</code>
    * @return The uiCreationDurationMs.
    */
+  @java.lang.Override
   public long getUiCreationDurationMs() {
     return uiCreationDurationMs_;
   }
@@ -164,6 +168,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 tooling_api_build_finished_event_latency_ms = 3;</code>
    * @return Whether the toolingApiBuildFinishedEventLatencyMs field is set.
    */
+  @java.lang.Override
   public boolean hasToolingApiBuildFinishedEventLatencyMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -176,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 tooling_api_build_finished_event_latency_ms = 3;</code>
    * @return The toolingApiBuildFinishedEventLatencyMs.
    */
+  @java.lang.Override
   public long getToolingApiBuildFinishedEventLatencyMs() {
     return toolingApiBuildFinishedEventLatencyMs_;
   }
@@ -561,6 +567,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 post_build_analysis_duration_ms = 1;</code>
      * @return Whether the postBuildAnalysisDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasPostBuildAnalysisDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -573,6 +580,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 post_build_analysis_duration_ms = 1;</code>
      * @return The postBuildAnalysisDurationMs.
      */
+    @java.lang.Override
     public long getPostBuildAnalysisDurationMs() {
       return postBuildAnalysisDurationMs_;
     }
@@ -617,6 +625,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ui_creation_duration_ms = 2;</code>
      * @return Whether the uiCreationDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasUiCreationDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -628,6 +637,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ui_creation_duration_ms = 2;</code>
      * @return The uiCreationDurationMs.
      */
+    @java.lang.Override
     public long getUiCreationDurationMs() {
       return uiCreationDurationMs_;
     }
@@ -671,6 +681,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 tooling_api_build_finished_event_latency_ms = 3;</code>
      * @return Whether the toolingApiBuildFinishedEventLatencyMs field is set.
      */
+    @java.lang.Override
     public boolean hasToolingApiBuildFinishedEventLatencyMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -683,6 +694,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 tooling_api_build_finished_event_latency_ms = 3;</code>
      * @return The toolingApiBuildFinishedEventLatencyMs.
      */
+    @java.lang.Override
     public long getToolingApiBuildFinishedEventLatencyMs() {
       return toolingApiBuildFinishedEventLatencyMs_;
     }

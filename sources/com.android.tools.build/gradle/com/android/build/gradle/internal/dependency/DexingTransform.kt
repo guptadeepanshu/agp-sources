@@ -26,7 +26,6 @@ import com.android.build.gradle.internal.dexing.writeDesugarGraph
 import com.android.build.gradle.internal.errors.MessageReceiverImpl
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SyncOptions
 import com.android.build.gradle.tasks.toSerializable
 import com.android.builder.dexing.ClassFileEntry
@@ -95,7 +94,7 @@ abstract class BaseDexingTransform<T : BaseDexingTransform.Parameters> : Transfo
 
     // Use RELATIVE path sensitivity since we use [FileChange.normalizedPath] to calculate the
     // derived dex file relative path. This will ensure we find the derived file when deletion is
-    // required. Revert to CLASSPATH once Gradle 7.5 is used : b/224524454 
+    // required. Revert to CLASSPATH once Gradle 7.5 is used : b/224524454
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputArtifact
     @get:Incremental
@@ -338,10 +337,7 @@ fun getDexingArtifactConfiguration(creationConfig: ApkCreationConfig): DexingArt
         needsShrinkDesugarLibrary = creationConfig.needsShrinkDesugarLibrary,
         asmTransformedVariant =
             if (creationConfig.dependenciesClassesAreInstrumented) creationConfig.name else null,
-        isCoverageEnabled = creationConfig.variantDslInfo.isTestCoverageEnabled,
-        useTransformInstrumentation =
-            creationConfig.services
-                .projectOptions[BooleanOption.ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION]
+        useJacocoTransformInstrumentation = creationConfig.useJacocoTransformInstrumentation
     )
 }
 
@@ -352,8 +348,7 @@ data class DexingArtifactConfiguration(
     private val enableCoreLibraryDesugaring: Boolean,
     private val needsShrinkDesugarLibrary: Boolean,
     private val asmTransformedVariant: String?,
-    private val isCoverageEnabled: Boolean,
-    private val useTransformInstrumentation: Boolean
+    private val useJacocoTransformInstrumentation: Boolean
 ) {
 
     // If we want to do desugaring and our minSdk (or the API level of the device we're deploying
@@ -408,7 +403,7 @@ data class DexingArtifactConfiguration(
             // used. These artifacts are the same as CLASSES, CLASSES_JAR and ASM_INSTRUMENTED_JARS,
             // but they have been offline instrumented by Jacoco and include Jacoco dependencies.
             val inputArtifact: AndroidArtifacts.ArtifactType =
-                if (isCoverageEnabled && useTransformInstrumentation) {
+                if (useJacocoTransformInstrumentation) {
                     when {
                         asmTransformedVariant != null ->
                             AndroidArtifacts.ArtifactType.JACOCO_ASM_INSTRUMENTED_JARS
@@ -461,6 +456,7 @@ data class DexingArtifactConfiguration(
                 ATTR_MIN_SDK to minSdk.toString(),
                 ATTR_IS_DEBUGGABLE to isDebuggable.toString(),
                 ATTR_ENABLE_DESUGARING to enableDesugaring.toString(),
+                ATTR_ENABLE_JACOCO_INSTRUMENTATION to useJacocoTransformInstrumentation.toString(),
                 ATTR_ASM_TRANSFORMED_VARIANT to (asmTransformedVariant ?: "NONE")
             )
         )
@@ -472,5 +468,7 @@ val ATTR_IS_DEBUGGABLE: Attribute<String> =
     Attribute.of("dexing-is-debuggable", String::class.java)
 val ATTR_ENABLE_DESUGARING: Attribute<String> =
     Attribute.of("dexing-enable-desugaring", String::class.java)
+val ATTR_ENABLE_JACOCO_INSTRUMENTATION: Attribute<String> =
+    Attribute.of("dexing-enable-jacoco-instrumentation", String::class.java)
 
 const val DESUGAR_GRAPH_FILE_NAME = "desugar_graph.bin"

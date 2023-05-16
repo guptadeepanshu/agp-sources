@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleNativeAndroidModule}
  */
-public  final class GradleNativeAndroidModule extends
+public final class GradleNativeAndroidModule extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleNativeAndroidModule)
     GradleNativeAndroidModuleOrBuilder {
@@ -157,6 +157,14 @@ private static final long serialVersionUID = 0L;
      * <code>CMAKE = 4;</code>
      */
     CMAKE(4),
+    /**
+     * <pre>
+     * Custom build system that uses Ninja as back end.
+     * </pre>
+     *
+     * <code>NINJA = 5;</code>
+     */
+    NINJA(5),
     ;
 
     /**
@@ -195,6 +203,14 @@ private static final long serialVersionUID = 0L;
      * <code>CMAKE = 4;</code>
      */
     public static final int CMAKE_VALUE = 4;
+    /**
+     * <pre>
+     * Custom build system that uses Ninja as back end.
+     * </pre>
+     *
+     * <code>NINJA = 5;</code>
+     */
+    public static final int NINJA_VALUE = 5;
 
 
     public final int getNumber() {
@@ -222,6 +238,7 @@ private static final long serialVersionUID = 0L;
         case 2: return NDK_COMPILE;
         case 3: return NDK_BUILD;
         case 4: return CMAKE;
+        case 5: return NINJA;
         default: return null;
       }
     }
@@ -285,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return Whether the appId field is set.
    */
+  @java.lang.Override
   public boolean hasAppId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -299,6 +317,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return The appId.
    */
+  @java.lang.Override
   public java.lang.String getAppId() {
     java.lang.Object ref = appId_;
     if (ref instanceof java.lang.String) {
@@ -324,6 +343,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return The bytes for appId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAppIdBytes() {
     java.lang.Object ref = appId_;
@@ -348,6 +368,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return Whether the moduleName field is set.
    */
+  @java.lang.Override
   public boolean hasModuleName() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -359,6 +380,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return The moduleName.
    */
+  @java.lang.Override
   public java.lang.String getModuleName() {
     java.lang.Object ref = moduleName_;
     if (ref instanceof java.lang.String) {
@@ -381,6 +403,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return The bytes for moduleName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModuleNameBytes() {
     java.lang.Object ref = moduleName_;
@@ -405,7 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleNativeAndroidModule.NativeBuildSystemType build_system_type = 3;</code>
    * @return Whether the buildSystemType field is set.
    */
-  public boolean hasBuildSystemType() {
+  @java.lang.Override public boolean hasBuildSystemType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -416,7 +439,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleNativeAndroidModule.NativeBuildSystemType build_system_type = 3;</code>
    * @return The buildSystemType.
    */
-  public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.valueOf(buildSystemType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.UNKNOWN_NATIVE_BUILD_SYSTEM_TYPE : result;
@@ -1034,7 +1057,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleNativeAndroidModule.NativeBuildSystemType build_system_type = 3;</code>
      * @return Whether the buildSystemType field is set.
      */
-    public boolean hasBuildSystemType() {
+    @java.lang.Override public boolean hasBuildSystemType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1045,6 +1068,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleNativeAndroidModule.NativeBuildSystemType build_system_type = 3;</code>
      * @return The buildSystemType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType getBuildSystemType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType result = com.google.wireless.android.sdk.stats.GradleNativeAndroidModule.NativeBuildSystemType.valueOf(buildSystemType_);

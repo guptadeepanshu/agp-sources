@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LintSession}
  */
-public  final class LintSession extends
+public final class LintSession extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LintSession)
     LintSessionOrBuilder {
@@ -371,7 +371,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintSession.AnalysisType analysis_type = 1;</code>
    * @return Whether the analysisType field is set.
    */
-  public boolean hasAnalysisType() {
+  @java.lang.Override public boolean hasAnalysisType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -382,7 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintSession.AnalysisType analysis_type = 1;</code>
    * @return The analysisType.
    */
-  public com.google.wireless.android.sdk.stats.LintSession.AnalysisType getAnalysisType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LintSession.AnalysisType getAnalysisType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.valueOf(analysisType_);
     return result == null ? com.google.wireless.android.sdk.stats.LintSession.AnalysisType.UNKNOWN_ANALYSIS_TYPE : result;
@@ -398,6 +398,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
    * @return Whether the lintPerformance field is set.
    */
+  @java.lang.Override
   public boolean hasLintPerformance() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -409,6 +410,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
    * @return The lintPerformance.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintPerformance getLintPerformance() {
     return lintPerformance_ == null ? com.google.wireless.android.sdk.stats.LintPerformance.getDefaultInstance() : lintPerformance_;
   }
@@ -419,6 +421,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LintPerformance lint_performance = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintPerformanceOrBuilder getLintPerformanceOrBuilder() {
     return lintPerformance_ == null ? com.google.wireless.android.sdk.stats.LintPerformance.getDefaultInstance() : lintPerformance_;
   }
@@ -432,6 +435,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LintIssueId issue_ids = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.LintIssueId> getIssueIdsList() {
     return issueIds_;
   }
@@ -442,6 +446,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LintIssueId issue_ids = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.LintIssueIdOrBuilder> 
       getIssueIdsOrBuilderList() {
     return issueIds_;
@@ -453,6 +458,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LintIssueId issue_ids = 3;</code>
    */
+  @java.lang.Override
   public int getIssueIdsCount() {
     return issueIds_.size();
   }
@@ -463,6 +469,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LintIssueId issue_ids = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintIssueId getIssueIds(int index) {
     return issueIds_.get(index);
   }
@@ -473,6 +480,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LintIssueId issue_ids = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintIssueIdOrBuilder getIssueIdsOrBuilder(
       int index) {
     return issueIds_.get(index);
@@ -493,6 +501,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 4;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -509,6 +518,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 4;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -536,6 +546,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 4;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -560,6 +571,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool baseline_enabled = 5;</code>
    * @return Whether the baselineEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasBaselineEnabled() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -571,6 +583,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool baseline_enabled = 5;</code>
    * @return The baselineEnabled.
    */
+  @java.lang.Override
   public boolean getBaselineEnabled() {
     return baselineEnabled_;
   }
@@ -585,6 +598,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_test_sources = 6;</code>
    * @return Whether the includingTestSources field is set.
    */
+  @java.lang.Override
   public boolean hasIncludingTestSources() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -596,6 +610,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_test_sources = 6;</code>
    * @return The includingTestSources.
    */
+  @java.lang.Override
   public boolean getIncludingTestSources() {
     return includingTestSources_;
   }
@@ -610,6 +625,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_generated_sources = 7;</code>
    * @return Whether the includingGeneratedSources field is set.
    */
+  @java.lang.Override
   public boolean hasIncludingGeneratedSources() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -621,6 +637,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_generated_sources = 7;</code>
    * @return The includingGeneratedSources.
    */
+  @java.lang.Override
   public boolean getIncludingGeneratedSources() {
     return includingGeneratedSources_;
   }
@@ -635,6 +652,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_dependencies = 8;</code>
    * @return Whether the includingDependencies field is set.
    */
+  @java.lang.Override
   public boolean hasIncludingDependencies() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -646,6 +664,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool including_dependencies = 8;</code>
    * @return The includingDependencies.
    */
+  @java.lang.Override
   public boolean getIncludingDependencies() {
     return includingDependencies_;
   }
@@ -660,6 +679,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abort_on_error = 9;</code>
    * @return Whether the abortOnError field is set.
    */
+  @java.lang.Override
   public boolean hasAbortOnError() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -671,6 +691,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abort_on_error = 9;</code>
    * @return The abortOnError.
    */
+  @java.lang.Override
   public boolean getAbortOnError() {
     return abortOnError_;
   }
@@ -685,6 +706,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool ignore_warnings = 10;</code>
    * @return Whether the ignoreWarnings field is set.
    */
+  @java.lang.Override
   public boolean hasIgnoreWarnings() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -696,6 +718,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool ignore_warnings = 10;</code>
    * @return The ignoreWarnings.
    */
+  @java.lang.Override
   public boolean getIgnoreWarnings() {
     return ignoreWarnings_;
   }
@@ -710,6 +733,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool warnings_as_errors = 11;</code>
    * @return Whether the warningsAsErrors field is set.
    */
+  @java.lang.Override
   public boolean hasWarningsAsErrors() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -721,6 +745,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool warnings_as_errors = 11;</code>
    * @return The warningsAsErrors.
    */
+  @java.lang.Override
   public boolean getWarningsAsErrors() {
     return warningsAsErrors_;
   }
@@ -1348,7 +1373,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintSession.AnalysisType analysis_type = 1;</code>
      * @return Whether the analysisType field is set.
      */
-    public boolean hasAnalysisType() {
+    @java.lang.Override public boolean hasAnalysisType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1359,6 +1384,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintSession.AnalysisType analysis_type = 1;</code>
      * @return The analysisType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintSession.AnalysisType getAnalysisType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LintSession.AnalysisType result = com.google.wireless.android.sdk.stats.LintSession.AnalysisType.valueOf(analysisType_);
@@ -2012,6 +2038,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool baseline_enabled = 5;</code>
      * @return Whether the baselineEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasBaselineEnabled() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2023,6 +2050,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool baseline_enabled = 5;</code>
      * @return The baselineEnabled.
      */
+    @java.lang.Override
     public boolean getBaselineEnabled() {
       return baselineEnabled_;
     }
@@ -2065,6 +2093,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_test_sources = 6;</code>
      * @return Whether the includingTestSources field is set.
      */
+    @java.lang.Override
     public boolean hasIncludingTestSources() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2076,6 +2105,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_test_sources = 6;</code>
      * @return The includingTestSources.
      */
+    @java.lang.Override
     public boolean getIncludingTestSources() {
       return includingTestSources_;
     }
@@ -2118,6 +2148,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_generated_sources = 7;</code>
      * @return Whether the includingGeneratedSources field is set.
      */
+    @java.lang.Override
     public boolean hasIncludingGeneratedSources() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -2129,6 +2160,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_generated_sources = 7;</code>
      * @return The includingGeneratedSources.
      */
+    @java.lang.Override
     public boolean getIncludingGeneratedSources() {
       return includingGeneratedSources_;
     }
@@ -2171,6 +2203,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_dependencies = 8;</code>
      * @return Whether the includingDependencies field is set.
      */
+    @java.lang.Override
     public boolean hasIncludingDependencies() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -2182,6 +2215,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool including_dependencies = 8;</code>
      * @return The includingDependencies.
      */
+    @java.lang.Override
     public boolean getIncludingDependencies() {
       return includingDependencies_;
     }
@@ -2224,6 +2258,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abort_on_error = 9;</code>
      * @return Whether the abortOnError field is set.
      */
+    @java.lang.Override
     public boolean hasAbortOnError() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2235,6 +2270,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abort_on_error = 9;</code>
      * @return The abortOnError.
      */
+    @java.lang.Override
     public boolean getAbortOnError() {
       return abortOnError_;
     }
@@ -2277,6 +2313,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool ignore_warnings = 10;</code>
      * @return Whether the ignoreWarnings field is set.
      */
+    @java.lang.Override
     public boolean hasIgnoreWarnings() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -2288,6 +2325,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool ignore_warnings = 10;</code>
      * @return The ignoreWarnings.
      */
+    @java.lang.Override
     public boolean getIgnoreWarnings() {
       return ignoreWarnings_;
     }
@@ -2330,6 +2368,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool warnings_as_errors = 11;</code>
      * @return Whether the warningsAsErrors field is set.
      */
+    @java.lang.Override
     public boolean hasWarningsAsErrors() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -2341,6 +2380,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool warnings_as_errors = 11;</code>
      * @return The warningsAsErrors.
      */
+    @java.lang.Override
     public boolean getWarningsAsErrors() {
       return warningsAsErrors_;
     }

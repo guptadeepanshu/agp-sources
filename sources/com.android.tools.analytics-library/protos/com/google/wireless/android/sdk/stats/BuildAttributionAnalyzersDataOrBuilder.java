@@ -214,4 +214,31 @@ public interface BuildAttributionAnalyzersDataOrBuilder extends
    * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
    */
   com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder();
+
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * @return Whether the downloadsAnalysisData field is set.
+   */
+  boolean hasDownloadsAnalysisData();
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * @return The downloadsAnalysisData.
+   */
+  com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsAnalysisData();
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   */
+  com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder();
 }

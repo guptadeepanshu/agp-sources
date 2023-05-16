@@ -24,8 +24,8 @@ import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.pipeline.StreamFilter
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.ALL
-import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK_MAPPING
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope.PROJECT
+import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.APK_MAPPING
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactType.FILTERED_PROGUARD_RULES
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.COMPILE_CLASSPATH
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedConfigType.REVERSE_METADATA_VALUES
@@ -33,9 +33,10 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedCon
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.GENERATED_PROGUARD_FILE
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.builder.core.VariantType
+import com.android.builder.core.ComponentType
 import com.google.common.base.Preconditions
 import com.google.common.collect.Sets
+import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -44,9 +45,11 @@ import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
@@ -67,7 +70,7 @@ abstract class ProguardConfigurableTask(
 ) : NonIncrementalTask() {
 
     @get:Input
-    abstract val variantType: Property<VariantType>
+    abstract val componentType: Property<ComponentType>
 
     @get:Input
     abstract val includeFeaturesInScopes: Property<Boolean>
@@ -99,6 +102,16 @@ abstract class ProguardConfigurableTask(
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val configurationFiles: ConfigurableFileCollection
 
+    @get:Internal
+    lateinit var libraryKeepRules: ArtifactCollection
+        private set
+
+    @get:Input
+    abstract val ignoredLibraryKeepRules: SetProperty<String>
+
+    @get:Input
+    abstract val ignoreAllLibraryKeepRules: Property<Boolean>
+
     @get:OutputFile
     abstract val mappingFile: RegularFileProperty
 
@@ -118,7 +131,7 @@ abstract class ProguardConfigurableTask(
 
         // if this is not a base module, there should not be any default proguard files so just
         // return.
-        if (!variantType.get().isBaseModule) {
+        if (!componentType.get().isBaseModule) {
             return incomingProguardFile.files
         }
 
@@ -152,7 +165,7 @@ abstract class ProguardConfigurableTask(
     ) {
 
         private val includeFeaturesInScopes: Boolean = creationConfig.variantScope.consumesFeatureJars()
-        protected val variantType: VariantType = creationConfig.variantType
+        protected val componentType: ComponentType = creationConfig.componentType
         private val testedConfig = creationConfig.testedConfig
 
         // Override to make this true in proguard
@@ -170,7 +183,7 @@ abstract class ProguardConfigurableTask(
         @Suppress("DEPRECATION") // Legacy support (b/195153220)
         protected val inputScopes: MutableSet<com.android.build.api.transform.QualifiedContent.ScopeType> =
             when {
-                variantType.isAar -> mutableSetOf(
+                componentType.isAar -> mutableSetOf(
                     com.android.build.api.transform.QualifiedContent.Scope.PROJECT,
                     InternalScope.LOCAL_DEPS
                 )
@@ -191,12 +204,12 @@ abstract class ProguardConfigurableTask(
             @Suppress("DEPRECATION") // Legacy support (b/195153220)
             val referencedScopes: Set<com.android.build.api.transform.QualifiedContent.Scope> = run {
                 val set = Sets.newHashSetWithExpectedSize<com.android.build.api.transform.QualifiedContent.Scope>(5)
-                if (variantType.isAar) {
+                if (componentType.isAar) {
                     set.add(com.android.build.api.transform.QualifiedContent.Scope.SUB_PROJECTS)
                     set.add(com.android.build.api.transform.QualifiedContent.Scope.EXTERNAL_LIBRARIES)
                 }
 
-                if (variantType.isTestComponent) {
+                if (componentType.isTestComponent) {
                     set.add(com.android.build.api.transform.QualifiedContent.Scope.TESTED_CODE)
                 }
 
@@ -273,7 +286,7 @@ abstract class ProguardConfigurableTask(
                 )
             }
 
-            task.variantType.set(variantType)
+            task.componentType.set(componentType)
 
             task.includeFeaturesInScopes.set(includeFeaturesInScopes)
 
@@ -305,6 +318,15 @@ abstract class ProguardConfigurableTask(
             inputProguardMapping: FileCollection?,
             testedConfig: VariantCreationConfig?
         ) {
+            task.libraryKeepRules =
+                    creationConfig.variantDependencies.getArtifactCollection(
+                            RUNTIME_CLASSPATH,
+                            ALL,
+                            FILTERED_PROGUARD_RULES
+                    )
+            task.ignoredLibraryKeepRules.set(creationConfig.ignoredLibraryKeepRules)
+            task.ignoreAllLibraryKeepRules.set(creationConfig.ignoreAllLibraryKeepRules)
+
             when {
                 testedConfig != null -> {
                     // This is an androidTest variant inside an app/library.
@@ -313,39 +335,24 @@ abstract class ProguardConfigurableTask(
                     // All -dontwarn rules for test dependencies should go in here:
                     val configurationFiles = task.project.files(
                         creationConfig.proguardFiles,
-                        creationConfig.variantDependencies.getArtifactFileCollection(
-                            RUNTIME_CLASSPATH,
-                            ALL,
-                            FILTERED_PROGUARD_RULES
-                        )
+                        task.libraryKeepRules.artifactFiles
                     )
                     task.configurationFiles.from(configurationFiles)
                 }
-                creationConfig.variantType.isForTesting && !creationConfig.variantType.isTestComponent -> {
+                creationConfig.componentType.isForTesting && !creationConfig.componentType.isTestComponent -> {
                     // This is a test-only module and the app being tested was obfuscated with ProGuard.
                     applyProguardDefaultsForTest()
 
                     // All -dontwarn rules for test dependencies should go in here:
                     val configurationFiles = task.project.files(
                         creationConfig.proguardFiles,
-                        creationConfig.variantDependencies.getArtifactFileCollection(
-                            RUNTIME_CLASSPATH,
-                            ALL,
-                            FILTERED_PROGUARD_RULES
-                        )
+                        task.libraryKeepRules.artifactFiles
                     )
                     task.configurationFiles.from(configurationFiles)
                 }
                 else -> // This is a "normal" variant in an app/library.
                     applyProguardConfigForNonTest(task, creationConfig)
             }
-
-            // To set up a dependency on the producer task, the actual proguard files are computed
-            // through variantScope
-            task.configurationFiles.from(
-                creationConfig.global.globalArtifacts.get(
-                    InternalArtifactType.DEFAULT_PROGUARD_FILES)
-            )
 
             if (inputProguardMapping != null) {
                 task.dependsOn(inputProguardMapping)
@@ -369,8 +376,6 @@ abstract class ProguardConfigurableTask(
             task: ProguardConfigurableTask,
             creationConfig: ConsumableCreationConfig
         ) {
-            val variantDslInfo = creationConfig.variantDslInfo
-
             val postprocessingFeatures = creationConfig.variantScope.postprocessingFeatures
             postprocessingFeatures?.let { setActions(postprocessingFeatures) }
 
@@ -388,24 +393,21 @@ abstract class ProguardConfigurableTask(
                 creationConfig.proguardFiles,
                 aaptProguardFile,
                 creationConfig.artifacts.get(GENERATED_PROGUARD_FILE),
-                creationConfig.variantDependencies.getArtifactFileCollection(
-                    RUNTIME_CLASSPATH,
-                    ALL,
-                    FILTERED_PROGUARD_RULES
-                )
+                task.libraryKeepRules.artifactFiles
             )
 
             if (task.includeFeaturesInScopes.get()) {
                 addFeatureProguardRules(creationConfig, configurationFiles)
             }
+
             task.configurationFiles.from(configurationFiles)
 
-            if (creationConfig.variantType.isAar) {
+            if (creationConfig.componentType.isAar) {
                 keep("class **.R")
                 keep("class **.R$* {*;}")
             }
 
-            if (variantDslInfo.isTestCoverageEnabled) {
+            if (creationConfig.isAndroidTestCoverageEnabled) {
                 // when collecting coverage, don't remove the JaCoCo runtime
                 keep("class com.vladium.** {*;}")
                 keep("class org.jacoco.** {*;}")

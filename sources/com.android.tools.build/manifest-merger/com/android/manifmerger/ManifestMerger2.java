@@ -86,7 +86,8 @@ public class ManifestMerger2 {
     private final Map<String, Object> mPlaceHolderValues;
 
     @NonNull
-    private final KeyBasedValueResolver<ManifestSystemProperty> mSystemPropertyResolver;
+    private final KeyBasedValueResolver<ManifestSystemProperty>
+            mSystemPropertyResolver;
 
     @NonNull
     private final ILogger mLogger;
@@ -193,6 +194,24 @@ public class ManifestMerger2 {
                 loadedMainManifestInfo.getXmlDocument().getPackage();
         final String originalMainManifestPackageName =
                 mainPackageAttribute.map(XmlAttribute::getValue).orElse(null);
+
+        if (mOptionalFeatures.contains(Invoker.Feature.WARN_IF_PACKAGE_IN_SOURCE_MANIFEST)
+                && originalMainManifestPackageName != null) {
+            mLogger.warning(
+                    String.format(
+                            "package=\"%1$s\" found in source AndroidManifest.xml: %2$s.\n"
+                                    + "Setting the namespace via a source AndroidManifest.xml's "
+                                    + "package attribute is deprecated.\n"
+                                    + "Please instead set the namespace (or testNamespace) in the "
+                                    + "module's build.gradle file, as described here: "
+                                    + "https://developer.android.com/studio/build/configure-app-module#set-namespace\n"
+                                    + "This migration can be done automatically using the AGP "
+                                    + "Upgrade Assistant, please refer to "
+                                    + "https://developer.android.com/studio/build/agp-upgrade-assistant "
+                                    + "for more information.",
+                            originalMainManifestPackageName,
+                            loadedMainManifestInfo.getLocation().getAbsolutePath()));
+        }
 
         // load all the libraries xml files early to have a list of all possible node:selector
         // values.
@@ -1017,7 +1036,7 @@ public class ManifestMerger2 {
                             mModel,
                             rewriteNamespaces);
         } catch (Exception e) {
-            throw new MergeFailureException(e);
+            throw new MergeFailureException("Error parsing " + xmlFile.getAbsolutePath(), e);
         }
 
         MergingReport.Builder builder =
@@ -1226,7 +1245,8 @@ public class ManifestMerger2 {
                                             + "' used in: "
                                             + Joiner.on(", ").join(offendingTargets)
                                             + ".";
-                            // We know that there is at least one because of the filter check.
+                            // We know that there is at least one because of the
+                            // filter check.
                             LoadedManifestInfo info = e.getValue().stream().findFirst().get();
                             // Report only once per error, since the error message contain the path
                             // to all manifests with the repeated namespace.
@@ -1308,13 +1328,13 @@ public class ManifestMerger2 {
 
     /**
      * Perform {@link ManifestSystemProperty} injection.
+     *
      * @param mergingReport to log actions and errors.
      * @param xmlDocument the xml document to inject into.
      */
     protected void performSystemPropertiesInjection(
-            @NonNull MergingReport.Builder mergingReport,
-            @NonNull XmlDocument xmlDocument) {
-        for (ManifestSystemProperty manifestSystemProperty : ManifestSystemProperty.values()) {
+            @NonNull MergingReport.Builder mergingReport, @NonNull XmlDocument xmlDocument) {
+        for (ManifestSystemProperty manifestSystemProperty : ManifestSystemProperty.getValues()) {
             String propertyOverride = mSystemPropertyResolver.getValue(manifestSystemProperty);
             if (propertyOverride != null) {
                 manifestSystemProperty.addTo(
@@ -1422,8 +1442,8 @@ public class ManifestMerger2 {
 
         protected final File mMainManifestFile;
 
-        protected final ImmutableMap.Builder<ManifestSystemProperty, Object> mSystemProperties =
-                new ImmutableMap.Builder<>();
+        protected final ImmutableMap.Builder<ManifestSystemProperty, Object>
+                mSystemProperties = new ImmutableMap.Builder<>();
 
         @NonNull
         protected final ILogger mLogger;
@@ -1474,12 +1494,14 @@ public class ManifestMerger2 {
 
         /**
          * Sets a value for a {@link ManifestSystemProperty}
+         *
          * @param override the property to set
          * @param value the value for the property
          * @return itself.
          */
         @NonNull
-        public Invoker setOverride(@NonNull ManifestSystemProperty override, @NonNull String value) {
+        public Invoker setOverride(
+                @NonNull ManifestSystemProperty override, @NonNull String value) {
             mSystemProperties.put(override, value);
             return this;
         }
@@ -1609,6 +1631,13 @@ public class ManifestMerger2 {
 
             /** Unsafely disables minSdkVersion check in libraries. */
             DISABLE_MINSDKLIBRARY_CHECK,
+
+            /**
+             * Warn if the package attribute is present in a source manifest.
+             *
+             * <p>This is used in AGP because users should migrate to the new namespace DSL.
+             */
+            WARN_IF_PACKAGE_IN_SOURCE_MANIFEST
         }
 
         /**
@@ -1875,15 +1904,20 @@ public class ManifestMerger2 {
         public MergingReport merge() throws MergeFailureException {
 
             // provide some free placeholders values.
-            ImmutableMap<ManifestSystemProperty, Object> systemProperties = mSystemProperties.build();
-            if (systemProperties.containsKey(ManifestSystemProperty.PACKAGE)) {
+            ImmutableMap<ManifestSystemProperty, Object> systemProperties =
+                    mSystemProperties.build();
+            if (systemProperties.containsKey(ManifestSystemProperty.Document.PACKAGE)) {
                 // if the package is provided, make it available for placeholder replacement.
-                mPlaceholders.put(PACKAGE_NAME, systemProperties.get(ManifestSystemProperty.PACKAGE));
+                mPlaceholders.put(
+                        PACKAGE_NAME,
+                        systemProperties.get(ManifestSystemProperty.Document.PACKAGE));
                 // as well as applicationId since package system property overrides everything
                 // but not when output is a library since only the final (application)
                 // application Id should be used to replace libraries "applicationId" placeholders.
                 if (mMergeType != MergeType.LIBRARY) {
-                    mPlaceholders.put(APPLICATION_ID, systemProperties.get(ManifestSystemProperty.PACKAGE));
+                    mPlaceholders.put(
+                            APPLICATION_ID,
+                            systemProperties.get(ManifestSystemProperty.Document.PACKAGE));
                 }
             }
 
@@ -2006,6 +2040,10 @@ public class ManifestMerger2 {
 
     // a wrapper exception to all sorts of failure exceptions that can be thrown during merging.
     public static class MergeFailureException extends Exception {
+
+        protected MergeFailureException(String msg, Exception cause) {
+            super(msg, cause);
+        }
 
         protected MergeFailureException(Exception cause) {
             super(cause);

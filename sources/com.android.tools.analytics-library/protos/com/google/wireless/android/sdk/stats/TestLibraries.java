@@ -9,12 +9,12 @@ package com.google.wireless.android.sdk.stats;
  * Each string field of this message holds the exact version of the given
  * library (e.g. "1.0.0") that the field name represents. The field is populated
  * only if this project uses the given library.
- * Next ID: 38
+ * Next ID: 41
  * </pre>
  *
  * Protobuf type {@code android_studio.TestLibraries}
  */
-public  final class TestLibraries extends
+public final class TestLibraries extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TestLibraries)
     TestLibrariesOrBuilder {
@@ -52,6 +52,9 @@ private static final long serialVersionUID = 0L;
     benchmarkJunit4Version_ = "";
     benchmarkMacroVersion_ = "";
     benchmarkMacroJunit4Version_ = "";
+    composeUiTestVersion_ = "";
+    composeUiTestJunit4Version_ = "";
+    composeUiTestManifestVersion_ = "";
     robolectricVersion_ = "";
     mockitoVersion_ = "";
     junitVersion_ = "";
@@ -109,13 +112,13 @@ private static final long serialVersionUID = 0L;
           }
           case 26: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x10000000;
+            bitField0_ |= 0x80000000;
             robolectricVersion_ = bs;
             break;
           }
           case 34: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x20000000;
+            bitField1_ |= 0x00000001;
             mockitoVersion_ = bs;
             break;
           }
@@ -199,13 +202,13 @@ private static final long serialVersionUID = 0L;
           }
           case 146: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x40000000;
+            bitField1_ |= 0x00000002;
             junitVersion_ = bs;
             break;
           }
           case 154: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField0_ |= 0x80000000;
+            bitField1_ |= 0x00000004;
             truthVersion_ = bs;
             break;
           }
@@ -289,32 +292,50 @@ private static final long serialVersionUID = 0L;
           }
           case 266: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000001;
+            bitField1_ |= 0x00000008;
             testNgVersion_ = bs;
             break;
           }
           case 274: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000002;
+            bitField1_ |= 0x00000010;
             junitPlatformLauncherVersion_ = bs;
             break;
           }
           case 282: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000004;
+            bitField1_ |= 0x00000020;
             junitPlatformRunnerVersion_ = bs;
             break;
           }
           case 290: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000008;
+            bitField1_ |= 0x00000040;
             junitJupiterVersion_ = bs;
             break;
           }
           case 298: {
             com.google.protobuf.ByteString bs = input.readBytes();
-            bitField1_ |= 0x00000010;
+            bitField1_ |= 0x00000080;
             junitVintageEngineVersion_ = bs;
+            break;
+          }
+          case 306: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x10000000;
+            composeUiTestVersion_ = bs;
+            break;
+          }
+          case 314: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x20000000;
+            composeUiTestJunit4Version_ = bs;
+            break;
+          }
+          case 322: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x40000000;
+            composeUiTestManifestVersion_ = bs;
             break;
           }
           default: {
@@ -361,6 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_library_version = 1;</code>
    * @return Whether the testSupportLibraryVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportLibraryVersion() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -372,6 +394,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_library_version = 1;</code>
    * @return The testSupportLibraryVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportLibraryVersion() {
     java.lang.Object ref = testSupportLibraryVersion_;
     if (ref instanceof java.lang.String) {
@@ -394,6 +417,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_library_version = 1;</code>
    * @return The bytes for testSupportLibraryVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportLibraryVersionBytes() {
     java.lang.Object ref = testSupportLibraryVersion_;
@@ -418,6 +442,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_orchestrator_version = 22;</code>
    * @return Whether the testSupportOrchestratorVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportOrchestratorVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -429,6 +454,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_orchestrator_version = 22;</code>
    * @return The testSupportOrchestratorVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportOrchestratorVersion() {
     java.lang.Object ref = testSupportOrchestratorVersion_;
     if (ref instanceof java.lang.String) {
@@ -451,6 +477,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_orchestrator_version = 22;</code>
    * @return The bytes for testSupportOrchestratorVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportOrchestratorVersionBytes() {
     java.lang.Object ref = testSupportOrchestratorVersion_;
@@ -475,6 +502,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_rules_version = 23;</code>
    * @return Whether the testSupportRulesVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportRulesVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -486,6 +514,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_rules_version = 23;</code>
    * @return The testSupportRulesVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportRulesVersion() {
     java.lang.Object ref = testSupportRulesVersion_;
     if (ref instanceof java.lang.String) {
@@ -508,6 +537,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_rules_version = 23;</code>
    * @return The bytes for testSupportRulesVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportRulesVersionBytes() {
     java.lang.Object ref = testSupportRulesVersion_;
@@ -532,6 +562,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_version = 25;</code>
    * @return Whether the testSupportEspressoVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoVersion() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -543,6 +574,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_version = 25;</code>
    * @return The testSupportEspressoVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoVersion() {
     java.lang.Object ref = testSupportEspressoVersion_;
     if (ref instanceof java.lang.String) {
@@ -565,6 +597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_version = 25;</code>
    * @return The bytes for testSupportEspressoVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoVersionBytes() {
     java.lang.Object ref = testSupportEspressoVersion_;
@@ -589,6 +622,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_contrib_version = 26;</code>
    * @return Whether the testSupportEspressoContribVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoContribVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -600,6 +634,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_contrib_version = 26;</code>
    * @return The testSupportEspressoContribVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoContribVersion() {
     java.lang.Object ref = testSupportEspressoContribVersion_;
     if (ref instanceof java.lang.String) {
@@ -622,6 +657,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_contrib_version = 26;</code>
    * @return The bytes for testSupportEspressoContribVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoContribVersionBytes() {
     java.lang.Object ref = testSupportEspressoContribVersion_;
@@ -646,6 +682,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_web_version = 27;</code>
    * @return Whether the testSupportEspressoWebVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoWebVersion() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -657,6 +694,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_web_version = 27;</code>
    * @return The testSupportEspressoWebVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoWebVersion() {
     java.lang.Object ref = testSupportEspressoWebVersion_;
     if (ref instanceof java.lang.String) {
@@ -679,6 +717,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_web_version = 27;</code>
    * @return The bytes for testSupportEspressoWebVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoWebVersionBytes() {
     java.lang.Object ref = testSupportEspressoWebVersion_;
@@ -703,6 +742,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_intents_version = 28;</code>
    * @return Whether the testSupportEspressoIntentsVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoIntentsVersion() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -714,6 +754,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_intents_version = 28;</code>
    * @return The testSupportEspressoIntentsVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoIntentsVersion() {
     java.lang.Object ref = testSupportEspressoIntentsVersion_;
     if (ref instanceof java.lang.String) {
@@ -736,6 +777,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_intents_version = 28;</code>
    * @return The bytes for testSupportEspressoIntentsVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoIntentsVersionBytes() {
     java.lang.Object ref = testSupportEspressoIntentsVersion_;
@@ -760,6 +802,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_idling_resource_version = 29;</code>
    * @return Whether the testSupportEspressoIdlingResourceVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoIdlingResourceVersion() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -771,6 +814,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_idling_resource_version = 29;</code>
    * @return The testSupportEspressoIdlingResourceVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoIdlingResourceVersion() {
     java.lang.Object ref = testSupportEspressoIdlingResourceVersion_;
     if (ref instanceof java.lang.String) {
@@ -793,6 +837,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_idling_resource_version = 29;</code>
    * @return The bytes for testSupportEspressoIdlingResourceVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoIdlingResourceVersionBytes() {
     java.lang.Object ref = testSupportEspressoIdlingResourceVersion_;
@@ -817,6 +862,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_accessibility_version = 30;</code>
    * @return Whether the testSupportEspressoAccessibilityVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestSupportEspressoAccessibilityVersion() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -828,6 +874,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_accessibility_version = 30;</code>
    * @return The testSupportEspressoAccessibilityVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestSupportEspressoAccessibilityVersion() {
     java.lang.Object ref = testSupportEspressoAccessibilityVersion_;
     if (ref instanceof java.lang.String) {
@@ -850,6 +897,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_support_espresso_accessibility_version = 30;</code>
    * @return The bytes for testSupportEspressoAccessibilityVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestSupportEspressoAccessibilityVersionBytes() {
     java.lang.Object ref = testSupportEspressoAccessibilityVersion_;
@@ -874,6 +922,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_version = 12;</code>
    * @return Whether the testCoreVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestCoreVersion() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -885,6 +934,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_version = 12;</code>
    * @return The testCoreVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestCoreVersion() {
     java.lang.Object ref = testCoreVersion_;
     if (ref instanceof java.lang.String) {
@@ -907,6 +957,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_version = 12;</code>
    * @return The bytes for testCoreVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestCoreVersionBytes() {
     java.lang.Object ref = testCoreVersion_;
@@ -931,6 +982,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_ktx_version = 13;</code>
    * @return Whether the testCoreKtxVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestCoreKtxVersion() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -942,6 +994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_ktx_version = 13;</code>
    * @return The testCoreKtxVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestCoreKtxVersion() {
     java.lang.Object ref = testCoreKtxVersion_;
     if (ref instanceof java.lang.String) {
@@ -964,6 +1017,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_core_ktx_version = 13;</code>
    * @return The bytes for testCoreKtxVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestCoreKtxVersionBytes() {
     java.lang.Object ref = testCoreKtxVersion_;
@@ -988,6 +1042,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_runner_version = 24;</code>
    * @return Whether the testRunnerVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestRunnerVersion() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -999,6 +1054,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_runner_version = 24;</code>
    * @return The testRunnerVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestRunnerVersion() {
     java.lang.Object ref = testRunnerVersion_;
     if (ref instanceof java.lang.String) {
@@ -1021,6 +1077,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_runner_version = 24;</code>
    * @return The bytes for testRunnerVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestRunnerVersionBytes() {
     java.lang.Object ref = testRunnerVersion_;
@@ -1045,6 +1102,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_orchestrator_version = 10;</code>
    * @return Whether the testOrchestratorVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestOrchestratorVersion() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -1056,6 +1114,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_orchestrator_version = 10;</code>
    * @return The testOrchestratorVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestOrchestratorVersion() {
     java.lang.Object ref = testOrchestratorVersion_;
     if (ref instanceof java.lang.String) {
@@ -1078,6 +1137,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_orchestrator_version = 10;</code>
    * @return The bytes for testOrchestratorVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestOrchestratorVersionBytes() {
     java.lang.Object ref = testOrchestratorVersion_;
@@ -1102,6 +1162,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_rules_version = 11;</code>
    * @return Whether the testRulesVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestRulesVersion() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -1113,6 +1174,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_rules_version = 11;</code>
    * @return The testRulesVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestRulesVersion() {
     java.lang.Object ref = testRulesVersion_;
     if (ref instanceof java.lang.String) {
@@ -1135,6 +1197,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_rules_version = 11;</code>
    * @return The bytes for testRulesVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestRulesVersionBytes() {
     java.lang.Object ref = testRulesVersion_;
@@ -1159,6 +1222,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_version = 14;</code>
    * @return Whether the testExtJunitVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestExtJunitVersion() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -1170,6 +1234,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_version = 14;</code>
    * @return The testExtJunitVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestExtJunitVersion() {
     java.lang.Object ref = testExtJunitVersion_;
     if (ref instanceof java.lang.String) {
@@ -1192,6 +1257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_version = 14;</code>
    * @return The bytes for testExtJunitVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestExtJunitVersionBytes() {
     java.lang.Object ref = testExtJunitVersion_;
@@ -1216,6 +1282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_ktx_version = 15;</code>
    * @return Whether the testExtJunitKtxVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestExtJunitKtxVersion() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -1227,6 +1294,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_ktx_version = 15;</code>
    * @return The testExtJunitKtxVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestExtJunitKtxVersion() {
     java.lang.Object ref = testExtJunitKtxVersion_;
     if (ref instanceof java.lang.String) {
@@ -1249,6 +1317,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_junit_ktx_version = 15;</code>
    * @return The bytes for testExtJunitKtxVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestExtJunitKtxVersionBytes() {
     java.lang.Object ref = testExtJunitKtxVersion_;
@@ -1273,6 +1342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_truth_version = 16;</code>
    * @return Whether the testExtTruthVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestExtTruthVersion() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -1284,6 +1354,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_truth_version = 16;</code>
    * @return The testExtTruthVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestExtTruthVersion() {
     java.lang.Object ref = testExtTruthVersion_;
     if (ref instanceof java.lang.String) {
@@ -1306,6 +1377,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ext_truth_version = 16;</code>
    * @return The bytes for testExtTruthVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestExtTruthVersionBytes() {
     java.lang.Object ref = testExtTruthVersion_;
@@ -1330,6 +1402,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_version = 2;</code>
    * @return Whether the espressoVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoVersion() {
     return ((bitField0_ & 0x00020000) != 0);
   }
@@ -1341,6 +1414,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_version = 2;</code>
    * @return The espressoVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoVersion() {
     java.lang.Object ref = espressoVersion_;
     if (ref instanceof java.lang.String) {
@@ -1363,6 +1437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_version = 2;</code>
    * @return The bytes for espressoVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoVersionBytes() {
     java.lang.Object ref = espressoVersion_;
@@ -1387,6 +1462,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_contrib_version = 5;</code>
    * @return Whether the espressoContribVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoContribVersion() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -1398,6 +1474,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_contrib_version = 5;</code>
    * @return The espressoContribVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoContribVersion() {
     java.lang.Object ref = espressoContribVersion_;
     if (ref instanceof java.lang.String) {
@@ -1420,6 +1497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_contrib_version = 5;</code>
    * @return The bytes for espressoContribVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoContribVersionBytes() {
     java.lang.Object ref = espressoContribVersion_;
@@ -1444,6 +1522,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_web_version = 6;</code>
    * @return Whether the espressoWebVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoWebVersion() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -1455,6 +1534,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_web_version = 6;</code>
    * @return The espressoWebVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoWebVersion() {
     java.lang.Object ref = espressoWebVersion_;
     if (ref instanceof java.lang.String) {
@@ -1477,6 +1557,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_web_version = 6;</code>
    * @return The bytes for espressoWebVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoWebVersionBytes() {
     java.lang.Object ref = espressoWebVersion_;
@@ -1501,6 +1582,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_intents_version = 7;</code>
    * @return Whether the espressoIntentsVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoIntentsVersion() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -1512,6 +1594,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_intents_version = 7;</code>
    * @return The espressoIntentsVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoIntentsVersion() {
     java.lang.Object ref = espressoIntentsVersion_;
     if (ref instanceof java.lang.String) {
@@ -1534,6 +1617,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_intents_version = 7;</code>
    * @return The bytes for espressoIntentsVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoIntentsVersionBytes() {
     java.lang.Object ref = espressoIntentsVersion_;
@@ -1558,6 +1642,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_idling_resource_version = 8;</code>
    * @return Whether the espressoIdlingResourceVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoIdlingResourceVersion() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -1569,6 +1654,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_idling_resource_version = 8;</code>
    * @return The espressoIdlingResourceVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoIdlingResourceVersion() {
     java.lang.Object ref = espressoIdlingResourceVersion_;
     if (ref instanceof java.lang.String) {
@@ -1591,6 +1677,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_idling_resource_version = 8;</code>
    * @return The bytes for espressoIdlingResourceVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoIdlingResourceVersionBytes() {
     java.lang.Object ref = espressoIdlingResourceVersion_;
@@ -1615,6 +1702,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_accessibility_version = 9;</code>
    * @return Whether the espressoAccessibilityVersion field is set.
    */
+  @java.lang.Override
   public boolean hasEspressoAccessibilityVersion() {
     return ((bitField0_ & 0x00400000) != 0);
   }
@@ -1626,6 +1714,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_accessibility_version = 9;</code>
    * @return The espressoAccessibilityVersion.
    */
+  @java.lang.Override
   public java.lang.String getEspressoAccessibilityVersion() {
     java.lang.Object ref = espressoAccessibilityVersion_;
     if (ref instanceof java.lang.String) {
@@ -1648,6 +1737,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string espresso_accessibility_version = 9;</code>
    * @return The bytes for espressoAccessibilityVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getEspressoAccessibilityVersionBytes() {
     java.lang.Object ref = espressoAccessibilityVersion_;
@@ -1672,6 +1762,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fragment_testing_version = 17;</code>
    * @return Whether the fragmentTestingVersion field is set.
    */
+  @java.lang.Override
   public boolean hasFragmentTestingVersion() {
     return ((bitField0_ & 0x00800000) != 0);
   }
@@ -1683,6 +1774,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fragment_testing_version = 17;</code>
    * @return The fragmentTestingVersion.
    */
+  @java.lang.Override
   public java.lang.String getFragmentTestingVersion() {
     java.lang.Object ref = fragmentTestingVersion_;
     if (ref instanceof java.lang.String) {
@@ -1705,6 +1797,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fragment_testing_version = 17;</code>
    * @return The bytes for fragmentTestingVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFragmentTestingVersionBytes() {
     java.lang.Object ref = fragmentTestingVersion_;
@@ -1729,6 +1822,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_common_version = 20;</code>
    * @return Whether the benchmarkCommonVersion field is set.
    */
+  @java.lang.Override
   public boolean hasBenchmarkCommonVersion() {
     return ((bitField0_ & 0x01000000) != 0);
   }
@@ -1740,6 +1834,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_common_version = 20;</code>
    * @return The benchmarkCommonVersion.
    */
+  @java.lang.Override
   public java.lang.String getBenchmarkCommonVersion() {
     java.lang.Object ref = benchmarkCommonVersion_;
     if (ref instanceof java.lang.String) {
@@ -1762,6 +1857,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_common_version = 20;</code>
    * @return The bytes for benchmarkCommonVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBenchmarkCommonVersionBytes() {
     java.lang.Object ref = benchmarkCommonVersion_;
@@ -1786,6 +1882,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_junit4_version = 21;</code>
    * @return Whether the benchmarkJunit4Version field is set.
    */
+  @java.lang.Override
   public boolean hasBenchmarkJunit4Version() {
     return ((bitField0_ & 0x02000000) != 0);
   }
@@ -1797,6 +1894,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_junit4_version = 21;</code>
    * @return The benchmarkJunit4Version.
    */
+  @java.lang.Override
   public java.lang.String getBenchmarkJunit4Version() {
     java.lang.Object ref = benchmarkJunit4Version_;
     if (ref instanceof java.lang.String) {
@@ -1819,6 +1917,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_junit4_version = 21;</code>
    * @return The bytes for benchmarkJunit4Version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBenchmarkJunit4VersionBytes() {
     java.lang.Object ref = benchmarkJunit4Version_;
@@ -1843,6 +1942,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_version = 31;</code>
    * @return Whether the benchmarkMacroVersion field is set.
    */
+  @java.lang.Override
   public boolean hasBenchmarkMacroVersion() {
     return ((bitField0_ & 0x04000000) != 0);
   }
@@ -1854,6 +1954,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_version = 31;</code>
    * @return The benchmarkMacroVersion.
    */
+  @java.lang.Override
   public java.lang.String getBenchmarkMacroVersion() {
     java.lang.Object ref = benchmarkMacroVersion_;
     if (ref instanceof java.lang.String) {
@@ -1876,6 +1977,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_version = 31;</code>
    * @return The bytes for benchmarkMacroVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBenchmarkMacroVersionBytes() {
     java.lang.Object ref = benchmarkMacroVersion_;
@@ -1900,6 +2002,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_junit4_version = 32;</code>
    * @return Whether the benchmarkMacroJunit4Version field is set.
    */
+  @java.lang.Override
   public boolean hasBenchmarkMacroJunit4Version() {
     return ((bitField0_ & 0x08000000) != 0);
   }
@@ -1911,6 +2014,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_junit4_version = 32;</code>
    * @return The benchmarkMacroJunit4Version.
    */
+  @java.lang.Override
   public java.lang.String getBenchmarkMacroJunit4Version() {
     java.lang.Object ref = benchmarkMacroJunit4Version_;
     if (ref instanceof java.lang.String) {
@@ -1933,6 +2037,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string benchmark_macro_junit4_version = 32;</code>
    * @return The bytes for benchmarkMacroJunit4Version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBenchmarkMacroJunit4VersionBytes() {
     java.lang.Object ref = benchmarkMacroJunit4Version_;
@@ -1941,6 +2046,186 @@ private static final long serialVersionUID = 0L;
           com.google.protobuf.ByteString.copyFromUtf8(
               (java.lang.String) ref);
       benchmarkMacroJunit4Version_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int COMPOSE_UI_TEST_VERSION_FIELD_NUMBER = 38;
+  private volatile java.lang.Object composeUiTestVersion_;
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return Whether the composeUiTestVersion field is set.
+   */
+  @java.lang.Override
+  public boolean hasComposeUiTestVersion() {
+    return ((bitField0_ & 0x10000000) != 0);
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return The composeUiTestVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getComposeUiTestVersion() {
+    java.lang.Object ref = composeUiTestVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        composeUiTestVersion_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return The bytes for composeUiTestVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getComposeUiTestVersionBytes() {
+    java.lang.Object ref = composeUiTestVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      composeUiTestVersion_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int COMPOSE_UI_TEST_JUNIT4_VERSION_FIELD_NUMBER = 39;
+  private volatile java.lang.Object composeUiTestJunit4Version_;
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return Whether the composeUiTestJunit4Version field is set.
+   */
+  @java.lang.Override
+  public boolean hasComposeUiTestJunit4Version() {
+    return ((bitField0_ & 0x20000000) != 0);
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return The composeUiTestJunit4Version.
+   */
+  @java.lang.Override
+  public java.lang.String getComposeUiTestJunit4Version() {
+    java.lang.Object ref = composeUiTestJunit4Version_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        composeUiTestJunit4Version_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return The bytes for composeUiTestJunit4Version.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getComposeUiTestJunit4VersionBytes() {
+    java.lang.Object ref = composeUiTestJunit4Version_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      composeUiTestJunit4Version_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
+  }
+
+  public static final int COMPOSE_UI_TEST_MANIFEST_VERSION_FIELD_NUMBER = 40;
+  private volatile java.lang.Object composeUiTestManifestVersion_;
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return Whether the composeUiTestManifestVersion field is set.
+   */
+  @java.lang.Override
+  public boolean hasComposeUiTestManifestVersion() {
+    return ((bitField0_ & 0x40000000) != 0);
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return The composeUiTestManifestVersion.
+   */
+  @java.lang.Override
+  public java.lang.String getComposeUiTestManifestVersion() {
+    java.lang.Object ref = composeUiTestManifestVersion_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        composeUiTestManifestVersion_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return The bytes for composeUiTestManifestVersion.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getComposeUiTestManifestVersionBytes() {
+    java.lang.Object ref = composeUiTestManifestVersion_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      composeUiTestManifestVersion_ = b;
       return b;
     } else {
       return (com.google.protobuf.ByteString) ref;
@@ -1957,8 +2242,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string robolectric_version = 3;</code>
    * @return Whether the robolectricVersion field is set.
    */
+  @java.lang.Override
   public boolean hasRobolectricVersion() {
-    return ((bitField0_ & 0x10000000) != 0);
+    return ((bitField0_ & 0x80000000) != 0);
   }
   /**
    * <pre>
@@ -1968,6 +2254,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string robolectric_version = 3;</code>
    * @return The robolectricVersion.
    */
+  @java.lang.Override
   public java.lang.String getRobolectricVersion() {
     java.lang.Object ref = robolectricVersion_;
     if (ref instanceof java.lang.String) {
@@ -1990,6 +2277,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string robolectric_version = 3;</code>
    * @return The bytes for robolectricVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRobolectricVersionBytes() {
     java.lang.Object ref = robolectricVersion_;
@@ -2014,8 +2302,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string mockito_version = 4;</code>
    * @return Whether the mockitoVersion field is set.
    */
+  @java.lang.Override
   public boolean hasMockitoVersion() {
-    return ((bitField0_ & 0x20000000) != 0);
+    return ((bitField1_ & 0x00000001) != 0);
   }
   /**
    * <pre>
@@ -2025,6 +2314,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string mockito_version = 4;</code>
    * @return The mockitoVersion.
    */
+  @java.lang.Override
   public java.lang.String getMockitoVersion() {
     java.lang.Object ref = mockitoVersion_;
     if (ref instanceof java.lang.String) {
@@ -2047,6 +2337,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string mockito_version = 4;</code>
    * @return The bytes for mockitoVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMockitoVersionBytes() {
     java.lang.Object ref = mockitoVersion_;
@@ -2071,8 +2362,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_version = 18;</code>
    * @return Whether the junitVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJunitVersion() {
-    return ((bitField0_ & 0x40000000) != 0);
+    return ((bitField1_ & 0x00000002) != 0);
   }
   /**
    * <pre>
@@ -2082,6 +2374,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_version = 18;</code>
    * @return The junitVersion.
    */
+  @java.lang.Override
   public java.lang.String getJunitVersion() {
     java.lang.Object ref = junitVersion_;
     if (ref instanceof java.lang.String) {
@@ -2104,6 +2397,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_version = 18;</code>
    * @return The bytes for junitVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJunitVersionBytes() {
     java.lang.Object ref = junitVersion_;
@@ -2128,8 +2422,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string truth_version = 19;</code>
    * @return Whether the truthVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTruthVersion() {
-    return ((bitField0_ & 0x80000000) != 0);
+    return ((bitField1_ & 0x00000004) != 0);
   }
   /**
    * <pre>
@@ -2139,6 +2434,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string truth_version = 19;</code>
    * @return The truthVersion.
    */
+  @java.lang.Override
   public java.lang.String getTruthVersion() {
     java.lang.Object ref = truthVersion_;
     if (ref instanceof java.lang.String) {
@@ -2161,6 +2457,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string truth_version = 19;</code>
    * @return The bytes for truthVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTruthVersionBytes() {
     java.lang.Object ref = truthVersion_;
@@ -2185,8 +2482,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ng_version = 33;</code>
    * @return Whether the testNgVersion field is set.
    */
+  @java.lang.Override
   public boolean hasTestNgVersion() {
-    return ((bitField1_ & 0x00000001) != 0);
+    return ((bitField1_ & 0x00000008) != 0);
   }
   /**
    * <pre>
@@ -2196,6 +2494,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ng_version = 33;</code>
    * @return The testNgVersion.
    */
+  @java.lang.Override
   public java.lang.String getTestNgVersion() {
     java.lang.Object ref = testNgVersion_;
     if (ref instanceof java.lang.String) {
@@ -2218,6 +2517,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string test_ng_version = 33;</code>
    * @return The bytes for testNgVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTestNgVersionBytes() {
     java.lang.Object ref = testNgVersion_;
@@ -2242,8 +2542,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_launcher_version = 34;</code>
    * @return Whether the junitPlatformLauncherVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJunitPlatformLauncherVersion() {
-    return ((bitField1_ & 0x00000002) != 0);
+    return ((bitField1_ & 0x00000010) != 0);
   }
   /**
    * <pre>
@@ -2253,6 +2554,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_launcher_version = 34;</code>
    * @return The junitPlatformLauncherVersion.
    */
+  @java.lang.Override
   public java.lang.String getJunitPlatformLauncherVersion() {
     java.lang.Object ref = junitPlatformLauncherVersion_;
     if (ref instanceof java.lang.String) {
@@ -2275,6 +2577,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_launcher_version = 34;</code>
    * @return The bytes for junitPlatformLauncherVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJunitPlatformLauncherVersionBytes() {
     java.lang.Object ref = junitPlatformLauncherVersion_;
@@ -2299,8 +2602,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_runner_version = 35;</code>
    * @return Whether the junitPlatformRunnerVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJunitPlatformRunnerVersion() {
-    return ((bitField1_ & 0x00000004) != 0);
+    return ((bitField1_ & 0x00000020) != 0);
   }
   /**
    * <pre>
@@ -2310,6 +2614,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_runner_version = 35;</code>
    * @return The junitPlatformRunnerVersion.
    */
+  @java.lang.Override
   public java.lang.String getJunitPlatformRunnerVersion() {
     java.lang.Object ref = junitPlatformRunnerVersion_;
     if (ref instanceof java.lang.String) {
@@ -2332,6 +2637,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_platform_runner_version = 35;</code>
    * @return The bytes for junitPlatformRunnerVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJunitPlatformRunnerVersionBytes() {
     java.lang.Object ref = junitPlatformRunnerVersion_;
@@ -2356,8 +2662,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_jupiter_version = 36;</code>
    * @return Whether the junitJupiterVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJunitJupiterVersion() {
-    return ((bitField1_ & 0x00000008) != 0);
+    return ((bitField1_ & 0x00000040) != 0);
   }
   /**
    * <pre>
@@ -2367,6 +2674,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_jupiter_version = 36;</code>
    * @return The junitJupiterVersion.
    */
+  @java.lang.Override
   public java.lang.String getJunitJupiterVersion() {
     java.lang.Object ref = junitJupiterVersion_;
     if (ref instanceof java.lang.String) {
@@ -2389,6 +2697,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_jupiter_version = 36;</code>
    * @return The bytes for junitJupiterVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJunitJupiterVersionBytes() {
     java.lang.Object ref = junitJupiterVersion_;
@@ -2413,8 +2722,9 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_vintage_engine_version = 37;</code>
    * @return Whether the junitVintageEngineVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJunitVintageEngineVersion() {
-    return ((bitField1_ & 0x00000010) != 0);
+    return ((bitField1_ & 0x00000080) != 0);
   }
   /**
    * <pre>
@@ -2424,6 +2734,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_vintage_engine_version = 37;</code>
    * @return The junitVintageEngineVersion.
    */
+  @java.lang.Override
   public java.lang.String getJunitVintageEngineVersion() {
     java.lang.Object ref = junitVintageEngineVersion_;
     if (ref instanceof java.lang.String) {
@@ -2446,6 +2757,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string junit_vintage_engine_version = 37;</code>
    * @return The bytes for junitVintageEngineVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJunitVintageEngineVersionBytes() {
     java.lang.Object ref = junitVintageEngineVersion_;
@@ -2480,10 +2792,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00020000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 2, espressoVersion_);
     }
-    if (((bitField0_ & 0x10000000) != 0)) {
+    if (((bitField0_ & 0x80000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, robolectricVersion_);
     }
-    if (((bitField0_ & 0x20000000) != 0)) {
+    if (((bitField1_ & 0x00000001) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 4, mockitoVersion_);
     }
     if (((bitField0_ & 0x00040000) != 0)) {
@@ -2525,10 +2837,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00800000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 17, fragmentTestingVersion_);
     }
-    if (((bitField0_ & 0x40000000) != 0)) {
+    if (((bitField1_ & 0x00000002) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 18, junitVersion_);
     }
-    if (((bitField0_ & 0x80000000) != 0)) {
+    if (((bitField1_ & 0x00000004) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 19, truthVersion_);
     }
     if (((bitField0_ & 0x01000000) != 0)) {
@@ -2570,20 +2882,29 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x08000000) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 32, benchmarkMacroJunit4Version_);
     }
-    if (((bitField1_ & 0x00000001) != 0)) {
+    if (((bitField1_ & 0x00000008) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 33, testNgVersion_);
     }
-    if (((bitField1_ & 0x00000002) != 0)) {
+    if (((bitField1_ & 0x00000010) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 34, junitPlatformLauncherVersion_);
     }
-    if (((bitField1_ & 0x00000004) != 0)) {
+    if (((bitField1_ & 0x00000020) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 35, junitPlatformRunnerVersion_);
     }
-    if (((bitField1_ & 0x00000008) != 0)) {
+    if (((bitField1_ & 0x00000040) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 36, junitJupiterVersion_);
     }
-    if (((bitField1_ & 0x00000010) != 0)) {
+    if (((bitField1_ & 0x00000080) != 0)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 37, junitVintageEngineVersion_);
+    }
+    if (((bitField0_ & 0x10000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 38, composeUiTestVersion_);
+    }
+    if (((bitField0_ & 0x20000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 39, composeUiTestJunit4Version_);
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 40, composeUiTestManifestVersion_);
     }
     unknownFields.writeTo(output);
   }
@@ -2600,10 +2921,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00020000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, espressoVersion_);
     }
-    if (((bitField0_ & 0x10000000) != 0)) {
+    if (((bitField0_ & 0x80000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, robolectricVersion_);
     }
-    if (((bitField0_ & 0x20000000) != 0)) {
+    if (((bitField1_ & 0x00000001) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, mockitoVersion_);
     }
     if (((bitField0_ & 0x00040000) != 0)) {
@@ -2645,10 +2966,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00800000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(17, fragmentTestingVersion_);
     }
-    if (((bitField0_ & 0x40000000) != 0)) {
+    if (((bitField1_ & 0x00000002) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, junitVersion_);
     }
-    if (((bitField0_ & 0x80000000) != 0)) {
+    if (((bitField1_ & 0x00000004) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, truthVersion_);
     }
     if (((bitField0_ & 0x01000000) != 0)) {
@@ -2690,20 +3011,29 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x08000000) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(32, benchmarkMacroJunit4Version_);
     }
-    if (((bitField1_ & 0x00000001) != 0)) {
+    if (((bitField1_ & 0x00000008) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(33, testNgVersion_);
     }
-    if (((bitField1_ & 0x00000002) != 0)) {
+    if (((bitField1_ & 0x00000010) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(34, junitPlatformLauncherVersion_);
     }
-    if (((bitField1_ & 0x00000004) != 0)) {
+    if (((bitField1_ & 0x00000020) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(35, junitPlatformRunnerVersion_);
     }
-    if (((bitField1_ & 0x00000008) != 0)) {
+    if (((bitField1_ & 0x00000040) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(36, junitJupiterVersion_);
     }
-    if (((bitField1_ & 0x00000010) != 0)) {
+    if (((bitField1_ & 0x00000080) != 0)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(37, junitVintageEngineVersion_);
+    }
+    if (((bitField0_ & 0x10000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(38, composeUiTestVersion_);
+    }
+    if (((bitField0_ & 0x20000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(39, composeUiTestJunit4Version_);
+    }
+    if (((bitField0_ & 0x40000000) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(40, composeUiTestManifestVersion_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2859,6 +3189,21 @@ private static final long serialVersionUID = 0L;
     if (hasBenchmarkMacroJunit4Version()) {
       if (!getBenchmarkMacroJunit4Version()
           .equals(other.getBenchmarkMacroJunit4Version())) return false;
+    }
+    if (hasComposeUiTestVersion() != other.hasComposeUiTestVersion()) return false;
+    if (hasComposeUiTestVersion()) {
+      if (!getComposeUiTestVersion()
+          .equals(other.getComposeUiTestVersion())) return false;
+    }
+    if (hasComposeUiTestJunit4Version() != other.hasComposeUiTestJunit4Version()) return false;
+    if (hasComposeUiTestJunit4Version()) {
+      if (!getComposeUiTestJunit4Version()
+          .equals(other.getComposeUiTestJunit4Version())) return false;
+    }
+    if (hasComposeUiTestManifestVersion() != other.hasComposeUiTestManifestVersion()) return false;
+    if (hasComposeUiTestManifestVersion()) {
+      if (!getComposeUiTestManifestVersion()
+          .equals(other.getComposeUiTestManifestVersion())) return false;
     }
     if (hasRobolectricVersion() != other.hasRobolectricVersion()) return false;
     if (hasRobolectricVersion()) {
@@ -3028,6 +3373,18 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + BENCHMARK_MACRO_JUNIT4_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getBenchmarkMacroJunit4Version().hashCode();
     }
+    if (hasComposeUiTestVersion()) {
+      hash = (37 * hash) + COMPOSE_UI_TEST_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getComposeUiTestVersion().hashCode();
+    }
+    if (hasComposeUiTestJunit4Version()) {
+      hash = (37 * hash) + COMPOSE_UI_TEST_JUNIT4_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getComposeUiTestJunit4Version().hashCode();
+    }
+    if (hasComposeUiTestManifestVersion()) {
+      hash = (37 * hash) + COMPOSE_UI_TEST_MANIFEST_VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getComposeUiTestManifestVersion().hashCode();
+    }
     if (hasRobolectricVersion()) {
       hash = (37 * hash) + ROBOLECTRIC_VERSION_FIELD_NUMBER;
       hash = (53 * hash) + getRobolectricVersion().hashCode();
@@ -3165,7 +3522,7 @@ private static final long serialVersionUID = 0L;
    * Each string field of this message holds the exact version of the given
    * library (e.g. "1.0.0") that the field name represents. The field is populated
    * only if this project uses the given library.
-   * Next ID: 38
+   * Next ID: 41
    * </pre>
    *
    * Protobuf type {@code android_studio.TestLibraries}
@@ -3261,24 +3618,30 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x04000000);
       benchmarkMacroJunit4Version_ = "";
       bitField0_ = (bitField0_ & ~0x08000000);
-      robolectricVersion_ = "";
+      composeUiTestVersion_ = "";
       bitField0_ = (bitField0_ & ~0x10000000);
-      mockitoVersion_ = "";
+      composeUiTestJunit4Version_ = "";
       bitField0_ = (bitField0_ & ~0x20000000);
-      junitVersion_ = "";
+      composeUiTestManifestVersion_ = "";
       bitField0_ = (bitField0_ & ~0x40000000);
-      truthVersion_ = "";
+      robolectricVersion_ = "";
       bitField0_ = (bitField0_ & ~0x80000000);
-      testNgVersion_ = "";
+      mockitoVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000001);
-      junitPlatformLauncherVersion_ = "";
+      junitVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000002);
-      junitPlatformRunnerVersion_ = "";
+      truthVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000004);
-      junitJupiterVersion_ = "";
+      testNgVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000008);
-      junitVintageEngineVersion_ = "";
+      junitPlatformLauncherVersion_ = "";
       bitField1_ = (bitField1_ & ~0x00000010);
+      junitPlatformRunnerVersion_ = "";
+      bitField1_ = (bitField1_ & ~0x00000020);
+      junitJupiterVersion_ = "";
+      bitField1_ = (bitField1_ & ~0x00000040);
+      junitVintageEngineVersion_ = "";
+      bitField1_ = (bitField1_ & ~0x00000080);
       return this;
     }
 
@@ -3424,37 +3787,49 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x10000000) != 0)) {
         to_bitField0_ |= 0x10000000;
       }
-      result.robolectricVersion_ = robolectricVersion_;
+      result.composeUiTestVersion_ = composeUiTestVersion_;
       if (((from_bitField0_ & 0x20000000) != 0)) {
         to_bitField0_ |= 0x20000000;
       }
-      result.mockitoVersion_ = mockitoVersion_;
+      result.composeUiTestJunit4Version_ = composeUiTestJunit4Version_;
       if (((from_bitField0_ & 0x40000000) != 0)) {
         to_bitField0_ |= 0x40000000;
       }
-      result.junitVersion_ = junitVersion_;
+      result.composeUiTestManifestVersion_ = composeUiTestManifestVersion_;
       if (((from_bitField0_ & 0x80000000) != 0)) {
         to_bitField0_ |= 0x80000000;
       }
-      result.truthVersion_ = truthVersion_;
+      result.robolectricVersion_ = robolectricVersion_;
       if (((from_bitField1_ & 0x00000001) != 0)) {
         to_bitField1_ |= 0x00000001;
       }
-      result.testNgVersion_ = testNgVersion_;
+      result.mockitoVersion_ = mockitoVersion_;
       if (((from_bitField1_ & 0x00000002) != 0)) {
         to_bitField1_ |= 0x00000002;
       }
-      result.junitPlatformLauncherVersion_ = junitPlatformLauncherVersion_;
+      result.junitVersion_ = junitVersion_;
       if (((from_bitField1_ & 0x00000004) != 0)) {
         to_bitField1_ |= 0x00000004;
       }
-      result.junitPlatformRunnerVersion_ = junitPlatformRunnerVersion_;
+      result.truthVersion_ = truthVersion_;
       if (((from_bitField1_ & 0x00000008) != 0)) {
         to_bitField1_ |= 0x00000008;
       }
-      result.junitJupiterVersion_ = junitJupiterVersion_;
+      result.testNgVersion_ = testNgVersion_;
       if (((from_bitField1_ & 0x00000010) != 0)) {
         to_bitField1_ |= 0x00000010;
+      }
+      result.junitPlatformLauncherVersion_ = junitPlatformLauncherVersion_;
+      if (((from_bitField1_ & 0x00000020) != 0)) {
+        to_bitField1_ |= 0x00000020;
+      }
+      result.junitPlatformRunnerVersion_ = junitPlatformRunnerVersion_;
+      if (((from_bitField1_ & 0x00000040) != 0)) {
+        to_bitField1_ |= 0x00000040;
+      }
+      result.junitJupiterVersion_ = junitJupiterVersion_;
+      if (((from_bitField1_ & 0x00000080) != 0)) {
+        to_bitField1_ |= 0x00000080;
       }
       result.junitVintageEngineVersion_ = junitVintageEngineVersion_;
       result.bitField0_ = to_bitField0_;
@@ -3647,48 +4022,63 @@ private static final long serialVersionUID = 0L;
         benchmarkMacroJunit4Version_ = other.benchmarkMacroJunit4Version_;
         onChanged();
       }
-      if (other.hasRobolectricVersion()) {
+      if (other.hasComposeUiTestVersion()) {
         bitField0_ |= 0x10000000;
+        composeUiTestVersion_ = other.composeUiTestVersion_;
+        onChanged();
+      }
+      if (other.hasComposeUiTestJunit4Version()) {
+        bitField0_ |= 0x20000000;
+        composeUiTestJunit4Version_ = other.composeUiTestJunit4Version_;
+        onChanged();
+      }
+      if (other.hasComposeUiTestManifestVersion()) {
+        bitField0_ |= 0x40000000;
+        composeUiTestManifestVersion_ = other.composeUiTestManifestVersion_;
+        onChanged();
+      }
+      if (other.hasRobolectricVersion()) {
+        bitField0_ |= 0x80000000;
         robolectricVersion_ = other.robolectricVersion_;
         onChanged();
       }
       if (other.hasMockitoVersion()) {
-        bitField0_ |= 0x20000000;
+        bitField1_ |= 0x00000001;
         mockitoVersion_ = other.mockitoVersion_;
         onChanged();
       }
       if (other.hasJunitVersion()) {
-        bitField0_ |= 0x40000000;
+        bitField1_ |= 0x00000002;
         junitVersion_ = other.junitVersion_;
         onChanged();
       }
       if (other.hasTruthVersion()) {
-        bitField0_ |= 0x80000000;
+        bitField1_ |= 0x00000004;
         truthVersion_ = other.truthVersion_;
         onChanged();
       }
       if (other.hasTestNgVersion()) {
-        bitField1_ |= 0x00000001;
+        bitField1_ |= 0x00000008;
         testNgVersion_ = other.testNgVersion_;
         onChanged();
       }
       if (other.hasJunitPlatformLauncherVersion()) {
-        bitField1_ |= 0x00000002;
+        bitField1_ |= 0x00000010;
         junitPlatformLauncherVersion_ = other.junitPlatformLauncherVersion_;
         onChanged();
       }
       if (other.hasJunitPlatformRunnerVersion()) {
-        bitField1_ |= 0x00000004;
+        bitField1_ |= 0x00000020;
         junitPlatformRunnerVersion_ = other.junitPlatformRunnerVersion_;
         onChanged();
       }
       if (other.hasJunitJupiterVersion()) {
-        bitField1_ |= 0x00000008;
+        bitField1_ |= 0x00000040;
         junitJupiterVersion_ = other.junitJupiterVersion_;
         onChanged();
       }
       if (other.hasJunitVintageEngineVersion()) {
-        bitField1_ |= 0x00000010;
+        bitField1_ |= 0x00000080;
         junitVintageEngineVersion_ = other.junitVintageEngineVersion_;
         onChanged();
       }
@@ -6747,6 +7137,330 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
+    private java.lang.Object composeUiTestVersion_ = "";
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @return Whether the composeUiTestVersion field is set.
+     */
+    public boolean hasComposeUiTestVersion() {
+      return ((bitField0_ & 0x10000000) != 0);
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @return The composeUiTestVersion.
+     */
+    public java.lang.String getComposeUiTestVersion() {
+      java.lang.Object ref = composeUiTestVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          composeUiTestVersion_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @return The bytes for composeUiTestVersion.
+     */
+    public com.google.protobuf.ByteString
+        getComposeUiTestVersionBytes() {
+      java.lang.Object ref = composeUiTestVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        composeUiTestVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @param value The composeUiTestVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x10000000;
+      composeUiTestVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearComposeUiTestVersion() {
+      bitField0_ = (bitField0_ & ~0x10000000);
+      composeUiTestVersion_ = getDefaultInstance().getComposeUiTestVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_version = 38;</code>
+     * @param value The bytes for composeUiTestVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x10000000;
+      composeUiTestVersion_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object composeUiTestJunit4Version_ = "";
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @return Whether the composeUiTestJunit4Version field is set.
+     */
+    public boolean hasComposeUiTestJunit4Version() {
+      return ((bitField0_ & 0x20000000) != 0);
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @return The composeUiTestJunit4Version.
+     */
+    public java.lang.String getComposeUiTestJunit4Version() {
+      java.lang.Object ref = composeUiTestJunit4Version_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          composeUiTestJunit4Version_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @return The bytes for composeUiTestJunit4Version.
+     */
+    public com.google.protobuf.ByteString
+        getComposeUiTestJunit4VersionBytes() {
+      java.lang.Object ref = composeUiTestJunit4Version_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        composeUiTestJunit4Version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @param value The composeUiTestJunit4Version to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestJunit4Version(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x20000000;
+      composeUiTestJunit4Version_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearComposeUiTestJunit4Version() {
+      bitField0_ = (bitField0_ & ~0x20000000);
+      composeUiTestJunit4Version_ = getDefaultInstance().getComposeUiTestJunit4Version();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-junit4".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_junit4_version = 39;</code>
+     * @param value The bytes for composeUiTestJunit4Version to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestJunit4VersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x20000000;
+      composeUiTestJunit4Version_ = value;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object composeUiTestManifestVersion_ = "";
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @return Whether the composeUiTestManifestVersion field is set.
+     */
+    public boolean hasComposeUiTestManifestVersion() {
+      return ((bitField0_ & 0x40000000) != 0);
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @return The composeUiTestManifestVersion.
+     */
+    public java.lang.String getComposeUiTestManifestVersion() {
+      java.lang.Object ref = composeUiTestManifestVersion_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          composeUiTestManifestVersion_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @return The bytes for composeUiTestManifestVersion.
+     */
+    public com.google.protobuf.ByteString
+        getComposeUiTestManifestVersionBytes() {
+      java.lang.Object ref = composeUiTestManifestVersion_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        composeUiTestManifestVersion_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @param value The composeUiTestManifestVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestManifestVersion(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+      composeUiTestManifestVersion_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearComposeUiTestManifestVersion() {
+      bitField0_ = (bitField0_ & ~0x40000000);
+      composeUiTestManifestVersion_ = getDefaultInstance().getComposeUiTestManifestVersion();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * "androidx.compose.ui:ui-test-manifest".
+     * </pre>
+     *
+     * <code>optional string compose_ui_test_manifest_version = 40;</code>
+     * @param value The bytes for composeUiTestManifestVersion to set.
+     * @return This builder for chaining.
+     */
+    public Builder setComposeUiTestManifestVersionBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x40000000;
+      composeUiTestManifestVersion_ = value;
+      onChanged();
+      return this;
+    }
+
     private java.lang.Object robolectricVersion_ = "";
     /**
      * <pre>
@@ -6757,7 +7471,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the robolectricVersion field is set.
      */
     public boolean hasRobolectricVersion() {
-      return ((bitField0_ & 0x10000000) != 0);
+      return ((bitField0_ & 0x80000000) != 0);
     }
     /**
      * <pre>
@@ -6816,7 +7530,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x80000000;
       robolectricVersion_ = value;
       onChanged();
       return this;
@@ -6830,7 +7544,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearRobolectricVersion() {
-      bitField0_ = (bitField0_ & ~0x10000000);
+      bitField0_ = (bitField0_ & ~0x80000000);
       robolectricVersion_ = getDefaultInstance().getRobolectricVersion();
       onChanged();
       return this;
@@ -6849,7 +7563,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x10000000;
+  bitField0_ |= 0x80000000;
       robolectricVersion_ = value;
       onChanged();
       return this;
@@ -6865,7 +7579,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the mockitoVersion field is set.
      */
     public boolean hasMockitoVersion() {
-      return ((bitField0_ & 0x20000000) != 0);
+      return ((bitField1_ & 0x00000001) != 0);
     }
     /**
      * <pre>
@@ -6924,7 +7638,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField1_ |= 0x00000001;
       mockitoVersion_ = value;
       onChanged();
       return this;
@@ -6938,7 +7652,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearMockitoVersion() {
-      bitField0_ = (bitField0_ & ~0x20000000);
+      bitField1_ = (bitField1_ & ~0x00000001);
       mockitoVersion_ = getDefaultInstance().getMockitoVersion();
       onChanged();
       return this;
@@ -6957,7 +7671,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x20000000;
+  bitField1_ |= 0x00000001;
       mockitoVersion_ = value;
       onChanged();
       return this;
@@ -6973,7 +7687,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitVersion field is set.
      */
     public boolean hasJunitVersion() {
-      return ((bitField0_ & 0x40000000) != 0);
+      return ((bitField1_ & 0x00000002) != 0);
     }
     /**
      * <pre>
@@ -7032,7 +7746,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000002;
       junitVersion_ = value;
       onChanged();
       return this;
@@ -7046,7 +7760,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitVersion() {
-      bitField0_ = (bitField0_ & ~0x40000000);
+      bitField1_ = (bitField1_ & ~0x00000002);
       junitVersion_ = getDefaultInstance().getJunitVersion();
       onChanged();
       return this;
@@ -7065,7 +7779,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x40000000;
+  bitField1_ |= 0x00000002;
       junitVersion_ = value;
       onChanged();
       return this;
@@ -7081,7 +7795,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the truthVersion field is set.
      */
     public boolean hasTruthVersion() {
-      return ((bitField0_ & 0x80000000) != 0);
+      return ((bitField1_ & 0x00000004) != 0);
     }
     /**
      * <pre>
@@ -7140,7 +7854,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000004;
       truthVersion_ = value;
       onChanged();
       return this;
@@ -7154,7 +7868,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTruthVersion() {
-      bitField0_ = (bitField0_ & ~0x80000000);
+      bitField1_ = (bitField1_ & ~0x00000004);
       truthVersion_ = getDefaultInstance().getTruthVersion();
       onChanged();
       return this;
@@ -7173,7 +7887,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x80000000;
+  bitField1_ |= 0x00000004;
       truthVersion_ = value;
       onChanged();
       return this;
@@ -7189,7 +7903,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the testNgVersion field is set.
      */
     public boolean hasTestNgVersion() {
-      return ((bitField1_ & 0x00000001) != 0);
+      return ((bitField1_ & 0x00000008) != 0);
     }
     /**
      * <pre>
@@ -7248,7 +7962,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000001;
+  bitField1_ |= 0x00000008;
       testNgVersion_ = value;
       onChanged();
       return this;
@@ -7262,7 +7976,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearTestNgVersion() {
-      bitField1_ = (bitField1_ & ~0x00000001);
+      bitField1_ = (bitField1_ & ~0x00000008);
       testNgVersion_ = getDefaultInstance().getTestNgVersion();
       onChanged();
       return this;
@@ -7281,7 +7995,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000001;
+  bitField1_ |= 0x00000008;
       testNgVersion_ = value;
       onChanged();
       return this;
@@ -7297,7 +8011,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitPlatformLauncherVersion field is set.
      */
     public boolean hasJunitPlatformLauncherVersion() {
-      return ((bitField1_ & 0x00000002) != 0);
+      return ((bitField1_ & 0x00000010) != 0);
     }
     /**
      * <pre>
@@ -7356,7 +8070,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000002;
+  bitField1_ |= 0x00000010;
       junitPlatformLauncherVersion_ = value;
       onChanged();
       return this;
@@ -7370,7 +8084,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitPlatformLauncherVersion() {
-      bitField1_ = (bitField1_ & ~0x00000002);
+      bitField1_ = (bitField1_ & ~0x00000010);
       junitPlatformLauncherVersion_ = getDefaultInstance().getJunitPlatformLauncherVersion();
       onChanged();
       return this;
@@ -7389,7 +8103,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000002;
+  bitField1_ |= 0x00000010;
       junitPlatformLauncherVersion_ = value;
       onChanged();
       return this;
@@ -7405,7 +8119,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitPlatformRunnerVersion field is set.
      */
     public boolean hasJunitPlatformRunnerVersion() {
-      return ((bitField1_ & 0x00000004) != 0);
+      return ((bitField1_ & 0x00000020) != 0);
     }
     /**
      * <pre>
@@ -7464,7 +8178,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000004;
+  bitField1_ |= 0x00000020;
       junitPlatformRunnerVersion_ = value;
       onChanged();
       return this;
@@ -7478,7 +8192,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitPlatformRunnerVersion() {
-      bitField1_ = (bitField1_ & ~0x00000004);
+      bitField1_ = (bitField1_ & ~0x00000020);
       junitPlatformRunnerVersion_ = getDefaultInstance().getJunitPlatformRunnerVersion();
       onChanged();
       return this;
@@ -7497,7 +8211,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000004;
+  bitField1_ |= 0x00000020;
       junitPlatformRunnerVersion_ = value;
       onChanged();
       return this;
@@ -7513,7 +8227,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitJupiterVersion field is set.
      */
     public boolean hasJunitJupiterVersion() {
-      return ((bitField1_ & 0x00000008) != 0);
+      return ((bitField1_ & 0x00000040) != 0);
     }
     /**
      * <pre>
@@ -7572,7 +8286,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000040;
       junitJupiterVersion_ = value;
       onChanged();
       return this;
@@ -7586,7 +8300,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitJupiterVersion() {
-      bitField1_ = (bitField1_ & ~0x00000008);
+      bitField1_ = (bitField1_ & ~0x00000040);
       junitJupiterVersion_ = getDefaultInstance().getJunitJupiterVersion();
       onChanged();
       return this;
@@ -7605,7 +8319,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000008;
+  bitField1_ |= 0x00000040;
       junitJupiterVersion_ = value;
       onChanged();
       return this;
@@ -7621,7 +8335,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the junitVintageEngineVersion field is set.
      */
     public boolean hasJunitVintageEngineVersion() {
-      return ((bitField1_ & 0x00000010) != 0);
+      return ((bitField1_ & 0x00000080) != 0);
     }
     /**
      * <pre>
@@ -7680,7 +8394,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000010;
+  bitField1_ |= 0x00000080;
       junitVintageEngineVersion_ = value;
       onChanged();
       return this;
@@ -7694,7 +8408,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearJunitVintageEngineVersion() {
-      bitField1_ = (bitField1_ & ~0x00000010);
+      bitField1_ = (bitField1_ & ~0x00000080);
       junitVintageEngineVersion_ = getDefaultInstance().getJunitVintageEngineVersion();
       onChanged();
       return this;
@@ -7713,7 +8427,7 @@ private static final long serialVersionUID = 0L;
       if (value == null) {
     throw new NullPointerException();
   }
-  bitField1_ |= 0x00000010;
+  bitField1_ |= 0x00000080;
       junitVintageEngineVersion_ = value;
       onChanged();
       return this;

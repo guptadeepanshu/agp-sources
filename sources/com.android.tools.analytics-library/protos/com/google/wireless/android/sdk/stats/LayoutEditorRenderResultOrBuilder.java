@@ -139,4 +139,45 @@ public interface LayoutEditorRenderResultOrBuilder extends
    * @return The fidelityWarningCount.
    */
   int getFidelityWarningCount();
+
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return Whether the deviceId field is set.
+   */
+  boolean hasDeviceId();
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return The deviceId.
+   */
+  java.lang.String getDeviceId();
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return The bytes for deviceId.
+   */
+  com.google.protobuf.ByteString
+      getDeviceIdBytes();
 }

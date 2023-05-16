@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ComposeSampleEvent}
  */
-public  final class ComposeSampleEvent extends
+public final class ComposeSampleEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ComposeSampleEvent)
     ComposeSampleEventOrBuilder {
@@ -213,7 +213,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeSampleEvent.ComposeSampleEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeSampleEvent.ComposeSampleEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType result = com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType.UNKNOWN_EVENT_TYPE : result;
@@ -556,7 +556,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ComposeSampleEvent.ComposeSampleEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -567,6 +567,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ComposeSampleEvent.ComposeSampleEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType result = com.google.wireless.android.sdk.stats.ComposeSampleEvent.ComposeSampleEventType.valueOf(type_);

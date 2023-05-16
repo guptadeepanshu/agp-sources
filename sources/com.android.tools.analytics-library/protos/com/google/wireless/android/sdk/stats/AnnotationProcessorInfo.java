@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.AnnotationProcessorInfo}
  */
-public  final class AnnotationProcessorInfo extends
+public final class AnnotationProcessorInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AnnotationProcessorInfo)
     AnnotationProcessorInfoOrBuilder {
@@ -247,6 +247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string spec = 1;</code>
    * @return Whether the spec field is set.
    */
+  @java.lang.Override
   public boolean hasSpec() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -259,6 +260,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string spec = 1;</code>
    * @return The spec.
    */
+  @java.lang.Override
   public java.lang.String getSpec() {
     java.lang.Object ref = spec_;
     if (ref instanceof java.lang.String) {
@@ -282,6 +284,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string spec = 1;</code>
    * @return The bytes for spec.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSpecBytes() {
     java.lang.Object ref = spec_;
@@ -306,7 +309,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnnotationProcessorInfo.InclusionType inclusion_type = 2;</code>
    * @return Whether the inclusionType field is set.
    */
-  public boolean hasInclusionType() {
+  @java.lang.Override public boolean hasInclusionType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -317,7 +320,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnnotationProcessorInfo.InclusionType inclusion_type = 2;</code>
    * @return The inclusionType.
    */
-  public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType getInclusionType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType getInclusionType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.valueOf(inclusionType_);
     return result == null ? com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.APT : result;
@@ -334,6 +337,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_incremental = 3;</code>
    * @return Whether the isIncremental field is set.
    */
+  @java.lang.Override
   public boolean hasIsIncremental() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -346,6 +350,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_incremental = 3;</code>
    * @return The isIncremental.
    */
+  @java.lang.Override
   public boolean getIsIncremental() {
     return isIncremental_;
   }
@@ -838,7 +843,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnnotationProcessorInfo.InclusionType inclusion_type = 2;</code>
      * @return Whether the inclusionType field is set.
      */
-    public boolean hasInclusionType() {
+    @java.lang.Override public boolean hasInclusionType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -849,6 +854,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnnotationProcessorInfo.InclusionType inclusion_type = 2;</code>
      * @return The inclusionType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType getInclusionType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType result = com.google.wireless.android.sdk.stats.AnnotationProcessorInfo.InclusionType.valueOf(inclusionType_);
@@ -897,6 +903,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_incremental = 3;</code>
      * @return Whether the isIncremental field is set.
      */
+    @java.lang.Override
     public boolean hasIsIncremental() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -909,6 +916,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_incremental = 3;</code>
      * @return The isIncremental.
      */
+    @java.lang.Override
     public boolean getIsIncremental() {
       return isIncremental_;
     }

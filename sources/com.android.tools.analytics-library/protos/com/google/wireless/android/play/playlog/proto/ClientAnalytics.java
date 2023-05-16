@@ -43,7 +43,7 @@ public final class ClientAnalytics {
   /**
    * Protobuf type {@code wireless_android_play_playlog.LogEvent}
    */
-  public  static final class LogEvent extends
+  public static final class LogEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless_android_play_playlog.LogEvent)
       LogEventOrBuilder {
@@ -136,6 +136,7 @@ public final class ClientAnalytics {
      * <code>optional int64 event_time_ms = 1;</code>
      * @return Whether the eventTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasEventTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -143,6 +144,7 @@ public final class ClientAnalytics {
      * <code>optional int64 event_time_ms = 1;</code>
      * @return The eventTimeMs.
      */
+    @java.lang.Override
     public long getEventTimeMs() {
       return eventTimeMs_;
     }
@@ -153,6 +155,7 @@ public final class ClientAnalytics {
      * <code>optional bytes source_extension = 6;</code>
      * @return Whether the sourceExtension field is set.
      */
+    @java.lang.Override
     public boolean hasSourceExtension() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -160,6 +163,7 @@ public final class ClientAnalytics {
      * <code>optional bytes source_extension = 6;</code>
      * @return The sourceExtension.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSourceExtension() {
       return sourceExtension_;
     }
@@ -509,6 +513,7 @@ public final class ClientAnalytics {
        * <code>optional int64 event_time_ms = 1;</code>
        * @return Whether the eventTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasEventTimeMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -516,6 +521,7 @@ public final class ClientAnalytics {
        * <code>optional int64 event_time_ms = 1;</code>
        * @return The eventTimeMs.
        */
+      @java.lang.Override
       public long getEventTimeMs() {
         return eventTimeMs_;
       }
@@ -546,6 +552,7 @@ public final class ClientAnalytics {
        * <code>optional bytes source_extension = 6;</code>
        * @return Whether the sourceExtension field is set.
        */
+      @java.lang.Override
       public boolean hasSourceExtension() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -553,6 +560,7 @@ public final class ClientAnalytics {
        * <code>optional bytes source_extension = 6;</code>
        * @return The sourceExtension.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSourceExtension() {
         return sourceExtension_;
       }
@@ -759,7 +767,7 @@ public final class ClientAnalytics {
   /**
    * Protobuf type {@code wireless_android_play_playlog.DesktopClientInfo}
    */
-  public  static final class DesktopClientInfo extends
+  public static final class DesktopClientInfo extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless_android_play_playlog.DesktopClientInfo)
       DesktopClientInfoOrBuilder {
@@ -890,6 +898,7 @@ public final class ClientAnalytics {
      * <code>optional string client_id = 1;</code>
      * @return Whether the clientId field is set.
      */
+    @java.lang.Override
     public boolean hasClientId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -897,6 +906,7 @@ public final class ClientAnalytics {
      * <code>optional string client_id = 1;</code>
      * @return The clientId.
      */
+    @java.lang.Override
     public java.lang.String getClientId() {
       java.lang.Object ref = clientId_;
       if (ref instanceof java.lang.String) {
@@ -915,6 +925,7 @@ public final class ClientAnalytics {
      * <code>optional string client_id = 1;</code>
      * @return The bytes for clientId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getClientIdBytes() {
       java.lang.Object ref = clientId_;
@@ -935,6 +946,7 @@ public final class ClientAnalytics {
      * <code>optional string logging_id = 2;</code>
      * @return Whether the loggingId field is set.
      */
+    @java.lang.Override
     public boolean hasLoggingId() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -942,6 +954,7 @@ public final class ClientAnalytics {
      * <code>optional string logging_id = 2;</code>
      * @return The loggingId.
      */
+    @java.lang.Override
     public java.lang.String getLoggingId() {
       java.lang.Object ref = loggingId_;
       if (ref instanceof java.lang.String) {
@@ -960,6 +973,7 @@ public final class ClientAnalytics {
      * <code>optional string logging_id = 2;</code>
      * @return The bytes for loggingId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getLoggingIdBytes() {
       java.lang.Object ref = loggingId_;
@@ -980,6 +994,7 @@ public final class ClientAnalytics {
      * <code>optional string os = 3;</code>
      * @return Whether the os field is set.
      */
+    @java.lang.Override
     public boolean hasOs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -987,6 +1002,7 @@ public final class ClientAnalytics {
      * <code>optional string os = 3;</code>
      * @return The os.
      */
+    @java.lang.Override
     public java.lang.String getOs() {
       java.lang.Object ref = os_;
       if (ref instanceof java.lang.String) {
@@ -1005,6 +1021,7 @@ public final class ClientAnalytics {
      * <code>optional string os = 3;</code>
      * @return The bytes for os.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOsBytes() {
       java.lang.Object ref = os_;
@@ -1025,6 +1042,7 @@ public final class ClientAnalytics {
      * <code>optional string os_major_version = 4;</code>
      * @return Whether the osMajorVersion field is set.
      */
+    @java.lang.Override
     public boolean hasOsMajorVersion() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1032,6 +1050,7 @@ public final class ClientAnalytics {
      * <code>optional string os_major_version = 4;</code>
      * @return The osMajorVersion.
      */
+    @java.lang.Override
     public java.lang.String getOsMajorVersion() {
       java.lang.Object ref = osMajorVersion_;
       if (ref instanceof java.lang.String) {
@@ -1050,6 +1069,7 @@ public final class ClientAnalytics {
      * <code>optional string os_major_version = 4;</code>
      * @return The bytes for osMajorVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOsMajorVersionBytes() {
       java.lang.Object ref = osMajorVersion_;
@@ -1070,6 +1090,7 @@ public final class ClientAnalytics {
      * <code>optional string os_full_version = 5;</code>
      * @return Whether the osFullVersion field is set.
      */
+    @java.lang.Override
     public boolean hasOsFullVersion() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1077,6 +1098,7 @@ public final class ClientAnalytics {
      * <code>optional string os_full_version = 5;</code>
      * @return The osFullVersion.
      */
+    @java.lang.Override
     public java.lang.String getOsFullVersion() {
       java.lang.Object ref = osFullVersion_;
       if (ref instanceof java.lang.String) {
@@ -1095,6 +1117,7 @@ public final class ClientAnalytics {
      * <code>optional string os_full_version = 5;</code>
      * @return The bytes for osFullVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getOsFullVersionBytes() {
       java.lang.Object ref = osFullVersion_;
@@ -1115,6 +1138,7 @@ public final class ClientAnalytics {
      * <code>optional string application_build = 6;</code>
      * @return Whether the applicationBuild field is set.
      */
+    @java.lang.Override
     public boolean hasApplicationBuild() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1122,6 +1146,7 @@ public final class ClientAnalytics {
      * <code>optional string application_build = 6;</code>
      * @return The applicationBuild.
      */
+    @java.lang.Override
     public java.lang.String getApplicationBuild() {
       java.lang.Object ref = applicationBuild_;
       if (ref instanceof java.lang.String) {
@@ -1140,6 +1165,7 @@ public final class ClientAnalytics {
      * <code>optional string application_build = 6;</code>
      * @return The bytes for applicationBuild.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getApplicationBuildBytes() {
       java.lang.Object ref = applicationBuild_;
@@ -1160,6 +1186,7 @@ public final class ClientAnalytics {
      * <code>optional string country = 7;</code>
      * @return Whether the country field is set.
      */
+    @java.lang.Override
     public boolean hasCountry() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1167,6 +1194,7 @@ public final class ClientAnalytics {
      * <code>optional string country = 7;</code>
      * @return The country.
      */
+    @java.lang.Override
     public java.lang.String getCountry() {
       java.lang.Object ref = country_;
       if (ref instanceof java.lang.String) {
@@ -1185,6 +1213,7 @@ public final class ClientAnalytics {
      * <code>optional string country = 7;</code>
      * @return The bytes for country.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCountryBytes() {
       java.lang.Object ref = country_;
@@ -2343,7 +2372,7 @@ public final class ClientAnalytics {
   /**
    * Protobuf type {@code wireless_android_play_playlog.ClientInfo}
    */
-  public  static final class ClientInfo extends
+  public static final class ClientInfo extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless_android_play_playlog.ClientInfo)
       ClientInfoOrBuilder {
@@ -2538,14 +2567,14 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.ClientInfo.ClientType client_type = 1;</code>
      * @return Whether the clientType field is set.
      */
-    public boolean hasClientType() {
+    @java.lang.Override public boolean hasClientType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .wireless_android_play_playlog.ClientInfo.ClientType client_type = 1;</code>
      * @return The clientType.
      */
-    public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType getClientType() {
+    @java.lang.Override public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType getClientType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.valueOf(clientType_);
       return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.DESKTOP : result;
@@ -2557,6 +2586,7 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.DesktopClientInfo desktop_client_info = 3;</code>
      * @return Whether the desktopClientInfo field is set.
      */
+    @java.lang.Override
     public boolean hasDesktopClientInfo() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2564,12 +2594,14 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.DesktopClientInfo desktop_client_info = 3;</code>
      * @return The desktopClientInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo getDesktopClientInfo() {
       return desktopClientInfo_ == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.getDefaultInstance() : desktopClientInfo_;
     }
     /**
      * <code>optional .wireless_android_play_playlog.DesktopClientInfo desktop_client_info = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfoOrBuilder getDesktopClientInfoOrBuilder() {
       return desktopClientInfo_ == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.DesktopClientInfo.getDefaultInstance() : desktopClientInfo_;
     }
@@ -2926,13 +2958,14 @@ public final class ClientAnalytics {
        * <code>optional .wireless_android_play_playlog.ClientInfo.ClientType client_type = 1;</code>
        * @return Whether the clientType field is set.
        */
-      public boolean hasClientType() {
+      @java.lang.Override public boolean hasClientType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .wireless_android_play_playlog.ClientInfo.ClientType client_type = 1;</code>
        * @return The clientType.
        */
+      @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType getClientType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.ClientType.valueOf(clientType_);
@@ -3203,7 +3236,7 @@ public final class ClientAnalytics {
   /**
    * Protobuf type {@code wireless_android_play_playlog.LogRequest}
    */
-  public  static final class LogRequest extends
+  public static final class LogRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless_android_play_playlog.LogRequest)
       LogRequestOrBuilder {
@@ -3425,6 +3458,7 @@ public final class ClientAnalytics {
      * <code>optional int64 request_time_ms = 4;</code>
      * @return Whether the requestTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasRequestTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -3432,6 +3466,7 @@ public final class ClientAnalytics {
      * <code>optional int64 request_time_ms = 4;</code>
      * @return The requestTimeMs.
      */
+    @java.lang.Override
     public long getRequestTimeMs() {
       return requestTimeMs_;
     }
@@ -3442,6 +3477,7 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.ClientInfo client_info = 1;</code>
      * @return Whether the clientInfo field is set.
      */
+    @java.lang.Override
     public boolean hasClientInfo() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -3449,12 +3485,14 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.ClientInfo client_info = 1;</code>
      * @return The clientInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo getClientInfo() {
       return clientInfo_ == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.getDefaultInstance() : clientInfo_;
     }
     /**
      * <code>optional .wireless_android_play_playlog.ClientInfo client_info = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfoOrBuilder getClientInfoOrBuilder() {
       return clientInfo_ == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.ClientInfo.getDefaultInstance() : clientInfo_;
     }
@@ -3465,14 +3503,14 @@ public final class ClientAnalytics {
      * <code>optional .wireless_android_play_playlog.LogRequest.LogSource log_source = 2 [default = UNKNOWN];</code>
      * @return Whether the logSource field is set.
      */
-    public boolean hasLogSource() {
+    @java.lang.Override public boolean hasLogSource() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>optional .wireless_android_play_playlog.LogRequest.LogSource log_source = 2 [default = UNKNOWN];</code>
      * @return The logSource.
      */
-    public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource getLogSource() {
+    @java.lang.Override public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource getLogSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.valueOf(logSource_);
       return result == null ? com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.UNKNOWN : result;
@@ -3483,12 +3521,14 @@ public final class ClientAnalytics {
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent> getLogEventList() {
       return logEvent_;
     }
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEventOrBuilder> 
         getLogEventOrBuilderList() {
       return logEvent_;
@@ -3496,18 +3536,21 @@ public final class ClientAnalytics {
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
      */
+    @java.lang.Override
     public int getLogEventCount() {
       return logEvent_.size();
     }
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEvent getLogEvent(int index) {
       return logEvent_.get(index);
     }
     /**
      * <code>repeated .wireless_android_play_playlog.LogEvent log_event = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogEventOrBuilder getLogEventOrBuilder(
         int index) {
       return logEvent_.get(index);
@@ -3946,6 +3989,7 @@ public final class ClientAnalytics {
        * <code>optional int64 request_time_ms = 4;</code>
        * @return Whether the requestTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasRequestTimeMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -3953,6 +3997,7 @@ public final class ClientAnalytics {
        * <code>optional int64 request_time_ms = 4;</code>
        * @return The requestTimeMs.
        */
+      @java.lang.Override
       public long getRequestTimeMs() {
         return requestTimeMs_;
       }
@@ -4103,13 +4148,14 @@ public final class ClientAnalytics {
        * <code>optional .wireless_android_play_playlog.LogRequest.LogSource log_source = 2 [default = UNKNOWN];</code>
        * @return Whether the logSource field is set.
        */
-      public boolean hasLogSource() {
+      @java.lang.Override public boolean hasLogSource() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>optional .wireless_android_play_playlog.LogRequest.LogSource log_source = 2 [default = UNKNOWN];</code>
        * @return The logSource.
        */
+      @java.lang.Override
       public com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource getLogSource() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource result = com.google.wireless.android.play.playlog.proto.ClientAnalytics.LogRequest.LogSource.valueOf(logSource_);

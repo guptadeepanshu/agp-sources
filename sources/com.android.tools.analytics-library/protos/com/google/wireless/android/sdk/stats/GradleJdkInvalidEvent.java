@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleJdkInvalidEvent}
  */
-public  final class GradleJdkInvalidEvent extends
+public final class GradleJdkInvalidEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleJdkInvalidEvent)
     GradleJdkInvalidEventOrBuilder {
@@ -342,7 +342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleJdkInvalidEvent.InvalidJdkReason reason = 1;</code>
    * @return Whether the reason field is set.
    */
-  public boolean hasReason() {
+  @java.lang.Override public boolean hasReason() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -353,7 +353,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleJdkInvalidEvent.InvalidJdkReason reason = 1;</code>
    * @return The reason.
    */
-  public com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason getReason() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason getReason() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason result = com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason.valueOf(reason_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason.INVALID_JDK_UNSPECIFIED_REASON : result;
@@ -681,7 +681,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleJdkInvalidEvent.InvalidJdkReason reason = 1;</code>
      * @return Whether the reason field is set.
      */
-    public boolean hasReason() {
+    @java.lang.Override public boolean hasReason() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -692,6 +692,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleJdkInvalidEvent.InvalidJdkReason reason = 1;</code>
      * @return The reason.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason getReason() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason result = com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.InvalidJdkReason.valueOf(reason_);

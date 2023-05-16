@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.InstantRunStatus}
  */
-public  final class InstantRunStatus extends
+public final class InstantRunStatus extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.InstantRunStatus)
     InstantRunStatusOrBuilder {
@@ -895,7 +895,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.BuildMode build_mode = 1;</code>
    * @return Whether the buildMode field is set.
    */
-  public boolean hasBuildMode() {
+  @java.lang.Override public boolean hasBuildMode() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -908,7 +908,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.BuildMode build_mode = 1;</code>
    * @return The buildMode.
    */
-  public com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode getBuildMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode getBuildMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.valueOf(buildMode_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.UNKNOWN_BUILD_MODE : result;
@@ -924,7 +924,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.PatchingPolicy patching_policy = 2;</code>
    * @return Whether the patchingPolicy field is set.
    */
-  public boolean hasPatchingPolicy() {
+  @java.lang.Override public boolean hasPatchingPolicy() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -935,7 +935,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.PatchingPolicy patching_policy = 2;</code>
    * @return The patchingPolicy.
    */
-  public com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy getPatchingPolicy() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy getPatchingPolicy() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.valueOf(patchingPolicy_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.UNKNOWN_PATCHING_POLICY : result;
@@ -952,7 +952,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.VerifierStatus verifier_status = 3;</code>
    * @return Whether the verifierStatus field is set.
    */
-  public boolean hasVerifierStatus() {
+  @java.lang.Override public boolean hasVerifierStatus() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -964,7 +964,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.VerifierStatus verifier_status = 3;</code>
    * @return The verifierStatus.
    */
-  public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getVerifierStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getVerifierStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(verifierStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.UNKNOWN_VERIFIER_STATUS : result;
@@ -982,6 +982,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.InstantRunArtifact artifact = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.InstantRunArtifact> getArtifactList() {
     return artifact_;
   }
@@ -995,6 +996,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.InstantRunArtifact artifact = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.InstantRunArtifactOrBuilder> 
       getArtifactOrBuilderList() {
     return artifact_;
@@ -1009,6 +1011,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.InstantRunArtifact artifact = 4;</code>
    */
+  @java.lang.Override
   public int getArtifactCount() {
     return artifact_.size();
   }
@@ -1022,6 +1025,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.InstantRunArtifact artifact = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunArtifact getArtifact(int index) {
     return artifact_.get(index);
   }
@@ -1035,6 +1039,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.InstantRunArtifact artifact = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunArtifactOrBuilder getArtifactOrBuilder(
       int index) {
     return artifact_.get(index);
@@ -1467,7 +1472,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.BuildMode build_mode = 1;</code>
      * @return Whether the buildMode field is set.
      */
-    public boolean hasBuildMode() {
+    @java.lang.Override public boolean hasBuildMode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1480,6 +1485,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.BuildMode build_mode = 1;</code>
      * @return The buildMode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode getBuildMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode result = com.google.wireless.android.sdk.stats.InstantRunStatus.BuildMode.valueOf(buildMode_);
@@ -1531,7 +1537,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.PatchingPolicy patching_policy = 2;</code>
      * @return Whether the patchingPolicy field is set.
      */
-    public boolean hasPatchingPolicy() {
+    @java.lang.Override public boolean hasPatchingPolicy() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1542,6 +1548,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.PatchingPolicy patching_policy = 2;</code>
      * @return The patchingPolicy.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy getPatchingPolicy() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy result = com.google.wireless.android.sdk.stats.InstantRunStatus.PatchingPolicy.valueOf(patchingPolicy_);
@@ -1590,7 +1597,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.VerifierStatus verifier_status = 3;</code>
      * @return Whether the verifierStatus field is set.
      */
-    public boolean hasVerifierStatus() {
+    @java.lang.Override public boolean hasVerifierStatus() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1602,6 +1609,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.VerifierStatus verifier_status = 3;</code>
      * @return The verifierStatus.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getVerifierStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(verifierStatus_);

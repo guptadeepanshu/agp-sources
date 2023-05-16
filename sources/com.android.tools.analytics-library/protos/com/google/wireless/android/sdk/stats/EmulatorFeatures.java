@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorFeatures}
  */
-public  final class EmulatorFeatures extends
+public final class EmulatorFeatures extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorFeatures)
     EmulatorFeaturesOrBuilder {
@@ -230,6 +230,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool gps = 1;</code>
    * @return Whether the gps field is set.
    */
+  @java.lang.Override
   public boolean hasGps() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -237,6 +238,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool gps = 1;</code>
    * @return The gps.
    */
+  @java.lang.Override
   public boolean getGps() {
     return gps_;
   }
@@ -247,6 +249,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool sensors = 2;</code>
    * @return Whether the sensors field is set.
    */
+  @java.lang.Override
   public boolean hasSensors() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -254,6 +257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool sensors = 2;</code>
    * @return The sensors.
    */
+  @java.lang.Override
   public boolean getSensors() {
     return sensors_;
   }
@@ -264,6 +268,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virtualscene_config = 3;</code>
    * @return Whether the virtualsceneConfig field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualsceneConfig() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -271,6 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virtualscene_config = 3;</code>
    * @return The virtualsceneConfig.
    */
+  @java.lang.Override
   public boolean getVirtualsceneConfig() {
     return virtualsceneConfig_;
   }
@@ -285,6 +291,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
    * @return Whether the containerLaunch field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasContainerLaunch() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -296,6 +303,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool container_launch = 4 [deprecated = true];</code>
    * @return The containerLaunch.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean getContainerLaunch() {
     return containerLaunch_;
   }
@@ -306,14 +314,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorFeatures.EmulatorLaunchType launch_type = 5;</code>
    * @return Whether the launchType field is set.
    */
-  public boolean hasLaunchType() {
+  @java.lang.Override public boolean hasLaunchType() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
    * <code>optional .android_studio.EmulatorFeatures.EmulatorLaunchType launch_type = 5;</code>
    * @return The launchType.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType getLaunchType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType getLaunchType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType result = com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType.valueOf(launchType_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType.UNKNOWN_EMULATOR_LAUNCH_TYPE : result;
@@ -745,6 +753,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool gps = 1;</code>
      * @return Whether the gps field is set.
      */
+    @java.lang.Override
     public boolean hasGps() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -752,6 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool gps = 1;</code>
      * @return The gps.
      */
+    @java.lang.Override
     public boolean getGps() {
       return gps_;
     }
@@ -782,6 +792,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool sensors = 2;</code>
      * @return Whether the sensors field is set.
      */
+    @java.lang.Override
     public boolean hasSensors() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -789,6 +800,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool sensors = 2;</code>
      * @return The sensors.
      */
+    @java.lang.Override
     public boolean getSensors() {
       return sensors_;
     }
@@ -819,6 +831,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virtualscene_config = 3;</code>
      * @return Whether the virtualsceneConfig field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualsceneConfig() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -826,6 +839,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virtualscene_config = 3;</code>
      * @return The virtualsceneConfig.
      */
+    @java.lang.Override
     public boolean getVirtualsceneConfig() {
       return virtualsceneConfig_;
     }
@@ -860,6 +874,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool container_launch = 4 [deprecated = true];</code>
      * @return Whether the containerLaunch field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasContainerLaunch() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -871,6 +886,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool container_launch = 4 [deprecated = true];</code>
      * @return The containerLaunch.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean getContainerLaunch() {
       return containerLaunch_;
     }
@@ -909,13 +925,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorFeatures.EmulatorLaunchType launch_type = 5;</code>
      * @return Whether the launchType field is set.
      */
-    public boolean hasLaunchType() {
+    @java.lang.Override public boolean hasLaunchType() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <code>optional .android_studio.EmulatorFeatures.EmulatorLaunchType launch_type = 5;</code>
      * @return The launchType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType getLaunchType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType result = com.google.wireless.android.sdk.stats.EmulatorFeatures.EmulatorLaunchType.valueOf(launchType_);

@@ -3785,4 +3785,267 @@ public interface AndroidStudioEventOrBuilder extends
    * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
    */
   com.google.wireless.android.sdk.stats.CoroutineDebuggerEventOrBuilder getCoroutineDebuggerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * @return Whether the splittingTabsUsageEvent field is set.
+   */
+  boolean hasSplittingTabsUsageEvent();
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * @return The splittingTabsUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent getSplittingTabsUsageEvent();
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   */
+  com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder getSplittingTabsUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * @return Whether the logcatUsageEvent field is set.
+   */
+  boolean hasLogcatUsageEvent();
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * @return The logcatUsageEvent.
+   */
+  com.google.wireless.android.sdk.stats.LogcatUsageEvent getLogcatUsageEvent();
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   */
+  com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder getLogcatUsageEventOrBuilder();
+
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @return A list containing the rawProjectIds.
+   */
+  java.util.List<java.lang.String>
+      getRawProjectIdsList();
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @return The count of rawProjectIds.
+   */
+  int getRawProjectIdsCount();
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @param index The index of the element to return.
+   * @return The rawProjectIds at the given index.
+   */
+  java.lang.String getRawProjectIds(int index);
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the rawProjectIds at the given index.
+   */
+  com.google.protobuf.ByteString
+      getRawProjectIdsBytes(int index);
+
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @return A list containing the projectIds.
+   */
+  java.util.List<java.lang.String>
+      getProjectIdsList();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @return The count of projectIds.
+   */
+  int getProjectIdsCount();
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @param index The index of the element to return.
+   * @return The projectIds at the given index.
+   */
+  java.lang.String getProjectIds(int index);
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the projectIds at the given index.
+   */
+  com.google.protobuf.ByteString
+      getProjectIdsBytes(int index);
+
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * @return Whether the osMetrics field is set.
+   */
+  boolean hasOsMetrics();
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * @return The osMetrics.
+   */
+  com.google.wireless.android.sdk.stats.OSMetrics getOsMetrics();
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   */
+  com.google.wireless.android.sdk.stats.OSMetricsOrBuilder getOsMetricsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * @return Whether the sdkIndexLibraryDetails field is set.
+   */
+  boolean hasSdkIndexLibraryDetails();
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * @return The sdkIndexLibraryDetails.
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails getSdkIndexLibraryDetails();
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   */
+  com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder getSdkIndexLibraryDetailsOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * @return Whether the editorPickerEvent field is set.
+   */
+  boolean hasEditorPickerEvent();
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * @return The editorPickerEvent.
+   */
+  com.google.wireless.android.sdk.stats.EditorPickerEvent getEditorPickerEvent();
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   */
+  com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder getEditorPickerEventOrBuilder();
+
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * @return Whether the composeMultiPreviewEvent field is set.
+   */
+  boolean hasComposeMultiPreviewEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * @return The composeMultiPreviewEvent.
+   */
+  com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent getComposeMultiPreviewEvent();
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   */
+  com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder getComposeMultiPreviewEventOrBuilder();
 }

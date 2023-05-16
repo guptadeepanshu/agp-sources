@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CpuStartupProfilingMetadata}
  */
-public  final class CpuStartupProfilingMetadata extends
+public final class CpuStartupProfilingMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CpuStartupProfilingMetadata)
     CpuStartupProfilingMetadataOrBuilder {
@@ -105,6 +105,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
    * @return Whether the profilingConfig field is set.
    */
+  @java.lang.Override
   public boolean hasProfilingConfig() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -112,12 +113,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
    * @return The profilingConfig.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuProfilingConfig getProfilingConfig() {
     return profilingConfig_ == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance() : profilingConfig_;
   }
   /**
    * <code>optional .android_studio.CpuProfilingConfig profiling_config = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getProfilingConfigOrBuilder() {
     return profilingConfig_ == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance() : profilingConfig_;
   }

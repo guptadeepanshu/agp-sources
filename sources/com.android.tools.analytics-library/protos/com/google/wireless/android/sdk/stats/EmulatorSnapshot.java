@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorSnapshot}
  */
-public  final class EmulatorSnapshot extends
+public final class EmulatorSnapshot extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorSnapshot)
     EmulatorSnapshotOrBuilder {
@@ -215,6 +215,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return Whether the name field is set.
    */
+  @java.lang.Override
   public boolean hasName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -226,6 +227,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -248,6 +250,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -272,6 +275,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 flags = 2;</code>
    * @return Whether the flags field is set.
    */
+  @java.lang.Override
   public boolean hasFlags() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -283,6 +287,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 flags = 2;</code>
    * @return The flags.
    */
+  @java.lang.Override
   public int getFlags() {
     return flags_;
   }
@@ -297,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 size_bytes = 3;</code>
    * @return Whether the sizeBytes field is set.
    */
+  @java.lang.Override
   public boolean hasSizeBytes() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -308,6 +314,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 size_bytes = 3;</code>
    * @return The sizeBytes.
    */
+  @java.lang.Override
   public long getSizeBytes() {
     return sizeBytes_;
   }
@@ -322,7 +329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotSaveState save_state = 4;</code>
    * @return Whether the saveState field is set.
    */
-  public boolean hasSaveState() {
+  @java.lang.Override public boolean hasSaveState() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -333,7 +340,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotSaveState save_state = 4;</code>
    * @return The saveState.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState getSaveState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState getSaveState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.valueOf(saveState_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.EMULATOR_SNAPSHOT_SAVE_SUCCEEDED_NORMAL : result;
@@ -345,14 +352,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotLoadState load_state = 5;</code>
    * @return Whether the loadState field is set.
    */
-  public boolean hasLoadState() {
+  @java.lang.Override public boolean hasLoadState() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
    * <code>optional .android_studio.EmulatorSnapshotLoadState load_state = 5;</code>
    * @return The loadState.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState getLoadState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState getLoadState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.valueOf(loadState_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.EMULATOR_SNAPSHOT_LOAD_SUCCEEDED_NORMAL : result;
@@ -368,7 +375,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotFailureReason load_failure_reason = 6;</code>
    * @return Whether the loadFailureReason field is set.
    */
-  public boolean hasLoadFailureReason() {
+  @java.lang.Override public boolean hasLoadFailureReason() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -379,7 +386,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotFailureReason load_failure_reason = 6;</code>
    * @return The loadFailureReason.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getLoadFailureReason() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getLoadFailureReason() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(loadFailureReason_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
@@ -395,7 +402,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotFailureReason save_failure_reason = 7;</code>
    * @return Whether the saveFailureReason field is set.
    */
-  public boolean hasSaveFailureReason() {
+  @java.lang.Override public boolean hasSaveFailureReason() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -406,7 +413,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotFailureReason save_failure_reason = 7;</code>
    * @return The saveFailureReason.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getSaveFailureReason() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getSaveFailureReason() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(saveFailureReason_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
@@ -422,6 +429,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool lazy_loaded = 8;</code>
    * @return Whether the lazyLoaded field is set.
    */
+  @java.lang.Override
   public boolean hasLazyLoaded() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -433,6 +441,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool lazy_loaded = 8;</code>
    * @return The lazyLoaded.
    */
+  @java.lang.Override
   public boolean getLazyLoaded() {
     return lazyLoaded_;
   }
@@ -447,6 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool incrementally_saved = 9;</code>
    * @return Whether the incrementallySaved field is set.
    */
+  @java.lang.Override
   public boolean hasIncrementallySaved() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -458,6 +468,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool incrementally_saved = 9;</code>
    * @return The incrementallySaved.
    */
+  @java.lang.Override
   public boolean getIncrementallySaved() {
     return incrementallySaved_;
   }
@@ -472,6 +483,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ram_size_bytes = 10;</code>
    * @return Whether the ramSizeBytes field is set.
    */
+  @java.lang.Override
   public boolean hasRamSizeBytes() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -483,6 +495,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ram_size_bytes = 10;</code>
    * @return The ramSizeBytes.
    */
+  @java.lang.Override
   public long getRamSizeBytes() {
     return ramSizeBytes_;
   }
@@ -497,6 +510,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 textures_size_bytes = 11;</code>
    * @return Whether the texturesSizeBytes field is set.
    */
+  @java.lang.Override
   public boolean hasTexturesSizeBytes() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -508,6 +522,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 textures_size_bytes = 11;</code>
    * @return The texturesSizeBytes.
    */
+  @java.lang.Override
   public long getTexturesSizeBytes() {
     return texturesSizeBytes_;
   }
@@ -522,6 +537,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 load_duration_ms = 12;</code>
    * @return Whether the loadDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasLoadDurationMs() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -533,6 +549,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 load_duration_ms = 12;</code>
    * @return The loadDurationMs.
    */
+  @java.lang.Override
   public long getLoadDurationMs() {
     return loadDurationMs_;
   }
@@ -543,6 +560,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 save_duration_ms = 13;</code>
    * @return Whether the saveDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasSaveDurationMs() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -550,6 +568,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 save_duration_ms = 13;</code>
    * @return The saveDurationMs.
    */
+  @java.lang.Override
   public long getSaveDurationMs() {
     return saveDurationMs_;
   }
@@ -564,6 +583,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 ram_load_duration_ms = 14;</code>
    * @return Whether the ramLoadDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasRamLoadDurationMs() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -575,6 +595,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 ram_load_duration_ms = 14;</code>
    * @return The ramLoadDurationMs.
    */
+  @java.lang.Override
   public long getRamLoadDurationMs() {
     return ramLoadDurationMs_;
   }
@@ -585,6 +606,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 ram_save_duration_ms = 15;</code>
    * @return Whether the ramSaveDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasRamSaveDurationMs() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -592,6 +614,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 ram_save_duration_ms = 15;</code>
    * @return The ramSaveDurationMs.
    */
+  @java.lang.Override
   public long getRamSaveDurationMs() {
     return ramSaveDurationMs_;
   }
@@ -606,6 +629,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 textures_load_duration_ms = 16;</code>
    * @return Whether the texturesLoadDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasTexturesLoadDurationMs() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -617,6 +641,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 textures_load_duration_ms = 16;</code>
    * @return The texturesLoadDurationMs.
    */
+  @java.lang.Override
   public long getTexturesLoadDurationMs() {
     return texturesLoadDurationMs_;
   }
@@ -631,6 +656,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 textures_save_duration_ms = 17;</code>
    * @return Whether the texturesSaveDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasTexturesSaveDurationMs() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -642,6 +668,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 textures_save_duration_ms = 17;</code>
    * @return The texturesSaveDurationMs.
    */
+  @java.lang.Override
   public long getTexturesSaveDurationMs() {
     return texturesSaveDurationMs_;
   }
@@ -1489,6 +1516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 flags = 2;</code>
      * @return Whether the flags field is set.
      */
+    @java.lang.Override
     public boolean hasFlags() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1500,6 +1528,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 flags = 2;</code>
      * @return The flags.
      */
+    @java.lang.Override
     public int getFlags() {
       return flags_;
     }
@@ -1542,6 +1571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 size_bytes = 3;</code>
      * @return Whether the sizeBytes field is set.
      */
+    @java.lang.Override
     public boolean hasSizeBytes() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1553,6 +1583,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 size_bytes = 3;</code>
      * @return The sizeBytes.
      */
+    @java.lang.Override
     public long getSizeBytes() {
       return sizeBytes_;
     }
@@ -1595,7 +1626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotSaveState save_state = 4;</code>
      * @return Whether the saveState field is set.
      */
-    public boolean hasSaveState() {
+    @java.lang.Override public boolean hasSaveState() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -1606,6 +1637,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotSaveState save_state = 4;</code>
      * @return The saveState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState getSaveState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotSaveState.valueOf(saveState_);
@@ -1649,13 +1681,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotLoadState load_state = 5;</code>
      * @return Whether the loadState field is set.
      */
-    public boolean hasLoadState() {
+    @java.lang.Override public boolean hasLoadState() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
      * <code>optional .android_studio.EmulatorSnapshotLoadState load_state = 5;</code>
      * @return The loadState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState getLoadState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState result = com.google.wireless.android.sdk.stats.EmulatorSnapshotLoadState.valueOf(loadState_);
@@ -1695,7 +1728,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason load_failure_reason = 6;</code>
      * @return Whether the loadFailureReason field is set.
      */
-    public boolean hasLoadFailureReason() {
+    @java.lang.Override public boolean hasLoadFailureReason() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -1706,6 +1739,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason load_failure_reason = 6;</code>
      * @return The loadFailureReason.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getLoadFailureReason() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(loadFailureReason_);
@@ -1753,7 +1787,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason save_failure_reason = 7;</code>
      * @return Whether the saveFailureReason field is set.
      */
-    public boolean hasSaveFailureReason() {
+    @java.lang.Override public boolean hasSaveFailureReason() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -1764,6 +1798,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason save_failure_reason = 7;</code>
      * @return The saveFailureReason.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getSaveFailureReason() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(saveFailureReason_);
@@ -1811,6 +1846,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool lazy_loaded = 8;</code>
      * @return Whether the lazyLoaded field is set.
      */
+    @java.lang.Override
     public boolean hasLazyLoaded() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1822,6 +1858,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool lazy_loaded = 8;</code>
      * @return The lazyLoaded.
      */
+    @java.lang.Override
     public boolean getLazyLoaded() {
       return lazyLoaded_;
     }
@@ -1864,6 +1901,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool incrementally_saved = 9;</code>
      * @return Whether the incrementallySaved field is set.
      */
+    @java.lang.Override
     public boolean hasIncrementallySaved() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1875,6 +1913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool incrementally_saved = 9;</code>
      * @return The incrementallySaved.
      */
+    @java.lang.Override
     public boolean getIncrementallySaved() {
       return incrementallySaved_;
     }
@@ -1917,6 +1956,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ram_size_bytes = 10;</code>
      * @return Whether the ramSizeBytes field is set.
      */
+    @java.lang.Override
     public boolean hasRamSizeBytes() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1928,6 +1968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ram_size_bytes = 10;</code>
      * @return The ramSizeBytes.
      */
+    @java.lang.Override
     public long getRamSizeBytes() {
       return ramSizeBytes_;
     }
@@ -1970,6 +2011,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 textures_size_bytes = 11;</code>
      * @return Whether the texturesSizeBytes field is set.
      */
+    @java.lang.Override
     public boolean hasTexturesSizeBytes() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -1981,6 +2023,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 textures_size_bytes = 11;</code>
      * @return The texturesSizeBytes.
      */
+    @java.lang.Override
     public long getTexturesSizeBytes() {
       return texturesSizeBytes_;
     }
@@ -2023,6 +2066,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 load_duration_ms = 12;</code>
      * @return Whether the loadDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasLoadDurationMs() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -2034,6 +2078,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 load_duration_ms = 12;</code>
      * @return The loadDurationMs.
      */
+    @java.lang.Override
     public long getLoadDurationMs() {
       return loadDurationMs_;
     }
@@ -2072,6 +2117,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 save_duration_ms = 13;</code>
      * @return Whether the saveDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasSaveDurationMs() {
       return ((bitField0_ & 0x00001000) != 0);
     }
@@ -2079,6 +2125,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 save_duration_ms = 13;</code>
      * @return The saveDurationMs.
      */
+    @java.lang.Override
     public long getSaveDurationMs() {
       return saveDurationMs_;
     }
@@ -2113,6 +2160,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 ram_load_duration_ms = 14;</code>
      * @return Whether the ramLoadDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasRamLoadDurationMs() {
       return ((bitField0_ & 0x00002000) != 0);
     }
@@ -2124,6 +2172,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 ram_load_duration_ms = 14;</code>
      * @return The ramLoadDurationMs.
      */
+    @java.lang.Override
     public long getRamLoadDurationMs() {
       return ramLoadDurationMs_;
     }
@@ -2162,6 +2211,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 ram_save_duration_ms = 15;</code>
      * @return Whether the ramSaveDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasRamSaveDurationMs() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -2169,6 +2219,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 ram_save_duration_ms = 15;</code>
      * @return The ramSaveDurationMs.
      */
+    @java.lang.Override
     public long getRamSaveDurationMs() {
       return ramSaveDurationMs_;
     }
@@ -2203,6 +2254,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 textures_load_duration_ms = 16;</code>
      * @return Whether the texturesLoadDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasTexturesLoadDurationMs() {
       return ((bitField0_ & 0x00008000) != 0);
     }
@@ -2214,6 +2266,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 textures_load_duration_ms = 16;</code>
      * @return The texturesLoadDurationMs.
      */
+    @java.lang.Override
     public long getTexturesLoadDurationMs() {
       return texturesLoadDurationMs_;
     }
@@ -2256,6 +2309,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 textures_save_duration_ms = 17;</code>
      * @return Whether the texturesSaveDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasTexturesSaveDurationMs() {
       return ((bitField0_ & 0x00010000) != 0);
     }
@@ -2267,6 +2321,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 textures_save_duration_ms = 17;</code>
      * @return The texturesSaveDurationMs.
      */
+    @java.lang.Override
     public long getTexturesSaveDurationMs() {
       return texturesSaveDurationMs_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.UndoAppliedAtfFixEvent}
  */
-public  final class UndoAppliedAtfFixEvent extends
+public final class UndoAppliedAtfFixEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UndoAppliedAtfFixEvent)
     UndoAppliedAtfFixEventOrBuilder {
@@ -122,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    * @return Whether the atfResult field is set.
    */
+  @java.lang.Override
   public boolean hasAtfResult() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -133,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    * @return The atfResult.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfResultDetail getAtfResult() {
     return atfResult_ == null ? com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance() : atfResult_;
   }
@@ -143,6 +145,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder() {
     return atfResult_ == null ? com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance() : atfResult_;
   }
@@ -157,6 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
    * @return Whether the atfFix field is set.
    */
+  @java.lang.Override
   public boolean hasAtfFix() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -168,6 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
    * @return The atfFix.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfFixDetail getAtfFix() {
     return atfFix_ == null ? com.google.wireless.android.sdk.stats.AtfFixDetail.getDefaultInstance() : atfFix_;
   }
@@ -178,6 +183,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AtfFixDetail atf_fix = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder getAtfFixOrBuilder() {
     return atfFix_ == null ? com.google.wireless.android.sdk.stats.AtfFixDetail.getDefaultInstance() : atfFix_;
   }

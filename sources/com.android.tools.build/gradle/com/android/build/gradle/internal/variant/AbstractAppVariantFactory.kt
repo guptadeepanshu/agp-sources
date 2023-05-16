@@ -32,7 +32,7 @@ import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.plugins.DslContainerProvider
 import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.services.ProjectServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.core.BuilderConstants
 import com.android.builder.errors.IssueReporter
 import org.gradle.api.Project
@@ -56,7 +56,7 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilderImpl, V
         variantSources: VariantSources,
         paths: VariantPathHelper,
         artifacts: ArtifactsImpl,
-        services: VariantPropertiesApiServices,
+        services: VariantServices,
         taskContainer: MutableTaskContainer
     ): BaseVariantData {
         return ApplicationVariantData(
@@ -82,7 +82,7 @@ abstract class AbstractAppVariantFactory<VariantBuilderT : VariantBuilderImpl, V
     ) {
         super.preVariantCallback(project, dslExtension, model)
         validateVersionCodes(model)
-        if (!variantType.isDynamicFeature) {
+        if (!componentType.isDynamicFeature) {
             return
         }
 

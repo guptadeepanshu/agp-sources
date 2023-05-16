@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioProjectChange}
  */
-public  final class StudioProjectChange extends
+public final class StudioProjectChange extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioProjectChange)
     StudioProjectChangeOrBuilder {
@@ -101,6 +101,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 projects_open = 1;</code>
    * @return Whether the projectsOpen field is set.
    */
+  @java.lang.Override
   public boolean hasProjectsOpen() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -112,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 projects_open = 1;</code>
    * @return The projectsOpen.
    */
+  @java.lang.Override
   public int getProjectsOpen() {
     return projectsOpen_;
   }
@@ -443,6 +445,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 projects_open = 1;</code>
      * @return Whether the projectsOpen field is set.
      */
+    @java.lang.Override
     public boolean hasProjectsOpen() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -454,6 +457,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 projects_open = 1;</code>
      * @return The projectsOpen.
      */
+    @java.lang.Override
     public int getProjectsOpen() {
       return projectsOpen_;
     }

@@ -18,7 +18,7 @@ package com.android.build.gradle.tasks
 
 import com.android.build.gradle.internal.BuildToolsExecutableInput
 import com.android.build.gradle.internal.LoggerWrapper
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.initialize
 import com.android.build.gradle.internal.process.GradleProcessExecutor
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.AndroidVariantTask
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.compiling.DependencyFileProcessor
 import com.android.builder.internal.compiler.AidlProcessor
 import com.android.builder.internal.compiler.DirectoryWalker
@@ -38,6 +39,7 @@ import com.android.ide.common.process.LoggedProcessOutputHandler
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.FileTree
@@ -78,7 +80,7 @@ abstract class AidlCompile : NonIncrementalTask() {
         private set
 
     @get:Internal
-    abstract val sourceDirs: ListProperty<File>
+    abstract val sourceDirs: ListProperty<Directory>
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -129,7 +131,7 @@ abstract class AidlCompile : NonIncrementalTask() {
         val sourceFolders = sourceDirs.get()
         val importFolders = importDirs.files
 
-        val fullImportList = sourceFolders + importFolders
+        val fullImportList = sourceFolders.map { it.asFile } + importFolders
 
         aidlCompileDelegate(
             workerExecutor,
@@ -138,15 +140,15 @@ abstract class AidlCompile : NonIncrementalTask() {
             destinationDir,
             parcelableDir?.asFile,
             packagedList,
-            sourceFolders,
+            sourceFolders.map { it.asFile },
             fullImportList,
             this
         )
     }
 
     class CreationAction(
-        creationConfig: VariantCreationConfig
-    ) : VariantTaskCreationAction<AidlCompile, VariantCreationConfig>(
+        creationConfig: ConsumableCreationConfig
+    ) : VariantTaskCreationAction<AidlCompile, ConsumableCreationConfig>(
         creationConfig
     ) {
 
@@ -164,7 +166,7 @@ abstract class AidlCompile : NonIncrementalTask() {
                 AidlCompile::sourceOutputDir
             ).withName("out").on(InternalArtifactType.AIDL_SOURCE_OUTPUT_DIR)
 
-            if (creationConfig.variantType.isAar) {
+            if (creationConfig.componentType.isAar) {
                 creationConfig.artifacts.setInitialProvider(
                     taskProvider,
                     AidlCompile::packagedDir
@@ -178,26 +180,16 @@ abstract class AidlCompile : NonIncrementalTask() {
             super.configure(task)
             val services = creationConfig.services
 
-            val variantSources = creationConfig.variantSources
-
-            task
-                .sourceDirs
-                .set(services.provider { variantSources.aidlSourceList })
-            task.sourceDirs.disallowChanges()
-
-            // This is because aidl may be in the same folder as Java and we want to restrict to
-            // .aidl files and not java files.
-            task
-                .sourceFiles
-                .set(
-                    services.provider {
-                        services.fileCollection(task.sourceDirs).asFileTree.matching(PATTERN_SET)
-                    })
-            task.sourceFiles.disallowChanges()
+            creationConfig.sources.aidl?.let {
+                task.sourceDirs.setDisallowChanges(it.all)
+                // This is because aidl may be in the same folder as Java and we want to restrict to
+                // .aidl files and not java files.
+                task.sourceFiles.setDisallowChanges(services.fileCollection(task.sourceDirs).asFileTree.matching(PATTERN_SET))
+            }
 
             task.importDirs = creationConfig.variantDependencies.getArtifactFileCollection(COMPILE_CLASSPATH, ALL, AIDL)
 
-            if (creationConfig.variantType.isAar) {
+            if (creationConfig.componentType.isAar) {
                 task.packagedList = creationConfig.global.aidlPackagedList
             }
             task.buildTools.initialize(creationConfig)
@@ -208,7 +200,7 @@ abstract class AidlCompile : NonIncrementalTask() {
 
     abstract class AidlCompileRunnable : ProfileAwareWorkAction<AidlCompileRunnable.Params>() {
 
-        abstract class Params: ProfileAwareWorkAction.Parameters() {
+        abstract class Params: Parameters() {
             abstract val aidlExecutable: RegularFileProperty
             abstract val frameworkLocation: DirectoryProperty
             abstract val importFolders: ConfigurableFileCollection

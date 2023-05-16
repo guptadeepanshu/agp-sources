@@ -10,7 +10,7 @@ package com.android.tools.build.libraries.metadata;
  *
  * Protobuf type {@code LibraryDependencies}
  */
-public  final class LibraryDependencies extends
+public final class LibraryDependencies extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:LibraryDependencies)
     LibraryDependenciesOrBuilder {
@@ -125,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 library_index = 1;</code>
    * @return The libraryIndex.
    */
+  @java.lang.Override
   public int getLibraryIndex() {
     return libraryIndex_;
   }
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 library_dep_index = 2;</code>
    * @return A list containing the libraryDepIndex.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getLibraryDepIndexList() {
     return libraryDepIndex_;
@@ -518,6 +520,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 library_index = 1;</code>
      * @return The libraryIndex.
      */
+    @java.lang.Override
     public int getLibraryIndex() {
       return libraryIndex_;
     }

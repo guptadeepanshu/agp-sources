@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AsmFramesComputationModeUpdate}
  */
-public  final class AsmFramesComputationModeUpdate extends
+public final class AsmFramesComputationModeUpdate extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AsmFramesComputationModeUpdate)
     AsmFramesComputationModeUpdateOrBuilder {
@@ -237,7 +237,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AsmFramesComputationModeUpdate.Mode mode = 1;</code>
    * @return Whether the mode field is set.
    */
-  public boolean hasMode() {
+  @java.lang.Override public boolean hasMode() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AsmFramesComputationModeUpdate.Mode mode = 1;</code>
    * @return The mode.
    */
-  public com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode getMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode getMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode result = com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode.valueOf(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode.UNKNOWN_MODE : result;
@@ -581,7 +581,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AsmFramesComputationModeUpdate.Mode mode = 1;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -592,6 +592,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AsmFramesComputationModeUpdate.Mode mode = 1;</code>
      * @return The mode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode result = com.google.wireless.android.sdk.stats.AsmFramesComputationModeUpdate.Mode.valueOf(mode_);

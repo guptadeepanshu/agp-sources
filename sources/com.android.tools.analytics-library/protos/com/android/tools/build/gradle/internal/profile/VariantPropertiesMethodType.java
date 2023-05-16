@@ -501,6 +501,54 @@ public enum VariantPropertiesMethodType
    * <code>BUNDLE_CONFIG_ADD_METADATA = 111;</code>
    */
   BUNDLE_CONFIG_ADD_METADATA(111),
+  /**
+   * <code>SOURCES_ASSETS_ACCESS = 112;</code>
+   */
+  SOURCES_ASSETS_ACCESS(112),
+  /**
+   * <code>SOURCES_JNI_ACCESS = 113;</code>
+   */
+  SOURCES_JNI_ACCESS(113),
+  /**
+   * <code>SOURCES_SHADERS_ACCESS = 114;</code>
+   */
+  SOURCES_SHADERS_ACCESS(114),
+  /**
+   * <code>COMPILE_CONFIGURATION = 115;</code>
+   */
+  COMPILE_CONFIGURATION(115),
+  /**
+   * <code>RUNTIME_CONFIGURATION = 116;</code>
+   */
+  RUNTIME_CONFIGURATION(116),
+  /**
+   * <code>ANNOTATION_PROCESSOR_CONFIGURATION = 117;</code>
+   */
+  ANNOTATION_PROCESSOR_CONFIGURATION(117),
+  /**
+   * <code>SOURCES_ML_MODELS_ACCESS = 118;</code>
+   */
+  SOURCES_ML_MODELS_ACCESS(118),
+  /**
+   * <code>SOURCES_AIDL_ACCESS = 119;</code>
+   */
+  SOURCES_AIDL_ACCESS(119),
+  /**
+   * <code>SOURCES_RENDERSCRIPT_ACCESS = 120;</code>
+   */
+  SOURCES_RENDERSCRIPT_ACCESS(120),
+  /**
+   * <code>SOURCES_KOTLIN_ACCESS = 121;</code>
+   */
+  SOURCES_KOTLIN_ACCESS(121),
+  /**
+   * <code>CONFIGURATIONS = 122;</code>
+   */
+  CONFIGURATIONS(122),
+  /**
+   * <code>COMPONENTS = 123;</code>
+   */
+  COMPONENTS(123),
   UNRECOGNIZED(-1),
   ;
 
@@ -547,7 +595,7 @@ public enum VariantPropertiesMethodType
   /**
    * <code>PACKAGE_NAME = 8 [deprecated = true];</code>
    */
-  public static final int PACKAGE_NAME_VALUE = 8;
+  @java.lang.Deprecated public static final int PACKAGE_NAME_VALUE = 8;
   /**
    * <code>BUILD_CONFIG_FIELDS = 9;</code>
    */
@@ -996,6 +1044,54 @@ public enum VariantPropertiesMethodType
    * <code>BUNDLE_CONFIG_ADD_METADATA = 111;</code>
    */
   public static final int BUNDLE_CONFIG_ADD_METADATA_VALUE = 111;
+  /**
+   * <code>SOURCES_ASSETS_ACCESS = 112;</code>
+   */
+  public static final int SOURCES_ASSETS_ACCESS_VALUE = 112;
+  /**
+   * <code>SOURCES_JNI_ACCESS = 113;</code>
+   */
+  public static final int SOURCES_JNI_ACCESS_VALUE = 113;
+  /**
+   * <code>SOURCES_SHADERS_ACCESS = 114;</code>
+   */
+  public static final int SOURCES_SHADERS_ACCESS_VALUE = 114;
+  /**
+   * <code>COMPILE_CONFIGURATION = 115;</code>
+   */
+  public static final int COMPILE_CONFIGURATION_VALUE = 115;
+  /**
+   * <code>RUNTIME_CONFIGURATION = 116;</code>
+   */
+  public static final int RUNTIME_CONFIGURATION_VALUE = 116;
+  /**
+   * <code>ANNOTATION_PROCESSOR_CONFIGURATION = 117;</code>
+   */
+  public static final int ANNOTATION_PROCESSOR_CONFIGURATION_VALUE = 117;
+  /**
+   * <code>SOURCES_ML_MODELS_ACCESS = 118;</code>
+   */
+  public static final int SOURCES_ML_MODELS_ACCESS_VALUE = 118;
+  /**
+   * <code>SOURCES_AIDL_ACCESS = 119;</code>
+   */
+  public static final int SOURCES_AIDL_ACCESS_VALUE = 119;
+  /**
+   * <code>SOURCES_RENDERSCRIPT_ACCESS = 120;</code>
+   */
+  public static final int SOURCES_RENDERSCRIPT_ACCESS_VALUE = 120;
+  /**
+   * <code>SOURCES_KOTLIN_ACCESS = 121;</code>
+   */
+  public static final int SOURCES_KOTLIN_ACCESS_VALUE = 121;
+  /**
+   * <code>CONFIGURATIONS = 122;</code>
+   */
+  public static final int CONFIGURATIONS_VALUE = 122;
+  /**
+   * <code>COMPONENTS = 123;</code>
+   */
+  public static final int COMPONENTS_VALUE = 123;
 
 
   public final int getNumber() {
@@ -1134,6 +1230,18 @@ public enum VariantPropertiesMethodType
       case 109: return SOURCES_AND_OVERLAY_DIRECTORIES_GET_ALL;
       case 110: return COMPILE_CLASSPATH;
       case 111: return BUNDLE_CONFIG_ADD_METADATA;
+      case 112: return SOURCES_ASSETS_ACCESS;
+      case 113: return SOURCES_JNI_ACCESS;
+      case 114: return SOURCES_SHADERS_ACCESS;
+      case 115: return COMPILE_CONFIGURATION;
+      case 116: return RUNTIME_CONFIGURATION;
+      case 117: return ANNOTATION_PROCESSOR_CONFIGURATION;
+      case 118: return SOURCES_ML_MODELS_ACCESS;
+      case 119: return SOURCES_AIDL_ACCESS;
+      case 120: return SOURCES_RENDERSCRIPT_ACCESS;
+      case 121: return SOURCES_KOTLIN_ACCESS;
+      case 122: return CONFIGURATIONS;
+      case 123: return COMPONENTS;
       default: return null;
     }
   }
@@ -1152,6 +1260,10 @@ public enum VariantPropertiesMethodType
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.PercentileEstimator}
  */
-public  final class PercentileEstimator extends
+public final class PercentileEstimator extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.PercentileEstimator)
     PercentileEstimatorOrBuilder {
@@ -134,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated double raw_sample = 2;</code>
    * @return A list containing the rawSample.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Double>
       getRawSampleList() {
     return rawSample_;
@@ -173,6 +174,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PercentileBucket bucket = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.PercentileBucket> getBucketList() {
     return bucket_;
   }
@@ -183,6 +185,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PercentileBucket bucket = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.PercentileBucketOrBuilder> 
       getBucketOrBuilderList() {
     return bucket_;
@@ -194,6 +197,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PercentileBucket bucket = 3;</code>
    */
+  @java.lang.Override
   public int getBucketCount() {
     return bucket_.size();
   }
@@ -204,6 +208,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PercentileBucket bucket = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileBucket getBucket(int index) {
     return bucket_.get(index);
   }
@@ -214,6 +219,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PercentileBucket bucket = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileBucketOrBuilder getBucketOrBuilder(
       int index) {
     return bucket_.get(index);

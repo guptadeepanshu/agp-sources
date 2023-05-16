@@ -25,16 +25,15 @@ import com.android.build.api.variant.BuildConfigField
 import com.android.build.api.variant.Component
 import com.android.build.api.variant.ExternalNativeBuild
 import com.android.build.api.variant.ExternalNdkBuildImpl
-import com.android.build.api.variant.HasAndroidTest
-import com.android.build.api.variant.HasTestFixtures
 import com.android.build.api.variant.Packaging
 import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.Variant
 import com.android.build.api.variant.VariantBuilder
-import com.android.build.gradle.internal.VariantManager
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.core.NativeBuiltType
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
+import com.android.build.gradle.internal.cxx.configure.externalNativeNinjaOptions
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.scope.BuildFeatureValues
@@ -42,17 +41,17 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.android.builder.core.VariantType
-import com.google.common.collect.ImmutableList
+import com.android.builder.core.ComponentType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import java.io.Serializable
 
 abstract class VariantImpl(
@@ -66,7 +65,7 @@ abstract class VariantImpl(
     variantScope: VariantScope,
     variantData: BaseVariantData,
     transformManager: TransformManager,
-    variantPropertiesApiServices: VariantPropertiesApiServices,
+    variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig
 ) : ComponentImpl(
@@ -80,10 +79,10 @@ abstract class VariantImpl(
     variantScope,
     variantData,
     transformManager,
-    variantPropertiesApiServices,
+    variantServices,
     taskCreationServices,
     global
-), Variant, ConsumableCreationConfig {
+), Variant, VariantCreationConfig {
 
     // ---------------------------------------------------------------------------------------------
     // PUBLIC API
@@ -108,18 +107,12 @@ abstract class VariantImpl(
         )
     }
 
+    override val dslBuildConfigFields: Map<String, BuildConfigField<out Serializable>>
+        get() = variantDslInfo.getBuildConfigFields()
+
     // for compatibility with old variant API.
     fun addBuildConfigField(type: String, key: String, value: Serializable, comment: String?) {
         buildConfigFields.put(key, BuildConfigField(type, value, comment))
-    }
-
-    override val manifestPlaceholders: MapProperty<String, String> by lazy {
-        @Suppress("UNCHECKED_CAST")
-        internalServices.mapPropertyOf(
-            String::class.java,
-            String::class.java,
-            variantDslInfo.manifestPlaceholders
-        )
     }
 
     override val packaging: Packaging by lazy {
@@ -130,20 +123,26 @@ abstract class VariantImpl(
     override val externalNativeBuild: ExternalNativeBuild? by lazy {
         variantDslInfo.nativeBuildSystem?.let { nativeBuildType ->
             when(nativeBuildType) {
-                VariantManager.NativeBuiltType.CMAKE ->
+                NativeBuiltType.CMAKE ->
                     variantDslInfo.externalNativeBuildOptions.externalNativeCmakeOptions?.let {
                         ExternalCmakeImpl(
                                 it,
-                                variantPropertiesApiServices
+                                variantServices
                         )
                     }
-                VariantManager.NativeBuiltType.NDK_BUILD ->
+                NativeBuiltType.NDK_BUILD ->
                     variantDslInfo.externalNativeBuildOptions.externalNativeNdkBuildOptions?.let {
                         ExternalNdkBuildImpl(
                                 it,
-                                variantPropertiesApiServices
+                                variantServices
                         )
                     }
+                NativeBuiltType.NINJA -> {
+                    ExternalNinjaImpl(
+                        externalNativeNinjaOptions,
+                        variantServices
+                    )
+                }
             }
         }
     }
@@ -152,7 +151,7 @@ abstract class VariantImpl(
         type.cast(externalExtensions?.get(type))
 
     override val proguardFiles: ListProperty<RegularFile> =
-        variantPropertiesApiServices.listPropertyOf(RegularFile::class.java) {
+        variantServices.listPropertyOf(RegularFile::class.java) {
             variantDslInfo.getProguardFiles(it)
         }
 
@@ -160,7 +159,7 @@ abstract class VariantImpl(
     // INTERNAL API
     // ---------------------------------------------------------------------------------------------
 
-    val testComponents = mutableMapOf<VariantType, ComponentImpl>()
+    val testComponents = mutableMapOf<ComponentType, ComponentImpl>()
     var testFixturesComponent: ComponentImpl? = null
 
     val externalExtensions: Map<Class<*>, Any>? by lazy {
@@ -189,7 +188,7 @@ abstract class VariantImpl(
             return _isMultiDexEnabled ?: (minSdkVersion.getFeatureLevel() >= 21)
         }
 
-    private val isBaseModule = variantDslInfo.variantType.isBaseModule
+    private val isBaseModule = variantDslInfo.componentType.isBaseModule
 
     override val needsMainDexListForBundle: Boolean
         get() = isBaseModule
@@ -207,26 +206,6 @@ abstract class VariantImpl(
 
     override var unitTest: UnitTest? = null
 
-    /**
-     * adds renderscript sources if present.
-     */
-    override fun addRenderscriptSources(
-            sourceSets: ImmutableList.Builder<DirectoryEntry>,
-    ) {
-        renderscript?.let {
-            if (!it.ndkModeEnabled.get()
-                && artifacts.get(InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR).isPresent
-            ) {
-                sourceSets.add(
-                    TaskProviderBasedDirectoryEntryImpl(
-                        name = "generated_renderscript",
-                        directoryProvider = artifacts.get(InternalArtifactType.RENDERSCRIPT_SOURCE_OUTPUT_DIR),
-                    )
-                )
-            }
-        }
-    }
-
     override val pseudoLocalesEnabled: Property<Boolean> =
         internalServices.newPropertyBackingDeprecatedApi(Boolean::class.java, variantDslInfo.isPseudoLocalesEnabled)
 
@@ -239,15 +218,22 @@ abstract class VariantImpl(
     override val nestedComponents: List<Component>
         get() = listOfNotNull(
             unitTest,
-            if (this is HasAndroidTest) {
-                androidTest
-            } else {
-                null
-            },
-            if (this is HasTestFixtures) {
-                testFixtures
-            } else {
-                null
-            }
+            (this as? HasAndroidTest)?.androidTest,
+            (this as? HasTestFixtures)?.testFixtures
         )
+
+    override val components: List<Component>
+        get() = listOfNotNull(
+            this,
+            unitTest,
+            (this as? HasAndroidTest)?.androidTest,
+            (this as? HasTestFixtures)?.testFixtures
+        )
+
+    override val ignoredLibraryKeepRules: Provider<Set<String>> =
+            internalServices.setPropertyOf(
+                    String::class.java,
+                    variantDslInfo.ignoredLibraryKeepRules)
+
+    override val ignoreAllLibraryKeepRules: Boolean = variantDslInfo.ignoreAllLibraryKeepRules
 }

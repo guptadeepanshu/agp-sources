@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.attribution;
  *
  * Protobuf type {@code BuildTaskAttributions}
  */
-public  final class BuildTaskAttributions extends
+public final class BuildTaskAttributions extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:BuildTaskAttributions)
     BuildTaskAttributionsOrBuilder {
@@ -152,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>.AttributionKey key = 1;</code>
    * @return Whether the key field is set.
    */
+  @java.lang.Override
   public boolean hasKey() {
     return key_ != null;
   }
@@ -163,6 +164,7 @@ private static final long serialVersionUID = 0L;
    * <code>.AttributionKey key = 1;</code>
    * @return The key.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.attribution.AttributionKey getKey() {
     return key_ == null ? com.android.build.gradle.internal.cxx.attribution.AttributionKey.getDefaultInstance() : key_;
   }
@@ -173,6 +175,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.AttributionKey key = 1;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.attribution.AttributionKeyOrBuilder getKeyOrBuilder() {
     return getKey();
   }
@@ -187,6 +190,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_folder = 2;</code>
    * @return The buildFolder.
    */
+  @java.lang.Override
   public java.lang.String getBuildFolder() {
     java.lang.Object ref = buildFolder_;
     if (ref instanceof java.lang.String) {
@@ -207,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * <code>string build_folder = 2;</code>
    * @return The bytes for buildFolder.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildFolderBytes() {
     java.lang.Object ref = buildFolder_;
@@ -282,6 +287,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 ninja_log_start_line = 4;</code>
    * @return The ninjaLogStartLine.
    */
+  @java.lang.Override
   public int getNinjaLogStartLine() {
     return ninjaLogStartLine_;
   }
@@ -296,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 build_start_time_ms = 5;</code>
    * @return The buildStartTimeMs.
    */
+  @java.lang.Override
   public long getBuildStartTimeMs() {
     return buildStartTimeMs_;
   }
@@ -309,6 +316,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .BuildTaskAttribution attribution = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<com.android.build.gradle.internal.cxx.attribution.BuildTaskAttribution> getAttributionList() {
     return attribution_;
   }
@@ -319,6 +327,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .BuildTaskAttribution attribution = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.android.build.gradle.internal.cxx.attribution.BuildTaskAttributionOrBuilder> 
       getAttributionOrBuilderList() {
     return attribution_;
@@ -330,6 +339,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .BuildTaskAttribution attribution = 6;</code>
    */
+  @java.lang.Override
   public int getAttributionCount() {
     return attribution_.size();
   }
@@ -340,6 +350,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .BuildTaskAttribution attribution = 6;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.attribution.BuildTaskAttribution getAttribution(int index) {
     return attribution_.get(index);
   }
@@ -350,6 +361,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .BuildTaskAttribution attribution = 6;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.attribution.BuildTaskAttributionOrBuilder getAttributionOrBuilder(
       int index) {
     return attribution_.get(index);
@@ -1224,6 +1236,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 ninja_log_start_line = 4;</code>
      * @return The ninjaLogStartLine.
      */
+    @java.lang.Override
     public int getNinjaLogStartLine() {
       return ninjaLogStartLine_;
     }
@@ -1266,6 +1279,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 build_start_time_ms = 5;</code>
      * @return The buildStartTimeMs.
      */
+    @java.lang.Override
     public long getBuildStartTimeMs() {
       return buildStartTimeMs_;
     }

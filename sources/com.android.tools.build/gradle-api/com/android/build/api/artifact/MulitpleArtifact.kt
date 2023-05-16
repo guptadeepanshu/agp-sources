@@ -55,13 +55,11 @@ sealed class MultipleArtifact<FileTypeT : FileSystemLocation>(
      * This is not the whole list of classes as some are generated, or processed as jars. In order
      * to process all classes, one should also consume [ALL_CLASSES_JARS]
      */
-    @Incubating
     object ALL_CLASSES_DIRS:
             MultipleArtifact<Directory>(DIRECTORY),
             Appendable,
             Transformable,
             Replaceable
-
     /**
      * Classes that will eventually be dex'ed for this module, that were generated, or processed
      * as jar files.
@@ -69,28 +67,8 @@ sealed class MultipleArtifact<FileTypeT : FileSystemLocation>(
      * This is not the whole list of classes as some are generated, or processed as directories.
      * In order to process all classes, one should also consume [ALL_CLASSES_DIRS]
      */
-    @Incubating
     object ALL_CLASSES_JARS:
-            MultipleArtifact<RegularFile>(FILE),
-            Appendable,
-            Transformable,
-            Replaceable
-
-    /**
-     * Assets that will be packaged in the resulting APK or Bundle.
-     *
-     * When used as an input, the content will be the merged assets.
-     * For the APK, the assets will be compressed before packaging.
-     *
-     * When using [OutOperationRequest.toAppendTo] method is used to append assets for packaging,
-     * no handling is provided in case of conflicts. In other words, you cannot have conflicts when
-     * adding to the assets. If there can be conflicts,
-     * [InAndOutDirectoryOperationRequest.toTransformMany] should be used to process all inputs and
-     * handle the conflicts before writing out the transformed assets.
-     */
-    @Incubating
-    object ASSETS:
-        MultipleArtifact<Directory>(DIRECTORY),
+        MultipleArtifact<RegularFile>(FILE),
         Appendable,
         Transformable,
         Replaceable

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.NavigationContents}
  */
-public  final class NavigationContents extends
+public final class NavigationContents extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavigationContents)
     NavigationContentsOrBuilder {
@@ -142,6 +142,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 fragments = 1;</code>
    * @return Whether the fragments field is set.
    */
+  @java.lang.Override
   public boolean hasFragments() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -153,6 +154,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 fragments = 1;</code>
    * @return The fragments.
    */
+  @java.lang.Override
   public int getFragments() {
     return fragments_;
   }
@@ -167,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 activities = 2;</code>
    * @return Whether the activities field is set.
    */
+  @java.lang.Override
   public boolean hasActivities() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -178,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 activities = 2;</code>
    * @return The activities.
    */
+  @java.lang.Override
   public int getActivities() {
     return activities_;
   }
@@ -192,6 +196,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_destinations = 3;</code>
    * @return Whether the customDestinations field is set.
    */
+  @java.lang.Override
   public boolean hasCustomDestinations() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -203,6 +208,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_destinations = 3;</code>
    * @return The customDestinations.
    */
+  @java.lang.Override
   public int getCustomDestinations() {
     return customDestinations_;
   }
@@ -217,6 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 regular_actions = 4;</code>
    * @return Whether the regularActions field is set.
    */
+  @java.lang.Override
   public boolean hasRegularActions() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -228,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 regular_actions = 4;</code>
    * @return The regularActions.
    */
+  @java.lang.Override
   public int getRegularActions() {
     return regularActions_;
   }
@@ -242,6 +250,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 exit_actions = 5;</code>
    * @return Whether the exitActions field is set.
    */
+  @java.lang.Override
   public boolean hasExitActions() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -253,6 +262,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 exit_actions = 5;</code>
    * @return The exitActions.
    */
+  @java.lang.Override
   public int getExitActions() {
     return exitActions_;
   }
@@ -267,6 +277,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 global_actions = 6;</code>
    * @return Whether the globalActions field is set.
    */
+  @java.lang.Override
   public boolean hasGlobalActions() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -278,6 +289,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 global_actions = 6;</code>
    * @return The globalActions.
    */
+  @java.lang.Override
   public int getGlobalActions() {
     return globalActions_;
   }
@@ -292,6 +304,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 self_actions = 10;</code>
    * @return Whether the selfActions field is set.
    */
+  @java.lang.Override
   public boolean hasSelfActions() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -303,6 +316,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 self_actions = 10;</code>
    * @return The selfActions.
    */
+  @java.lang.Override
   public int getSelfActions() {
     return selfActions_;
   }
@@ -317,6 +331,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 includes = 7;</code>
    * @return Whether the includes field is set.
    */
+  @java.lang.Override
   public boolean hasIncludes() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -328,6 +343,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 includes = 7;</code>
    * @return The includes.
    */
+  @java.lang.Override
   public int getIncludes() {
     return includes_;
   }
@@ -342,6 +358,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 nested_graphs = 8;</code>
    * @return Whether the nestedGraphs field is set.
    */
+  @java.lang.Override
   public boolean hasNestedGraphs() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -353,6 +370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 nested_graphs = 8;</code>
    * @return The nestedGraphs.
    */
+  @java.lang.Override
   public int getNestedGraphs() {
     return nestedGraphs_;
   }
@@ -368,6 +386,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 placeholders = 9;</code>
    * @return Whether the placeholders field is set.
    */
+  @java.lang.Override
   public boolean hasPlaceholders() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -380,6 +399,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 placeholders = 9;</code>
    * @return The placeholders.
    */
+  @java.lang.Override
   public int getPlaceholders() {
     return placeholders_;
   }
@@ -932,6 +952,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 fragments = 1;</code>
      * @return Whether the fragments field is set.
      */
+    @java.lang.Override
     public boolean hasFragments() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -943,6 +964,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 fragments = 1;</code>
      * @return The fragments.
      */
+    @java.lang.Override
     public int getFragments() {
       return fragments_;
     }
@@ -985,6 +1007,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 activities = 2;</code>
      * @return Whether the activities field is set.
      */
+    @java.lang.Override
     public boolean hasActivities() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -996,6 +1019,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 activities = 2;</code>
      * @return The activities.
      */
+    @java.lang.Override
     public int getActivities() {
       return activities_;
     }
@@ -1038,6 +1062,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_destinations = 3;</code>
      * @return Whether the customDestinations field is set.
      */
+    @java.lang.Override
     public boolean hasCustomDestinations() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1049,6 +1074,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_destinations = 3;</code>
      * @return The customDestinations.
      */
+    @java.lang.Override
     public int getCustomDestinations() {
       return customDestinations_;
     }
@@ -1091,6 +1117,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 regular_actions = 4;</code>
      * @return Whether the regularActions field is set.
      */
+    @java.lang.Override
     public boolean hasRegularActions() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1102,6 +1129,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 regular_actions = 4;</code>
      * @return The regularActions.
      */
+    @java.lang.Override
     public int getRegularActions() {
       return regularActions_;
     }
@@ -1144,6 +1172,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 exit_actions = 5;</code>
      * @return Whether the exitActions field is set.
      */
+    @java.lang.Override
     public boolean hasExitActions() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1155,6 +1184,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 exit_actions = 5;</code>
      * @return The exitActions.
      */
+    @java.lang.Override
     public int getExitActions() {
       return exitActions_;
     }
@@ -1197,6 +1227,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 global_actions = 6;</code>
      * @return Whether the globalActions field is set.
      */
+    @java.lang.Override
     public boolean hasGlobalActions() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1208,6 +1239,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 global_actions = 6;</code>
      * @return The globalActions.
      */
+    @java.lang.Override
     public int getGlobalActions() {
       return globalActions_;
     }
@@ -1250,6 +1282,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 self_actions = 10;</code>
      * @return Whether the selfActions field is set.
      */
+    @java.lang.Override
     public boolean hasSelfActions() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1261,6 +1294,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 self_actions = 10;</code>
      * @return The selfActions.
      */
+    @java.lang.Override
     public int getSelfActions() {
       return selfActions_;
     }
@@ -1303,6 +1337,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 includes = 7;</code>
      * @return Whether the includes field is set.
      */
+    @java.lang.Override
     public boolean hasIncludes() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1314,6 +1349,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 includes = 7;</code>
      * @return The includes.
      */
+    @java.lang.Override
     public int getIncludes() {
       return includes_;
     }
@@ -1356,6 +1392,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 nested_graphs = 8;</code>
      * @return Whether the nestedGraphs field is set.
      */
+    @java.lang.Override
     public boolean hasNestedGraphs() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1367,6 +1404,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 nested_graphs = 8;</code>
      * @return The nestedGraphs.
      */
+    @java.lang.Override
     public int getNestedGraphs() {
       return nestedGraphs_;
     }
@@ -1410,6 +1448,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 placeholders = 9;</code>
      * @return Whether the placeholders field is set.
      */
+    @java.lang.Override
     public boolean hasPlaceholders() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1422,6 +1461,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 placeholders = 9;</code>
      * @return The placeholders.
      */
+    @java.lang.Override
     public int getPlaceholders() {
       return placeholders_;
     }

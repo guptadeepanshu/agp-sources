@@ -6,7 +6,7 @@ package com.android.tools.build.libraries.metadata;
 /**
  * Protobuf type {@code MavenLibrary}
  */
-public  final class MavenLibrary extends
+public final class MavenLibrary extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:MavenLibrary)
     MavenLibraryOrBuilder {
@@ -121,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>string groupId = 1;</code>
    * @return The groupId.
    */
+  @java.lang.Override
   public java.lang.String getGroupId() {
     java.lang.Object ref = groupId_;
     if (ref instanceof java.lang.String) {
@@ -137,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>string groupId = 1;</code>
    * @return The bytes for groupId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGroupIdBytes() {
     java.lang.Object ref = groupId_;
@@ -157,6 +159,7 @@ private static final long serialVersionUID = 0L;
    * <code>string artifactId = 2;</code>
    * @return The artifactId.
    */
+  @java.lang.Override
   public java.lang.String getArtifactId() {
     java.lang.Object ref = artifactId_;
     if (ref instanceof java.lang.String) {
@@ -173,6 +176,7 @@ private static final long serialVersionUID = 0L;
    * <code>string artifactId = 2;</code>
    * @return The bytes for artifactId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getArtifactIdBytes() {
     java.lang.Object ref = artifactId_;
@@ -193,6 +197,7 @@ private static final long serialVersionUID = 0L;
    * <code>string packaging = 3;</code>
    * @return The packaging.
    */
+  @java.lang.Override
   public java.lang.String getPackaging() {
     java.lang.Object ref = packaging_;
     if (ref instanceof java.lang.String) {
@@ -209,6 +214,7 @@ private static final long serialVersionUID = 0L;
    * <code>string packaging = 3;</code>
    * @return The bytes for packaging.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPackagingBytes() {
     java.lang.Object ref = packaging_;
@@ -229,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>string classifier = 4;</code>
    * @return The classifier.
    */
+  @java.lang.Override
   public java.lang.String getClassifier() {
     java.lang.Object ref = classifier_;
     if (ref instanceof java.lang.String) {
@@ -245,6 +252,7 @@ private static final long serialVersionUID = 0L;
    * <code>string classifier = 4;</code>
    * @return The bytes for classifier.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassifierBytes() {
     java.lang.Object ref = classifier_;
@@ -265,6 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>string version = 5;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -281,6 +290,7 @@ private static final long serialVersionUID = 0L;
    * <code>string version = 5;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;

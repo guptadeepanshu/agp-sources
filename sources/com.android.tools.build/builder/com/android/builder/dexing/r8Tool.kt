@@ -132,7 +132,7 @@ fun runR8(
         }
         if (toolConfig.isDebuggable) {
             r8CommandBuilder.addAssertionsConfiguration(
-                AssertionsConfiguration.Builder::enableAllAssertions
+                AssertionsConfiguration.Builder::compileTimeEnableAllAssertions
             )
         }
     }
@@ -293,6 +293,11 @@ fun runR8(
             }
         }
     }
+
+    // Enable workarounds for missing library APIs in R8 (see b/231547906).
+    // This has been default enabled on R8 version 3.3 up until 3.3.43 where
+    // it became default disabled. Explicitly enable it to retain the same behavior.
+    r8CommandBuilder.setEnableExperimentalMissingLibraryApiModeling(true);
 
     ClassFileProviderFactory(libraries).use { libraryClasses ->
         ClassFileProviderFactory(classpath).use { classpathClasses ->

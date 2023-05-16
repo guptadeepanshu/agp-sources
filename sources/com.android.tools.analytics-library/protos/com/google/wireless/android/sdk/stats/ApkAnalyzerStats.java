@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ApkAnalyzerStats}
  */
-public  final class ApkAnalyzerStats extends
+public final class ApkAnalyzerStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ApkAnalyzerStats)
     ApkAnalyzerStatsOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 uncompressed_size = 1;</code>
    * @return Whether the uncompressedSize field is set.
    */
+  @java.lang.Override
   public boolean hasUncompressedSize() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 uncompressed_size = 1;</code>
    * @return The uncompressedSize.
    */
+  @java.lang.Override
   public long getUncompressedSize() {
     return uncompressedSize_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 compressed_size = 2;</code>
    * @return Whether the compressedSize field is set.
    */
+  @java.lang.Override
   public boolean hasCompressedSize() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 compressed_size = 2;</code>
    * @return The compressedSize.
    */
+  @java.lang.Override
   public long getCompressedSize() {
     return compressedSize_;
   }
@@ -500,6 +504,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 uncompressed_size = 1;</code>
      * @return Whether the uncompressedSize field is set.
      */
+    @java.lang.Override
     public boolean hasUncompressedSize() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -511,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 uncompressed_size = 1;</code>
      * @return The uncompressedSize.
      */
+    @java.lang.Override
     public long getUncompressedSize() {
       return uncompressedSize_;
     }
@@ -553,6 +559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 compressed_size = 2;</code>
      * @return Whether the compressedSize field is set.
      */
+    @java.lang.Override
     public boolean hasCompressedSize() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -564,6 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 compressed_size = 2;</code>
      * @return The compressedSize.
      */
+    @java.lang.Override
     public long getCompressedSize() {
       return compressedSize_;
     }

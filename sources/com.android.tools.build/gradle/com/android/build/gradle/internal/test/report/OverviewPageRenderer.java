@@ -16,11 +16,17 @@
 package com.android.build.gradle.internal.test.report;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import kotlin.text.StringsKt;
 
 /**
  * Custom OverviewPageRenderer based on Gradle's OverviewPageRenderer
  */
 class OverviewPageRenderer extends PageRenderer<AllTestResults> {
+
+    private final CodePanelRenderer codePanelRenderer = new CodePanelRenderer();
 
     public OverviewPageRenderer(ReportType reportType) {
         super(reportType);
@@ -28,6 +34,7 @@ class OverviewPageRenderer extends PageRenderer<AllTestResults> {
 
     @Override
     protected void registerTabs() {
+        addToolFailuresTab();
         addFailuresTab();
         if (!getResults().getPackages().isEmpty()) {
             addTab("Packages", new ErroringAction<SimpleHtmlWriter>() {
@@ -103,5 +110,25 @@ class OverviewPageRenderer extends PageRenderer<AllTestResults> {
         }
         htmlWriter.endElement();
         htmlWriter.endElement();
+    }
+
+    private void addToolFailuresTab() {
+        List<Map.Entry<String, StringBuilder>> standardErrorPerDevices =
+                getResults().getStandardErrorPerDevices().entrySet().stream()
+                        .filter(entry -> !StringsKt.isBlank(entry.getValue()))
+                        .collect(Collectors.toList());
+        if (!standardErrorPerDevices.isEmpty()) {
+            addTab(
+                    "Tool failures",
+                    new ErroringAction<SimpleHtmlWriter>() {
+                        @Override
+                        public void doExecute(SimpleHtmlWriter writer) throws IOException {
+                            for (Map.Entry<String, StringBuilder> entry : standardErrorPerDevices) {
+                                writer.startElement("h2").characters(entry.getKey()).endElement();
+                                codePanelRenderer.render(entry.getValue().toString(), writer);
+                            }
+                        }
+                    });
+        }
     }
 }

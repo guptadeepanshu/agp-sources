@@ -57,10 +57,10 @@ import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.ExtractDeepLinksTask;
 import com.android.build.gradle.tasks.MergeResources;
-import com.android.builder.core.VariantType;
+import com.android.builder.core.ComponentType;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -75,9 +75,9 @@ public abstract class AbstractAppTaskManager<
 
     protected AbstractAppTaskManager(
             @NonNull Project project,
-            @NonNull List<ComponentInfo<VariantBuilderT, VariantT>> variants,
-            @NonNull List<TestComponentImpl> testComponents,
-            @NonNull List<TestFixturesImpl> testFixturesComponents,
+            @NonNull Collection<? extends ComponentInfo<VariantBuilderT, VariantT>> variants,
+            @NonNull Collection<? extends TestComponentImpl> testComponents,
+            @NonNull Collection<? extends TestFixturesImpl> testFixturesComponents,
             @NonNull GlobalTaskCreationConfig globalConfig,
             @NonNull TaskManagerConfig localConfig,
             @NonNull BaseExtension extension) {
@@ -143,7 +143,8 @@ public abstract class AbstractAppTaskManager<
         maybeExtractProfilerDependencies(apkCreationConfig);
 
         // Set up the C/C++ external native build task
-        createCxxVariantBuildTask(taskFactory, variant.getVariant());
+        createCxxVariantBuildTask(
+                taskFactory, variant.getVariant(), project.getProviders(), project.getLayout());
 
         // Add a task to merge the jni libs folders
         createMergeJniLibFoldersTasks(appVariantProperties);
@@ -169,7 +170,7 @@ public abstract class AbstractAppTaskManager<
         taskFactory.register(
                 new PackagedDependenciesWriterTask.CreationAction(appVariantProperties));
 
-        taskFactory.register(new ApkZipPackagingTask.CreationAction(appVariantProperties));
+        taskFactory.register(new ApkZipPackagingTask.CreationAction(apkCreationConfig));
     }
 
     private void createCompileTask(@NonNull VariantImpl variant) {
@@ -195,9 +196,9 @@ public abstract class AbstractAppTaskManager<
 
     @Override
     protected void createVariantPreBuildTask(@NonNull ComponentCreationConfig creationConfig) {
-        final VariantType variantType = creationConfig.getVariantType();
+        final ComponentType componentType = creationConfig.getComponentType();
 
-        if (variantType.isApk()) {
+        if (componentType.isApk()) {
             boolean useDependencyConstraints =
                     creationConfig
                             .getServices()
@@ -206,7 +207,7 @@ public abstract class AbstractAppTaskManager<
 
             TaskProvider<? extends Task> task;
 
-            if (variantType.isTestComponent()) {
+            if (componentType.isTestComponent()) {
                 task =
                         taskFactory.register(
                                 new TestPreBuildTask.CreationAction(
@@ -235,7 +236,7 @@ public abstract class AbstractAppTaskManager<
                 TaskFactoryUtils.dependsOn(task, classpathCheck);
             }
 
-            if (variantType.isBaseModule() && globalConfig.getHasDynamicFeatures()) {
+            if (componentType.isBaseModule() && globalConfig.getHasDynamicFeatures()) {
                 TaskProvider<CheckMultiApkLibrariesTask> checkMultiApkLibrariesTask =
                         taskFactory.register(
                                 new CheckMultiApkLibrariesTask.CreationAction(creationConfig));
@@ -262,7 +263,7 @@ public abstract class AbstractAppTaskManager<
     }
 
     private void createApplicationIdWriterTask(@NonNull ApkCreationConfig creationConfig) {
-        if (creationConfig.getVariantType().isBaseModule()) {
+        if (creationConfig.getComponentType().isBaseModule()) {
             taskFactory.register(
                     new ModuleMetadataWriterTask.CreationAction(
                             (ApplicationCreationConfig) creationConfig));
@@ -292,7 +293,7 @@ public abstract class AbstractAppTaskManager<
 
         // TODO(b/138780301): Also use compile time R class in android tests.
         if ((projectOptions.get(BooleanOption.ENABLE_APP_COMPILE_TIME_R_CLASS) || nonTransitiveR)
-                && !variant.getVariantType().isForTesting()
+                && !variant.getComponentType().isForTesting()
                 && !namespaced) {
             // The "small merge" of only the app's local resources (can be multiple source-sets, but
             // most of the time it's just one). This is used by the Process for generating the local

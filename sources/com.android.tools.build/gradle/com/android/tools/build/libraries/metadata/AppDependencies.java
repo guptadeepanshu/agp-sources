@@ -6,7 +6,7 @@ package com.android.tools.build.libraries.metadata;
 /**
  * Protobuf type {@code AppDependencies}
  */
-public  final class AppDependencies extends
+public final class AppDependencies extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:AppDependencies)
     AppDependenciesOrBuilder {
@@ -142,6 +142,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Library library = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.android.tools.build.libraries.metadata.Library> getLibraryList() {
     return library_;
   }
@@ -152,6 +153,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Library library = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.android.tools.build.libraries.metadata.LibraryOrBuilder> 
       getLibraryOrBuilderList() {
     return library_;
@@ -163,6 +165,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Library library = 1;</code>
    */
+  @java.lang.Override
   public int getLibraryCount() {
     return library_.size();
   }
@@ -173,6 +176,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Library library = 1;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.Library getLibrary(int index) {
     return library_.get(index);
   }
@@ -183,6 +187,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Library library = 1;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.LibraryOrBuilder getLibraryOrBuilder(
       int index) {
     return library_.get(index);
@@ -197,6 +202,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .LibraryDependencies library_dependencies = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.android.tools.build.libraries.metadata.LibraryDependencies> getLibraryDependenciesList() {
     return libraryDependencies_;
   }
@@ -207,6 +213,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .LibraryDependencies library_dependencies = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.android.tools.build.libraries.metadata.LibraryDependenciesOrBuilder> 
       getLibraryDependenciesOrBuilderList() {
     return libraryDependencies_;
@@ -218,6 +225,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .LibraryDependencies library_dependencies = 2;</code>
    */
+  @java.lang.Override
   public int getLibraryDependenciesCount() {
     return libraryDependencies_.size();
   }
@@ -228,6 +236,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .LibraryDependencies library_dependencies = 2;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.LibraryDependencies getLibraryDependencies(int index) {
     return libraryDependencies_.get(index);
   }
@@ -238,6 +247,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .LibraryDependencies library_dependencies = 2;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.LibraryDependenciesOrBuilder getLibraryDependenciesOrBuilder(
       int index) {
     return libraryDependencies_.get(index);
@@ -252,6 +262,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .ModuleDependencies module_dependencies = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.android.tools.build.libraries.metadata.ModuleDependencies> getModuleDependenciesList() {
     return moduleDependencies_;
   }
@@ -262,6 +273,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .ModuleDependencies module_dependencies = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.android.tools.build.libraries.metadata.ModuleDependenciesOrBuilder> 
       getModuleDependenciesOrBuilderList() {
     return moduleDependencies_;
@@ -273,6 +285,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .ModuleDependencies module_dependencies = 3;</code>
    */
+  @java.lang.Override
   public int getModuleDependenciesCount() {
     return moduleDependencies_.size();
   }
@@ -283,6 +296,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .ModuleDependencies module_dependencies = 3;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.ModuleDependencies getModuleDependencies(int index) {
     return moduleDependencies_.get(index);
   }
@@ -293,6 +307,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .ModuleDependencies module_dependencies = 3;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.ModuleDependenciesOrBuilder getModuleDependenciesOrBuilder(
       int index) {
     return moduleDependencies_.get(index);
@@ -307,6 +322,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Repository repositories = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.android.tools.build.libraries.metadata.Repository> getRepositoriesList() {
     return repositories_;
   }
@@ -317,6 +333,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Repository repositories = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.android.tools.build.libraries.metadata.RepositoryOrBuilder> 
       getRepositoriesOrBuilderList() {
     return repositories_;
@@ -328,6 +345,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Repository repositories = 4;</code>
    */
+  @java.lang.Override
   public int getRepositoriesCount() {
     return repositories_.size();
   }
@@ -338,6 +356,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Repository repositories = 4;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.Repository getRepositories(int index) {
     return repositories_.get(index);
   }
@@ -348,6 +367,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .Repository repositories = 4;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.RepositoryOrBuilder getRepositoriesOrBuilder(
       int index) {
     return repositories_.get(index);

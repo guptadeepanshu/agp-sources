@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.UIActionStats}
  */
-public  final class UIActionStats extends
+public final class UIActionStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UIActionStats)
     UIActionStatsOrBuilder {
@@ -270,6 +270,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_class_name = 1;</code>
    * @return Whether the actionClassName field is set.
    */
+  @java.lang.Override
   public boolean hasActionClassName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -282,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_class_name = 1;</code>
    * @return The actionClassName.
    */
+  @java.lang.Override
   public java.lang.String getActionClassName() {
     java.lang.Object ref = actionClassName_;
     if (ref instanceof java.lang.String) {
@@ -305,6 +307,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_class_name = 1;</code>
    * @return The bytes for actionClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getActionClassNameBytes() {
     java.lang.Object ref = actionClassName_;
@@ -329,6 +332,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 invocations = 2;</code>
    * @return Whether the invocations field is set.
    */
+  @java.lang.Override
   public boolean hasInvocations() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -340,6 +344,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 invocations = 2;</code>
    * @return The invocations.
    */
+  @java.lang.Override
   public long getInvocations() {
     return invocations_;
   }
@@ -354,7 +359,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
    * @return Whether the invocationKind field is set.
    */
-  public boolean hasInvocationKind() {
+  @java.lang.Override public boolean hasInvocationKind() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -365,7 +370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
    * @return The invocationKind.
    */
-  public com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind getInvocationKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind getInvocationKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.valueOf(invocationKind_);
     return result == null ? com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.UNKNOWN_INVOCATION_KIND : result;
@@ -382,6 +387,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool direct = 4;</code>
    * @return Whether the direct field is set.
    */
+  @java.lang.Override
   public boolean hasDirect() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -394,6 +400,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool direct = 4;</code>
    * @return The direct.
    */
+  @java.lang.Override
   public boolean getDirect() {
     return direct_;
   }
@@ -410,6 +417,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string ui_place = 5;</code>
    * @return Whether the uiPlace field is set.
    */
+  @java.lang.Override
   public boolean hasUiPlace() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -423,6 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string ui_place = 5;</code>
    * @return The uiPlace.
    */
+  @java.lang.Override
   public java.lang.String getUiPlace() {
     java.lang.Object ref = uiPlace_;
     if (ref instanceof java.lang.String) {
@@ -447,6 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string ui_place = 5;</code>
    * @return The bytes for uiPlace.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getUiPlaceBytes() {
     java.lang.Object ref = uiPlace_;
@@ -1005,6 +1015,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 invocations = 2;</code>
      * @return Whether the invocations field is set.
      */
+    @java.lang.Override
     public boolean hasInvocations() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1016,6 +1027,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 invocations = 2;</code>
      * @return The invocations.
      */
+    @java.lang.Override
     public long getInvocations() {
       return invocations_;
     }
@@ -1058,7 +1070,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
      * @return Whether the invocationKind field is set.
      */
-    public boolean hasInvocationKind() {
+    @java.lang.Override public boolean hasInvocationKind() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1069,6 +1081,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UIActionStats.InvocationKind invocation_kind = 3;</code>
      * @return The invocationKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind getInvocationKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind result = com.google.wireless.android.sdk.stats.UIActionStats.InvocationKind.valueOf(invocationKind_);
@@ -1117,6 +1130,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool direct = 4;</code>
      * @return Whether the direct field is set.
      */
+    @java.lang.Override
     public boolean hasDirect() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1129,6 +1143,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool direct = 4;</code>
      * @return The direct.
      */
+    @java.lang.Override
     public boolean getDirect() {
       return direct_;
     }

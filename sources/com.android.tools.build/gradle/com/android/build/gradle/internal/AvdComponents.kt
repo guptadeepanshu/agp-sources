@@ -18,10 +18,15 @@ package com.android.build.gradle.internal
 
 import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.ServiceRegistrationAction
-import com.android.repository.Revision
 import com.android.build.gradle.internal.services.getBuildService
+import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.IntegerOption
+import com.android.build.gradle.options.ProjectOptions
+import com.android.repository.Revision
 import com.android.sdklib.repository.AndroidSdkHandler
 import com.android.utils.ILogger
+import com.android.utils.PathUtils
+import javax.inject.Inject
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -31,7 +36,6 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
-import javax.inject.Inject
 
 /**
  * Build Service for loading and creating Android Virtual Devices.
@@ -50,6 +54,8 @@ abstract class AvdComponentsBuildService @Inject constructor(
         val buildToolsRevision: Property<Revision>
         val androidLocationsService: Property<AndroidLocationsBuildService>
         val avdLocation: DirectoryProperty
+        val showEmulatorKernelLogging: Property<Boolean>
+        val deviceSetupTimeoutMinutes: Property<Int>
     }
 
     private val avdManager: AvdManager by lazy {
@@ -64,7 +70,10 @@ abstract class AvdComponentsBuildService @Inject constructor(
                 parameters.sdkService.get().sdkDirectoryProvider.get().asFile.toPath()
             ),
             locationsService,
-            AvdSnapshotHandler()
+            AvdSnapshotHandler(
+                parameters.showEmulatorKernelLogging.get(),
+                parameters.deviceSetupTimeoutMinutes.getOrNull()
+            )
         )
     }
 
@@ -99,6 +108,15 @@ abstract class AvdComponentsBuildService @Inject constructor(
         avdManager.deleteAvds(avds)
     }
 
+    /**
+     * Removes the legacy Gradle Managed Device Avd directory (.android/gradle/avd), which had
+     * been used until 7.3.0-alpha08.
+     */
+    fun deleteLegacyGradleManagedDeviceAvdDirectory() {
+        PathUtils.deleteRecursivelyIfExists(
+            parameters.androidLocationsService.get().prefsLocation.resolve("gradle").resolve("avd"))
+    }
+
     fun avdProvider(
         imageProvider: Provider<Directory>,
         imageHash: String,
@@ -121,12 +139,13 @@ abstract class AvdComponentsBuildService @Inject constructor(
      * @param deviceName The name of the avd to check. This avd should have already been created via
      * a call to get() on the provider returned by [avdProvider].
      */
-    fun ensureLoadableSnapshot(deviceName: String) {
-        avdManager.loadSnapshotIfNeeded(deviceName)
+    fun ensureLoadableSnapshot(deviceName: String, emulatorGpuMode: String) {
+        avdManager.loadSnapshotIfNeeded(deviceName, emulatorGpuMode)
     }
 
     class RegistrationAction(
         project: Project,
+        private val projectOptions: ProjectOptions,
         private val avdFolderLocation: Provider<Directory>,
         private val sdkService: Provider<SdkComponentsBuildService>,
         private val compileSdkVersion: Provider<String>,
@@ -143,6 +162,11 @@ abstract class AvdComponentsBuildService @Inject constructor(
             parameters.buildToolsRevision.set(buildToolsRevision)
             parameters.sdkService.set(getBuildService(project.gradle.sharedServices))
             parameters.androidLocationsService.set(getBuildService(project.gradle.sharedServices))
+            parameters.showEmulatorKernelLogging.set(
+                projectOptions[BooleanOption.GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING])
+            parameters.deviceSetupTimeoutMinutes.set(
+                projectOptions[IntegerOption.GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES]
+            )
         }
     }
 

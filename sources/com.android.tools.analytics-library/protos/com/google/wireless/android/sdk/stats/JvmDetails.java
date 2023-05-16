@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.JvmDetails}
  */
-public  final class JvmDetails extends
+public final class JvmDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.JvmDetails)
     JvmDetailsOrBuilder {
@@ -291,6 +291,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return Whether the name field is set.
    */
+  @java.lang.Override
   public boolean hasName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -302,6 +303,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -324,6 +326,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -348,6 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -359,6 +363,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -381,6 +386,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;
@@ -405,6 +411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 3;</code>
    * @return Whether the vendor field is set.
    */
+  @java.lang.Override
   public boolean hasVendor() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -416,6 +423,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 3;</code>
    * @return The vendor.
    */
+  @java.lang.Override
   public java.lang.String getVendor() {
     java.lang.Object ref = vendor_;
     if (ref instanceof java.lang.String) {
@@ -438,6 +446,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 3;</code>
    * @return The bytes for vendor.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVendorBytes() {
     java.lang.Object ref = vendor_;
@@ -462,6 +471,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 minimum_heap_size = 4;</code>
    * @return Whether the minimumHeapSize field is set.
    */
+  @java.lang.Override
   public boolean hasMinimumHeapSize() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -473,6 +483,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 minimum_heap_size = 4;</code>
    * @return The minimumHeapSize.
    */
+  @java.lang.Override
   public long getMinimumHeapSize() {
     return minimumHeapSize_;
   }
@@ -487,6 +498,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_heap_size = 5;</code>
    * @return Whether the maximumHeapSize field is set.
    */
+  @java.lang.Override
   public boolean hasMaximumHeapSize() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -498,6 +510,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_heap_size = 5;</code>
    * @return The maximumHeapSize.
    */
+  @java.lang.Override
   public long getMaximumHeapSize() {
     return maximumHeapSize_;
   }
@@ -513,6 +526,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_permanent_space_size = 6;</code>
    * @return Whether the maximumPermanentSpaceSize field is set.
    */
+  @java.lang.Override
   public boolean hasMaximumPermanentSpaceSize() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -525,6 +539,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_permanent_space_size = 6;</code>
    * @return The maximumPermanentSpaceSize.
    */
+  @java.lang.Override
   public long getMaximumPermanentSpaceSize() {
     return maximumPermanentSpaceSize_;
   }
@@ -540,6 +555,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_code_cache_size = 7;</code>
    * @return Whether the maximumCodeCacheSize field is set.
    */
+  @java.lang.Override
   public boolean hasMaximumCodeCacheSize() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -552,6 +568,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 maximum_code_cache_size = 7;</code>
    * @return The maximumCodeCacheSize.
    */
+  @java.lang.Override
   public long getMaximumCodeCacheSize() {
     return maximumCodeCacheSize_;
   }
@@ -567,6 +584,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 soft_reference_lru_policy = 8;</code>
    * @return Whether the softReferenceLruPolicy field is set.
    */
+  @java.lang.Override
   public boolean hasSoftReferenceLruPolicy() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -579,6 +597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 soft_reference_lru_policy = 8;</code>
    * @return The softReferenceLruPolicy.
    */
+  @java.lang.Override
   public long getSoftReferenceLruPolicy() {
     return softReferenceLruPolicy_;
   }
@@ -593,7 +612,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JvmDetails.GarbageCollector garbage_collector = 9;</code>
    * @return Whether the garbageCollector field is set.
    */
-  public boolean hasGarbageCollector() {
+  @java.lang.Override public boolean hasGarbageCollector() {
     return ((bitField0_ & 0x00000100) != 0);
   }
   /**
@@ -604,7 +623,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JvmDetails.GarbageCollector garbage_collector = 9;</code>
    * @return The garbageCollector.
    */
-  public com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector getGarbageCollector() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector getGarbageCollector() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.valueOf(garbageCollector_);
     return result == null ? com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.UNSPECIFIED_GC : result;
@@ -1468,6 +1487,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 minimum_heap_size = 4;</code>
      * @return Whether the minimumHeapSize field is set.
      */
+    @java.lang.Override
     public boolean hasMinimumHeapSize() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1479,6 +1499,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 minimum_heap_size = 4;</code>
      * @return The minimumHeapSize.
      */
+    @java.lang.Override
     public long getMinimumHeapSize() {
       return minimumHeapSize_;
     }
@@ -1521,6 +1542,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_heap_size = 5;</code>
      * @return Whether the maximumHeapSize field is set.
      */
+    @java.lang.Override
     public boolean hasMaximumHeapSize() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1532,6 +1554,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_heap_size = 5;</code>
      * @return The maximumHeapSize.
      */
+    @java.lang.Override
     public long getMaximumHeapSize() {
       return maximumHeapSize_;
     }
@@ -1575,6 +1598,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_permanent_space_size = 6;</code>
      * @return Whether the maximumPermanentSpaceSize field is set.
      */
+    @java.lang.Override
     public boolean hasMaximumPermanentSpaceSize() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1587,6 +1611,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_permanent_space_size = 6;</code>
      * @return The maximumPermanentSpaceSize.
      */
+    @java.lang.Override
     public long getMaximumPermanentSpaceSize() {
       return maximumPermanentSpaceSize_;
     }
@@ -1632,6 +1657,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_code_cache_size = 7;</code>
      * @return Whether the maximumCodeCacheSize field is set.
      */
+    @java.lang.Override
     public boolean hasMaximumCodeCacheSize() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1644,6 +1670,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 maximum_code_cache_size = 7;</code>
      * @return The maximumCodeCacheSize.
      */
+    @java.lang.Override
     public long getMaximumCodeCacheSize() {
       return maximumCodeCacheSize_;
     }
@@ -1689,6 +1716,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 soft_reference_lru_policy = 8;</code>
      * @return Whether the softReferenceLruPolicy field is set.
      */
+    @java.lang.Override
     public boolean hasSoftReferenceLruPolicy() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1701,6 +1729,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 soft_reference_lru_policy = 8;</code>
      * @return The softReferenceLruPolicy.
      */
+    @java.lang.Override
     public long getSoftReferenceLruPolicy() {
       return softReferenceLruPolicy_;
     }
@@ -1745,7 +1774,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JvmDetails.GarbageCollector garbage_collector = 9;</code>
      * @return Whether the garbageCollector field is set.
      */
-    public boolean hasGarbageCollector() {
+    @java.lang.Override public boolean hasGarbageCollector() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
@@ -1756,6 +1785,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JvmDetails.GarbageCollector garbage_collector = 9;</code>
      * @return The garbageCollector.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector getGarbageCollector() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector result = com.google.wireless.android.sdk.stats.JvmDetails.GarbageCollector.valueOf(garbageCollector_);

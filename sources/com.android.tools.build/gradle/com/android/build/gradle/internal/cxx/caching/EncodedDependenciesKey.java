@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code EncodedDependenciesKey}
  */
-public  final class EncodedDependenciesKey extends
+public final class EncodedDependenciesKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedDependenciesKey)
     EncodedDependenciesKeyOrBuilder {
@@ -105,6 +105,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 source_file_id = 1;</code>
    * @return The sourceFileId.
    */
+  @java.lang.Override
   public int getSourceFileId() {
     return sourceFileId_;
   }
@@ -119,6 +120,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 compiler_flags_id = 2;</code>
    * @return The compilerFlagsId.
    */
+  @java.lang.Override
   public int getCompilerFlagsId() {
     return compilerFlagsId_;
   }
@@ -456,6 +458,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 source_file_id = 1;</code>
      * @return The sourceFileId.
      */
+    @java.lang.Override
     public int getSourceFileId() {
       return sourceFileId_;
     }
@@ -498,6 +501,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 compiler_flags_id = 2;</code>
      * @return The compilerFlagsId.
      */
+    @java.lang.Override
     public int getCompilerFlagsId() {
       return compilerFlagsId_;
     }

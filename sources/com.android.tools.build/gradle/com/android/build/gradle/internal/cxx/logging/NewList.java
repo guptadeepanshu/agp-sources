@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code NewList}
  */
-public  final class NewList extends
+public final class NewList extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:NewList)
     NewListOrBuilder {
@@ -117,6 +117,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 data = 1;</code>
    * @return A list containing the data.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getDataList() {
     return data_;

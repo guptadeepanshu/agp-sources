@@ -21,6 +21,7 @@ import com.android.build.api.variant.impl.getApiString
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.dependency.ArtifactCollectionWithExtraArtifact.ExtraComponentIdentifier
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.publishing.AndroidArtifacts.ArtifactScope
@@ -31,8 +32,10 @@ import com.android.build.gradle.internal.scope.InternalArtifactType.NAVIGATION_J
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.manifest.mergeManifests
 import com.android.build.gradle.internal.ide.dependencies.getIdString
+import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.build.gradle.options.BooleanOption
+import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.tasks.ProcessApplicationManifest.CreationAction.ManifestProviderImpl
 import com.android.builder.dexing.DexingType
 import com.android.manifmerger.ManifestMerger2
@@ -103,6 +106,12 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     @get:Input
     abstract val namespace: Property<String>
 
+    @get:Input
+    abstract val profileable: Property<Boolean>
+
+    @get:Input
+    abstract val testOnly: Property<Boolean>
+
     @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFiles
     abstract val manifestOverlays: ListProperty<File>
@@ -154,13 +163,15 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             featureName.orNull,
             packageOverride.get(),
             namespace.get(),
+            profileable.get(),
             variantOutput.get().versionCode.orNull,
             variantOutput.get().versionName.orNull,
             minSdkVersion.orNull,
             targetSdkVersion.orNull,
             maxSdkVersion.orNull,
-            mergedManifest.get().asFile.absolutePath,
-            null /* aaptFriendlyManifestOutputFile */,
+            testOnly.get(),
+            mergedManifest.get().asFile.absolutePath /* aaptFriendlyManifestOutputFile */,
+            null /* outAaptSafeManifestLocation */,
             ManifestMerger2.MergeType.APPLICATION,
             manifestPlaceholders.get(),
             optionalFeatures.get().plus(
@@ -237,7 +248,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
     abstract val applicationId: Property<String>
 
     @get:Input
-    abstract val variantType: Property<String?>
+    abstract val componentType: Property<String?>
 
     @get:Optional
     @get:Input
@@ -295,8 +306,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             taskName: String
         ) {
             super.preConfigure(taskName)
-            val variantType = creationConfig.variantType
-            Preconditions.checkState(!variantType.isTestComponent)
+            val componentType = creationConfig.componentType
+            Preconditions.checkState(!componentType.isTestComponent)
             val artifacts = creationConfig.artifacts
             artifacts.republish(
                 InternalArtifactType.PACKAGED_MANIFESTS,
@@ -341,7 +352,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         ) {
             super.configure(task)
             val variantSources = creationConfig.variantSources
-            val variantType = creationConfig.variantType
+            val componentType = creationConfig.componentType
             // This includes the dependent libraries.
             task.manifests = creationConfig
                 .variantDependencies
@@ -361,8 +372,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             }
             task.applicationId.set(creationConfig.applicationId)
             task.applicationId.disallowChanges()
-            task.variantType.set(creationConfig.variantType.toString())
-            task.variantType.disallowChanges()
+            task.componentType.set(creationConfig.componentType.toString())
+            task.componentType.disallowChanges()
             task.minSdkVersion.setDisallowChanges(creationConfig.minSdkVersion.getApiString())
             task.targetSdkVersion
                 .setDisallowChanges(
@@ -370,7 +381,9 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                             null
                         else creationConfig.targetSdkVersion.getApiString()
                 )
-            task.maxSdkVersion.setDisallowChanges(creationConfig.maxSdkVersion)
+            task.maxSdkVersion.setDisallowChanges(
+                (creationConfig as VariantCreationConfig).maxSdkVersion
+            )
             task.optionalFeatures.setDisallowChanges(creationConfig.services.provider {
                 getOptionalFeatures(
                     creationConfig
@@ -383,7 +396,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                 creationConfig.outputs.getMainSplit()
             )
             // set optional inputs per module type
-            if (variantType.isBaseModule) {
+            if (componentType.isBaseModule) {
                 task.featureManifests = creationConfig
                     .variantDependencies
                     .getArtifactCollection(
@@ -391,7 +404,7 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
                         ArtifactScope.PROJECT,
                         AndroidArtifacts.ArtifactType.REVERSE_METADATA_FEATURE_MANIFEST
                     )
-            } else if (variantType.isDynamicFeature) {
+            } else if (componentType.isDynamicFeature) {
                 val dfCreationConfig =
                     creationConfig as DynamicFeatureCreationConfig
                 task.featureName.setDisallowChanges(dfCreationConfig.featureName)
@@ -418,13 +431,19 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
             }
             task.packageOverride.setDisallowChanges(creationConfig.applicationId)
             task.namespace.setDisallowChanges(creationConfig.namespace)
+            task.profileable.setDisallowChanges(creationConfig.profileable)
+            task.testOnly.setDisallowChanges(
+                ProfilingMode.getProfilingModeType(
+                    creationConfig.services.projectOptions[StringOption.PROFILING_MODE]
+                ) != ProfilingMode.UNDEFINED
+            )
             task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
             task.manifestPlaceholders.disallowChanges()
             task.mainManifest.setDisallowChanges(creationConfig.services.provider(variantSources::mainManifestFilePath))
             task.manifestOverlays.setDisallowChanges(
                 task.project.provider(variantSources::manifestOverlays)
             )
-            task.isFeatureSplitVariantType = creationConfig.variantType.isDynamicFeature
+            task.isFeatureSplitVariantType = creationConfig.componentType.isDynamicFeature
             task.buildTypeName = creationConfig.buildType
             task.projectBuildFile.set(task.project.buildFile)
             task.projectBuildFile.disallowChanges()
@@ -484,8 +503,8 @@ abstract class ProcessApplicationManifest : ManifestProcessorTask() {
         ): EnumSet<Invoker.Feature> {
             val features: MutableList<Invoker.Feature> =
                 ArrayList()
-            val variantType = creationConfig.variantType
-            if (variantType.isDynamicFeature) {
+            val componentType = creationConfig.componentType
+            if (componentType.isDynamicFeature) {
                 features.add(Invoker.Feature.ADD_DYNAMIC_FEATURE_ATTRIBUTES)
             }
             if (creationConfig.testOnlyApk) {

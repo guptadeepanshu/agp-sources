@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.KotlinProjectConfiguration}
  */
-public  final class KotlinProjectConfiguration extends
+public final class KotlinProjectConfiguration extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.KotlinProjectConfiguration)
     KotlinProjectConfigurationOrBuilder {
@@ -25,6 +25,7 @@ private static final long serialVersionUID = 0L;
     plugin_ = "";
     pluginType_ = "";
     platform_ = "";
+    eventType_ = 0;
   }
 
   @java.lang.Override
@@ -93,6 +94,18 @@ private static final long serialVersionUID = 0L;
             isMultiplatform_ = input.readBool();
             break;
           }
+          case 56: {
+            int rawValue = input.readEnum();
+              @SuppressWarnings("deprecation")
+            com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType value = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.valueOf(rawValue);
+            if (value == null) {
+              unknownFields.mergeVarintField(7, rawValue);
+            } else {
+              bitField0_ |= 0x00000040;
+              eventType_ = rawValue;
+            }
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -125,6 +138,102 @@ private static final long serialVersionUID = 0L;
             com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.class, com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.Builder.class);
   }
 
+  /**
+   * Protobuf enum {@code android_studio.KotlinProjectConfiguration.EventType}
+   */
+  public enum EventType
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>TYPE_UNKNOWN = 0;</code>
+     */
+    TYPE_UNKNOWN(0),
+    /**
+     * <code>BUILD = 1;</code>
+     */
+    BUILD(1),
+    ;
+
+    /**
+     * <code>TYPE_UNKNOWN = 0;</code>
+     */
+    public static final int TYPE_UNKNOWN_VALUE = 0;
+    /**
+     * <code>BUILD = 1;</code>
+     */
+    public static final int BUILD_VALUE = 1;
+
+
+    public final int getNumber() {
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static EventType valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static EventType forNumber(int value) {
+      switch (value) {
+        case 0: return TYPE_UNKNOWN;
+        case 1: return BUILD;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<EventType>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        EventType> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<EventType>() {
+            public EventType findValueByNumber(int number) {
+              return EventType.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final EventType[] VALUES = values();
+
+    public static EventType valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private EventType(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:android_studio.KotlinProjectConfiguration.EventType)
+  }
+
   private int bitField0_;
   public static final int SYSTEM_FIELD_NUMBER = 1;
   private volatile java.lang.Object system_;
@@ -136,6 +245,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string system = 1;</code>
    * @return Whether the system field is set.
    */
+  @java.lang.Override
   public boolean hasSystem() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -147,6 +257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string system = 1;</code>
    * @return The system.
    */
+  @java.lang.Override
   public java.lang.String getSystem() {
     java.lang.Object ref = system_;
     if (ref instanceof java.lang.String) {
@@ -169,6 +280,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string system = 1;</code>
    * @return The bytes for system.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSystemBytes() {
     java.lang.Object ref = system_;
@@ -193,6 +305,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_version = 2;</code>
    * @return Whether the pluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasPluginVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -204,6 +317,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_version = 2;</code>
    * @return The pluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getPluginVersion() {
     java.lang.Object ref = pluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -226,6 +340,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_version = 2;</code>
    * @return The bytes for pluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginVersionBytes() {
     java.lang.Object ref = pluginVersion_;
@@ -250,6 +365,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin = 3;</code>
    * @return Whether the plugin field is set.
    */
+  @java.lang.Override
   public boolean hasPlugin() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -261,6 +377,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin = 3;</code>
    * @return The plugin.
    */
+  @java.lang.Override
   public java.lang.String getPlugin() {
     java.lang.Object ref = plugin_;
     if (ref instanceof java.lang.String) {
@@ -283,6 +400,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin = 3;</code>
    * @return The bytes for plugin.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginBytes() {
     java.lang.Object ref = plugin_;
@@ -307,6 +425,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 4;</code>
    * @return Whether the pluginType field is set.
    */
+  @java.lang.Override
   public boolean hasPluginType() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -318,6 +437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 4;</code>
    * @return The pluginType.
    */
+  @java.lang.Override
   public java.lang.String getPluginType() {
     java.lang.Object ref = pluginType_;
     if (ref instanceof java.lang.String) {
@@ -340,6 +460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 4;</code>
    * @return The bytes for pluginType.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginTypeBytes() {
     java.lang.Object ref = pluginType_;
@@ -364,6 +485,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string platform = 5;</code>
    * @return Whether the platform field is set.
    */
+  @java.lang.Override
   public boolean hasPlatform() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -375,6 +497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string platform = 5;</code>
    * @return The platform.
    */
+  @java.lang.Override
   public java.lang.String getPlatform() {
     java.lang.Object ref = platform_;
     if (ref instanceof java.lang.String) {
@@ -397,6 +520,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string platform = 5;</code>
    * @return The bytes for platform.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPlatformBytes() {
     java.lang.Object ref = platform_;
@@ -421,6 +545,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_multiplatform = 6;</code>
    * @return Whether the isMultiplatform field is set.
    */
+  @java.lang.Override
   public boolean hasIsMultiplatform() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -432,8 +557,36 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_multiplatform = 6;</code>
    * @return The isMultiplatform.
    */
+  @java.lang.Override
   public boolean getIsMultiplatform() {
     return isMultiplatform_;
+  }
+
+  public static final int EVENT_TYPE_FIELD_NUMBER = 7;
+  private int eventType_;
+  /**
+   * <pre>
+   * indicates the type of the configuration event (i.e. build)
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+   * @return Whether the eventType field is set.
+   */
+  @java.lang.Override public boolean hasEventType() {
+    return ((bitField0_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * indicates the type of the configuration event (i.e. build)
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+   * @return The eventType.
+   */
+  @java.lang.Override public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType() {
+    @SuppressWarnings("deprecation")
+    com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.valueOf(eventType_);
+    return result == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.TYPE_UNKNOWN : result;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -468,6 +621,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       output.writeBool(6, isMultiplatform_);
     }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      output.writeEnum(7, eventType_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -495,6 +651,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000020) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeBoolSize(6, isMultiplatform_);
+    }
+    if (((bitField0_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(7, eventType_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -541,6 +701,10 @@ private static final long serialVersionUID = 0L;
       if (getIsMultiplatform()
           != other.getIsMultiplatform()) return false;
     }
+    if (hasEventType() != other.hasEventType()) return false;
+    if (hasEventType()) {
+      if (eventType_ != other.eventType_) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -576,6 +740,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + IS_MULTIPLATFORM_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getIsMultiplatform());
+    }
+    if (hasEventType()) {
+      hash = (37 * hash) + EVENT_TYPE_FIELD_NUMBER;
+      hash = (53 * hash) + eventType_;
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -726,6 +894,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000010);
       isMultiplatform_ = false;
       bitField0_ = (bitField0_ & ~0x00000020);
+      eventType_ = 0;
+      bitField0_ = (bitField0_ & ~0x00000040);
       return this;
     }
 
@@ -778,6 +948,10 @@ private static final long serialVersionUID = 0L;
         result.isMultiplatform_ = isMultiplatform_;
         to_bitField0_ |= 0x00000020;
       }
+      if (((from_bitField0_ & 0x00000040) != 0)) {
+        to_bitField0_ |= 0x00000040;
+      }
+      result.eventType_ = eventType_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -854,6 +1028,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasIsMultiplatform()) {
         setIsMultiplatform(other.getIsMultiplatform());
+      }
+      if (other.hasEventType()) {
+        setEventType(other.getEventType());
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1434,6 +1611,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_multiplatform = 6;</code>
      * @return Whether the isMultiplatform field is set.
      */
+    @java.lang.Override
     public boolean hasIsMultiplatform() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1445,6 +1623,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_multiplatform = 6;</code>
      * @return The isMultiplatform.
      */
+    @java.lang.Override
     public boolean getIsMultiplatform() {
       return isMultiplatform_;
     }
@@ -1474,6 +1653,65 @@ private static final long serialVersionUID = 0L;
     public Builder clearIsMultiplatform() {
       bitField0_ = (bitField0_ & ~0x00000020);
       isMultiplatform_ = false;
+      onChanged();
+      return this;
+    }
+
+    private int eventType_ = 0;
+    /**
+     * <pre>
+     * indicates the type of the configuration event (i.e. build)
+     * </pre>
+     *
+     * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+     * @return Whether the eventType field is set.
+     */
+    @java.lang.Override public boolean hasEventType() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * indicates the type of the configuration event (i.e. build)
+     * </pre>
+     *
+     * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+     * @return The eventType.
+     */
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType result = com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.valueOf(eventType_);
+      return result == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType.TYPE_UNKNOWN : result;
+    }
+    /**
+     * <pre>
+     * indicates the type of the configuration event (i.e. build)
+     * </pre>
+     *
+     * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+     * @param value The eventType to set.
+     * @return This builder for chaining.
+     */
+    public Builder setEventType(com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      bitField0_ |= 0x00000040;
+      eventType_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * indicates the type of the configuration event (i.e. build)
+     * </pre>
+     *
+     * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearEventType() {
+      bitField0_ = (bitField0_ & ~0x00000040);
+      eventType_ = 0;
       onChanged();
       return this;
     }

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.StudioExceptionDetails}
  */
-public  final class StudioExceptionDetails extends
+public final class StudioExceptionDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioExceptionDetails)
     StudioExceptionDetailsOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string hash = 1;</code>
    * @return Whether the hash field is set.
    */
+  @java.lang.Override
   public boolean hasHash() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string hash = 1;</code>
    * @return The hash.
    */
+  @java.lang.Override
   public java.lang.String getHash() {
     java.lang.Object ref = hash_;
     if (ref instanceof java.lang.String) {
@@ -144,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string hash = 1;</code>
    * @return The bytes for hash.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getHashBytes() {
     java.lang.Object ref = hash_;
@@ -168,6 +171,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string summary = 2;</code>
    * @return Whether the summary field is set.
    */
+  @java.lang.Override
   public boolean hasSummary() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -179,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string summary = 2;</code>
    * @return The summary.
    */
+  @java.lang.Override
   public java.lang.String getSummary() {
     java.lang.Object ref = summary_;
     if (ref instanceof java.lang.String) {
@@ -201,6 +206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string summary = 2;</code>
    * @return The bytes for summary.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSummaryBytes() {
     java.lang.Object ref = summary_;
@@ -225,6 +231,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count = 3;</code>
    * @return Whether the count field is set.
    */
+  @java.lang.Override
   public boolean hasCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -236,6 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count = 3;</code>
    * @return The count.
    */
+  @java.lang.Override
   public int getCount() {
     return count_;
   }
@@ -831,6 +839,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count = 3;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -842,6 +851,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count = 3;</code>
      * @return The count.
      */
+    @java.lang.Override
     public int getCount() {
       return count_;
     }

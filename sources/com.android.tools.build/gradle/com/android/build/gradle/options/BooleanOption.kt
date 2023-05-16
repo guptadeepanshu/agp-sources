@@ -25,6 +25,7 @@ import com.android.build.gradle.options.Version.VERSION_4_2
 import com.android.build.gradle.options.Version.VERSION_7_0
 import com.android.build.gradle.internal.errors.DeprecationReporter.DeprecationTarget.VERSION_8_0
 import com.android.build.gradle.options.Version.VERSION_7_2
+import com.android.build.gradle.options.Version.VERSION_7_3
 import com.android.build.gradle.options.Version.VERSION_BEFORE_4_0
 import com.android.builder.model.AndroidProject
 import com.android.builder.model.AndroidProject.PROPERTY_BUILD_MODEL_ONLY
@@ -103,7 +104,6 @@ enum class BooleanOption(
     // Flag added to work around b/130596259.
     FORCE_JACOCO_OUT_OF_PROCESS("android.forceJacocoOutOfProcess", false, FeatureStage.Supported),
 
-    ENABLE_DEXING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform", true, FeatureStage.Supported),
     PRECOMPILE_DEPENDENCIES_RESOURCES("android.precompileDependenciesResources", true, FeatureStage.Supported),
 
     INCLUDE_DEPENDENCY_INFO_IN_APKS("android.includeDependencyInfoInApks", true, FeatureStage.Supported),
@@ -118,7 +118,6 @@ enum class BooleanOption(
 
     BUILD_FEATURE_MLMODELBINDING("android.defaults.buildfeatures.mlmodelbinding", false, ApiStage.Experimental),
     ENABLE_PROFILE_JSON("android.enableProfileJson", false, FeatureStage.Experimental),
-    WARN_ABOUT_DEPENDENCY_RESOLUTION_AT_CONFIGURATION("android.dependencyResolutionAtConfigurationTime.warn", false, FeatureStage.Experimental),
     DISALLOW_DEPENDENCY_RESOLUTION_AT_CONFIGURATION("android.dependencyResolutionAtConfigurationTime.disallow", false, FeatureStage.Experimental),
     ENABLE_TEST_SHARDING("android.androidTest.shardBetweenDevices", false, FeatureStage.Experimental),
     VERSION_CHECK_OVERRIDE_PROPERTY("android.overrideVersionCheck", false, FeatureStage.Experimental),
@@ -142,13 +141,27 @@ enum class BooleanOption(
      */
     UNINSTALL_INCOMPATIBLE_APKS("android.experimental.testOptions.uninstallIncompatibleApks", false, FeatureStage.Experimental),
 
+    /**
+     * When enabled, "-show-kernel" and "-verbose" flags are used when running an Android emulator
+     * for Gradle Managed devices.
+     */
+    GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING("android.experimental.testOptions.managedDevices.emulator.showKernelLogging", false, FeatureStage.Experimental),
+
+    /**
+     * Gradle Managed devices officially supports Android devices on API level 27 and higher because
+     * using the API level 26 and lower devices increase instability. When a user tries to use those
+     * old API devices, GMD task throws an exception and task fails by default.
+     *
+     * When this flag is enabled, it allows a user to use any old API level devices regardless of
+     * its instability.
+     */
+    GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES("android.experimental.testOptions.managedDevices.allowOldApiLevelDevices", false, FeatureStage.Experimental),
+
     /** When set R classes are treated as compilation classpath in libraries, rather than runtime classpath, with values set to 0. */
     ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT("android.enableAdditionalTestOutput", true, FeatureStage.Experimental),
 
     ENABLE_APP_COMPILE_TIME_R_CLASS("android.enableAppCompileTimeRClass", false, FeatureStage.Experimental),
-    COMPILE_CLASSPATH_LIBRARY_R_CLASSES("android.useCompileClasspathLibraryRClasses", true, FeatureStage.Experimental),
     ENABLE_EXTRACT_ANNOTATIONS("android.enableExtractAnnotations", true, FeatureStage.Experimental),
-    ENABLE_AAPT2_WORKER_ACTIONS("android.enableAapt2WorkerActions", true, FeatureStage.Experimental),
 
     // Marked as stable to avoid reporting deprecation twice.
     CONVERT_NON_NAMESPACED_DEPENDENCIES("android.convertNonNamespacedDependencies", true, FeatureStage.Experimental),
@@ -163,8 +176,6 @@ enum class BooleanOption(
     ENABLE_PROGUARD_RULES_EXTRACTION("android.proguard.enableRulesExtraction", true, FeatureStage.Experimental),
     USE_DEPENDENCY_CONSTRAINTS("android.dependency.useConstraints", true, FeatureStage.Experimental),
     ENABLE_DUPLICATE_CLASSES_CHECK("android.enableDuplicateClassesCheck", true, FeatureStage.Experimental),
-    ENABLE_DEXING_DESUGARING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform.desugaring", true, FeatureStage.Experimental),
-    ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS("android.enableDexingArtifactTransformForExternalLibs", true, FeatureStage.Experimental),
     MINIMAL_KEEP_RULES("android.useMinimalKeepRules", true, FeatureStage.Experimental),
     EXCLUDE_RES_SOURCES_FOR_RELEASE_BUNDLES("android.bundle.excludeResSourcesForRelease", true, FeatureStage.Experimental),
     ENABLE_BUILD_CONFIG_AS_BYTECODE("android.enableBuildConfigAsBytecode", false, FeatureStage.Experimental),
@@ -177,6 +188,18 @@ enum class BooleanOption(
 
     /** Whether to force the APK to be deterministic. */
     FORCE_DETERMINISTIC_APK("android.experimental.forceDeterministicApk", false, FeatureStage.Experimental),
+
+    MISSING_LINT_BASELINE_IS_EMPTY_BASELINE(
+        "android.experimental.lint.missingBaselineIsEmptyBaseline",
+        false,
+        FeatureStage.Experimental,
+    ),
+
+    LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL(
+            "android.experimental.legacyTransform.forceNonIncremental",
+            false,
+            FeatureStage.Experimental
+    ),
 
     /* ------------------------
      * SOFTLY-ENFORCED FEATURES
@@ -210,13 +233,6 @@ enum class BooleanOption(
             DeprecationReporter.DeprecationTarget.ENABLE_UNCOMPRESSED_NATIVE_LIBS_IN_BUNDLE
         )
     ),
-
-    ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION(
-        "android.enableJacocoTransformInstrumentation",
-        true,
-        FeatureStage.SoftlyEnforced(VERSION_8_0)
-    ),
-
     ENABLE_SOURCE_SET_PATHS_MAP(
         "android.enableSourceSetPathsMap",
         true,
@@ -227,6 +243,18 @@ enum class BooleanOption(
         true,
         FeatureStage.SoftlyEnforced(VERSION_8_0)
     ),
+
+    COMPILE_CLASSPATH_LIBRARY_R_CLASSES("android.useCompileClasspathLibraryRClasses", true, FeatureStage.SoftlyEnforced(VERSION_8_0)),
+
+    WARN_ABOUT_DEPENDENCY_RESOLUTION_AT_CONFIGURATION(
+        "android.dependencyResolutionAtConfigurationTime.warn",
+        true,
+        FeatureStage.SoftlyEnforced(VERSION_8_0)
+    ),
+
+    ENABLE_DEXING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform", true, FeatureStage.SoftlyEnforced(VERSION_8_0)),
+    ENABLE_DEXING_DESUGARING_ARTIFACT_TRANSFORM("android.enableDexingArtifactTransform.desugaring", true, FeatureStage.SoftlyEnforced(VERSION_8_0)),
+    ENABLE_DEXING_ARTIFACT_TRANSFORM_FOR_EXTERNAL_LIBS("android.enableDexingArtifactTransformForExternalLibs", true, FeatureStage.SoftlyEnforced(VERSION_8_0)),
 
     /* -------------------
      * DEPRECATED FEATURES
@@ -443,6 +471,20 @@ enum class BooleanOption(
     /** Whether to use lint's partial analysis functionality. */
     USE_LINT_PARTIAL_ANALYSIS("android.enableParallelLint", true, FeatureStage.Enforced(VERSION_7_2)),
 
+    ENABLE_AAPT2_WORKER_ACTIONS(
+        "android.enableAapt2WorkerActions",
+        true,
+        FeatureStage.Enforced(
+            VERSION_7_3,
+            "AAPT2 worker actions have been used unconditionally since Android Gradle Plugin 3.3"
+        )
+    ),
+    ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION(
+        "android.enableJacocoTransformInstrumentation",
+        true,
+        FeatureStage.Enforced(VERSION_7_3)
+    ),
+
     /* ----------------
      * REMOVED FEATURES
      */
@@ -537,7 +579,7 @@ enum class BooleanOption(
     @Suppress("unused")
     ENABLE_DESUGAR(
             "android.enableDesugar",
-            true,
+            false,
             FeatureStage.Removed(VERSION_7_0, "Desugar tool has been removed from AGP.")
     ),
 

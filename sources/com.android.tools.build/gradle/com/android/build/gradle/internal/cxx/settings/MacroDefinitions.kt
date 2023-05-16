@@ -16,7 +16,7 @@
 
 package com.android.build.gradle.internal.cxx.settings
 
-import com.android.build.gradle.internal.cxx.configure.ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION
+import com.android.SdkConstants.NDK_DEFAULT_VERSION
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.ANDROID_ABI
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.ANDROID_NDK
@@ -53,6 +53,8 @@ import com.android.build.gradle.internal.cxx.model.ndkMajorVersion
 import com.android.build.gradle.internal.cxx.model.ndkMaxPlatform
 import com.android.build.gradle.internal.cxx.model.ndkMinPlatform
 import com.android.build.gradle.internal.cxx.model.ndkMinorVersion
+import com.android.build.gradle.internal.cxx.model.ninjaBuildFile
+import com.android.build.gradle.internal.cxx.model.ninjaBuildLocationFile
 import com.android.build.gradle.internal.cxx.model.platform
 import com.android.build.gradle.internal.cxx.model.platformCode
 import com.android.build.gradle.internal.cxx.model.tag
@@ -60,6 +62,8 @@ import com.android.build.gradle.internal.cxx.settings.Environment.GRADLE
 import com.android.build.gradle.internal.cxx.settings.Environment.MICROSOFT_BUILT_IN
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK
 import com.android.build.gradle.internal.cxx.settings.Environment.NDK_EXPOSED_BY_HOST
+import com.android.repository.Revision
+import java.io.File
 import kotlin.reflect.KClassifier
 import kotlin.reflect.KProperty1
 
@@ -114,6 +118,13 @@ enum class Macro(
         tag = "maxPlatform",
         example = "29",
         bind = CxxModuleModel::ndkMaxPlatform),
+    NDK_MODULE_MAKE_FILE(
+        description = "Path to the make file for the current build system type.",
+        environment = GRADLE,
+        tag = "moduleMakeFile",
+        example = "\$PROJECTS/MyProject/CMakeLists.txt",
+        ndkBuildExample = "\$PROJECTS/MyProject/Android.mk",
+        bind = CxxModuleModel::makeFile),
     NDK_PLATFORM_SYSTEM_VERSION(
         description = "The currently targeted Android system version, suitable for passing to " +
                 "CMake in CMAKE_SYSTEM_VERSION.",
@@ -189,7 +200,7 @@ enum class Macro(
         description = "Folder of the current Android NDK.",
         environment = GRADLE,
         tag = "moduleNdkDir",
-        example = "${NDK_PROJECT_SDK_DIR.ref}/ndk/$ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION",
+        example = "${NDK_PROJECT_SDK_DIR.ref}/ndk/$NDK_DEFAULT_VERSION",
         cmakeProperties = listOf(ANDROID_NDK, CMAKE_ANDROID_NDK),
         bind = CxxModuleModel::ndkFolder),
     NDK_CMAKE_TOOLCHAIN(
@@ -226,19 +237,19 @@ enum class Macro(
         description = "Version of NDK.",
         environment = GRADLE,
         tag = "moduleNdkVersion",
-        example = ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION,
+        example = NDK_DEFAULT_VERSION,
         bind = CxxModuleModel::ndkVersion),
     NDK_MODULE_NDK_VERSION_MAJOR(
         description = "Version number major part.",
         environment = GRADLE,
         tag = "moduleNdkVersionMajor",
-        example = ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION.split(".")[0],
+        example = NDK_DEFAULT_VERSION.split(".")[0],
         bind = CxxModuleModel::ndkMajorVersion),
     NDK_MODULE_NDK_VERSION_MINOR(
         description = "Version number minor part.",
         environment = GRADLE,
         tag = "moduleNdkVersionMinor",
-        example = ANDROID_GRADLE_PLUGIN_FIXED_DEFAULT_NDK_VERSION.split(".")[1],
+        example = NDK_DEFAULT_VERSION.split(".")[1],
         bind = CxxModuleModel::ndkMinorVersion),
     NDK_MODULE_DIR(
         description = "Folder of the module level build.gradle.",
@@ -271,19 +282,34 @@ enum class Macro(
         example = "app1",
         bind = CxxModuleModel::moduleName),
     NDK_MODULE_BUILD_ROOT(
-        description = "The default module-level CMake or ndk-build build root that gradle uses.",
+        description = "The default CMake, ndk-build, or Ninja build root folder without ABI.",
         environment = GRADLE,
         tag = "moduleBuildRoot",
         example = "${NDK_MODULE_DIR.ref}/.cxx",
         ndkBuildExample = "${NDK_MODULE_DIR.ref}/build/.cxx",
         bind = CxxModuleModel::cxxFolder),
     NDK_BUILD_ROOT(
-        description = "The default CMake or ndk-build build root that gradle uses.",
+        description = "The default CMake, ndk-build, or Ninja build root folder that gradle uses.",
         environment = GRADLE,
         tag = "buildRoot",
         example = "${NDK_MODULE_DIR.ref}/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64",
         ndkBuildExample = "${NDK_MODULE_DIR.ref}/build/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64",
         bind = CxxAbiModel::cxxBuildFolder),
+    NDK_NINJA_BUILD_FILE(
+        description = "The path to the expected build.ninja file.",
+        environment = GRADLE,
+        tag = "ninjaBuildFile",
+        example = "${NDK_MODULE_DIR.ref}/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64/build.ninja",
+        ndkBuildExample = "${NDK_MODULE_DIR.ref}/build/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64/build.ninja",
+        bind = CxxAbiModel::ninjaBuildFile),
+    NDK_NINJA_BUILD_LOCATION_FILE(
+        description = "Path to a file that contains the location of build.ninja. Written by custom" +
+                " external build systems to specify the location where build.ninja was written.",
+        environment = GRADLE,
+        tag = "ninjaBuildLocationFile",
+        example = "${NDK_MODULE_DIR.ref}/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64/build.ninja.txt",
+        ndkBuildExample = "${NDK_MODULE_DIR.ref}/build/.cxx/Debug/${NDK_CONFIGURATION_HASH.ref}/x86_64/build.ninja.txt",
+        bind = CxxAbiModel::ninjaBuildLocationFile),
     NDK_VARIANT_C_FLAGS(
         description = "The value of cFlags from android.config.externalNativeBuild.cFlags in build.gradle.",
         environment = GRADLE,
@@ -402,6 +428,8 @@ enum class Macro(
 
     /**
      * Try to look up a value for this [Macro] from [instance]
+     * Returns null when the requested macro doesn't exist on [instance].
+     * Returns "" when the requested macro exists on [instance] but the macro value itself is null.
      */
     fun <T:Any> takeFrom(instance:T) : String? {
         return MACRO_DEFINITIONS_BINDINGS_GETTERS[instance::class to this]?.let { property ->

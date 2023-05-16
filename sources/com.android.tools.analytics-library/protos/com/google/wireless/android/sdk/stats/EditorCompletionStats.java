@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EditorCompletionStats}
  */
-public  final class EditorCompletionStats extends
+public final class EditorCompletionStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EditorCompletionStats)
     EditorCompletionStatsOrBuilder {
@@ -201,7 +201,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.EditorCompletionStats.Stats}
    */
-  public  static final class Stats extends
+  public static final class Stats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.EditorCompletionStats.Stats)
       StatsOrBuilder {
@@ -339,7 +339,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return Whether the fileType field is set.
      */
-    public boolean hasFileType() {
+    @java.lang.Override public boolean hasFileType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -350,7 +350,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return The fileType.
      */
-    public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
@@ -366,6 +366,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram popup_latency = 2;</code>
      * @return Whether the popupLatency field is set.
      */
+    @java.lang.Override
     public boolean hasPopupLatency() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -377,6 +378,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram popup_latency = 2;</code>
      * @return The popupLatency.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Histogram getPopupLatency() {
       return popupLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : popupLatency_;
     }
@@ -387,6 +389,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.Histogram popup_latency = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPopupLatencyOrBuilder() {
       return popupLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : popupLatency_;
     }
@@ -401,6 +404,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
      * @return Whether the fullCompletionLatency field is set.
      */
+    @java.lang.Override
     public boolean hasFullCompletionLatency() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -412,6 +416,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
      * @return The fullCompletionLatency.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Histogram getFullCompletionLatency() {
       return fullCompletionLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : fullCompletionLatency_;
     }
@@ -422,6 +427,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.Histogram full_completion_latency = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getFullCompletionLatencyOrBuilder() {
       return fullCompletionLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : fullCompletionLatency_;
     }
@@ -436,6 +442,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
      * @return Whether the insertionLatency field is set.
      */
+    @java.lang.Override
     public boolean hasInsertionLatency() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -447,6 +454,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
      * @return The insertionLatency.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Histogram getInsertionLatency() {
       return insertionLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : insertionLatency_;
     }
@@ -457,6 +465,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.Histogram insertion_latency = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getInsertionLatencyOrBuilder() {
       return insertionLatency_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : insertionLatency_;
     }
@@ -885,7 +894,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return Whether the fileType field is set.
        */
-      public boolean hasFileType() {
+      @java.lang.Override public boolean hasFileType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -896,6 +905,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return The fileType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
@@ -1463,6 +1473,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EditorCompletionStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats> getByFileTypeList() {
     return byFileType_;
   }
@@ -1473,6 +1484,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EditorCompletionStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EditorCompletionStats.StatsOrBuilder> 
       getByFileTypeOrBuilderList() {
     return byFileType_;
@@ -1484,6 +1496,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EditorCompletionStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public int getByFileTypeCount() {
     return byFileType_.size();
   }
@@ -1494,6 +1507,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EditorCompletionStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorCompletionStats.Stats getByFileType(int index) {
     return byFileType_.get(index);
   }
@@ -1504,6 +1518,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EditorCompletionStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorCompletionStats.StatsOrBuilder getByFileTypeOrBuilder(
       int index) {
     return byFileType_.get(index);

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LLDBFrontendDetails}
  */
-public  final class LLDBFrontendDetails extends
+public final class LLDBFrontendDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LLDBFrontendDetails)
     LLDBFrontendDetailsOrBuilder {
@@ -101,6 +101,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 exit_code = 1;</code>
    * @return Whether the exitCode field is set.
    */
+  @java.lang.Override
   public boolean hasExitCode() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -112,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 exit_code = 1;</code>
    * @return The exitCode.
    */
+  @java.lang.Override
   public int getExitCode() {
     return exitCode_;
   }
@@ -443,6 +445,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 exit_code = 1;</code>
      * @return Whether the exitCode field is set.
      */
+    @java.lang.Override
     public boolean hasExitCode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -454,6 +457,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 exit_code = 1;</code>
      * @return The exitCode.
      */
+    @java.lang.Override
     public int getExitCode() {
       return exitCode_;
     }

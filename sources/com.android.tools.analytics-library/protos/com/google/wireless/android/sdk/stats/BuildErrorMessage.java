@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildErrorMessage}
  */
-public  final class BuildErrorMessage extends
+public final class BuildErrorMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildErrorMessage)
     BuildErrorMessageOrBuilder {
@@ -440,7 +440,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildErrorMessage.ErrorType error_shown_type = 1;</code>
    * @return Whether the errorShownType field is set.
    */
-  public boolean hasErrorShownType() {
+  @java.lang.Override public boolean hasErrorShownType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -451,7 +451,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildErrorMessage.ErrorType error_shown_type = 1;</code>
    * @return The errorShownType.
    */
-  public com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType getErrorShownType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType getErrorShownType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType result = com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType.valueOf(errorShownType_);
     return result == null ? com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType.UNKNOWN_ERROR_TYPE : result;
@@ -467,6 +467,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool file_location_included = 2;</code>
    * @return Whether the fileLocationIncluded field is set.
    */
+  @java.lang.Override
   public boolean hasFileLocationIncluded() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -478,6 +479,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool file_location_included = 2;</code>
    * @return The fileLocationIncluded.
    */
+  @java.lang.Override
   public boolean getFileLocationIncluded() {
     return fileLocationIncluded_;
   }
@@ -492,7 +494,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildErrorMessage.FileType file_included_type = 3;</code>
    * @return Whether the fileIncludedType field is set.
    */
-  public boolean hasFileIncludedType() {
+  @java.lang.Override public boolean hasFileIncludedType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -503,7 +505,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildErrorMessage.FileType file_included_type = 3;</code>
    * @return The fileIncludedType.
    */
-  public com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType getFileIncludedType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType getFileIncludedType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType result = com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType.valueOf(fileIncludedType_);
     return result == null ? com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType.UNKNOWN_FILE_TYPE : result;
@@ -519,6 +521,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool line_location_included = 4;</code>
    * @return Whether the lineLocationIncluded field is set.
    */
+  @java.lang.Override
   public boolean hasLineLocationIncluded() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -530,6 +533,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool line_location_included = 4;</code>
    * @return The lineLocationIncluded.
    */
+  @java.lang.Override
   public boolean getLineLocationIncluded() {
     return lineLocationIncluded_;
   }
@@ -937,7 +941,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildErrorMessage.ErrorType error_shown_type = 1;</code>
      * @return Whether the errorShownType field is set.
      */
-    public boolean hasErrorShownType() {
+    @java.lang.Override public boolean hasErrorShownType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -948,6 +952,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildErrorMessage.ErrorType error_shown_type = 1;</code>
      * @return The errorShownType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType getErrorShownType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType result = com.google.wireless.android.sdk.stats.BuildErrorMessage.ErrorType.valueOf(errorShownType_);
@@ -995,6 +1000,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool file_location_included = 2;</code>
      * @return Whether the fileLocationIncluded field is set.
      */
+    @java.lang.Override
     public boolean hasFileLocationIncluded() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1006,6 +1012,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool file_location_included = 2;</code>
      * @return The fileLocationIncluded.
      */
+    @java.lang.Override
     public boolean getFileLocationIncluded() {
       return fileLocationIncluded_;
     }
@@ -1048,7 +1055,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildErrorMessage.FileType file_included_type = 3;</code>
      * @return Whether the fileIncludedType field is set.
      */
-    public boolean hasFileIncludedType() {
+    @java.lang.Override public boolean hasFileIncludedType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1059,6 +1066,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildErrorMessage.FileType file_included_type = 3;</code>
      * @return The fileIncludedType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType getFileIncludedType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType result = com.google.wireless.android.sdk.stats.BuildErrorMessage.FileType.valueOf(fileIncludedType_);
@@ -1106,6 +1114,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool line_location_included = 4;</code>
      * @return Whether the lineLocationIncluded field is set.
      */
+    @java.lang.Override
     public boolean hasLineLocationIncluded() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1117,6 +1126,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool line_location_included = 4;</code>
      * @return The lineLocationIncluded.
      */
+    @java.lang.Override
     public boolean getLineLocationIncluded() {
       return lineLocationIncluded_;
     }

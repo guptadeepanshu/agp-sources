@@ -49,6 +49,7 @@ import com.android.build.gradle.internal.res.GenerateApiPublicTxtTask;
 import com.android.build.gradle.internal.res.GenerateEmptyResourceFilesTask;
 import com.android.build.gradle.internal.scope.BuildFeatureValues;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
+import com.android.build.gradle.internal.services.DokkaParallelBuildService;
 import com.android.build.gradle.internal.tasks.AarMetadataTask;
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesDir;
 import com.android.build.gradle.internal.tasks.BundleLibraryClassesJar;
@@ -85,6 +86,7 @@ import com.android.builder.errors.IssueReporter.Type;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.gradle.api.Project;
@@ -99,9 +101,9 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
     public LibraryTaskManager(
             @NonNull Project project,
-            @NonNull List<ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
-            @NonNull List<TestComponentImpl> testComponents,
-            @NonNull List<TestFixturesImpl> testFixturesComponents,
+            @NonNull Collection<? extends ComponentInfo<LibraryVariantBuilderImpl, LibraryVariantImpl>> variants,
+            @NonNull Collection<? extends TestComponentImpl> testComponents,
+            @NonNull Collection<? extends TestFixturesImpl> testFixturesComponents,
             @NonNull GlobalTaskCreationConfig globalConfig,
             @NonNull TaskManagerConfig localConfig,
             @NonNull BaseExtension extension) {
@@ -132,6 +134,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
         if (buildFeatures.getAndroidResources()) {
             createGenerateResValuesTask(libraryVariant);
             taskFactory.register(new ExtractDeepLinksTask.CreationAction(libraryVariant));
+            taskFactory.register(new ExtractDeepLinksTask.AarCreationAction(libraryVariant));
         } else { // Resource processing is disabled.
             // TODO(b/147579629): add a warning for manifests containing resource references.
             if (globalConfig.getNamespacedAndroidResources()) {
@@ -210,7 +213,8 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
 
         taskFactory.register(new MergeGeneratedProguardFilesCreationAction(libraryVariant));
 
-        createCxxVariantBuildTask(taskFactory, variantInfo.getVariant());
+        createCxxVariantBuildTask(
+                taskFactory, variantInfo.getVariant(), project.getProviders(), project.getLayout());
 
         createMergeJniLibFoldersTasks(libraryVariant);
 
@@ -233,7 +237,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
             taskFactory.register(new ExtractAnnotations.CreationAction(libraryVariant));
         }
 
-        final boolean instrumented = libraryVariant.getVariantDslInfo().isTestCoverageEnabled();
+        final boolean instrumented = libraryVariant.isAndroidTestCoverageEnabled();
 
         TransformManager transformManager = libraryVariant.getTransformManager();
 
@@ -242,7 +246,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
             createJacocoTask(libraryVariant);
         }
 
-        maybeCreateTransformClassesWithAsmTask(libraryVariant, instrumented);
+        maybeCreateTransformClassesWithAsmTask(libraryVariant);
 
         // ----- External Transforms -----
         // apply all the external transforms.
@@ -356,7 +360,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                             task.dependsOn(variant.getArtifacts().get(SingleArtifact.AAR.INSTANCE));
                         });
 
-        VariantPublishingInfo publishInfo = variant.getVariantDslInfo().getPublishInfo();
+        VariantPublishingInfo publishInfo = variant.getPublishInfo();
         if (publishInfo != null) {
             List<ComponentPublishingInfo> components = publishInfo.getComponents();
 
@@ -366,6 +370,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
                 taskFactory.register(new SourceJarTask.CreationAction(variant));
             }
             if (components.stream().anyMatch(ComponentPublishingInfo::getWithJavadocJar)) {
+                new DokkaParallelBuildService.RegistrationAction(project).execute();
                 taskFactory.register(new JavaDocGenerationTask.CreationAction(variant));
                 taskFactory.register(new JavaDocJarTask.CreationAction(variant));
             }
@@ -525,7 +530,7 @@ public class LibraryTaskManager extends TaskManager<LibraryVariantBuilderImpl, L
             @NonNull ComponentCreationConfig creationConfig,
             @NonNull QualifiedContent.ContentType contentType) {
         Preconditions.checkArgument(contentType == RESOURCES, "contentType must be RESOURCES");
-        if (creationConfig.getVariantType().isTestComponent()) {
+        if (creationConfig.getComponentType().isTestComponent()) {
             return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS;
         }
         return TransformManager.SCOPE_FULL_LIBRARY_WITH_LOCAL_JARS;

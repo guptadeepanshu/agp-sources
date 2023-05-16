@@ -1,25 +1,12 @@
 package com.android.tools.utp.plugins.result.listener.gradle.proto;
 
 import static io.grpc.MethodDescriptor.generateFullMethodName;
-import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncUnaryCall;
-import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
-import static io.grpc.stub.ClientCalls.blockingUnaryCall;
-import static io.grpc.stub.ClientCalls.futureUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.21.1)",
-    comments = "Source: gradle_android_test_result_listener.proto")
+    value = "by gRPC proto compiler (version 1.39.0)",
+    comments = "Source: src/main/proto/gradle_android_test_result_listener.proto")
 public final class GradleAndroidTestResultListenerServiceGrpc {
 
   private GradleAndroidTestResultListenerServiceGrpc() {}
@@ -41,29 +28,35 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
     if ((getRecordTestResultEventMethod = GradleAndroidTestResultListenerServiceGrpc.getRecordTestResultEventMethod) == null) {
       synchronized (GradleAndroidTestResultListenerServiceGrpc.class) {
         if ((getRecordTestResultEventMethod = GradleAndroidTestResultListenerServiceGrpc.getRecordTestResultEventMethod) == null) {
-          GradleAndroidTestResultListenerServiceGrpc.getRecordTestResultEventMethod = getRecordTestResultEventMethod = 
+          GradleAndroidTestResultListenerServiceGrpc.getRecordTestResultEventMethod = getRecordTestResultEventMethod =
               io.grpc.MethodDescriptor.<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent, com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
-              .setFullMethodName(generateFullMethodName(
-                  "com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerService", "RecordTestResultEvent"))
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RecordTestResultEvent"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
                   com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse.getDefaultInstance()))
-                  .setSchemaDescriptor(new GradleAndroidTestResultListenerServiceMethodDescriptorSupplier("RecordTestResultEvent"))
-                  .build();
-          }
+              .setSchemaDescriptor(new GradleAndroidTestResultListenerServiceMethodDescriptorSupplier("RecordTestResultEvent"))
+              .build();
         }
-     }
-     return getRecordTestResultEventMethod;
+      }
+    }
+    return getRecordTestResultEventMethod;
   }
 
   /**
    * Creates a new async stub that supports all call types for the service
    */
   public static GradleAndroidTestResultListenerServiceStub newStub(io.grpc.Channel channel) {
-    return new GradleAndroidTestResultListenerServiceStub(channel);
+    io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceStub>() {
+        @java.lang.Override
+        public GradleAndroidTestResultListenerServiceStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new GradleAndroidTestResultListenerServiceStub(channel, callOptions);
+        }
+      };
+    return GradleAndroidTestResultListenerServiceStub.newStub(factory, channel);
   }
 
   /**
@@ -71,7 +64,14 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
    */
   public static GradleAndroidTestResultListenerServiceBlockingStub newBlockingStub(
       io.grpc.Channel channel) {
-    return new GradleAndroidTestResultListenerServiceBlockingStub(channel);
+    io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceBlockingStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceBlockingStub>() {
+        @java.lang.Override
+        public GradleAndroidTestResultListenerServiceBlockingStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new GradleAndroidTestResultListenerServiceBlockingStub(channel, callOptions);
+        }
+      };
+    return GradleAndroidTestResultListenerServiceBlockingStub.newStub(factory, channel);
   }
 
   /**
@@ -79,7 +79,14 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
    */
   public static GradleAndroidTestResultListenerServiceFutureStub newFutureStub(
       io.grpc.Channel channel) {
-    return new GradleAndroidTestResultListenerServiceFutureStub(channel);
+    io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceFutureStub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<GradleAndroidTestResultListenerServiceFutureStub>() {
+        @java.lang.Override
+        public GradleAndroidTestResultListenerServiceFutureStub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new GradleAndroidTestResultListenerServiceFutureStub(channel, callOptions);
+        }
+      };
+    return GradleAndroidTestResultListenerServiceFutureStub.newStub(factory, channel);
   }
 
   /**
@@ -94,14 +101,14 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
      */
     public io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent> recordTestResultEvent(
         io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(getRecordTestResultEventMethod(), responseObserver);
+      return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getRecordTestResultEventMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
             getRecordTestResultEventMethod(),
-            asyncClientStreamingCall(
+            io.grpc.stub.ServerCalls.asyncClientStreamingCall(
               new MethodHandlers<
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent,
                 com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse>(
@@ -112,19 +119,15 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
 
   /**
    */
-  public static final class GradleAndroidTestResultListenerServiceStub extends io.grpc.stub.AbstractStub<GradleAndroidTestResultListenerServiceStub> {
-    private GradleAndroidTestResultListenerServiceStub(io.grpc.Channel channel) {
-      super(channel);
-    }
-
-    private GradleAndroidTestResultListenerServiceStub(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+  public static final class GradleAndroidTestResultListenerServiceStub extends io.grpc.stub.AbstractAsyncStub<GradleAndroidTestResultListenerServiceStub> {
+    private GradleAndroidTestResultListenerServiceStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected GradleAndroidTestResultListenerServiceStub build(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+    protected GradleAndroidTestResultListenerServiceStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new GradleAndroidTestResultListenerServiceStub(channel, callOptions);
     }
 
@@ -136,45 +139,37 @@ public final class GradleAndroidTestResultListenerServiceGrpc {
      */
     public io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.TestResultEvent> recordTestResultEvent(
         io.grpc.stub.StreamObserver<com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto.RecordTestResultEventResponse> responseObserver) {
-      return asyncClientStreamingCall(
+      return io.grpc.stub.ClientCalls.asyncClientStreamingCall(
           getChannel().newCall(getRecordTestResultEventMethod(), getCallOptions()), responseObserver);
     }
   }
 
   /**
    */
-  public static final class GradleAndroidTestResultListenerServiceBlockingStub extends io.grpc.stub.AbstractStub<GradleAndroidTestResultListenerServiceBlockingStub> {
-    private GradleAndroidTestResultListenerServiceBlockingStub(io.grpc.Channel channel) {
-      super(channel);
-    }
-
-    private GradleAndroidTestResultListenerServiceBlockingStub(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+  public static final class GradleAndroidTestResultListenerServiceBlockingStub extends io.grpc.stub.AbstractBlockingStub<GradleAndroidTestResultListenerServiceBlockingStub> {
+    private GradleAndroidTestResultListenerServiceBlockingStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected GradleAndroidTestResultListenerServiceBlockingStub build(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+    protected GradleAndroidTestResultListenerServiceBlockingStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new GradleAndroidTestResultListenerServiceBlockingStub(channel, callOptions);
     }
   }
 
   /**
    */
-  public static final class GradleAndroidTestResultListenerServiceFutureStub extends io.grpc.stub.AbstractStub<GradleAndroidTestResultListenerServiceFutureStub> {
-    private GradleAndroidTestResultListenerServiceFutureStub(io.grpc.Channel channel) {
-      super(channel);
-    }
-
-    private GradleAndroidTestResultListenerServiceFutureStub(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+  public static final class GradleAndroidTestResultListenerServiceFutureStub extends io.grpc.stub.AbstractFutureStub<GradleAndroidTestResultListenerServiceFutureStub> {
+    private GradleAndroidTestResultListenerServiceFutureStub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
     }
 
     @java.lang.Override
-    protected GradleAndroidTestResultListenerServiceFutureStub build(io.grpc.Channel channel,
-        io.grpc.CallOptions callOptions) {
+    protected GradleAndroidTestResultListenerServiceFutureStub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       return new GradleAndroidTestResultListenerServiceFutureStub(channel, callOptions);
     }
   }

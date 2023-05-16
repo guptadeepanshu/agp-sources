@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GraphicsResourceUsage}
  */
-public  final class GraphicsResourceUsage extends
+public final class GraphicsResourceUsage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GraphicsResourceUsage)
     GraphicsResourceUsageOrBuilder {
@@ -125,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 colorbuffer_count = 1;</code>
    * @return Whether the colorbufferCount field is set.
    */
+  @java.lang.Override
   public boolean hasColorbufferCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -136,6 +137,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 colorbuffer_count = 1;</code>
    * @return The colorbufferCount.
    */
+  @java.lang.Override
   public int getColorbufferCount() {
     return colorbufferCount_;
   }
@@ -146,6 +148,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 shader_count = 2;</code>
    * @return Whether the shaderCount field is set.
    */
+  @java.lang.Override
   public boolean hasShaderCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -153,6 +156,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 shader_count = 2;</code>
    * @return The shaderCount.
    */
+  @java.lang.Override
   public int getShaderCount() {
     return shaderCount_;
   }
@@ -163,6 +167,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 renderthread_count = 3;</code>
    * @return Whether the renderthreadCount field is set.
    */
+  @java.lang.Override
   public boolean hasRenderthreadCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -170,6 +175,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 renderthread_count = 3;</code>
    * @return The renderthreadCount.
    */
+  @java.lang.Override
   public int getRenderthreadCount() {
     return renderthreadCount_;
   }
@@ -180,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 colorbuffer_total_allocation_bytes = 4;</code>
    * @return Whether the colorbufferTotalAllocationBytes field is set.
    */
+  @java.lang.Override
   public boolean hasColorbufferTotalAllocationBytes() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -187,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 colorbuffer_total_allocation_bytes = 4;</code>
    * @return The colorbufferTotalAllocationBytes.
    */
+  @java.lang.Override
   public long getColorbufferTotalAllocationBytes() {
     return colorbufferTotalAllocationBytes_;
   }
@@ -201,6 +209,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
    * @return Whether the vulkanResourceUsage field is set.
    */
+  @java.lang.Override
   public boolean hasVulkanResourceUsage() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -212,6 +221,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
    * @return The vulkanResourceUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VulkanResourceUsage getVulkanResourceUsage() {
     return vulkanResourceUsage_ == null ? com.google.wireless.android.sdk.stats.VulkanResourceUsage.getDefaultInstance() : vulkanResourceUsage_;
   }
@@ -222,6 +232,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.VulkanResourceUsage vulkan_resource_usage = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VulkanResourceUsageOrBuilder getVulkanResourceUsageOrBuilder() {
     return vulkanResourceUsage_ == null ? com.google.wireless.android.sdk.stats.VulkanResourceUsage.getDefaultInstance() : vulkanResourceUsage_;
   }
@@ -659,6 +670,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 colorbuffer_count = 1;</code>
      * @return Whether the colorbufferCount field is set.
      */
+    @java.lang.Override
     public boolean hasColorbufferCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -670,6 +682,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 colorbuffer_count = 1;</code>
      * @return The colorbufferCount.
      */
+    @java.lang.Override
     public int getColorbufferCount() {
       return colorbufferCount_;
     }
@@ -708,6 +721,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 shader_count = 2;</code>
      * @return Whether the shaderCount field is set.
      */
+    @java.lang.Override
     public boolean hasShaderCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -715,6 +729,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 shader_count = 2;</code>
      * @return The shaderCount.
      */
+    @java.lang.Override
     public int getShaderCount() {
       return shaderCount_;
     }
@@ -745,6 +760,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 renderthread_count = 3;</code>
      * @return Whether the renderthreadCount field is set.
      */
+    @java.lang.Override
     public boolean hasRenderthreadCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -752,6 +768,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 renderthread_count = 3;</code>
      * @return The renderthreadCount.
      */
+    @java.lang.Override
     public int getRenderthreadCount() {
       return renderthreadCount_;
     }
@@ -782,6 +799,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 colorbuffer_total_allocation_bytes = 4;</code>
      * @return Whether the colorbufferTotalAllocationBytes field is set.
      */
+    @java.lang.Override
     public boolean hasColorbufferTotalAllocationBytes() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -789,6 +807,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 colorbuffer_total_allocation_bytes = 4;</code>
      * @return The colorbufferTotalAllocationBytes.
      */
+    @java.lang.Override
     public long getColorbufferTotalAllocationBytes() {
       return colorbufferTotalAllocationBytes_;
     }

@@ -13,7 +13,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code UnknownMessage}
  */
-public  final class UnknownMessage extends
+public final class UnknownMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:UnknownMessage)
     UnknownMessageOrBuilder {
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 type_id = 1;</code>
    * @return The typeId.
    */
+  @java.lang.Override
   public int getTypeId() {
     return typeId_;
   }
@@ -113,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 size_bytes = 2;</code>
    * @return The sizeBytes.
    */
+  @java.lang.Override
   public int getSizeBytes() {
     return sizeBytes_;
   }
@@ -448,6 +450,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 type_id = 1;</code>
      * @return The typeId.
      */
+    @java.lang.Override
     public int getTypeId() {
       return typeId_;
     }
@@ -478,6 +481,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 size_bytes = 2;</code>
      * @return The sizeBytes.
      */
+    @java.lang.Override
     public int getSizeBytes() {
       return sizeBytes_;
     }

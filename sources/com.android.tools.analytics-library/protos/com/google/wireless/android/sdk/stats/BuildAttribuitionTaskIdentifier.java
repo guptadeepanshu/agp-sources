@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildAttribuitionTaskIdentifier}
  */
-public  final class BuildAttribuitionTaskIdentifier extends
+public final class BuildAttribuitionTaskIdentifier extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildAttribuitionTaskIdentifier)
     BuildAttribuitionTaskIdentifierOrBuilder {
@@ -117,6 +117,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string task_class_name = 1;</code>
    * @return Whether the taskClassName field is set.
    */
+  @java.lang.Override
   public boolean hasTaskClassName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -129,6 +130,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string task_class_name = 1;</code>
    * @return The taskClassName.
    */
+  @java.lang.Override
   public java.lang.String getTaskClassName() {
     java.lang.Object ref = taskClassName_;
     if (ref instanceof java.lang.String) {
@@ -152,6 +154,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string task_class_name = 1;</code>
    * @return The bytes for taskClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTaskClassNameBytes() {
     java.lang.Object ref = taskClassName_;
@@ -176,6 +179,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
    * @return Whether the originPlugin field is set.
    */
+  @java.lang.Override
   public boolean hasOriginPlugin() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -187,6 +191,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
    * @return The originPlugin.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getOriginPlugin() {
     return originPlugin_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : originPlugin_;
   }
@@ -197,6 +202,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.BuildAttributionPluginIdentifier origin_plugin = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getOriginPluginOrBuilder() {
     return originPlugin_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : originPlugin_;
   }

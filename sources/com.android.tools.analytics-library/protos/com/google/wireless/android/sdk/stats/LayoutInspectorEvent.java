@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutInspectorEvent}
  */
-public  final class LayoutInspectorEvent extends
+public final class LayoutInspectorEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutInspectorEvent)
     LayoutInspectorEventOrBuilder {
@@ -330,7 +330,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutInspectorEvent.LayoutInspectorEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -341,7 +341,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutInspectorEvent.LayoutInspectorEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.UNKNOWN_EVENT_TYPE : result;
@@ -357,6 +357,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_in_ms = 2;</code>
    * @return Whether the durationInMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationInMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -368,6 +369,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_in_ms = 2;</code>
    * @return The durationInMs.
    */
+  @java.lang.Override
   public long getDurationInMs() {
     return durationInMs_;
   }
@@ -383,6 +385,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 data_size = 3;</code>
    * @return Whether the dataSize field is set.
    */
+  @java.lang.Override
   public boolean hasDataSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -395,6 +398,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 data_size = 3;</code>
    * @return The dataSize.
    */
+  @java.lang.Override
   public long getDataSize() {
     return dataSize_;
   }
@@ -410,6 +414,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 version = 4;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -422,6 +427,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 version = 4;</code>
    * @return The version.
    */
+  @java.lang.Override
   public int getVersion() {
     return version_;
   }
@@ -829,7 +835,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutInspectorEvent.LayoutInspectorEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -840,6 +846,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutInspectorEvent.LayoutInspectorEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType result = com.google.wireless.android.sdk.stats.LayoutInspectorEvent.LayoutInspectorEventType.valueOf(type_);
@@ -887,6 +894,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_in_ms = 2;</code>
      * @return Whether the durationInMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationInMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -898,6 +906,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_in_ms = 2;</code>
      * @return The durationInMs.
      */
+    @java.lang.Override
     public long getDurationInMs() {
       return durationInMs_;
     }
@@ -941,6 +950,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 data_size = 3;</code>
      * @return Whether the dataSize field is set.
      */
+    @java.lang.Override
     public boolean hasDataSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -953,6 +963,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 data_size = 3;</code>
      * @return The dataSize.
      */
+    @java.lang.Override
     public long getDataSize() {
       return dataSize_;
     }
@@ -998,6 +1009,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 version = 4;</code>
      * @return Whether the version field is set.
      */
+    @java.lang.Override
     public boolean hasVersion() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1010,6 +1022,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 version = 4;</code>
      * @return The version.
      */
+    @java.lang.Override
     public int getVersion() {
       return version_;
     }

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.IdePlugin}
  */
-public  final class IdePlugin extends
+public final class IdePlugin extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.IdePlugin)
     IdePluginOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return Whether the id field is set.
    */
+  @java.lang.Override
   public boolean hasId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public java.lang.String getId() {
     java.lang.Object ref = id_;
     if (ref instanceof java.lang.String) {
@@ -144,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return The bytes for id.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIdBytes() {
     java.lang.Object ref = id_;
@@ -168,6 +171,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -179,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -201,6 +206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 2;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;
@@ -225,6 +231,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool bundled = 3;</code>
    * @return Whether the bundled field is set.
    */
+  @java.lang.Override
   public boolean hasBundled() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -236,6 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool bundled = 3;</code>
    * @return The bundled.
    */
+  @java.lang.Override
   public boolean getBundled() {
     return bundled_;
   }
@@ -832,6 +840,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool bundled = 3;</code>
      * @return Whether the bundled field is set.
      */
+    @java.lang.Override
     public boolean hasBundled() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -843,6 +852,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool bundled = 3;</code>
      * @return The bundled.
      */
+    @java.lang.Override
     public boolean getBundled() {
       return bundled_;
     }

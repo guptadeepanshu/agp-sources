@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.UpgradeAssistantComponentInfo}
  */
-public  final class UpgradeAssistantComponentInfo extends
+public final class UpgradeAssistantComponentInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UpgradeAssistantComponentInfo)
     UpgradeAssistantComponentInfoOrBuilder {
@@ -397,7 +397,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings}
    */
-  public  static final class Java8DefaultProcessorSettings extends
+  public static final class Java8DefaultProcessorSettings extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings)
       Java8DefaultProcessorSettingsOrBuilder {
@@ -597,14 +597,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction no_language_level_action = 1;</code>
      * @return Whether the noLanguageLevelAction field is set.
      */
-    public boolean hasNoLanguageLevelAction() {
+    @java.lang.Override public boolean hasNoLanguageLevelAction() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction no_language_level_action = 1;</code>
      * @return The noLanguageLevelAction.
      */
-    public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction getNoLanguageLevelAction() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction getNoLanguageLevelAction() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction.valueOf(noLanguageLevelAction_);
       return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction.UNKNOWN_NO_LANGUAGE_LEVEL_ACTION : result;
@@ -928,13 +928,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction no_language_level_action = 1;</code>
        * @return Whether the noLanguageLevelAction field is set.
        */
-      public boolean hasNoLanguageLevelAction() {
+      @java.lang.Override public boolean hasNoLanguageLevelAction() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction no_language_level_action = 1;</code>
        * @return The noLanguageLevelAction.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction getNoLanguageLevelAction() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.NoLanguageLevelAction.valueOf(noLanguageLevelAction_);
@@ -1028,7 +1029,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1039,7 +1040,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind.UNKNOWN_ASSISTANT_COMPONENT_KIND : result;
@@ -1055,6 +1056,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_enabled = 2;</code>
    * @return Whether the isEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasIsEnabled() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1066,6 +1068,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_enabled = 2;</code>
    * @return The isEnabled.
    */
+  @java.lang.Override
   public boolean getIsEnabled() {
     return isEnabled_;
   }
@@ -1081,6 +1084,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
    * @return Whether the java8DefaultSettings field is set.
    */
+  @java.lang.Override
   public boolean hasJava8DefaultSettings() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1093,6 +1097,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
    * @return The java8DefaultSettings.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings getJava8DefaultSettings() {
     return java8DefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.getDefaultInstance() : java8DefaultSettings_;
   }
@@ -1104,6 +1109,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings java8_default_settings = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettingsOrBuilder getJava8DefaultSettingsOrBuilder() {
     return java8DefaultSettings_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.Java8DefaultProcessorSettings.getDefaultInstance() : java8DefaultSettings_;
   }
@@ -1490,7 +1496,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1501,6 +1507,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.UpgradeAssistantComponentKind.valueOf(kind_);
@@ -1548,6 +1555,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_enabled = 2;</code>
      * @return Whether the isEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasIsEnabled() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1559,6 +1567,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_enabled = 2;</code>
      * @return The isEnabled.
      */
+    @java.lang.Override
     public boolean getIsEnabled() {
       return isEnabled_;
     }

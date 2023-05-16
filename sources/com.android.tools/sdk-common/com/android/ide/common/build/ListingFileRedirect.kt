@@ -15,7 +15,6 @@
  */
 package com.android.ide.common.build
 
-import com.android.utils.ILogger
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringReader
@@ -39,36 +38,31 @@ object ListingFileRedirect {
     const val REDIRECT_FILE_NAME = "redirect.txt"
 
     fun writeRedirect(listingFile: File, into: File) {
+        val path = try {
+                into.parentFile.toPath().relativize(listingFile.toPath()).toString()
+            } catch(ex: IllegalArgumentException) {
+                listingFile.canonicalPath
+            }
         PrintWriter(into).use {
             it.println(REDIRECT_MARKER)
-            it.println("${REDIRECT_PROPERTY_NAME}=${listingFile.relativeTo(into.parentFile).path.replace("\\", "/")}")
+            it.println("${REDIRECT_PROPERTY_NAME}=${path.replace("\\", "/")}")
         }
     }
 
-    fun maybeExtractRedirectedFile(
-        redirectFile: File,
-        redirectFileContent: String? = null,
-        logger: ILogger? = null,
-    ): File? {
+    fun maybeExtractRedirectedFile(redirectFile: File, redirectFileContent: String? = null): File? {
         val fileContent = redirectFileContent ?: redirectFile.readText()
         return if (fileContent.startsWith(REDIRECT_MARKER)) {
-
-            logger?.info("Redirect file detected")
             val fileLocator = Properties().also {
                 it.load(StringReader(fileContent))
             }
-            fileLocator.getProperty(
-                REDIRECT_PROPERTY_NAME
-            ).let {
-                logger?.info("Redirect file pointing to %s", it)
-                redirectFile.parentFile.resolve(it)
-            }
-        } else {
-            logger?.info("No redirect file present, should be output.json")
-            null
-        }
+            val file = File(fileLocator.getProperty(REDIRECT_PROPERTY_NAME))
+            if(!file.isAbsolute())
+                redirectFile.parentFile.resolve(file)
+            else
+                file
+        } else null
     }
 
-    fun getListingFile(inputFile: File, logger: ILogger? = null) =
-        maybeExtractRedirectedFile(inputFile, logger = logger) ?: inputFile
+    fun getListingFile(inputFile: File) =
+        maybeExtractRedirectedFile(inputFile) ?: inputFile
 }

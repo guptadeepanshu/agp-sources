@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ProductDetails}
  */
-public  final class ProductDetails extends
+public final class ProductDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ProductDetails)
     ProductDetailsOrBuilder {
@@ -747,7 +747,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.ProductKind product = 1;</code>
    * @return Whether the product field is set.
    */
-  public boolean hasProduct() {
+  @java.lang.Override public boolean hasProduct() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -758,7 +758,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.ProductKind product = 1;</code>
    * @return The product.
    */
-  public com.google.wireless.android.sdk.stats.ProductDetails.ProductKind getProduct() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProductDetails.ProductKind getProduct() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProductDetails.ProductKind result = com.google.wireless.android.sdk.stats.ProductDetails.ProductKind.valueOf(product_);
     return result == null ? com.google.wireless.android.sdk.stats.ProductDetails.ProductKind.UNKNOWN_PRODUCT : result;
@@ -774,6 +774,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build = 2;</code>
    * @return Whether the build field is set.
    */
+  @java.lang.Override
   public boolean hasBuild() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -785,6 +786,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build = 2;</code>
    * @return The build.
    */
+  @java.lang.Override
   public java.lang.String getBuild() {
     java.lang.Object ref = build_;
     if (ref instanceof java.lang.String) {
@@ -807,6 +809,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build = 2;</code>
    * @return The bytes for build.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildBytes() {
     java.lang.Object ref = build_;
@@ -831,6 +834,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -842,6 +846,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -864,6 +869,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;
@@ -889,6 +895,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool preview = 4 [deprecated = true];</code>
    * @return Whether the preview field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasPreview() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -901,6 +908,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool preview = 4 [deprecated = true];</code>
    * @return The preview.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean getPreview() {
     return preview_;
   }
@@ -915,7 +923,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
    * @return Whether the osArchitecture field is set.
    */
-  public boolean hasOsArchitecture() {
+  @java.lang.Override public boolean hasOsArchitecture() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -926,7 +934,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
    * @return The osArchitecture.
    */
-  public com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture getOsArchitecture() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture getOsArchitecture() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture result = com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture.valueOf(osArchitecture_);
     return result == null ? com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture.UNKNOWN_CPU_ARCHITECTURE : result;
@@ -942,7 +950,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.SoftwareLifeCycleChannel channel = 6;</code>
    * @return Whether the channel field is set.
    */
-  public boolean hasChannel() {
+  @java.lang.Override public boolean hasChannel() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -953,7 +961,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.SoftwareLifeCycleChannel channel = 6;</code>
    * @return The channel.
    */
-  public com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel getChannel() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel getChannel() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel result = com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel.valueOf(channel_);
     return result == null ? com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel.UNKNOWN_LIFE_CYCLE_CHANNEL : result;
@@ -969,7 +977,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.IdeTheme theme = 7;</code>
    * @return Whether the theme field is set.
    */
-  public boolean hasTheme() {
+  @java.lang.Override public boolean hasTheme() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -980,7 +988,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails.IdeTheme theme = 7;</code>
    * @return The theme.
    */
-  public com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme getTheme() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme getTheme() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme result = com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme.valueOf(theme_);
     return result == null ? com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme.UNKNOWN_THEME : result;
@@ -1059,6 +1067,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 server_flags_changelist = 9;</code>
    * @return Whether the serverFlagsChangelist field is set.
    */
+  @java.lang.Override
   public boolean hasServerFlagsChangelist() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1070,6 +1079,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 server_flags_changelist = 9;</code>
    * @return The serverFlagsChangelist.
    */
+  @java.lang.Override
   public long getServerFlagsChangelist() {
     return serverFlagsChangelist_;
   }
@@ -1610,7 +1620,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.ProductKind product = 1;</code>
      * @return Whether the product field is set.
      */
-    public boolean hasProduct() {
+    @java.lang.Override public boolean hasProduct() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1621,6 +1631,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.ProductKind product = 1;</code>
      * @return The product.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProductDetails.ProductKind getProduct() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProductDetails.ProductKind result = com.google.wireless.android.sdk.stats.ProductDetails.ProductKind.valueOf(product_);
@@ -1885,6 +1896,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool preview = 4 [deprecated = true];</code>
      * @return Whether the preview field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasPreview() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1897,6 +1909,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool preview = 4 [deprecated = true];</code>
      * @return The preview.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean getPreview() {
       return preview_;
     }
@@ -1941,7 +1954,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
      * @return Whether the osArchitecture field is set.
      */
-    public boolean hasOsArchitecture() {
+    @java.lang.Override public boolean hasOsArchitecture() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -1952,6 +1965,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.CpuArchitecture os_architecture = 5;</code>
      * @return The osArchitecture.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture getOsArchitecture() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture result = com.google.wireless.android.sdk.stats.ProductDetails.CpuArchitecture.valueOf(osArchitecture_);
@@ -1999,7 +2013,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.SoftwareLifeCycleChannel channel = 6;</code>
      * @return Whether the channel field is set.
      */
-    public boolean hasChannel() {
+    @java.lang.Override public boolean hasChannel() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -2010,6 +2024,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.SoftwareLifeCycleChannel channel = 6;</code>
      * @return The channel.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel getChannel() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel result = com.google.wireless.android.sdk.stats.ProductDetails.SoftwareLifeCycleChannel.valueOf(channel_);
@@ -2057,7 +2072,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.IdeTheme theme = 7;</code>
      * @return Whether the theme field is set.
      */
-    public boolean hasTheme() {
+    @java.lang.Override public boolean hasTheme() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -2068,6 +2083,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProductDetails.IdeTheme theme = 7;</code>
      * @return The theme.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme getTheme() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme result = com.google.wireless.android.sdk.stats.ProductDetails.IdeTheme.valueOf(theme_);
@@ -2287,6 +2303,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 server_flags_changelist = 9;</code>
      * @return Whether the serverFlagsChangelist field is set.
      */
+    @java.lang.Override
     public boolean hasServerFlagsChangelist() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2298,6 +2315,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 server_flags_changelist = 9;</code>
      * @return The serverFlagsChangelist.
      */
+    @java.lang.Override
     public long getServerFlagsChangelist() {
       return serverFlagsChangelist_;
     }

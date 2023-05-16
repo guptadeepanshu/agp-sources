@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ProjectApiUse}
  */
-public  final class ProjectApiUse extends
+public final class ProjectApiUse extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ProjectApiUse)
     ProjectApiUseOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool builder_test_api_device_provider = 1;</code>
    * @return Whether the builderTestApiDeviceProvider field is set.
    */
+  @java.lang.Override
   public boolean hasBuilderTestApiDeviceProvider() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool builder_test_api_device_provider = 1;</code>
    * @return The builderTestApiDeviceProvider.
    */
+  @java.lang.Override
   public boolean getBuilderTestApiDeviceProvider() {
     return builderTestApiDeviceProvider_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool builder_test_api_test_server = 2;</code>
    * @return Whether the builderTestApiTestServer field is set.
    */
+  @java.lang.Override
   public boolean hasBuilderTestApiTestServer() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool builder_test_api_test_server = 2;</code>
    * @return The builderTestApiTestServer.
    */
+  @java.lang.Override
   public boolean getBuilderTestApiTestServer() {
     return builderTestApiTestServer_;
   }
@@ -500,6 +504,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool builder_test_api_device_provider = 1;</code>
      * @return Whether the builderTestApiDeviceProvider field is set.
      */
+    @java.lang.Override
     public boolean hasBuilderTestApiDeviceProvider() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -511,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool builder_test_api_device_provider = 1;</code>
      * @return The builderTestApiDeviceProvider.
      */
+    @java.lang.Override
     public boolean getBuilderTestApiDeviceProvider() {
       return builderTestApiDeviceProvider_;
     }
@@ -553,6 +559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool builder_test_api_test_server = 2;</code>
      * @return Whether the builderTestApiTestServer field is set.
      */
+    @java.lang.Override
     public boolean hasBuilderTestApiTestServer() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -564,6 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool builder_test_api_test_server = 2;</code>
      * @return The builderTestApiTestServer.
      */
+    @java.lang.Override
     public boolean getBuilderTestApiTestServer() {
       return builderTestApiTestServer_;
     }

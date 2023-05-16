@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DesignEditorHelpPanelEvent}
  */
-public  final class DesignEditorHelpPanelEvent extends
+public final class DesignEditorHelpPanelEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DesignEditorHelpPanelEvent)
     DesignEditorHelpPanelEventOrBuilder {
@@ -422,7 +422,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelAction action = 1;</code>
    * @return Whether the action field is set.
    */
-  public boolean hasAction() {
+  @java.lang.Override public boolean hasAction() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -433,7 +433,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelAction action = 1;</code>
    * @return The action.
    */
-  public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction getAction() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction getAction() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.valueOf(action_);
     return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.UNKNOWN_ACTION : result;
@@ -449,7 +449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelType help_panel_type = 2;</code>
    * @return Whether the helpPanelType field is set.
    */
-  public boolean hasHelpPanelType() {
+  @java.lang.Override public boolean hasHelpPanelType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -460,7 +460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelType help_panel_type = 2;</code>
    * @return The helpPanelType.
    */
-  public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType getHelpPanelType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType getHelpPanelType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.valueOf(helpPanelType_);
     return result == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.UNKNOWN_PANEL_TYPE : result;
@@ -476,6 +476,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_close_ms = 3;</code>
    * @return Whether the timeToCloseMs field is set.
    */
+  @java.lang.Override
   public boolean hasTimeToCloseMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -487,6 +488,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_close_ms = 3;</code>
    * @return The timeToCloseMs.
    */
+  @java.lang.Override
   public long getTimeToCloseMs() {
     return timeToCloseMs_;
   }
@@ -867,7 +869,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelAction action = 1;</code>
      * @return Whether the action field is set.
      */
-    public boolean hasAction() {
+    @java.lang.Override public boolean hasAction() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -878,6 +880,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelAction action = 1;</code>
      * @return The action.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction getAction() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelAction.valueOf(action_);
@@ -925,7 +928,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelType help_panel_type = 2;</code>
      * @return Whether the helpPanelType field is set.
      */
-    public boolean hasHelpPanelType() {
+    @java.lang.Override public boolean hasHelpPanelType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -936,6 +939,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DesignEditorHelpPanelEvent.HelpPanelType help_panel_type = 2;</code>
      * @return The helpPanelType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType getHelpPanelType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType result = com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.HelpPanelType.valueOf(helpPanelType_);
@@ -983,6 +987,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_close_ms = 3;</code>
      * @return Whether the timeToCloseMs field is set.
      */
+    @java.lang.Override
     public boolean hasTimeToCloseMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -994,6 +999,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_close_ms = 3;</code>
      * @return The timeToCloseMs.
      */
+    @java.lang.Override
     public long getTimeToCloseMs() {
       return timeToCloseMs_;
     }

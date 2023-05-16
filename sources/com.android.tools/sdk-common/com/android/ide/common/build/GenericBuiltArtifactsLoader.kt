@@ -48,12 +48,7 @@ object GenericBuiltArtifactsLoader {
      */
     @JvmStatic
     fun loadFromFile(inputFile: File?, logger: ILogger): GenericBuiltArtifacts? {
-        if (inputFile == null) {
-            logger.info("null redirect file passed to loadFromFile")
-            return null
-        }
-        if (!inputFile.exists()) {
-            logger.info("%s file does not exist", inputFile.absolutePath)
+        if (inputFile == null || !inputFile.exists()) {
             return null
         }
         val gsonBuilder = GsonBuilder()

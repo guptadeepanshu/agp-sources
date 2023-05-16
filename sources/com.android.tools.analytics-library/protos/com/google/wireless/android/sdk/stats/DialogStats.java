@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DialogStats}
  */
-public  final class DialogStats extends
+public final class DialogStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DialogStats)
     DialogStatsOrBuilder {
@@ -249,6 +249,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string dialog_class_name = 1;</code>
    * @return Whether the dialogClassName field is set.
    */
+  @java.lang.Override
   public boolean hasDialogClassName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -261,6 +262,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string dialog_class_name = 1;</code>
    * @return The dialogClassName.
    */
+  @java.lang.Override
   public java.lang.String getDialogClassName() {
     java.lang.Object ref = dialogClassName_;
     if (ref instanceof java.lang.String) {
@@ -284,6 +286,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string dialog_class_name = 1;</code>
    * @return The bytes for dialogClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDialogClassNameBytes() {
     java.lang.Object ref = dialogClassName_;
@@ -308,7 +311,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DialogStats.DialogState state = 2;</code>
    * @return Whether the state field is set.
    */
-  public boolean hasState() {
+  @java.lang.Override public boolean hasState() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -319,7 +322,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DialogStats.DialogState state = 2;</code>
    * @return The state.
    */
-  public com.google.wireless.android.sdk.stats.DialogStats.DialogState getState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DialogStats.DialogState getState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DialogStats.DialogState result = com.google.wireless.android.sdk.stats.DialogStats.DialogState.valueOf(state_);
     return result == null ? com.google.wireless.android.sdk.stats.DialogStats.DialogState.UNKNOWN_DIALOG_STATE : result;
@@ -791,7 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DialogStats.DialogState state = 2;</code>
      * @return Whether the state field is set.
      */
-    public boolean hasState() {
+    @java.lang.Override public boolean hasState() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -802,6 +805,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DialogStats.DialogState state = 2;</code>
      * @return The state.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DialogStats.DialogState getState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DialogStats.DialogState result = com.google.wireless.android.sdk.stats.DialogStats.DialogState.valueOf(state_);

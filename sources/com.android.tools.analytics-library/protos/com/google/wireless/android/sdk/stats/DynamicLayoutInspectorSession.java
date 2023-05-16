@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorSession}
  */
-public  final class DynamicLayoutInspectorSession extends
+public final class DynamicLayoutInspectorSession extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorSession)
     DynamicLayoutInspectorSessionOrBuilder {
@@ -174,6 +174,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
    * @return Whether the live field is set.
    */
+  @java.lang.Override
   public boolean hasLive() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -185,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
    * @return The live.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode getLive() {
     return live_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.getDefaultInstance() : live_;
   }
@@ -195,6 +197,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorLiveMode live = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveModeOrBuilder getLiveOrBuilder() {
     return live_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorLiveMode.getDefaultInstance() : live_;
   }
@@ -209,6 +212,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
    * @return Whether the rotation field is set.
    */
+  @java.lang.Override
   public boolean hasRotation() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -220,6 +224,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
    * @return The rotation.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation getRotation() {
     return rotation_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.getDefaultInstance() : rotation_;
   }
@@ -230,6 +235,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorRotation rotation = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotationOrBuilder getRotationOrBuilder() {
     return rotation_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorRotation.getDefaultInstance() : rotation_;
   }
@@ -244,6 +250,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
    * @return Whether the memory field is set.
    */
+  @java.lang.Override
   public boolean hasMemory() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -255,6 +262,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
    * @return The memory.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory getMemory() {
     return memory_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.getDefaultInstance() : memory_;
   }
@@ -265,6 +273,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorMemory memory = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemoryOrBuilder getMemoryOrBuilder() {
     return memory_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.getDefaultInstance() : memory_;
   }
@@ -279,6 +288,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
    * @return Whether the compose field is set.
    */
+  @java.lang.Override
   public boolean hasCompose() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -290,6 +300,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
    * @return The compose.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose getCompose() {
     return compose_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.getDefaultInstance() : compose_;
   }
@@ -300,6 +311,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorCompose compose = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorComposeOrBuilder getComposeOrBuilder() {
     return compose_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorCompose.getDefaultInstance() : compose_;
   }
@@ -314,6 +326,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
    * @return Whether the system field is set.
    */
+  @java.lang.Override
   public boolean hasSystem() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -325,6 +338,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
    * @return The system.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode getSystem() {
     return system_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.getDefaultInstance() : system_;
   }
@@ -335,6 +349,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorSystemNode system = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNodeOrBuilder getSystemOrBuilder() {
     return system_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSystemNode.getDefaultInstance() : system_;
   }
@@ -349,6 +364,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
    * @return Whether the gotoDeclaration field is set.
    */
+  @java.lang.Override
   public boolean hasGotoDeclaration() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -360,6 +376,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
    * @return The gotoDeclaration.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration getGotoDeclaration() {
     return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
   }
@@ -370,6 +387,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorGotoDeclaration goto_declaration = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclarationOrBuilder getGotoDeclarationOrBuilder() {
     return gotoDeclaration_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorGotoDeclaration.getDefaultInstance() : gotoDeclaration_;
   }

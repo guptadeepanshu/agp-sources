@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LintIssueId}
  */
-public  final class LintIssueId extends
+public final class LintIssueId extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LintIssueId)
     LintIssueIdOrBuilder {
@@ -342,6 +342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return Whether the issueId field is set.
    */
+  @java.lang.Override
   public boolean hasIssueId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -354,6 +355,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return The issueId.
    */
+  @java.lang.Override
   public java.lang.String getIssueId() {
     java.lang.Object ref = issueId_;
     if (ref instanceof java.lang.String) {
@@ -377,6 +379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return The bytes for issueId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIssueIdBytes() {
     java.lang.Object ref = issueId_;
@@ -401,6 +404,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 count = 2;</code>
    * @return Whether the count field is set.
    */
+  @java.lang.Override
   public boolean hasCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -412,6 +416,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 count = 2;</code>
    * @return The count.
    */
+  @java.lang.Override
   public long getCount() {
     return count_;
   }
@@ -426,7 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintIssueId.LintSeverity severity = 3;</code>
    * @return Whether the severity field is set.
    */
-  public boolean hasSeverity() {
+  @java.lang.Override public boolean hasSeverity() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -437,7 +442,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintIssueId.LintSeverity severity = 3;</code>
    * @return The severity.
    */
-  public com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity getSeverity() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity getSeverity() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity result = com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity.valueOf(severity_);
     return result == null ? com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity.UNKNOWN_SEVERITY : result;
@@ -935,6 +940,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 count = 2;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -946,6 +952,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 count = 2;</code>
      * @return The count.
      */
+    @java.lang.Override
     public long getCount() {
       return count_;
     }
@@ -988,7 +995,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintIssueId.LintSeverity severity = 3;</code>
      * @return Whether the severity field is set.
      */
-    public boolean hasSeverity() {
+    @java.lang.Override public boolean hasSeverity() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -999,6 +1006,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintIssueId.LintSeverity severity = 3;</code>
      * @return The severity.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity getSeverity() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity result = com.google.wireless.android.sdk.stats.LintIssueId.LintSeverity.valueOf(severity_);

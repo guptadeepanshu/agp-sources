@@ -17,30 +17,32 @@
 package com.android.build.gradle.internal
 
 import com.android.SdkConstants
+import com.android.builder.utils.SynchronizedFile
 import com.android.prefs.AndroidLocationsProvider
 import com.android.sdklib.PathFileWrapper
 import com.android.sdklib.devices.DeviceManager
 import com.android.sdklib.internal.avd.AvdCamera
 import com.android.sdklib.internal.avd.AvdInfo
+import com.android.sdklib.internal.avd.AvdInfo.AvdStatus
 import com.android.sdklib.internal.avd.EmulatedProperties
 import com.android.sdklib.internal.avd.GpuMode
 import com.android.sdklib.internal.avd.HardwareProperties
 import com.android.sdklib.repository.AndroidSdkHandler
 import com.android.sdklib.repository.LoggerProgressIndicatorWrapper
+import com.android.testing.utils.isWearTvOrAutoDevice
+import com.android.utils.FileUtils
 import com.android.utils.ILogger
 import com.android.utils.StdLogger
-import org.gradle.api.file.Directory
-import org.gradle.api.provider.Provider
+import com.sun.xml.bind.v2.util.EditDistance
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 import java.nio.file.Path
 import kotlin.math.min
+import org.gradle.api.file.Directory
+import org.gradle.api.provider.Provider
 
 private const val MAX_SYSTEM_IMAGE_RETRIES = 4
 private const val BASE_RETRY_DELAY_SECONDS = 2L
 private const val MAX_RETRY_DELAY_SECONDS = 10L
-
-private val avdLocks: ConcurrentHashMap<String, Any> = ConcurrentHashMap()
 
 /**
  * Manages AVDs for the Avd build service inside the Android Gradle Plugin.
@@ -70,27 +72,50 @@ class AvdManager(
         DeviceManager.createInstance(androidLocationsProvider, sdkDirectory.toPath(), logger)
     }
 
+    init {
+        FileUtils.mkdirs(avdFolder)
+    }
+
     fun createOrRetrieveAvd(
         imageProvider: Provider<Directory>,
         imageHash: String,
         deviceName: String,
         hardwareProfile: String
     ): File {
-        val lock = avdLocks.computeIfAbsent(deviceName) {
-            Any()
-        }
-        synchronized(lock) {
+        // It fails to generate a snapshot image if you try to create two AVDs with a same name
+        // simultaneously. https://issuetracker.google.com/issues/206798666
+        return runWithMultiProcessLocking(deviceName) {
             avdManager.reloadAvds(logger)
             val info = avdManager.getAvd(deviceName, false)
             info?.let {
-                logger.info("Device: $deviceName already exists. AVD creation skipped.")
-                // already generated the avd
-                return info.configFile.toFile()
+                if (info.status == AvdStatus.OK) {
+                    logger.info("Device: $deviceName already exists. AVD creation skipped.")
+                    return@runWithMultiProcessLocking info.configFile.toFile()
+                }
+                // avd exists but is invalid, remove before we recreate.
+                logger.warning(
+                    "$deviceName needs to be recreated because it is invalid " +
+                            "(AvdStatus = ${info.status})"
+                )
+                deleteAvds(listOf(deviceName))
             }
 
             val newInfo = createAvd(imageProvider, imageHash, deviceName, hardwareProfile)
-            return newInfo?.configFile?.toFile() ?: error("AVD could not be created.")
+            return@runWithMultiProcessLocking newInfo?.configFile?.toFile()
+                ?: error("AVD could not be created.")
         }
+    }
+
+    private fun <V> runWithMultiProcessLocking(deviceName: String, runnable: () -> V): V {
+        return SynchronizedFile.getInstanceWithMultiProcessLocking(avdFolder.resolve(deviceName))
+            .write {
+                val result = try {
+                    runnable()
+                } finally {
+                    SynchronizedFile.getLockFile(it).delete()
+                }
+                return@write result
+            }
     }
 
     internal fun createAvd(
@@ -108,7 +133,19 @@ class AvdManager(
 
         val device = deviceManager.getDevices(DeviceManager.ALL_DEVICES).find {
             it.displayName == hardwareProfile
-        } ?: error("Failed to find hardware profile for name: $hardwareProfile")
+        }
+        if (device == null) {
+            val availableDevices = getHardwareProfiles(hardwareProfile).ifEmpty {
+                // If there is no good alternative hardware profiles are found,
+                // let's suggest Pixel 6 and other Pixel devices.
+                getHardwareProfiles("Pixel 6")
+            }
+            val errMsg = """
+                Failed to find hardware profile for name: $hardwareProfile
+                Try one of the following device profiles: ${availableDevices.joinToString(", ")}
+                """.trimIndent()
+            error(errMsg)
+        }
 
         val hardwareConfig = defaultHardwareConfig()
         hardwareConfig.putAll(DeviceManager.getHardwareProperties(device))
@@ -135,11 +172,32 @@ class AvdManager(
         )
     }
 
-    fun loadSnapshotIfNeeded(deviceName: String) {
-        val lock = avdLocks.computeIfAbsent(deviceName) {
-            Any()
-        }
-        synchronized(lock) {
+    /**
+     * Returns a list of available hardware profile names. The returned list contains up to
+     * [maxSuggestions] hardware profile names that is sorted by edit-distance. Candidates
+     * whose edit-distance is farther than [maxEditDistance] will be excluded.
+     */
+    private fun getHardwareProfiles(
+        hardwareProfile: String,
+        maxEditDistance: Int = 3,
+        maxSuggestions: Int = 5): List<String> {
+        return deviceManager.getDevices(DeviceManager.ALL_DEVICES)
+            .asSequence()
+            .map { it.displayName }
+            .filterNot(::isWearTvOrAutoDevice)
+            .distinct()
+            .map { it to EditDistance.editDistance(hardwareProfile, it) }
+            .filter { (_, distance) -> distance <= maxEditDistance }
+            .sortedBy { (_, distance) ->  distance }
+            .map { (name, _) -> name }
+            .take(maxSuggestions)
+            .toList()
+    }
+
+    fun loadSnapshotIfNeeded(deviceName: String, emulatorGpuFlag: String) {
+        // It fails to generate a snapshot image if you try to create a snapshot for two
+        // AVD with a same name simultaneously. https://issuetracker.google.com/issues/206798666
+        runWithMultiProcessLocking(deviceName) {
             val emulatorProvider = versionedSdkLoader.get().emulatorDirectoryProvider
             val emulatorExecutable = snapshotHandler.getEmulatorExecutable(emulatorProvider)
 
@@ -147,11 +205,12 @@ class AvdManager(
                     deviceName,
                     emulatorExecutable,
                     avdFolder,
+                    emulatorGpuFlag,
                     logger
                 )
             ) {
                 logger.verbose("Snapshot already exists for device $deviceName")
-                return
+                return@runWithMultiProcessLocking
             }
 
             val adbExecutable = versionedSdkLoader.get().adbExecutableProvider.get().asFile
@@ -162,6 +221,7 @@ class AvdManager(
                 emulatorExecutable,
                 adbExecutable,
                 avdFolder,
+                emulatorGpuFlag,
                 logger
             )
 
@@ -169,11 +229,12 @@ class AvdManager(
                     deviceName,
                     emulatorExecutable,
                     avdFolder,
+                    emulatorGpuFlag,
                     logger
                 )
             ) {
                 logger.verbose("Verified snapshot created for: $deviceName.")
-            }  else {
+            } else {
                 error("""
                     Snapshot setup ran successfully, but the snapshot failed to be created. This is
                     likely to a lack of disk space for the snapshot. Try the cleanManagedDevices

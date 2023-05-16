@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.WhatsNewAssistantUpdateEvent}
  */
-public  final class WhatsNewAssistantUpdateEvent extends
+public final class WhatsNewAssistantUpdateEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.WhatsNewAssistantUpdateEvent)
     WhatsNewAssistantUpdateEventOrBuilder {
@@ -221,7 +221,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent}
    */
-  public  static final class ActionButtonEvent extends
+  public static final class ActionButtonEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent)
       ActionButtonEventOrBuilder {
@@ -767,7 +767,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType action_button_type = 1;</code>
      * @return Whether the actionButtonType field is set.
      */
-    public boolean hasActionButtonType() {
+    @java.lang.Override public boolean hasActionButtonType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -778,7 +778,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType action_button_type = 1;</code>
      * @return The actionButtonType.
      */
-    public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType getActionButtonType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType getActionButtonType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.valueOf(actionButtonType_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.UNKNOWN_BUTTON : result;
@@ -794,7 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType event_type = 2;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -805,7 +805,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType event_type = 2;</code>
      * @return The eventType.
      */
-    public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType getEventType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.valueOf(eventType_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.UNKNOWN_TYPE : result;
@@ -821,7 +821,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState action_button_state = 3;</code>
      * @return Whether the actionButtonState field is set.
      */
-    public boolean hasActionButtonState() {
+    @java.lang.Override public boolean hasActionButtonState() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -832,7 +832,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState action_button_state = 3;</code>
      * @return The actionButtonState.
      */
-    public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState getActionButtonState() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState getActionButtonState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.valueOf(actionButtonState_);
       return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.UNKNOWN_STATE : result;
@@ -848,6 +848,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_from_wna_open = 4;</code>
      * @return Whether the timeFromWnaOpen field is set.
      */
+    @java.lang.Override
     public boolean hasTimeFromWnaOpen() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -859,6 +860,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_from_wna_open = 4;</code>
      * @return The timeFromWnaOpen.
      */
+    @java.lang.Override
     public long getTimeFromWnaOpen() {
       return timeFromWnaOpen_;
     }
@@ -1264,7 +1266,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType action_button_type = 1;</code>
        * @return Whether the actionButtonType field is set.
        */
-      public boolean hasActionButtonType() {
+      @java.lang.Override public boolean hasActionButtonType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -1275,6 +1277,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType action_button_type = 1;</code>
        * @return The actionButtonType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType getActionButtonType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonType.valueOf(actionButtonType_);
@@ -1322,7 +1325,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType event_type = 2;</code>
        * @return Whether the eventType field is set.
        */
-      public boolean hasEventType() {
+      @java.lang.Override public boolean hasEventType() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -1333,6 +1336,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType event_type = 2;</code>
        * @return The eventType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType getEventType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.EventType.valueOf(eventType_);
@@ -1380,7 +1384,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState action_button_state = 3;</code>
        * @return Whether the actionButtonState field is set.
        */
-      public boolean hasActionButtonState() {
+      @java.lang.Override public boolean hasActionButtonState() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -1391,6 +1395,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState action_button_state = 3;</code>
        * @return The actionButtonState.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState getActionButtonState() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState result = com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent.ActionButtonState.valueOf(actionButtonState_);
@@ -1438,6 +1443,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 time_from_wna_open = 4;</code>
        * @return Whether the timeFromWnaOpen field is set.
        */
+      @java.lang.Override
       public boolean hasTimeFromWnaOpen() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1449,6 +1455,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 time_from_wna_open = 4;</code>
        * @return The timeFromWnaOpen.
        */
+      @java.lang.Override
       public long getTimeFromWnaOpen() {
         return timeFromWnaOpen_;
       }
@@ -1545,6 +1552,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool auto_opened = 1;</code>
    * @return Whether the autoOpened field is set.
    */
+  @java.lang.Override
   public boolean hasAutoOpened() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -1556,6 +1564,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool auto_opened = 1;</code>
    * @return The autoOpened.
    */
+  @java.lang.Override
   public boolean getAutoOpened() {
     return autoOpened_;
   }
@@ -1570,6 +1579,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool update_flow = 2;</code>
    * @return Whether the updateFlow field is set.
    */
+  @java.lang.Override
   public boolean hasUpdateFlow() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1581,6 +1591,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool update_flow = 2;</code>
    * @return The updateFlow.
    */
+  @java.lang.Override
   public boolean getUpdateFlow() {
     return updateFlow_;
   }
@@ -1595,6 +1606,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool scrolled_to_bottom = 3;</code>
    * @return Whether the scrolledToBottom field is set.
    */
+  @java.lang.Override
   public boolean hasScrolledToBottom() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1606,6 +1618,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool scrolled_to_bottom = 3;</code>
    * @return The scrolledToBottom.
    */
+  @java.lang.Override
   public boolean getScrolledToBottom() {
     return scrolledToBottom_;
   }
@@ -1620,6 +1633,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_scrolled_to_bottom = 7;</code>
    * @return Whether the timeToScrolledToBottom field is set.
    */
+  @java.lang.Override
   public boolean hasTimeToScrolledToBottom() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1631,6 +1645,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_scrolled_to_bottom = 7;</code>
    * @return The timeToScrolledToBottom.
    */
+  @java.lang.Override
   public long getTimeToScrolledToBottom() {
     return timeToScrolledToBottom_;
   }
@@ -1645,6 +1660,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool dismissed = 4;</code>
    * @return Whether the dismissed field is set.
    */
+  @java.lang.Override
   public boolean hasDismissed() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1656,6 +1672,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool dismissed = 4;</code>
    * @return The dismissed.
    */
+  @java.lang.Override
   public boolean getDismissed() {
     return dismissed_;
   }
@@ -1670,6 +1687,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_update_ms = 5;</code>
    * @return Whether the timeToUpdateMs field is set.
    */
+  @java.lang.Override
   public boolean hasTimeToUpdateMs() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1681,6 +1699,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_update_ms = 5;</code>
    * @return The timeToUpdateMs.
    */
+  @java.lang.Override
   public long getTimeToUpdateMs() {
     return timeToUpdateMs_;
   }
@@ -1695,6 +1714,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_close_ms = 6;</code>
    * @return Whether the timeToCloseMs field is set.
    */
+  @java.lang.Override
   public boolean hasTimeToCloseMs() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1706,6 +1726,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 time_to_close_ms = 6;</code>
    * @return The timeToCloseMs.
    */
+  @java.lang.Override
   public long getTimeToCloseMs() {
     return timeToCloseMs_;
   }
@@ -1719,6 +1740,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent action_button_events = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent> getActionButtonEventsList() {
     return actionButtonEvents_;
   }
@@ -1729,6 +1751,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent action_button_events = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEventOrBuilder> 
       getActionButtonEventsOrBuilderList() {
     return actionButtonEvents_;
@@ -1740,6 +1763,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent action_button_events = 8;</code>
    */
+  @java.lang.Override
   public int getActionButtonEventsCount() {
     return actionButtonEvents_.size();
   }
@@ -1750,6 +1774,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent action_button_events = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEvent getActionButtonEvents(int index) {
     return actionButtonEvents_.get(index);
   }
@@ -1760,6 +1785,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.WhatsNewAssistantUpdateEvent.ActionButtonEvent action_button_events = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.ActionButtonEventOrBuilder getActionButtonEventsOrBuilder(
       int index) {
     return actionButtonEvents_.get(index);
@@ -2304,6 +2330,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool auto_opened = 1;</code>
      * @return Whether the autoOpened field is set.
      */
+    @java.lang.Override
     public boolean hasAutoOpened() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -2315,6 +2342,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool auto_opened = 1;</code>
      * @return The autoOpened.
      */
+    @java.lang.Override
     public boolean getAutoOpened() {
       return autoOpened_;
     }
@@ -2357,6 +2385,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool update_flow = 2;</code>
      * @return Whether the updateFlow field is set.
      */
+    @java.lang.Override
     public boolean hasUpdateFlow() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2368,6 +2397,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool update_flow = 2;</code>
      * @return The updateFlow.
      */
+    @java.lang.Override
     public boolean getUpdateFlow() {
       return updateFlow_;
     }
@@ -2410,6 +2440,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool scrolled_to_bottom = 3;</code>
      * @return Whether the scrolledToBottom field is set.
      */
+    @java.lang.Override
     public boolean hasScrolledToBottom() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2421,6 +2452,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool scrolled_to_bottom = 3;</code>
      * @return The scrolledToBottom.
      */
+    @java.lang.Override
     public boolean getScrolledToBottom() {
       return scrolledToBottom_;
     }
@@ -2463,6 +2495,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_scrolled_to_bottom = 7;</code>
      * @return Whether the timeToScrolledToBottom field is set.
      */
+    @java.lang.Override
     public boolean hasTimeToScrolledToBottom() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2474,6 +2507,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_scrolled_to_bottom = 7;</code>
      * @return The timeToScrolledToBottom.
      */
+    @java.lang.Override
     public long getTimeToScrolledToBottom() {
       return timeToScrolledToBottom_;
     }
@@ -2516,6 +2550,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool dismissed = 4;</code>
      * @return Whether the dismissed field is set.
      */
+    @java.lang.Override
     public boolean hasDismissed() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2527,6 +2562,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool dismissed = 4;</code>
      * @return The dismissed.
      */
+    @java.lang.Override
     public boolean getDismissed() {
       return dismissed_;
     }
@@ -2569,6 +2605,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_update_ms = 5;</code>
      * @return Whether the timeToUpdateMs field is set.
      */
+    @java.lang.Override
     public boolean hasTimeToUpdateMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2580,6 +2617,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_update_ms = 5;</code>
      * @return The timeToUpdateMs.
      */
+    @java.lang.Override
     public long getTimeToUpdateMs() {
       return timeToUpdateMs_;
     }
@@ -2622,6 +2660,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_close_ms = 6;</code>
      * @return Whether the timeToCloseMs field is set.
      */
+    @java.lang.Override
     public boolean hasTimeToCloseMs() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -2633,6 +2672,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 time_to_close_ms = 6;</code>
      * @return The timeToCloseMs.
      */
+    @java.lang.Override
     public long getTimeToCloseMs() {
       return timeToCloseMs_;
     }

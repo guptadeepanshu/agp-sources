@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.UpgradeAssistantComponentEvent}
  */
-public  final class UpgradeAssistantComponentEvent extends
+public final class UpgradeAssistantComponentEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UpgradeAssistantComponentEvent)
     UpgradeAssistantComponentEventOrBuilder {
@@ -153,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string upgrade_uuid = 1;</code>
    * @return Whether the upgradeUuid field is set.
    */
+  @java.lang.Override
   public boolean hasUpgradeUuid() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -164,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string upgrade_uuid = 1;</code>
    * @return The upgradeUuid.
    */
+  @java.lang.Override
   public java.lang.String getUpgradeUuid() {
     java.lang.Object ref = upgradeUuid_;
     if (ref instanceof java.lang.String) {
@@ -186,6 +188,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string upgrade_uuid = 1;</code>
    * @return The bytes for upgradeUuid.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getUpgradeUuidBytes() {
     java.lang.Object ref = upgradeUuid_;
@@ -210,6 +213,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_agp_version = 2;</code>
    * @return Whether the currentAgpVersion field is set.
    */
+  @java.lang.Override
   public boolean hasCurrentAgpVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -221,6 +225,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_agp_version = 2;</code>
    * @return The currentAgpVersion.
    */
+  @java.lang.Override
   public java.lang.String getCurrentAgpVersion() {
     java.lang.Object ref = currentAgpVersion_;
     if (ref instanceof java.lang.String) {
@@ -243,6 +248,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_agp_version = 2;</code>
    * @return The bytes for currentAgpVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCurrentAgpVersionBytes() {
     java.lang.Object ref = currentAgpVersion_;
@@ -267,6 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_agp_version = 3;</code>
    * @return Whether the newAgpVersion field is set.
    */
+  @java.lang.Override
   public boolean hasNewAgpVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -278,6 +285,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_agp_version = 3;</code>
    * @return The newAgpVersion.
    */
+  @java.lang.Override
   public java.lang.String getNewAgpVersion() {
     java.lang.Object ref = newAgpVersion_;
     if (ref instanceof java.lang.String) {
@@ -300,6 +308,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_agp_version = 3;</code>
    * @return The bytes for newAgpVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNewAgpVersionBytes() {
     java.lang.Object ref = newAgpVersion_;
@@ -324,6 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_gradle_version = 4;</code>
    * @return Whether the currentGradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasCurrentGradleVersion() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -335,6 +345,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_gradle_version = 4;</code>
    * @return The currentGradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getCurrentGradleVersion() {
     java.lang.Object ref = currentGradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -357,6 +368,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string current_gradle_version = 4;</code>
    * @return The bytes for currentGradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCurrentGradleVersionBytes() {
     java.lang.Object ref = currentGradleVersion_;
@@ -381,6 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_gradle_version = 5;</code>
    * @return Whether the newGradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasNewGradleVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -392,6 +405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_gradle_version = 5;</code>
    * @return The newGradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getNewGradleVersion() {
     java.lang.Object ref = newGradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -414,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string new_gradle_version = 5;</code>
    * @return The bytes for newGradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNewGradleVersionBytes() {
     java.lang.Object ref = newGradleVersion_;
@@ -438,6 +453,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
    * @return Whether the componentInfo field is set.
    */
+  @java.lang.Override
   public boolean hasComponentInfo() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -449,6 +465,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
    * @return The componentInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo getComponentInfo() {
     return componentInfo_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.getDefaultInstance() : componentInfo_;
   }
@@ -459,6 +476,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UpgradeAssistantComponentInfo component_info = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfoOrBuilder getComponentInfoOrBuilder() {
     return componentInfo_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentInfo.getDefaultInstance() : componentInfo_;
   }
@@ -473,6 +491,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
    * @return Whether the eventInfo field is set.
    */
+  @java.lang.Override
   public boolean hasEventInfo() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -484,6 +503,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
    * @return The eventInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo getEventInfo() {
     return eventInfo_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.getDefaultInstance() : eventInfo_;
   }
@@ -494,6 +514,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UpgradeAssistantEventInfo event_info = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfoOrBuilder getEventInfoOrBuilder() {
     return eventInfo_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.getDefaultInstance() : eventInfo_;
   }

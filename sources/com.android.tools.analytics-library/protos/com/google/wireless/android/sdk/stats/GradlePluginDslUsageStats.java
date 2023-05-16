@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradlePluginDslUsageStats}
  */
-public  final class GradlePluginDslUsageStats extends
+public final class GradlePluginDslUsageStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradlePluginDslUsageStats)
     GradlePluginDslUsageStatsOrBuilder {
@@ -154,7 +154,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.GradlePluginDslUsageStats.DslElementUse}
    */
-  public  static final class DslElementUse extends
+  public static final class DslElementUse extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.GradlePluginDslUsageStats.DslElementUse)
       DslElementUseOrBuilder {
@@ -253,6 +253,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1;</code>
      * @return Whether the type field is set.
      */
+    @java.lang.Override
     public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -267,6 +268,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public int getType() {
       return type_;
     }
@@ -281,6 +283,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 count = 2;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -292,6 +295,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 count = 2;</code>
      * @return The count.
      */
+    @java.lang.Override
     public int getCount() {
       return count_;
     }
@@ -651,6 +655,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 type = 1;</code>
        * @return Whether the type field is set.
        */
+      @java.lang.Override
       public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -665,6 +670,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public int getType() {
         return type_;
       }
@@ -713,6 +719,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 count = 2;</code>
        * @return Whether the count field is set.
        */
+      @java.lang.Override
       public boolean hasCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -724,6 +731,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 count = 2;</code>
        * @return The count.
        */
+      @java.lang.Override
       public int getCount() {
         return count_;
       }
@@ -818,6 +826,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginDslUsageStats.DslElementUse dsl_element_use = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.DslElementUse> getDslElementUseList() {
     return dslElementUse_;
   }
@@ -828,6 +837,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginDslUsageStats.DslElementUse dsl_element_use = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.DslElementUseOrBuilder> 
       getDslElementUseOrBuilderList() {
     return dslElementUse_;
@@ -839,6 +849,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginDslUsageStats.DslElementUse dsl_element_use = 1;</code>
    */
+  @java.lang.Override
   public int getDslElementUseCount() {
     return dslElementUse_.size();
   }
@@ -849,6 +860,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginDslUsageStats.DslElementUse dsl_element_use = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.DslElementUse getDslElementUse(int index) {
     return dslElementUse_.get(index);
   }
@@ -859,6 +871,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginDslUsageStats.DslElementUse dsl_element_use = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.DslElementUseOrBuilder getDslElementUseOrBuilder(
       int index) {
     return dslElementUse_.get(index);

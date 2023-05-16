@@ -24,7 +24,8 @@ public interface ICommand {
     /**
      * Action to perform when running the command.
      *
+     * @return Error string if one occurred, otherwise null or empty.
      * @param argsString optional arguments passed to command.
      */
-    void run(String argsString);
+    CommandResult run(String argsString);
 }

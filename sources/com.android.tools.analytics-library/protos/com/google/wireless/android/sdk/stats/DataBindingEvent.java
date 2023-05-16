@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DataBindingEvent}
  */
-public  final class DataBindingEvent extends
+public final class DataBindingEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent)
     DataBindingEventOrBuilder {
@@ -689,7 +689,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.DataBindingEvent.DataBindingPollMetadata}
    */
-  public  static final class DataBindingPollMetadata extends
+  public static final class DataBindingPollMetadata extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent.DataBindingPollMetadata)
       DataBindingPollMetadataOrBuilder {
@@ -907,7 +907,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Protobuf type {@code android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics}
      */
-    public  static final class ObservableMetrics extends
+    public static final class ObservableMetrics extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics)
         ObservableMetricsOrBuilder {
@@ -1008,6 +1008,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 primitive_count = 1;</code>
        * @return Whether the primitiveCount field is set.
        */
+      @java.lang.Override
       public boolean hasPrimitiveCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -1019,6 +1020,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 primitive_count = 1;</code>
        * @return The primitiveCount.
        */
+      @java.lang.Override
       public int getPrimitiveCount() {
         return primitiveCount_;
       }
@@ -1033,6 +1035,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 collection_count = 2;</code>
        * @return Whether the collectionCount field is set.
        */
+      @java.lang.Override
       public boolean hasCollectionCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1044,6 +1047,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 collection_count = 2;</code>
        * @return The collectionCount.
        */
+      @java.lang.Override
       public int getCollectionCount() {
         return collectionCount_;
       }
@@ -1058,6 +1062,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 observable_object_count = 3;</code>
        * @return Whether the observableObjectCount field is set.
        */
+      @java.lang.Override
       public boolean hasObservableObjectCount() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1069,6 +1074,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 observable_object_count = 3;</code>
        * @return The observableObjectCount.
        */
+      @java.lang.Override
       public int getObservableObjectCount() {
         return observableObjectCount_;
       }
@@ -1446,6 +1452,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 primitive_count = 1;</code>
          * @return Whether the primitiveCount field is set.
          */
+        @java.lang.Override
         public boolean hasPrimitiveCount() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -1457,6 +1464,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 primitive_count = 1;</code>
          * @return The primitiveCount.
          */
+        @java.lang.Override
         public int getPrimitiveCount() {
           return primitiveCount_;
         }
@@ -1499,6 +1507,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 collection_count = 2;</code>
          * @return Whether the collectionCount field is set.
          */
+        @java.lang.Override
         public boolean hasCollectionCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -1510,6 +1519,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 collection_count = 2;</code>
          * @return The collectionCount.
          */
+        @java.lang.Override
         public int getCollectionCount() {
           return collectionCount_;
         }
@@ -1552,6 +1562,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 observable_object_count = 3;</code>
          * @return Whether the observableObjectCount field is set.
          */
+        @java.lang.Override
         public boolean hasObservableObjectCount() {
           return ((bitField0_ & 0x00000004) != 0);
         }
@@ -1563,6 +1574,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 observable_object_count = 3;</code>
          * @return The observableObjectCount.
          */
+        @java.lang.Override
         public int getObservableObjectCount() {
           return observableObjectCount_;
         }
@@ -1693,7 +1705,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Protobuf type {@code android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics}
      */
-    public  static final class BindingAdapterMetrics extends
+    public static final class BindingAdapterMetrics extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics)
         BindingAdapterMetricsOrBuilder {
@@ -1789,6 +1801,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 adapter_count = 1;</code>
        * @return Whether the adapterCount field is set.
        */
+      @java.lang.Override
       public boolean hasAdapterCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -1800,6 +1813,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 adapter_count = 1;</code>
        * @return The adapterCount.
        */
+      @java.lang.Override
       public int getAdapterCount() {
         return adapterCount_;
       }
@@ -1814,6 +1828,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 adapter_reference_count = 2;</code>
        * @return Whether the adapterReferenceCount field is set.
        */
+      @java.lang.Override
       public boolean hasAdapterReferenceCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1825,6 +1840,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 adapter_reference_count = 2;</code>
        * @return The adapterReferenceCount.
        */
+      @java.lang.Override
       public int getAdapterReferenceCount() {
         return adapterReferenceCount_;
       }
@@ -2177,6 +2193,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 adapter_count = 1;</code>
          * @return Whether the adapterCount field is set.
          */
+        @java.lang.Override
         public boolean hasAdapterCount() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -2188,6 +2205,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 adapter_count = 1;</code>
          * @return The adapterCount.
          */
+        @java.lang.Override
         public int getAdapterCount() {
           return adapterCount_;
         }
@@ -2230,6 +2248,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 adapter_reference_count = 2;</code>
          * @return Whether the adapterReferenceCount field is set.
          */
+        @java.lang.Override
         public boolean hasAdapterReferenceCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -2241,6 +2260,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 adapter_reference_count = 2;</code>
          * @return The adapterReferenceCount.
          */
+        @java.lang.Override
         public int getAdapterReferenceCount() {
           return adapterReferenceCount_;
         }
@@ -2352,7 +2372,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Protobuf type {@code android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics}
      */
-    public  static final class LiveDataMetrics extends
+    public static final class LiveDataMetrics extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics)
         LiveDataMetricsOrBuilder {
@@ -2443,6 +2463,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 live_data_object_count = 1;</code>
        * @return Whether the liveDataObjectCount field is set.
        */
+      @java.lang.Override
       public boolean hasLiveDataObjectCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -2454,6 +2475,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 live_data_object_count = 1;</code>
        * @return The liveDataObjectCount.
        */
+      @java.lang.Override
       public int getLiveDataObjectCount() {
         return liveDataObjectCount_;
       }
@@ -2781,6 +2803,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 live_data_object_count = 1;</code>
          * @return Whether the liveDataObjectCount field is set.
          */
+        @java.lang.Override
         public boolean hasLiveDataObjectCount() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -2792,6 +2815,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 live_data_object_count = 1;</code>
          * @return The liveDataObjectCount.
          */
+        @java.lang.Override
         public int getLiveDataObjectCount() {
           return liveDataObjectCount_;
         }
@@ -2889,6 +2913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool data_binding_enabled = 1;</code>
      * @return Whether the dataBindingEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasDataBindingEnabled() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -2901,6 +2926,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool data_binding_enabled = 1;</code>
      * @return The dataBindingEnabled.
      */
+    @java.lang.Override
     public boolean getDataBindingEnabled() {
       return dataBindingEnabled_;
     }
@@ -2915,6 +2941,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 layout_xml_count = 2;</code>
      * @return Whether the layoutXmlCount field is set.
      */
+    @java.lang.Override
     public boolean hasLayoutXmlCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2926,6 +2953,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 layout_xml_count = 2;</code>
      * @return The layoutXmlCount.
      */
+    @java.lang.Override
     public int getLayoutXmlCount() {
       return layoutXmlCount_;
     }
@@ -2940,6 +2968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 import_count = 3;</code>
      * @return Whether the importCount field is set.
      */
+    @java.lang.Override
     public boolean hasImportCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2951,6 +2980,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 import_count = 3;</code>
      * @return The importCount.
      */
+    @java.lang.Override
     public int getImportCount() {
       return importCount_;
     }
@@ -2965,6 +2995,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 variable_count = 4;</code>
      * @return Whether the variableCount field is set.
      */
+    @java.lang.Override
     public boolean hasVariableCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2976,6 +3007,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 variable_count = 4;</code>
      * @return The variableCount.
      */
+    @java.lang.Override
     public int getVariableCount() {
       return variableCount_;
     }
@@ -2990,6 +3022,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 expression_count = 5;</code>
      * @return Whether the expressionCount field is set.
      */
+    @java.lang.Override
     public boolean hasExpressionCount() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -3001,6 +3034,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 expression_count = 5;</code>
      * @return The expressionCount.
      */
+    @java.lang.Override
     public int getExpressionCount() {
       return expressionCount_;
     }
@@ -3015,6 +3049,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 error_count = 6;</code>
      * @return Whether the errorCount field is set.
      */
+    @java.lang.Override
     public boolean hasErrorCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -3026,6 +3061,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 error_count = 6;</code>
      * @return The errorCount.
      */
+    @java.lang.Override
     public int getErrorCount() {
       return errorCount_;
     }
@@ -3040,6 +3076,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 module_count = 7;</code>
      * @return Whether the moduleCount field is set.
      */
+    @java.lang.Override
     public boolean hasModuleCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -3051,6 +3088,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 module_count = 7;</code>
      * @return The moduleCount.
      */
+    @java.lang.Override
     public int getModuleCount() {
       return moduleCount_;
     }
@@ -3065,6 +3103,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 data_binding_enabled_module_count = 8;</code>
      * @return Whether the dataBindingEnabledModuleCount field is set.
      */
+    @java.lang.Override
     public boolean hasDataBindingEnabledModuleCount() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -3076,6 +3115,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 data_binding_enabled_module_count = 8;</code>
      * @return The dataBindingEnabledModuleCount.
      */
+    @java.lang.Override
     public int getDataBindingEnabledModuleCount() {
       return dataBindingEnabledModuleCount_;
     }
@@ -3090,6 +3130,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
      * @return Whether the observableMetrics field is set.
      */
+    @java.lang.Override
     public boolean hasObservableMetrics() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -3101,6 +3142,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
      * @return The observableMetrics.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics getObservableMetrics() {
       return observableMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.getDefaultInstance() : observableMetrics_;
     }
@@ -3111,6 +3153,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics observable_metrics = 101;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetricsOrBuilder getObservableMetricsOrBuilder() {
       return observableMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.ObservableMetrics.getDefaultInstance() : observableMetrics_;
     }
@@ -3125,6 +3168,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
      * @return Whether the bindingAdapterMetrics field is set.
      */
+    @java.lang.Override
     public boolean hasBindingAdapterMetrics() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -3136,6 +3180,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
      * @return The bindingAdapterMetrics.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics getBindingAdapterMetrics() {
       return bindingAdapterMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.getDefaultInstance() : bindingAdapterMetrics_;
     }
@@ -3146,6 +3191,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics binding_adapter_metrics = 102;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetricsOrBuilder getBindingAdapterMetricsOrBuilder() {
       return bindingAdapterMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.BindingAdapterMetrics.getDefaultInstance() : bindingAdapterMetrics_;
     }
@@ -3160,6 +3206,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
      * @return Whether the liveDataMetrics field is set.
      */
+    @java.lang.Override
     public boolean hasLiveDataMetrics() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -3171,6 +3218,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
      * @return The liveDataMetrics.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics getLiveDataMetrics() {
       return liveDataMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.getDefaultInstance() : liveDataMetrics_;
     }
@@ -3181,6 +3229,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics live_data_metrics = 103;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetricsOrBuilder getLiveDataMetricsOrBuilder() {
       return liveDataMetrics_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.LiveDataMetrics.getDefaultInstance() : liveDataMetrics_;
     }
@@ -3791,6 +3840,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool data_binding_enabled = 1;</code>
        * @return Whether the dataBindingEnabled field is set.
        */
+      @java.lang.Override
       public boolean hasDataBindingEnabled() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -3803,6 +3853,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool data_binding_enabled = 1;</code>
        * @return The dataBindingEnabled.
        */
+      @java.lang.Override
       public boolean getDataBindingEnabled() {
         return dataBindingEnabled_;
       }
@@ -3847,6 +3898,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 layout_xml_count = 2;</code>
        * @return Whether the layoutXmlCount field is set.
        */
+      @java.lang.Override
       public boolean hasLayoutXmlCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -3858,6 +3910,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 layout_xml_count = 2;</code>
        * @return The layoutXmlCount.
        */
+      @java.lang.Override
       public int getLayoutXmlCount() {
         return layoutXmlCount_;
       }
@@ -3900,6 +3953,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 import_count = 3;</code>
        * @return Whether the importCount field is set.
        */
+      @java.lang.Override
       public boolean hasImportCount() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -3911,6 +3965,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 import_count = 3;</code>
        * @return The importCount.
        */
+      @java.lang.Override
       public int getImportCount() {
         return importCount_;
       }
@@ -3953,6 +4008,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 variable_count = 4;</code>
        * @return Whether the variableCount field is set.
        */
+      @java.lang.Override
       public boolean hasVariableCount() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -3964,6 +4020,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 variable_count = 4;</code>
        * @return The variableCount.
        */
+      @java.lang.Override
       public int getVariableCount() {
         return variableCount_;
       }
@@ -4006,6 +4063,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 expression_count = 5;</code>
        * @return Whether the expressionCount field is set.
        */
+      @java.lang.Override
       public boolean hasExpressionCount() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -4017,6 +4075,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 expression_count = 5;</code>
        * @return The expressionCount.
        */
+      @java.lang.Override
       public int getExpressionCount() {
         return expressionCount_;
       }
@@ -4059,6 +4118,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 error_count = 6;</code>
        * @return Whether the errorCount field is set.
        */
+      @java.lang.Override
       public boolean hasErrorCount() {
         return ((bitField0_ & 0x00000020) != 0);
       }
@@ -4070,6 +4130,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 error_count = 6;</code>
        * @return The errorCount.
        */
+      @java.lang.Override
       public int getErrorCount() {
         return errorCount_;
       }
@@ -4112,6 +4173,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 module_count = 7;</code>
        * @return Whether the moduleCount field is set.
        */
+      @java.lang.Override
       public boolean hasModuleCount() {
         return ((bitField0_ & 0x00000040) != 0);
       }
@@ -4123,6 +4185,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 module_count = 7;</code>
        * @return The moduleCount.
        */
+      @java.lang.Override
       public int getModuleCount() {
         return moduleCount_;
       }
@@ -4165,6 +4228,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 data_binding_enabled_module_count = 8;</code>
        * @return Whether the dataBindingEnabledModuleCount field is set.
        */
+      @java.lang.Override
       public boolean hasDataBindingEnabledModuleCount() {
         return ((bitField0_ & 0x00000080) != 0);
       }
@@ -4176,6 +4240,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 data_binding_enabled_module_count = 8;</code>
        * @return The dataBindingEnabledModuleCount.
        */
+      @java.lang.Override
       public int getDataBindingEnabledModuleCount() {
         return dataBindingEnabledModuleCount_;
       }
@@ -4778,7 +4843,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.DataBindingEvent.ViewBindingPollMetadata}
    */
-  public  static final class ViewBindingPollMetadata extends
+  public static final class ViewBindingPollMetadata extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.DataBindingEvent.ViewBindingPollMetadata)
       ViewBindingPollMetadataOrBuilder {
@@ -4874,6 +4939,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool view_binding_enabled = 1;</code>
      * @return Whether the viewBindingEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasViewBindingEnabled() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -4885,6 +4951,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool view_binding_enabled = 1;</code>
      * @return The viewBindingEnabled.
      */
+    @java.lang.Override
     public boolean getViewBindingEnabled() {
       return viewBindingEnabled_;
     }
@@ -4899,6 +4966,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 layout_xml_count = 2;</code>
      * @return Whether the layoutXmlCount field is set.
      */
+    @java.lang.Override
     public boolean hasLayoutXmlCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -4910,6 +4978,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 layout_xml_count = 2;</code>
      * @return The layoutXmlCount.
      */
+    @java.lang.Override
     public int getLayoutXmlCount() {
       return layoutXmlCount_;
     }
@@ -5267,6 +5336,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool view_binding_enabled = 1;</code>
        * @return Whether the viewBindingEnabled field is set.
        */
+      @java.lang.Override
       public boolean hasViewBindingEnabled() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -5278,6 +5348,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool view_binding_enabled = 1;</code>
        * @return The viewBindingEnabled.
        */
+      @java.lang.Override
       public boolean getViewBindingEnabled() {
         return viewBindingEnabled_;
       }
@@ -5320,6 +5391,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 layout_xml_count = 2;</code>
        * @return Whether the layoutXmlCount field is set.
        */
+      @java.lang.Override
       public boolean hasLayoutXmlCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -5331,6 +5403,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 layout_xml_count = 2;</code>
        * @return The layoutXmlCount.
        */
+      @java.lang.Override
       public int getLayoutXmlCount() {
         return layoutXmlCount_;
       }
@@ -5427,7 +5500,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.EventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -5438,7 +5511,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.EventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.DataBindingEvent.EventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DataBindingEvent.EventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.UNKNOWN_TYPE : result;
@@ -5454,7 +5527,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.DataBindingContext context = 2;</code>
    * @return Whether the context field is set.
    */
-  public boolean hasContext() {
+  @java.lang.Override public boolean hasContext() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -5465,7 +5538,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.DataBindingContext context = 2;</code>
    * @return The context.
    */
-  public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext getContext() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext getContext() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.valueOf(context_);
     return result == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.UNKNOWN_CONTEXT : result;
@@ -5481,6 +5554,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
    * @return Whether the pollMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasPollMetadata() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -5492,6 +5566,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
    * @return The pollMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata getPollMetadata() {
     return pollMetadata_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.getDefaultInstance() : pollMetadata_;
   }
@@ -5502,6 +5577,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DataBindingEvent.DataBindingPollMetadata poll_metadata = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadataOrBuilder getPollMetadataOrBuilder() {
     return pollMetadata_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingPollMetadata.getDefaultInstance() : pollMetadata_;
   }
@@ -5516,6 +5592,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
    * @return Whether the viewBindingMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasViewBindingMetadata() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -5527,6 +5604,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
    * @return The viewBindingMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata getViewBindingMetadata() {
     return viewBindingMetadata_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.getDefaultInstance() : viewBindingMetadata_;
   }
@@ -5537,6 +5615,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DataBindingEvent.ViewBindingPollMetadata view_binding_metadata = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadataOrBuilder getViewBindingMetadataOrBuilder() {
     return viewBindingMetadata_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.ViewBindingPollMetadata.getDefaultInstance() : viewBindingMetadata_;
   }
@@ -5959,7 +6038,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.EventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -5970,6 +6049,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.EventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.EventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DataBindingEvent.EventType result = com.google.wireless.android.sdk.stats.DataBindingEvent.EventType.valueOf(type_);
@@ -6017,7 +6097,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingContext context = 2;</code>
      * @return Whether the context field is set.
      */
-    public boolean hasContext() {
+    @java.lang.Override public boolean hasContext() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -6028,6 +6108,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DataBindingEvent.DataBindingContext context = 2;</code>
      * @return The context.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext getContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext result = com.google.wireless.android.sdk.stats.DataBindingEvent.DataBindingContext.valueOf(context_);

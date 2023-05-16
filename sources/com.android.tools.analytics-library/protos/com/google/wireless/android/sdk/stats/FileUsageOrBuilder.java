@@ -93,4 +93,52 @@ public interface FileUsageOrBuilder extends
    */
   com.google.protobuf.ByteString
       getPluginTypeBytes();
+
+  /**
+   * <pre>
+   * Plugin version
+   * </pre>
+   *
+   * <code>optional string plugin_version = 4;</code>
+   * @return Whether the pluginVersion field is set.
+   */
+  boolean hasPluginVersion();
+  /**
+   * <pre>
+   * Plugin version
+   * </pre>
+   *
+   * <code>optional string plugin_version = 4;</code>
+   * @return The pluginVersion.
+   */
+  java.lang.String getPluginVersion();
+  /**
+   * <pre>
+   * Plugin version
+   * </pre>
+   *
+   * <code>optional string plugin_version = 4;</code>
+   * @return The bytes for pluginVersion.
+   */
+  com.google.protobuf.ByteString
+      getPluginVersionBytes();
+
+  /**
+   * <pre>
+   * Event type
+   * </pre>
+   *
+   * <code>optional .android_studio.FileUsage.EventType event_type = 5;</code>
+   * @return Whether the eventType field is set.
+   */
+  boolean hasEventType();
+  /**
+   * <pre>
+   * Event type
+   * </pre>
+   *
+   * <code>optional .android_studio.FileUsage.EventType event_type = 5;</code>
+   * @return The eventType.
+   */
+  com.google.wireless.android.sdk.stats.FileUsage.EventType getEventType();
 }

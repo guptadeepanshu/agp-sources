@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioPerformanceStats}
  */
-public  final class StudioPerformanceStats extends
+public final class StudioPerformanceStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioPerformanceStats)
     StudioPerformanceStatsOrBuilder {
@@ -145,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ui_freeze_time_ms = 1;</code>
    * @return Whether the uiFreezeTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasUiFreezeTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -156,6 +157,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ui_freeze_time_ms = 1;</code>
    * @return The uiFreezeTimeMs.
    */
+  @java.lang.Override
   public int getUiFreezeTimeMs() {
     return uiFreezeTimeMs_;
   }
@@ -174,6 +176,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
    * @return Whether the eventServiceTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasEventServiceTimeMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -189,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
    * @return The eventServiceTimeMs.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.Histogram getEventServiceTimeMs() {
     return eventServiceTimeMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : eventServiceTimeMs_;
   }
@@ -203,6 +207,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.Histogram event_service_time_ms = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getEventServiceTimeMsOrBuilder() {
     return eventServiceTimeMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : eventServiceTimeMs_;
   }
@@ -221,6 +226,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 event_service_time_sample_period = 3;</code>
    * @return Whether the eventServiceTimeSamplePeriod field is set.
    */
+  @java.lang.Override
   public boolean hasEventServiceTimeSamplePeriod() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -236,6 +242,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 event_service_time_sample_period = 3;</code>
    * @return The eventServiceTimeSamplePeriod.
    */
+  @java.lang.Override
   public int getEventServiceTimeSamplePeriod() {
     return eventServiceTimeSamplePeriod_;
   }
@@ -250,6 +257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
    * @return Whether the writeLockWaitTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasWriteLockWaitTimeMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -261,6 +269,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
    * @return The writeLockWaitTimeMs.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.Histogram getWriteLockWaitTimeMs() {
     return writeLockWaitTimeMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : writeLockWaitTimeMs_;
   }
@@ -271,6 +280,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.Histogram write_lock_wait_time_ms = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getWriteLockWaitTimeMsOrBuilder() {
     return writeLockWaitTimeMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : writeLockWaitTimeMs_;
   }
@@ -285,6 +295,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GcPauseInfo gc_pause_info = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GcPauseInfo> getGcPauseInfoList() {
     return gcPauseInfo_;
   }
@@ -296,6 +307,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GcPauseInfo gc_pause_info = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GcPauseInfoOrBuilder> 
       getGcPauseInfoOrBuilderList() {
     return gcPauseInfo_;
@@ -308,6 +320,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GcPauseInfo gc_pause_info = 5;</code>
    */
+  @java.lang.Override
   public int getGcPauseInfoCount() {
     return gcPauseInfo_.size();
   }
@@ -319,6 +332,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GcPauseInfo gc_pause_info = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GcPauseInfo getGcPauseInfo(int index) {
     return gcPauseInfo_.get(index);
   }
@@ -330,6 +344,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GcPauseInfo gc_pause_info = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GcPauseInfoOrBuilder getGcPauseInfoOrBuilder(
       int index) {
     return gcPauseInfo_.get(index);
@@ -810,6 +825,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ui_freeze_time_ms = 1;</code>
      * @return Whether the uiFreezeTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasUiFreezeTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -821,6 +837,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ui_freeze_time_ms = 1;</code>
      * @return The uiFreezeTimeMs.
      */
+    @java.lang.Override
     public int getUiFreezeTimeMs() {
       return uiFreezeTimeMs_;
     }
@@ -1059,6 +1076,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 event_service_time_sample_period = 3;</code>
      * @return Whether the eventServiceTimeSamplePeriod field is set.
      */
+    @java.lang.Override
     public boolean hasEventServiceTimeSamplePeriod() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1074,6 +1092,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 event_service_time_sample_period = 3;</code>
      * @return The eventServiceTimeSamplePeriod.
      */
+    @java.lang.Override
     public int getEventServiceTimeSamplePeriod() {
       return eventServiceTimeSamplePeriod_;
     }

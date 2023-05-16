@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code EncodedCompilation}
  */
-public  final class EncodedCompilation extends
+public final class EncodedCompilation extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedCompilation)
     EncodedCompilationOrBuilder {
@@ -114,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 working_directory_id = 1;</code>
    * @return The workingDirectoryId.
    */
+  @java.lang.Override
   public int getWorkingDirectoryId() {
     return workingDirectoryId_;
   }
@@ -124,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedObjectFileKey object_file_key = 2;</code>
    * @return Whether the objectFileKey field is set.
    */
+  @java.lang.Override
   public boolean hasObjectFileKey() {
     return objectFileKey_ != null;
   }
@@ -131,12 +133,14 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedObjectFileKey object_file_key = 2;</code>
    * @return The objectFileKey.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedObjectFileKey getObjectFileKey() {
     return objectFileKey_ == null ? com.android.build.gradle.internal.cxx.caching.EncodedObjectFileKey.getDefaultInstance() : objectFileKey_;
   }
   /**
    * <code>.EncodedObjectFileKey object_file_key = 2;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedObjectFileKeyOrBuilder getObjectFileKeyOrBuilder() {
     return getObjectFileKey();
   }
@@ -147,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 object_file_id = 3;</code>
    * @return The objectFileId.
    */
+  @java.lang.Override
   public int getObjectFileId() {
     return objectFileId_;
   }
@@ -510,6 +515,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 working_directory_id = 1;</code>
      * @return The workingDirectoryId.
      */
+    @java.lang.Override
     public int getWorkingDirectoryId() {
       return workingDirectoryId_;
     }
@@ -659,6 +665,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 object_file_id = 3;</code>
      * @return The objectFileId.
      */
+    @java.lang.Override
     public int getObjectFileId() {
       return objectFileId_;
     }

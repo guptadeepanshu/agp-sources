@@ -19,13 +19,9 @@ package com.android.build.gradle.internal.core
 import com.android.SdkConstants
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.utils.immutableMapBuilder
-import com.android.builder.core.BuilderConstants
-import com.android.builder.core.VariantType
+import com.android.builder.core.ComponentType
 import com.android.builder.model.v2.CustomSourceDirectory
 import com.android.builder.model.SourceProvider
-import com.android.ide.common.rendering.api.ResourceNamespace
-import com.android.ide.common.resources.AssetSet
-import com.android.ide.common.resources.ResourceSet
 import com.google.common.collect.Lists
 import java.io.File
 import java.util.function.Function
@@ -35,7 +31,7 @@ import java.util.function.Function
  */
 class VariantSources internal constructor(
     val fullName: String,
-    val variantType: VariantType,
+    val componentType: ComponentType,
     private val defaultSourceProvider: SourceProvider,
     private val buildTypeSourceProvider: SourceProvider? = null,
     /** The list of product flavors. Items earlier in the list override later items.  */
@@ -91,7 +87,7 @@ class VariantSources internal constructor(
      *
      * @return a list of source provider
      */
-    val sortedSourceProviders: List<SourceProvider>
+    val  sortedSourceProviders: List<SourceProvider>
         get() {
             val providers: MutableList<SourceProvider> =
                 Lists.newArrayListWithExpectedSize(flavorSourceProviders.size + 4)
@@ -137,175 +133,7 @@ class VariantSources internal constructor(
         }.toSet()
     }
 
-    /**
-     * Returns the dynamic list of [ResourceSet] for the source folders only.
-     *
-     *
-     * The list is ordered in ascending order of importance, meaning the first set is meant to be
-     * overridden by the 2nd one and so on. This is meant to facilitate usage of the list in a
-     * Resource merger
-     *
-     * @param aaptEnv the value of "ANDROID_AAPT_IGNORE" environment variable.
-     * @return a list ResourceSet.
-     */
-    fun getResourceSets(validateEnabled: Boolean, aaptEnv: String?): List<ResourceSet> {
-        val resourceSets: MutableList<ResourceSet> =
-            Lists.newArrayList()
-        val mainResDirs =
-            defaultSourceProvider.resDirectories
-        // the main + generated res folders are in the same ResourceSet
-        var resourceSet = ResourceSet(
-            BuilderConstants.MAIN, ResourceNamespace.RES_AUTO, null, validateEnabled, aaptEnv
-        )
-        resourceSet.addSources(mainResDirs)
-        resourceSets.add(resourceSet)
-        // the list of flavor must be reversed to use the right overlay order.
-        for (n in flavorSourceProviders.indices.reversed()) {
-            val sourceProvider = flavorSourceProviders[n]
-            val flavorResDirs = sourceProvider.resDirectories
-
-            // we need the same of the flavor config, but it's in a different list.
-            // This is fine as both list are parallel collections with the same number of items.
-            resourceSet = ResourceSet(
-                sourceProvider.name,
-                ResourceNamespace.RES_AUTO,
-                null,
-                validateEnabled,
-                aaptEnv
-            )
-            resourceSet.addSources(flavorResDirs)
-            resourceSets.add(resourceSet)
-        }
-        // multiflavor specific overrides flavor
-        multiFlavorSourceProvider?.let {
-            val variantResDirs = it.resDirectories
-            resourceSet = ResourceSet(
-                multiFlavorSourceProvider.name,
-                ResourceNamespace.RES_AUTO,
-                null,
-                validateEnabled,
-                aaptEnv
-            )
-            resourceSet.addSources(variantResDirs)
-            resourceSets.add(resourceSet)
-        }
-
-        // build type overrides the flavors
-        buildTypeSourceProvider?.let {
-            val typeResDirs = it.resDirectories
-            resourceSet = ResourceSet(
-                buildTypeSourceProvider.name,
-                ResourceNamespace.RES_AUTO,
-                null,
-                validateEnabled,
-                aaptEnv
-            )
-            resourceSet.addSources(typeResDirs)
-            resourceSets.add(resourceSet)
-        }
-
-        // variant specific overrides all
-        variantSourceProvider?.let {
-            val variantResDirs = it.resDirectories
-            resourceSet = ResourceSet(
-                variantSourceProvider.name,
-                ResourceNamespace.RES_AUTO,
-                null,
-                validateEnabled,
-                aaptEnv
-            )
-            resourceSet.addSources(variantResDirs)
-            resourceSets.add(resourceSet)
-        }
-
-        return resourceSets
-    }
-
-    /**
-     * Returns the dynamic list of [AssetSet] based on the configuration, for a particular
-     * property of [SourceProvider].
-     *
-     *
-     * The list is ordered in ascending order of importance, meaning the first set is meant to be
-     * overridden by the 2nd one and so on. This is meant to facilitate usage of the list in an
-     * asset merger
-     *
-     * @param function the function that return a collection of file based on the SourceProvider.
-     * this is usually a method reference on SourceProvider
-     * @param aaptEnv the value of "ANDROID_AAPT_IGNORE" environment variable.
-     * @return a list ResourceSet.
-     */
-    fun getSourceFilesAsAssetSets(
-        function: Function<SourceProvider, Collection<File>>,
-        aaptEnv: String?
-    ): List<AssetSet> {
-        val assetSets = mutableListOf<AssetSet>()
-
-        val mainResDirs = function.apply(defaultSourceProvider)
-        // the main + generated asset folders are in the same AssetSet
-        var assetSet = AssetSet(BuilderConstants.MAIN, aaptEnv)
-        assetSet.addSources(mainResDirs)
-        assetSets.add(assetSet)
-        // the list of flavor must be reversed to use the right overlay order.
-        for (n in flavorSourceProviders.indices.reversed()) {
-            val sourceProvider = flavorSourceProviders[n]
-            val flavorResDirs = function.apply(sourceProvider)
-            // we need the same of the flavor config, but it's in a different list.
-            // This is fine as both list are parallel collections with the same number of items.
-            assetSet = AssetSet(sourceProvider.name, aaptEnv)
-            assetSet.addSources(flavorResDirs)
-            assetSets.add(assetSet)
-        }
-
-        // multiflavor specific overrides flavor
-        multiFlavorSourceProvider?.let {
-            val variantResDirs = function.apply(it)
-            assetSet = AssetSet(multiFlavorSourceProvider.name, aaptEnv)
-            assetSet.addSources(variantResDirs)
-            assetSets.add(assetSet)
-        }
-
-        // build type overrides flavors
-        if (buildTypeSourceProvider != null) {
-            val typeResDirs = function.apply(buildTypeSourceProvider)
-            assetSet = AssetSet(buildTypeSourceProvider.name, aaptEnv)
-            assetSet.addSources(typeResDirs)
-            assetSets.add(assetSet)
-        }
-
-        // variant specific overrides all
-        variantSourceProvider?.let {
-            val variantResDirs = function.apply(it)
-            assetSet = AssetSet(variantSourceProvider.name, aaptEnv)
-            assetSet.addSources(variantResDirs)
-            assetSets.add(assetSet)
-        }
-
-        return assetSets
-    }
-
-    /**
-     * Returns all the renderscript source folder from the main config, the flavors and the build
-     * type.
-     *
-     * @return a list of folders.
-     */
-    val renderscriptSourceList: Collection<File>
-        get() = getSourceFiles(
-            Function { obj: SourceProvider -> obj.renderscriptDirectories }
-        )
-
-    val aidlSourceList: Collection<File>
-        get() = getSourceFiles(
-            Function { obj: SourceProvider -> obj.aidlDirectories }
-        )
-
-    val jniSourceList: Collection<File>
-        get() = getSourceFiles(
-            Function { obj: SourceProvider -> obj.cDirectories }
-        )
-
-    /**
+     /**
      * Returns a map af all customs source directories registered. Key is the source set name as
      * registered by the user. Value is also a map of source set name to list of folders registered
      * for this source set.

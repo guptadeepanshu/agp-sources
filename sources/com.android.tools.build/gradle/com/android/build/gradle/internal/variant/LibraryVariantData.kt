@@ -21,8 +21,8 @@ import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.dependency.VariantDependencies
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
-import com.android.builder.core.VariantType
+import com.android.build.gradle.internal.services.VariantServices
+import com.android.builder.core.ComponentType
 import com.android.utils.appendCapitalized
 import com.android.utils.capitalizeAndAppend
 import org.gradle.api.Task
@@ -37,7 +37,7 @@ class LibraryVariantData(
     variantSources: VariantSources,
     paths: VariantPathHelper,
     artifacts: ArtifactsImpl,
-    services: VariantPropertiesApiServices,
+    services: VariantServices,
     taskContainer: MutableTaskContainer
 ) : BaseVariantData(
     componentIdentity,
@@ -49,7 +49,7 @@ class LibraryVariantData(
     services,
     taskContainer
 ), TestedVariantData {
-    private val testVariants: MutableMap<VariantType, TestVariantData> = mutableMapOf()
+    private val testVariants: MutableMap<ComponentType, TestVariantData> = mutableMapOf()
 
     override val description: String
         get() = if (componentIdentity.productFlavors.isNotEmpty()) {
@@ -62,11 +62,11 @@ class LibraryVariantData(
             componentIdentity.buildType!!.capitalizeAndAppend(" build")
         }
 
-    override fun getTestVariantData(type: VariantType): TestVariantData? {
+    override fun getTestVariantData(type: ComponentType): TestVariantData? {
         return testVariants[type]
     }
 
-    override fun setTestVariantData(testVariantData: TestVariantData, type: VariantType) {
+    override fun setTestVariantData(testVariantData: TestVariantData, type: ComponentType) {
         testVariants[type] = testVariantData
     }
 

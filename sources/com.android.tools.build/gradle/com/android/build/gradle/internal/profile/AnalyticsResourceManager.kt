@@ -18,6 +18,7 @@ package com.android.build.gradle.internal.profile
 
 import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.isConfigurationCache
+import com.android.build.gradle.internal.isProjectIsolation
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.options.BooleanOption
@@ -284,13 +285,16 @@ class AnalyticsResourceManager constructor(
             .get().projectOptions
         val providers = project.providers
 
-        recordPlugins(project)
+        val projectIsolation = project.gradle.startParameter.isProjectIsolation == true
+        if (!projectIsolation) {
+            recordPlugins(project)
+        }
 
         profileBuilder
-            .setOsName(getSystemProperty(providers,"os.name"))
-            .setOsVersion(getSystemProperty(providers,"os.version"))
-            .setJavaVersion(getSystemProperty(providers,"java.version"))
-            .setJavaVmVersion(getSystemProperty(providers,"java.vm.version"))
+            .setOsName(getSystemProperty("os.name"))
+            .setOsVersion(getSystemProperty("os.version"))
+            .setJavaVersion(getSystemProperty("java.version"))
+            .setJavaVmVersion(getSystemProperty("java.vm.version"))
             .setMaxMemory(Runtime.getRuntime().maxMemory())
             .setGradleVersion(project.gradle.gradleVersion)
 
@@ -398,15 +402,8 @@ class AnalyticsResourceManager constructor(
         }
     }
 
-    private fun getSystemProperty(
-        providerFactory: ProviderFactory,
-        propertyName: String
-    ): String {
-        return providerFactory
-            .systemProperty(propertyName)
-            .forUseAtConfigurationTime()
-            .orElse("")
-            .get()
+    private fun getSystemProperty(propertyName: String): String {
+        return System.getProperty(propertyName) ?: ""
     }
 
     private fun getFinalProfile() : GradleBuildProfile {

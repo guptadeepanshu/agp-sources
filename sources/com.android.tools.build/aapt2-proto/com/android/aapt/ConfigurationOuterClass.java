@@ -418,7 +418,7 @@ public final class ConfigurationOuterClass {
    *
    * Protobuf type {@code aapt.pb.Configuration}
    */
-  public  static final class Configuration extends
+  public static final class Configuration extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Configuration)
       ConfigurationOrBuilder {
@@ -728,6 +728,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -859,6 +863,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -972,6 +980,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1085,6 +1097,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1198,6 +1214,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1311,6 +1331,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1433,6 +1457,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1591,6 +1619,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1704,6 +1736,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1826,6 +1862,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -1948,6 +1988,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -2070,6 +2114,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -2183,6 +2231,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -2314,6 +2366,10 @@ public final class ConfigurationOuterClass {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -2358,6 +2414,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 mcc = 1;</code>
      * @return The mcc.
      */
+    @java.lang.Override
     public int getMcc() {
       return mcc_;
     }
@@ -2372,6 +2429,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 mnc = 2;</code>
      * @return The mnc.
      */
+    @java.lang.Override
     public int getMnc() {
       return mnc_;
     }
@@ -2386,6 +2444,7 @@ public final class ConfigurationOuterClass {
      * <code>string locale = 3;</code>
      * @return The locale.
      */
+    @java.lang.Override
     public java.lang.String getLocale() {
       java.lang.Object ref = locale_;
       if (ref instanceof java.lang.String) {
@@ -2406,6 +2465,7 @@ public final class ConfigurationOuterClass {
      * <code>string locale = 3;</code>
      * @return The bytes for locale.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getLocaleBytes() {
       java.lang.Object ref = locale_;
@@ -2430,7 +2490,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.LayoutDirection layout_direction = 4;</code>
      * @return The enum numeric value on the wire for layoutDirection.
      */
-    public int getLayoutDirectionValue() {
+    @java.lang.Override public int getLayoutDirectionValue() {
       return layoutDirection_;
     }
     /**
@@ -2441,7 +2501,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.LayoutDirection layout_direction = 4;</code>
      * @return The layoutDirection.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection getLayoutDirection() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection getLayoutDirection() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection result = com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection.valueOf(layoutDirection_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection.UNRECOGNIZED : result;
@@ -2457,6 +2517,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 screen_width = 5;</code>
      * @return The screenWidth.
      */
+    @java.lang.Override
     public int getScreenWidth() {
       return screenWidth_;
     }
@@ -2471,6 +2532,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 screen_height = 6;</code>
      * @return The screenHeight.
      */
+    @java.lang.Override
     public int getScreenHeight() {
       return screenHeight_;
     }
@@ -2485,6 +2547,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 screen_width_dp = 7;</code>
      * @return The screenWidthDp.
      */
+    @java.lang.Override
     public int getScreenWidthDp() {
       return screenWidthDp_;
     }
@@ -2499,6 +2562,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 screen_height_dp = 8;</code>
      * @return The screenHeightDp.
      */
+    @java.lang.Override
     public int getScreenHeightDp() {
       return screenHeightDp_;
     }
@@ -2513,6 +2577,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 smallest_screen_width_dp = 9;</code>
      * @return The smallestScreenWidthDp.
      */
+    @java.lang.Override
     public int getSmallestScreenWidthDp() {
       return smallestScreenWidthDp_;
     }
@@ -2527,7 +2592,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenLayoutSize screen_layout_size = 10;</code>
      * @return The enum numeric value on the wire for screenLayoutSize.
      */
-    public int getScreenLayoutSizeValue() {
+    @java.lang.Override public int getScreenLayoutSizeValue() {
       return screenLayoutSize_;
     }
     /**
@@ -2538,7 +2603,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenLayoutSize screen_layout_size = 10;</code>
      * @return The screenLayoutSize.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize getScreenLayoutSize() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize getScreenLayoutSize() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize.valueOf(screenLayoutSize_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize.UNRECOGNIZED : result;
@@ -2554,7 +2619,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenLayoutLong screen_layout_long = 11;</code>
      * @return The enum numeric value on the wire for screenLayoutLong.
      */
-    public int getScreenLayoutLongValue() {
+    @java.lang.Override public int getScreenLayoutLongValue() {
       return screenLayoutLong_;
     }
     /**
@@ -2565,7 +2630,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenLayoutLong screen_layout_long = 11;</code>
      * @return The screenLayoutLong.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong getScreenLayoutLong() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong getScreenLayoutLong() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong.valueOf(screenLayoutLong_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong.UNRECOGNIZED : result;
@@ -2581,7 +2646,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenRound screen_round = 12;</code>
      * @return The enum numeric value on the wire for screenRound.
      */
-    public int getScreenRoundValue() {
+    @java.lang.Override public int getScreenRoundValue() {
       return screenRound_;
     }
     /**
@@ -2592,7 +2657,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.ScreenRound screen_round = 12;</code>
      * @return The screenRound.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound getScreenRound() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound getScreenRound() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound.valueOf(screenRound_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound.UNRECOGNIZED : result;
@@ -2608,7 +2673,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.WideColorGamut wide_color_gamut = 13;</code>
      * @return The enum numeric value on the wire for wideColorGamut.
      */
-    public int getWideColorGamutValue() {
+    @java.lang.Override public int getWideColorGamutValue() {
       return wideColorGamut_;
     }
     /**
@@ -2619,7 +2684,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.WideColorGamut wide_color_gamut = 13;</code>
      * @return The wideColorGamut.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut getWideColorGamut() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut getWideColorGamut() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut result = com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut.valueOf(wideColorGamut_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut.UNRECOGNIZED : result;
@@ -2635,7 +2700,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Hdr hdr = 14;</code>
      * @return The enum numeric value on the wire for hdr.
      */
-    public int getHdrValue() {
+    @java.lang.Override public int getHdrValue() {
       return hdr_;
     }
     /**
@@ -2646,7 +2711,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Hdr hdr = 14;</code>
      * @return The hdr.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.Hdr getHdr() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.Hdr getHdr() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.Hdr result = com.android.aapt.ConfigurationOuterClass.Configuration.Hdr.valueOf(hdr_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.Hdr.UNRECOGNIZED : result;
@@ -2662,7 +2727,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Orientation orientation = 15;</code>
      * @return The enum numeric value on the wire for orientation.
      */
-    public int getOrientationValue() {
+    @java.lang.Override public int getOrientationValue() {
       return orientation_;
     }
     /**
@@ -2673,7 +2738,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Orientation orientation = 15;</code>
      * @return The orientation.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.Orientation getOrientation() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.Orientation getOrientation() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.Orientation result = com.android.aapt.ConfigurationOuterClass.Configuration.Orientation.valueOf(orientation_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.Orientation.UNRECOGNIZED : result;
@@ -2689,7 +2754,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.UiModeType ui_mode_type = 16;</code>
      * @return The enum numeric value on the wire for uiModeType.
      */
-    public int getUiModeTypeValue() {
+    @java.lang.Override public int getUiModeTypeValue() {
       return uiModeType_;
     }
     /**
@@ -2700,7 +2765,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.UiModeType ui_mode_type = 16;</code>
      * @return The uiModeType.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType getUiModeType() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType getUiModeType() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType result = com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType.valueOf(uiModeType_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType.UNRECOGNIZED : result;
@@ -2716,7 +2781,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.UiModeNight ui_mode_night = 17;</code>
      * @return The enum numeric value on the wire for uiModeNight.
      */
-    public int getUiModeNightValue() {
+    @java.lang.Override public int getUiModeNightValue() {
       return uiModeNight_;
     }
     /**
@@ -2727,7 +2792,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.UiModeNight ui_mode_night = 17;</code>
      * @return The uiModeNight.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight getUiModeNight() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight getUiModeNight() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight result = com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight.valueOf(uiModeNight_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight.UNRECOGNIZED : result;
@@ -2743,6 +2808,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 density = 18;</code>
      * @return The density.
      */
+    @java.lang.Override
     public int getDensity() {
       return density_;
     }
@@ -2757,7 +2823,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Touchscreen touchscreen = 19;</code>
      * @return The enum numeric value on the wire for touchscreen.
      */
-    public int getTouchscreenValue() {
+    @java.lang.Override public int getTouchscreenValue() {
       return touchscreen_;
     }
     /**
@@ -2768,7 +2834,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Touchscreen touchscreen = 19;</code>
      * @return The touchscreen.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen getTouchscreen() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen getTouchscreen() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen result = com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen.valueOf(touchscreen_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen.UNRECOGNIZED : result;
@@ -2785,7 +2851,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.KeysHidden keys_hidden = 20;</code>
      * @return The enum numeric value on the wire for keysHidden.
      */
-    public int getKeysHiddenValue() {
+    @java.lang.Override public int getKeysHiddenValue() {
       return keysHidden_;
     }
     /**
@@ -2797,7 +2863,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.KeysHidden keys_hidden = 20;</code>
      * @return The keysHidden.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden getKeysHidden() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden getKeysHidden() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden result = com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden.valueOf(keysHidden_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden.UNRECOGNIZED : result;
@@ -2813,7 +2879,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Keyboard keyboard = 21;</code>
      * @return The enum numeric value on the wire for keyboard.
      */
-    public int getKeyboardValue() {
+    @java.lang.Override public int getKeyboardValue() {
       return keyboard_;
     }
     /**
@@ -2824,7 +2890,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Keyboard keyboard = 21;</code>
      * @return The keyboard.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard getKeyboard() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard getKeyboard() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard result = com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard.valueOf(keyboard_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard.UNRECOGNIZED : result;
@@ -2840,7 +2906,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.NavHidden nav_hidden = 22;</code>
      * @return The enum numeric value on the wire for navHidden.
      */
-    public int getNavHiddenValue() {
+    @java.lang.Override public int getNavHiddenValue() {
       return navHidden_;
     }
     /**
@@ -2851,7 +2917,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.NavHidden nav_hidden = 22;</code>
      * @return The navHidden.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden getNavHidden() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden getNavHidden() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden result = com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden.valueOf(navHidden_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden.UNRECOGNIZED : result;
@@ -2868,7 +2934,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Navigation navigation = 23;</code>
      * @return The enum numeric value on the wire for navigation.
      */
-    public int getNavigationValue() {
+    @java.lang.Override public int getNavigationValue() {
       return navigation_;
     }
     /**
@@ -2880,7 +2946,7 @@ public final class ConfigurationOuterClass {
      * <code>.aapt.pb.Configuration.Navigation navigation = 23;</code>
      * @return The navigation.
      */
-    public com.android.aapt.ConfigurationOuterClass.Configuration.Navigation getNavigation() {
+    @java.lang.Override public com.android.aapt.ConfigurationOuterClass.Configuration.Navigation getNavigation() {
       @SuppressWarnings("deprecation")
       com.android.aapt.ConfigurationOuterClass.Configuration.Navigation result = com.android.aapt.ConfigurationOuterClass.Configuration.Navigation.valueOf(navigation_);
       return result == null ? com.android.aapt.ConfigurationOuterClass.Configuration.Navigation.UNRECOGNIZED : result;
@@ -2896,6 +2962,7 @@ public final class ConfigurationOuterClass {
      * <code>uint32 sdk_version = 24;</code>
      * @return The sdkVersion.
      */
+    @java.lang.Override
     public int getSdkVersion() {
       return sdkVersion_;
     }
@@ -2906,6 +2973,7 @@ public final class ConfigurationOuterClass {
      * <code>string product = 25;</code>
      * @return The product.
      */
+    @java.lang.Override
     public java.lang.String getProduct() {
       java.lang.Object ref = product_;
       if (ref instanceof java.lang.String) {
@@ -2922,6 +2990,7 @@ public final class ConfigurationOuterClass {
      * <code>string product = 25;</code>
      * @return The bytes for product.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getProductBytes() {
       java.lang.Object ref = product_;
@@ -3646,6 +3715,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 mcc = 1;</code>
        * @return The mcc.
        */
+      @java.lang.Override
       public int getMcc() {
         return mcc_;
       }
@@ -3688,6 +3758,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 mnc = 2;</code>
        * @return The mnc.
        */
+      @java.lang.Override
       public int getMnc() {
         return mnc_;
       }
@@ -3826,7 +3897,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.LayoutDirection layout_direction = 4;</code>
        * @return The enum numeric value on the wire for layoutDirection.
        */
-      public int getLayoutDirectionValue() {
+      @java.lang.Override public int getLayoutDirectionValue() {
         return layoutDirection_;
       }
       /**
@@ -3839,6 +3910,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setLayoutDirectionValue(int value) {
+        
         layoutDirection_ = value;
         onChanged();
         return this;
@@ -3851,6 +3923,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.LayoutDirection layout_direction = 4;</code>
        * @return The layoutDirection.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection getLayoutDirection() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection result = com.android.aapt.ConfigurationOuterClass.Configuration.LayoutDirection.valueOf(layoutDirection_);
@@ -3898,6 +3971,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 screen_width = 5;</code>
        * @return The screenWidth.
        */
+      @java.lang.Override
       public int getScreenWidth() {
         return screenWidth_;
       }
@@ -3940,6 +4014,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 screen_height = 6;</code>
        * @return The screenHeight.
        */
+      @java.lang.Override
       public int getScreenHeight() {
         return screenHeight_;
       }
@@ -3982,6 +4057,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 screen_width_dp = 7;</code>
        * @return The screenWidthDp.
        */
+      @java.lang.Override
       public int getScreenWidthDp() {
         return screenWidthDp_;
       }
@@ -4024,6 +4100,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 screen_height_dp = 8;</code>
        * @return The screenHeightDp.
        */
+      @java.lang.Override
       public int getScreenHeightDp() {
         return screenHeightDp_;
       }
@@ -4066,6 +4143,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 smallest_screen_width_dp = 9;</code>
        * @return The smallestScreenWidthDp.
        */
+      @java.lang.Override
       public int getSmallestScreenWidthDp() {
         return smallestScreenWidthDp_;
       }
@@ -4108,7 +4186,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenLayoutSize screen_layout_size = 10;</code>
        * @return The enum numeric value on the wire for screenLayoutSize.
        */
-      public int getScreenLayoutSizeValue() {
+      @java.lang.Override public int getScreenLayoutSizeValue() {
         return screenLayoutSize_;
       }
       /**
@@ -4121,6 +4199,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setScreenLayoutSizeValue(int value) {
+        
         screenLayoutSize_ = value;
         onChanged();
         return this;
@@ -4133,6 +4212,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenLayoutSize screen_layout_size = 10;</code>
        * @return The screenLayoutSize.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize getScreenLayoutSize() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutSize.valueOf(screenLayoutSize_);
@@ -4180,7 +4260,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenLayoutLong screen_layout_long = 11;</code>
        * @return The enum numeric value on the wire for screenLayoutLong.
        */
-      public int getScreenLayoutLongValue() {
+      @java.lang.Override public int getScreenLayoutLongValue() {
         return screenLayoutLong_;
       }
       /**
@@ -4193,6 +4273,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setScreenLayoutLongValue(int value) {
+        
         screenLayoutLong_ = value;
         onChanged();
         return this;
@@ -4205,6 +4286,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenLayoutLong screen_layout_long = 11;</code>
        * @return The screenLayoutLong.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong getScreenLayoutLong() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenLayoutLong.valueOf(screenLayoutLong_);
@@ -4252,7 +4334,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenRound screen_round = 12;</code>
        * @return The enum numeric value on the wire for screenRound.
        */
-      public int getScreenRoundValue() {
+      @java.lang.Override public int getScreenRoundValue() {
         return screenRound_;
       }
       /**
@@ -4265,6 +4347,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setScreenRoundValue(int value) {
+        
         screenRound_ = value;
         onChanged();
         return this;
@@ -4277,6 +4360,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.ScreenRound screen_round = 12;</code>
        * @return The screenRound.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound getScreenRound() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound result = com.android.aapt.ConfigurationOuterClass.Configuration.ScreenRound.valueOf(screenRound_);
@@ -4324,7 +4408,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.WideColorGamut wide_color_gamut = 13;</code>
        * @return The enum numeric value on the wire for wideColorGamut.
        */
-      public int getWideColorGamutValue() {
+      @java.lang.Override public int getWideColorGamutValue() {
         return wideColorGamut_;
       }
       /**
@@ -4337,6 +4421,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setWideColorGamutValue(int value) {
+        
         wideColorGamut_ = value;
         onChanged();
         return this;
@@ -4349,6 +4434,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.WideColorGamut wide_color_gamut = 13;</code>
        * @return The wideColorGamut.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut getWideColorGamut() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut result = com.android.aapt.ConfigurationOuterClass.Configuration.WideColorGamut.valueOf(wideColorGamut_);
@@ -4396,7 +4482,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Hdr hdr = 14;</code>
        * @return The enum numeric value on the wire for hdr.
        */
-      public int getHdrValue() {
+      @java.lang.Override public int getHdrValue() {
         return hdr_;
       }
       /**
@@ -4409,6 +4495,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setHdrValue(int value) {
+        
         hdr_ = value;
         onChanged();
         return this;
@@ -4421,6 +4508,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Hdr hdr = 14;</code>
        * @return The hdr.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.Hdr getHdr() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.Hdr result = com.android.aapt.ConfigurationOuterClass.Configuration.Hdr.valueOf(hdr_);
@@ -4468,7 +4556,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Orientation orientation = 15;</code>
        * @return The enum numeric value on the wire for orientation.
        */
-      public int getOrientationValue() {
+      @java.lang.Override public int getOrientationValue() {
         return orientation_;
       }
       /**
@@ -4481,6 +4569,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setOrientationValue(int value) {
+        
         orientation_ = value;
         onChanged();
         return this;
@@ -4493,6 +4582,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Orientation orientation = 15;</code>
        * @return The orientation.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.Orientation getOrientation() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.Orientation result = com.android.aapt.ConfigurationOuterClass.Configuration.Orientation.valueOf(orientation_);
@@ -4540,7 +4630,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.UiModeType ui_mode_type = 16;</code>
        * @return The enum numeric value on the wire for uiModeType.
        */
-      public int getUiModeTypeValue() {
+      @java.lang.Override public int getUiModeTypeValue() {
         return uiModeType_;
       }
       /**
@@ -4553,6 +4643,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setUiModeTypeValue(int value) {
+        
         uiModeType_ = value;
         onChanged();
         return this;
@@ -4565,6 +4656,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.UiModeType ui_mode_type = 16;</code>
        * @return The uiModeType.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType getUiModeType() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType result = com.android.aapt.ConfigurationOuterClass.Configuration.UiModeType.valueOf(uiModeType_);
@@ -4612,7 +4704,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.UiModeNight ui_mode_night = 17;</code>
        * @return The enum numeric value on the wire for uiModeNight.
        */
-      public int getUiModeNightValue() {
+      @java.lang.Override public int getUiModeNightValue() {
         return uiModeNight_;
       }
       /**
@@ -4625,6 +4717,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setUiModeNightValue(int value) {
+        
         uiModeNight_ = value;
         onChanged();
         return this;
@@ -4637,6 +4730,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.UiModeNight ui_mode_night = 17;</code>
        * @return The uiModeNight.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight getUiModeNight() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight result = com.android.aapt.ConfigurationOuterClass.Configuration.UiModeNight.valueOf(uiModeNight_);
@@ -4684,6 +4778,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 density = 18;</code>
        * @return The density.
        */
+      @java.lang.Override
       public int getDensity() {
         return density_;
       }
@@ -4726,7 +4821,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Touchscreen touchscreen = 19;</code>
        * @return The enum numeric value on the wire for touchscreen.
        */
-      public int getTouchscreenValue() {
+      @java.lang.Override public int getTouchscreenValue() {
         return touchscreen_;
       }
       /**
@@ -4739,6 +4834,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setTouchscreenValue(int value) {
+        
         touchscreen_ = value;
         onChanged();
         return this;
@@ -4751,6 +4847,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Touchscreen touchscreen = 19;</code>
        * @return The touchscreen.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen getTouchscreen() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen result = com.android.aapt.ConfigurationOuterClass.Configuration.Touchscreen.valueOf(touchscreen_);
@@ -4799,7 +4896,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.KeysHidden keys_hidden = 20;</code>
        * @return The enum numeric value on the wire for keysHidden.
        */
-      public int getKeysHiddenValue() {
+      @java.lang.Override public int getKeysHiddenValue() {
         return keysHidden_;
       }
       /**
@@ -4813,6 +4910,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setKeysHiddenValue(int value) {
+        
         keysHidden_ = value;
         onChanged();
         return this;
@@ -4826,6 +4924,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.KeysHidden keys_hidden = 20;</code>
        * @return The keysHidden.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden getKeysHidden() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden result = com.android.aapt.ConfigurationOuterClass.Configuration.KeysHidden.valueOf(keysHidden_);
@@ -4875,7 +4974,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Keyboard keyboard = 21;</code>
        * @return The enum numeric value on the wire for keyboard.
        */
-      public int getKeyboardValue() {
+      @java.lang.Override public int getKeyboardValue() {
         return keyboard_;
       }
       /**
@@ -4888,6 +4987,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setKeyboardValue(int value) {
+        
         keyboard_ = value;
         onChanged();
         return this;
@@ -4900,6 +5000,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Keyboard keyboard = 21;</code>
        * @return The keyboard.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard getKeyboard() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard result = com.android.aapt.ConfigurationOuterClass.Configuration.Keyboard.valueOf(keyboard_);
@@ -4947,7 +5048,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.NavHidden nav_hidden = 22;</code>
        * @return The enum numeric value on the wire for navHidden.
        */
-      public int getNavHiddenValue() {
+      @java.lang.Override public int getNavHiddenValue() {
         return navHidden_;
       }
       /**
@@ -4960,6 +5061,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setNavHiddenValue(int value) {
+        
         navHidden_ = value;
         onChanged();
         return this;
@@ -4972,6 +5074,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.NavHidden nav_hidden = 22;</code>
        * @return The navHidden.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden getNavHidden() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden result = com.android.aapt.ConfigurationOuterClass.Configuration.NavHidden.valueOf(navHidden_);
@@ -5020,7 +5123,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Navigation navigation = 23;</code>
        * @return The enum numeric value on the wire for navigation.
        */
-      public int getNavigationValue() {
+      @java.lang.Override public int getNavigationValue() {
         return navigation_;
       }
       /**
@@ -5034,6 +5137,7 @@ public final class ConfigurationOuterClass {
        * @return This builder for chaining.
        */
       public Builder setNavigationValue(int value) {
+        
         navigation_ = value;
         onChanged();
         return this;
@@ -5047,6 +5151,7 @@ public final class ConfigurationOuterClass {
        * <code>.aapt.pb.Configuration.Navigation navigation = 23;</code>
        * @return The navigation.
        */
+      @java.lang.Override
       public com.android.aapt.ConfigurationOuterClass.Configuration.Navigation getNavigation() {
         @SuppressWarnings("deprecation")
         com.android.aapt.ConfigurationOuterClass.Configuration.Navigation result = com.android.aapt.ConfigurationOuterClass.Configuration.Navigation.valueOf(navigation_);
@@ -5096,6 +5201,7 @@ public final class ConfigurationOuterClass {
        * <code>uint32 sdk_version = 24;</code>
        * @return The sdkVersion.
        */
+      @java.lang.Override
       public int getSdkVersion() {
         return sdkVersion_;
       }

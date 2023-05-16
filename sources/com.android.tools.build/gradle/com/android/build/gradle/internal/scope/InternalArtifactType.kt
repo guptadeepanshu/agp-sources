@@ -18,7 +18,6 @@ package com.android.build.gradle.internal.scope
 
 import com.android.build.api.artifact.Artifact
 import com.android.build.api.artifact.ArtifactKind
-import com.android.build.api.artifact.MultipleArtifact
 import com.android.build.api.artifact.SingleArtifact
 import org.gradle.api.file.Directory
 import org.gradle.api.file.FileSystemLocation
@@ -162,6 +161,8 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // The android test results proto merged test results from all devices.
     object MANAGED_DEVICE_ANDROID_TEST_MERGED_RESULTS_PROTO: InternalArtifactType<RegularFile>(FILE, Category.OUTPUTS)
+    // The android test results report HTML whose data are merged from all devices.
+    object MANAGED_DEVICE_ANDROID_TEST_MERGED_RESULTS_REPORT: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
 
     // Additional test output data from the connected task
     object CONNECTED_ANDROID_TEST_ADDITIONAL_OUTPUT: InternalArtifactType<Directory>(DIRECTORY, Category.OUTPUTS)
@@ -185,11 +186,7 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // --- android res ---
     // generated res
-    object GENERATED_RES: InternalArtifactType<Directory>(
-        DIRECTORY,
-        Category.GENERATED,
-        "res/resValues"
-    ), Replaceable
+    object GENERATED_RES: InternalArtifactType<Directory>(DIRECTORY, Category.GENERATED,), Replaceable
     // output of the resource merger ready for aapt.
     object MERGED_RES: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // folder for the blame report on the merged resources
@@ -251,6 +248,9 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // Information neeeded to resolve included navigation graphs into intent filters
     object NAVIGATION_JSON: InternalArtifactType<RegularFile>(FILE), Replaceable
+    // Similar to [NAVIGATION_JSON], but it lacks the source file information, which shouldn't be in
+    // the AAR.
+    object NAVIGATION_JSON_FOR_AAR: InternalArtifactType<RegularFile>(FILE), Replaceable
 
     // --- Namespaced android res ---
     // An AAPT2 static library: InternalArtifactType<RegularFile>(FILE), Replaceable containing only the current sub-project's resources.
@@ -294,9 +294,6 @@ InternalArtifactType<T : FileSystemLocation>(
     object SHADER_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
     object LIBRARY_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    // assets built by AGP and possible additions from the variant API are merged into this
-    // private type for 'test_config.properties' creation.
-    object MERGED_ASSETS_FOR_UNIT_TEST: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // compressed assets, ready to be packaged in the APK.
     object COMPRESSED_ASSETS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
 
@@ -310,10 +307,7 @@ InternalArtifactType<T : FileSystemLocation>(
     // renderscript library
     object RENDERSCRIPT_LIB: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // renderscript generated res
-    object RENDERSCRIPT_GENERATED_RES: InternalArtifactType<Directory>(
-        DIRECTORY,
-        Category.GENERATED,
-        "res/rs"), Replaceable
+    object RENDERSCRIPT_GENERATED_RES: InternalArtifactType<Directory>(DIRECTORY, Category.GENERATED), Replaceable
 
     // An output of AndroidManifest.xml check.
     // REMOVE ME (bug 139855995): This artifact can be removed in the new variant API, we haven't
@@ -371,8 +365,6 @@ InternalArtifactType<T : FileSystemLocation>(
     // directory containing layout info files for data binding when merge-resources type == PACKAGE
     // see https://issuetracker.google.com/110412851
     object DATA_BINDING_LAYOUT_INFO_TYPE_PACKAGE: InternalArtifactType<Directory>(DIRECTORY), Replaceable
-    // the generated base classes artifacts from all dependencies
-    object DATA_BINDING_BASE_CLASS_LOGS_DEPENDENCY_ARTIFACTS: InternalArtifactType<Directory>(DIRECTORY), Replaceable
     // the data binding class log generated after compilation: InternalArtifactType<RegularFile>(FILE), Replaceable includes merged
     // class info file
     object DATA_BINDING_BASE_CLASS_LOG_ARTIFACT: InternalArtifactType<Directory>(DIRECTORY), Replaceable
@@ -577,6 +569,7 @@ InternalArtifactType<T : FileSystemLocation>(
 
     // Sync dynamic properties file artifacts
     object VARIANT_MODEL: InternalArtifactType<RegularFile>(FILE)
+    object APP_ID_LIST_MODEL: InternalArtifactType<RegularFile>(FILE)
 
     override fun getFolderName(): String {
         return folderName ?: super.getFolderName()

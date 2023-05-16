@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorLatencyStats}
  */
-public  final class EmulatorLatencyStats extends
+public final class EmulatorLatencyStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorLatencyStats)
     EmulatorLatencyStatsOrBuilder {
@@ -322,14 +322,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorLatencyStats.EmulatorLatencySource latency_source = 1;</code>
    * @return Whether the latencySource field is set.
    */
-  public boolean hasLatencySource() {
+  @java.lang.Override public boolean hasLatencySource() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.EmulatorLatencyStats.EmulatorLatencySource latency_source = 1;</code>
    * @return The latencySource.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource getLatencySource() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource getLatencySource() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.valueOf(latencySource_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.EMULATOR_LATENCY_SOURCE_DEFAULT : result;
@@ -345,6 +345,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 vcpu_handling_mmio_address = 2;</code>
    * @return Whether the vcpuHandlingMmioAddress field is set.
    */
+  @java.lang.Override
   public boolean hasVcpuHandlingMmioAddress() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -356,6 +357,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 vcpu_handling_mmio_address = 2;</code>
    * @return The vcpuHandlingMmioAddress.
    */
+  @java.lang.Override
   public long getVcpuHandlingMmioAddress() {
     return vcpuHandlingMmioAddress_;
   }
@@ -370,6 +372,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 input_queue_full_loops = 8;</code>
    * @return Whether the inputQueueFullLoops field is set.
    */
+  @java.lang.Override
   public boolean hasInputQueueFullLoops() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -381,6 +384,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 input_queue_full_loops = 8;</code>
    * @return The inputQueueFullLoops.
    */
+  @java.lang.Override
   public int getInputQueueFullLoops() {
     return inputQueueFullLoops_;
   }
@@ -395,6 +399,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_max_us = 3;</code>
    * @return Whether the latencyMaxUs field is set.
    */
+  @java.lang.Override
   public boolean hasLatencyMaxUs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -406,6 +411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_max_us = 3;</code>
    * @return The latencyMaxUs.
    */
+  @java.lang.Override
   public long getLatencyMaxUs() {
     return latencyMaxUs_;
   }
@@ -416,6 +422,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_99_9_us = 4;</code>
    * @return Whether the latency999Us field is set.
    */
+  @java.lang.Override
   public boolean hasLatency999Us() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -423,6 +430,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_99_9_us = 4;</code>
    * @return The latency999Us.
    */
+  @java.lang.Override
   public long getLatency999Us() {
     return latency999Us_;
   }
@@ -433,6 +441,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_99_us = 5;</code>
    * @return Whether the latency99Us field is set.
    */
+  @java.lang.Override
   public boolean hasLatency99Us() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -440,6 +449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_99_us = 5;</code>
    * @return The latency99Us.
    */
+  @java.lang.Override
   public long getLatency99Us() {
     return latency99Us_;
   }
@@ -450,6 +460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_90_us = 6;</code>
    * @return Whether the latency90Us field is set.
    */
+  @java.lang.Override
   public boolean hasLatency90Us() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -457,6 +468,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_90_us = 6;</code>
    * @return The latency90Us.
    */
+  @java.lang.Override
   public long getLatency90Us() {
     return latency90Us_;
   }
@@ -467,6 +479,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_50_us = 7;</code>
    * @return Whether the latency50Us field is set.
    */
+  @java.lang.Override
   public boolean hasLatency50Us() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -474,6 +487,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_50_us = 7;</code>
    * @return The latency50Us.
    */
+  @java.lang.Override
   public long getLatency50Us() {
     return latency50Us_;
   }
@@ -981,13 +995,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorLatencyStats.EmulatorLatencySource latency_source = 1;</code>
      * @return Whether the latencySource field is set.
      */
-    public boolean hasLatencySource() {
+    @java.lang.Override public boolean hasLatencySource() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EmulatorLatencyStats.EmulatorLatencySource latency_source = 1;</code>
      * @return The latencySource.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource getLatencySource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource result = com.google.wireless.android.sdk.stats.EmulatorLatencyStats.EmulatorLatencySource.valueOf(latencySource_);
@@ -1027,6 +1042,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 vcpu_handling_mmio_address = 2;</code>
      * @return Whether the vcpuHandlingMmioAddress field is set.
      */
+    @java.lang.Override
     public boolean hasVcpuHandlingMmioAddress() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1038,6 +1054,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 vcpu_handling_mmio_address = 2;</code>
      * @return The vcpuHandlingMmioAddress.
      */
+    @java.lang.Override
     public long getVcpuHandlingMmioAddress() {
       return vcpuHandlingMmioAddress_;
     }
@@ -1080,6 +1097,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 input_queue_full_loops = 8;</code>
      * @return Whether the inputQueueFullLoops field is set.
      */
+    @java.lang.Override
     public boolean hasInputQueueFullLoops() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1091,6 +1109,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 input_queue_full_loops = 8;</code>
      * @return The inputQueueFullLoops.
      */
+    @java.lang.Override
     public int getInputQueueFullLoops() {
       return inputQueueFullLoops_;
     }
@@ -1133,6 +1152,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_max_us = 3;</code>
      * @return Whether the latencyMaxUs field is set.
      */
+    @java.lang.Override
     public boolean hasLatencyMaxUs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1144,6 +1164,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_max_us = 3;</code>
      * @return The latencyMaxUs.
      */
+    @java.lang.Override
     public long getLatencyMaxUs() {
       return latencyMaxUs_;
     }
@@ -1182,6 +1203,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_99_9_us = 4;</code>
      * @return Whether the latency999Us field is set.
      */
+    @java.lang.Override
     public boolean hasLatency999Us() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1189,6 +1211,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_99_9_us = 4;</code>
      * @return The latency999Us.
      */
+    @java.lang.Override
     public long getLatency999Us() {
       return latency999Us_;
     }
@@ -1219,6 +1242,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_99_us = 5;</code>
      * @return Whether the latency99Us field is set.
      */
+    @java.lang.Override
     public boolean hasLatency99Us() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1226,6 +1250,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_99_us = 5;</code>
      * @return The latency99Us.
      */
+    @java.lang.Override
     public long getLatency99Us() {
       return latency99Us_;
     }
@@ -1256,6 +1281,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_90_us = 6;</code>
      * @return Whether the latency90Us field is set.
      */
+    @java.lang.Override
     public boolean hasLatency90Us() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1263,6 +1289,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_90_us = 6;</code>
      * @return The latency90Us.
      */
+    @java.lang.Override
     public long getLatency90Us() {
       return latency90Us_;
     }
@@ -1293,6 +1320,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_50_us = 7;</code>
      * @return Whether the latency50Us field is set.
      */
+    @java.lang.Override
     public boolean hasLatency50Us() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1300,6 +1328,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_50_us = 7;</code>
      * @return The latency50Us.
      */
+    @java.lang.Override
     public long getLatency50Us() {
       return latency50Us_;
     }

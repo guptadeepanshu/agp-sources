@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.CpuProfilingConfig}
  */
-public  final class CpuProfilingConfig extends
+public final class CpuProfilingConfig extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CpuProfilingConfig)
     CpuProfilingConfigOrBuilder {
@@ -404,7 +404,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -415,7 +415,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type result = com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type.UNKNOWN_TYPE : result;
@@ -431,7 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig.Mode mode = 2;</code>
    * @return Whether the mode field is set.
    */
-  public boolean hasMode() {
+  @java.lang.Override public boolean hasMode() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -442,7 +442,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig.Mode mode = 2;</code>
    * @return The mode.
    */
-  public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode getMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode getMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode result = com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode.valueOf(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode.UNKNOWN_MODE : result;
@@ -458,6 +458,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 size_limit = 3;</code>
    * @return Whether the sizeLimit field is set.
    */
+  @java.lang.Override
   public boolean hasSizeLimit() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -469,6 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 size_limit = 3;</code>
    * @return The sizeLimit.
    */
+  @java.lang.Override
   public int getSizeLimit() {
     return sizeLimit_;
   }
@@ -483,6 +485,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 sample_interval = 4;</code>
    * @return Whether the sampleInterval field is set.
    */
+  @java.lang.Override
   public boolean hasSampleInterval() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -494,6 +497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 sample_interval = 4;</code>
    * @return The sampleInterval.
    */
+  @java.lang.Override
   public int getSampleInterval() {
     return sampleInterval_;
   }
@@ -894,7 +898,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuProfilingConfig.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -905,6 +909,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuProfilingConfig.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type result = com.google.wireless.android.sdk.stats.CpuProfilingConfig.Type.valueOf(type_);
@@ -952,7 +957,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuProfilingConfig.Mode mode = 2;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -963,6 +968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuProfilingConfig.Mode mode = 2;</code>
      * @return The mode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode result = com.google.wireless.android.sdk.stats.CpuProfilingConfig.Mode.valueOf(mode_);
@@ -1010,6 +1016,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 size_limit = 3;</code>
      * @return Whether the sizeLimit field is set.
      */
+    @java.lang.Override
     public boolean hasSizeLimit() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1021,6 +1028,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 size_limit = 3;</code>
      * @return The sizeLimit.
      */
+    @java.lang.Override
     public int getSizeLimit() {
       return sizeLimit_;
     }
@@ -1063,6 +1071,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 sample_interval = 4;</code>
      * @return Whether the sampleInterval field is set.
      */
+    @java.lang.Override
     public boolean hasSampleInterval() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1074,6 +1083,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 sample_interval = 4;</code>
      * @return The sampleInterval.
      */
+    @java.lang.Override
     public int getSampleInterval() {
       return sampleInterval_;
     }

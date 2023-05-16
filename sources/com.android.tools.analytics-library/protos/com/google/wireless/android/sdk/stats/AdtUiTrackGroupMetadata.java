@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AdtUiTrackGroupMetadata}
  */
-public  final class AdtUiTrackGroupMetadata extends
+public final class AdtUiTrackGroupMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AdtUiTrackGroupMetadata)
     AdtUiTrackGroupMetadataOrBuilder {
@@ -240,6 +240,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string title = 1;</code>
    * @return Whether the title field is set.
    */
+  @java.lang.Override
   public boolean hasTitle() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -252,6 +253,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string title = 1;</code>
    * @return The title.
    */
+  @java.lang.Override
   public java.lang.String getTitle() {
     java.lang.Object ref = title_;
     if (ref instanceof java.lang.String) {
@@ -275,6 +277,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string title = 1;</code>
    * @return The bytes for title.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTitleBytes() {
     java.lang.Object ref = title_;
@@ -299,7 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiTrackGroupMetadata.TrackGroupActionType action_type = 2;</code>
    * @return Whether the actionType field is set.
    */
-  public boolean hasActionType() {
+  @java.lang.Override public boolean hasActionType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -310,7 +313,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiTrackGroupMetadata.TrackGroupActionType action_type = 2;</code>
    * @return The actionType.
    */
-  public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType getActionType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType getActionType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.valueOf(actionType_);
     return result == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.UNKNOWN : result;
@@ -782,7 +785,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AdtUiTrackGroupMetadata.TrackGroupActionType action_type = 2;</code>
      * @return Whether the actionType field is set.
      */
-    public boolean hasActionType() {
+    @java.lang.Override public boolean hasActionType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -793,6 +796,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AdtUiTrackGroupMetadata.TrackGroupActionType action_type = 2;</code>
      * @return The actionType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType getActionType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType result = com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.TrackGroupActionType.valueOf(actionType_);

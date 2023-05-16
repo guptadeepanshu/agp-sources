@@ -33,6 +33,8 @@ class ManagedDeviceTestRunner(
     private val retentionConfig: RetentionConfig,
     private val useOrchestrator: Boolean,
     private val numShards: Int?,
+    private val emulatorGpuFlag: String,
+    private val showEmulatorKernelLogging: Boolean,
     private val utpLoggingLevel: Level = Level.WARNING,
     private val configFactory: UtpConfigFactory = UtpConfigFactory(),
     private val runUtpTestSuiteAndWaitFunc: (
@@ -59,7 +61,7 @@ class ManagedDeviceTestRunner(
         helperApks: Set<File>,
         logger: ILogger
     ): Boolean {
-        val testedApks = ManagedDeviceTestRunner.getTestedApks(testData, managedDevice, logger)
+        val testedApks = getTestedApks(testData, managedDevice, logger)
         val runnerConfigs = mutableListOf<UtpRunnerConfig>()
         repeat(numShards ?: 1) { currentShard ->
             val shardConfig = numShards?.let {
@@ -98,6 +100,8 @@ class ManagedDeviceTestRunner(
                         additionalTestOutputDir,
                         useOrchestrator,
                         resultListenerServerMetadata,
+                        emulatorGpuFlag,
+                        showEmulatorKernelLogging,
                         shardConfig
                     )
                 }
@@ -120,6 +124,15 @@ class ManagedDeviceTestRunner(
             logger
         )
 
+        results.forEach { result ->
+            if (result.resultsProto?.hasPlatformError() == true) {
+                logger.error(null, getPlatformErrorMessage(result.resultsProto))
+            }
+            result.resultsProto?.issueList?.forEach { issue ->
+                logger.error(null, issue.message)
+            }
+        }
+
         val resultProtos = results
             .map(UtpTestRunResult::resultsProto)
             .filterNotNull()
@@ -133,7 +146,9 @@ class ManagedDeviceTestRunner(
                 resultProtos.forEach(resultsMerger::merge)
 
                 val mergedTestResultPbFile = File(outputDirectory, TEST_RESULT_PB_FILE_NAME)
-                resultsMerger.result.writeTo(mergedTestResultPbFile.outputStream())
+                mergedTestResultPbFile.outputStream().use {
+                    resultsMerger.result.writeTo(it)
+                }
             }
         }
 
@@ -190,7 +205,7 @@ class ManagedDeviceTestRunner(
             logger.error(
                 null,
                 "Could not finish tests for device: ${runConfig.shardName()}.\n" +
-                "Last Error: ${getPlatformErrorMessage(runResult?.resultsProto)}\n"
+                "${getPlatformErrorMessage(runResult?.resultsProto)}\n"
             )
         }
 

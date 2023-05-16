@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AsmClassesTransformRegistration}
  */
-public  final class AsmClassesTransformRegistration extends
+public final class AsmClassesTransformRegistration extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AsmClassesTransformRegistration)
     AsmClassesTransformRegistrationOrBuilder {
@@ -226,6 +226,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_visitor_factory_class_name = 1;</code>
    * @return Whether the classVisitorFactoryClassName field is set.
    */
+  @java.lang.Override
   public boolean hasClassVisitorFactoryClassName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -238,6 +239,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_visitor_factory_class_name = 1;</code>
    * @return The classVisitorFactoryClassName.
    */
+  @java.lang.Override
   public java.lang.String getClassVisitorFactoryClassName() {
     java.lang.Object ref = classVisitorFactoryClassName_;
     if (ref instanceof java.lang.String) {
@@ -261,6 +263,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_visitor_factory_class_name = 1;</code>
    * @return The bytes for classVisitorFactoryClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassVisitorFactoryClassNameBytes() {
     java.lang.Object ref = classVisitorFactoryClassName_;
@@ -285,7 +288,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AsmClassesTransformRegistration.Scope scope = 2;</code>
    * @return Whether the scope field is set.
    */
-  public boolean hasScope() {
+  @java.lang.Override public boolean hasScope() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -296,7 +299,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AsmClassesTransformRegistration.Scope scope = 2;</code>
    * @return The scope.
    */
-  public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope getScope() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope getScope() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.valueOf(scope_);
     return result == null ? com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.UNKNOWN_SCOPE : result;
@@ -768,7 +771,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AsmClassesTransformRegistration.Scope scope = 2;</code>
      * @return Whether the scope field is set.
      */
-    public boolean hasScope() {
+    @java.lang.Override public boolean hasScope() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -779,6 +782,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AsmClassesTransformRegistration.Scope scope = 2;</code>
      * @return The scope.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope getScope() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope result = com.google.wireless.android.sdk.stats.AsmClassesTransformRegistration.Scope.valueOf(scope_);

@@ -14,7 +14,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code PayloadHeader}
  */
-public  final class PayloadHeader extends
+public final class PayloadHeader extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:PayloadHeader)
     PayloadHeaderOrBuilder {
@@ -104,6 +104,7 @@ private static final long serialVersionUID = 0L;
    * <code>int64 time_stamp_ms = 1;</code>
    * @return The timeStampMs.
    */
+  @java.lang.Override
   public long getTimeStampMs() {
     return timeStampMs_;
   }
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 type_id = 2;</code>
    * @return The typeId.
    */
+  @java.lang.Override
   public int getTypeId() {
     return typeId_;
   }
@@ -451,6 +453,7 @@ private static final long serialVersionUID = 0L;
      * <code>int64 time_stamp_ms = 1;</code>
      * @return The timeStampMs.
      */
+    @java.lang.Override
     public long getTimeStampMs() {
       return timeStampMs_;
     }
@@ -481,6 +484,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 type_id = 2;</code>
      * @return The typeId.
      */
+    @java.lang.Override
     public int getTypeId() {
       return typeId_;
     }

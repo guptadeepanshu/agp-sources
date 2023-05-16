@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorVirtualSceneSession}
  */
-public  final class EmulatorVirtualSceneSession extends
+public final class EmulatorVirtualSceneSession extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorVirtualSceneSession)
     EmulatorVirtualSceneSessionOrBuilder {
@@ -151,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -162,6 +163,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 1;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -176,6 +178,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 min_sensor_delay_ms = 2;</code>
    * @return Whether the minSensorDelayMs field is set.
    */
+  @java.lang.Override
   public boolean hasMinSensorDelayMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -187,6 +190,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 min_sensor_delay_ms = 2;</code>
    * @return The minSensorDelayMs.
    */
+  @java.lang.Override
   public int getMinSensorDelayMs() {
     return minSensorDelayMs_;
   }
@@ -201,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 tap_count = 3;</code>
    * @return Whether the tapCount field is set.
    */
+  @java.lang.Override
   public boolean hasTapCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -212,6 +217,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 tap_count = 3;</code>
    * @return The tapCount.
    */
+  @java.lang.Override
   public int getTapCount() {
     return tapCount_;
   }
@@ -226,6 +232,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 orientation_change_count = 4;</code>
    * @return Whether the orientationChangeCount field is set.
    */
+  @java.lang.Override
   public boolean hasOrientationChangeCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -237,6 +244,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 orientation_change_count = 4;</code>
    * @return The orientationChangeCount.
    */
+  @java.lang.Override
   public int getOrientationChangeCount() {
     return orientationChangeCount_;
   }
@@ -252,6 +260,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virtual_sensors_visible = 5;</code>
    * @return Whether the virtualSensorsVisible field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualSensorsVisible() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -264,6 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virtual_sensors_visible = 5;</code>
    * @return The virtualSensorsVisible.
    */
+  @java.lang.Override
   public boolean getVirtualSensorsVisible() {
     return virtualSensorsVisible_;
   }
@@ -278,6 +288,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 virtual_sensors_interaction_count = 6;</code>
    * @return Whether the virtualSensorsInteractionCount field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualSensorsInteractionCount() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -289,6 +300,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 virtual_sensors_interaction_count = 6;</code>
    * @return The virtualSensorsInteractionCount.
    */
+  @java.lang.Override
   public int getVirtualSensorsInteractionCount() {
     return virtualSensorsInteractionCount_;
   }
@@ -303,6 +315,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 hotkey_invoke_count = 7;</code>
    * @return Whether the hotkeyInvokeCount field is set.
    */
+  @java.lang.Override
   public boolean hasHotkeyInvokeCount() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -314,6 +327,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 hotkey_invoke_count = 7;</code>
    * @return The hotkeyInvokeCount.
    */
+  @java.lang.Override
   public int getHotkeyInvokeCount() {
     return hotkeyInvokeCount_;
   }
@@ -328,6 +342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 hotkey_duration_ms = 8;</code>
    * @return Whether the hotkeyDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasHotkeyDurationMs() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -339,6 +354,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 hotkey_duration_ms = 8;</code>
    * @return The hotkeyDurationMs.
    */
+  @java.lang.Override
   public long getHotkeyDurationMs() {
     return hotkeyDurationMs_;
   }
@@ -354,6 +370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 taps_after_hotkey_invoke = 9;</code>
    * @return Whether the tapsAfterHotkeyInvoke field is set.
    */
+  @java.lang.Override
   public boolean hasTapsAfterHotkeyInvoke() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -366,6 +383,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 taps_after_hotkey_invoke = 9;</code>
    * @return The tapsAfterHotkeyInvoke.
    */
+  @java.lang.Override
   public int getTapsAfterHotkeyInvoke() {
     return tapsAfterHotkeyInvoke_;
   }
@@ -380,6 +398,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double total_rotation_radians = 10;</code>
    * @return Whether the totalRotationRadians field is set.
    */
+  @java.lang.Override
   public boolean hasTotalRotationRadians() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -391,6 +410,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double total_rotation_radians = 10;</code>
    * @return The totalRotationRadians.
    */
+  @java.lang.Override
   public double getTotalRotationRadians() {
     return totalRotationRadians_;
   }
@@ -405,6 +425,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double total_translation_meters = 11;</code>
    * @return Whether the totalTranslationMeters field is set.
    */
+  @java.lang.Override
   public boolean hasTotalTranslationMeters() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -416,6 +437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double total_translation_meters = 11;</code>
    * @return The totalTranslationMeters.
    */
+  @java.lang.Override
   public double getTotalTranslationMeters() {
     return totalTranslationMeters_;
   }
@@ -1004,6 +1026,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1015,6 +1038,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 1;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -1057,6 +1081,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 min_sensor_delay_ms = 2;</code>
      * @return Whether the minSensorDelayMs field is set.
      */
+    @java.lang.Override
     public boolean hasMinSensorDelayMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1068,6 +1093,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 min_sensor_delay_ms = 2;</code>
      * @return The minSensorDelayMs.
      */
+    @java.lang.Override
     public int getMinSensorDelayMs() {
       return minSensorDelayMs_;
     }
@@ -1110,6 +1136,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 tap_count = 3;</code>
      * @return Whether the tapCount field is set.
      */
+    @java.lang.Override
     public boolean hasTapCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1121,6 +1148,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 tap_count = 3;</code>
      * @return The tapCount.
      */
+    @java.lang.Override
     public int getTapCount() {
       return tapCount_;
     }
@@ -1163,6 +1191,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 orientation_change_count = 4;</code>
      * @return Whether the orientationChangeCount field is set.
      */
+    @java.lang.Override
     public boolean hasOrientationChangeCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1174,6 +1203,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 orientation_change_count = 4;</code>
      * @return The orientationChangeCount.
      */
+    @java.lang.Override
     public int getOrientationChangeCount() {
       return orientationChangeCount_;
     }
@@ -1217,6 +1247,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virtual_sensors_visible = 5;</code>
      * @return Whether the virtualSensorsVisible field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualSensorsVisible() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1229,6 +1260,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virtual_sensors_visible = 5;</code>
      * @return The virtualSensorsVisible.
      */
+    @java.lang.Override
     public boolean getVirtualSensorsVisible() {
       return virtualSensorsVisible_;
     }
@@ -1273,6 +1305,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 virtual_sensors_interaction_count = 6;</code>
      * @return Whether the virtualSensorsInteractionCount field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualSensorsInteractionCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1284,6 +1317,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 virtual_sensors_interaction_count = 6;</code>
      * @return The virtualSensorsInteractionCount.
      */
+    @java.lang.Override
     public int getVirtualSensorsInteractionCount() {
       return virtualSensorsInteractionCount_;
     }
@@ -1326,6 +1360,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 hotkey_invoke_count = 7;</code>
      * @return Whether the hotkeyInvokeCount field is set.
      */
+    @java.lang.Override
     public boolean hasHotkeyInvokeCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1337,6 +1372,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 hotkey_invoke_count = 7;</code>
      * @return The hotkeyInvokeCount.
      */
+    @java.lang.Override
     public int getHotkeyInvokeCount() {
       return hotkeyInvokeCount_;
     }
@@ -1379,6 +1415,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 hotkey_duration_ms = 8;</code>
      * @return Whether the hotkeyDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasHotkeyDurationMs() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1390,6 +1427,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 hotkey_duration_ms = 8;</code>
      * @return The hotkeyDurationMs.
      */
+    @java.lang.Override
     public long getHotkeyDurationMs() {
       return hotkeyDurationMs_;
     }
@@ -1433,6 +1471,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 taps_after_hotkey_invoke = 9;</code>
      * @return Whether the tapsAfterHotkeyInvoke field is set.
      */
+    @java.lang.Override
     public boolean hasTapsAfterHotkeyInvoke() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1445,6 +1484,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 taps_after_hotkey_invoke = 9;</code>
      * @return The tapsAfterHotkeyInvoke.
      */
+    @java.lang.Override
     public int getTapsAfterHotkeyInvoke() {
       return tapsAfterHotkeyInvoke_;
     }
@@ -1489,6 +1529,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double total_rotation_radians = 10;</code>
      * @return Whether the totalRotationRadians field is set.
      */
+    @java.lang.Override
     public boolean hasTotalRotationRadians() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1500,6 +1541,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double total_rotation_radians = 10;</code>
      * @return The totalRotationRadians.
      */
+    @java.lang.Override
     public double getTotalRotationRadians() {
       return totalRotationRadians_;
     }
@@ -1542,6 +1584,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double total_translation_meters = 11;</code>
      * @return Whether the totalTranslationMeters field is set.
      */
+    @java.lang.Override
     public boolean hasTotalTranslationMeters() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -1553,6 +1596,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double total_translation_meters = 11;</code>
      * @return The totalTranslationMeters.
      */
+    @java.lang.Override
     public double getTotalTranslationMeters() {
       return totalTranslationMeters_;
     }

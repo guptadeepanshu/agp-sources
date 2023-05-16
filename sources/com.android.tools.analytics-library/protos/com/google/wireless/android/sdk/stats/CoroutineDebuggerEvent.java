@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CoroutineDebuggerEvent}
  */
-public  final class CoroutineDebuggerEvent extends
+public final class CoroutineDebuggerEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CoroutineDebuggerEvent)
     CoroutineDebuggerEventOrBuilder {
@@ -222,14 +222,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CoroutineDebuggerEvent.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.CoroutineDebuggerEvent.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type result = com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -246,6 +246,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool disabled_in_settings = 2;</code>
    * @return Whether the disabledInSettings field is set.
    */
+  @java.lang.Override
   public boolean hasDisabledInSettings() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -258,6 +259,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool disabled_in_settings = 2;</code>
    * @return The disabledInSettings.
    */
+  @java.lang.Override
   public boolean getDisabledInSettings() {
     return disabledInSettings_;
   }
@@ -610,13 +612,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CoroutineDebuggerEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.CoroutineDebuggerEvent.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type result = com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.Type.valueOf(type_);
@@ -657,6 +660,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool disabled_in_settings = 2;</code>
      * @return Whether the disabledInSettings field is set.
      */
+    @java.lang.Override
     public boolean hasDisabledInSettings() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -669,6 +673,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool disabled_in_settings = 2;</code>
      * @return The disabledInSettings.
      */
+    @java.lang.Override
     public boolean getDisabledInSettings() {
       return disabledInSettings_;
     }

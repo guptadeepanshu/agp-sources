@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleTransformExecution}
  */
-public  final class GradleTransformExecution extends
+public final class GradleTransformExecution extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleTransformExecution)
     GradleTransformExecutionOrBuilder {
@@ -113,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 type = 1 [deprecated = true];</code>
    * @return Whether the type field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 type = 1 [deprecated = true];</code>
    * @return The type.
    */
+  @java.lang.Override
   @java.lang.Deprecated public int getType() {
     return type_;
   }
@@ -143,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_incremental = 2;</code>
    * @return Whether the isIncremental field is set.
    */
+  @java.lang.Override
   public boolean hasIsIncremental() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -155,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_incremental = 2;</code>
    * @return The isIncremental.
    */
+  @java.lang.Override
   public boolean getIsIncremental() {
     return isIncremental_;
   }
@@ -170,6 +174,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string transform_class_name = 3;</code>
    * @return Whether the transformClassName field is set.
    */
+  @java.lang.Override
   public boolean hasTransformClassName() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -182,6 +187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string transform_class_name = 3;</code>
    * @return The transformClassName.
    */
+  @java.lang.Override
   public java.lang.String getTransformClassName() {
     java.lang.Object ref = transformClassName_;
     if (ref instanceof java.lang.String) {
@@ -205,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string transform_class_name = 3;</code>
    * @return The bytes for transformClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTransformClassNameBytes() {
     java.lang.Object ref = transformClassName_;
@@ -598,6 +605,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @return Whether the type field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -613,6 +621,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1 [deprecated = true];</code>
      * @return The type.
      */
+    @java.lang.Override
     @java.lang.Deprecated public int getType() {
       return type_;
     }
@@ -664,6 +673,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_incremental = 2;</code>
      * @return Whether the isIncremental field is set.
      */
+    @java.lang.Override
     public boolean hasIsIncremental() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -676,6 +686,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_incremental = 2;</code>
      * @return The isIncremental.
      */
+    @java.lang.Override
     public boolean getIsIncremental() {
       return isIncremental_;
     }

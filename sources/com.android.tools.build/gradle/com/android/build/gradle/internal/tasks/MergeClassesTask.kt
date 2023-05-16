@@ -18,8 +18,8 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants.DOT_JAR
 import com.android.build.gradle.internal.TaskManager
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.packaging.JarCreatorFactory
-import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.packaging.JarCreatorType
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
@@ -96,8 +96,8 @@ abstract class MergeClassesTask : NonIncrementalTask() {
     }
 
     class CreationAction(
-        creationConfig: VariantCreationConfig
-    ) : VariantTaskCreationAction<MergeClassesTask, VariantCreationConfig>(
+        creationConfig: ComponentCreationConfig
+    ) : VariantTaskCreationAction<MergeClassesTask, ComponentCreationConfig>(
         creationConfig
     ) {
         override val type = MergeClassesTask::class.java
@@ -121,7 +121,7 @@ abstract class MergeClassesTask : NonIncrementalTask() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 MergeClassesTask::outputFile
-            ).withName(if (creationConfig.variantType.isBaseModule) {
+            ).withName(if (creationConfig.componentType.isBaseModule) {
                 "base.jar"
             } else {
                 TaskManager.getFeatureFileName(creationConfig.services.projectInfo.path, DOT_JAR)

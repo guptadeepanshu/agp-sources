@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.NavSchemaInfo}
  */
-public  final class NavSchemaInfo extends
+public final class NavSchemaInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavSchemaInfo)
     NavSchemaInfoOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_navigators = 1;</code>
    * @return Whether the customNavigators field is set.
    */
+  @java.lang.Override
   public boolean hasCustomNavigators() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -123,6 +124,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_navigators = 1;</code>
    * @return The customNavigators.
    */
+  @java.lang.Override
   public int getCustomNavigators() {
     return customNavigators_;
   }
@@ -137,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_tags = 2;</code>
    * @return Whether the customTags field is set.
    */
+  @java.lang.Override
   public boolean hasCustomTags() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -148,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_tags = 2;</code>
    * @return The customTags.
    */
+  @java.lang.Override
   public int getCustomTags() {
     return customTags_;
   }
@@ -162,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_destinations = 3;</code>
    * @return Whether the customDestinations field is set.
    */
+  @java.lang.Override
   public boolean hasCustomDestinations() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -173,6 +178,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_destinations = 3;</code>
    * @return The customDestinations.
    */
+  @java.lang.Override
   public int getCustomDestinations() {
     return customDestinations_;
   }
@@ -187,6 +193,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_attributes = 4;</code>
    * @return Whether the customAttributes field is set.
    */
+  @java.lang.Override
   public boolean hasCustomAttributes() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -198,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 custom_attributes = 4;</code>
    * @return The customAttributes.
    */
+  @java.lang.Override
   public int getCustomAttributes() {
     return customAttributes_;
   }
@@ -600,6 +608,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_navigators = 1;</code>
      * @return Whether the customNavigators field is set.
      */
+    @java.lang.Override
     public boolean hasCustomNavigators() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -611,6 +620,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_navigators = 1;</code>
      * @return The customNavigators.
      */
+    @java.lang.Override
     public int getCustomNavigators() {
       return customNavigators_;
     }
@@ -653,6 +663,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_tags = 2;</code>
      * @return Whether the customTags field is set.
      */
+    @java.lang.Override
     public boolean hasCustomTags() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -664,6 +675,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_tags = 2;</code>
      * @return The customTags.
      */
+    @java.lang.Override
     public int getCustomTags() {
       return customTags_;
     }
@@ -706,6 +718,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_destinations = 3;</code>
      * @return Whether the customDestinations field is set.
      */
+    @java.lang.Override
     public boolean hasCustomDestinations() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -717,6 +730,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_destinations = 3;</code>
      * @return The customDestinations.
      */
+    @java.lang.Override
     public int getCustomDestinations() {
       return customDestinations_;
     }
@@ -759,6 +773,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_attributes = 4;</code>
      * @return Whether the customAttributes field is set.
      */
+    @java.lang.Override
     public boolean hasCustomAttributes() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -770,6 +785,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 custom_attributes = 4;</code>
      * @return The customAttributes.
      */
+    @java.lang.Override
     public int getCustomAttributes() {
       return customAttributes_;
     }

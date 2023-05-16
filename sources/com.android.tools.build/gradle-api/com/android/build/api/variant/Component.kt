@@ -22,6 +22,8 @@ import com.android.build.api.instrumentation.FramesComputationMode
 import com.android.build.api.instrumentation.InstrumentationParameters
 import com.android.build.api.instrumentation.InstrumentationScope
 import org.gradle.api.Incubating
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.file.FileCollection
 
 interface Component: ComponentIdentity {
 
@@ -56,4 +58,39 @@ interface Component: ComponentIdentity {
      * Access to the variant's instrumentation options.
      */
     val instrumentation: Instrumentation
+
+    /**
+     * Access to the variant's compile classpath.
+     *
+     * The returned [FileCollection] should not be resolved until execution time.
+     */
+    @get:Incubating
+    val compileClasspath: FileCollection
+
+    /**
+     * Access to the variant's compile [Configuration]; for example, the debugCompileClasspath
+     * [Configuration] for the debug variant.
+     *
+     * The returned [Configuration] should not be resolved until execution time.
+     */
+    @get:Incubating
+    val compileConfiguration: Configuration
+
+    /**
+     * Access to the variant's runtime [Configuration]; for example, the debugRuntimeClasspath
+     * [Configuration] for the debug variant.
+     *
+     * The returned [Configuration] should not be resolved until execution time.
+     */
+    @get:Incubating
+    val runtimeConfiguration: Configuration
+
+    /**
+     * Access to the variant's annotation processor [Configuration]; for example, the
+     * debugAnnotationProcessor [Configuration] for the debug variant.
+     *
+     * The returned [Configuration] should not be resolved until execution time.
+     */
+    @get:Incubating
+    val annotationProcessorConfiguration: Configuration
 }

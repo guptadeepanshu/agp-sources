@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code NewString}
  */
-public  final class NewString extends
+public final class NewString extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:NewString)
     NewStringOrBuilder {
@@ -98,6 +98,7 @@ private static final long serialVersionUID = 0L;
    * <code>string data = 1;</code>
    * @return The data.
    */
+  @java.lang.Override
   public java.lang.String getData() {
     java.lang.Object ref = data_;
     if (ref instanceof java.lang.String) {
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>string data = 1;</code>
    * @return The bytes for data.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDataBytes() {
     java.lang.Object ref = data_;

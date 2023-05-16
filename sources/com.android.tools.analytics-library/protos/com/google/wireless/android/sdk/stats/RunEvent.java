@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.RunEvent}
  */
-public  final class RunEvent extends
+public final class RunEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.RunEvent)
     RunEventOrBuilder {
@@ -502,14 +502,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunEvent.Status status = 1;</code>
    * @return Whether the status field is set.
    */
-  public boolean hasStatus() {
+  @java.lang.Override public boolean hasStatus() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.RunEvent.Status status = 1;</code>
    * @return The status.
    */
-  public com.google.wireless.android.sdk.stats.RunEvent.Status getStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.RunEvent.Status getStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.valueOf(status_);
     return result == null ? com.google.wireless.android.sdk.stats.RunEvent.Status.UNKNOWN_STATUS : result;
@@ -525,6 +525,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return Whether the executor field is set.
    */
+  @java.lang.Override
   public boolean hasExecutor() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -536,6 +537,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return The executor.
    */
+  @java.lang.Override
   public java.lang.String getExecutor() {
     java.lang.Object ref = executor_;
     if (ref instanceof java.lang.String) {
@@ -558,6 +560,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return The bytes for executor.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getExecutorBytes() {
     java.lang.Object ref = executor_;
@@ -582,6 +585,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool debuggable = 3;</code>
    * @return Whether the debuggable field is set.
    */
+  @java.lang.Override
   public boolean hasDebuggable() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -593,6 +597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool debuggable = 3;</code>
    * @return The debuggable.
    */
+  @java.lang.Override
   public boolean getDebuggable() {
     return debuggable_;
   }
@@ -607,6 +612,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run_enabled = 4;</code>
    * @return Whether the instantRunEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasInstantRunEnabled() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -618,6 +624,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run_enabled = 4;</code>
    * @return The instantRunEnabled.
    */
+  @java.lang.Override
   public boolean getInstantRunEnabled() {
     return instantRunEnabled_;
   }
@@ -632,6 +639,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_changes = 5;</code>
    * @return Whether the applyChanges field is set.
    */
+  @java.lang.Override
   public boolean hasApplyChanges() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -643,6 +651,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_changes = 5;</code>
    * @return The applyChanges.
    */
+  @java.lang.Override
   public boolean getApplyChanges() {
     return applyChanges_;
   }
@@ -657,6 +666,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_selected_target = 6;</code>
    * @return Whether the userSelectedTarget field is set.
    */
+  @java.lang.Override
   public boolean hasUserSelectedTarget() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -668,6 +678,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_selected_target = 6;</code>
    * @return The userSelectedTarget.
    */
+  @java.lang.Override
   public boolean getUserSelectedTarget() {
     return userSelectedTarget_;
   }
@@ -682,6 +693,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool launched_devices = 7;</code>
    * @return Whether the launchedDevices field is set.
    */
+  @java.lang.Override
   public boolean hasLaunchedDevices() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -693,6 +705,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool launched_devices = 7;</code>
    * @return The launchedDevices.
    */
+  @java.lang.Override
   public boolean getLaunchedDevices() {
     return launchedDevices_;
   }
@@ -707,6 +720,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 device_count = 8;</code>
    * @return Whether the deviceCount field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceCount() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -718,6 +732,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 device_count = 8;</code>
    * @return The deviceCount.
    */
+  @java.lang.Override
   public int getDeviceCount() {
     return deviceCount_;
   }
@@ -732,6 +747,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool partial = 9;</code>
    * @return Whether the partial field is set.
    */
+  @java.lang.Override
   public boolean hasPartial() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -743,6 +759,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool partial = 9;</code>
    * @return The partial.
    */
+  @java.lang.Override
   public boolean getPartial() {
     return partial_;
   }
@@ -756,6 +773,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LaunchTaskDetail launch_task_detail = 10;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.LaunchTaskDetail> getLaunchTaskDetailList() {
     return launchTaskDetail_;
   }
@@ -766,6 +784,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LaunchTaskDetail launch_task_detail = 10;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.LaunchTaskDetailOrBuilder> 
       getLaunchTaskDetailOrBuilderList() {
     return launchTaskDetail_;
@@ -777,6 +796,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LaunchTaskDetail launch_task_detail = 10;</code>
    */
+  @java.lang.Override
   public int getLaunchTaskDetailCount() {
     return launchTaskDetail_.size();
   }
@@ -787,6 +807,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LaunchTaskDetail launch_task_detail = 10;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LaunchTaskDetail getLaunchTaskDetail(int index) {
     return launchTaskDetail_.get(index);
   }
@@ -797,6 +818,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LaunchTaskDetail launch_task_detail = 10;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LaunchTaskDetailOrBuilder getLaunchTaskDetailOrBuilder(
       int index) {
     return launchTaskDetail_.get(index);
@@ -813,6 +835,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_timestamp_ms = 11;</code>
    * @return Whether the beginTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasBeginTimestampMs() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -825,6 +848,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_timestamp_ms = 11;</code>
    * @return The beginTimestampMs.
    */
+  @java.lang.Override
   public long getBeginTimestampMs() {
     return beginTimestampMs_;
   }
@@ -839,6 +863,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_before_run_tasks_timestamp_ms = 12;</code>
    * @return Whether the beginBeforeRunTasksTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasBeginBeforeRunTasksTimestampMs() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -850,6 +875,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_before_run_tasks_timestamp_ms = 12;</code>
    * @return The beginBeforeRunTasksTimestampMs.
    */
+  @java.lang.Override
   public long getBeginBeforeRunTasksTimestampMs() {
     return beginBeforeRunTasksTimestampMs_;
   }
@@ -864,6 +890,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_before_run_tasks_timestamp_ms = 13;</code>
    * @return Whether the endBeforeRunTasksTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasEndBeforeRunTasksTimestampMs() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -875,6 +902,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_before_run_tasks_timestamp_ms = 13;</code>
    * @return The endBeforeRunTasksTimestampMs.
    */
+  @java.lang.Override
   public long getEndBeforeRunTasksTimestampMs() {
     return endBeforeRunTasksTimestampMs_;
   }
@@ -889,6 +917,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_wait_for_device_timestamp_ms = 14;</code>
    * @return Whether the beginWaitForDeviceTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasBeginWaitForDeviceTimestampMs() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -900,6 +929,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_wait_for_device_timestamp_ms = 14;</code>
    * @return The beginWaitForDeviceTimestampMs.
    */
+  @java.lang.Override
   public long getBeginWaitForDeviceTimestampMs() {
     return beginWaitForDeviceTimestampMs_;
   }
@@ -914,6 +944,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_wait_for_device_timestamp_ms = 15;</code>
    * @return Whether the endWaitForDeviceTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasEndWaitForDeviceTimestampMs() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -925,6 +956,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_wait_for_device_timestamp_ms = 15;</code>
    * @return The endWaitForDeviceTimestampMs.
    */
+  @java.lang.Override
   public long getEndWaitForDeviceTimestampMs() {
     return endWaitForDeviceTimestampMs_;
   }
@@ -939,6 +971,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_launch_tasks_timestamp_ms = 16;</code>
    * @return Whether the beginLaunchTasksTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasBeginLaunchTasksTimestampMs() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -950,6 +983,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 begin_launch_tasks_timestamp_ms = 16;</code>
    * @return The beginLaunchTasksTimestampMs.
    */
+  @java.lang.Override
   public long getBeginLaunchTasksTimestampMs() {
     return beginLaunchTasksTimestampMs_;
   }
@@ -964,6 +998,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_launch_tasks_timestamp_ms = 17;</code>
    * @return Whether the endLaunchTasksTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasEndLaunchTasksTimestampMs() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -975,6 +1010,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_launch_tasks_timestamp_ms = 17;</code>
    * @return The endLaunchTasksTimestampMs.
    */
+  @java.lang.Override
   public long getEndLaunchTasksTimestampMs() {
     return endLaunchTasksTimestampMs_;
   }
@@ -989,6 +1025,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_timestamp_ms = 18;</code>
    * @return Whether the endTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasEndTimestampMs() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -1000,6 +1037,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_timestamp_ms = 18;</code>
    * @return The endTimestampMs.
    */
+  @java.lang.Override
   public long getEndTimestampMs() {
     return endTimestampMs_;
   }
@@ -1014,6 +1052,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool deployed_as_instant = 19;</code>
    * @return Whether the deployedAsInstant field is set.
    */
+  @java.lang.Override
   public boolean hasDeployedAsInstant() {
     return ((bitField0_ & 0x00020000) != 0);
   }
@@ -1025,6 +1064,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool deployed_as_instant = 19;</code>
    * @return The deployedAsInstant.
    */
+  @java.lang.Override
   public boolean getDeployedAsInstant() {
     return deployedAsInstant_;
   }
@@ -1039,6 +1079,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool deployed_from_bundle = 20;</code>
    * @return Whether the deployedFromBundle field is set.
    */
+  @java.lang.Override
   public boolean hasDeployedFromBundle() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -1050,6 +1091,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool deployed_from_bundle = 20;</code>
    * @return The deployedFromBundle.
    */
+  @java.lang.Override
   public boolean getDeployedFromBundle() {
     return deployedFromBundle_;
   }
@@ -1064,6 +1106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string deploy_failure_id = 21;</code>
    * @return Whether the deployFailureId field is set.
    */
+  @java.lang.Override
   public boolean hasDeployFailureId() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -1075,6 +1118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string deploy_failure_id = 21;</code>
    * @return The deployFailureId.
    */
+  @java.lang.Override
   public java.lang.String getDeployFailureId() {
     java.lang.Object ref = deployFailureId_;
     if (ref instanceof java.lang.String) {
@@ -1097,6 +1141,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string deploy_failure_id = 21;</code>
    * @return The bytes for deployFailureId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDeployFailureIdBytes() {
     java.lang.Object ref = deployFailureId_;
@@ -1121,6 +1166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_changes_fallback_to_run = 22;</code>
    * @return Whether the applyChangesFallbackToRun field is set.
    */
+  @java.lang.Override
   public boolean hasApplyChangesFallbackToRun() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -1132,6 +1178,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_changes_fallback_to_run = 22;</code>
    * @return The applyChangesFallbackToRun.
    */
+  @java.lang.Override
   public boolean getApplyChangesFallbackToRun() {
     return applyChangesFallbackToRun_;
   }
@@ -1146,6 +1193,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_code_changes_fallback_to_run = 23;</code>
    * @return Whether the applyCodeChangesFallbackToRun field is set.
    */
+  @java.lang.Override
   public boolean hasApplyCodeChangesFallbackToRun() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -1157,6 +1205,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool apply_code_changes_fallback_to_run = 23;</code>
    * @return The applyCodeChangesFallbackToRun.
    */
+  @java.lang.Override
   public boolean getApplyCodeChangesFallbackToRun() {
     return applyCodeChangesFallbackToRun_;
   }
@@ -1171,6 +1220,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool run_always_install_with_pm = 24;</code>
    * @return Whether the runAlwaysInstallWithPm field is set.
    */
+  @java.lang.Override
   public boolean hasRunAlwaysInstallWithPm() {
     return ((bitField0_ & 0x00400000) != 0);
   }
@@ -1182,6 +1232,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool run_always_install_with_pm = 24;</code>
    * @return The runAlwaysInstallWithPm.
    */
+  @java.lang.Override
   public boolean getRunAlwaysInstallWithPm() {
     return runAlwaysInstallWithPm_;
   }
@@ -1196,7 +1247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
    * @return Whether the appComponentType field is set.
    */
-  public boolean hasAppComponentType() {
+  @java.lang.Override public boolean hasAppComponentType() {
     return ((bitField0_ & 0x00800000) != 0);
   }
   /**
@@ -1207,7 +1258,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
    * @return The appComponentType.
    */
-  public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);
     return result == null ? com.google.wireless.android.sdk.stats.RunEvent.AppComponent.UNKNOWN : result;
@@ -2181,13 +2232,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.RunEvent.Status status = 1;</code>
      * @return Whether the status field is set.
      */
-    public boolean hasStatus() {
+    @java.lang.Override public boolean hasStatus() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.RunEvent.Status status = 1;</code>
      * @return The status.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunEvent.Status getStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.RunEvent.Status result = com.google.wireless.android.sdk.stats.RunEvent.Status.valueOf(status_);
@@ -2335,6 +2387,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool debuggable = 3;</code>
      * @return Whether the debuggable field is set.
      */
+    @java.lang.Override
     public boolean hasDebuggable() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2346,6 +2399,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool debuggable = 3;</code>
      * @return The debuggable.
      */
+    @java.lang.Override
     public boolean getDebuggable() {
       return debuggable_;
     }
@@ -2388,6 +2442,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run_enabled = 4;</code>
      * @return Whether the instantRunEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasInstantRunEnabled() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2399,6 +2454,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run_enabled = 4;</code>
      * @return The instantRunEnabled.
      */
+    @java.lang.Override
     public boolean getInstantRunEnabled() {
       return instantRunEnabled_;
     }
@@ -2441,6 +2497,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_changes = 5;</code>
      * @return Whether the applyChanges field is set.
      */
+    @java.lang.Override
     public boolean hasApplyChanges() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2452,6 +2509,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_changes = 5;</code>
      * @return The applyChanges.
      */
+    @java.lang.Override
     public boolean getApplyChanges() {
       return applyChanges_;
     }
@@ -2494,6 +2552,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_selected_target = 6;</code>
      * @return Whether the userSelectedTarget field is set.
      */
+    @java.lang.Override
     public boolean hasUserSelectedTarget() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2505,6 +2564,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_selected_target = 6;</code>
      * @return The userSelectedTarget.
      */
+    @java.lang.Override
     public boolean getUserSelectedTarget() {
       return userSelectedTarget_;
     }
@@ -2547,6 +2607,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool launched_devices = 7;</code>
      * @return Whether the launchedDevices field is set.
      */
+    @java.lang.Override
     public boolean hasLaunchedDevices() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -2558,6 +2619,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool launched_devices = 7;</code>
      * @return The launchedDevices.
      */
+    @java.lang.Override
     public boolean getLaunchedDevices() {
       return launchedDevices_;
     }
@@ -2600,6 +2662,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 device_count = 8;</code>
      * @return Whether the deviceCount field is set.
      */
+    @java.lang.Override
     public boolean hasDeviceCount() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -2611,6 +2674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 device_count = 8;</code>
      * @return The deviceCount.
      */
+    @java.lang.Override
     public int getDeviceCount() {
       return deviceCount_;
     }
@@ -2653,6 +2717,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool partial = 9;</code>
      * @return Whether the partial field is set.
      */
+    @java.lang.Override
     public boolean hasPartial() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2664,6 +2729,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool partial = 9;</code>
      * @return The partial.
      */
+    @java.lang.Override
     public boolean getPartial() {
       return partial_;
     }
@@ -3019,6 +3085,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_timestamp_ms = 11;</code>
      * @return Whether the beginTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasBeginTimestampMs() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -3031,6 +3098,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_timestamp_ms = 11;</code>
      * @return The beginTimestampMs.
      */
+    @java.lang.Override
     public long getBeginTimestampMs() {
       return beginTimestampMs_;
     }
@@ -3075,6 +3143,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_before_run_tasks_timestamp_ms = 12;</code>
      * @return Whether the beginBeforeRunTasksTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasBeginBeforeRunTasksTimestampMs() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -3086,6 +3155,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_before_run_tasks_timestamp_ms = 12;</code>
      * @return The beginBeforeRunTasksTimestampMs.
      */
+    @java.lang.Override
     public long getBeginBeforeRunTasksTimestampMs() {
       return beginBeforeRunTasksTimestampMs_;
     }
@@ -3128,6 +3198,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_before_run_tasks_timestamp_ms = 13;</code>
      * @return Whether the endBeforeRunTasksTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasEndBeforeRunTasksTimestampMs() {
       return ((bitField0_ & 0x00001000) != 0);
     }
@@ -3139,6 +3210,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_before_run_tasks_timestamp_ms = 13;</code>
      * @return The endBeforeRunTasksTimestampMs.
      */
+    @java.lang.Override
     public long getEndBeforeRunTasksTimestampMs() {
       return endBeforeRunTasksTimestampMs_;
     }
@@ -3181,6 +3253,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_wait_for_device_timestamp_ms = 14;</code>
      * @return Whether the beginWaitForDeviceTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasBeginWaitForDeviceTimestampMs() {
       return ((bitField0_ & 0x00002000) != 0);
     }
@@ -3192,6 +3265,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_wait_for_device_timestamp_ms = 14;</code>
      * @return The beginWaitForDeviceTimestampMs.
      */
+    @java.lang.Override
     public long getBeginWaitForDeviceTimestampMs() {
       return beginWaitForDeviceTimestampMs_;
     }
@@ -3234,6 +3308,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_wait_for_device_timestamp_ms = 15;</code>
      * @return Whether the endWaitForDeviceTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasEndWaitForDeviceTimestampMs() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -3245,6 +3320,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_wait_for_device_timestamp_ms = 15;</code>
      * @return The endWaitForDeviceTimestampMs.
      */
+    @java.lang.Override
     public long getEndWaitForDeviceTimestampMs() {
       return endWaitForDeviceTimestampMs_;
     }
@@ -3287,6 +3363,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_launch_tasks_timestamp_ms = 16;</code>
      * @return Whether the beginLaunchTasksTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasBeginLaunchTasksTimestampMs() {
       return ((bitField0_ & 0x00008000) != 0);
     }
@@ -3298,6 +3375,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 begin_launch_tasks_timestamp_ms = 16;</code>
      * @return The beginLaunchTasksTimestampMs.
      */
+    @java.lang.Override
     public long getBeginLaunchTasksTimestampMs() {
       return beginLaunchTasksTimestampMs_;
     }
@@ -3340,6 +3418,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_launch_tasks_timestamp_ms = 17;</code>
      * @return Whether the endLaunchTasksTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasEndLaunchTasksTimestampMs() {
       return ((bitField0_ & 0x00010000) != 0);
     }
@@ -3351,6 +3430,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_launch_tasks_timestamp_ms = 17;</code>
      * @return The endLaunchTasksTimestampMs.
      */
+    @java.lang.Override
     public long getEndLaunchTasksTimestampMs() {
       return endLaunchTasksTimestampMs_;
     }
@@ -3393,6 +3473,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_timestamp_ms = 18;</code>
      * @return Whether the endTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasEndTimestampMs() {
       return ((bitField0_ & 0x00020000) != 0);
     }
@@ -3404,6 +3485,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_timestamp_ms = 18;</code>
      * @return The endTimestampMs.
      */
+    @java.lang.Override
     public long getEndTimestampMs() {
       return endTimestampMs_;
     }
@@ -3446,6 +3528,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool deployed_as_instant = 19;</code>
      * @return Whether the deployedAsInstant field is set.
      */
+    @java.lang.Override
     public boolean hasDeployedAsInstant() {
       return ((bitField0_ & 0x00040000) != 0);
     }
@@ -3457,6 +3540,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool deployed_as_instant = 19;</code>
      * @return The deployedAsInstant.
      */
+    @java.lang.Override
     public boolean getDeployedAsInstant() {
       return deployedAsInstant_;
     }
@@ -3499,6 +3583,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool deployed_from_bundle = 20;</code>
      * @return Whether the deployedFromBundle field is set.
      */
+    @java.lang.Override
     public boolean hasDeployedFromBundle() {
       return ((bitField0_ & 0x00080000) != 0);
     }
@@ -3510,6 +3595,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool deployed_from_bundle = 20;</code>
      * @return The deployedFromBundle.
      */
+    @java.lang.Override
     public boolean getDeployedFromBundle() {
       return deployedFromBundle_;
     }
@@ -3660,6 +3746,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_changes_fallback_to_run = 22;</code>
      * @return Whether the applyChangesFallbackToRun field is set.
      */
+    @java.lang.Override
     public boolean hasApplyChangesFallbackToRun() {
       return ((bitField0_ & 0x00200000) != 0);
     }
@@ -3671,6 +3758,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_changes_fallback_to_run = 22;</code>
      * @return The applyChangesFallbackToRun.
      */
+    @java.lang.Override
     public boolean getApplyChangesFallbackToRun() {
       return applyChangesFallbackToRun_;
     }
@@ -3713,6 +3801,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_code_changes_fallback_to_run = 23;</code>
      * @return Whether the applyCodeChangesFallbackToRun field is set.
      */
+    @java.lang.Override
     public boolean hasApplyCodeChangesFallbackToRun() {
       return ((bitField0_ & 0x00400000) != 0);
     }
@@ -3724,6 +3813,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool apply_code_changes_fallback_to_run = 23;</code>
      * @return The applyCodeChangesFallbackToRun.
      */
+    @java.lang.Override
     public boolean getApplyCodeChangesFallbackToRun() {
       return applyCodeChangesFallbackToRun_;
     }
@@ -3766,6 +3856,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool run_always_install_with_pm = 24;</code>
      * @return Whether the runAlwaysInstallWithPm field is set.
      */
+    @java.lang.Override
     public boolean hasRunAlwaysInstallWithPm() {
       return ((bitField0_ & 0x00800000) != 0);
     }
@@ -3777,6 +3868,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool run_always_install_with_pm = 24;</code>
      * @return The runAlwaysInstallWithPm.
      */
+    @java.lang.Override
     public boolean getRunAlwaysInstallWithPm() {
       return runAlwaysInstallWithPm_;
     }
@@ -3819,7 +3911,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
      * @return Whether the appComponentType field is set.
      */
-    public boolean hasAppComponentType() {
+    @java.lang.Override public boolean hasAppComponentType() {
       return ((bitField0_ & 0x01000000) != 0);
     }
     /**
@@ -3830,6 +3922,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.RunEvent.AppComponent app_component_type = 25;</code>
      * @return The appComponentType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.RunEvent.AppComponent getAppComponentType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.RunEvent.AppComponent result = com.google.wireless.android.sdk.stats.RunEvent.AppComponent.valueOf(appComponentType_);

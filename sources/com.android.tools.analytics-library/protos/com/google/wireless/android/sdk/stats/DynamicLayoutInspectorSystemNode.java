@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.DynamicLayoutInspectorSystemNode}
  */
-public  final class DynamicLayoutInspectorSystemNode extends
+public final class DynamicLayoutInspectorSystemNode extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorSystemNode)
     DynamicLayoutInspectorSystemNodeOrBuilder {
@@ -102,6 +102,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_hidden_system_views = 1;</code>
    * @return Whether the clicksWithHiddenSystemViews field is set.
    */
+  @java.lang.Override
   public boolean hasClicksWithHiddenSystemViews() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -113,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_hidden_system_views = 1;</code>
    * @return The clicksWithHiddenSystemViews.
    */
+  @java.lang.Override
   public int getClicksWithHiddenSystemViews() {
     return clicksWithHiddenSystemViews_;
   }
@@ -127,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_visible_system_views = 2;</code>
    * @return Whether the clicksWithVisibleSystemViews field is set.
    */
+  @java.lang.Override
   public boolean hasClicksWithVisibleSystemViews() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -138,6 +141,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_visible_system_views = 2;</code>
    * @return The clicksWithVisibleSystemViews.
    */
+  @java.lang.Override
   public int getClicksWithVisibleSystemViews() {
     return clicksWithVisibleSystemViews_;
   }
@@ -490,6 +494,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_hidden_system_views = 1;</code>
      * @return Whether the clicksWithHiddenSystemViews field is set.
      */
+    @java.lang.Override
     public boolean hasClicksWithHiddenSystemViews() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -501,6 +506,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_hidden_system_views = 1;</code>
      * @return The clicksWithHiddenSystemViews.
      */
+    @java.lang.Override
     public int getClicksWithHiddenSystemViews() {
       return clicksWithHiddenSystemViews_;
     }
@@ -543,6 +549,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_visible_system_views = 2;</code>
      * @return Whether the clicksWithVisibleSystemViews field is set.
      */
+    @java.lang.Override
     public boolean hasClicksWithVisibleSystemViews() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -554,6 +561,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_visible_system_views = 2;</code>
      * @return The clicksWithVisibleSystemViews.
      */
+    @java.lang.Override
     public int getClicksWithVisibleSystemViews() {
       return clicksWithVisibleSystemViews_;
     }

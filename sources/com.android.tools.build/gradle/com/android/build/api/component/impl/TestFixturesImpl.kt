@@ -41,9 +41,10 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.AarMetadataTask.Companion.DEFAULT_MIN_AGP_VERSION
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
+import com.android.build.gradle.internal.testFixtures.testFixturesFeatureName
 import com.android.build.gradle.internal.variant.TestFixturesVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -64,7 +65,7 @@ open class TestFixturesImpl @Inject constructor(
     variantData: TestFixturesVariantData,
     val mainVariant: VariantImpl,
     transformManager: TransformManager,
-    variantPropertiesApiServices: VariantPropertiesApiServices,
+    variantServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig
 ) : ComponentImpl(
@@ -78,7 +79,7 @@ open class TestFixturesImpl @Inject constructor(
     variantScope,
     variantData,
     transformManager,
-    variantPropertiesApiServices,
+    variantServices,
     taskCreationServices,
     global
 ), TestFixtures, ComponentCreationConfig, AarCreationConfig {
@@ -91,6 +92,8 @@ open class TestFixturesImpl @Inject constructor(
         internalServices.providerOf(String::class.java, variantDslInfo.namespace)
     override val debuggable: Boolean
         get() = mainVariant.debuggable
+    override val profileable: Boolean
+        get() = mainVariant.profileable
     override val minSdkVersion: AndroidVersion
         get() = mainVariant.minSdkVersion
     override val targetSdkVersion: AndroidVersion
@@ -151,6 +154,10 @@ open class TestFixturesImpl @Inject constructor(
             Boolean::class.java,
             variantDslInfo.isPseudoLocalesEnabled
         )
+
+    override fun getArtifactName(name: String): String {
+        return "$testFixturesFeatureName-$name"
+    }
 
     // ---------------------------------------------------------------------------------------------
     // Private stuff

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CMakeEditingEvent}
  */
-public  final class CMakeEditingEvent extends
+public final class CMakeEditingEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CMakeEditingEvent)
     CMakeEditingEventOrBuilder {
@@ -231,14 +231,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CMakeEditingEvent.CMakeEditingEventKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.CMakeEditingEvent.CMakeEditingEventKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind result = com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind.UNKNOWN_CMAKE_EDITING_EVENT : result;
@@ -254,6 +254,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_duration_ms = 2;</code>
    * @return Whether the eventDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasEventDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -265,6 +266,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_duration_ms = 2;</code>
    * @return The eventDurationMs.
    */
+  @java.lang.Override
   public long getEventDurationMs() {
     return eventDurationMs_;
   }
@@ -617,13 +619,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CMakeEditingEvent.CMakeEditingEventKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.CMakeEditingEvent.CMakeEditingEventKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind result = com.google.wireless.android.sdk.stats.CMakeEditingEvent.CMakeEditingEventKind.valueOf(kind_);
@@ -663,6 +666,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_duration_ms = 2;</code>
      * @return Whether the eventDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasEventDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -674,6 +678,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_duration_ms = 2;</code>
      * @return The eventDurationMs.
      */
+    @java.lang.Override
     public long getEventDurationMs() {
       return eventDurationMs_;
     }

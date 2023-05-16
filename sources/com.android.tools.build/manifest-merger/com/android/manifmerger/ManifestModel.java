@@ -21,6 +21,7 @@ import static com.android.SdkConstants.ATTR_NAME;
 import static com.android.SdkConstants.ATTR_PACKAGE;
 import static com.android.manifmerger.AttributeModel.Hexadecimal32BitsWithMinimumValue;
 import static com.android.manifmerger.AttributeModel.OR_MERGING_POLICY;
+import static com.android.manifmerger.AttributeModel.STRICT_MERGING_POLICY;
 import static com.android.manifmerger.AttributeModel.SeparatedValuesValidator;
 
 import com.android.SdkConstants;
@@ -331,6 +332,30 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
                                         return OR_MERGING_POLICY.merge(
                                                 higherPriority, lowerPriority);
                                     }
+                                }),
+                AttributeModel.newModel("localeConfig")
+                        .setMergingPolicy(
+                                new AttributeModel.MergingPolicy() {
+                                    @Override
+                                    public boolean shouldMergeDefaultValues() {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean canMergeWithLowerPriority(
+                                            @NonNull XmlDocument document) {
+                                        return EnumSet.of(Type.MAIN, Type.OVERLAY)
+                                                .contains(document.getFileType());
+                                    }
+
+                                    @Nullable
+                                    @Override
+                                    public String merge(
+                                            @NonNull String higherPriority,
+                                            @NonNull String lowerPriority) {
+                                        return STRICT_MERGING_POLICY.merge(
+                                                higherPriority, lowerPriority);
+                                    }
                                 })),
 
         /**
@@ -506,6 +531,24 @@ public class ManifestModel implements DocumentModel<ManifestModel.NodeTypes> {
          */
         PERMISSION_TREE(MergeType.MERGE, DEFAULT_NAME_ATTRIBUTE_RESOLVER,
                 AttributeModel.newModel(SdkConstants.ATTR_NAME)),
+
+        /**
+         * Profileable <br>
+         * <b>See also : </b> {@link <a
+         * href=https://developer.android.com/guide/topics/manifest/profileable-element>Profileable
+         * Xml documentation</a>}
+         */
+        PROFILEABLE(
+                MergeType.MERGE,
+                PROVIDER_KEY_RESOLVER,
+                // The profileable android:shell attribute added in SDK 29.
+                AttributeModel.newModel("shell")
+                        .setDefaultValue("true")
+                        .setMergingPolicy(AttributeModel.NO_MERGING_POLICY),
+                // The profileable android:enabled attribute added in SDK 30.
+                AttributeModel.newModel("enabled")
+                        .setDefaultValue("true")
+                        .setMergingPolicy(AttributeModel.NO_MERGING_POLICY)),
 
         /**
          * Provider (contained in application or queries) <br>

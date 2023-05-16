@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.variant
 
+import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.component.impl.ComponentImpl
 import com.android.build.api.component.impl.TestComponentImpl
 import com.android.build.api.variant.impl.VariantImpl
@@ -41,8 +42,8 @@ import java.util.Comparator
 
 class VariantModelImpl(
     override val inputs: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
-    private val testBuilderTypeProvider: () -> String,
-    private val variantProvider: () -> List<VariantImpl>,
+    private val testBuilderTypeProvider: () -> String?,
+    private val variantProvider: () -> List<ComponentImpl>,
     private val testComponentProvider: () -> List<TestComponentImpl>,
     private val buildFeaturesProvider: () -> BuildFeatureValues,
     override val projectTypeV1: Int,
@@ -56,7 +57,7 @@ class VariantModelImpl(
     override val syncIssueReporter: SyncIssueReporter
         get() = globalConfig.services.issueReporter as SyncIssueReporter
 
-    override val variants: List<VariantImpl>
+    override val variants: List<ComponentImpl>
         get() = variantProvider()
 
     override val testComponents: List<TestComponentImpl>
@@ -76,6 +77,9 @@ class VariantModelImpl(
 
     override val filteredBootClasspath: Provider<List<RegularFile>>
         get() = globalConfig.filteredBootClasspath
+
+    override val globalArtifacts: ArtifactsImpl
+        get() = globalConfig.globalArtifacts
 
     /**
      * Calculates the default variant to put in the model.
@@ -120,7 +124,7 @@ class VariantModelImpl(
         // Ignore test, base feature and feature variants.
         // * Test variants have corresponding production variants
         // * Hybrid feature variants have corresponding library variants.
-        val defaultComponent: VariantImpl? = variants.minWithOrNull(preferredDefaultVariantScopeComparator)
+        val defaultComponent: ComponentImpl? = variants.minWithOrNull(preferredDefaultVariantScopeComparator)
 
         return defaultComponent?.name
     }
@@ -262,12 +266,12 @@ private class BuildAuthorSpecifiedDefaultsFlavorComparator constructor(
     override fun compare(v1: ComponentImpl, v2: ComponentImpl): Int {
         var f1Score = 0
         var f2Score = 0
-        for (flavor in v1.variantDslInfo.productFlavorList) {
+        for (flavor in v1.productFlavorList) {
             if (flavor.name == defaultFlavors[flavor.dimension]) {
                 f1Score++
             }
         }
-        for (flavor in v2.variantDslInfo.productFlavorList) {
+        for (flavor in v2.productFlavorList) {
             if (flavor.name == defaultFlavors[flavor.dimension]) {
                 f2Score++
             }
@@ -313,9 +317,9 @@ private class DefaultBuildTypeComparator constructor(
 private class DefaultFlavorComparator : Comparator<ComponentImpl> {
     override fun compare(v1: ComponentImpl, v2: ComponentImpl): Int {
         // Compare flavors left-to right.
-        for (i in v1.variantDslInfo.productFlavorList.indices) {
-            val f1 = v1.variantDslInfo.productFlavorList[i].name
-            val f2 = v2.variantDslInfo.productFlavorList[i].name
+        for (i in v1.productFlavorList.indices) {
+            val f1 = v1.productFlavorList[i].name
+            val f2 = v2.productFlavorList[i].name
             val diff = f1.compareTo(f2)
             if (diff != 0) {
                 return diff

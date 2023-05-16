@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GfxTracingDetails}
  */
-public  final class GfxTracingDetails extends
+public final class GfxTracingDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GfxTracingDetails)
     GfxTracingDetailsOrBuilder {
@@ -139,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_time = 1;</code>
    * @return Whether the totalTime field is set.
    */
+  @java.lang.Override
   public boolean hasTotalTime() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -150,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_time = 1;</code>
    * @return The totalTime.
    */
+  @java.lang.Override
   public long getTotalTime() {
     return totalTime_;
   }
@@ -164,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string command = 2;</code>
    * @return Whether the command field is set.
    */
+  @java.lang.Override
   public boolean hasCommand() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -175,6 +178,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string command = 2;</code>
    * @return The command.
    */
+  @java.lang.Override
   public java.lang.String getCommand() {
     java.lang.Object ref = command_;
     if (ref instanceof java.lang.String) {
@@ -197,6 +201,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string command = 2;</code>
    * @return The bytes for command.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCommandBytes() {
     java.lang.Object ref = command_;
@@ -221,6 +226,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 3;</code>
    * @return Whether the errorMessage field is set.
    */
+  @java.lang.Override
   public boolean hasErrorMessage() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -232,6 +238,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 3;</code>
    * @return The errorMessage.
    */
+  @java.lang.Override
   public java.lang.String getErrorMessage() {
     java.lang.Object ref = errorMessage_;
     if (ref instanceof java.lang.String) {
@@ -254,6 +261,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 3;</code>
    * @return The bytes for errorMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getErrorMessageBytes() {
     java.lang.Object ref = errorMessage_;
@@ -282,6 +290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string trace_path = 4;</code>
    * @return Whether the tracePath field is set.
    */
+  @java.lang.Override
   public boolean hasTracePath() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -297,6 +306,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string trace_path = 4;</code>
    * @return The tracePath.
    */
+  @java.lang.Override
   public java.lang.String getTracePath() {
     java.lang.Object ref = tracePath_;
     if (ref instanceof java.lang.String) {
@@ -323,6 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string trace_path = 4;</code>
    * @return The bytes for tracePath.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTracePathBytes() {
     java.lang.Object ref = tracePath_;
@@ -347,6 +358,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string image_format = 5;</code>
    * @return Whether the imageFormat field is set.
    */
+  @java.lang.Override
   public boolean hasImageFormat() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -358,6 +370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string image_format = 5;</code>
    * @return The imageFormat.
    */
+  @java.lang.Override
   public java.lang.String getImageFormat() {
     java.lang.Object ref = imageFormat_;
     if (ref instanceof java.lang.String) {
@@ -380,6 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string image_format = 5;</code>
    * @return The bytes for imageFormat.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getImageFormatBytes() {
     java.lang.Object ref = imageFormat_;
@@ -404,6 +418,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 image_width = 6;</code>
    * @return Whether the imageWidth field is set.
    */
+  @java.lang.Override
   public boolean hasImageWidth() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -415,6 +430,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 image_width = 6;</code>
    * @return The imageWidth.
    */
+  @java.lang.Override
   public long getImageWidth() {
     return imageWidth_;
   }
@@ -429,6 +445,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 image_height = 7;</code>
    * @return Whether the imageHeight field is set.
    */
+  @java.lang.Override
   public boolean hasImageHeight() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -440,6 +457,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 image_height = 7;</code>
    * @return The imageHeight.
    */
+  @java.lang.Override
   public long getImageHeight() {
     return imageHeight_;
   }
@@ -928,6 +946,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_time = 1;</code>
      * @return Whether the totalTime field is set.
      */
+    @java.lang.Override
     public boolean hasTotalTime() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -939,6 +958,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_time = 1;</code>
      * @return The totalTime.
      */
+    @java.lang.Override
     public long getTotalTime() {
       return totalTime_;
     }
@@ -1437,6 +1457,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 image_width = 6;</code>
      * @return Whether the imageWidth field is set.
      */
+    @java.lang.Override
     public boolean hasImageWidth() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1448,6 +1469,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 image_width = 6;</code>
      * @return The imageWidth.
      */
+    @java.lang.Override
     public long getImageWidth() {
       return imageWidth_;
     }
@@ -1490,6 +1512,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 image_height = 7;</code>
      * @return Whether the imageHeight field is set.
      */
+    @java.lang.Override
     public boolean hasImageHeight() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1501,6 +1524,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 image_height = 7;</code>
      * @return The imageHeight.
      */
+    @java.lang.Override
     public long getImageHeight() {
       return imageHeight_;
     }

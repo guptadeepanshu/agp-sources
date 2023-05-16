@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleVersionCatalogDetectorEvent}
  */
-public  final class GradleVersionCatalogDetectorEvent extends
+public final class GradleVersionCatalogDetectorEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleVersionCatalogDetectorEvent)
     GradleVersionCatalogDetectorEventOrBuilder {
@@ -276,7 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State state = 1;</code>
    * @return Whether the state field is set.
    */
-  public boolean hasState() {
+  @java.lang.Override public boolean hasState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -287,7 +287,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State state = 1;</code>
    * @return The state.
    */
-  public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(state_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.UNKNOWN_GRADLE_VERSION_CATALOG_DETECTOR_STATE : result;
@@ -619,7 +619,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State state = 1;</code>
      * @return Whether the state field is set.
      */
-    public boolean hasState() {
+    @java.lang.Override public boolean hasState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -630,6 +630,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleVersionCatalogDetectorEvent.State state = 1;</code>
      * @return The state.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State getState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State result = com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.State.valueOf(state_);

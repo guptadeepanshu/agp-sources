@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AlwaysRunTasksAnalyzerData}
  */
-public  final class AlwaysRunTasksAnalyzerData extends
+public final class AlwaysRunTasksAnalyzerData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AlwaysRunTasksAnalyzerData)
     AlwaysRunTasksAnalyzerDataOrBuilder {
@@ -181,7 +181,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask}
    */
-  public  static final class AlwaysRunTask extends
+  public static final class AlwaysRunTask extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask)
       AlwaysRunTaskOrBuilder {
@@ -420,7 +420,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason reason = 1;</code>
      * @return Whether the reason field is set.
      */
-    public boolean hasReason() {
+    @java.lang.Override public boolean hasReason() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -431,7 +431,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason reason = 1;</code>
      * @return The reason.
      */
-    public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason getReason() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason getReason() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.valueOf(reason_);
       return result == null ? com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.UNKNOWN_REASON : result;
@@ -448,6 +448,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
      * @return Whether the pluginIdentifier field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasPluginIdentifier() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -460,6 +461,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
      * @return The pluginIdentifier.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -471,6 +473,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -485,6 +488,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
      * @return Whether the taskIdentifier field is set.
      */
+    @java.lang.Override
     public boolean hasTaskIdentifier() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -496,6 +500,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
      * @return The taskIdentifier.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier getTaskIdentifier() {
       return taskIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.getDefaultInstance() : taskIdentifier_;
     }
@@ -506,6 +511,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttribuitionTaskIdentifier task_identifier = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder getTaskIdentifierOrBuilder() {
       return taskIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier.getDefaultInstance() : taskIdentifier_;
     }
@@ -900,7 +906,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason reason = 1;</code>
        * @return Whether the reason field is set.
        */
-      public boolean hasReason() {
+      @java.lang.Override public boolean hasReason() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -911,6 +917,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason reason = 1;</code>
        * @return The reason.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason getReason() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason result = com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask.AlwaysRunReason.valueOf(reason_);
@@ -1331,6 +1338,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask always_run_tasks = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask> getAlwaysRunTasksList() {
     return alwaysRunTasks_;
   }
@@ -1341,6 +1349,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask always_run_tasks = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTaskOrBuilder> 
       getAlwaysRunTasksOrBuilderList() {
     return alwaysRunTasks_;
@@ -1352,6 +1361,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask always_run_tasks = 1;</code>
    */
+  @java.lang.Override
   public int getAlwaysRunTasksCount() {
     return alwaysRunTasks_.size();
   }
@@ -1362,6 +1372,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask always_run_tasks = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTask getAlwaysRunTasks(int index) {
     return alwaysRunTasks_.get(index);
   }
@@ -1372,6 +1383,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AlwaysRunTasksAnalyzerData.AlwaysRunTask always_run_tasks = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.AlwaysRunTaskOrBuilder getAlwaysRunTasksOrBuilder(
       int index) {
     return alwaysRunTasks_.get(index);

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.ApplyChangesAgentError}
  */
-public  final class ApplyChangesAgentError extends
+public final class ApplyChangesAgentError extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ApplyChangesAgentError)
     ApplyChangesAgentErrorOrBuilder {
@@ -409,6 +409,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 agent_attach_time_ms = 1;</code>
    * @return Whether the agentAttachTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasAgentAttachTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -420,6 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 agent_attach_time_ms = 1;</code>
    * @return The agentAttachTimeMs.
    */
+  @java.lang.Override
   public long getAgentAttachTimeMs() {
     return agentAttachTimeMs_;
   }
@@ -434,6 +436,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 agent_attach_count = 2;</code>
    * @return Whether the agentAttachCount field is set.
    */
+  @java.lang.Override
   public boolean hasAgentAttachCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -445,6 +448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 agent_attach_count = 2;</code>
    * @return The agentAttachCount.
    */
+  @java.lang.Override
   public int getAgentAttachCount() {
     return agentAttachCount_;
   }
@@ -459,6 +463,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_time_ms = 3;</code>
    * @return Whether the eventTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasEventTimeMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -470,6 +475,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_time_ms = 3;</code>
    * @return The eventTimeMs.
    */
+  @java.lang.Override
   public long getEventTimeMs() {
     return eventTimeMs_;
   }
@@ -484,7 +490,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyChangesAgentError.AgentPurpose agent_purpose = 4;</code>
    * @return Whether the agentPurpose field is set.
    */
-  public boolean hasAgentPurpose() {
+  @java.lang.Override public boolean hasAgentPurpose() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -495,7 +501,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyChangesAgentError.AgentPurpose agent_purpose = 4;</code>
    * @return The agentPurpose.
    */
-  public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose getAgentPurpose() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose getAgentPurpose() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.valueOf(agentPurpose_);
     return result == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.UNKNOWN_PURPOSE : result;
@@ -522,6 +528,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.ApplyChangesAgentError.TargetClass target_classes = 5;</code>
    * @return A list containing the targetClasses.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass> getTargetClassesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass>(targetClasses_, targetClasses_converter_);
@@ -533,8 +540,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.ApplyChangesAgentError.TargetClass target_classes = 5;</code>
-   * @param value The targetClasses to add.
+   * @return The count of targetClasses.
    */
+  @java.lang.Override
   public int getTargetClassesCount() {
     return targetClasses_.size();
   }
@@ -548,6 +556,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The targetClasses at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.TargetClass getTargetClasses(int index) {
     return targetClasses_converter_.convert(targetClasses_.get(index));
   }
@@ -985,6 +994,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 agent_attach_time_ms = 1;</code>
      * @return Whether the agentAttachTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasAgentAttachTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -996,6 +1006,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 agent_attach_time_ms = 1;</code>
      * @return The agentAttachTimeMs.
      */
+    @java.lang.Override
     public long getAgentAttachTimeMs() {
       return agentAttachTimeMs_;
     }
@@ -1038,6 +1049,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 agent_attach_count = 2;</code>
      * @return Whether the agentAttachCount field is set.
      */
+    @java.lang.Override
     public boolean hasAgentAttachCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1049,6 +1061,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 agent_attach_count = 2;</code>
      * @return The agentAttachCount.
      */
+    @java.lang.Override
     public int getAgentAttachCount() {
       return agentAttachCount_;
     }
@@ -1091,6 +1104,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_time_ms = 3;</code>
      * @return Whether the eventTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasEventTimeMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1102,6 +1116,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_time_ms = 3;</code>
      * @return The eventTimeMs.
      */
+    @java.lang.Override
     public long getEventTimeMs() {
       return eventTimeMs_;
     }
@@ -1144,7 +1159,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ApplyChangesAgentError.AgentPurpose agent_purpose = 4;</code>
      * @return Whether the agentPurpose field is set.
      */
-    public boolean hasAgentPurpose() {
+    @java.lang.Override public boolean hasAgentPurpose() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -1155,6 +1170,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ApplyChangesAgentError.AgentPurpose agent_purpose = 4;</code>
      * @return The agentPurpose.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose getAgentPurpose() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose result = com.google.wireless.android.sdk.stats.ApplyChangesAgentError.AgentPurpose.valueOf(agentPurpose_);

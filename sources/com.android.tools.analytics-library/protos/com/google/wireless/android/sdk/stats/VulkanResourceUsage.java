@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.VulkanResourceUsage}
  */
-public  final class VulkanResourceUsage extends
+public final class VulkanResourceUsage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.VulkanResourceUsage)
     VulkanResourceUsageOrBuilder {
@@ -107,6 +107,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_host_visible_memory_allocation_bytes = 1;</code>
    * @return Whether the totalHostVisibleMemoryAllocationBytes field is set.
    */
+  @java.lang.Override
   public boolean hasTotalHostVisibleMemoryAllocationBytes() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_host_visible_memory_allocation_bytes = 1;</code>
    * @return The totalHostVisibleMemoryAllocationBytes.
    */
+  @java.lang.Override
   public long getTotalHostVisibleMemoryAllocationBytes() {
     return totalHostVisibleMemoryAllocationBytes_;
   }
@@ -124,6 +126,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_device_local_memory_allocation_bytes = 2;</code>
    * @return Whether the totalDeviceLocalMemoryAllocationBytes field is set.
    */
+  @java.lang.Override
   public boolean hasTotalDeviceLocalMemoryAllocationBytes() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -131,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_device_local_memory_allocation_bytes = 2;</code>
    * @return The totalDeviceLocalMemoryAllocationBytes.
    */
+  @java.lang.Override
   public long getTotalDeviceLocalMemoryAllocationBytes() {
     return totalDeviceLocalMemoryAllocationBytes_;
   }
@@ -141,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_instances = 3;</code>
    * @return Whether the totalInstances field is set.
    */
+  @java.lang.Override
   public boolean hasTotalInstances() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -148,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_instances = 3;</code>
    * @return The totalInstances.
    */
+  @java.lang.Override
   public int getTotalInstances() {
     return totalInstances_;
   }
@@ -527,6 +533,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_host_visible_memory_allocation_bytes = 1;</code>
      * @return Whether the totalHostVisibleMemoryAllocationBytes field is set.
      */
+    @java.lang.Override
     public boolean hasTotalHostVisibleMemoryAllocationBytes() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -534,6 +541,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_host_visible_memory_allocation_bytes = 1;</code>
      * @return The totalHostVisibleMemoryAllocationBytes.
      */
+    @java.lang.Override
     public long getTotalHostVisibleMemoryAllocationBytes() {
       return totalHostVisibleMemoryAllocationBytes_;
     }
@@ -564,6 +572,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_device_local_memory_allocation_bytes = 2;</code>
      * @return Whether the totalDeviceLocalMemoryAllocationBytes field is set.
      */
+    @java.lang.Override
     public boolean hasTotalDeviceLocalMemoryAllocationBytes() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -571,6 +580,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_device_local_memory_allocation_bytes = 2;</code>
      * @return The totalDeviceLocalMemoryAllocationBytes.
      */
+    @java.lang.Override
     public long getTotalDeviceLocalMemoryAllocationBytes() {
       return totalDeviceLocalMemoryAllocationBytes_;
     }
@@ -601,6 +611,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_instances = 3;</code>
      * @return Whether the totalInstances field is set.
      */
+    @java.lang.Override
     public boolean hasTotalInstances() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -608,6 +619,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_instances = 3;</code>
      * @return The totalInstances.
      */
+    @java.lang.Override
     public int getTotalInstances() {
       return totalInstances_;
     }

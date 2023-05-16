@@ -14,7 +14,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.FirebaseContextDetails}
  */
-public  final class FirebaseContextDetails extends
+public final class FirebaseContextDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.FirebaseContextDetails)
     FirebaseContextDetailsOrBuilder {
@@ -290,6 +290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -301,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -323,6 +325,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -348,6 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_number = 2;</code>
    * @return Whether the projectNumber field is set.
    */
+  @java.lang.Override
   public boolean hasProjectNumber() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -360,6 +364,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_number = 2;</code>
    * @return The projectNumber.
    */
+  @java.lang.Override
   public java.lang.String getProjectNumber() {
     java.lang.Object ref = projectNumber_;
     if (ref instanceof java.lang.String) {
@@ -383,6 +388,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_number = 2;</code>
    * @return The bytes for projectNumber.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectNumberBytes() {
     java.lang.Object ref = projectNumber_;
@@ -407,6 +413,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool logged_in = 3;</code>
    * @return Whether the loggedIn field is set.
    */
+  @java.lang.Override
   public boolean hasLoggedIn() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -418,6 +425,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool logged_in = 3;</code>
    * @return The loggedIn.
    */
+  @java.lang.Override
   public boolean getLoggedIn() {
     return loggedIn_;
   }
@@ -433,7 +441,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseContextDetails.ConnectStatus connect_status = 4;</code>
    * @return Whether the connectStatus field is set.
    */
-  public boolean hasConnectStatus() {
+  @java.lang.Override public boolean hasConnectStatus() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -445,7 +453,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseContextDetails.ConnectStatus connect_status = 4;</code>
    * @return The connectStatus.
    */
-  public com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus getConnectStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus getConnectStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.valueOf(connectStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.UNKNOWN_CONNECT_STATUS : result;
@@ -462,6 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string performed_on = 5;</code>
    * @return Whether the performedOn field is set.
    */
+  @java.lang.Override
   public boolean hasPerformedOn() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -474,6 +483,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string performed_on = 5;</code>
    * @return The performedOn.
    */
+  @java.lang.Override
   public java.lang.String getPerformedOn() {
     java.lang.Object ref = performedOn_;
     if (ref instanceof java.lang.String) {
@@ -497,6 +507,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string performed_on = 5;</code>
    * @return The bytes for performedOn.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPerformedOnBytes() {
     java.lang.Object ref = performedOn_;
@@ -522,6 +533,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration = 6;</code>
    * @return Whether the duration field is set.
    */
+  @java.lang.Override
   public boolean hasDuration() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -534,6 +546,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration = 6;</code>
    * @return The duration.
    */
+  @java.lang.Override
   public long getDuration() {
     return duration_;
   }
@@ -1220,6 +1233,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool logged_in = 3;</code>
      * @return Whether the loggedIn field is set.
      */
+    @java.lang.Override
     public boolean hasLoggedIn() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1231,6 +1245,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool logged_in = 3;</code>
      * @return The loggedIn.
      */
+    @java.lang.Override
     public boolean getLoggedIn() {
       return loggedIn_;
     }
@@ -1274,7 +1289,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.FirebaseContextDetails.ConnectStatus connect_status = 4;</code>
      * @return Whether the connectStatus field is set.
      */
-    public boolean hasConnectStatus() {
+    @java.lang.Override public boolean hasConnectStatus() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -1286,6 +1301,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.FirebaseContextDetails.ConnectStatus connect_status = 4;</code>
      * @return The connectStatus.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus getConnectStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus result = com.google.wireless.android.sdk.stats.FirebaseContextDetails.ConnectStatus.valueOf(connectStatus_);
@@ -1450,6 +1466,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration = 6;</code>
      * @return Whether the duration field is set.
      */
+    @java.lang.Override
     public boolean hasDuration() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1462,6 +1479,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration = 6;</code>
      * @return The duration.
      */
+    @java.lang.Override
     public long getDuration() {
       return duration_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.IgnoreAtfResultEvent}
  */
-public  final class IgnoreAtfResultEvent extends
+public final class IgnoreAtfResultEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.IgnoreAtfResultEvent)
     IgnoreAtfResultEventOrBuilder {
@@ -109,6 +109,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    * @return Whether the atfResult field is set.
    */
+  @java.lang.Override
   public boolean hasAtfResult() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -120,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    * @return The atfResult.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfResultDetail getAtfResult() {
     return atfResult_ == null ? com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance() : atfResult_;
   }
@@ -130,6 +132,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AtfResultDetail atf_result = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfResultDetailOrBuilder getAtfResultOrBuilder() {
     return atfResult_ == null ? com.google.wireless.android.sdk.stats.AtfResultDetail.getDefaultInstance() : atfResult_;
   }

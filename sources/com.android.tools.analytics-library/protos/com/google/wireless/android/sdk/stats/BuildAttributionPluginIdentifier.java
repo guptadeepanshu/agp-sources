@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildAttributionPluginIdentifier}
  */
-public  final class BuildAttributionPluginIdentifier extends
+public final class BuildAttributionPluginIdentifier extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildAttributionPluginIdentifier)
     BuildAttributionPluginIdentifierOrBuilder {
@@ -159,7 +159,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>BINARY_PLUGIN = 2 [deprecated = true];</code>
      */
-    public static final int BINARY_PLUGIN_VALUE = 2;
+    @java.lang.Deprecated public static final int BINARY_PLUGIN_VALUE = 2;
     /**
      * <code>BUILD_SRC = 3;</code>
      */
@@ -255,7 +255,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionPluginIdentifier.PluginType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -266,7 +266,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionPluginIdentifier.PluginType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType result = com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType.UNKNOWN_TYPE : result;
@@ -284,6 +284,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_display_name = 2;</code>
    * @return Whether the pluginDisplayName field is set.
    */
+  @java.lang.Override
   public boolean hasPluginDisplayName() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -297,6 +298,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_display_name = 2;</code>
    * @return The pluginDisplayName.
    */
+  @java.lang.Override
   public java.lang.String getPluginDisplayName() {
     java.lang.Object ref = pluginDisplayName_;
     if (ref instanceof java.lang.String) {
@@ -321,6 +323,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_display_name = 2;</code>
    * @return The bytes for pluginDisplayName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginDisplayNameBytes() {
     java.lang.Object ref = pluginDisplayName_;
@@ -346,6 +349,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_class_name = 3;</code>
    * @return Whether the pluginClassName field is set.
    */
+  @java.lang.Override
   public boolean hasPluginClassName() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -358,6 +362,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_class_name = 3;</code>
    * @return The pluginClassName.
    */
+  @java.lang.Override
   public java.lang.String getPluginClassName() {
     java.lang.Object ref = pluginClassName_;
     if (ref instanceof java.lang.String) {
@@ -381,6 +386,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_class_name = 3;</code>
    * @return The bytes for pluginClassName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginClassNameBytes() {
     java.lang.Object ref = pluginClassName_;
@@ -773,7 +779,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier.PluginType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -784,6 +790,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier.PluginType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType result = com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.PluginType.valueOf(type_);

@@ -20,7 +20,6 @@ import org.gradle.api.Incubating
 import org.gradle.api.NamedDomainObjectContainer
 
 /** Options for running tests. */
-@Incubating
 interface TestOptions {
     /** Options for controlling unit tests execution. */
     val unitTests: UnitTestOptions
@@ -51,7 +50,11 @@ interface TestOptions {
      * List of test devices for this project for use with the Unified Test Platform
      *
      * These APIs are experimental and may change without notice.
+     *
+     * [devices] is deprecated, use [managedDevices.devices] to specify Gradle Managed Devices
      */
+    @Deprecated("devices is deprecated in testOptions, use managedDevices.devices instead")
+    @get:Incubating
     val devices: org.gradle.api.ExtensiblePolymorphicDomainObjectContainer<Device>
 
     /**
@@ -62,17 +65,26 @@ interface TestOptions {
      * individual device.
      *
      * These APIs are experimental and may change without notice.
+     *
+     * [deviceGroups] is deprecated, use [managedDevices.groups] to specify groups of
+     * Gradle Managed Devices.
      */
+    @Deprecated(
+        "deviceGroups is deprecated in testOptions, use managedDevices.groups instead"
+    )
+    @get:Incubating
     val deviceGroups: NamedDomainObjectContainer<DeviceGroup>
 
     /**
      * Configures Gradle Managed Devices for use in testing with the Unified test platform.
      */
+    @get:Incubating
     val managedDevices: ManagedDevices
 
     /**
      * Configures Gradle Managed Devices for use in testing with the Unified test platform.
      */
+    @Incubating
     fun managedDevices(action: ManagedDevices.() -> Unit)
 
     /**
@@ -112,15 +124,19 @@ interface TestOptions {
      * }
      * ```
      */
+    @get:Incubating
     val emulatorSnapshots: EmulatorSnapshots
 
+    @Incubating
     fun emulatorSnapshots(action: EmulatorSnapshots.() -> Unit)
 
     @Suppress("DEPRECATION")
     @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
+    @get:Incubating
     val failureRetention: FailureRetention
 
     @Suppress("DEPRECATION")
     @Deprecated("Renamed to emulatorSnapshots", replaceWith = ReplaceWith("emulatorSnapshots"))
+    @Incubating
     fun failureRetention(action: FailureRetention.() -> Unit)
 }

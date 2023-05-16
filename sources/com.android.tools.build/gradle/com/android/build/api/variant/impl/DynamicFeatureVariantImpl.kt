@@ -25,7 +25,6 @@ import com.android.build.api.component.impl.TestFixturesImpl
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidResources
-import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.AndroidVersion
 import com.android.build.api.variant.ApkPackaging
 import com.android.build.api.variant.Component
@@ -45,12 +44,13 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.ModuleMetadata
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadata
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.StringOption
 import com.android.builder.dexing.DexingType
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
@@ -69,7 +69,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     variantScope: VariantScope,
     variantData: BaseVariantData,
     transformManager: TransformManager,
-    internalServices: VariantPropertiesApiServices,
+    internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     globalTaskCreationConfig: GlobalTaskCreationConfig,
 ) : VariantImpl(
@@ -172,6 +172,8 @@ open class DynamicFeatureVariantImpl @Inject constructor(
     override val shouldPackageDesugarLibDex: Boolean = false
     override val debuggable: Boolean
         get() = delegate.isDebuggable
+    override val profileable: Boolean
+        get() = delegate.isProfileable
 
     override val shouldPackageProfilerDependencies: Boolean = false
 
@@ -183,6 +185,9 @@ open class DynamicFeatureVariantImpl @Inject constructor(
         }
 
     override val signingConfigImpl: SigningConfigImpl? = null
+
+    override val useJacocoTransformInstrumentation: Boolean
+        get() = variantDslInfo.isAndroidTestCoverageEnabled
 
     // ---------------------------------------------------------------------------------------------
     // DO NOT USE, only present for old variant API.
@@ -289,4 +294,7 @@ open class DynamicFeatureVariantImpl @Inject constructor(
 
     override val needsShrinkDesugarLibrary: Boolean
         get() = delegate.needsShrinkDesugarLibrary
+
+    override val ignoredLibraryKeepRules: Provider<Set<String>> =
+            baseModuleMetadata.map { it.ignoredLibraryKeepRules }
 }

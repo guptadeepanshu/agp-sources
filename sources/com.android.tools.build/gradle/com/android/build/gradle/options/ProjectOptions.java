@@ -20,8 +20,6 @@ import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.annotations.concurrency.Immutable;
 import com.android.build.gradle.internal.LoggerWrapper;
-import com.android.build.gradle.internal.profile.GradleAnalyticsEnvironment;
-import com.android.build.gradle.internal.profile.GradleSystemEnvironment;
 import com.android.tools.analytics.AnalyticsSettings;
 import com.android.utils.Environment;
 import com.google.common.collect.ImmutableMap;
@@ -61,8 +59,8 @@ public final class ProjectOptions {
         AnalyticsSettings.initialize(
                 LoggerWrapper.getLogger(ProjectOptions.class),
                 null,
-                new GradleAnalyticsEnvironment(providerFactory));
-        Environment.initialize(new GradleSystemEnvironment(providerFactory));
+                com.android.tools.analytics.Environment.getSYSTEM());
+        Environment.initialize(Environment.Companion.getSYSTEM());
     }
 
     @NonNull
@@ -87,7 +85,6 @@ public final class ProjectOptions {
             String argValue =
                     providerFactory
                             .gradleProperty(arg.getFullKey())
-                            .forUseAtConfigurationTime()
                             .getOrNull();
             if (argValue != null) {
                 testRunnerArgsBuilder.put(arg.getShortKey(), argValue);
@@ -99,7 +96,7 @@ public final class ProjectOptions {
 
     /** Obtain the gradle property value immediately at configuration time. */
     public boolean get(@NonNull BooleanOption option) {
-        Boolean value = booleanOptionValues.get(option).getValueForUseAtConfiguration();
+        Boolean value = booleanOptionValues.get(option).getValue().getOrNull();
         if (value != null) {
             return value;
         } else {
@@ -114,26 +111,26 @@ public final class ProjectOptions {
                 () ->
                         booleanOptionValues
                                 .get(option)
-                                .getValueForUseAtExecution()
+                                .getValue()
                                 .getOrElse(option.getDefaultValue()));
     }
 
     /** Obtain the gradle property value immediately at configuration time. */
     @Nullable
     public Boolean get(@NonNull OptionalBooleanOption option) {
-        return optionalBooleanOptionValues.get(option).getValueForUseAtConfiguration();
+        return optionalBooleanOptionValues.get(option).getValue().getOrNull();
     }
 
     /** Returns a provider which has the gradle property value to be obtained at execution time. */
     @NonNull
     public Provider<Boolean> getProvider(@NonNull OptionalBooleanOption option) {
-        return optionalBooleanOptionValues.get(option).getValueForUseAtExecution();
+        return optionalBooleanOptionValues.get(option).getValue();
     }
 
     /** Obtain the gradle property value immediately at configuration time. */
     @Nullable
     public Integer get(@NonNull IntegerOption option) {
-        Integer value = integerOptionValues.get(option).getValueForUseAtConfiguration();
+        Integer value = integerOptionValues.get(option).getValue().getOrNull();
         if (value != null) {
             return value;
         } else {
@@ -146,8 +143,7 @@ public final class ProjectOptions {
     public Provider<Integer> getProvider(@NonNull IntegerOption option) {
         return providerFactory.provider(
                 () -> {
-                    Integer value =
-                            integerOptionValues.get(option).getValueForUseAtExecution().getOrNull();
+                    Integer value = integerOptionValues.get(option).getValue().getOrNull();
                     if (value != null) {
                         return value;
                     } else {
@@ -159,7 +155,7 @@ public final class ProjectOptions {
     /** Obtain the gradle property value immediately at configuration time. */
     @Nullable
     public String get(@NonNull StringOption option) {
-        String value = stringOptionValues.get(option).getValueForUseAtConfiguration();
+        String value = stringOptionValues.get(option).getValue().getOrNull();
         if (value != null) {
             return value;
         } else {
@@ -172,8 +168,7 @@ public final class ProjectOptions {
     public Provider<String> getProvider(@NonNull StringOption option) {
         return providerFactory.provider(
                 () -> {
-                    String value =
-                            stringOptionValues.get(option).getValueForUseAtExecution().getOrNull();
+                    String value = stringOptionValues.get(option).getValue().getOrNull();
                     if (value != null) {
                         return value;
                     } else {
@@ -198,7 +193,7 @@ public final class ProjectOptions {
                     ImmutableMap<OptionT, OptionValue<OptionT, ValueT>> optionValues) {
         ImmutableMap.Builder<OptionT, ValueT> mapBuilder = ImmutableMap.builder();
         for (Map.Entry<OptionT, OptionValue<OptionT, ValueT>> entry : optionValues.entrySet()) {
-            ValueT value = entry.getValue().getValueForUseAtConfiguration();
+            ValueT value = entry.getValue().getValue().getOrNull();
             if (value != null) {
                 mapBuilder.put(entry.getKey(), value);
             }
@@ -237,45 +232,23 @@ public final class ProjectOptions {
     }
 
     private class OptionValue<OptionT extends Option<ValueT>, ValueT> {
-        @Nullable private Provider<ValueT> valueForUseAtConfiguration;
-        @Nullable private Provider<ValueT> valueForUseAtExecution;
+        @Nullable private Provider<ValueT> value;
         @NonNull private OptionT option;
 
         OptionValue(@NonNull OptionT option) {
             this.option = option;
         }
 
-        @Nullable
-        private ValueT getValueForUseAtConfiguration() {
-            if (valueForUseAtConfiguration == null) {
-                valueForUseAtConfiguration = setValueForUseAtConfiguration();
+        @NonNull
+        private Provider<ValueT> getValue() {
+            if (value == null) {
+                value = setValue();
             }
-            return valueForUseAtConfiguration.getOrNull();
+            return value;
         }
 
         @NonNull
-        private Provider<ValueT> getValueForUseAtExecution() {
-            if (valueForUseAtExecution == null) {
-                valueForUseAtExecution = setValueForUseAtExecution();
-            }
-            return valueForUseAtExecution;
-        }
-
-        @NonNull
-        private Provider<ValueT> setValueForUseAtConfiguration() {
-            Provider<String> rawValue = providerFactory.gradleProperty(option.getPropertyName());
-            return providerFactory.provider(
-                    () -> {
-                        String str = rawValue.forUseAtConfigurationTime().getOrNull();
-                        if (str == null) {
-                            return null;
-                        }
-                        return option.parse(str);
-                    });
-        }
-
-        @NonNull
-        private Provider<ValueT> setValueForUseAtExecution() {
+        private Provider<ValueT> setValue() {
             Provider<String> rawValue = providerFactory.gradleProperty(option.getPropertyName());
             return providerFactory.provider(
                     () -> {

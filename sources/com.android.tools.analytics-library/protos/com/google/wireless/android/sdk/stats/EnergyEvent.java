@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EnergyEvent}
  */
-public  final class EnergyEvent extends
+public final class EnergyEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EnergyEvent)
     EnergyEventOrBuilder {

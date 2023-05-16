@@ -23,6 +23,7 @@ import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.Installation
 import com.android.build.api.dsl.SdkComponents
 import com.android.build.api.dsl.TestCoverage
+import com.android.build.api.dsl.ViewBinding
 import com.android.build.gradle.ProguardFiles
 import com.android.build.gradle.api.AndroidSourceSet
 import com.android.build.gradle.internal.coverage.JacocoOptions
@@ -275,7 +276,7 @@ abstract class CommonExtensionImpl<
     }
 
     override val dataBinding: DataBindingOptions =
-        dslServices.newInstance(
+        dslServices.newDecoratedInstance(
             DataBindingOptions::class.java,
             Supplier { buildFeatures },
             dslServices
@@ -289,23 +290,27 @@ abstract class CommonExtensionImpl<
         action.execute(dataBinding)
     }
 
+    override val viewBinding: ViewBindingOptionsImpl
+        get() = dslServices.newDecoratedInstance(
+            ViewBindingOptionsImpl::class.java,
+            Supplier { buildFeatures },
+            dslServices
+        )
+
+    override fun viewBinding(action: Action<ViewBindingOptionsImpl>) {
+        action.execute(viewBinding)
+    }
+
+    override fun viewBinding(action: ViewBinding.() -> Unit) {
+        action.invoke(viewBinding)
+    }
+
     override fun defaultConfig(action: Action<com.android.build.gradle.internal.dsl.DefaultConfig>) {
         action.execute(defaultConfig as com.android.build.gradle.internal.dsl.DefaultConfig)
     }
 
     override fun defaultConfig(action: DefaultConfigT.() -> Unit) {
         action.invoke(defaultConfig)
-    }
-
-    override val externalNativeBuild: ExternalNativeBuild =
-        dslServices.newInstance(ExternalNativeBuild::class.java, dslServices)
-
-    override fun externalNativeBuild(action: com.android.build.api.dsl.ExternalNativeBuild.() -> Unit) {
-        action.invoke(externalNativeBuild)
-    }
-
-    override fun externalNativeBuild(action: Action<ExternalNativeBuild>) {
-        action.execute(externalNativeBuild)
     }
 
     override val testCoverage: TestCoverage  = dslServices.newInstance(JacocoOptions::class.java)

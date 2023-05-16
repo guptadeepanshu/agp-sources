@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DeviceInfo}
  */
-public  final class DeviceInfo extends
+public final class DeviceInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DeviceInfo)
     DeviceInfoOrBuilder {
@@ -659,6 +659,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string anonymized_serial_number = 1;</code>
    * @return Whether the anonymizedSerialNumber field is set.
    */
+  @java.lang.Override
   public boolean hasAnonymizedSerialNumber() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -670,6 +671,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string anonymized_serial_number = 1;</code>
    * @return The anonymizedSerialNumber.
    */
+  @java.lang.Override
   public java.lang.String getAnonymizedSerialNumber() {
     java.lang.Object ref = anonymizedSerialNumber_;
     if (ref instanceof java.lang.String) {
@@ -692,6 +694,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string anonymized_serial_number = 1;</code>
    * @return The bytes for anonymizedSerialNumber.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAnonymizedSerialNumberBytes() {
     java.lang.Object ref = anonymizedSerialNumber_;
@@ -717,6 +720,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tags = 2;</code>
    * @return Whether the buildTags field is set.
    */
+  @java.lang.Override
   public boolean hasBuildTags() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -729,6 +733,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tags = 2;</code>
    * @return The buildTags.
    */
+  @java.lang.Override
   public java.lang.String getBuildTags() {
     java.lang.Object ref = buildTags_;
     if (ref instanceof java.lang.String) {
@@ -752,6 +757,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tags = 2;</code>
    * @return The bytes for buildTags.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildTagsBytes() {
     java.lang.Object ref = buildTags_;
@@ -777,6 +783,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_type = 3;</code>
    * @return Whether the buildType field is set.
    */
+  @java.lang.Override
   public boolean hasBuildType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -789,6 +796,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_type = 3;</code>
    * @return The buildType.
    */
+  @java.lang.Override
   public java.lang.String getBuildType() {
     java.lang.Object ref = buildType_;
     if (ref instanceof java.lang.String) {
@@ -812,6 +820,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_type = 3;</code>
    * @return The bytes for buildType.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildTypeBytes() {
     java.lang.Object ref = buildType_;
@@ -836,6 +845,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_version_release = 4;</code>
    * @return Whether the buildVersionRelease field is set.
    */
+  @java.lang.Override
   public boolean hasBuildVersionRelease() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -847,6 +857,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_version_release = 4;</code>
    * @return The buildVersionRelease.
    */
+  @java.lang.Override
   public java.lang.String getBuildVersionRelease() {
     java.lang.Object ref = buildVersionRelease_;
     if (ref instanceof java.lang.String) {
@@ -869,6 +880,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_version_release = 4;</code>
    * @return The bytes for buildVersionRelease.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildVersionReleaseBytes() {
     java.lang.Object ref = buildVersionRelease_;
@@ -893,6 +905,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
    * @return Whether the buildApiLevel field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasBuildApiLevel() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -904,6 +917,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
    * @return The buildApiLevel.
    */
+  @java.lang.Override
   @java.lang.Deprecated public int getBuildApiLevel() {
     return buildApiLevel_;
   }
@@ -918,7 +932,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface cpu_abi = 6;</code>
    * @return Whether the cpuAbi field is set.
    */
-  public boolean hasCpuAbi() {
+  @java.lang.Override public boolean hasCpuAbi() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -929,7 +943,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface cpu_abi = 6;</code>
    * @return The cpuAbi.
    */
-  public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getCpuAbi() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getCpuAbi() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(cpuAbi_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.UNKNOWN_ABI : result;
@@ -945,6 +959,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string manufacturer = 7;</code>
    * @return Whether the manufacturer field is set.
    */
+  @java.lang.Override
   public boolean hasManufacturer() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -956,6 +971,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string manufacturer = 7;</code>
    * @return The manufacturer.
    */
+  @java.lang.Override
   public java.lang.String getManufacturer() {
     java.lang.Object ref = manufacturer_;
     if (ref instanceof java.lang.String) {
@@ -978,6 +994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string manufacturer = 7;</code>
    * @return The bytes for manufacturer.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getManufacturerBytes() {
     java.lang.Object ref = manufacturer_;
@@ -1002,6 +1019,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 8;</code>
    * @return Whether the model field is set.
    */
+  @java.lang.Override
   public boolean hasModel() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1013,6 +1031,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 8;</code>
    * @return The model.
    */
+  @java.lang.Override
   public java.lang.String getModel() {
     java.lang.Object ref = model_;
     if (ref instanceof java.lang.String) {
@@ -1035,6 +1054,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 8;</code>
    * @return The bytes for model.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModelBytes() {
     java.lang.Object ref = model_;
@@ -1059,7 +1079,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.DeviceType device_type = 9;</code>
    * @return Whether the deviceType field is set.
    */
-  public boolean hasDeviceType() {
+  @java.lang.Override public boolean hasDeviceType() {
     return ((bitField0_ & 0x00000100) != 0);
   }
   /**
@@ -1070,7 +1090,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.DeviceType device_type = 9;</code>
    * @return The deviceType.
    */
-  public com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType getDeviceType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType getDeviceType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType result = com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType.valueOf(deviceType_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType.UNKNOWN_DEVICE_TYPE : result;
@@ -1086,6 +1106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_api_level_full = 10;</code>
    * @return Whether the buildApiLevelFull field is set.
    */
+  @java.lang.Override
   public boolean hasBuildApiLevelFull() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -1097,6 +1118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_api_level_full = 10;</code>
    * @return The buildApiLevelFull.
    */
+  @java.lang.Override
   public java.lang.String getBuildApiLevelFull() {
     java.lang.Object ref = buildApiLevelFull_;
     if (ref instanceof java.lang.String) {
@@ -1119,6 +1141,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_api_level_full = 10;</code>
    * @return The bytes for buildApiLevelFull.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildApiLevelFullBytes() {
     java.lang.Object ref = buildApiLevelFull_;
@@ -1143,7 +1166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.MdnsConnectionType mdns_connection_type = 11;</code>
    * @return Whether the mdnsConnectionType field is set.
    */
-  public boolean hasMdnsConnectionType() {
+  @java.lang.Override public boolean hasMdnsConnectionType() {
     return ((bitField0_ & 0x00000400) != 0);
   }
   /**
@@ -1154,7 +1177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo.MdnsConnectionType mdns_connection_type = 11;</code>
    * @return The mdnsConnectionType.
    */
-  public com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType getMdnsConnectionType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType getMdnsConnectionType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType result = com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.valueOf(mdnsConnectionType_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.UNKNOWN_MDNS_CONNECTION_TYPE : result;
@@ -2270,6 +2293,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
      * @return Whether the buildApiLevel field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasBuildApiLevel() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2281,6 +2305,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 build_api_level = 5 [deprecated = true];</code>
      * @return The buildApiLevel.
      */
+    @java.lang.Override
     @java.lang.Deprecated public int getBuildApiLevel() {
       return buildApiLevel_;
     }
@@ -2323,7 +2348,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface cpu_abi = 6;</code>
      * @return Whether the cpuAbi field is set.
      */
-    public boolean hasCpuAbi() {
+    @java.lang.Override public boolean hasCpuAbi() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -2334,6 +2359,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface cpu_abi = 6;</code>
      * @return The cpuAbi.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getCpuAbi() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(cpuAbi_);
@@ -2597,7 +2623,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.DeviceType device_type = 9;</code>
      * @return Whether the deviceType field is set.
      */
-    public boolean hasDeviceType() {
+    @java.lang.Override public boolean hasDeviceType() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
@@ -2608,6 +2634,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.DeviceType device_type = 9;</code>
      * @return The deviceType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType getDeviceType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType result = com.google.wireless.android.sdk.stats.DeviceInfo.DeviceType.valueOf(deviceType_);
@@ -2763,7 +2790,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.MdnsConnectionType mdns_connection_type = 11;</code>
      * @return Whether the mdnsConnectionType field is set.
      */
-    public boolean hasMdnsConnectionType() {
+    @java.lang.Override public boolean hasMdnsConnectionType() {
       return ((bitField0_ & 0x00000400) != 0);
     }
     /**
@@ -2774,6 +2801,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.MdnsConnectionType mdns_connection_type = 11;</code>
      * @return The mdnsConnectionType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType getMdnsConnectionType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType result = com.google.wireless.android.sdk.stats.DeviceInfo.MdnsConnectionType.valueOf(mdnsConnectionType_);

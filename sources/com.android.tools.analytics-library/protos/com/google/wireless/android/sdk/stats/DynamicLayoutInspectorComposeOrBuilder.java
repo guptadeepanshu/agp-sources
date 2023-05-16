@@ -82,4 +82,80 @@ public interface DynamicLayoutInspectorComposeOrBuilder extends
    * @return The goToSourceFromPropertyValueClicks.
    */
   int getGoToSourceFromPropertyValueClicks();
+
+  /**
+   * <pre>
+   * The max recomposition count seen for a composable in a session
+   * </pre>
+   *
+   * <code>optional uint32 max_recomposition_count = 5;</code>
+   * @return Whether the maxRecompositionCount field is set.
+   */
+  boolean hasMaxRecompositionCount();
+  /**
+   * <pre>
+   * The max recomposition count seen for a composable in a session
+   * </pre>
+   *
+   * <code>optional uint32 max_recomposition_count = 5;</code>
+   * @return The maxRecompositionCount.
+   */
+  int getMaxRecompositionCount();
+
+  /**
+   * <pre>
+   * The max recomposition skips seen for a composable in a session
+   * </pre>
+   *
+   * <code>optional uint32 max_recomposition_skips = 6;</code>
+   * @return Whether the maxRecompositionSkips field is set.
+   */
+  boolean hasMaxRecompositionSkips();
+  /**
+   * <pre>
+   * The max recomposition skips seen for a composable in a session
+   * </pre>
+   *
+   * <code>optional uint32 max_recomposition_skips = 6;</code>
+   * @return The maxRecompositionSkips.
+   */
+  int getMaxRecompositionSkips();
+
+  /**
+   * <pre>
+   * The max highlight amount seen in a session
+   * </pre>
+   *
+   * <code>optional float max_recomposition_highlight = 7;</code>
+   * @return Whether the maxRecompositionHighlight field is set.
+   */
+  boolean hasMaxRecompositionHighlight();
+  /**
+   * <pre>
+   * The max highlight amount seen in a session
+   * </pre>
+   *
+   * <code>optional float max_recomposition_highlight = 7;</code>
+   * @return The maxRecompositionHighlight.
+   */
+  float getMaxRecompositionHighlight();
+
+  /**
+   * <pre>
+   * Number of times the recomposition counts were explicitly reset
+   * </pre>
+   *
+   * <code>optional uint32 recomposition_reset_clicks = 8;</code>
+   * @return Whether the recompositionResetClicks field is set.
+   */
+  boolean hasRecompositionResetClicks();
+  /**
+   * <pre>
+   * Number of times the recomposition counts were explicitly reset
+   * </pre>
+   *
+   * <code>optional uint32 recomposition_reset_clicks = 8;</code>
+   * @return The recompositionResetClicks.
+   */
+  int getRecompositionResetClicks();
 }

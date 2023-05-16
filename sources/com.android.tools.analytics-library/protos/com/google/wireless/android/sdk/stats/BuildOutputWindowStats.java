@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildOutputWindowStats}
  */
-public  final class BuildOutputWindowStats extends
+public final class BuildOutputWindowStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildOutputWindowStats)
     BuildOutputWindowStatsOrBuilder {
@@ -103,12 +103,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.BuildErrorMessage build_error_messages = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.BuildErrorMessage> getBuildErrorMessagesList() {
     return buildErrorMessages_;
   }
   /**
    * <code>repeated .android_studio.BuildErrorMessage build_error_messages = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.BuildErrorMessageOrBuilder> 
       getBuildErrorMessagesOrBuilderList() {
     return buildErrorMessages_;
@@ -116,18 +118,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.BuildErrorMessage build_error_messages = 1;</code>
    */
+  @java.lang.Override
   public int getBuildErrorMessagesCount() {
     return buildErrorMessages_.size();
   }
   /**
    * <code>repeated .android_studio.BuildErrorMessage build_error_messages = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildErrorMessage getBuildErrorMessages(int index) {
     return buildErrorMessages_.get(index);
   }
   /**
    * <code>repeated .android_studio.BuildErrorMessage build_error_messages = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildErrorMessageOrBuilder getBuildErrorMessagesOrBuilder(
       int index) {
     return buildErrorMessages_.get(index);

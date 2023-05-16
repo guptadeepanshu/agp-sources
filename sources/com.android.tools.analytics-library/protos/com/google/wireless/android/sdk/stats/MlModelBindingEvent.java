@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.MlModelBindingEvent}
  */
-public  final class MlModelBindingEvent extends
+public final class MlModelBindingEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MlModelBindingEvent)
     MlModelBindingEventOrBuilder {
@@ -478,7 +478,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.MlModelBindingEvent.ModelMetadata}
    */
-  public  static final class ModelMetadata extends
+  public static final class ModelMetadata extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.MlModelBindingEvent.ModelMetadata)
       ModelMetadataOrBuilder {
@@ -586,6 +586,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 file_size = 1;</code>
      * @return Whether the fileSize field is set.
      */
+    @java.lang.Override
     public boolean hasFileSize() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -597,6 +598,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 file_size = 1;</code>
      * @return The fileSize.
      */
+    @java.lang.Override
     public long getFileSize() {
       return fileSize_;
     }
@@ -611,6 +613,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string file_hash = 2;</code>
      * @return Whether the fileHash field is set.
      */
+    @java.lang.Override
     public boolean hasFileHash() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -622,6 +625,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string file_hash = 2;</code>
      * @return The fileHash.
      */
+    @java.lang.Override
     public java.lang.String getFileHash() {
       java.lang.Object ref = fileHash_;
       if (ref instanceof java.lang.String) {
@@ -644,6 +648,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string file_hash = 2;</code>
      * @return The bytes for fileHash.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getFileHashBytes() {
       java.lang.Object ref = fileHash_;
@@ -668,6 +673,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_valid_model = 3;</code>
      * @return Whether the isValidModel field is set.
      */
+    @java.lang.Override
     public boolean hasIsValidModel() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -679,6 +685,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_valid_model = 3;</code>
      * @return The isValidModel.
      */
+    @java.lang.Override
     public boolean getIsValidModel() {
       return isValidModel_;
     }
@@ -693,6 +700,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_metadata = 4;</code>
      * @return Whether the hasMetadata field is set.
      */
+    @java.lang.Override
     public boolean hasHasMetadata() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -704,6 +712,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_metadata = 4;</code>
      * @return The hasMetadata.
      */
+    @java.lang.Override
     public boolean getHasMetadata() {
       return hasMetadata_;
     }
@@ -1110,6 +1119,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 file_size = 1;</code>
        * @return Whether the fileSize field is set.
        */
+      @java.lang.Override
       public boolean hasFileSize() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -1121,6 +1131,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 file_size = 1;</code>
        * @return The fileSize.
        */
+      @java.lang.Override
       public long getFileSize() {
         return fileSize_;
       }
@@ -1271,6 +1282,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_valid_model = 3;</code>
        * @return Whether the isValidModel field is set.
        */
+      @java.lang.Override
       public boolean hasIsValidModel() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1282,6 +1294,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_valid_model = 3;</code>
        * @return The isValidModel.
        */
+      @java.lang.Override
       public boolean getIsValidModel() {
         return isValidModel_;
       }
@@ -1324,6 +1337,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool has_metadata = 4;</code>
        * @return Whether the hasMetadata field is set.
        */
+      @java.lang.Override
       public boolean hasHasMetadata() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1335,6 +1349,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool has_metadata = 4;</code>
        * @return The hasMetadata.
        */
+      @java.lang.Override
       public boolean getHasMetadata() {
         return hasMetadata_;
       }
@@ -1431,7 +1446,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent.EventType event_type = 1;</code>
    * @return Whether the eventType field is set.
    */
-  public boolean hasEventType() {
+  @java.lang.Override public boolean hasEventType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1442,7 +1457,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent.EventType event_type = 1;</code>
    * @return The eventType.
    */
-  public com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType getEventType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType getEventType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.valueOf(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.UNKNOWN_EVENT_TYPE : result;
@@ -1457,6 +1472,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.MlModelBindingEvent.ModelMetadata model_metadatas = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata> getModelMetadatasList() {
     return modelMetadatas_;
   }
@@ -1467,6 +1483,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.MlModelBindingEvent.ModelMetadata model_metadatas = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadataOrBuilder> 
       getModelMetadatasOrBuilderList() {
     return modelMetadatas_;
@@ -1478,6 +1495,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.MlModelBindingEvent.ModelMetadata model_metadatas = 2;</code>
    */
+  @java.lang.Override
   public int getModelMetadatasCount() {
     return modelMetadatas_.size();
   }
@@ -1488,6 +1506,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.MlModelBindingEvent.ModelMetadata model_metadatas = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadata getModelMetadatas(int index) {
     return modelMetadatas_.get(index);
   }
@@ -1498,6 +1517,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.MlModelBindingEvent.ModelMetadata model_metadatas = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ModelMetadataOrBuilder getModelMetadatasOrBuilder(
       int index) {
     return modelMetadatas_.get(index);
@@ -1513,7 +1533,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent.ErrorCode error_code = 3;</code>
    * @return Whether the errorCode field is set.
    */
-  public boolean hasErrorCode() {
+  @java.lang.Override public boolean hasErrorCode() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -1524,7 +1544,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent.ErrorCode error_code = 3;</code>
    * @return The errorCode.
    */
-  public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode getErrorCode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode getErrorCode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.valueOf(errorCode_);
     return result == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.UNKNOWN_ERROR_CODE : result;
@@ -1935,7 +1955,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MlModelBindingEvent.EventType event_type = 1;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1946,6 +1966,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MlModelBindingEvent.EventType event_type = 1;</code>
      * @return The eventType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.EventType.valueOf(eventType_);
@@ -2305,7 +2326,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MlModelBindingEvent.ErrorCode error_code = 3;</code>
      * @return Whether the errorCode field is set.
      */
-    public boolean hasErrorCode() {
+    @java.lang.Override public boolean hasErrorCode() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -2316,6 +2337,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MlModelBindingEvent.ErrorCode error_code = 3;</code>
      * @return The errorCode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode getErrorCode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode result = com.google.wireless.android.sdk.stats.MlModelBindingEvent.ErrorCode.valueOf(errorCode_);

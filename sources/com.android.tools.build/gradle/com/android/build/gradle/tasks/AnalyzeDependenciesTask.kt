@@ -24,7 +24,7 @@ import com.android.build.gradle.internal.publishing.PublishedConfigSpec
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.builder.core.VariantTypeImpl
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.model.SourceProvider
 import com.google.common.annotations.VisibleForTesting
 import org.gradle.api.artifacts.ArtifactCollection
@@ -219,18 +219,20 @@ abstract class AnalyzeDependenciesTask : NonIncrementalTask() {
                 .variantDependencies
                 .getIncomingRuntimeDependencies()
 
-            task.isVariantLibrary = (creationConfig.variantType == VariantTypeImpl.LIBRARY)
+            task.isVariantLibrary = (creationConfig.componentType == ComponentTypeImpl.LIBRARY)
 
             // ResourceSets from main and generated directories of default, flavors,
             // multiflavor and buildtype sources (if they exist).
             // TODO(lukeedgar) Use merged resources.
-            task.resourceSourceSets.from(Callable {
-                creationConfig.variantSources.getSourceFiles(resDirFunction)
-            })
+            task.resourceSourceSets.from(creationConfig.sources.res.all)
 
             creationConfig
                     .artifacts
                     .setTaskInputToFinalProduct(SingleArtifact.MERGED_MANIFEST, task.mergedManifest)
+
+            // b/215776121
+            task.notCompatibleWithConfigurationCache(
+                "AnalyzeDependenciesTask not compatible with configuration caching.")
         }
 
         override fun handleProvider(

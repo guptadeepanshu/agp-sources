@@ -94,7 +94,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
    *
    * Protobuf type {@code com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderConfig}
    */
-  public  static final class GradleManagedAndroidDeviceProviderConfig extends
+  public static final class GradleManagedAndroidDeviceProviderConfig extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedAndroidDeviceProviderConfig)
       GradleManagedAndroidDeviceProviderConfigOrBuilder {
@@ -209,6 +209,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      * <code>.com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig managed_device = 1;</code>
      * @return Whether the managedDevice field is set.
      */
+    @java.lang.Override
     public boolean hasManagedDevice() {
       return managedDevice_ != null;
     }
@@ -220,6 +221,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      * <code>.com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig managed_device = 1;</code>
      * @return The managedDevice.
      */
+    @java.lang.Override
     public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig getManagedDevice() {
       return managedDevice_ == null ? com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfig.getDefaultInstance() : managedDevice_;
     }
@@ -230,6 +232,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      *
      * <code>.com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig managed_device = 1;</code>
      */
+    @java.lang.Override
     public com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceProto.GradleManagedDeviceConfigOrBuilder getManagedDeviceOrBuilder() {
       return getManagedDevice();
     }
@@ -244,6 +247,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      * <code>int32 adb_server_port = 2;</code>
      * @return The adbServerPort.
      */
+    @java.lang.Override
     public int getAdbServerPort() {
       return adbServerPort_;
     }
@@ -259,6 +263,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      * <code>.google.protobuf.Any adb_config = 3;</code>
      * @return Whether the adbConfig field is set.
      */
+    @java.lang.Override
     public boolean hasAdbConfig() {
       return adbConfig_ != null;
     }
@@ -271,6 +276,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      * <code>.google.protobuf.Any adb_config = 3;</code>
      * @return The adbConfig.
      */
+    @java.lang.Override
     public com.google.protobuf.Any getAdbConfig() {
       return adbConfig_ == null ? com.google.protobuf.Any.getDefaultInstance() : adbConfig_;
     }
@@ -282,6 +288,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
      *
      * <code>.google.protobuf.Any adb_config = 3;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getAdbConfigOrBuilder() {
       return getAdbConfig();
     }
@@ -818,6 +825,7 @@ public final class GradleManagedAndroidDeviceProviderProto {
        * <code>int32 adb_server_port = 2;</code>
        * @return The adbServerPort.
        */
+      @java.lang.Override
       public int getAdbServerPort() {
         return adbServerPort_;
       }

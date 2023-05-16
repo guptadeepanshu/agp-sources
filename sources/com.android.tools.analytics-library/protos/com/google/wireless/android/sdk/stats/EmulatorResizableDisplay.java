@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorResizableDisplay}
  */
-public  final class EmulatorResizableDisplay extends
+public final class EmulatorResizableDisplay extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorResizableDisplay)
     EmulatorResizableDisplayOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_phone_count = 1;</code>
    * @return Whether the displayPhoneCount field is set.
    */
+  @java.lang.Override
   public boolean hasDisplayPhoneCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_phone_count = 1;</code>
    * @return The displayPhoneCount.
    */
+  @java.lang.Override
   public int getDisplayPhoneCount() {
     return displayPhoneCount_;
   }
@@ -137,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_foldable_count = 2;</code>
    * @return Whether the displayFoldableCount field is set.
    */
+  @java.lang.Override
   public boolean hasDisplayFoldableCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -144,6 +147,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_foldable_count = 2;</code>
    * @return The displayFoldableCount.
    */
+  @java.lang.Override
   public int getDisplayFoldableCount() {
     return displayFoldableCount_;
   }
@@ -154,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_tablet_count = 3;</code>
    * @return Whether the displayTabletCount field is set.
    */
+  @java.lang.Override
   public boolean hasDisplayTabletCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -161,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_tablet_count = 3;</code>
    * @return The displayTabletCount.
    */
+  @java.lang.Override
   public int getDisplayTabletCount() {
     return displayTabletCount_;
   }
@@ -171,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_desktop_count = 4;</code>
    * @return Whether the displayDesktopCount field is set.
    */
+  @java.lang.Override
   public boolean hasDisplayDesktopCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -178,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 display_desktop_count = 4;</code>
    * @return The displayDesktopCount.
    */
+  @java.lang.Override
   public int getDisplayDesktopCount() {
     return displayDesktopCount_;
   }
@@ -584,6 +592,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_phone_count = 1;</code>
      * @return Whether the displayPhoneCount field is set.
      */
+    @java.lang.Override
     public boolean hasDisplayPhoneCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -595,6 +604,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_phone_count = 1;</code>
      * @return The displayPhoneCount.
      */
+    @java.lang.Override
     public int getDisplayPhoneCount() {
       return displayPhoneCount_;
     }
@@ -633,6 +643,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_foldable_count = 2;</code>
      * @return Whether the displayFoldableCount field is set.
      */
+    @java.lang.Override
     public boolean hasDisplayFoldableCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -640,6 +651,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_foldable_count = 2;</code>
      * @return The displayFoldableCount.
      */
+    @java.lang.Override
     public int getDisplayFoldableCount() {
       return displayFoldableCount_;
     }
@@ -670,6 +682,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_tablet_count = 3;</code>
      * @return Whether the displayTabletCount field is set.
      */
+    @java.lang.Override
     public boolean hasDisplayTabletCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -677,6 +690,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_tablet_count = 3;</code>
      * @return The displayTabletCount.
      */
+    @java.lang.Override
     public int getDisplayTabletCount() {
       return displayTabletCount_;
     }
@@ -707,6 +721,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_desktop_count = 4;</code>
      * @return Whether the displayDesktopCount field is set.
      */
+    @java.lang.Override
     public boolean hasDisplayDesktopCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -714,6 +729,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 display_desktop_count = 4;</code>
      * @return The displayDesktopCount.
      */
+    @java.lang.Override
     public int getDisplayDesktopCount() {
       return displayDesktopCount_;
     }

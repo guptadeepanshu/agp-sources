@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.TraceProcessorDaemonQueryStats}
  */
-public  final class TraceProcessorDaemonQueryStats extends
+public final class TraceProcessorDaemonQueryStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TraceProcessorDaemonQueryStats)
     TraceProcessorDaemonQueryStatsOrBuilder {
@@ -263,6 +263,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 method_duration_ms = 1;</code>
    * @return Whether the methodDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasMethodDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -275,6 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 method_duration_ms = 1;</code>
    * @return The methodDurationMs.
    */
+  @java.lang.Override
   public long getMethodDurationMs() {
     return methodDurationMs_;
   }
@@ -289,6 +291,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 grpc_query_duration_ms = 2;</code>
    * @return Whether the grpcQueryDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasGrpcQueryDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -300,6 +303,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 grpc_query_duration_ms = 2;</code>
    * @return The grpcQueryDurationMs.
    */
+  @java.lang.Override
   public long getGrpcQueryDurationMs() {
     return grpcQueryDurationMs_;
   }
@@ -314,7 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonQueryStats.QueryReturnStatus query_status = 3;</code>
    * @return Whether the queryStatus field is set.
    */
-  public boolean hasQueryStatus() {
+  @java.lang.Override public boolean hasQueryStatus() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -325,7 +329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonQueryStats.QueryReturnStatus query_status = 3;</code>
    * @return The queryStatus.
    */
-  public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus getQueryStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus getQueryStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus result = com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus.valueOf(queryStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus.UNKNOWN : result;
@@ -342,6 +346,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 trace_size_bytes = 100;</code>
    * @return Whether the traceSizeBytes field is set.
    */
+  @java.lang.Override
   public boolean hasTraceSizeBytes() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -354,6 +359,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 trace_size_bytes = 100;</code>
    * @return The traceSizeBytes.
    */
+  @java.lang.Override
   public long getTraceSizeBytes() {
     return traceSizeBytes_;
   }
@@ -759,6 +765,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 method_duration_ms = 1;</code>
      * @return Whether the methodDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasMethodDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -771,6 +778,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 method_duration_ms = 1;</code>
      * @return The methodDurationMs.
      */
+    @java.lang.Override
     public long getMethodDurationMs() {
       return methodDurationMs_;
     }
@@ -815,6 +823,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 grpc_query_duration_ms = 2;</code>
      * @return Whether the grpcQueryDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasGrpcQueryDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -826,6 +835,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 grpc_query_duration_ms = 2;</code>
      * @return The grpcQueryDurationMs.
      */
+    @java.lang.Override
     public long getGrpcQueryDurationMs() {
       return grpcQueryDurationMs_;
     }
@@ -868,7 +878,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TraceProcessorDaemonQueryStats.QueryReturnStatus query_status = 3;</code>
      * @return Whether the queryStatus field is set.
      */
-    public boolean hasQueryStatus() {
+    @java.lang.Override public boolean hasQueryStatus() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -879,6 +889,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TraceProcessorDaemonQueryStats.QueryReturnStatus query_status = 3;</code>
      * @return The queryStatus.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus getQueryStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus result = com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.QueryReturnStatus.valueOf(queryStatus_);
@@ -927,6 +938,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 trace_size_bytes = 100;</code>
      * @return Whether the traceSizeBytes field is set.
      */
+    @java.lang.Override
     public boolean hasTraceSizeBytes() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -939,6 +951,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 trace_size_bytes = 100;</code>
      * @return The traceSizeBytes.
      */
+    @java.lang.Override
     public long getTraceSizeBytes() {
       return traceSizeBytes_;
     }

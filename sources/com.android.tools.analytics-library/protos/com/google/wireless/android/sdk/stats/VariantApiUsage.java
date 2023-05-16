@@ -12,7 +12,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.VariantApiUsage}
  */
-public  final class VariantApiUsage extends
+public final class VariantApiUsage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.VariantApiUsage)
     VariantApiUsageOrBuilder {
@@ -135,6 +135,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantAccess variant_access = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.VariantAccess> getVariantAccessList() {
     return variantAccess_;
   }
@@ -145,6 +146,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantAccess variant_access = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.VariantAccessOrBuilder> 
       getVariantAccessOrBuilderList() {
     return variantAccess_;
@@ -156,6 +158,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantAccess variant_access = 1;</code>
    */
+  @java.lang.Override
   public int getVariantAccessCount() {
     return variantAccess_.size();
   }
@@ -166,6 +169,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantAccess variant_access = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VariantAccess getVariantAccess(int index) {
     return variantAccess_.get(index);
   }
@@ -176,6 +180,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantAccess variant_access = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VariantAccessOrBuilder getVariantAccessOrBuilder(
       int index) {
     return variantAccess_.get(index);
@@ -191,6 +196,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantPropertiesAccess variant_properties_access = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.VariantPropertiesAccess> getVariantPropertiesAccessList() {
     return variantPropertiesAccess_;
   }
@@ -202,6 +208,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantPropertiesAccess variant_properties_access = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.VariantPropertiesAccessOrBuilder> 
       getVariantPropertiesAccessOrBuilderList() {
     return variantPropertiesAccess_;
@@ -214,6 +221,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantPropertiesAccess variant_properties_access = 2;</code>
    */
+  @java.lang.Override
   public int getVariantPropertiesAccessCount() {
     return variantPropertiesAccess_.size();
   }
@@ -225,6 +233,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantPropertiesAccess variant_properties_access = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VariantPropertiesAccess getVariantPropertiesAccess(int index) {
     return variantPropertiesAccess_.get(index);
   }
@@ -236,6 +245,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.VariantPropertiesAccess variant_properties_access = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VariantPropertiesAccessOrBuilder getVariantPropertiesAccessOrBuilder(
       int index) {
     return variantPropertiesAccess_.get(index);
@@ -252,6 +262,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactAccess artifact_access = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ArtifactAccess> getArtifactAccessList() {
     return artifactAccess_;
   }
@@ -264,6 +275,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactAccess artifact_access = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.ArtifactAccessOrBuilder> 
       getArtifactAccessOrBuilderList() {
     return artifactAccess_;
@@ -277,6 +289,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactAccess artifact_access = 3;</code>
    */
+  @java.lang.Override
   public int getArtifactAccessCount() {
     return artifactAccess_.size();
   }
@@ -289,6 +302,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactAccess artifact_access = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactAccess getArtifactAccess(int index) {
     return artifactAccess_.get(index);
   }
@@ -301,6 +315,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactAccess artifact_access = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactAccessOrBuilder getArtifactAccessOrBuilder(
       int index) {
     return artifactAccess_.get(index);

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGuestGlInfo}
  */
-public  final class EmulatorGuestGlInfo extends
+public final class EmulatorGuestGlInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGuestGlInfo)
     EmulatorGuestGlInfoOrBuilder {
@@ -117,6 +117,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 1;</code>
    * @return Whether the vendor field is set.
    */
+  @java.lang.Override
   public boolean hasVendor() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 1;</code>
    * @return The vendor.
    */
+  @java.lang.Override
   public java.lang.String getVendor() {
     java.lang.Object ref = vendor_;
     if (ref instanceof java.lang.String) {
@@ -150,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string vendor = 1;</code>
    * @return The bytes for vendor.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVendorBytes() {
     java.lang.Object ref = vendor_;
@@ -174,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 2;</code>
    * @return Whether the renderer field is set.
    */
+  @java.lang.Override
   public boolean hasRenderer() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -185,6 +189,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 2;</code>
    * @return The renderer.
    */
+  @java.lang.Override
   public java.lang.String getRenderer() {
     java.lang.Object ref = renderer_;
     if (ref instanceof java.lang.String) {
@@ -207,6 +212,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 2;</code>
    * @return The bytes for renderer.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRendererBytes() {
     java.lang.Object ref = renderer_;
@@ -231,6 +237,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -242,6 +249,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -264,6 +272,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 3;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;

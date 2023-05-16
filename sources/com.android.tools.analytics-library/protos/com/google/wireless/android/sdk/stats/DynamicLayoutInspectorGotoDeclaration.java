@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorGotoDeclaration}
  */
-public  final class DynamicLayoutInspectorGotoDeclaration extends
+public final class DynamicLayoutInspectorGotoDeclaration extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorGotoDeclaration)
     DynamicLayoutInspectorGotoDeclarationOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_menu_action = 1;</code>
    * @return Whether the clicksMenuAction field is set.
    */
+  @java.lang.Override
   public boolean hasClicksMenuAction() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_menu_action = 1;</code>
    * @return The clicksMenuAction.
    */
+  @java.lang.Override
   public int getClicksMenuAction() {
     return clicksMenuAction_;
   }
@@ -137,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 key_strokes_shortcut = 2;</code>
    * @return Whether the keyStrokesShortcut field is set.
    */
+  @java.lang.Override
   public boolean hasKeyStrokesShortcut() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -149,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 key_strokes_shortcut = 2;</code>
    * @return The keyStrokesShortcut.
    */
+  @java.lang.Override
   public int getKeyStrokesShortcut() {
     return keyStrokesShortcut_;
   }
@@ -163,6 +167,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 double_clicks = 3;</code>
    * @return Whether the doubleClicks field is set.
    */
+  @java.lang.Override
   public boolean hasDoubleClicks() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -174,6 +179,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 double_clicks = 3;</code>
    * @return The doubleClicks.
    */
+  @java.lang.Override
   public int getDoubleClicks() {
     return doubleClicks_;
   }
@@ -555,6 +561,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_menu_action = 1;</code>
      * @return Whether the clicksMenuAction field is set.
      */
+    @java.lang.Override
     public boolean hasClicksMenuAction() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -566,6 +573,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_menu_action = 1;</code>
      * @return The clicksMenuAction.
      */
+    @java.lang.Override
     public int getClicksMenuAction() {
       return clicksMenuAction_;
     }
@@ -609,6 +617,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 key_strokes_shortcut = 2;</code>
      * @return Whether the keyStrokesShortcut field is set.
      */
+    @java.lang.Override
     public boolean hasKeyStrokesShortcut() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -621,6 +630,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 key_strokes_shortcut = 2;</code>
      * @return The keyStrokesShortcut.
      */
+    @java.lang.Override
     public int getKeyStrokesShortcut() {
       return keyStrokesShortcut_;
     }
@@ -665,6 +675,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 double_clicks = 3;</code>
      * @return Whether the doubleClicks field is set.
      */
+    @java.lang.Override
     public boolean hasDoubleClicks() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -676,6 +687,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 double_clicks = 3;</code>
      * @return The doubleClicks.
      */
+    @java.lang.Override
     public int getDoubleClicks() {
       return doubleClicks_;
     }

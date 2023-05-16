@@ -64,6 +64,14 @@ public enum IntegerOption
    * <code>MANAGED_DEVICE_SHARD_POOL_SIZE = 13;</code>
    */
   MANAGED_DEVICE_SHARD_POOL_SIZE(13),
+  /**
+   * <code>R8_MAX_WORKERS = 14;</code>
+   */
+  R8_MAX_WORKERS(14),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES = 15;</code>
+   */
+  GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES(15),
   UNRECOGNIZED(-1),
   ;
 
@@ -123,6 +131,14 @@ public enum IntegerOption
    * <code>MANAGED_DEVICE_SHARD_POOL_SIZE = 13;</code>
    */
   public static final int MANAGED_DEVICE_SHARD_POOL_SIZE_VALUE = 13;
+  /**
+   * <code>R8_MAX_WORKERS = 14;</code>
+   */
+  public static final int R8_MAX_WORKERS_VALUE = 14;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES = 15;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES_VALUE = 15;
 
 
   public final int getNumber() {
@@ -163,6 +179,8 @@ public enum IntegerOption
       case 11: return AAPT2_THREAD_POOL_SIZE;
       case 12: return TEST_FAILURE_RETENTION;
       case 13: return MANAGED_DEVICE_SHARD_POOL_SIZE;
+      case 14: return R8_MAX_WORKERS;
+      case 15: return GRADLE_MANAGED_DEVICE_SETUP_TIMEOUT_MINUTES;
       default: return null;
     }
   }
@@ -181,6 +199,10 @@ public enum IntegerOption
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor

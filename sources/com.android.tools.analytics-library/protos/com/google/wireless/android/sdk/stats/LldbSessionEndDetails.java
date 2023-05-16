@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.LldbSessionEndDetails}
  */
-public  final class LldbSessionEndDetails extends
+public final class LldbSessionEndDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LldbSessionEndDetails)
     LldbSessionEndDetailsOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return Whether the debugSessionId field is set.
    */
+  @java.lang.Override
   public boolean hasDebugSessionId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return The debugSessionId.
    */
+  @java.lang.Override
   public java.lang.String getDebugSessionId() {
     java.lang.Object ref = debugSessionId_;
     if (ref instanceof java.lang.String) {
@@ -149,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return The bytes for debugSessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDebugSessionIdBytes() {
     java.lang.Object ref = debugSessionId_;
@@ -174,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string failure_message = 2;</code>
    * @return Whether the failureMessage field is set.
    */
+  @java.lang.Override
   public boolean hasFailureMessage() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -186,6 +190,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string failure_message = 2;</code>
    * @return The failureMessage.
    */
+  @java.lang.Override
   public java.lang.String getFailureMessage() {
     java.lang.Object ref = failureMessage_;
     if (ref instanceof java.lang.String) {
@@ -209,6 +214,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string failure_message = 2;</code>
    * @return The bytes for failureMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFailureMessageBytes() {
     java.lang.Object ref = failureMessage_;
@@ -234,6 +240,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 stops = 3;</code>
    * @return Whether the stops field is set.
    */
+  @java.lang.Override
   public boolean hasStops() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -246,6 +253,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 stops = 3;</code>
    * @return The stops.
    */
+  @java.lang.Override
   public long getStops() {
     return stops_;
   }
@@ -261,6 +269,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 errors = 4;</code>
    * @return Whether the errors field is set.
    */
+  @java.lang.Override
   public boolean hasErrors() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -273,6 +282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 errors = 4;</code>
    * @return The errors.
    */
+  @java.lang.Override
   public long getErrors() {
     return errors_;
   }
@@ -902,6 +912,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 stops = 3;</code>
      * @return Whether the stops field is set.
      */
+    @java.lang.Override
     public boolean hasStops() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -914,6 +925,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 stops = 3;</code>
      * @return The stops.
      */
+    @java.lang.Override
     public long getStops() {
       return stops_;
     }
@@ -959,6 +971,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 errors = 4;</code>
      * @return Whether the errors field is set.
      */
+    @java.lang.Override
     public boolean hasErrors() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -971,6 +984,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 errors = 4;</code>
      * @return The errors.
      */
+    @java.lang.Override
     public long getErrors() {
       return errors_;
     }

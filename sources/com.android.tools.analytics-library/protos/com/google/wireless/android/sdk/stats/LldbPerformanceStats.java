@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LldbPerformanceStats}
  */
-public  final class LldbPerformanceStats extends
+public final class LldbPerformanceStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LldbPerformanceStats)
     LldbPerformanceStatsOrBuilder {
@@ -107,6 +107,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LldbPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.LldbPercentileEstimator> getEstimatorList() {
     return estimator_;
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LldbPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.LldbPercentileEstimatorOrBuilder> 
       getEstimatorOrBuilderList() {
     return estimator_;
@@ -128,6 +130,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LldbPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public int getEstimatorCount() {
     return estimator_.size();
   }
@@ -138,6 +141,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LldbPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbPercentileEstimator getEstimator(int index) {
     return estimator_.get(index);
   }
@@ -148,6 +152,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LldbPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbPercentileEstimatorOrBuilder getEstimatorOrBuilder(
       int index) {
     return estimator_.get(index);

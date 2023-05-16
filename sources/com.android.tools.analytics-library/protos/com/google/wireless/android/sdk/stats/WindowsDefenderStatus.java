@@ -14,7 +14,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.WindowsDefenderStatus}
  */
-public  final class WindowsDefenderStatus extends
+public final class WindowsDefenderStatus extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.WindowsDefenderStatus)
     WindowsDefenderStatusOrBuilder {
@@ -247,7 +247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WindowsDefenderStatus.Status status = 1;</code>
    * @return Whether the status field is set.
    */
-  public boolean hasStatus() {
+  @java.lang.Override public boolean hasStatus() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -258,7 +258,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WindowsDefenderStatus.Status status = 1;</code>
    * @return The status.
    */
-  public com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status getStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status getStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status result = com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status.valueOf(status_);
     return result == null ? com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status.UNKNOWN_STATUS : result;
@@ -274,6 +274,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool project_dir_excluded = 2;</code>
    * @return Whether the projectDirExcluded field is set.
    */
+  @java.lang.Override
   public boolean hasProjectDirExcluded() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -285,6 +286,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool project_dir_excluded = 2;</code>
    * @return The projectDirExcluded.
    */
+  @java.lang.Override
   public boolean getProjectDirExcluded() {
     return projectDirExcluded_;
   }
@@ -645,7 +647,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WindowsDefenderStatus.Status status = 1;</code>
      * @return Whether the status field is set.
      */
-    public boolean hasStatus() {
+    @java.lang.Override public boolean hasStatus() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -656,6 +658,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WindowsDefenderStatus.Status status = 1;</code>
      * @return The status.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status getStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status result = com.google.wireless.android.sdk.stats.WindowsDefenderStatus.Status.valueOf(status_);
@@ -703,6 +706,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool project_dir_excluded = 2;</code>
      * @return Whether the projectDirExcluded field is set.
      */
+    @java.lang.Override
     public boolean hasProjectDirExcluded() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -714,6 +718,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool project_dir_excluded = 2;</code>
      * @return The projectDirExcluded.
      */
+    @java.lang.Override
     public boolean getProjectDirExcluded() {
       return projectDirExcluded_;
     }

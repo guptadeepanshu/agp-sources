@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutAttributeChangeEvent}
  */
-public  final class LayoutAttributeChangeEvent extends
+public final class LayoutAttributeChangeEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutAttributeChangeEvent)
     LayoutAttributeChangeEventOrBuilder {
@@ -257,6 +257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
    * @return Whether the attribute field is set.
    */
+  @java.lang.Override
   public boolean hasAttribute() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -268,6 +269,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
    * @return The attribute.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttribute getAttribute() {
     return attribute_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : attribute_;
   }
@@ -278,6 +280,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidAttribute attribute = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidAttributeOrBuilder getAttributeOrBuilder() {
     return attribute_ == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.getDefaultInstance() : attribute_;
   }
@@ -292,7 +295,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SearchOption search_option = 2;</code>
    * @return Whether the searchOption field is set.
    */
-  public boolean hasSearchOption() {
+  @java.lang.Override public boolean hasSearchOption() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -303,7 +306,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SearchOption search_option = 2;</code>
    * @return The searchOption.
    */
-  public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
     return result == null ? com.google.wireless.android.sdk.stats.SearchOption.UNKNOWN_SEARCH_OPTION : result;
@@ -319,7 +322,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutAttributeChangeEvent.ViewType view_type = 3;</code>
    * @return Whether the viewType field is set.
    */
-  public boolean hasViewType() {
+  @java.lang.Override public boolean hasViewType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -330,7 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutAttributeChangeEvent.ViewType view_type = 3;</code>
    * @return The viewType.
    */
-  public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType getViewType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType getViewType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType.valueOf(viewType_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType.UNKNOWN_VIEW_TYPE : result;
@@ -345,6 +348,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidView view = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AndroidView> getViewList() {
     return view_;
   }
@@ -355,6 +359,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidView view = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AndroidViewOrBuilder> 
       getViewOrBuilderList() {
     return view_;
@@ -366,6 +371,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidView view = 4;</code>
    */
+  @java.lang.Override
   public int getViewCount() {
     return view_.size();
   }
@@ -376,6 +382,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidView view = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidView getView(int index) {
     return view_.get(index);
   }
@@ -386,6 +393,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidView view = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidViewOrBuilder getViewOrBuilder(
       int index) {
     return view_.get(index);
@@ -986,7 +994,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SearchOption search_option = 2;</code>
      * @return Whether the searchOption field is set.
      */
-    public boolean hasSearchOption() {
+    @java.lang.Override public boolean hasSearchOption() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -997,6 +1005,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SearchOption search_option = 2;</code>
      * @return The searchOption.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
@@ -1044,7 +1053,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutAttributeChangeEvent.ViewType view_type = 3;</code>
      * @return Whether the viewType field is set.
      */
-    public boolean hasViewType() {
+    @java.lang.Override public boolean hasViewType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1055,6 +1064,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutAttributeChangeEvent.ViewType view_type = 3;</code>
      * @return The viewType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType getViewType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.ViewType.valueOf(viewType_);

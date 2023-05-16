@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutEditorState}
  */
-public  final class LayoutEditorState extends
+public final class LayoutEditorState extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutEditorState)
     LayoutEditorStateOrBuilder {
@@ -763,7 +763,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Mode mode = 1;</code>
    * @return Whether the mode field is set.
    */
-  public boolean hasMode() {
+  @java.lang.Override public boolean hasMode() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -774,7 +774,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Mode mode = 1;</code>
    * @return The mode.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorState.Mode getMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Mode getMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.valueOf(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.UNKOWN_MODE : result;
@@ -790,7 +790,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Type type = 2;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -801,7 +801,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Type type = 2;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorState.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Type.UNKNOWN_TYPE : result;
@@ -817,6 +817,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string config_api_level = 3;</code>
    * @return Whether the configApiLevel field is set.
    */
+  @java.lang.Override
   public boolean hasConfigApiLevel() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -828,6 +829,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string config_api_level = 3;</code>
    * @return The configApiLevel.
    */
+  @java.lang.Override
   public java.lang.String getConfigApiLevel() {
     java.lang.Object ref = configApiLevel_;
     if (ref instanceof java.lang.String) {
@@ -850,6 +852,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string config_api_level = 3;</code>
    * @return The bytes for configApiLevel.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getConfigApiLevelBytes() {
     java.lang.Object ref = configApiLevel_;
@@ -874,6 +877,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 config_zoom_level = 4;</code>
    * @return Whether the configZoomLevel field is set.
    */
+  @java.lang.Override
   public boolean hasConfigZoomLevel() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -885,6 +889,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 config_zoom_level = 4;</code>
    * @return The configZoomLevel.
    */
+  @java.lang.Override
   public int getConfigZoomLevel() {
     return configZoomLevel_;
   }
@@ -899,7 +904,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Orientation config_orientation = 5;</code>
    * @return Whether the configOrientation field is set.
    */
-  public boolean hasConfigOrientation() {
+  @java.lang.Override public boolean hasConfigOrientation() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -910,7 +915,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Orientation config_orientation = 5;</code>
    * @return The configOrientation.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation getConfigOrientation() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation getConfigOrientation() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.valueOf(configOrientation_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.UNKNOWN_ORIENTATION : result;
@@ -926,7 +931,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Surfaces surfaces = 6;</code>
    * @return Whether the surfaces field is set.
    */
-  public boolean hasSurfaces() {
+  @java.lang.Override public boolean hasSurfaces() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -937,7 +942,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.Surfaces surfaces = 6;</code>
    * @return The surfaces.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces getSurfaces() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces getSurfaces() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.valueOf(surfaces_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.UNKNOWN_SURFACES : result;
@@ -954,7 +959,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.PreviewMode preview_mode = 7;</code>
    * @return Whether the previewMode field is set.
    */
-  public boolean hasPreviewMode() {
+  @java.lang.Override public boolean hasPreviewMode() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -966,7 +971,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState.PreviewMode preview_mode = 7;</code>
    * @return The previewMode.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode getPreviewMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode getPreviewMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.valueOf(previewMode_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.UNKNOWN_PREVIEW_MODE : result;
@@ -1445,7 +1450,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Mode mode = 1;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1456,6 +1461,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Mode mode = 1;</code>
      * @return The mode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Mode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorState.Mode result = com.google.wireless.android.sdk.stats.LayoutEditorState.Mode.valueOf(mode_);
@@ -1503,7 +1509,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Type type = 2;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1514,6 +1520,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Type type = 2;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorState.Type result = com.google.wireless.android.sdk.stats.LayoutEditorState.Type.valueOf(type_);
@@ -1669,6 +1676,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 config_zoom_level = 4;</code>
      * @return Whether the configZoomLevel field is set.
      */
+    @java.lang.Override
     public boolean hasConfigZoomLevel() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1680,6 +1688,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 config_zoom_level = 4;</code>
      * @return The configZoomLevel.
      */
+    @java.lang.Override
     public int getConfigZoomLevel() {
       return configZoomLevel_;
     }
@@ -1722,7 +1731,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Orientation config_orientation = 5;</code>
      * @return Whether the configOrientation field is set.
      */
-    public boolean hasConfigOrientation() {
+    @java.lang.Override public boolean hasConfigOrientation() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -1733,6 +1742,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Orientation config_orientation = 5;</code>
      * @return The configOrientation.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation getConfigOrientation() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation result = com.google.wireless.android.sdk.stats.LayoutEditorState.Orientation.valueOf(configOrientation_);
@@ -1780,7 +1790,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Surfaces surfaces = 6;</code>
      * @return Whether the surfaces field is set.
      */
-    public boolean hasSurfaces() {
+    @java.lang.Override public boolean hasSurfaces() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -1791,6 +1801,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.Surfaces surfaces = 6;</code>
      * @return The surfaces.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces getSurfaces() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces result = com.google.wireless.android.sdk.stats.LayoutEditorState.Surfaces.valueOf(surfaces_);
@@ -1839,7 +1850,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.PreviewMode preview_mode = 7;</code>
      * @return Whether the previewMode field is set.
      */
-    public boolean hasPreviewMode() {
+    @java.lang.Override public boolean hasPreviewMode() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -1851,6 +1862,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorState.PreviewMode preview_mode = 7;</code>
      * @return The previewMode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode getPreviewMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode result = com.google.wireless.android.sdk.stats.LayoutEditorState.PreviewMode.valueOf(previewMode_);

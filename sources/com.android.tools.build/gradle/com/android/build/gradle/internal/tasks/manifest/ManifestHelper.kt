@@ -45,11 +45,13 @@ fun mergeManifests(
     featureName: String?,
     packageOverride: String?,
     namespace: String,
+    profileable: Boolean,
     versionCode: Int?,
     versionName: String?,
     minSdkVersion: String?,
     targetSdkVersion: String?,
     maxSdkVersion: Int?,
+    testOnly: Boolean,
     outMergedManifestLocation: String?,
     outAaptSafeManifestLocation: String?,
     mergeType: ManifestMerger2.MergeType,
@@ -72,11 +74,13 @@ fun mergeManifests(
             .setFeatureName(featureName)
             .addDependencyFeatureNames(dependencyFeatureNames)
             .setNamespace(namespace)
+            .withFeatures(ManifestMerger2.Invoker.Feature.WARN_IF_PACKAGE_IN_SOURCE_MANIFEST)
+        val isAppMerge = mergeType == ManifestMerger2.MergeType.APPLICATION
+        val injectProfileable = isAppMerge && profileable
 
-        if (mergeType == ManifestMerger2.MergeType.APPLICATION) {
+        if (isAppMerge) {
             manifestMergerInvoker.withFeatures(ManifestMerger2.Invoker.Feature.REMOVE_TOOLS_DECLARATIONS)
         }
-
 
         if (outAaptSafeManifestLocation != null) {
             manifestMergerInvoker.withFeatures(ManifestMerger2.Invoker.Feature.MAKE_AAPT_SAFE)
@@ -85,7 +89,8 @@ fun mergeManifests(
         setInjectableValues(
             manifestMergerInvoker,
             packageOverride, versionCode, versionName,
-            minSdkVersion, targetSdkVersion, maxSdkVersion
+            minSdkVersion, targetSdkVersion, maxSdkVersion,
+            injectProfileable, testOnly
         )
 
         val mergingReport = manifestMergerInvoker.merge()
@@ -182,30 +187,39 @@ private fun setInjectableValues(
     versionName: String?,
     minSdkVersion: String?,
     targetSdkVersion: String?,
-    maxSdkVersion: Int?
+    maxSdkVersion: Int?,
+    profileable: Boolean,
+    testOnly: Boolean
 ) {
 
     if (packageOverride != null && packageOverride.isNotEmpty()) {
-        invoker.setOverride(ManifestSystemProperty.PACKAGE, packageOverride)
+        invoker.setOverride(ManifestSystemProperty.Document.PACKAGE, packageOverride)
     }
 
     versionCode?.let {
         if (it > 0) {
-            invoker.setOverride(ManifestSystemProperty.VERSION_CODE, it.toString())
+            invoker.setOverride(ManifestSystemProperty.Manifest.VERSION_CODE, it.toString())
         }
     }
 
     if (versionName != null && versionName.isNotEmpty()) {
-        invoker.setOverride(ManifestSystemProperty.VERSION_NAME, versionName)
+        invoker.setOverride(ManifestSystemProperty.Manifest.VERSION_NAME, versionName)
     }
     if (minSdkVersion != null && minSdkVersion.isNotEmpty()) {
-        invoker.setOverride(ManifestSystemProperty.MIN_SDK_VERSION, minSdkVersion)
+        invoker.setOverride(ManifestSystemProperty.UsesSdk.MIN_SDK_VERSION, minSdkVersion)
     }
     if (targetSdkVersion != null && targetSdkVersion.isNotEmpty()) {
-        invoker.setOverride(ManifestSystemProperty.TARGET_SDK_VERSION, targetSdkVersion)
+        invoker.setOverride(ManifestSystemProperty.UsesSdk.TARGET_SDK_VERSION, targetSdkVersion)
     }
     if (maxSdkVersion != null) {
-        invoker.setOverride(ManifestSystemProperty.MAX_SDK_VERSION, maxSdkVersion.toString())
+        invoker.setOverride(ManifestSystemProperty.UsesSdk.MAX_SDK_VERSION, maxSdkVersion.toString())
+    }
+    if (profileable) {
+        invoker.setOverride(ManifestSystemProperty.Profileable.SHELL, "true")
+        invoker.setOverride(ManifestSystemProperty.Profileable.ENABLED, "true")
+    }
+    if (testOnly) {
+        invoker.setOverride(ManifestSystemProperty.Application.TEST_ONLY, "true")
     }
 }
 

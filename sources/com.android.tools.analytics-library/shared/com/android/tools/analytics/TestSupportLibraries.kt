@@ -53,6 +53,9 @@ private val setters = ImmutableTable.Builder<String, String, (Builder, String) -
   put("androidx.benchmark", "benchmark-junit4", Builder::setBenchmarkJunit4Version)
   put("androidx.benchmark", "benchmark-macro", Builder::setBenchmarkMacroVersion)
   put("androidx.benchmark", "benchmark-macro-junit4", Builder::setBenchmarkMacroJunit4Version)
+  put("androidx.compose.ui", "ui-test", Builder::setComposeUiTestVersion)
+  put("androidx.compose.ui", "ui-test-junit4", Builder::setComposeUiTestJunit4Version)
+  put("androidx.compose.ui", "ui-test-manifest", Builder::setComposeUiTestManifestVersion)
 }.build()
 
 /**

@@ -20,6 +20,7 @@ import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_BUILD
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_SYSTEM_VERSION
 import com.android.build.gradle.internal.cxx.configure.CmakeProperty.CMAKE_TOOLCHAIN_FILE
 import com.android.build.gradle.internal.cxx.configure.CommandLineArgument
+import com.android.build.gradle.internal.cxx.configure.CommandLineArgument.UnknownArgument
 import com.android.build.gradle.internal.cxx.configure.NdkBuildProperty.APP_ABI
 import com.android.build.gradle.internal.cxx.configure.NdkBuildProperty.APP_BUILD_SCRIPT
 import com.android.build.gradle.internal.cxx.configure.NdkBuildProperty.APP_CFLAGS
@@ -62,6 +63,8 @@ import com.android.utils.FileUtils.join
 import com.android.utils.cxx.CxxDiagnosticCode.NDK_FEATURE_NOT_SUPPORTED_FOR_VERSION
 import com.google.common.annotations.VisibleForTesting
 import com.google.common.collect.Lists
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.provider.ProviderFactory
 import java.io.File
 import kotlin.reflect.KProperty1
 
@@ -78,8 +81,11 @@ import kotlin.reflect.KProperty1
  * The purpose of this separation is to allow file outputs to depend on configuration hash but
  * also for the rest of the paths to contribute to the hash itself.
  */
-fun CxxAbiModel.calculateConfigurationArguments() : CxxAbiModel {
-    return calculateConfigurationArgumentsExceptHash()
+fun CxxAbiModel.calculateConfigurationArguments(
+    providers: ProviderFactory,
+    layout: ProjectLayout
+) : CxxAbiModel {
+    return calculateConfigurationArgumentsExceptHash(providers, layout)
             .supportNdkR14AndEarlier()
             .calculateConfigurationHash()
             .expandConfigurationHashMacros()
@@ -96,8 +102,11 @@ fun CxxAbiModel.calculateConfigurationArguments() : CxxAbiModel {
  *
  * We need to update [CxxVariantModel::optimizationTag] with that value.
  */
-private fun CxxAbiModel.calculateConfigurationArgumentsExceptHash() : CxxAbiModel {
-    val rewriteConfig = getAbiRewriteConfiguration()
+private fun CxxAbiModel.calculateConfigurationArgumentsExceptHash(
+    providers: ProviderFactory,
+    layout: ProjectLayout
+) : CxxAbiModel {
+    val rewriteConfig = getAbiRewriteConfiguration(providers, layout)
     val argsAdded = copy(
             cmake = cmake?.copy(buildCommandArgs = rewriteConfig.buildCommandArgs),
             configurationArguments = rewriteConfig.configurationArgs
@@ -115,11 +124,10 @@ private fun CxxAbiModel.calculateConfigurationArgumentsExceptHash() : CxxAbiMode
             // Instantiate ${...} macro values in the argument
             .map { argument -> rewriteConfig.reifier(argument) }
             // Parse the argument
-            // Parse the argument
             .map { argument -> when(variant.module.buildSystem) {
                     CMAKE -> argument.toCmakeArgument()
                     NDK_BUILD -> argument.toNdkBuildArgument()
-                    else -> error("${variant.module.buildSystem}")
+                    else -> UnknownArgument(argument)
                 }
             }
             // Get rid of arguments that are irrelevant because they were superseded
@@ -186,8 +194,11 @@ private fun CxxAbiModel.expandConfigurationHashMacros() = rewrite { _, value ->
  * expanding macros in different fields.
  */
 @VisibleForTesting
-fun CxxAbiModel.getAbiRewriteConfiguration() : RewriteConfiguration {
-    val allSettings = gatherSettingsFromAllLocations()
+fun CxxAbiModel.getAbiRewriteConfiguration(
+    providers: ProviderFactory,
+    layout: ProjectLayout
+) : RewriteConfiguration {
+    val allSettings = gatherSettingsFromAllLocations(providers, layout)
 
    val configuration =
             allSettings.getConfiguration(TRADITIONAL_CONFIGURATION_NAME)!!
@@ -196,13 +207,13 @@ fun CxxAbiModel.getAbiRewriteConfiguration() : RewriteConfiguration {
     val builtInCommandLineArguments = when(variant.module.buildSystem) {
         CMAKE -> configuration.getCmakeCommandLineArguments()
         NDK_BUILD -> getNdkBuildCommandLineArguments()
-        else -> error("${variant.module.buildSystem}")
+        else -> listOf()
     }
 
     val buildGradleCommandLineArguments =  when(variant.module.buildSystem) {
         CMAKE -> variant.buildSystemArgumentList.toCmakeArguments()
         NDK_BUILD -> variant.buildSystemArgumentList.toNdkBuildArguments()
-        else -> error("${variant.module.buildSystem}")
+        else -> variant.buildSystemArgumentList.map { UnknownArgument(it) }
     }
 
     val arguments =
@@ -414,7 +425,9 @@ private fun CxxModuleModel.rewrite(rewrite : (property: KProperty1<*, *>, value:
         intermediatesFolder = rewrite(CxxModuleModel::intermediatesFolder, intermediatesFolder.path).toFile(),
         moduleRootFolder = rewrite(CxxModuleModel::moduleRootFolder, moduleRootFolder.path).toFile(),
         ndkFolder = rewrite(CxxModuleModel::ndkFolder, ndkFolder.path).toFile(),
-        ninjaExe = rewrite.fileOrNull(CxxModuleModel::ninjaExe, ninjaExe)
+        ninjaExe = rewrite.fileOrNull(CxxModuleModel::ninjaExe, ninjaExe),
+        makeFile = rewrite.fileOrNull(CxxModuleModel::makeFile, makeFile)!!,
+        configureScript = rewrite.fileOrNull(CxxModuleModel::configureScript, configureScript)
 )
 
 // Rewriter for CxxVariantModel

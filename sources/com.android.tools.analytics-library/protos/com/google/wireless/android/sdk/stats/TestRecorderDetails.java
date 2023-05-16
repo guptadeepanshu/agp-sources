@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.TestRecorderDetails}
  */
-public  final class TestRecorderDetails extends
+public final class TestRecorderDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TestRecorderDetails)
     TestRecorderDetailsOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_count = 1;</code>
    * @return Whether the eventCount field is set.
    */
+  @java.lang.Override
   public boolean hasEventCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_count = 1;</code>
    * @return The eventCount.
    */
+  @java.lang.Override
   public long getEventCount() {
     return eventCount_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 assertion_count = 2;</code>
    * @return Whether the assertionCount field is set.
    */
+  @java.lang.Override
   public boolean hasAssertionCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 assertion_count = 2;</code>
    * @return The assertionCount.
    */
+  @java.lang.Override
   public long getAssertionCount() {
     return assertionCount_;
   }
@@ -500,6 +504,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_count = 1;</code>
      * @return Whether the eventCount field is set.
      */
+    @java.lang.Override
     public boolean hasEventCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -511,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_count = 1;</code>
      * @return The eventCount.
      */
+    @java.lang.Override
     public long getEventCount() {
       return eventCount_;
     }
@@ -553,6 +559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 assertion_count = 2;</code>
      * @return Whether the assertionCount field is set.
      */
+    @java.lang.Override
     public boolean hasAssertionCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -564,6 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 assertion_count = 2;</code>
      * @return The assertionCount.
      */
+    @java.lang.Override
     public long getAssertionCount() {
       return assertionCount_;
     }

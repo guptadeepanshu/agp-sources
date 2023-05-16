@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioUpdateFlowEvent}
  */
-public  final class StudioUpdateFlowEvent extends
+public final class StudioUpdateFlowEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioUpdateFlowEvent)
     StudioUpdateFlowEventOrBuilder {
@@ -465,14 +465,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioUpdateFlowEvent.Kind event_kind = 1;</code>
    * @return Whether the eventKind field is set.
    */
-  public boolean hasEventKind() {
+  @java.lang.Override public boolean hasEventKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.StudioUpdateFlowEvent.Kind event_kind = 1;</code>
    * @return The eventKind.
    */
-  public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind getEventKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind getEventKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind result = com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind.valueOf(eventKind_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind.UNKNOWN_KIND : result;
@@ -488,6 +488,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_new_version = 2;</code>
    * @return Whether the studioNewVersion field is set.
    */
+  @java.lang.Override
   public boolean hasStudioNewVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -499,6 +500,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_new_version = 2;</code>
    * @return The studioNewVersion.
    */
+  @java.lang.Override
   public java.lang.String getStudioNewVersion() {
     java.lang.Object ref = studioNewVersion_;
     if (ref instanceof java.lang.String) {
@@ -521,6 +523,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_new_version = 2;</code>
    * @return The bytes for studioNewVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getStudioNewVersionBytes() {
     java.lang.Object ref = studioNewVersion_;
@@ -545,7 +548,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioUpdateFlowEvent.DialogTrigger dialog_trigger = 3;</code>
    * @return Whether the dialogTrigger field is set.
    */
-  public boolean hasDialogTrigger() {
+  @java.lang.Override public boolean hasDialogTrigger() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -556,7 +559,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioUpdateFlowEvent.DialogTrigger dialog_trigger = 3;</code>
    * @return The dialogTrigger.
    */
-  public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger getDialogTrigger() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger getDialogTrigger() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger result = com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger.valueOf(dialogTrigger_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger.UNKNOWN_DIALOG_TRIGER : result;
@@ -578,6 +581,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_name = 4;</code>
    * @return Whether the actionName field is set.
    */
+  @java.lang.Override
   public boolean hasActionName() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -595,6 +599,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_name = 4;</code>
    * @return The actionName.
    */
+  @java.lang.Override
   public java.lang.String getActionName() {
     java.lang.Object ref = actionName_;
     if (ref instanceof java.lang.String) {
@@ -623,6 +628,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string action_name = 4;</code>
    * @return The bytes for actionName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getActionNameBytes() {
     java.lang.Object ref = actionName_;
@@ -1035,13 +1041,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioUpdateFlowEvent.Kind event_kind = 1;</code>
      * @return Whether the eventKind field is set.
      */
-    public boolean hasEventKind() {
+    @java.lang.Override public boolean hasEventKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.StudioUpdateFlowEvent.Kind event_kind = 1;</code>
      * @return The eventKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind getEventKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind result = com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.Kind.valueOf(eventKind_);
@@ -1189,7 +1196,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioUpdateFlowEvent.DialogTrigger dialog_trigger = 3;</code>
      * @return Whether the dialogTrigger field is set.
      */
-    public boolean hasDialogTrigger() {
+    @java.lang.Override public boolean hasDialogTrigger() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1200,6 +1207,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioUpdateFlowEvent.DialogTrigger dialog_trigger = 3;</code>
      * @return The dialogTrigger.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger getDialogTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger result = com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.DialogTrigger.valueOf(dialogTrigger_);

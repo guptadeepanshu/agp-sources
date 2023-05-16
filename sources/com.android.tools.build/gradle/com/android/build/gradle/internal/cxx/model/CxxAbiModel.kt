@@ -21,7 +21,6 @@ import com.android.build.gradle.internal.cxx.cmake.cmakeBoolean
 import com.android.build.gradle.internal.cxx.settings.BuildSettingsConfiguration
 import com.android.build.gradle.internal.ndk.AbiInfo
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
-import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
 import com.android.sdklib.AndroidVersion
 import com.android.utils.FileUtils.join
 import com.android.utils.tokenizeCommandLineToEscaped
@@ -140,6 +139,12 @@ val CxxAbiModel.miniConfigFile: File
 private val CxxAbiModel.modelMetadataFolder: File
     get() = join(intermediatesParentFolder, "meta", abi.tag)
 
+/**
+ * Location of spawned process logs file
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/log
+ */
+val CxxAbiModel.logsFolder: File
+    get() = join(intermediatesParentFolder, "logs", abi.tag)
 
 /**
  * Pull up the app's minSdkVersion to be within the bounds for the ABI and NDK.
@@ -168,8 +173,7 @@ val CxxAbiModel.minSdkVersion : Int get() {
  *   ex, $moduleRootFolder/.cxx/cmake/debug/x86/.ninja_log
  */
 val CxxAbiModel.ninjaLogFile: File
-    get() = join(cxxBuildFolder, ".ninja_log")
-
+    get() = join(redirectedCxxBuildFolder, ".ninja_log")
 
 /**
  * .ninja_deps file for this ABI. Only applies to CMake builds.
@@ -177,7 +181,33 @@ val CxxAbiModel.ninjaLogFile: File
  * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/.ninja_deps
  */
 val CxxAbiModel.ninjaDepsFile: File
-    get() = join(cxxBuildFolder, ".ninja_deps")
+    get() = join(redirectedCxxBuildFolder, ".ninja_deps")
+
+/**
+ * Path to the expected build.ninja for this ABI.
+ * For example, $moduleRootFolder/.cxx/Debug/3c254s6s/arm64-v8a/build.ninja
+ */
+val CxxAbiModel.ninjaBuildFile: File
+    get() = join(redirectedCxxBuildFolder, "build.ninja")
+
+/**
+ * The location of [cxxBuildFolder] after considering [ninjaBuildLocationFile].
+ * The purpose is to allow [cxxBuildFolder] to be overridden in the presence of
+ * [ninjaBuildLocationFile].
+ */
+private val CxxAbiModel.redirectedCxxBuildFolder : File get() {
+    if (cxxBuildFolder.resolve("build.ninja").isFile ||
+        !ninjaBuildLocationFile.isFile) return cxxBuildFolder
+    return File(ninjaBuildLocationFile.readText().lineSequence().first()).parentFile
+}
+
+/**
+ * Path to the expected build.ninja redirect file which is a file that contains the full path
+ * to the real build.ninja.
+ * For example, $moduleRootFolder/.cxx/Debug/3c254s6s/arm64-v8a/build.ninja.txt
+ */
+val CxxAbiModel.ninjaBuildLocationFile: File
+    get() = join(cxxBuildFolder, "build.ninja.txt")
 
 /**
  * Folder for .o files
@@ -186,8 +216,7 @@ val CxxAbiModel.ninjaDepsFile: File
 val CxxAbiModel.objFolder: File
     get() = when(variant.module.buildSystem) {
         CMAKE -> join(cxxBuildFolder, "CMakeFiles")
-        NDK_BUILD -> soFolder
-        else -> error("${variant.module.buildSystem}")
+        else -> soFolder
     }
 
 /**
@@ -195,14 +224,14 @@ val CxxAbiModel.objFolder: File
  *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/build_model.json
  */
 val CxxAbiModel.modelOutputFile: File
-    get() = join(modelMetadataFolder, "build_model.json")
+    get() = join(logsFolder, "build_model.json")
 
 /**
  * Json Generation logging record
  *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_record.json
  */
 val CxxAbiModel.jsonGenerationLoggingRecordFile: File
-    get() = join(modelMetadataFolder, "metadata_generation_record.json")
+    get() = join(logsFolder, "metadata_generation_record.json")
 
 /**
  * Text file containing command run to generate C/C++ metadata.
@@ -229,14 +258,14 @@ val CxxAbiModel.metadataGenerationStderrFile: File
  * Folder used to hold metadata generation performance timings.
  */
 val CxxAbiModel.metadataGenerationTimingFolder: File
-    get() = modelMetadataFolder
+    get() = logsFolder
 
 /**
  * When CMake server is used, this is the log of the interaction with it.
  *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/cmake_server_log.txt
  */
 val CxxAbiModel.cmakeServerLogFile: File
-    get() = join(modelMetadataFolder, "cmake_server_log.txt")
+    get() = join(logsFolder, "cmake_server_log.txt")
 
 /**
  * The prefab configuration used when building this project
@@ -308,18 +337,6 @@ fun CxxAbiModel.buildIsPrefabCapable(): Boolean = variant.module.project.isPrefa
 fun CxxAbiModel.shouldGeneratePrefabPackages(): Boolean = buildIsPrefabCapable()
         && variant.prefabPackages != null
         && !variant.prefabPackages.isEmpty
-
-/**
- * Call [compute] if logging native configure to lifecycle
- */
-fun <T> CxxAbiModel.ifLogNativeConfigureToLifecycle(compute : () -> T?) =
-    variant.ifLogNativeConfigureToLifecycle(compute)
-
-/**
- * Call [compute] if logging native build to lifecycle
- */
-fun <T> CxxAbiModel.ifLogNativeBuildToLifecycle(compute : () -> T?) =
-    variant.ifLogNativeBuildToLifecycle(compute)
 
 /**
  * Returns the Ninja build commands from CMakeSettings.json.
@@ -407,14 +424,17 @@ val CxxAbiModel.platformCode
 /**
  * Construct a ninja command-line with [args] at the end.
  */
-fun CxxAbiModel.createNinjaCommand(vararg args: String) : List<String> {
+fun CxxAbiModel.createNinjaCommand(args: List<String>) : List<String> {
     val command = mutableListOf<String>()
     command.add(variant.module.ninjaExe!!.absolutePath)
     command.addAll(getBuildCommandArguments())
     command.add("-C")
-    command.add(cxxBuildFolder.absolutePath)
-    command.addAll(args.asList())
+    command.add(ninjaBuildFile.parentFile.absolutePath)
+    command.addAll(args)
     return command
 }
+
+fun CxxAbiModel.createNinjaCommand(vararg args: String) = createNinjaCommand(args.toList())
+
 
 

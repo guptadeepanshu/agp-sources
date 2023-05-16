@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AdbAssistantStats}
  */
-public  final class AdbAssistantStats extends
+public final class AdbAssistantStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AdbAssistantStats)
     AdbAssistantStatsOrBuilder {
@@ -225,7 +225,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdbAssistantStats.Trigger trigger = 1;</code>
    * @return Whether the trigger field is set.
    */
-  public boolean hasTrigger() {
+  @java.lang.Override public boolean hasTrigger() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -236,7 +236,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdbAssistantStats.Trigger trigger = 1;</code>
    * @return The trigger.
    */
-  public com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger getTrigger() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger getTrigger() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger result = com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger.valueOf(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger.NO_RUNNING_DEVICE : result;
@@ -568,7 +568,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AdbAssistantStats.Trigger trigger = 1;</code>
      * @return Whether the trigger field is set.
      */
-    public boolean hasTrigger() {
+    @java.lang.Override public boolean hasTrigger() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -579,6 +579,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AdbAssistantStats.Trigger trigger = 1;</code>
      * @return The trigger.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger getTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger result = com.google.wireless.android.sdk.stats.AdbAssistantStats.Trigger.valueOf(trigger_);

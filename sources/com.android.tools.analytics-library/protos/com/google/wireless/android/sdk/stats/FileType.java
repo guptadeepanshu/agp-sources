@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.FileType}
  */
-public  final class FileType extends
+public final class FileType extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.FileType)
     FileTypeOrBuilder {
@@ -115,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string file_type = 1;</code>
    * @return Whether the fileType field is set.
    */
+  @java.lang.Override
   public boolean hasFileType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -126,6 +127,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string file_type = 1;</code>
    * @return The fileType.
    */
+  @java.lang.Override
   public java.lang.String getFileType() {
     java.lang.Object ref = fileType_;
     if (ref instanceof java.lang.String) {
@@ -148,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string file_type = 1;</code>
    * @return The bytes for fileType.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFileTypeBytes() {
     java.lang.Object ref = fileType_;
@@ -172,6 +175,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 2;</code>
    * @return Whether the pluginType field is set.
    */
+  @java.lang.Override
   public boolean hasPluginType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -183,6 +187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 2;</code>
    * @return The pluginType.
    */
+  @java.lang.Override
   public java.lang.String getPluginType() {
     java.lang.Object ref = pluginType_;
     if (ref instanceof java.lang.String) {
@@ -205,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string plugin_type = 2;</code>
    * @return The bytes for pluginType.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPluginTypeBytes() {
     java.lang.Object ref = pluginType_;
@@ -229,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_files = 3;</code>
    * @return Whether the numberOfFiles field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfFiles() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -240,6 +247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_files = 3;</code>
    * @return The numberOfFiles.
    */
+  @java.lang.Override
   public int getNumberOfFiles() {
     return numberOfFiles_;
   }
@@ -839,6 +847,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_files = 3;</code>
      * @return Whether the numberOfFiles field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfFiles() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -850,6 +859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_files = 3;</code>
      * @return The numberOfFiles.
      */
+    @java.lang.Override
     public int getNumberOfFiles() {
       return numberOfFiles_;
     }

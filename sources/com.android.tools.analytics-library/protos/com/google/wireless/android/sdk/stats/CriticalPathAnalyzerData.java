@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CriticalPathAnalyzerData}
  */
-public  final class CriticalPathAnalyzerData extends
+public final class CriticalPathAnalyzerData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CriticalPathAnalyzerData)
     CriticalPathAnalyzerDataOrBuilder {
@@ -173,7 +173,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.CriticalPathAnalyzerData.PluginBuildData}
    */
-  public  static final class PluginBuildData extends
+  public static final class PluginBuildData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.CriticalPathAnalyzerData.PluginBuildData)
       PluginBuildDataOrBuilder {
@@ -278,6 +278,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_duration_ms = 1;</code>
      * @return Whether the buildDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasBuildDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -290,6 +291,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_duration_ms = 1;</code>
      * @return The buildDurationMs.
      */
+    @java.lang.Override
     public long getBuildDurationMs() {
       return buildDurationMs_;
     }
@@ -304,6 +306,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      * @return Whether the pluginIdentifier field is set.
      */
+    @java.lang.Override
     public boolean hasPluginIdentifier() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -315,6 +318,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      * @return The pluginIdentifier.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -325,6 +329,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -688,6 +693,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 build_duration_ms = 1;</code>
        * @return Whether the buildDurationMs field is set.
        */
+      @java.lang.Override
       public boolean hasBuildDurationMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -700,6 +706,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 build_duration_ms = 1;</code>
        * @return The buildDurationMs.
        */
+      @java.lang.Override
       public long getBuildDurationMs() {
         return buildDurationMs_;
       }
@@ -954,6 +961,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 critical_path_duration_ms = 1;</code>
    * @return Whether the criticalPathDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasCriticalPathDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -965,6 +973,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 critical_path_duration_ms = 1;</code>
    * @return The criticalPathDurationMs.
    */
+  @java.lang.Override
   public long getCriticalPathDurationMs() {
     return criticalPathDurationMs_;
   }
@@ -979,6 +988,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tasks_on_critical_path = 2;</code>
    * @return Whether the numberOfTasksOnCriticalPath field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfTasksOnCriticalPath() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -990,6 +1000,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tasks_on_critical_path = 2;</code>
    * @return The numberOfTasksOnCriticalPath.
    */
+  @java.lang.Override
   public int getNumberOfTasksOnCriticalPath() {
     return numberOfTasksOnCriticalPath_;
   }
@@ -1003,6 +1014,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.CriticalPathAnalyzerData.PluginBuildData plugins_critical_path = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.PluginBuildData> getPluginsCriticalPathList() {
     return pluginsCriticalPath_;
   }
@@ -1013,6 +1025,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.CriticalPathAnalyzerData.PluginBuildData plugins_critical_path = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.PluginBuildDataOrBuilder> 
       getPluginsCriticalPathOrBuilderList() {
     return pluginsCriticalPath_;
@@ -1024,6 +1037,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.CriticalPathAnalyzerData.PluginBuildData plugins_critical_path = 3;</code>
    */
+  @java.lang.Override
   public int getPluginsCriticalPathCount() {
     return pluginsCriticalPath_.size();
   }
@@ -1034,6 +1048,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.CriticalPathAnalyzerData.PluginBuildData plugins_critical_path = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.PluginBuildData getPluginsCriticalPath(int index) {
     return pluginsCriticalPath_.get(index);
   }
@@ -1044,6 +1059,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.CriticalPathAnalyzerData.PluginBuildData plugins_critical_path = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.PluginBuildDataOrBuilder getPluginsCriticalPathOrBuilder(
       int index) {
     return pluginsCriticalPath_.get(index);
@@ -1059,6 +1075,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 tasks_determining_build_duration_ms = 4;</code>
    * @return Whether the tasksDeterminingBuildDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasTasksDeterminingBuildDurationMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1070,6 +1087,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 tasks_determining_build_duration_ms = 4;</code>
    * @return The tasksDeterminingBuildDurationMs.
    */
+  @java.lang.Override
   public long getTasksDeterminingBuildDurationMs() {
     return tasksDeterminingBuildDurationMs_;
   }
@@ -1084,6 +1102,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tasks_determining_build_duration = 5;</code>
    * @return Whether the numberOfTasksDeterminingBuildDuration field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfTasksDeterminingBuildDuration() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1095,6 +1114,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tasks_determining_build_duration = 5;</code>
    * @return The numberOfTasksDeterminingBuildDuration.
    */
+  @java.lang.Override
   public int getNumberOfTasksDeterminingBuildDuration() {
     return numberOfTasksDeterminingBuildDuration_;
   }
@@ -1558,6 +1578,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 critical_path_duration_ms = 1;</code>
      * @return Whether the criticalPathDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasCriticalPathDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1569,6 +1590,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 critical_path_duration_ms = 1;</code>
      * @return The criticalPathDurationMs.
      */
+    @java.lang.Override
     public long getCriticalPathDurationMs() {
       return criticalPathDurationMs_;
     }
@@ -1611,6 +1633,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tasks_on_critical_path = 2;</code>
      * @return Whether the numberOfTasksOnCriticalPath field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfTasksOnCriticalPath() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1622,6 +1645,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tasks_on_critical_path = 2;</code>
      * @return The numberOfTasksOnCriticalPath.
      */
+    @java.lang.Override
     public int getNumberOfTasksOnCriticalPath() {
       return numberOfTasksOnCriticalPath_;
     }
@@ -1976,6 +2000,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 tasks_determining_build_duration_ms = 4;</code>
      * @return Whether the tasksDeterminingBuildDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasTasksDeterminingBuildDurationMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1987,6 +2012,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 tasks_determining_build_duration_ms = 4;</code>
      * @return The tasksDeterminingBuildDurationMs.
      */
+    @java.lang.Override
     public long getTasksDeterminingBuildDurationMs() {
       return tasksDeterminingBuildDurationMs_;
     }
@@ -2029,6 +2055,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tasks_determining_build_duration = 5;</code>
      * @return Whether the numberOfTasksDeterminingBuildDuration field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfTasksDeterminingBuildDuration() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2040,6 +2067,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tasks_determining_build_duration = 5;</code>
      * @return The numberOfTasksDeterminingBuildDuration.
      */
+    @java.lang.Override
     public int getNumberOfTasksDeterminingBuildDuration() {
       return numberOfTasksDeterminingBuildDuration_;
     }

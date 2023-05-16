@@ -18,7 +18,7 @@ package com.android.build.gradle.internal.lint
 
 import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.ERRNO_CREATED_BASELINE
 import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.ERRNO_ERRORS
 import com.android.build.gradle.internal.lint.AndroidLintWorkAction.Companion.maybeThrowException
@@ -31,16 +31,13 @@ import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.android.build.gradle.internal.utils.fromDisallowChanges
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import org.gradle.api.Project
-import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
@@ -77,17 +74,7 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
     @get:Input
     abstract val abortOnError: Property<Boolean>
 
-    /**
-     * The lint rule jars found in .android/lint. These jars are currently passed to lint via
-     * --lint-rule-jars in [AndroidLintTask] and [AndroidLintAnalysisTask], but this behavior has
-     * been deprecated. We warn in this task in case those other tasks are UP-TO-DATE.
-     */
-    @get:InputFiles
-    @get:PathSensitive(PathSensitivity.ABSOLUTE)
-    abstract val deprecatedGlobalRuleJars: ConfigurableFileCollection
-
     override fun doTaskAction() {
-        maybeWarnAboutDeprecatedGlobalRuleJars()
         if (outputStream.get() != OutputStream.ABBREVIATED) {
             textReportInputFile.get().asFile.let { textReportFile ->
                 val text = textReportFile.readText()
@@ -114,7 +101,12 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
                 if (returnValue == ERRNO_ERRORS && !abortOnError.get()) {
                     return
                 }
-                maybeThrowException(returnValue, android.get(), fatalOnly.get())
+                maybeThrowException(
+                    returnValue,
+                    android.get(),
+                    fatalOnly.get(),
+                    lintMode = LintMode.REPORTING
+                )
             }
         }
     }
@@ -143,27 +135,13 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         }.toString()
     }
 
-    private fun maybeWarnAboutDeprecatedGlobalRuleJars() {
-        val deprecatedJars = deprecatedGlobalRuleJars.files.filter { it.isFile }
-        if (deprecatedJars.isNotEmpty()) {
-            val parent: String = deprecatedJars[0].parent
-            val jarNames = deprecatedJars.joinToString { it.name }
-            logger.warn(
-                "Loaded lint jar file from $parent ($jarNames); this will stop working soon. If " +
-                        "you need to push lint rules into a build, use the `ANDROID_LINT_JARS` " +
-                        "environment variable or a `lint.xml` file setting " +
-                        "`<lint lintJars=\"path\"...>`"
-            )
-        }
-    }
-
-    class SingleVariantCreationAction(variant: VariantCreationConfig) :
-            VariantCreationAction(variant) {
+    class SingleVariantCreationAction(creationConfig: ComponentCreationConfig) :
+            VariantCreationAction(creationConfig) {
         override val name: String = computeTaskName("lint")
         override val fatalOnly = false
     }
 
-    class LintVitalCreationAction(variant: VariantCreationConfig) :
+    class LintVitalCreationAction(variant: ComponentCreationConfig) :
         VariantCreationAction(variant) {
         override val name: String = computeTaskName("lintVital")
         override val fatalOnly = true
@@ -173,8 +151,8 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         }
     }
 
-    abstract class VariantCreationAction(variant: VariantCreationConfig) :
-        VariantTaskCreationAction<AndroidLintTextOutputTask, VariantCreationConfig>(variant) {
+    abstract class VariantCreationAction(variant: ComponentCreationConfig) :
+        VariantTaskCreationAction<AndroidLintTextOutputTask, ComponentCreationConfig>(variant) {
 
         override val type: Class<AndroidLintTextOutputTask>
             get() = AndroidLintTextOutputTask::class.java
@@ -230,9 +208,6 @@ abstract class AndroidLintTextOutputTask : NonIncrementalTask() {
         }
         val locationsBuildService =
             getBuildService<AndroidLocationsBuildService>(project.gradle.sharedServices)
-        this.deprecatedGlobalRuleJars.fromDisallowChanges(
-            AndroidLintTask.getGlobalLintJarsInPrefsDir(project, locationsBuildService)
-        )
     }
 
     internal fun configureForStandalone(

@@ -18,29 +18,44 @@ package com.android.build.gradle.internal.tasks
 
 import com.android.SdkConstants
 import com.android.build.gradle.ProguardFiles
-import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
+import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.profile.ProfileAwareWorkAction
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.utils.getFilteredConfigurationFiles
 import com.android.build.gradle.internal.utils.immutableMapBuilder
 import com.android.build.gradle.internal.utils.setDisallowChanges
 import com.android.builder.errors.EvalIssueException
 import com.android.utils.FileUtils
+import org.gradle.api.artifacts.ArtifactCollection
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.work.DisableCachingByDefault
 import java.io.File
 import java.util.function.Consumer
 
-@CacheableTask
+/**
+ * Consolidates Proguard files into a single location for use in dependent modules
+ *
+ *
+ * Caching disabled by default for this task because the task does very little work.
+ * Some verification logic is executed and some files are copied to new locations.
+ * Calculating cache hit/miss and fetching results is likely more expensive than
+ * simply executing the task.
+ */
+@DisableCachingByDefault
 abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
 
     @get:Input
@@ -59,6 +74,18 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val inputFiles: ConfigurableFileCollection
 
+    @get:Input
+    @get:Optional
+    abstract val ignoredKeepRules: SetProperty<String>
+
+    @get:Input
+    @get:Optional
+    abstract val ignoreAllKeepRules: Property<Boolean>
+
+    @get:Internal
+    lateinit var libraryKeepRules: ArtifactCollection
+        private set
+
     @get:Internal("only for task execution")
     abstract val buildDirectory: DirectoryProperty
 
@@ -75,9 +102,22 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
                 Consumer { exception -> throw EvalIssueException(exception) }
             )
         }
+
+        val filteredProguardFiles = if (isDynamicFeature) {
+            getFilteredConfigurationFiles(
+                    ignoredKeepRules.get(),
+                    ignoreAllKeepRules.get(),
+                    libraryKeepRules,
+                    inputFiles,
+                    LoggerWrapper.getLogger(ExportConsumerProguardFilesTask::class.java)
+            )
+        } else {
+            inputFiles
+        }
+
         workerExecutor.noIsolation().submit(ExportConsumerProguardRunnable::class.java) {
             it.initializeFromAndroidVariantTask(this)
-            it.input.from(inputFiles)
+            it.input.from(filteredProguardFiles)
             it.outputDir.set(outputDir)
         }
     }
@@ -110,8 +150,8 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
             super.configure(task)
 
             task.consumerProguardFiles.from(creationConfig.variantScope.consumerProguardFilesForFeatures)
-            task.isBaseModule = creationConfig.variantType.isBaseModule
-            task.isDynamicFeature = creationConfig.variantType.isDynamicFeature
+            task.isBaseModule = creationConfig.componentType.isBaseModule
+            task.isDynamicFeature = creationConfig.componentType.isDynamicFeature
 
             task.inputFiles.from(
                 task.consumerProguardFiles,
@@ -119,14 +159,16 @@ abstract class ExportConsumerProguardFilesTask : NonIncrementalTask() {
                     .artifacts
                     .get(InternalArtifactType.GENERATED_PROGUARD_FILE)
             )
-            if (creationConfig.variantType.isDynamicFeature) {
-                task.inputFiles.from(
-                    creationConfig.variantDependencies.getArtifactFileCollection(
+            if (creationConfig.componentType.isDynamicFeature) {
+                task.libraryKeepRules = creationConfig.variantDependencies.getArtifactCollection(
                         AndroidArtifacts.ConsumedConfigType.RUNTIME_CLASSPATH,
                         AndroidArtifacts.ArtifactScope.ALL,
                         AndroidArtifacts.ArtifactType.UNFILTERED_PROGUARD_RULES
-                    )
                 )
+                task.inputFiles.from(task.libraryKeepRules.artifactFiles)
+
+                task.ignoredKeepRules.setDisallowChanges(creationConfig.ignoredLibraryKeepRules)
+                task.ignoreAllKeepRules.setDisallowChanges(creationConfig.ignoreAllLibraryKeepRules)
             }
             task.buildDirectory.setDisallowChanges(task.project.layout.buildDirectory)
         }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AtfFixDetail}
  */
-public  final class AtfFixDetail extends
+public final class AtfFixDetail extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AtfFixDetail)
     AtfFixDetailOrBuilder {
@@ -227,7 +227,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfFixDetail.AtfFixType fix_type = 3;</code>
    * @return Whether the fixType field is set.
    */
-  public boolean hasFixType() {
+  @java.lang.Override public boolean hasFixType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -238,7 +238,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfFixDetail.AtfFixType fix_type = 3;</code>
    * @return The fixType.
    */
-  public com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType getFixType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType getFixType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType result = com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType.valueOf(fixType_);
     return result == null ? com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType.UNKNOWN : result;
@@ -570,7 +570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfFixDetail.AtfFixType fix_type = 3;</code>
      * @return Whether the fixType field is set.
      */
-    public boolean hasFixType() {
+    @java.lang.Override public boolean hasFixType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -581,6 +581,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfFixDetail.AtfFixType fix_type = 3;</code>
      * @return The fixType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType getFixType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType result = com.google.wireless.android.sdk.stats.AtfFixDetail.AtfFixType.valueOf(fixType_);

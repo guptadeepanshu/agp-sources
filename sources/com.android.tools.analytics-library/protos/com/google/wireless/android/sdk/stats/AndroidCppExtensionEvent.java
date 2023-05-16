@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.AndroidCppExtensionEvent}
  */
-public  final class AndroidCppExtensionEvent extends
+public final class AndroidCppExtensionEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent)
     AndroidCppExtensionEventOrBuilder {
@@ -430,7 +430,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AndroidCppExtensionEvent.BuildEvent}
    */
-  public  static final class BuildEvent extends
+  public static final class BuildEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.BuildEvent)
       BuildEventOrBuilder {
@@ -1012,7 +1012,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo}
      */
-    public  static final class BuildCompleteInfo extends
+    public static final class BuildCompleteInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo)
         BuildCompleteInfoOrBuilder {
@@ -1109,6 +1109,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool succeeded = 1;</code>
        * @return Whether the succeeded field is set.
        */
+      @java.lang.Override
       public boolean hasSucceeded() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -1116,6 +1117,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool succeeded = 1;</code>
        * @return The succeeded.
        */
+      @java.lang.Override
       public boolean getSucceeded() {
         return succeeded_;
       }
@@ -1126,6 +1128,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 c_source_file_count = 3;</code>
        * @return Whether the cSourceFileCount field is set.
        */
+      @java.lang.Override
       public boolean hasCSourceFileCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1133,6 +1136,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 c_source_file_count = 3;</code>
        * @return The cSourceFileCount.
        */
+      @java.lang.Override
       public int getCSourceFileCount() {
         return cSourceFileCount_;
       }
@@ -1143,6 +1147,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cpp_source_file_count = 4;</code>
        * @return Whether the cppSourceFileCount field is set.
        */
+      @java.lang.Override
       public boolean hasCppSourceFileCount() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1150,6 +1155,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cpp_source_file_count = 4;</code>
        * @return The cppSourceFileCount.
        */
+      @java.lang.Override
       public int getCppSourceFileCount() {
         return cppSourceFileCount_;
       }
@@ -1529,6 +1535,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool succeeded = 1;</code>
          * @return Whether the succeeded field is set.
          */
+        @java.lang.Override
         public boolean hasSucceeded() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -1536,6 +1543,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool succeeded = 1;</code>
          * @return The succeeded.
          */
+        @java.lang.Override
         public boolean getSucceeded() {
           return succeeded_;
         }
@@ -1566,6 +1574,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 c_source_file_count = 3;</code>
          * @return Whether the cSourceFileCount field is set.
          */
+        @java.lang.Override
         public boolean hasCSourceFileCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -1573,6 +1582,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 c_source_file_count = 3;</code>
          * @return The cSourceFileCount.
          */
+        @java.lang.Override
         public int getCSourceFileCount() {
           return cSourceFileCount_;
         }
@@ -1603,6 +1613,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 cpp_source_file_count = 4;</code>
          * @return Whether the cppSourceFileCount field is set.
          */
+        @java.lang.Override
         public boolean hasCppSourceFileCount() {
           return ((bitField0_ & 0x00000004) != 0);
         }
@@ -1610,6 +1621,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 cpp_source_file_count = 4;</code>
          * @return The cppSourceFileCount.
          */
+        @java.lang.Override
         public int getCppSourceFileCount() {
           return cppSourceFileCount_;
         }
@@ -1781,7 +1793,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo}
      */
-    public  static final class CompileCompleteInfo extends
+    public static final class CompileCompleteInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo)
         CompileCompleteInfoOrBuilder {
@@ -1932,7 +1944,7 @@ private static final long serialVersionUID = 0L;
       /**
        * Protobuf type {@code android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch}
        */
-      public  static final class LanguageLevelBatch extends
+      public static final class LanguageLevelBatch extends
           com.google.protobuf.GeneratedMessageV3 implements
           // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch)
           LanguageLevelBatchOrBuilder {
@@ -2036,7 +2048,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
          * @return Whether the languageLevel field is set.
          */
-        public boolean hasLanguageLevel() {
+        @java.lang.Override public boolean hasLanguageLevel() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -2047,7 +2059,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
          * @return The languageLevel.
          */
-        public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
+        @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.valueOf(languageLevel_);
           return result == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.UNSPECIFIED_LANGUAGE_LEVEL : result;
@@ -2063,6 +2075,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 source_file_count = 2;</code>
          * @return Whether the sourceFileCount field is set.
          */
+        @java.lang.Override
         public boolean hasSourceFileCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -2074,6 +2087,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 source_file_count = 2;</code>
          * @return The sourceFileCount.
          */
+        @java.lang.Override
         public int getSourceFileCount() {
           return sourceFileCount_;
         }
@@ -2425,7 +2439,7 @@ private static final long serialVersionUID = 0L;
            * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
            * @return Whether the languageLevel field is set.
            */
-          public boolean hasLanguageLevel() {
+          @java.lang.Override public boolean hasLanguageLevel() {
             return ((bitField0_ & 0x00000001) != 0);
           }
           /**
@@ -2436,6 +2450,7 @@ private static final long serialVersionUID = 0L;
            * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
            * @return The languageLevel.
            */
+          @java.lang.Override
           public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
             @SuppressWarnings("deprecation")
             com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.valueOf(languageLevel_);
@@ -2483,6 +2498,7 @@ private static final long serialVersionUID = 0L;
            * <code>optional int32 source_file_count = 2;</code>
            * @return Whether the sourceFileCount field is set.
            */
+          @java.lang.Override
           public boolean hasSourceFileCount() {
             return ((bitField0_ & 0x00000002) != 0);
           }
@@ -2494,6 +2510,7 @@ private static final long serialVersionUID = 0L;
            * <code>optional int32 source_file_count = 2;</code>
            * @return The sourceFileCount.
            */
+          @java.lang.Override
           public int getSourceFileCount() {
             return sourceFileCount_;
           }
@@ -2590,7 +2607,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
        * @return Whether the languageLevel field is set.
        */
-      public boolean hasLanguageLevel() {
+      @java.lang.Override public boolean hasLanguageLevel() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -2601,7 +2618,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
        * @return The languageLevel.
        */
-      public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.valueOf(languageLevel_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.UNSPECIFIED_LANGUAGE_LEVEL : result;
@@ -2617,6 +2634,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 source_file_count = 2;</code>
        * @return Whether the sourceFileCount field is set.
        */
+      @java.lang.Override
       public boolean hasSourceFileCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -2628,6 +2646,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 source_file_count = 2;</code>
        * @return The sourceFileCount.
        */
+      @java.lang.Override
       public int getSourceFileCount() {
         return sourceFileCount_;
       }
@@ -2641,6 +2660,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch all_languge_levels = 3;</code>
        */
+      @java.lang.Override
       public java.util.List<com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch> getAllLangugeLevelsList() {
         return allLangugeLevels_;
       }
@@ -2651,6 +2671,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch all_languge_levels = 3;</code>
        */
+      @java.lang.Override
       public java.util.List<? extends com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatchOrBuilder> 
           getAllLangugeLevelsOrBuilderList() {
         return allLangugeLevels_;
@@ -2662,6 +2683,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch all_languge_levels = 3;</code>
        */
+      @java.lang.Override
       public int getAllLangugeLevelsCount() {
         return allLangugeLevels_.size();
       }
@@ -2672,6 +2694,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch all_languge_levels = 3;</code>
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch getAllLangugeLevels(int index) {
         return allLangugeLevels_.get(index);
       }
@@ -2682,6 +2705,7 @@ private static final long serialVersionUID = 0L;
        *
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatch all_languge_levels = 3;</code>
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.LanguageLevelBatchOrBuilder getAllLangugeLevelsOrBuilder(
           int index) {
         return allLangugeLevels_.get(index);
@@ -3094,7 +3118,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
          * @return Whether the languageLevel field is set.
          */
-        public boolean hasLanguageLevel() {
+        @java.lang.Override public boolean hasLanguageLevel() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -3105,6 +3129,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LanguageLevel language_level = 1;</code>
          * @return The languageLevel.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel getLanguageLevel() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LanguageLevel.valueOf(languageLevel_);
@@ -3152,6 +3177,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 source_file_count = 2;</code>
          * @return Whether the sourceFileCount field is set.
          */
+        @java.lang.Override
         public boolean hasSourceFileCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -3163,6 +3189,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 source_file_count = 2;</code>
          * @return The sourceFileCount.
          */
+        @java.lang.Override
         public int getSourceFileCount() {
           return sourceFileCount_;
         }
@@ -3588,7 +3615,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo}
      */
-    public  static final class LinkCompleteInfo extends
+    public static final class LinkCompleteInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo)
         LinkCompleteInfoOrBuilder {
@@ -4003,14 +4030,16 @@ private static final long serialVersionUID = 0L;
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.WellKnownLibraries library_dependencies = 1;</code>
        * @return A list containing the libraryDependencies.
        */
+      @java.lang.Override
       public java.util.List<com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.WellKnownLibraries> getLibraryDependenciesList() {
         return new com.google.protobuf.Internal.ListAdapter<
             java.lang.Integer, com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.WellKnownLibraries>(libraryDependencies_, libraryDependencies_converter_);
       }
       /**
        * <code>repeated .android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.WellKnownLibraries library_dependencies = 1;</code>
-       * @param value The libraryDependencies to add.
+       * @return The count of libraryDependencies.
        */
+      @java.lang.Override
       public int getLibraryDependenciesCount() {
         return libraryDependencies_.size();
       }
@@ -4019,6 +4048,7 @@ private static final long serialVersionUID = 0L;
        * @param index The index of the element to return.
        * @return The libraryDependencies at the given index.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.WellKnownLibraries getLibraryDependencies(int index) {
         return libraryDependencies_converter_.convert(libraryDependencies_.get(index));
       }
@@ -4498,6 +4528,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_session = 1;</code>
      * @return Whether the buildSession field is set.
      */
+    @java.lang.Override
     public boolean hasBuildSession() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -4510,6 +4541,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_session = 1;</code>
      * @return The buildSession.
      */
+    @java.lang.Override
     public java.lang.String getBuildSession() {
       java.lang.Object ref = buildSession_;
       if (ref instanceof java.lang.String) {
@@ -4533,6 +4565,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_session = 1;</code>
      * @return The bytes for buildSession.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBuildSessionBytes() {
       java.lang.Object ref = buildSession_;
@@ -4553,6 +4586,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_program_version = 2;</code>
      * @return Whether the buildProgramVersion field is set.
      */
+    @java.lang.Override
     public boolean hasBuildProgramVersion() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -4560,6 +4594,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_program_version = 2;</code>
      * @return The buildProgramVersion.
      */
+    @java.lang.Override
     public java.lang.String getBuildProgramVersion() {
       java.lang.Object ref = buildProgramVersion_;
       if (ref instanceof java.lang.String) {
@@ -4578,6 +4613,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_program_version = 2;</code>
      * @return The bytes for buildProgramVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBuildProgramVersionBytes() {
       java.lang.Object ref = buildProgramVersion_;
@@ -4598,14 +4634,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
      * @return Whether the platform field is set.
      */
-    public boolean hasPlatform() {
+    @java.lang.Override public boolean hasPlatform() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
      * @return The platform.
      */
-    public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(platform_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.UNKNOWN_ABI : result;
@@ -4617,6 +4653,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string ndk_version = 4;</code>
      * @return Whether the ndkVersion field is set.
      */
+    @java.lang.Override
     public boolean hasNdkVersion() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -4624,6 +4661,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string ndk_version = 4;</code>
      * @return The ndkVersion.
      */
+    @java.lang.Override
     public java.lang.String getNdkVersion() {
       java.lang.Object ref = ndkVersion_;
       if (ref instanceof java.lang.String) {
@@ -4642,6 +4680,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string ndk_version = 4;</code>
      * @return The bytes for ndkVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNdkVersionBytes() {
       java.lang.Object ref = ndkVersion_;
@@ -4662,6 +4701,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_debug_build = 5;</code>
      * @return Whether the isDebugBuild field is set.
      */
+    @java.lang.Override
     public boolean hasIsDebugBuild() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -4669,6 +4709,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_debug_build = 5;</code>
      * @return The isDebugBuild.
      */
+    @java.lang.Override
     public boolean getIsDebugBuild() {
       return isDebugBuild_;
     }
@@ -4679,6 +4720,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 6;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -4686,6 +4728,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 6;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -4696,6 +4739,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_using_distributed_build = 7;</code>
      * @return Whether the isUsingDistributedBuild field is set.
      */
+    @java.lang.Override
     public boolean hasIsUsingDistributedBuild() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -4703,6 +4747,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_using_distributed_build = 7;</code>
      * @return The isUsingDistributedBuild.
      */
+    @java.lang.Override
     public boolean getIsUsingDistributedBuild() {
       return isUsingDistributedBuild_;
     }
@@ -4718,6 +4763,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_project_path = 12;</code>
      * @return Whether the buildProjectPath field is set.
      */
+    @java.lang.Override
     public boolean hasBuildProjectPath() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -4730,6 +4776,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_project_path = 12;</code>
      * @return The buildProjectPath.
      */
+    @java.lang.Override
     public java.lang.String getBuildProjectPath() {
       java.lang.Object ref = buildProjectPath_;
       if (ref instanceof java.lang.String) {
@@ -4753,6 +4800,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string build_project_path = 12;</code>
      * @return The bytes for buildProjectPath.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getBuildProjectPathBytes() {
       java.lang.Object ref = buildProjectPath_;
@@ -4773,14 +4821,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildEventType type = 8;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildEventType type = 8;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType.UNSPECIFIED_BUILD_EVENT_TYPE : result;
@@ -4792,6 +4840,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
      * @return Whether the buildCompleteInfo field is set.
      */
+    @java.lang.Override
     public boolean hasBuildCompleteInfo() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -4799,12 +4848,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
      * @return The buildCompleteInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo getBuildCompleteInfo() {
       return buildCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo.getDefaultInstance() : buildCompleteInfo_;
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo build_complete_info = 9;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfoOrBuilder getBuildCompleteInfoOrBuilder() {
       return buildCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildCompleteInfo.getDefaultInstance() : buildCompleteInfo_;
     }
@@ -4815,6 +4866,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
      * @return Whether the compileCompleteInfo field is set.
      */
+    @java.lang.Override
     public boolean hasCompileCompleteInfo() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -4822,12 +4874,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
      * @return The compileCompleteInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo getCompileCompleteInfo() {
       return compileCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.getDefaultInstance() : compileCompleteInfo_;
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo compile_complete_info = 10;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfoOrBuilder getCompileCompleteInfoOrBuilder() {
       return compileCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.CompileCompleteInfo.getDefaultInstance() : compileCompleteInfo_;
     }
@@ -4838,6 +4892,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
      * @return Whether the linkCompleteInfo field is set.
      */
+    @java.lang.Override
     public boolean hasLinkCompleteInfo() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -4845,12 +4900,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
      * @return The linkCompleteInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo getLinkCompleteInfo() {
       return linkCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.getDefaultInstance() : linkCompleteInfo_;
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo link_complete_info = 11;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfoOrBuilder getLinkCompleteInfoOrBuilder() {
       return linkCompleteInfo_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.LinkCompleteInfo.getDefaultInstance() : linkCompleteInfo_;
     }
@@ -5679,13 +5736,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
        * @return Whether the platform field is set.
        */
-      public boolean hasPlatform() {
+      @java.lang.Override public boolean hasPlatform() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
        * @return The platform.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(platform_);
@@ -5805,6 +5863,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_debug_build = 5;</code>
        * @return Whether the isDebugBuild field is set.
        */
+      @java.lang.Override
       public boolean hasIsDebugBuild() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -5812,6 +5871,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_debug_build = 5;</code>
        * @return The isDebugBuild.
        */
+      @java.lang.Override
       public boolean getIsDebugBuild() {
         return isDebugBuild_;
       }
@@ -5842,6 +5902,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 duration_ms = 6;</code>
        * @return Whether the durationMs field is set.
        */
+      @java.lang.Override
       public boolean hasDurationMs() {
         return ((bitField0_ & 0x00000020) != 0);
       }
@@ -5849,6 +5910,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 duration_ms = 6;</code>
        * @return The durationMs.
        */
+      @java.lang.Override
       public long getDurationMs() {
         return durationMs_;
       }
@@ -5879,6 +5941,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_using_distributed_build = 7;</code>
        * @return Whether the isUsingDistributedBuild field is set.
        */
+      @java.lang.Override
       public boolean hasIsUsingDistributedBuild() {
         return ((bitField0_ & 0x00000040) != 0);
       }
@@ -5886,6 +5949,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_using_distributed_build = 7;</code>
        * @return The isUsingDistributedBuild.
        */
+      @java.lang.Override
       public boolean getIsUsingDistributedBuild() {
         return isUsingDistributedBuild_;
       }
@@ -6030,13 +6094,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildEventType type = 8;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000100) != 0);
       }
       /**
        * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent.BuildEventType type = 8;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.BuildEventType.valueOf(type_);
@@ -6613,7 +6678,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AndroidCppExtensionEvent.DebugEvent}
    */
-  public  static final class DebugEvent extends
+  public static final class DebugEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AndroidCppExtensionEvent.DebugEvent)
       DebugEventOrBuilder {
@@ -6977,6 +7042,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string session = 1;</code>
      * @return Whether the session field is set.
      */
+    @java.lang.Override
     public boolean hasSession() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -6988,6 +7054,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string session = 1;</code>
      * @return The session.
      */
+    @java.lang.Override
     public java.lang.String getSession() {
       java.lang.Object ref = session_;
       if (ref instanceof java.lang.String) {
@@ -7010,6 +7077,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string session = 1;</code>
      * @return The bytes for session.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSessionBytes() {
       java.lang.Object ref = session_;
@@ -7034,6 +7102,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string host_version = 2;</code>
      * @return Whether the hostVersion field is set.
      */
+    @java.lang.Override
     public boolean hasHostVersion() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -7045,6 +7114,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string host_version = 2;</code>
      * @return The hostVersion.
      */
+    @java.lang.Override
     public java.lang.String getHostVersion() {
       java.lang.Object ref = hostVersion_;
       if (ref instanceof java.lang.String) {
@@ -7067,6 +7137,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string host_version = 2;</code>
      * @return The bytes for hostVersion.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getHostVersionBytes() {
       java.lang.Object ref = hostVersion_;
@@ -7087,14 +7158,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
      * @return Whether the platform field is set.
      */
-    public boolean hasPlatform() {
+    @java.lang.Override public boolean hasPlatform() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
      * @return The platform.
      */
-    public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(platform_);
       return result == null ? com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.UNKNOWN_ABI : result;
@@ -7106,6 +7177,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_using_emulator = 4;</code>
      * @return Whether the isUsingEmulator field is set.
      */
+    @java.lang.Override
     public boolean hasIsUsingEmulator() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -7113,6 +7185,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_using_emulator = 4;</code>
      * @return The isUsingEmulator.
      */
+    @java.lang.Override
     public boolean getIsUsingEmulator() {
       return isUsingEmulator_;
     }
@@ -7123,6 +7196,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_debug_build = 5;</code>
      * @return Whether the isDebugBuild field is set.
      */
+    @java.lang.Override
     public boolean hasIsDebugBuild() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -7130,6 +7204,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_debug_build = 5;</code>
      * @return The isDebugBuild.
      */
+    @java.lang.Override
     public boolean getIsDebugBuild() {
       return isDebugBuild_;
     }
@@ -7147,6 +7222,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 6;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -7161,6 +7237,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_ms = 6;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -7171,14 +7248,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent.DebugEventType type = 7;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent.DebugEventType type = 7;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType.UNSPECIFIED_DEBUG_EVENT_TYPE : result;
@@ -7872,13 +7949,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
        * @return Whether the platform field is set.
        */
-      public boolean hasPlatform() {
+      @java.lang.Override public boolean hasPlatform() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>optional .android_studio.DeviceInfo.ApplicationBinaryInterface platform = 3;</code>
        * @return The platform.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getPlatform() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface result = com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface.valueOf(platform_);
@@ -7914,6 +7992,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_using_emulator = 4;</code>
        * @return Whether the isUsingEmulator field is set.
        */
+      @java.lang.Override
       public boolean hasIsUsingEmulator() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -7921,6 +8000,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_using_emulator = 4;</code>
        * @return The isUsingEmulator.
        */
+      @java.lang.Override
       public boolean getIsUsingEmulator() {
         return isUsingEmulator_;
       }
@@ -7951,6 +8031,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_debug_build = 5;</code>
        * @return Whether the isDebugBuild field is set.
        */
+      @java.lang.Override
       public boolean hasIsDebugBuild() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -7958,6 +8039,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool is_debug_build = 5;</code>
        * @return The isDebugBuild.
        */
+      @java.lang.Override
       public boolean getIsDebugBuild() {
         return isDebugBuild_;
       }
@@ -7995,6 +8077,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 duration_ms = 6;</code>
        * @return Whether the durationMs field is set.
        */
+      @java.lang.Override
       public boolean hasDurationMs() {
         return ((bitField0_ & 0x00000020) != 0);
       }
@@ -8009,6 +8092,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 duration_ms = 6;</code>
        * @return The durationMs.
        */
+      @java.lang.Override
       public long getDurationMs() {
         return durationMs_;
       }
@@ -8053,13 +8137,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent.DebugEventType type = 7;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000040) != 0);
       }
       /**
        * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent.DebugEventType type = 7;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.DebugEventType.valueOf(type_);
@@ -8149,14 +8234,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent.AndroidCppExtensionEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.AndroidCppExtensionEvent.AndroidCppExtensionEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType.UNSPECIFIED_ANDROID_CPP_EXTENSION_EVENT_TYPE : result;
@@ -8168,6 +8253,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent build_event = 2;</code>
    * @return Whether the buildEvent field is set.
    */
+  @java.lang.Override
   public boolean hasBuildEvent() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -8175,12 +8261,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent build_event = 2;</code>
    * @return The buildEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent getBuildEvent() {
     return buildEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.getDefaultInstance() : buildEvent_;
   }
   /**
    * <code>optional .android_studio.AndroidCppExtensionEvent.BuildEvent build_event = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEventOrBuilder getBuildEventOrBuilder() {
     return buildEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.BuildEvent.getDefaultInstance() : buildEvent_;
   }
@@ -8191,6 +8279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent debug_event = 3;</code>
    * @return Whether the debugEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDebugEvent() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -8198,12 +8287,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent debug_event = 3;</code>
    * @return The debugEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent getDebugEvent() {
     return debugEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.getDefaultInstance() : debugEvent_;
   }
   /**
    * <code>optional .android_studio.AndroidCppExtensionEvent.DebugEvent debug_event = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEventOrBuilder getDebugEventOrBuilder() {
     return debugEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.DebugEvent.getDefaultInstance() : debugEvent_;
   }
@@ -8594,13 +8685,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidCppExtensionEvent.AndroidCppExtensionEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.AndroidCppExtensionEvent.AndroidCppExtensionEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType result = com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.AndroidCppExtensionEventType.valueOf(type_);

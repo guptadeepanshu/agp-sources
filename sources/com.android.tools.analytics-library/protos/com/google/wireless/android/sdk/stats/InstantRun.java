@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.InstantRun}
  */
-public  final class InstantRun extends
+public final class InstantRun extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.InstantRun)
     InstantRunOrBuilder {
@@ -843,7 +843,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunDeploymentKind deployment_kind = 1;</code>
    * @return Whether the deploymentKind field is set.
    */
-  public boolean hasDeploymentKind() {
+  @java.lang.Override public boolean hasDeploymentKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -854,7 +854,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunDeploymentKind deployment_kind = 1;</code>
    * @return The deploymentKind.
    */
-  public com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind getDeploymentKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind getDeploymentKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind.valueOf(deploymentKind_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind.UNKNOWN_INSTANT_RUN_DEPLOYMENT_KIND : result;
@@ -872,7 +872,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
    * @return Whether the instantRunBuildCause field is set.
    */
-  @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -885,7 +885,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
    * @return The instantRunBuildCause.
    */
-  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause getInstantRunBuildCause() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause getInstantRunBuildCause() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause.valueOf(instantRunBuildCause_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause.UNKNOWN_INSTANT_RUN_BUILD_CAUSE : result;
@@ -901,6 +901,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_time = 4;</code>
    * @return Whether the buildTime field is set.
    */
+  @java.lang.Override
   public boolean hasBuildTime() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -912,6 +913,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_time = 4;</code>
    * @return The buildTime.
    */
+  @java.lang.Override
   public long getBuildTime() {
     return buildTime_;
   }
@@ -928,6 +930,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string session_id = 5;</code>
    * @return Whether the sessionId field is set.
    */
+  @java.lang.Override
   public boolean hasSessionId() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -941,6 +944,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string session_id = 5;</code>
    * @return The sessionId.
    */
+  @java.lang.Override
   public java.lang.String getSessionId() {
     java.lang.Object ref = sessionId_;
     if (ref instanceof java.lang.String) {
@@ -965,6 +969,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string session_id = 5;</code>
    * @return The bytes for sessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSessionIdBytes() {
     java.lang.Object ref = sessionId_;
@@ -990,7 +995,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunIdeBuildCause ide_build_cause = 6;</code>
    * @return Whether the ideBuildCause field is set.
    */
-  public boolean hasIdeBuildCause() {
+  @java.lang.Override public boolean hasIdeBuildCause() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -1002,7 +1007,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun.InstantRunIdeBuildCause ide_build_cause = 6;</code>
    * @return The ideBuildCause.
    */
-  public com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause getIdeBuildCause() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause getIdeBuildCause() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause.valueOf(ideBuildCause_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause.UNKNOWN_INSTANT_RUN_IDE_BUILD_CAUSE : result;
@@ -1019,7 +1024,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.VerifierStatus gradle_build_cause = 7;</code>
    * @return Whether the gradleBuildCause field is set.
    */
-  public boolean hasGradleBuildCause() {
+  @java.lang.Override public boolean hasGradleBuildCause() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -1031,7 +1036,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus.VerifierStatus gradle_build_cause = 7;</code>
    * @return The gradleBuildCause.
    */
-  public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getGradleBuildCause() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getGradleBuildCause() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(gradleBuildCause_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.UNKNOWN_VERIFIER_STATUS : result;
@@ -1487,7 +1492,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunDeploymentKind deployment_kind = 1;</code>
      * @return Whether the deploymentKind field is set.
      */
-    public boolean hasDeploymentKind() {
+    @java.lang.Override public boolean hasDeploymentKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1498,6 +1503,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunDeploymentKind deployment_kind = 1;</code>
      * @return The deploymentKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind getDeploymentKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunDeploymentKind.valueOf(deploymentKind_);
@@ -1547,7 +1553,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @return Whether the instantRunBuildCause field is set.
      */
-    @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasInstantRunBuildCause() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1560,6 +1566,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunBuildCause instant_run_build_cause = 3 [deprecated = true];</code>
      * @return The instantRunBuildCause.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause getInstantRunBuildCause() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunBuildCause.valueOf(instantRunBuildCause_);
@@ -1611,6 +1618,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_time = 4;</code>
      * @return Whether the buildTime field is set.
      */
+    @java.lang.Override
     public boolean hasBuildTime() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1622,6 +1630,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_time = 4;</code>
      * @return The buildTime.
      */
+    @java.lang.Override
     public long getBuildTime() {
       return buildTime_;
     }
@@ -1785,7 +1794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunIdeBuildCause ide_build_cause = 6;</code>
      * @return Whether the ideBuildCause field is set.
      */
-    public boolean hasIdeBuildCause() {
+    @java.lang.Override public boolean hasIdeBuildCause() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -1797,6 +1806,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRun.InstantRunIdeBuildCause ide_build_cause = 6;</code>
      * @return The ideBuildCause.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause getIdeBuildCause() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause result = com.google.wireless.android.sdk.stats.InstantRun.InstantRunIdeBuildCause.valueOf(ideBuildCause_);
@@ -1847,7 +1857,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.VerifierStatus gradle_build_cause = 7;</code>
      * @return Whether the gradleBuildCause field is set.
      */
-    public boolean hasGradleBuildCause() {
+    @java.lang.Override public boolean hasGradleBuildCause() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -1859,6 +1869,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunStatus.VerifierStatus gradle_build_cause = 7;</code>
      * @return The gradleBuildCause.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus getGradleBuildCause() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus result = com.google.wireless.android.sdk.stats.InstantRunStatus.VerifierStatus.valueOf(gradleBuildCause_);

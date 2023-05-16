@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.MemorySettingsEvent}
  */
-public  final class MemorySettingsEvent extends
+public final class MemorySettingsEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MemorySettingsEvent)
     MemorySettingsEventOrBuilder {
@@ -405,7 +405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettingsEvent.EventKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -416,7 +416,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettingsEvent.EventKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.UNKNOWN : result;
@@ -432,6 +432,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings current = 2;</code>
    * @return Whether the current field is set.
    */
+  @java.lang.Override
   public boolean hasCurrent() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -443,6 +444,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings current = 2;</code>
    * @return The current.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettings getCurrent() {
     return current_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : current_;
   }
@@ -453,6 +455,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MemorySettings current = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getCurrentOrBuilder() {
     return current_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : current_;
   }
@@ -467,6 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings recommended = 3;</code>
    * @return Whether the recommended field is set.
    */
+  @java.lang.Override
   public boolean hasRecommended() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -478,6 +482,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings recommended = 3;</code>
    * @return The recommended.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettings getRecommended() {
     return recommended_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : recommended_;
   }
@@ -488,6 +493,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MemorySettings recommended = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getRecommendedOrBuilder() {
     return recommended_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : recommended_;
   }
@@ -502,6 +508,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings changed = 4;</code>
    * @return Whether the changed field is set.
    */
+  @java.lang.Override
   public boolean hasChanged() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -513,6 +520,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettings changed = 4;</code>
    * @return The changed.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettings getChanged() {
     return changed_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : changed_;
   }
@@ -523,6 +531,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MemorySettings changed = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsOrBuilder getChangedOrBuilder() {
     return changed_ == null ? com.google.wireless.android.sdk.stats.MemorySettings.getDefaultInstance() : changed_;
   }
@@ -955,7 +964,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemorySettingsEvent.EventKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -966,6 +975,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemorySettingsEvent.EventKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind result = com.google.wireless.android.sdk.stats.MemorySettingsEvent.EventKind.valueOf(kind_);

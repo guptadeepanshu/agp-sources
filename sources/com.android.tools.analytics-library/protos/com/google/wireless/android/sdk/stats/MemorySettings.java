@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.MemorySettings}
  */
-public  final class MemorySettings extends
+public final class MemorySettings extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MemorySettings)
     MemorySettingsOrBuilder {
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_xmx = 1;</code>
    * @return Whether the ideXmx field is set.
    */
+  @java.lang.Override
   public boolean hasIdeXmx() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -110,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_xmx = 1;</code>
    * @return The ideXmx.
    */
+  @java.lang.Override
   public int getIdeXmx() {
     return ideXmx_;
   }
@@ -120,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 gradle_daemon_xmx = 2;</code>
    * @return Whether the gradleDaemonXmx field is set.
    */
+  @java.lang.Override
   public boolean hasGradleDaemonXmx() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -127,6 +130,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 gradle_daemon_xmx = 2;</code>
    * @return The gradleDaemonXmx.
    */
+  @java.lang.Override
   public int getGradleDaemonXmx() {
     return gradleDaemonXmx_;
   }
@@ -137,6 +141,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 kotlin_daemon_xmx = 3;</code>
    * @return Whether the kotlinDaemonXmx field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinDaemonXmx() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -144,6 +149,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 kotlin_daemon_xmx = 3;</code>
    * @return The kotlinDaemonXmx.
    */
+  @java.lang.Override
   public int getKotlinDaemonXmx() {
     return kotlinDaemonXmx_;
   }
@@ -517,6 +523,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_xmx = 1;</code>
      * @return Whether the ideXmx field is set.
      */
+    @java.lang.Override
     public boolean hasIdeXmx() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -524,6 +531,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_xmx = 1;</code>
      * @return The ideXmx.
      */
+    @java.lang.Override
     public int getIdeXmx() {
       return ideXmx_;
     }
@@ -554,6 +562,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 gradle_daemon_xmx = 2;</code>
      * @return Whether the gradleDaemonXmx field is set.
      */
+    @java.lang.Override
     public boolean hasGradleDaemonXmx() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -561,6 +570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 gradle_daemon_xmx = 2;</code>
      * @return The gradleDaemonXmx.
      */
+    @java.lang.Override
     public int getGradleDaemonXmx() {
       return gradleDaemonXmx_;
     }
@@ -591,6 +601,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 kotlin_daemon_xmx = 3;</code>
      * @return Whether the kotlinDaemonXmx field is set.
      */
+    @java.lang.Override
     public boolean hasKotlinDaemonXmx() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -598,6 +609,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 kotlin_daemon_xmx = 3;</code>
      * @return The kotlinDaemonXmx.
      */
+    @java.lang.Override
     public int getKotlinDaemonXmx() {
       return kotlinDaemonXmx_;
     }

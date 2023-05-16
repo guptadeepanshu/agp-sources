@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.IntellijProjectSizeStats}
  */
-public  final class IntellijProjectSizeStats extends
+public final class IntellijProjectSizeStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.IntellijProjectSizeStats)
     IntellijProjectSizeStatsOrBuilder {
@@ -380,14 +380,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IntellijProjectSizeStats.FileType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.IntellijProjectSizeStats.FileType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType result = com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType.UNKNOWN_FILE_TYPE : result;
@@ -399,14 +399,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IntellijProjectSizeStats.Scope scope = 2;</code>
    * @return Whether the scope field is set.
    */
-  public boolean hasScope() {
+  @java.lang.Override public boolean hasScope() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>optional .android_studio.IntellijProjectSizeStats.Scope scope = 2;</code>
    * @return The scope.
    */
-  public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope getScope() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope getScope() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope result = com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope.valueOf(scope_);
     return result == null ? com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope.UNKNOWN_SCOPE : result;
@@ -418,6 +418,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 count = 3;</code>
    * @return Whether the count field is set.
    */
+  @java.lang.Override
   public boolean hasCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -425,6 +426,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 count = 3;</code>
    * @return The count.
    */
+  @java.lang.Override
   public int getCount() {
     return count_;
   }
@@ -800,13 +802,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijProjectSizeStats.FileType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.IntellijProjectSizeStats.FileType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType result = com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.FileType.valueOf(type_);
@@ -842,13 +845,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijProjectSizeStats.Scope scope = 2;</code>
      * @return Whether the scope field is set.
      */
-    public boolean hasScope() {
+    @java.lang.Override public boolean hasScope() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>optional .android_studio.IntellijProjectSizeStats.Scope scope = 2;</code>
      * @return The scope.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope getScope() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope result = com.google.wireless.android.sdk.stats.IntellijProjectSizeStats.Scope.valueOf(scope_);
@@ -884,6 +888,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 count = 3;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -891,6 +896,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 count = 3;</code>
      * @return The count.
      */
+    @java.lang.Override
     public int getCount() {
       return count_;
     }

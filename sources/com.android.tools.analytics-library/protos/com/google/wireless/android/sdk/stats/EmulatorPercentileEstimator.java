@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EmulatorPercentileEstimator}
  */
-public  final class EmulatorPercentileEstimator extends
+public final class EmulatorPercentileEstimator extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorPercentileEstimator)
     EmulatorPercentileEstimatorOrBuilder {
@@ -216,7 +216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorPercentileEstimator.EmulatorPerformanceMetric metric = 1;</code>
    * @return Whether the metric field is set.
    */
-  public boolean hasMetric() {
+  @java.lang.Override public boolean hasMetric() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -227,7 +227,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorPercentileEstimator.EmulatorPerformanceMetric metric = 1;</code>
    * @return The metric.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric getMetric() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric getMetric() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric result = com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric.valueOf(metric_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric.UI_EVENT_HANDLING_TIME_US : result;
@@ -244,6 +244,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string context = 2;</code>
    * @return Whether the context field is set.
    */
+  @java.lang.Override
   public boolean hasContext() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -256,6 +257,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string context = 2;</code>
    * @return The context.
    */
+  @java.lang.Override
   public java.lang.String getContext() {
     java.lang.Object ref = context_;
     if (ref instanceof java.lang.String) {
@@ -279,6 +281,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string context = 2;</code>
    * @return The bytes for context.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getContextBytes() {
     java.lang.Object ref = context_;
@@ -303,6 +306,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
    * @return Whether the estimator field is set.
    */
+  @java.lang.Override
   public boolean hasEstimator() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -314,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
    * @return The estimator.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getEstimator() {
     return estimator_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : estimator_;
   }
@@ -324,6 +329,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator estimator = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getEstimatorOrBuilder() {
     return estimator_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : estimator_;
   }
@@ -710,7 +716,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorPercentileEstimator.EmulatorPerformanceMetric metric = 1;</code>
      * @return Whether the metric field is set.
      */
-    public boolean hasMetric() {
+    @java.lang.Override public boolean hasMetric() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -721,6 +727,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorPercentileEstimator.EmulatorPerformanceMetric metric = 1;</code>
      * @return The metric.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric getMetric() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric result = com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator.EmulatorPerformanceMetric.valueOf(metric_);

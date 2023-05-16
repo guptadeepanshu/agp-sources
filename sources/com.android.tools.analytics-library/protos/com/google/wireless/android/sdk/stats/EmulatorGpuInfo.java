@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGpuInfo}
  */
-public  final class EmulatorGpuInfo extends
+public final class EmulatorGpuInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGpuInfo)
     EmulatorGpuInfoOrBuilder {
@@ -138,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string make = 1;</code>
    * @return Whether the make field is set.
    */
+  @java.lang.Override
   public boolean hasMake() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -149,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string make = 1;</code>
    * @return The make.
    */
+  @java.lang.Override
   public java.lang.String getMake() {
     java.lang.Object ref = make_;
     if (ref instanceof java.lang.String) {
@@ -171,6 +173,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string make = 1;</code>
    * @return The bytes for make.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMakeBytes() {
     java.lang.Object ref = make_;
@@ -195,6 +198,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 2;</code>
    * @return Whether the model field is set.
    */
+  @java.lang.Override
   public boolean hasModel() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -206,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 2;</code>
    * @return The model.
    */
+  @java.lang.Override
   public java.lang.String getModel() {
     java.lang.Object ref = model_;
     if (ref instanceof java.lang.String) {
@@ -228,6 +233,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string model = 2;</code>
    * @return The bytes for model.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModelBytes() {
     java.lang.Object ref = model_;
@@ -252,6 +258,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string device_id = 3;</code>
    * @return Whether the deviceId field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceId() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -263,6 +270,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string device_id = 3;</code>
    * @return The deviceId.
    */
+  @java.lang.Override
   public java.lang.String getDeviceId() {
     java.lang.Object ref = deviceId_;
     if (ref instanceof java.lang.String) {
@@ -285,6 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string device_id = 3;</code>
    * @return The bytes for deviceId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDeviceIdBytes() {
     java.lang.Object ref = deviceId_;
@@ -309,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string revision_id = 4;</code>
    * @return Whether the revisionId field is set.
    */
+  @java.lang.Override
   public boolean hasRevisionId() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -320,6 +330,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string revision_id = 4;</code>
    * @return The revisionId.
    */
+  @java.lang.Override
   public java.lang.String getRevisionId() {
     java.lang.Object ref = revisionId_;
     if (ref instanceof java.lang.String) {
@@ -342,6 +353,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string revision_id = 4;</code>
    * @return The bytes for revisionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRevisionIdBytes() {
     java.lang.Object ref = revisionId_;
@@ -366,6 +378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 5;</code>
    * @return Whether the version field is set.
    */
+  @java.lang.Override
   public boolean hasVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -377,6 +390,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 5;</code>
    * @return The version.
    */
+  @java.lang.Override
   public java.lang.String getVersion() {
     java.lang.Object ref = version_;
     if (ref instanceof java.lang.String) {
@@ -399,6 +413,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string version = 5;</code>
    * @return The bytes for version.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVersionBytes() {
     java.lang.Object ref = version_;
@@ -423,6 +438,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 6;</code>
    * @return Whether the renderer field is set.
    */
+  @java.lang.Override
   public boolean hasRenderer() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -434,6 +450,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 6;</code>
    * @return The renderer.
    */
+  @java.lang.Override
   public java.lang.String getRenderer() {
     java.lang.Object ref = renderer_;
     if (ref instanceof java.lang.String) {
@@ -456,6 +473,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string renderer = 6;</code>
    * @return The bytes for renderer.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRendererBytes() {
     java.lang.Object ref = renderer_;

@@ -6,7 +6,7 @@ package com.android.tools.build.libraries.metadata;
 /**
  * Protobuf type {@code ModuleDependencies}
  */
-public  final class ModuleDependencies extends
+public final class ModuleDependencies extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:ModuleDependencies)
     ModuleDependenciesOrBuilder {
@@ -119,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>string module_name = 1;</code>
    * @return The moduleName.
    */
+  @java.lang.Override
   public java.lang.String getModuleName() {
     java.lang.Object ref = moduleName_;
     if (ref instanceof java.lang.String) {
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>string module_name = 1;</code>
    * @return The bytes for moduleName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModuleNameBytes() {
     java.lang.Object ref = moduleName_;
@@ -160,6 +162,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 dependency_index = 2;</code>
    * @return A list containing the dependencyIndex.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getDependencyIndexList() {
     return dependencyIndex_;

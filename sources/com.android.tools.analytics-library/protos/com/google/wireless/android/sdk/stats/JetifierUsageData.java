@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.JetifierUsageData}
  */
-public  final class JetifierUsageData extends
+public final class JetifierUsageData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.JetifierUsageData)
     JetifierUsageDataOrBuilder {
@@ -248,14 +248,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JetifierUsageData.JetifierUsageState jetifier_usage_state = 1;</code>
    * @return Whether the jetifierUsageState field is set.
    */
-  public boolean hasJetifierUsageState() {
+  @java.lang.Override public boolean hasJetifierUsageState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.JetifierUsageData.JetifierUsageState jetifier_usage_state = 1;</code>
    * @return The jetifierUsageState.
    */
-  public com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState getJetifierUsageState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState getJetifierUsageState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.valueOf(jetifierUsageState_);
     return result == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.UNKNOWN_STATE : result;
@@ -271,6 +271,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_libraries_require_jetifier = 2;</code>
    * @return Whether the numberOfLibrariesRequireJetifier field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfLibrariesRequireJetifier() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -282,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_libraries_require_jetifier = 2;</code>
    * @return The numberOfLibrariesRequireJetifier.
    */
+  @java.lang.Override
   public int getNumberOfLibrariesRequireJetifier() {
     return numberOfLibrariesRequireJetifier_;
   }
@@ -296,6 +298,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool check_jetifier_task_build = 3;</code>
    * @return Whether the checkJetifierTaskBuild field is set.
    */
+  @java.lang.Override
   public boolean hasCheckJetifierTaskBuild() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -307,6 +310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool check_jetifier_task_build = 3;</code>
    * @return The checkJetifierTaskBuild.
    */
+  @java.lang.Override
   public boolean getCheckJetifierTaskBuild() {
     return checkJetifierTaskBuild_;
   }
@@ -684,13 +688,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JetifierUsageData.JetifierUsageState jetifier_usage_state = 1;</code>
      * @return Whether the jetifierUsageState field is set.
      */
-    public boolean hasJetifierUsageState() {
+    @java.lang.Override public boolean hasJetifierUsageState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.JetifierUsageData.JetifierUsageState jetifier_usage_state = 1;</code>
      * @return The jetifierUsageState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState getJetifierUsageState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState result = com.google.wireless.android.sdk.stats.JetifierUsageData.JetifierUsageState.valueOf(jetifierUsageState_);
@@ -730,6 +735,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_libraries_require_jetifier = 2;</code>
      * @return Whether the numberOfLibrariesRequireJetifier field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfLibrariesRequireJetifier() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -741,6 +747,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_libraries_require_jetifier = 2;</code>
      * @return The numberOfLibrariesRequireJetifier.
      */
+    @java.lang.Override
     public int getNumberOfLibrariesRequireJetifier() {
       return numberOfLibrariesRequireJetifier_;
     }
@@ -783,6 +790,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool check_jetifier_task_build = 3;</code>
      * @return Whether the checkJetifierTaskBuild field is set.
      */
+    @java.lang.Override
     public boolean hasCheckJetifierTaskBuild() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -794,6 +802,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool check_jetifier_task_build = 3;</code>
      * @return The checkJetifierTaskBuild.
      */
+    @java.lang.Override
     public boolean getCheckJetifierTaskBuild() {
       return checkJetifierTaskBuild_;
     }

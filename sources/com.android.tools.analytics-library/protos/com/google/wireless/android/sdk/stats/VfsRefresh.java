@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.VfsRefresh}
  */
-public  final class VfsRefresh extends
+public final class VfsRefresh extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.VfsRefresh)
     VfsRefreshOrBuilder {
@@ -101,6 +101,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -112,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 1;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -444,6 +446,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -455,6 +458,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 1;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }

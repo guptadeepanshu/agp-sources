@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DisplayDetails}
  */
-public  final class DisplayDetails extends
+public final class DisplayDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DisplayDetails)
     DisplayDetailsOrBuilder {
@@ -121,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 width = 1;</code>
    * @return Whether the width field is set.
    */
+  @java.lang.Override
   public boolean hasWidth() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -132,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 width = 1;</code>
    * @return The width.
    */
+  @java.lang.Override
   public long getWidth() {
     return width_;
   }
@@ -146,6 +148,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 height = 2;</code>
    * @return Whether the height field is set.
    */
+  @java.lang.Override
   public boolean hasHeight() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -157,6 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 height = 2;</code>
    * @return The height.
    */
+  @java.lang.Override
   public long getHeight() {
     return height_;
   }
@@ -171,6 +175,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>
    * @return Whether the dotsPerInchHorizontal field is set.
    */
+  @java.lang.Override
   public boolean hasDotsPerInchHorizontal() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -182,6 +187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 dots_per_inch_horizontal = 3;</code>
    * @return The dotsPerInchHorizontal.
    */
+  @java.lang.Override
   public int getDotsPerInchHorizontal() {
     return dotsPerInchHorizontal_;
   }
@@ -196,6 +202,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 dots_per_inch_vertical = 4;</code>
    * @return Whether the dotsPerInchVertical field is set.
    */
+  @java.lang.Override
   public boolean hasDotsPerInchVertical() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -207,6 +214,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 dots_per_inch_vertical = 4;</code>
    * @return The dotsPerInchVertical.
    */
+  @java.lang.Override
   public int getDotsPerInchVertical() {
     return dotsPerInchVertical_;
   }
@@ -221,6 +229,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional float system_scale = 5;</code>
    * @return Whether the systemScale field is set.
    */
+  @java.lang.Override
   public boolean hasSystemScale() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -232,6 +241,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional float system_scale = 5;</code>
    * @return The systemScale.
    */
+  @java.lang.Override
   public float getSystemScale() {
     return systemScale_;
   }
@@ -667,6 +677,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 width = 1;</code>
      * @return Whether the width field is set.
      */
+    @java.lang.Override
     public boolean hasWidth() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -678,6 +689,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 width = 1;</code>
      * @return The width.
      */
+    @java.lang.Override
     public long getWidth() {
       return width_;
     }
@@ -720,6 +732,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 height = 2;</code>
      * @return Whether the height field is set.
      */
+    @java.lang.Override
     public boolean hasHeight() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -731,6 +744,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 height = 2;</code>
      * @return The height.
      */
+    @java.lang.Override
     public long getHeight() {
       return height_;
     }
@@ -773,6 +787,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>
      * @return Whether the dotsPerInchHorizontal field is set.
      */
+    @java.lang.Override
     public boolean hasDotsPerInchHorizontal() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -784,6 +799,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 dots_per_inch_horizontal = 3;</code>
      * @return The dotsPerInchHorizontal.
      */
+    @java.lang.Override
     public int getDotsPerInchHorizontal() {
       return dotsPerInchHorizontal_;
     }
@@ -826,6 +842,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 dots_per_inch_vertical = 4;</code>
      * @return Whether the dotsPerInchVertical field is set.
      */
+    @java.lang.Override
     public boolean hasDotsPerInchVertical() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -837,6 +854,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 dots_per_inch_vertical = 4;</code>
      * @return The dotsPerInchVertical.
      */
+    @java.lang.Override
     public int getDotsPerInchVertical() {
       return dotsPerInchVertical_;
     }
@@ -879,6 +897,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional float system_scale = 5;</code>
      * @return Whether the systemScale field is set.
      */
+    @java.lang.Override
     public boolean hasSystemScale() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -890,6 +909,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional float system_scale = 5;</code>
      * @return The systemScale.
      */
+    @java.lang.Override
     public float getSystemScale() {
       return systemScale_;
     }

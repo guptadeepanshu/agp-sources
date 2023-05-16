@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorQuickbootSave}
  */
-public  final class EmulatorQuickbootSave extends
+public final class EmulatorQuickbootSave extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorQuickbootSave)
     EmulatorQuickbootSaveOrBuilder {
@@ -367,7 +367,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootSave.EmulatorQuickbootSaveState state = 1;</code>
    * @return Whether the state field is set.
    */
-  public boolean hasState() {
+  @java.lang.Override public boolean hasState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -378,7 +378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootSave.EmulatorQuickbootSaveState state = 1;</code>
    * @return The state.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState getState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState getState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.valueOf(state_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.EMULATOR_QUICKBOOT_SAVE_SUCCEEDED : result;
@@ -394,6 +394,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -405,6 +406,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -419,6 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    * @return Whether the snapshot field is set.
    */
+  @java.lang.Override
   public boolean hasSnapshot() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -430,6 +433,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    * @return The snapshot.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot() {
     return snapshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance() : snapshot_;
   }
@@ -440,6 +444,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
     return snapshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance() : snapshot_;
   }
@@ -454,6 +459,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 sesion_uptime_ms = 4;</code>
    * @return Whether the sesionUptimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasSesionUptimeMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -465,6 +471,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 sesion_uptime_ms = 4;</code>
    * @return The sesionUptimeMs.
    */
+  @java.lang.Override
   public long getSesionUptimeMs() {
     return sesionUptimeMs_;
   }
@@ -881,7 +888,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorQuickbootSave.EmulatorQuickbootSaveState state = 1;</code>
      * @return Whether the state field is set.
      */
-    public boolean hasState() {
+    @java.lang.Override public boolean hasState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -892,6 +899,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorQuickbootSave.EmulatorQuickbootSaveState state = 1;</code>
      * @return The state.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState getState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.EmulatorQuickbootSaveState.valueOf(state_);
@@ -939,6 +947,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -950,6 +959,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -1148,6 +1158,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 sesion_uptime_ms = 4;</code>
      * @return Whether the sesionUptimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasSesionUptimeMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1159,6 +1170,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 sesion_uptime_ms = 4;</code>
      * @return The sesionUptimeMs.
      */
+    @java.lang.Override
     public long getSesionUptimeMs() {
       return sesionUptimeMs_;
     }

@@ -90,10 +90,10 @@ class UtpTestRunner @JvmOverloads constructor(
                     utpOutputDir,
                     utpTmpDir,
                     retentionConfig,
-                    coverageDir,
+                    File(coverageDir, deviceConnector.name),
                     useOrchestrator,
-                    if (additionalTestOutputEnabled) {
-                        additionalTestOutputDir
+                    if (additionalTestOutputEnabled && additionalTestOutputDir != null) {
+                        File(additionalTestOutputDir, deviceConnector.name)
                     } else {
                         null
                     },
@@ -124,6 +124,9 @@ class UtpTestRunner @JvmOverloads constructor(
             if (result.resultsProto?.hasPlatformError() == true) {
                 logger.error(null, getPlatformErrorMessage(result.resultsProto))
             }
+            result.resultsProto?.issueList?.forEach { issue ->
+                logger.error(null, issue.message)
+            }
         }
 
         val resultProtos = testSuiteResults
@@ -133,12 +136,9 @@ class UtpTestRunner @JvmOverloads constructor(
             val mergedTestResultPbFile = File(resultsDir, TEST_RESULT_PB_FILE_NAME)
             val resultsMerger = UtpTestSuiteResultMerger()
             resultProtos.forEach(resultsMerger::merge)
-            resultsMerger.result.writeTo(mergedTestResultPbFile.outputStream())
-            logger.quiet(
-                "\nTest results saved as ${mergedTestResultPbFile.toURI()}. " +
-                        "Inspect these results in Android Studio by selecting Run > Import Tests " +
-                        "From File from the menu bar and importing test-result.pb."
-            )
+            mergedTestResultPbFile.outputStream().use {
+                resultsMerger.result.writeTo(it)
+            }
         }
 
         return testSuiteResults.map { testRunResult ->

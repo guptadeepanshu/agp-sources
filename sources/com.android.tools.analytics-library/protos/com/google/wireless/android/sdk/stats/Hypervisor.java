@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.Hypervisor}
  */
-public  final class Hypervisor extends
+public final class Hypervisor extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.Hypervisor)
     HypervisorOrBuilder {
@@ -272,14 +272,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Hypervisor.HyperVState hyper_v_state = 1;</code>
    * @return Whether the hyperVState field is set.
    */
-  public boolean hasHyperVState() {
+  @java.lang.Override public boolean hasHyperVState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.Hypervisor.HyperVState hyper_v_state = 1;</code>
    * @return The hyperVState.
    */
-  public com.google.wireless.android.sdk.stats.Hypervisor.HyperVState getHyperVState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.Hypervisor.HyperVState getHyperVState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.Hypervisor.HyperVState result = com.google.wireless.android.sdk.stats.Hypervisor.HyperVState.valueOf(hyperVState_);
     return result == null ? com.google.wireless.android.sdk.stats.Hypervisor.HyperVState.UNKNOWN_HYPERV_STATE : result;
@@ -607,13 +607,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Hypervisor.HyperVState hyper_v_state = 1;</code>
      * @return Whether the hyperVState field is set.
      */
-    public boolean hasHyperVState() {
+    @java.lang.Override public boolean hasHyperVState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.Hypervisor.HyperVState hyper_v_state = 1;</code>
      * @return The hyperVState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Hypervisor.HyperVState getHyperVState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.Hypervisor.HyperVState result = com.google.wireless.android.sdk.stats.Hypervisor.HyperVState.valueOf(hyperVState_);

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.DeviceExplorerEvent}
  */
-public  final class DeviceExplorerEvent extends
+public final class DeviceExplorerEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DeviceExplorerEvent)
     DeviceExplorerEventOrBuilder {
@@ -381,14 +381,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceExplorerEvent.Action action = 1;</code>
    * @return Whether the action field is set.
    */
-  public boolean hasAction() {
+  @java.lang.Override public boolean hasAction() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.DeviceExplorerEvent.Action action = 1;</code>
    * @return The action.
    */
-  public com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action getAction() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action getAction() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.valueOf(action_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.UNSPECIFIED : result;
@@ -404,6 +404,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_file_count = 2;</code>
    * @return Whether the transferFileCount field is set.
    */
+  @java.lang.Override
   public boolean hasTransferFileCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -415,6 +416,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_file_count = 2;</code>
    * @return The transferFileCount.
    */
+  @java.lang.Override
   public int getTransferFileCount() {
     return transferFileCount_;
   }
@@ -429,6 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_total_size = 3;</code>
    * @return Whether the transferTotalSize field is set.
    */
+  @java.lang.Override
   public boolean hasTransferTotalSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -440,6 +443,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_total_size = 3;</code>
    * @return The transferTotalSize.
    */
+  @java.lang.Override
   public int getTransferTotalSize() {
     return transferTotalSize_;
   }
@@ -454,6 +458,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_time_ms = 4;</code>
    * @return Whether the transferTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasTransferTimeMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -465,6 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 transfer_time_ms = 4;</code>
    * @return The transferTimeMs.
    */
+  @java.lang.Override
   public int getTransferTimeMs() {
     return transferTimeMs_;
   }
@@ -862,13 +868,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceExplorerEvent.Action action = 1;</code>
      * @return Whether the action field is set.
      */
-    public boolean hasAction() {
+    @java.lang.Override public boolean hasAction() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.DeviceExplorerEvent.Action action = 1;</code>
      * @return The action.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action getAction() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action result = com.google.wireless.android.sdk.stats.DeviceExplorerEvent.Action.valueOf(action_);
@@ -908,6 +915,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_file_count = 2;</code>
      * @return Whether the transferFileCount field is set.
      */
+    @java.lang.Override
     public boolean hasTransferFileCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -919,6 +927,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_file_count = 2;</code>
      * @return The transferFileCount.
      */
+    @java.lang.Override
     public int getTransferFileCount() {
       return transferFileCount_;
     }
@@ -961,6 +970,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_total_size = 3;</code>
      * @return Whether the transferTotalSize field is set.
      */
+    @java.lang.Override
     public boolean hasTransferTotalSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -972,6 +982,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_total_size = 3;</code>
      * @return The transferTotalSize.
      */
+    @java.lang.Override
     public int getTransferTotalSize() {
       return transferTotalSize_;
     }
@@ -1014,6 +1025,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_time_ms = 4;</code>
      * @return Whether the transferTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasTransferTimeMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1025,6 +1037,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 transfer_time_ms = 4;</code>
      * @return The transferTimeMs.
      */
+    @java.lang.Override
     public int getTransferTimeMs() {
       return transferTimeMs_;
     }

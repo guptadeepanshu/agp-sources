@@ -39,13 +39,11 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
-import com.google.common.collect.ImmutableList
 import com.google.wireless.android.sdk.stats.GradleBuildVariant
-import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Provider
 import javax.inject.Inject
 
@@ -61,7 +59,7 @@ open class UnitTestImpl @Inject constructor(
     variantData: BaseVariantData,
     testedVariant: VariantImpl,
     transformManager: TransformManager,
-    internalServices: VariantPropertiesApiServices,
+    internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     global: GlobalTaskCreationConfig
 ) : TestComponentImpl(
@@ -117,14 +115,17 @@ open class UnitTestImpl @Inject constructor(
     override val debuggable: Boolean
         get() = testedConfig.debuggable
 
+    override val profileable: Boolean
+        get() = testedConfig.profileable
+
     // these would normally be public but not for unit-test. They are there to feed the
     // manifest but aren't actually used.
     override val isTestCoverageEnabled: Boolean
-        get() = variantDslInfo.isTestCoverageEnabled
-                || variantDslInfo.isUnitTestCoverageEnabled
+        get() = variantDslInfo.isUnitTestCoverageEnabled
 
     override fun addDataBindingSources(
-        sourceSets: ImmutableList.Builder<DirectoryEntry>) {}
+        sourceSets: MutableList<DirectoryEntry>
+    ) {}
 
     override fun <T : Component> createUserVisibleVariantObject(
             projectServices: ProjectServices,
@@ -142,13 +143,7 @@ open class UnitTestImpl @Inject constructor(
         }
 
     /**
-     * for unit tests, the placeholders are from the tested variant.
+     * There is no build config fields for unit tests.
      */
-    override val manifestPlaceholders: MapProperty<String, String> by lazy {
-        internalServices.mapPropertyOf(
-                String::class.java,
-                String::class.java,
-                variantDslInfo.manifestPlaceholders
-        )
-    }
+    override val buildConfigEnabled: Boolean = false
 }

@@ -16,6 +16,7 @@
 
 package com.android.build.gradle.internal.errors
 
+import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.Version
 
@@ -52,7 +53,6 @@ interface DeprecationReporter {
          */
         private val additionalMessage: String? = null
     ) {
-        VERSION_7_0(Version.VERSION_7_0),
         VERSION_8_0(Version.VERSION_8_0),
 
         // Obsolete dx Dex Options
@@ -60,17 +60,15 @@ interface DeprecationReporter {
                 "Gradle plugin optimizes dexing automatically."),
 
         // Deprecation of Task Access in the variant API
-        TASK_ACCESS_VIA_VARIANT(Version.VERSION_7_0),
-
-        ENABLE_R8(Version.VERSION_7_0, "You will no longer be able to disable R8"),
+        TASK_ACCESS_VIA_VARIANT(Version.VERSION_8_0),
 
         USE_PROPERTIES(
-            Version.VERSION_7_0,
+            Version.VERSION_8_0,
             "Gradle Properties must be used to change Variant information."
         ),
 
         LINT_CHECK_ONLY(
-            Version.VERSION_7_0,
+            Version.VERSION_8_0,
             "`check` has been renamed to `checkOnly` to make it clear that it " +
                     "will turn off all other checks than those explicitly listed. If that is " +
                     "what you actually intended, use `checkOnly`; otherwise switch to `enable`."
@@ -109,6 +107,11 @@ interface DeprecationReporter {
                 There is no single replacement for the Transform API—there are new, targeted
                 APIs for each use case. All the replacement APIs are in the
                 `androidComponents {}` block.
+
+                The Transform API uses incremental APIs deprecated since Gradle 7.5. Please add
+                `${BooleanOption.LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL.propertyName}=true` to
+                `gradle.properties` to fix this issue. Note that this will run transforms
+                non-incrementally and may have a build performance impact.
             """.trimIndent()
         )
         ;

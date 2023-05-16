@@ -26,7 +26,6 @@ import com.android.build.gradle.internal.scope.getRegularFiles
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.toSerializable
-import com.android.builder.dexing.isJarFile
 import com.android.builder.files.SerializableChange
 import com.android.utils.FileUtils
 import com.android.utils.PathUtils

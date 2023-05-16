@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ConnectionAssistantEvent}
  */
-public  final class ConnectionAssistantEvent extends
+public final class ConnectionAssistantEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ConnectionAssistantEvent)
     ConnectionAssistantEventOrBuilder {
@@ -325,7 +325,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConnectionAssistantEvent.ConnectionAssistantEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -336,7 +336,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConnectionAssistantEvent.ConnectionAssistantEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType result = com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType.UNKNOWN_EVENT_TYPE : result;
@@ -353,6 +353,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usb_devices_detected = 2;</code>
    * @return Whether the usbDevicesDetected field is set.
    */
+  @java.lang.Override
   public boolean hasUsbDevicesDetected() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -365,6 +366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usb_devices_detected = 2;</code>
    * @return The usbDevicesDetected.
    */
+  @java.lang.Override
   public int getUsbDevicesDetected() {
     return usbDevicesDetected_;
   }
@@ -380,6 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 adb_devices_detected = 3;</code>
    * @return Whether the adbDevicesDetected field is set.
    */
+  @java.lang.Override
   public boolean hasAdbDevicesDetected() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -392,6 +395,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 adb_devices_detected = 3;</code>
    * @return The adbDevicesDetected.
    */
+  @java.lang.Override
   public int getAdbDevicesDetected() {
     return adbDevicesDetected_;
   }
@@ -772,7 +776,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ConnectionAssistantEvent.ConnectionAssistantEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -783,6 +787,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ConnectionAssistantEvent.ConnectionAssistantEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType result = com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.ConnectionAssistantEventType.valueOf(type_);
@@ -831,6 +836,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usb_devices_detected = 2;</code>
      * @return Whether the usbDevicesDetected field is set.
      */
+    @java.lang.Override
     public boolean hasUsbDevicesDetected() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -843,6 +849,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usb_devices_detected = 2;</code>
      * @return The usbDevicesDetected.
      */
+    @java.lang.Override
     public int getUsbDevicesDetected() {
       return usbDevicesDetected_;
     }
@@ -888,6 +895,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 adb_devices_detected = 3;</code>
      * @return Whether the adbDevicesDetected field is set.
      */
+    @java.lang.Override
     public boolean hasAdbDevicesDetected() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -900,6 +908,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 adb_devices_detected = 3;</code>
      * @return The adbDevicesDetected.
      */
+    @java.lang.Override
     public int getAdbDevicesDetected() {
       return adbDevicesDetected_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.MachineDetails}
  */
-public  final class MachineDetails extends
+public final class MachineDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MachineDetails)
     MachineDetailsOrBuilder {
@@ -124,6 +124,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_ram = 1;</code>
    * @return Whether the totalRam field is set.
    */
+  @java.lang.Override
   public boolean hasTotalRam() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_ram = 1;</code>
    * @return The totalRam.
    */
+  @java.lang.Override
   public long getTotalRam() {
     return totalRam_;
   }
@@ -149,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_disk = 2;</code>
    * @return Whether the totalDisk field is set.
    */
+  @java.lang.Override
   public boolean hasTotalDisk() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -160,6 +163,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_disk = 2;</code>
    * @return The totalDisk.
    */
+  @java.lang.Override
   public long getTotalDisk() {
     return totalDisk_;
   }
@@ -173,6 +177,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.DisplayDetails display = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.DisplayDetails> getDisplayList() {
     return display_;
   }
@@ -183,6 +188,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.DisplayDetails display = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.DisplayDetailsOrBuilder> 
       getDisplayOrBuilderList() {
     return display_;
@@ -194,6 +200,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.DisplayDetails display = 3;</code>
    */
+  @java.lang.Override
   public int getDisplayCount() {
     return display_.size();
   }
@@ -204,6 +211,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.DisplayDetails display = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DisplayDetails getDisplay(int index) {
     return display_.get(index);
   }
@@ -214,6 +222,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.DisplayDetails display = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DisplayDetailsOrBuilder getDisplayOrBuilder(
       int index) {
     return display_.get(index);
@@ -229,6 +238,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 available_processors = 4;</code>
    * @return Whether the availableProcessors field is set.
    */
+  @java.lang.Override
   public boolean hasAvailableProcessors() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -240,6 +250,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 available_processors = 4;</code>
    * @return The availableProcessors.
    */
+  @java.lang.Override
   public int getAvailableProcessors() {
     return availableProcessors_;
   }
@@ -678,6 +689,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_ram = 1;</code>
      * @return Whether the totalRam field is set.
      */
+    @java.lang.Override
     public boolean hasTotalRam() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -689,6 +701,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_ram = 1;</code>
      * @return The totalRam.
      */
+    @java.lang.Override
     public long getTotalRam() {
       return totalRam_;
     }
@@ -731,6 +744,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_disk = 2;</code>
      * @return Whether the totalDisk field is set.
      */
+    @java.lang.Override
     public boolean hasTotalDisk() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -742,6 +756,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_disk = 2;</code>
      * @return The totalDisk.
      */
+    @java.lang.Override
     public long getTotalDisk() {
       return totalDisk_;
     }
@@ -1096,6 +1111,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 available_processors = 4;</code>
      * @return Whether the availableProcessors field is set.
      */
+    @java.lang.Override
     public boolean hasAvailableProcessors() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1107,6 +1123,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 available_processors = 4;</code>
      * @return The availableProcessors.
      */
+    @java.lang.Override
     public int getAvailableProcessors() {
       return availableProcessors_;
     }

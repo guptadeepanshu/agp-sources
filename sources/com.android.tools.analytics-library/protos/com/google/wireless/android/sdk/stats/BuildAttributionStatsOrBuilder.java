@@ -92,4 +92,26 @@ public interface BuildAttributionStatsOrBuilder extends
    */
   com.google.protobuf.ByteString
       getBuildAttributionReportSessionIdBytes();
+
+  /**
+   * <code>optional .android_studio.BuildAttributionStats.BuildAnalysisStatus build_analysis_status = 4;</code>
+   * @return Whether the buildAnalysisStatus field is set.
+   */
+  boolean hasBuildAnalysisStatus();
+  /**
+   * <code>optional .android_studio.BuildAttributionStats.BuildAnalysisStatus build_analysis_status = 4;</code>
+   * @return The buildAnalysisStatus.
+   */
+  com.google.wireless.android.sdk.stats.BuildAttributionStats.BuildAnalysisStatus getBuildAnalysisStatus();
+
+  /**
+   * <code>optional .android_studio.BuildAttributionStats.BuildType build_type = 5;</code>
+   * @return Whether the buildType field is set.
+   */
+  boolean hasBuildType();
+  /**
+   * <code>optional .android_studio.BuildAttributionStats.BuildType build_type = 5;</code>
+   * @return The buildType.
+   */
+  com.google.wireless.android.sdk.stats.BuildAttributionStats.BuildType getBuildType();
 }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleModule}
  */
-public  final class GradleModule extends
+public final class GradleModule extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleModule)
     GradleModuleOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_module_count = 1;</code>
    * @return Whether the totalModuleCount field is set.
    */
+  @java.lang.Override
   public boolean hasTotalModuleCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_module_count = 1;</code>
    * @return The totalModuleCount.
    */
+  @java.lang.Override
   public long getTotalModuleCount() {
     return totalModuleCount_;
   }
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 app_module_count = 2;</code>
    * @return Whether the appModuleCount field is set.
    */
+  @java.lang.Override
   public boolean hasAppModuleCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -147,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 app_module_count = 2;</code>
    * @return The appModuleCount.
    */
+  @java.lang.Override
   public long getAppModuleCount() {
     return appModuleCount_;
   }
@@ -161,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 lib_module_count = 3;</code>
    * @return Whether the libModuleCount field is set.
    */
+  @java.lang.Override
   public boolean hasLibModuleCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -172,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 lib_module_count = 3;</code>
    * @return The libModuleCount.
    */
+  @java.lang.Override
   public long getLibModuleCount() {
     return libModuleCount_;
   }
@@ -556,6 +562,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_module_count = 1;</code>
      * @return Whether the totalModuleCount field is set.
      */
+    @java.lang.Override
     public boolean hasTotalModuleCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -567,6 +574,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_module_count = 1;</code>
      * @return The totalModuleCount.
      */
+    @java.lang.Override
     public long getTotalModuleCount() {
       return totalModuleCount_;
     }
@@ -609,6 +617,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 app_module_count = 2;</code>
      * @return Whether the appModuleCount field is set.
      */
+    @java.lang.Override
     public boolean hasAppModuleCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -620,6 +629,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 app_module_count = 2;</code>
      * @return The appModuleCount.
      */
+    @java.lang.Override
     public long getAppModuleCount() {
       return appModuleCount_;
     }
@@ -662,6 +672,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 lib_module_count = 3;</code>
      * @return Whether the libModuleCount field is set.
      */
+    @java.lang.Override
     public boolean hasLibModuleCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -673,6 +684,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 lib_module_count = 3;</code>
      * @return The libModuleCount.
      */
+    @java.lang.Override
     public long getLibModuleCount() {
       return libModuleCount_;
     }

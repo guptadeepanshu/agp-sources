@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleBuildMemorySample}
  */
-public  final class GradleBuildMemorySample extends
+public final class GradleBuildMemorySample extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildMemorySample)
     GradleBuildMemorySampleOrBuilder {
@@ -122,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
    * @return Whether the gcTimeMs field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasGcTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
    * @return The gcTimeMs.
    */
+  @java.lang.Override
   @java.lang.Deprecated public long getGcTimeMs() {
     return gcTimeMs_;
   }
@@ -151,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
    * @return Whether the gcCount field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasGcCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -164,6 +167,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_count = 2 [deprecated = true];</code>
    * @return The gcCount.
    */
+  @java.lang.Override
   @java.lang.Deprecated public long getGcCount() {
     return gcCount_;
   }
@@ -178,6 +182,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 timestamp = 3;</code>
    * @return Whether the timestamp field is set.
    */
+  @java.lang.Override
   public boolean hasTimestamp() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -189,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 timestamp = 3;</code>
    * @return The timestamp.
    */
+  @java.lang.Override
   public long getTimestamp() {
     return timestamp_;
   }
@@ -203,6 +209,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
    * @return Whether the javaProcessStats field is set.
    */
+  @java.lang.Override
   public boolean hasJavaProcessStats() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -214,6 +221,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
    * @return The javaProcessStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JavaProcessStats getJavaProcessStats() {
     return javaProcessStats_ == null ? com.google.wireless.android.sdk.stats.JavaProcessStats.getDefaultInstance() : javaProcessStats_;
   }
@@ -224,6 +232,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder() {
     return javaProcessStats_ == null ? com.google.wireless.android.sdk.stats.JavaProcessStats.getDefaultInstance() : javaProcessStats_;
   }
@@ -640,6 +649,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
      * @return Whether the gcTimeMs field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasGcTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -653,6 +663,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time_ms = 1 [deprecated = true];</code>
      * @return The gcTimeMs.
      */
+    @java.lang.Override
     @java.lang.Deprecated public long getGcTimeMs() {
       return gcTimeMs_;
     }
@@ -701,6 +712,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_count = 2 [deprecated = true];</code>
      * @return Whether the gcCount field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasGcCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -714,6 +726,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_count = 2 [deprecated = true];</code>
      * @return The gcCount.
      */
+    @java.lang.Override
     @java.lang.Deprecated public long getGcCount() {
       return gcCount_;
     }
@@ -760,6 +773,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 timestamp = 3;</code>
      * @return Whether the timestamp field is set.
      */
+    @java.lang.Override
     public boolean hasTimestamp() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -771,6 +785,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 timestamp = 3;</code>
      * @return The timestamp.
      */
+    @java.lang.Override
     public long getTimestamp() {
       return timestamp_;
     }

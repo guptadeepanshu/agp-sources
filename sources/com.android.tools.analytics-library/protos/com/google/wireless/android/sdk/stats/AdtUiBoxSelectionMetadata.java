@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AdtUiBoxSelectionMetadata}
  */
-public  final class AdtUiBoxSelectionMetadata extends
+public final class AdtUiBoxSelectionMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AdtUiBoxSelectionMetadata)
     AdtUiBoxSelectionMetadataOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_us = 1;</code>
    * @return Whether the durationUs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationUs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_us = 1;</code>
    * @return The durationUs.
    */
+  @java.lang.Override
   public long getDurationUs() {
     return durationUs_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 track_count = 2;</code>
    * @return Whether the trackCount field is set.
    */
+  @java.lang.Override
   public boolean hasTrackCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 track_count = 2;</code>
    * @return The trackCount.
    */
+  @java.lang.Override
   public int getTrackCount() {
     return trackCount_;
   }
@@ -499,6 +503,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_us = 1;</code>
      * @return Whether the durationUs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationUs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -510,6 +515,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_us = 1;</code>
      * @return The durationUs.
      */
+    @java.lang.Override
     public long getDurationUs() {
       return durationUs_;
     }
@@ -552,6 +558,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 track_count = 2;</code>
      * @return Whether the trackCount field is set.
      */
+    @java.lang.Override
     public boolean hasTrackCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -563,6 +570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 track_count = 2;</code>
      * @return The trackCount.
      */
+    @java.lang.Override
     public int getTrackCount() {
       return trackCount_;
     }

@@ -20,7 +20,7 @@ import com.android.SdkConstants
 import com.android.SdkConstants.DOT_DEX
 import com.android.SdkConstants.FD_ASSETS
 import com.android.SdkConstants.FD_DEX
-import com.android.build.api.artifact.MultipleArtifact
+import com.android.build.api.artifact.SingleArtifact
 import com.android.build.gradle.internal.component.ApkCreationConfig
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.component.DynamicFeatureCreationConfig
@@ -41,15 +41,14 @@ import com.android.builder.files.NativeLibraryAbiPredicate
 import com.android.builder.packaging.JarCreator
 import com.android.builder.packaging.JarMerger
 import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
@@ -98,9 +97,9 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
     @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val featureJavaResFiles: ConfigurableFileCollection
 
-    @get:InputFiles
+    @get:InputDirectory
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    abstract val assetsFilesDirectories: ListProperty<Directory>
+    abstract val assetsFilesDirectory: DirectoryProperty
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
@@ -149,14 +148,12 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             }
 
         jarCreator.use {
-            assetsFilesDirectories.get().forEach { assetFilesDirectory ->
-                it.addDirectory(
-                    assetFilesDirectory.asFile.toPath(),
-                    null,
-                    null,
-                    Relocator(FD_ASSETS)
-                )
-            }
+            it.addDirectory(
+                assetsFilesDirectory.get().asFile.toPath(),
+                null,
+                null,
+                Relocator(FD_ASSETS)
+            )
 
             it.addJar(resFiles.get().asFile.toPath(), excludeJarManifest, ResRelocator())
 
@@ -251,8 +248,8 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             }
             task.fileName.disallowChanges()
 
-            task.assetsFilesDirectories.setDisallowChanges(
-                creationConfig.artifacts.getAll(MultipleArtifact.ASSETS)
+            task.assetsFilesDirectory.setDisallowChanges(
+                creationConfig.artifacts.get(SingleArtifact.ASSETS)
             )
 
             val legacyShrinkerEnabled = creationConfig.useResourceShrinker() &&
@@ -312,7 +309,7 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
             )
             task.featureJavaResFiles.disallowChanges()
 
-            if (creationConfig.variantType.isDynamicFeature) {
+            if (creationConfig.componentType.isDynamicFeature) {
                 // If this is a dynamic feature, we use the abiFilters published by the base module.
                 task.baseModuleMetadata.from(
                     creationConfig.variantDependencies.getArtifactFileCollection(
@@ -322,12 +319,12 @@ abstract class PerModuleBundleTask @Inject constructor(objects: ObjectFactory) :
                     )
                 )
             } else {
-                task.abiFilters.set(creationConfig.variantDslInfo.supportedAbis)
+                task.abiFilters.set(creationConfig.supportedAbis)
             }
             task.abiFilters.disallowChanges()
             task.baseModuleMetadata.disallowChanges()
 
-            if (creationConfig.variantType.isBaseModule) {
+            if (creationConfig.componentType.isBaseModule) {
                 artifacts.setTaskInputToFinalProduct(
                     InternalArtifactType.APP_METADATA,
                     task.appMetadata
@@ -391,7 +388,7 @@ private class ResRelocator : JarCreator.Relocator {
  */
 fun getNativeLibsFiles(creationConfig: ComponentCreationConfig): FileCollection {
     val nativeLibs = creationConfig.services.fileCollection()
-    if (creationConfig.variantType.isForTesting) {
+    if (creationConfig.componentType.isForTesting) {
         return nativeLibs.from(creationConfig.artifacts.get(MERGED_NATIVE_LIBS))
     }
     nativeLibs.from(creationConfig.artifacts.get(STRIPPED_NATIVE_LIBS))

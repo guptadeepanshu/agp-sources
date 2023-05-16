@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorMultiDisplay}
  */
-public  final class EmulatorMultiDisplay extends
+public final class EmulatorMultiDisplay extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorMultiDisplay)
     EmulatorMultiDisplayOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 apply_count = 1;</code>
    * @return Whether the applyCount field is set.
    */
+  @java.lang.Override
   public boolean hasApplyCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 apply_count = 1;</code>
    * @return The applyCount.
    */
+  @java.lang.Override
   public int getApplyCount() {
     return applyCount_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 max_displays = 2;</code>
    * @return Whether the maxDisplays field is set.
    */
+  @java.lang.Override
   public boolean hasMaxDisplays() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 max_displays = 2;</code>
    * @return The maxDisplays.
    */
+  @java.lang.Override
   public int getMaxDisplays() {
     return maxDisplays_;
   }
@@ -498,6 +502,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 apply_count = 1;</code>
      * @return Whether the applyCount field is set.
      */
+    @java.lang.Override
     public boolean hasApplyCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -509,6 +514,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 apply_count = 1;</code>
      * @return The applyCount.
      */
+    @java.lang.Override
     public int getApplyCount() {
       return applyCount_;
     }
@@ -551,6 +557,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 max_displays = 2;</code>
      * @return Whether the maxDisplays field is set.
      */
+    @java.lang.Override
     public boolean hasMaxDisplays() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -562,6 +569,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 max_displays = 2;</code>
      * @return The maxDisplays.
      */
+    @java.lang.Override
     public int getMaxDisplays() {
       return maxDisplays_;
     }

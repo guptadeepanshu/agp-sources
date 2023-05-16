@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ConfigurationCacheCompatibilityData}
  */
-public  final class ConfigurationCacheCompatibilityData extends
+public final class ConfigurationCacheCompatibilityData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ConfigurationCacheCompatibilityData)
     ConfigurationCacheCompatibilityDataOrBuilder {
@@ -310,14 +310,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData.CompatibilityState compatibility_state = 1;</code>
    * @return Whether the compatibilityState field is set.
    */
-  public boolean hasCompatibilityState() {
+  @java.lang.Override public boolean hasCompatibilityState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData.CompatibilityState compatibility_state = 1;</code>
    * @return The compatibilityState.
    */
-  public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState getCompatibilityState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState getCompatibilityState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState result = com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState.valueOf(compatibilityState_);
     return result == null ? com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState.UNKNOWN_STATE : result;
@@ -332,6 +332,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.BuildAttributionPluginIdentifier incompatible_plugins = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier> getIncompatiblePluginsList() {
     return incompatiblePlugins_;
   }
@@ -342,6 +343,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.BuildAttributionPluginIdentifier incompatible_plugins = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder> 
       getIncompatiblePluginsOrBuilderList() {
     return incompatiblePlugins_;
@@ -353,6 +355,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.BuildAttributionPluginIdentifier incompatible_plugins = 2;</code>
    */
+  @java.lang.Override
   public int getIncompatiblePluginsCount() {
     return incompatiblePlugins_.size();
   }
@@ -363,6 +366,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.BuildAttributionPluginIdentifier incompatible_plugins = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getIncompatiblePlugins(int index) {
     return incompatiblePlugins_.get(index);
   }
@@ -373,6 +377,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.BuildAttributionPluginIdentifier incompatible_plugins = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getIncompatiblePluginsOrBuilder(
       int index) {
     return incompatiblePlugins_.get(index);
@@ -755,13 +760,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ConfigurationCacheCompatibilityData.CompatibilityState compatibility_state = 1;</code>
      * @return Whether the compatibilityState field is set.
      */
-    public boolean hasCompatibilityState() {
+    @java.lang.Override public boolean hasCompatibilityState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.ConfigurationCacheCompatibilityData.CompatibilityState compatibility_state = 1;</code>
      * @return The compatibilityState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState getCompatibilityState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState result = com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.CompatibilityState.valueOf(compatibilityState_);

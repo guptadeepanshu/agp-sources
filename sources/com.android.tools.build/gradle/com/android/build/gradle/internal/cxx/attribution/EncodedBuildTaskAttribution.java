@@ -14,7 +14,7 @@ package com.android.build.gradle.internal.cxx.attribution;
  *
  * Protobuf type {@code EncodedBuildTaskAttribution}
  */
-public  final class EncodedBuildTaskAttribution extends
+public final class EncodedBuildTaskAttribution extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedBuildTaskAttribution)
     EncodedBuildTaskAttributionOrBuilder {
@@ -109,6 +109,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 output_file_id = 1;</code>
    * @return The outputFileId.
    */
+  @java.lang.Override
   public int getOutputFileId() {
     return outputFileId_;
   }
@@ -119,6 +120,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 start_time_offset_ms = 3;</code>
    * @return The startTimeOffsetMs.
    */
+  @java.lang.Override
   public int getStartTimeOffsetMs() {
     return startTimeOffsetMs_;
   }
@@ -129,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 end_time_offset_ms = 4;</code>
    * @return The endTimeOffsetMs.
    */
+  @java.lang.Override
   public int getEndTimeOffsetMs() {
     return endTimeOffsetMs_;
   }
@@ -482,6 +485,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 output_file_id = 1;</code>
      * @return The outputFileId.
      */
+    @java.lang.Override
     public int getOutputFileId() {
       return outputFileId_;
     }
@@ -512,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 start_time_offset_ms = 3;</code>
      * @return The startTimeOffsetMs.
      */
+    @java.lang.Override
     public int getStartTimeOffsetMs() {
       return startTimeOffsetMs_;
     }
@@ -542,6 +547,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 end_time_offset_ms = 4;</code>
      * @return The endTimeOffsetMs.
      */
+    @java.lang.Override
     public int getEndTimeOffsetMs() {
       return endTimeOffsetMs_;
     }

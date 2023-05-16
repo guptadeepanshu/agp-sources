@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.OptInToMetrics}
  */
-public  final class OptInToMetrics extends
+public final class OptInToMetrics extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.OptInToMetrics)
     OptInToMetricsOrBuilder {

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ProfilerSessionSelectionMetaData}
  */
-public  final class ProfilerSessionSelectionMetaData extends
+public final class ProfilerSessionSelectionMetaData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ProfilerSessionSelectionMetaData)
     ProfilerSessionSelectionMetaDataOrBuilder {
@@ -237,7 +237,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionSelectionMetaData.ArtifactType selected_type = 1;</code>
    * @return Whether the selectedType field is set.
    */
-  public boolean hasSelectedType() {
+  @java.lang.Override public boolean hasSelectedType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -248,7 +248,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionSelectionMetaData.ArtifactType selected_type = 1;</code>
    * @return The selectedType.
    */
-  public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType getSelectedType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType getSelectedType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.valueOf(selectedType_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.UNKNOWN_ARTIFACT_TYPE : result;
@@ -264,6 +264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_session_alive = 2;</code>
    * @return Whether the isSessionAlive field is set.
    */
+  @java.lang.Override
   public boolean hasIsSessionAlive() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -275,6 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_session_alive = 2;</code>
    * @return The isSessionAlive.
    */
+  @java.lang.Override
   public boolean getIsSessionAlive() {
     return isSessionAlive_;
   }
@@ -631,7 +633,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionSelectionMetaData.ArtifactType selected_type = 1;</code>
      * @return Whether the selectedType field is set.
      */
-    public boolean hasSelectedType() {
+    @java.lang.Override public boolean hasSelectedType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -642,6 +644,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionSelectionMetaData.ArtifactType selected_type = 1;</code>
      * @return The selectedType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType getSelectedType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType result = com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.ArtifactType.valueOf(selectedType_);
@@ -689,6 +692,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_session_alive = 2;</code>
      * @return Whether the isSessionAlive field is set.
      */
+    @java.lang.Override
     public boolean hasIsSessionAlive() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -700,6 +704,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_session_alive = 2;</code>
      * @return The isSessionAlive.
      */
+    @java.lang.Override
     public boolean getIsSessionAlive() {
       return isSessionAlive_;
     }

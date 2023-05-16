@@ -241,7 +241,7 @@ public final class InstrumentationData {
   /**
    * Protobuf type {@code android.am.ResultsBundleEntry}
    */
-  public  static final class ResultsBundleEntry extends
+  public static final class ResultsBundleEntry extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android.am.ResultsBundleEntry)
       ResultsBundleEntryOrBuilder {
@@ -376,6 +376,7 @@ public final class InstrumentationData {
      * <code>optional string key = 1;</code>
      * @return Whether the key field is set.
      */
+    @java.lang.Override
     public boolean hasKey() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -383,6 +384,7 @@ public final class InstrumentationData {
      * <code>optional string key = 1;</code>
      * @return The key.
      */
+    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -401,6 +403,7 @@ public final class InstrumentationData {
      * <code>optional string key = 1;</code>
      * @return The bytes for key.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -421,6 +424,7 @@ public final class InstrumentationData {
      * <code>optional string value_string = 2;</code>
      * @return Whether the valueString field is set.
      */
+    @java.lang.Override
     public boolean hasValueString() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -428,6 +432,7 @@ public final class InstrumentationData {
      * <code>optional string value_string = 2;</code>
      * @return The valueString.
      */
+    @java.lang.Override
     public java.lang.String getValueString() {
       java.lang.Object ref = valueString_;
       if (ref instanceof java.lang.String) {
@@ -446,6 +451,7 @@ public final class InstrumentationData {
      * <code>optional string value_string = 2;</code>
      * @return The bytes for valueString.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueStringBytes() {
       java.lang.Object ref = valueString_;
@@ -466,6 +472,7 @@ public final class InstrumentationData {
      * <code>optional sint32 value_int = 3;</code>
      * @return Whether the valueInt field is set.
      */
+    @java.lang.Override
     public boolean hasValueInt() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -473,6 +480,7 @@ public final class InstrumentationData {
      * <code>optional sint32 value_int = 3;</code>
      * @return The valueInt.
      */
+    @java.lang.Override
     public int getValueInt() {
       return valueInt_;
     }
@@ -483,6 +491,7 @@ public final class InstrumentationData {
      * <code>optional float value_float = 4;</code>
      * @return Whether the valueFloat field is set.
      */
+    @java.lang.Override
     public boolean hasValueFloat() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -490,6 +499,7 @@ public final class InstrumentationData {
      * <code>optional float value_float = 4;</code>
      * @return The valueFloat.
      */
+    @java.lang.Override
     public float getValueFloat() {
       return valueFloat_;
     }
@@ -500,6 +510,7 @@ public final class InstrumentationData {
      * <code>optional double value_double = 5;</code>
      * @return Whether the valueDouble field is set.
      */
+    @java.lang.Override
     public boolean hasValueDouble() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -507,6 +518,7 @@ public final class InstrumentationData {
      * <code>optional double value_double = 5;</code>
      * @return The valueDouble.
      */
+    @java.lang.Override
     public double getValueDouble() {
       return valueDouble_;
     }
@@ -517,6 +529,7 @@ public final class InstrumentationData {
      * <code>optional sint64 value_long = 6;</code>
      * @return Whether the valueLong field is set.
      */
+    @java.lang.Override
     public boolean hasValueLong() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -524,6 +537,7 @@ public final class InstrumentationData {
      * <code>optional sint64 value_long = 6;</code>
      * @return The valueLong.
      */
+    @java.lang.Override
     public long getValueLong() {
       return valueLong_;
     }
@@ -534,6 +548,7 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle value_bundle = 7;</code>
      * @return Whether the valueBundle field is set.
      */
+    @java.lang.Override
     public boolean hasValueBundle() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -541,12 +556,14 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle value_bundle = 7;</code>
      * @return The valueBundle.
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundle getValueBundle() {
       return valueBundle_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : valueBundle_;
     }
     /**
      * <code>optional .android.am.ResultsBundle value_bundle = 7;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundleOrBuilder getValueBundleOrBuilder() {
       return valueBundle_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : valueBundle_;
     }
@@ -557,6 +574,7 @@ public final class InstrumentationData {
      * <code>optional bytes value_bytes = 8;</code>
      * @return Whether the valueBytes field is set.
      */
+    @java.lang.Override
     public boolean hasValueBytes() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -564,6 +582,7 @@ public final class InstrumentationData {
      * <code>optional bytes value_bytes = 8;</code>
      * @return The valueBytes.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getValueBytes() {
       return valueBytes_;
     }
@@ -1246,6 +1265,7 @@ public final class InstrumentationData {
        * <code>optional sint32 value_int = 3;</code>
        * @return Whether the valueInt field is set.
        */
+      @java.lang.Override
       public boolean hasValueInt() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1253,6 +1273,7 @@ public final class InstrumentationData {
        * <code>optional sint32 value_int = 3;</code>
        * @return The valueInt.
        */
+      @java.lang.Override
       public int getValueInt() {
         return valueInt_;
       }
@@ -1283,6 +1304,7 @@ public final class InstrumentationData {
        * <code>optional float value_float = 4;</code>
        * @return Whether the valueFloat field is set.
        */
+      @java.lang.Override
       public boolean hasValueFloat() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1290,6 +1312,7 @@ public final class InstrumentationData {
        * <code>optional float value_float = 4;</code>
        * @return The valueFloat.
        */
+      @java.lang.Override
       public float getValueFloat() {
         return valueFloat_;
       }
@@ -1320,6 +1343,7 @@ public final class InstrumentationData {
        * <code>optional double value_double = 5;</code>
        * @return Whether the valueDouble field is set.
        */
+      @java.lang.Override
       public boolean hasValueDouble() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -1327,6 +1351,7 @@ public final class InstrumentationData {
        * <code>optional double value_double = 5;</code>
        * @return The valueDouble.
        */
+      @java.lang.Override
       public double getValueDouble() {
         return valueDouble_;
       }
@@ -1357,6 +1382,7 @@ public final class InstrumentationData {
        * <code>optional sint64 value_long = 6;</code>
        * @return Whether the valueLong field is set.
        */
+      @java.lang.Override
       public boolean hasValueLong() {
         return ((bitField0_ & 0x00000020) != 0);
       }
@@ -1364,6 +1390,7 @@ public final class InstrumentationData {
        * <code>optional sint64 value_long = 6;</code>
        * @return The valueLong.
        */
+      @java.lang.Override
       public long getValueLong() {
         return valueLong_;
       }
@@ -1514,6 +1541,7 @@ public final class InstrumentationData {
        * <code>optional bytes value_bytes = 8;</code>
        * @return Whether the valueBytes field is set.
        */
+      @java.lang.Override
       public boolean hasValueBytes() {
         return ((bitField0_ & 0x00000080) != 0);
       }
@@ -1521,6 +1549,7 @@ public final class InstrumentationData {
        * <code>optional bytes value_bytes = 8;</code>
        * @return The valueBytes.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getValueBytes() {
         return valueBytes_;
       }
@@ -1632,7 +1661,7 @@ public final class InstrumentationData {
   /**
    * Protobuf type {@code android.am.ResultsBundle}
    */
-  public  static final class ResultsBundle extends
+  public static final class ResultsBundle extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android.am.ResultsBundle)
       ResultsBundleOrBuilder {
@@ -1725,12 +1754,14 @@ public final class InstrumentationData {
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.commands.am.InstrumentationData.ResultsBundleEntry> getEntriesList() {
       return entries_;
     }
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.commands.am.InstrumentationData.ResultsBundleEntryOrBuilder> 
         getEntriesOrBuilderList() {
       return entries_;
@@ -1738,18 +1769,21 @@ public final class InstrumentationData {
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
      */
+    @java.lang.Override
     public int getEntriesCount() {
       return entries_.size();
     }
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundleEntry getEntries(int index) {
       return entries_.get(index);
     }
     /**
      * <code>repeated .android.am.ResultsBundleEntry entries = 1;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundleEntryOrBuilder getEntriesOrBuilder(
         int index) {
       return entries_.get(index);
@@ -2439,7 +2473,7 @@ public final class InstrumentationData {
   /**
    * Protobuf type {@code android.am.TestStatus}
    */
-  public  static final class TestStatus extends
+  public static final class TestStatus extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android.am.TestStatus)
       TestStatusOrBuilder {
@@ -2546,6 +2580,7 @@ public final class InstrumentationData {
      * <code>optional sint32 result_code = 3;</code>
      * @return Whether the resultCode field is set.
      */
+    @java.lang.Override
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -2553,6 +2588,7 @@ public final class InstrumentationData {
      * <code>optional sint32 result_code = 3;</code>
      * @return The resultCode.
      */
+    @java.lang.Override
     public int getResultCode() {
       return resultCode_;
     }
@@ -2563,6 +2599,7 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      * @return Whether the results field is set.
      */
+    @java.lang.Override
     public boolean hasResults() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2570,12 +2607,14 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      * @return The results.
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundle getResults() {
       return results_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : results_;
     }
     /**
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundleOrBuilder getResultsOrBuilder() {
       return results_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : results_;
     }
@@ -2586,6 +2625,7 @@ public final class InstrumentationData {
      * <code>optional string logcat = 5;</code>
      * @return Whether the logcat field is set.
      */
+    @java.lang.Override
     public boolean hasLogcat() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2593,6 +2633,7 @@ public final class InstrumentationData {
      * <code>optional string logcat = 5;</code>
      * @return The logcat.
      */
+    @java.lang.Override
     public java.lang.String getLogcat() {
       java.lang.Object ref = logcat_;
       if (ref instanceof java.lang.String) {
@@ -2611,6 +2652,7 @@ public final class InstrumentationData {
      * <code>optional string logcat = 5;</code>
      * @return The bytes for logcat.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getLogcatBytes() {
       java.lang.Object ref = logcat_;
@@ -3004,6 +3046,7 @@ public final class InstrumentationData {
        * <code>optional sint32 result_code = 3;</code>
        * @return Whether the resultCode field is set.
        */
+      @java.lang.Override
       public boolean hasResultCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -3011,6 +3054,7 @@ public final class InstrumentationData {
        * <code>optional sint32 result_code = 3;</code>
        * @return The resultCode.
        */
+      @java.lang.Override
       public int getResultCode() {
         return resultCode_;
       }
@@ -3353,7 +3397,7 @@ public final class InstrumentationData {
   /**
    * Protobuf type {@code android.am.SessionStatus}
    */
-  public  static final class SessionStatus extends
+  public static final class SessionStatus extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android.am.SessionStatus)
       SessionStatusOrBuilder {
@@ -3473,14 +3517,14 @@ public final class InstrumentationData {
      * <code>optional .android.am.SessionStatusCode status_code = 1;</code>
      * @return Whether the statusCode field is set.
      */
-    public boolean hasStatusCode() {
+    @java.lang.Override public boolean hasStatusCode() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android.am.SessionStatusCode status_code = 1;</code>
      * @return The statusCode.
      */
-    public com.android.commands.am.InstrumentationData.SessionStatusCode getStatusCode() {
+    @java.lang.Override public com.android.commands.am.InstrumentationData.SessionStatusCode getStatusCode() {
       @SuppressWarnings("deprecation")
       com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.valueOf(statusCode_);
       return result == null ? com.android.commands.am.InstrumentationData.SessionStatusCode.SESSION_FINISHED : result;
@@ -3492,6 +3536,7 @@ public final class InstrumentationData {
      * <code>optional string error_text = 2;</code>
      * @return Whether the errorText field is set.
      */
+    @java.lang.Override
     public boolean hasErrorText() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -3499,6 +3544,7 @@ public final class InstrumentationData {
      * <code>optional string error_text = 2;</code>
      * @return The errorText.
      */
+    @java.lang.Override
     public java.lang.String getErrorText() {
       java.lang.Object ref = errorText_;
       if (ref instanceof java.lang.String) {
@@ -3517,6 +3563,7 @@ public final class InstrumentationData {
      * <code>optional string error_text = 2;</code>
      * @return The bytes for errorText.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getErrorTextBytes() {
       java.lang.Object ref = errorText_;
@@ -3537,6 +3584,7 @@ public final class InstrumentationData {
      * <code>optional sint32 result_code = 3;</code>
      * @return Whether the resultCode field is set.
      */
+    @java.lang.Override
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -3544,6 +3592,7 @@ public final class InstrumentationData {
      * <code>optional sint32 result_code = 3;</code>
      * @return The resultCode.
      */
+    @java.lang.Override
     public int getResultCode() {
       return resultCode_;
     }
@@ -3554,6 +3603,7 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      * @return Whether the results field is set.
      */
+    @java.lang.Override
     public boolean hasResults() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -3561,12 +3611,14 @@ public final class InstrumentationData {
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      * @return The results.
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundle getResults() {
       return results_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : results_;
     }
     /**
      * <code>optional .android.am.ResultsBundle results = 4;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.ResultsBundleOrBuilder getResultsOrBuilder() {
       return results_ == null ? com.android.commands.am.InstrumentationData.ResultsBundle.getDefaultInstance() : results_;
     }
@@ -3974,13 +4026,14 @@ public final class InstrumentationData {
        * <code>optional .android.am.SessionStatusCode status_code = 1;</code>
        * @return Whether the statusCode field is set.
        */
-      public boolean hasStatusCode() {
+      @java.lang.Override public boolean hasStatusCode() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android.am.SessionStatusCode status_code = 1;</code>
        * @return The statusCode.
        */
+      @java.lang.Override
       public com.android.commands.am.InstrumentationData.SessionStatusCode getStatusCode() {
         @SuppressWarnings("deprecation")
         com.android.commands.am.InstrumentationData.SessionStatusCode result = com.android.commands.am.InstrumentationData.SessionStatusCode.valueOf(statusCode_);
@@ -4100,6 +4153,7 @@ public final class InstrumentationData {
        * <code>optional sint32 result_code = 3;</code>
        * @return Whether the resultCode field is set.
        */
+      @java.lang.Override
       public boolean hasResultCode() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -4107,6 +4161,7 @@ public final class InstrumentationData {
        * <code>optional sint32 result_code = 3;</code>
        * @return The resultCode.
        */
+      @java.lang.Override
       public int getResultCode() {
         return resultCode_;
       }
@@ -4350,7 +4405,7 @@ public final class InstrumentationData {
   /**
    * Protobuf type {@code android.am.Session}
    */
-  public  static final class Session extends
+  public static final class Session extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android.am.Session)
       SessionOrBuilder {
@@ -4457,12 +4512,14 @@ public final class InstrumentationData {
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.commands.am.InstrumentationData.TestStatus> getTestStatusList() {
       return testStatus_;
     }
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.commands.am.InstrumentationData.TestStatusOrBuilder> 
         getTestStatusOrBuilderList() {
       return testStatus_;
@@ -4470,18 +4527,21 @@ public final class InstrumentationData {
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
      */
+    @java.lang.Override
     public int getTestStatusCount() {
       return testStatus_.size();
     }
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.TestStatus getTestStatus(int index) {
       return testStatus_.get(index);
     }
     /**
      * <code>repeated .android.am.TestStatus test_status = 1;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.TestStatusOrBuilder getTestStatusOrBuilder(
         int index) {
       return testStatus_.get(index);
@@ -4493,6 +4553,7 @@ public final class InstrumentationData {
      * <code>optional .android.am.SessionStatus session_status = 2;</code>
      * @return Whether the sessionStatus field is set.
      */
+    @java.lang.Override
     public boolean hasSessionStatus() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -4500,12 +4561,14 @@ public final class InstrumentationData {
      * <code>optional .android.am.SessionStatus session_status = 2;</code>
      * @return The sessionStatus.
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.SessionStatus getSessionStatus() {
       return sessionStatus_ == null ? com.android.commands.am.InstrumentationData.SessionStatus.getDefaultInstance() : sessionStatus_;
     }
     /**
      * <code>optional .android.am.SessionStatus session_status = 2;</code>
      */
+    @java.lang.Override
     public com.android.commands.am.InstrumentationData.SessionStatusOrBuilder getSessionStatusOrBuilder() {
       return sessionStatus_ == null ? com.android.commands.am.InstrumentationData.SessionStatus.getDefaultInstance() : sessionStatus_;
     }

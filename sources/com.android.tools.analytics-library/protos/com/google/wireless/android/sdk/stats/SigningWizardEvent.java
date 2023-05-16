@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.SigningWizardEvent}
  */
-public  final class SigningWizardEvent extends
+public final class SigningWizardEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.SigningWizardEvent)
     SigningWizardEventOrBuilder {
@@ -410,7 +410,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent.SigningWizardFailureCause failure_cause = 1;</code>
    * @return Whether the failureCause field is set.
    */
-  public boolean hasFailureCause() {
+  @java.lang.Override public boolean hasFailureCause() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -421,7 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent.SigningWizardFailureCause failure_cause = 1;</code>
    * @return The failureCause.
    */
-  public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause getFailureCause() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause getFailureCause() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.valueOf(failureCause_);
     return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.FAILURE_CAUSE_UNKNOWN : result;
@@ -437,7 +437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent.SigningTargetType target_type = 2;</code>
    * @return Whether the targetType field is set.
    */
-  public boolean hasTargetType() {
+  @java.lang.Override public boolean hasTargetType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -448,7 +448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent.SigningTargetType target_type = 2;</code>
    * @return The targetType.
    */
-  public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType getTargetType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType getTargetType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.valueOf(targetType_);
     return result == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.TARGET_TYPE_UNKNOWN : result;
@@ -464,6 +464,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_modules = 3;</code>
    * @return Whether the numberOfModules field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfModules() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -475,6 +476,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_modules = 3;</code>
    * @return The numberOfModules.
    */
+  @java.lang.Override
   public int getNumberOfModules() {
     return numberOfModules_;
   }
@@ -489,6 +491,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_variants = 4;</code>
    * @return Whether the numberOfVariants field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfVariants() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -500,6 +503,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 number_of_variants = 4;</code>
    * @return The numberOfVariants.
    */
+  @java.lang.Override
   public int getNumberOfVariants() {
     return numberOfVariants_;
   }
@@ -514,6 +518,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_private_key_exported = 5;</code>
    * @return Whether the isPrivateKeyExported field is set.
    */
+  @java.lang.Override
   public boolean hasIsPrivateKeyExported() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -525,6 +530,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_private_key_exported = 5;</code>
    * @return The isPrivateKeyExported.
    */
+  @java.lang.Override
   public boolean getIsPrivateKeyExported() {
     return isPrivateKeyExported_;
   }
@@ -955,7 +961,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SigningWizardEvent.SigningWizardFailureCause failure_cause = 1;</code>
      * @return Whether the failureCause field is set.
      */
-    public boolean hasFailureCause() {
+    @java.lang.Override public boolean hasFailureCause() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -966,6 +972,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SigningWizardEvent.SigningWizardFailureCause failure_cause = 1;</code>
      * @return The failureCause.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause getFailureCause() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningWizardFailureCause.valueOf(failureCause_);
@@ -1013,7 +1020,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SigningWizardEvent.SigningTargetType target_type = 2;</code>
      * @return Whether the targetType field is set.
      */
-    public boolean hasTargetType() {
+    @java.lang.Override public boolean hasTargetType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1024,6 +1031,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SigningWizardEvent.SigningTargetType target_type = 2;</code>
      * @return The targetType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType getTargetType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType result = com.google.wireless.android.sdk.stats.SigningWizardEvent.SigningTargetType.valueOf(targetType_);
@@ -1071,6 +1079,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_modules = 3;</code>
      * @return Whether the numberOfModules field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfModules() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1082,6 +1091,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_modules = 3;</code>
      * @return The numberOfModules.
      */
+    @java.lang.Override
     public int getNumberOfModules() {
       return numberOfModules_;
     }
@@ -1124,6 +1134,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_variants = 4;</code>
      * @return Whether the numberOfVariants field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfVariants() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1135,6 +1146,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 number_of_variants = 4;</code>
      * @return The numberOfVariants.
      */
+    @java.lang.Override
     public int getNumberOfVariants() {
       return numberOfVariants_;
     }
@@ -1177,6 +1189,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_private_key_exported = 5;</code>
      * @return Whether the isPrivateKeyExported field is set.
      */
+    @java.lang.Override
     public boolean hasIsPrivateKeyExported() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1188,6 +1201,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_private_key_exported = 5;</code>
      * @return The isPrivateKeyExported.
      */
+    @java.lang.Override
     public boolean getIsPrivateKeyExported() {
       return isPrivateKeyExported_;
     }

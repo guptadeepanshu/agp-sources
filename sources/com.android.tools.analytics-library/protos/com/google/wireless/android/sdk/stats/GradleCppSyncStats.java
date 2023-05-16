@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleCppSyncStats}
  */
-public  final class GradleCppSyncStats extends
+public final class GradleCppSyncStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleCppSyncStats)
     GradleCppSyncStatsOrBuilder {
@@ -192,7 +192,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.GradleCppSyncStats.NativeModuleStats}
    */
-  public  static final class NativeModuleStats extends
+  public static final class NativeModuleStats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.GradleCppSyncStats.NativeModuleStats)
       NativeModuleStatsOrBuilder {
@@ -298,6 +298,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 c_source_file_count = 1;</code>
      * @return Whether the cSourceFileCount field is set.
      */
+    @java.lang.Override
     public boolean hasCSourceFileCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -309,6 +310,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 c_source_file_count = 1;</code>
      * @return The cSourceFileCount.
      */
+    @java.lang.Override
     public int getCSourceFileCount() {
       return cSourceFileCount_;
     }
@@ -323,6 +325,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cpp_source_file_count = 2;</code>
      * @return Whether the cppSourceFileCount field is set.
      */
+    @java.lang.Override
     public boolean hasCppSourceFileCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -334,6 +337,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cpp_source_file_count = 2;</code>
      * @return The cppSourceFileCount.
      */
+    @java.lang.Override
     public int getCppSourceFileCount() {
       return cppSourceFileCount_;
     }
@@ -348,6 +352,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 distinct_compiler_flag_lists_count = 3;</code>
      * @return Whether the distinctCompilerFlagListsCount field is set.
      */
+    @java.lang.Override
     public boolean hasDistinctCompilerFlagListsCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -359,6 +364,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 distinct_compiler_flag_lists_count = 3;</code>
      * @return The distinctCompilerFlagListsCount.
      */
+    @java.lang.Override
     public int getDistinctCompilerFlagListsCount() {
       return distinctCompilerFlagListsCount_;
     }
@@ -373,6 +379,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cidr_configuration_count = 4;</code>
      * @return Whether the cidrConfigurationCount field is set.
      */
+    @java.lang.Override
     public boolean hasCidrConfigurationCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -384,6 +391,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cidr_configuration_count = 4;</code>
      * @return The cidrConfigurationCount.
      */
+    @java.lang.Override
     public int getCidrConfigurationCount() {
       return cidrConfigurationCount_;
     }
@@ -786,6 +794,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 c_source_file_count = 1;</code>
        * @return Whether the cSourceFileCount field is set.
        */
+      @java.lang.Override
       public boolean hasCSourceFileCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -797,6 +806,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 c_source_file_count = 1;</code>
        * @return The cSourceFileCount.
        */
+      @java.lang.Override
       public int getCSourceFileCount() {
         return cSourceFileCount_;
       }
@@ -839,6 +849,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cpp_source_file_count = 2;</code>
        * @return Whether the cppSourceFileCount field is set.
        */
+      @java.lang.Override
       public boolean hasCppSourceFileCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -850,6 +861,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cpp_source_file_count = 2;</code>
        * @return The cppSourceFileCount.
        */
+      @java.lang.Override
       public int getCppSourceFileCount() {
         return cppSourceFileCount_;
       }
@@ -892,6 +904,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 distinct_compiler_flag_lists_count = 3;</code>
        * @return Whether the distinctCompilerFlagListsCount field is set.
        */
+      @java.lang.Override
       public boolean hasDistinctCompilerFlagListsCount() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -903,6 +916,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 distinct_compiler_flag_lists_count = 3;</code>
        * @return The distinctCompilerFlagListsCount.
        */
+      @java.lang.Override
       public int getDistinctCompilerFlagListsCount() {
         return distinctCompilerFlagListsCount_;
       }
@@ -945,6 +959,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cidr_configuration_count = 4;</code>
        * @return Whether the cidrConfigurationCount field is set.
        */
+      @java.lang.Override
       public boolean hasCidrConfigurationCount() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -956,6 +971,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 cidr_configuration_count = 4;</code>
        * @return The cidrConfigurationCount.
        */
+      @java.lang.Override
       public int getCidrConfigurationCount() {
         return cidrConfigurationCount_;
       }
@@ -1052,6 +1068,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 native_workspace_sync_time_ms = 1;</code>
    * @return Whether the nativeWorkspaceSyncTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasNativeWorkspaceSyncTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -1063,6 +1080,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 native_workspace_sync_time_ms = 1;</code>
    * @return The nativeWorkspaceSyncTimeMs.
    */
+  @java.lang.Override
   public long getNativeWorkspaceSyncTimeMs() {
     return nativeWorkspaceSyncTimeMs_;
   }
@@ -1072,12 +1090,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats> getSyncedNativeModuleStatsList() {
     return syncedNativeModuleStats_;
   }
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStatsOrBuilder> 
       getSyncedNativeModuleStatsOrBuilderList() {
     return syncedNativeModuleStats_;
@@ -1085,18 +1105,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
    */
+  @java.lang.Override
   public int getSyncedNativeModuleStatsCount() {
     return syncedNativeModuleStats_.size();
   }
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStats getSyncedNativeModuleStats(int index) {
     return syncedNativeModuleStats_.get(index);
   }
   /**
    * <code>repeated .android_studio.GradleCppSyncStats.NativeModuleStats synced_native_module_stats = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleCppSyncStats.NativeModuleStatsOrBuilder getSyncedNativeModuleStatsOrBuilder(
       int index) {
     return syncedNativeModuleStats_.get(index);
@@ -1113,6 +1136,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 cidr_workspace_size = 3;</code>
    * @return Whether the cidrWorkspaceSize field is set.
    */
+  @java.lang.Override
   public boolean hasCidrWorkspaceSize() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1125,6 +1149,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 cidr_workspace_size = 3;</code>
    * @return The cidrWorkspaceSize.
    */
+  @java.lang.Override
   public int getCidrWorkspaceSize() {
     return cidrWorkspaceSize_;
   }
@@ -1538,6 +1563,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 native_workspace_sync_time_ms = 1;</code>
      * @return Whether the nativeWorkspaceSyncTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasNativeWorkspaceSyncTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1549,6 +1575,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 native_workspace_sync_time_ms = 1;</code>
      * @return The nativeWorkspaceSyncTimeMs.
      */
+    @java.lang.Override
     public long getNativeWorkspaceSyncTimeMs() {
       return nativeWorkspaceSyncTimeMs_;
     }
@@ -1832,6 +1859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cidr_workspace_size = 3;</code>
      * @return Whether the cidrWorkspaceSize field is set.
      */
+    @java.lang.Override
     public boolean hasCidrWorkspaceSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1844,6 +1872,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cidr_workspace_size = 3;</code>
      * @return The cidrWorkspaceSize.
      */
+    @java.lang.Override
     public int getCidrWorkspaceSize() {
       return cidrWorkspaceSize_;
     }

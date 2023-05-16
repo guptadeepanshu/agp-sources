@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorQuickbootLoad}
  */
-public  final class EmulatorQuickbootLoad extends
+public final class EmulatorQuickbootLoad extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorQuickbootLoad)
     EmulatorQuickbootLoadOrBuilder {
@@ -374,7 +374,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootLoad.EmulatorQuickbootLoadState state = 1;</code>
    * @return Whether the state field is set.
    */
-  public boolean hasState() {
+  @java.lang.Override public boolean hasState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -385,7 +385,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootLoad.EmulatorQuickbootLoadState state = 1;</code>
    * @return The state.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState getState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState getState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState.valueOf(state_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState.EMULATOR_QUICKBOOT_LOAD_SUCCEEDED : result;
@@ -401,6 +401,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -412,6 +413,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -426,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    * @return Whether the snapshot field is set.
    */
+  @java.lang.Override
   public boolean hasSnapshot() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -437,6 +440,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    * @return The snapshot.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshot() {
     return snapshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance() : snapshot_;
   }
@@ -447,6 +451,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorSnapshot snapshot = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotOrBuilder() {
     return snapshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshot.getDefaultInstance() : snapshot_;
   }
@@ -461,6 +466,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool on_demand_ram_enabled = 4;</code>
    * @return Whether the onDemandRamEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasOnDemandRamEnabled() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -472,6 +478,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool on_demand_ram_enabled = 4;</code>
    * @return The onDemandRamEnabled.
    */
+  @java.lang.Override
   public boolean getOnDemandRamEnabled() {
     return onDemandRamEnabled_;
   }
@@ -486,6 +493,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 adb_connection_retries = 6;</code>
    * @return Whether the adbConnectionRetries field is set.
    */
+  @java.lang.Override
   public boolean hasAdbConnectionRetries() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -497,6 +505,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 adb_connection_retries = 6;</code>
    * @return The adbConnectionRetries.
    */
+  @java.lang.Override
   public int getAdbConnectionRetries() {
     return adbConnectionRetries_;
   }
@@ -938,7 +947,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorQuickbootLoad.EmulatorQuickbootLoadState state = 1;</code>
      * @return Whether the state field is set.
      */
-    public boolean hasState() {
+    @java.lang.Override public boolean hasState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -949,6 +958,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorQuickbootLoad.EmulatorQuickbootLoadState state = 1;</code>
      * @return The state.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState getState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState result = com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.EmulatorQuickbootLoadState.valueOf(state_);
@@ -996,6 +1006,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1007,6 +1018,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -1205,6 +1217,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool on_demand_ram_enabled = 4;</code>
      * @return Whether the onDemandRamEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasOnDemandRamEnabled() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1216,6 +1229,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool on_demand_ram_enabled = 4;</code>
      * @return The onDemandRamEnabled.
      */
+    @java.lang.Override
     public boolean getOnDemandRamEnabled() {
       return onDemandRamEnabled_;
     }
@@ -1258,6 +1272,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 adb_connection_retries = 6;</code>
      * @return Whether the adbConnectionRetries field is set.
      */
+    @java.lang.Override
     public boolean hasAdbConnectionRetries() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1269,6 +1284,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 adb_connection_retries = 6;</code>
      * @return The adbConnectionRetries.
      */
+    @java.lang.Override
     public int getAdbConnectionRetries() {
       return adbConnectionRetries_;
     }

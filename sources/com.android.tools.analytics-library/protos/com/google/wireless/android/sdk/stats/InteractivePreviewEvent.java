@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.InteractivePreviewEvent}
  */
-public  final class InteractivePreviewEvent extends
+public final class InteractivePreviewEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.InteractivePreviewEvent)
     InteractivePreviewEventOrBuilder {
@@ -243,7 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InteractivePreviewEvent.InteractivePreviewEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -254,7 +254,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InteractivePreviewEvent.InteractivePreviewEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType result = com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType.UNKNOWN_EVENT_TYPE : result;
@@ -270,6 +270,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 fps = 2;</code>
    * @return Whether the fps field is set.
    */
+  @java.lang.Override
   public boolean hasFps() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -281,6 +282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 fps = 2;</code>
    * @return The fps.
    */
+  @java.lang.Override
   public int getFps() {
     return fps_;
   }
@@ -295,6 +297,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 duration_ms = 3;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -306,6 +309,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 duration_ms = 3;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public int getDurationMs() {
     return durationMs_;
   }
@@ -320,6 +324,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 actions = 4;</code>
    * @return Whether the actions field is set.
    */
+  @java.lang.Override
   public boolean hasActions() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -331,6 +336,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 actions = 4;</code>
    * @return The actions.
    */
+  @java.lang.Override
   public int getActions() {
     return actions_;
   }
@@ -345,6 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 startup_time_ms = 5;</code>
    * @return Whether the startupTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasStartupTimeMs() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -356,6 +363,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 startup_time_ms = 5;</code>
    * @return The startupTimeMs.
    */
+  @java.lang.Override
   public int getStartupTimeMs() {
     return startupTimeMs_;
   }
@@ -371,6 +379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 peer_previews = 6;</code>
    * @return Whether the peerPreviews field is set.
    */
+  @java.lang.Override
   public boolean hasPeerPreviews() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -383,6 +392,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 peer_previews = 6;</code>
    * @return The peerPreviews.
    */
+  @java.lang.Override
   public int getPeerPreviews() {
     return peerPreviews_;
   }
@@ -838,7 +848,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InteractivePreviewEvent.InteractivePreviewEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -849,6 +859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InteractivePreviewEvent.InteractivePreviewEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType result = com.google.wireless.android.sdk.stats.InteractivePreviewEvent.InteractivePreviewEventType.valueOf(type_);
@@ -896,6 +907,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 fps = 2;</code>
      * @return Whether the fps field is set.
      */
+    @java.lang.Override
     public boolean hasFps() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -907,6 +919,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 fps = 2;</code>
      * @return The fps.
      */
+    @java.lang.Override
     public int getFps() {
       return fps_;
     }
@@ -949,6 +962,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 duration_ms = 3;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -960,6 +974,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 duration_ms = 3;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public int getDurationMs() {
       return durationMs_;
     }
@@ -1002,6 +1017,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 actions = 4;</code>
      * @return Whether the actions field is set.
      */
+    @java.lang.Override
     public boolean hasActions() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1013,6 +1029,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 actions = 4;</code>
      * @return The actions.
      */
+    @java.lang.Override
     public int getActions() {
       return actions_;
     }
@@ -1055,6 +1072,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 startup_time_ms = 5;</code>
      * @return Whether the startupTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasStartupTimeMs() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1066,6 +1084,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 startup_time_ms = 5;</code>
      * @return The startupTimeMs.
      */
+    @java.lang.Override
     public int getStartupTimeMs() {
       return startupTimeMs_;
     }
@@ -1109,6 +1128,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 peer_previews = 6;</code>
      * @return Whether the peerPreviews field is set.
      */
+    @java.lang.Override
     public boolean hasPeerPreviews() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1121,6 +1141,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 peer_previews = 6;</code>
      * @return The peerPreviews.
      */
+    @java.lang.Override
     public int getPeerPreviews() {
       return peerPreviews_;
     }

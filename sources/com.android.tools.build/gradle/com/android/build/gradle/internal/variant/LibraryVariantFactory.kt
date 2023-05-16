@@ -42,12 +42,12 @@ import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesIm
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantApiServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.BuilderConstants
-import com.android.builder.core.VariantTypeImpl
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
 import com.google.common.collect.ImmutableList
 import org.gradle.api.Project
@@ -62,7 +62,7 @@ class LibraryVariantFactory(
         globalVariantBuilderConfig: GlobalVariantBuilderConfig,
         componentIdentity: ComponentIdentity,
         variantDslInfo: VariantDslInfo,
-        variantApiServices: VariantApiServices
+        variantBuilderServices: VariantBuilderServices
     ): LibraryVariantBuilderImpl {
         return projectServices
                 .objectFactory
@@ -71,7 +71,7 @@ class LibraryVariantFactory(
                         globalVariantBuilderConfig,
                         variantDslInfo,
                         componentIdentity,
-                        variantApiServices)
+                        variantBuilderServices)
     }
 
     override fun createVariant(
@@ -86,7 +86,7 @@ class LibraryVariantFactory(
         variantScope: VariantScope,
         variantData: BaseVariantData,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
         ): LibraryVariantImpl {
@@ -104,7 +104,7 @@ class LibraryVariantFactory(
                         variantScope,
                         variantData,
                         transformManager,
-                        variantPropertiesApiServices,
+                        variantServices,
                         taskCreationServices,
                         globalConfig,
                 )
@@ -165,7 +165,7 @@ class LibraryVariantFactory(
         variantSources: VariantSources,
         paths: VariantPathHelper,
         artifacts: ArtifactsImpl,
-        services: VariantPropertiesApiServices,
+        services: VariantServices,
         taskContainer: MutableTaskContainer
     ): BaseVariantData {
         return LibraryVariantData(
@@ -184,8 +184,8 @@ class LibraryVariantFactory(
             return com.android.build.gradle.internal.api.LibraryVariantImpl::class.java
         }
 
-    override val variantType
-        get() = VariantTypeImpl.LIBRARY
+    override val componentType
+        get() = ComponentTypeImpl.LIBRARY
 
     /** * Prevent customization of applicationId or applicationIdSuffix.  */
     override fun preVariantCallback(

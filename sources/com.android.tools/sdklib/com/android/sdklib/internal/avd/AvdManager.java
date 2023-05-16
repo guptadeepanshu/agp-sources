@@ -930,7 +930,7 @@ public class AvdManager {
             configValues.put(AVD_INI_PLAYSTORE_ENABLED, Boolean.toString(deviceHasPlayStore && systemImage.hasPlayStore()));
             configValues.put(AVD_INI_ARC, Boolean.toString(SystemImage.CHROMEOS_TAG.equals(tag)));
 
-            createAvdSkin(skinFolder == null ? null : skinFolder, skinName, configValues, log);
+            createAvdSkin(skinFolder, skinName, configValues, log);
             createAvdSdCard(sdcard, editExisting, configValues, avdFolder, log);
 
             if (hardwareConfig == null) {
@@ -991,7 +991,6 @@ public class AvdManager {
                 }
             }
         }
-
         return null;
     }
 
@@ -2139,7 +2138,13 @@ public class AvdManager {
             String path = sdcardFile.toAbsolutePath().toString();
 
             // execute mksdcard with the proper parameters.
-            LoggerProgressIndicatorWrapper progress = new LoggerProgressIndicatorWrapper(log);
+            LoggerProgressIndicatorWrapper progress =
+                    new LoggerProgressIndicatorWrapper(log) {
+                        @Override
+                        public void logVerbose(@NonNull String s) {
+                            // Skip verbose messages
+                        }
+                    };
             LocalPackage p = mSdkHandler.getLocalPackage(SdkConstants.FD_EMULATOR, progress);
             if (p == null) {
                 progress.logWarning(

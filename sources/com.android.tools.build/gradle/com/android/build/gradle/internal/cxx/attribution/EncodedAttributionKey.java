@@ -14,7 +14,7 @@ package com.android.build.gradle.internal.cxx.attribution;
  *
  * Protobuf type {@code EncodedAttributionKey}
  */
-public  final class EncodedAttributionKey extends
+public final class EncodedAttributionKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedAttributionKey)
     EncodedAttributionKeyOrBuilder {
@@ -109,6 +109,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 module_id = 1;</code>
    * @return The moduleId.
    */
+  @java.lang.Override
   public int getModuleId() {
     return moduleId_;
   }
@@ -119,6 +120,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 variant_id = 2;</code>
    * @return The variantId.
    */
+  @java.lang.Override
   public int getVariantId() {
     return variantId_;
   }
@@ -129,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 abi_id = 3;</code>
    * @return The abiId.
    */
+  @java.lang.Override
   public int getAbiId() {
     return abiId_;
   }
@@ -482,6 +485,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 module_id = 1;</code>
      * @return The moduleId.
      */
+    @java.lang.Override
     public int getModuleId() {
       return moduleId_;
     }
@@ -512,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 variant_id = 2;</code>
      * @return The variantId.
      */
+    @java.lang.Override
     public int getVariantId() {
       return variantId_;
     }
@@ -542,6 +547,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 abi_id = 3;</code>
      * @return The abiId.
      */
+    @java.lang.Override
     public int getAbiId() {
       return abiId_;
     }

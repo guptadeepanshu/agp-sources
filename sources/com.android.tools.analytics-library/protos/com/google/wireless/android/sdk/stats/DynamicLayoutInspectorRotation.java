@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorRotation}
  */
-public  final class DynamicLayoutInspectorRotation extends
+public final class DynamicLayoutInspectorRotation extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorRotation)
     DynamicLayoutInspectorRotationOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 image_clicks_in_3d = 1;</code>
    * @return Whether the imageClicksIn3d field is set.
    */
+  @java.lang.Override
   public boolean hasImageClicksIn3D() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 image_clicks_in_3d = 1;</code>
    * @return The imageClicksIn3d.
    */
+  @java.lang.Override
   public int getImageClicksIn3D() {
     return imageClicksIn3D_;
   }
@@ -141,6 +143,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 image_clicks_in_2d = 2;</code>
    * @return Whether the imageClicksIn2d field is set.
    */
+  @java.lang.Override
   public boolean hasImageClicksIn2D() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -152,6 +155,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 image_clicks_in_2d = 2;</code>
    * @return The imageClicksIn2d.
    */
+  @java.lang.Override
   public int getImageClicksIn2D() {
     return imageClicksIn2D_;
   }
@@ -166,6 +170,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 component_tree_clicks_in_3d = 3;</code>
    * @return Whether the componentTreeClicksIn3d field is set.
    */
+  @java.lang.Override
   public boolean hasComponentTreeClicksIn3D() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -177,6 +182,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 component_tree_clicks_in_3d = 3;</code>
    * @return The componentTreeClicksIn3d.
    */
+  @java.lang.Override
   public int getComponentTreeClicksIn3D() {
     return componentTreeClicksIn3D_;
   }
@@ -191,6 +197,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 component_tree_clicks_in_2d = 4;</code>
    * @return Whether the componentTreeClicksIn2d field is set.
    */
+  @java.lang.Override
   public boolean hasComponentTreeClicksIn2D() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -202,6 +209,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 component_tree_clicks_in_2d = 4;</code>
    * @return The componentTreeClicksIn2d.
    */
+  @java.lang.Override
   public int getComponentTreeClicksIn2D() {
     return componentTreeClicksIn2D_;
   }
@@ -608,6 +616,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 image_clicks_in_3d = 1;</code>
      * @return Whether the imageClicksIn3d field is set.
      */
+    @java.lang.Override
     public boolean hasImageClicksIn3D() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -619,6 +628,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 image_clicks_in_3d = 1;</code>
      * @return The imageClicksIn3d.
      */
+    @java.lang.Override
     public int getImageClicksIn3D() {
       return imageClicksIn3D_;
     }
@@ -661,6 +671,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 image_clicks_in_2d = 2;</code>
      * @return Whether the imageClicksIn2d field is set.
      */
+    @java.lang.Override
     public boolean hasImageClicksIn2D() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -672,6 +683,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 image_clicks_in_2d = 2;</code>
      * @return The imageClicksIn2d.
      */
+    @java.lang.Override
     public int getImageClicksIn2D() {
       return imageClicksIn2D_;
     }
@@ -714,6 +726,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 component_tree_clicks_in_3d = 3;</code>
      * @return Whether the componentTreeClicksIn3d field is set.
      */
+    @java.lang.Override
     public boolean hasComponentTreeClicksIn3D() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -725,6 +738,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 component_tree_clicks_in_3d = 3;</code>
      * @return The componentTreeClicksIn3d.
      */
+    @java.lang.Override
     public int getComponentTreeClicksIn3D() {
       return componentTreeClicksIn3D_;
     }
@@ -767,6 +781,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 component_tree_clicks_in_2d = 4;</code>
      * @return Whether the componentTreeClicksIn2d field is set.
      */
+    @java.lang.Override
     public boolean hasComponentTreeClicksIn2D() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -778,6 +793,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 component_tree_clicks_in_2d = 4;</code>
      * @return The componentTreeClicksIn2d.
      */
+    @java.lang.Override
     public int getComponentTreeClicksIn2D() {
       return componentTreeClicksIn2D_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioCrash}
  */
-public  final class StudioCrash extends
+public final class StudioCrash extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioCrash)
     StudioCrashOrBuilder {
@@ -134,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 actions = 1;</code>
    * @return Whether the actions field is set.
    */
+  @java.lang.Override
   public boolean hasActions() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -145,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 actions = 1;</code>
    * @return The actions.
    */
+  @java.lang.Override
   public long getActions() {
     return actions_;
   }
@@ -159,6 +161,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 exceptions = 2;</code>
    * @return Whether the exceptions field is set.
    */
+  @java.lang.Override
   public boolean hasExceptions() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -170,6 +173,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 exceptions = 2;</code>
    * @return The exceptions.
    */
+  @java.lang.Override
   public long getExceptions() {
     return exceptions_;
   }
@@ -184,6 +188,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 crashes = 3;</code>
    * @return Whether the crashes field is set.
    */
+  @java.lang.Override
   public boolean hasCrashes() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -195,6 +200,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 crashes = 3;</code>
    * @return The crashes.
    */
+  @java.lang.Override
   public long getCrashes() {
     return crashes_;
   }
@@ -209,6 +215,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 bundled_plugin_exceptions = 4;</code>
    * @return Whether the bundledPluginExceptions field is set.
    */
+  @java.lang.Override
   public boolean hasBundledPluginExceptions() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -220,6 +227,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 bundled_plugin_exceptions = 4;</code>
    * @return The bundledPluginExceptions.
    */
+  @java.lang.Override
   public long getBundledPluginExceptions() {
     return bundledPluginExceptions_;
   }
@@ -234,6 +242,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 non_bundled_plugin_exceptions = 5;</code>
    * @return Whether the nonBundledPluginExceptions field is set.
    */
+  @java.lang.Override
   public boolean hasNonBundledPluginExceptions() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -245,6 +254,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 non_bundled_plugin_exceptions = 5;</code>
    * @return The nonBundledPluginExceptions.
    */
+  @java.lang.Override
   public long getNonBundledPluginExceptions() {
     return nonBundledPluginExceptions_;
   }
@@ -258,6 +268,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.StudioExceptionDetails details = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.StudioExceptionDetails> getDetailsList() {
     return details_;
   }
@@ -268,6 +279,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.StudioExceptionDetails details = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.StudioExceptionDetailsOrBuilder> 
       getDetailsOrBuilderList() {
     return details_;
@@ -279,6 +291,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.StudioExceptionDetails details = 6;</code>
    */
+  @java.lang.Override
   public int getDetailsCount() {
     return details_.size();
   }
@@ -289,6 +302,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.StudioExceptionDetails details = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioExceptionDetails getDetails(int index) {
     return details_.get(index);
   }
@@ -299,6 +313,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.StudioExceptionDetails details = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioExceptionDetailsOrBuilder getDetailsOrBuilder(
       int index) {
     return details_.get(index);
@@ -791,6 +806,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 actions = 1;</code>
      * @return Whether the actions field is set.
      */
+    @java.lang.Override
     public boolean hasActions() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -802,6 +818,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 actions = 1;</code>
      * @return The actions.
      */
+    @java.lang.Override
     public long getActions() {
       return actions_;
     }
@@ -844,6 +861,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 exceptions = 2;</code>
      * @return Whether the exceptions field is set.
      */
+    @java.lang.Override
     public boolean hasExceptions() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -855,6 +873,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 exceptions = 2;</code>
      * @return The exceptions.
      */
+    @java.lang.Override
     public long getExceptions() {
       return exceptions_;
     }
@@ -897,6 +916,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 crashes = 3;</code>
      * @return Whether the crashes field is set.
      */
+    @java.lang.Override
     public boolean hasCrashes() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -908,6 +928,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 crashes = 3;</code>
      * @return The crashes.
      */
+    @java.lang.Override
     public long getCrashes() {
       return crashes_;
     }
@@ -950,6 +971,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 bundled_plugin_exceptions = 4;</code>
      * @return Whether the bundledPluginExceptions field is set.
      */
+    @java.lang.Override
     public boolean hasBundledPluginExceptions() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -961,6 +983,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 bundled_plugin_exceptions = 4;</code>
      * @return The bundledPluginExceptions.
      */
+    @java.lang.Override
     public long getBundledPluginExceptions() {
       return bundledPluginExceptions_;
     }
@@ -1003,6 +1026,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 non_bundled_plugin_exceptions = 5;</code>
      * @return Whether the nonBundledPluginExceptions field is set.
      */
+    @java.lang.Override
     public boolean hasNonBundledPluginExceptions() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1014,6 +1038,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 non_bundled_plugin_exceptions = 5;</code>
      * @return The nonBundledPluginExceptions.
      */
+    @java.lang.Override
     public long getNonBundledPluginExceptions() {
       return nonBundledPluginExceptions_;
     }

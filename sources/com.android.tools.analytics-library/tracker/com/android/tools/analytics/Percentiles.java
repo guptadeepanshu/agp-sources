@@ -258,8 +258,7 @@ public class Percentiles {
                 builder.addBucketBuilder()
                         .setTargetPercentile(b.target)
                         .setValue(b.value)
-                        .setCount(b.count)
-                        .build();
+                        .setCount(b.count);
             }
         }
         return builder.build();

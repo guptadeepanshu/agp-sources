@@ -16,17 +16,6 @@
 
 package com.android.build.gradle.internal.tasks;
 
-import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
-import static com.android.build.gradle.internal.testing.utp.UtpTestUtilsKt.shouldEnableUtp;
-import static com.android.builder.core.BuilderConstants.CONNECTED;
-import static com.android.builder.core.BuilderConstants.DEVICE;
-import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
-import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
-import static com.android.builder.core.BuilderConstants.FD_FLAVORS;
-import static com.android.builder.core.BuilderConstants.FD_REPORTS;
-import static com.android.builder.model.TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR;
-import static com.android.builder.model.TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR;
-
 import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
@@ -37,6 +26,7 @@ import com.android.build.gradle.internal.BuildToolsExecutableInput;
 import com.android.build.gradle.internal.LoggerWrapper;
 import com.android.build.gradle.internal.SdkComponentsBuildService;
 import com.android.build.gradle.internal.SdkComponentsKt;
+import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig;
 import com.android.build.gradle.internal.component.VariantCreationConfig;
 import com.android.build.gradle.internal.dsl.EmulatorSnapshots;
 import com.android.build.gradle.internal.process.GradleProcessExecutor;
@@ -64,7 +54,7 @@ import com.android.build.gradle.internal.testing.utp.UtpTestRunner;
 import com.android.build.gradle.options.BooleanOption;
 import com.android.build.gradle.options.IntegerOption;
 import com.android.build.gradle.options.ProjectOptions;
-import com.android.builder.core.VariantType;
+import com.android.builder.core.ComponentType;
 import com.android.builder.model.TestOptions.Execution;
 import com.android.builder.testing.api.DeviceConnector;
 import com.android.builder.testing.api.DeviceException;
@@ -77,17 +67,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.logging.Level;
-import java.util.stream.Collectors;
-import javax.inject.Inject;
 import org.gradle.api.GradleException;
 import org.gradle.api.InvalidUserDataException;
 import org.gradle.api.Project;
@@ -116,6 +95,29 @@ import org.gradle.internal.logging.ConsoleRenderer;
 import org.gradle.process.ExecOperations;
 import org.gradle.work.DisableCachingByDefault;
 import org.gradle.workers.WorkerExecutor;
+
+import javax.inject.Inject;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
+import static com.android.build.gradle.internal.testing.utp.RetentionConfigKt.createRetentionConfig;
+import static com.android.build.gradle.internal.testing.utp.UtpTestUtilsKt.shouldEnableUtp;
+import static com.android.builder.core.BuilderConstants.CONNECTED;
+import static com.android.builder.core.BuilderConstants.DEVICE;
+import static com.android.builder.core.BuilderConstants.FD_ANDROID_RESULTS;
+import static com.android.builder.core.BuilderConstants.FD_ANDROID_TESTS;
+import static com.android.builder.core.BuilderConstants.FD_FLAVORS;
+import static com.android.builder.core.BuilderConstants.FD_REPORTS;
+import static com.android.builder.model.TestOptions.Execution.ANDROIDX_TEST_ORCHESTRATOR;
+import static com.android.builder.model.TestOptions.Execution.ANDROID_TEST_ORCHESTRATOR;
 
 /** Run instrumentation tests for a given variant */
 @DisableCachingByDefault
@@ -566,7 +568,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
     public static class CreationAction
             extends VariantTaskCreationAction<
-                    DeviceProviderInstrumentTestTask, VariantCreationConfig> {
+                    DeviceProviderInstrumentTestTask, InstrumentedTestCreationConfig> {
 
         private static final String CONNECTED_DEVICE_PROVIDER = "connected";
 
@@ -582,14 +584,14 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         }
 
         public CreationAction(
-                @NonNull VariantCreationConfig creationConfig,
+                @NonNull InstrumentedTestCreationConfig creationConfig,
                 @NonNull AbstractTestDataImpl testData) {
             this(creationConfig, testData, null);
         }
 
         /** Creation action for AGP {@link ConnectedDeviceProvider} device providers. */
         public CreationAction(
-                @NonNull VariantCreationConfig creationConfig,
+                @NonNull InstrumentedTestCreationConfig creationConfig,
                 @NonNull AbstractTestDataImpl testData,
                 @Nullable Provider<List<String>> connectedCheckTargetSerials) {
             this(
@@ -603,7 +605,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
 
         /** Creation action for custom (non-AGP) device providers. */
         public CreationAction(
-                @NonNull VariantCreationConfig creationConfig,
+                @NonNull InstrumentedTestCreationConfig creationConfig,
                 @NonNull DeviceProvider deviceProvider,
                 @NonNull AbstractTestDataImpl testData,
                 @Nullable Provider<List<String>> connectedCheckTargetSerials) {
@@ -617,7 +619,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
         }
 
         private CreationAction(
-                @NonNull VariantCreationConfig creationConfig,
+                @NonNull InstrumentedTestCreationConfig creationConfig,
                 @Nullable DeviceProvider deviceProvider,
                 @NonNull String deviceProviderName,
                 @NonNull Type type,
@@ -697,7 +699,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .on(InternalArtifactType.DEVICE_PROVIDER_CODE_COVERAGE.INSTANCE);
             }
 
-            if (creationConfig.getVariantType().isForTesting()) {
+            if (creationConfig.getComponentType().isForTesting()) {
                 if (type == Type.INTERNAL_CONNECTED_DEVICE_PROVIDER) {
                     creationConfig.getTaskContainer().setConnectedTestTask(taskProvider);
                 } else {
@@ -719,10 +721,10 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
             // this can be null for test plugin
             VariantCreationConfig testedConfig = creationConfig.getTestedConfig();
 
-            VariantType variantType =
+            ComponentType componentType =
                     testedConfig != null
-                            ? testedConfig.getVariantType()
-                            : creationConfig.getVariantType();
+                            ? testedConfig.getComponentType()
+                            : creationConfig.getComponentType();
             String variantName =
                     testedConfig != null ? testedConfig.getName() : creationConfig.getName();
             if (type == Type.INTERNAL_CONNECTED_DEVICE_PROVIDER) {
@@ -779,7 +781,7 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                         .getConnectedCheckDeviceSerials()
                         .set(connectedCheckTargetSerials);
             }
-            boolean useUtp = shouldEnableUtp(projectOptions, testOptions, variantType);
+            boolean useUtp = shouldEnableUtp(projectOptions, testOptions, componentType);
             task.getTestRunnerFactory().getUnifiedTestPlatform().set(useUtp);
             if (useUtp) {
                 if (!projectOptions.get(BooleanOption.ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM)) {
@@ -813,14 +815,9 @@ public abstract class DeviceProviderInstrumentTestTask extends NonIncrementalTas
                                     projectOptions,
                                     (EmulatorSnapshots) testOptions.getEmulatorSnapshots()));
 
-            task.getCodeCoverageEnabled()
-                    .set(creationConfig.getVariantDslInfo().isTestCoverageEnabled());
+            task.getCodeCoverageEnabled().set(creationConfig.isAndroidTestCoverageEnabled());
             boolean useJacocoTransformOutputs =
-                    creationConfig
-                                    .getServices()
-                                    .getProjectOptions()
-                                    .get(BooleanOption.ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION)
-                            && creationConfig.getVariantDslInfo().isTestCoverageEnabled();
+                    creationConfig.isAndroidTestCoverageEnabled();
             task.dependencies =
                     creationConfig
                             .getVariantDependencies()

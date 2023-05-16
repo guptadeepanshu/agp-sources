@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorAvdInfo}
  */
-public  final class EmulatorAvdInfo extends
+public final class EmulatorAvdInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorAvdInfo)
     EmulatorAvdInfoOrBuilder {
@@ -524,6 +524,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1 [deprecated = true];</code>
    * @return Whether the name field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -535,6 +536,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1 [deprecated = true];</code>
    * @return The name.
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -557,6 +559,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1 [deprecated = true];</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -581,6 +584,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 api_level = 2;</code>
    * @return Whether the apiLevel field is set.
    */
+  @java.lang.Override
   public boolean hasApiLevel() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -592,6 +596,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 api_level = 2;</code>
    * @return The apiLevel.
    */
+  @java.lang.Override
   public long getApiLevel() {
     return apiLevel_;
   }
@@ -606,7 +611,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture arch = 3;</code>
    * @return Whether the arch field is set.
    */
-  public boolean hasArch() {
+  @java.lang.Override public boolean hasArch() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -617,7 +622,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture arch = 3;</code>
    * @return The arch.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getArch() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getArch() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(arch_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.UNKNOWN_GUEST_CPU_ARCHITECTURE : result;
@@ -633,6 +638,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 creation_timestamp = 4;</code>
    * @return Whether the creationTimestamp field is set.
    */
+  @java.lang.Override
   public boolean hasCreationTimestamp() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -644,6 +650,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 creation_timestamp = 4;</code>
    * @return The creationTimestamp.
    */
+  @java.lang.Override
   public long getCreationTimestamp() {
     return creationTimestamp_;
   }
@@ -659,6 +666,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_id = 5;</code>
    * @return Whether the buildId field is set.
    */
+  @java.lang.Override
   public boolean hasBuildId() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -671,6 +679,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_id = 5;</code>
    * @return The buildId.
    */
+  @java.lang.Override
   public java.lang.String getBuildId() {
     java.lang.Object ref = buildId_;
     if (ref instanceof java.lang.String) {
@@ -694,6 +703,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_id = 5;</code>
    * @return The bytes for buildId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildIdBytes() {
     java.lang.Object ref = buildId_;
@@ -718,6 +728,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_timestamp = 6;</code>
    * @return Whether the buildTimestamp field is set.
    */
+  @java.lang.Override
   public boolean hasBuildTimestamp() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -729,6 +740,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_timestamp = 6;</code>
    * @return The buildTimestamp.
    */
+  @java.lang.Override
   public long getBuildTimestamp() {
     return buildTimestamp_;
   }
@@ -743,7 +755,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdInfo.EmulatorAvdImageKind image_kind = 7;</code>
    * @return Whether the imageKind field is set.
    */
-  public boolean hasImageKind() {
+  @java.lang.Override public boolean hasImageKind() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -754,7 +766,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdInfo.EmulatorAvdImageKind image_kind = 7;</code>
    * @return The imageKind.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind getImageKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind getImageKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.valueOf(imageKind_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.UNKNOWN_EMULATOR_AVD_IMAGE_KIND : result;
@@ -770,6 +782,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorAvdFile files = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorAvdFile> getFilesList() {
     return files_;
   }
@@ -781,6 +794,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorAvdFile files = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorAvdFileOrBuilder> 
       getFilesOrBuilderList() {
     return files_;
@@ -793,6 +807,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorAvdFile files = 8;</code>
    */
+  @java.lang.Override
   public int getFilesCount() {
     return files_.size();
   }
@@ -804,6 +819,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorAvdFile files = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdFile getFiles(int index) {
     return files_.get(index);
   }
@@ -815,6 +831,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorAvdFile files = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdFileOrBuilder getFilesOrBuilder(
       int index) {
     return files_.get(index);
@@ -841,6 +858,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorAvdInfo.EmulatorAvdProperty properties = 9;</code>
    * @return A list containing the properties.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty> getPropertiesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty>(properties_, properties_converter_);
@@ -852,8 +870,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorAvdInfo.EmulatorAvdProperty properties = 9;</code>
-   * @param value The properties to add.
+   * @return The count of properties.
    */
+  @java.lang.Override
   public int getPropertiesCount() {
     return properties_.size();
   }
@@ -867,6 +886,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The properties at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdProperty getProperties(int index) {
     return properties_converter_.convert(properties_.get(index));
   }
@@ -1548,6 +1568,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 api_level = 2;</code>
      * @return Whether the apiLevel field is set.
      */
+    @java.lang.Override
     public boolean hasApiLevel() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1559,6 +1580,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 api_level = 2;</code>
      * @return The apiLevel.
      */
+    @java.lang.Override
     public long getApiLevel() {
       return apiLevel_;
     }
@@ -1601,7 +1623,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture arch = 3;</code>
      * @return Whether the arch field is set.
      */
-    public boolean hasArch() {
+    @java.lang.Override public boolean hasArch() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1612,6 +1634,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture arch = 3;</code>
      * @return The arch.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getArch() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(arch_);
@@ -1659,6 +1682,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 creation_timestamp = 4;</code>
      * @return Whether the creationTimestamp field is set.
      */
+    @java.lang.Override
     public boolean hasCreationTimestamp() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1670,6 +1694,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 creation_timestamp = 4;</code>
      * @return The creationTimestamp.
      */
+    @java.lang.Override
     public long getCreationTimestamp() {
       return creationTimestamp_;
     }
@@ -1826,6 +1851,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_timestamp = 6;</code>
      * @return Whether the buildTimestamp field is set.
      */
+    @java.lang.Override
     public boolean hasBuildTimestamp() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1837,6 +1863,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_timestamp = 6;</code>
      * @return The buildTimestamp.
      */
+    @java.lang.Override
     public long getBuildTimestamp() {
       return buildTimestamp_;
     }
@@ -1879,7 +1906,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdInfo.EmulatorAvdImageKind image_kind = 7;</code>
      * @return Whether the imageKind field is set.
      */
-    public boolean hasImageKind() {
+    @java.lang.Override public boolean hasImageKind() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -1890,6 +1917,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdInfo.EmulatorAvdImageKind image_kind = 7;</code>
      * @return The imageKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind getImageKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind result = com.google.wireless.android.sdk.stats.EmulatorAvdInfo.EmulatorAvdImageKind.valueOf(imageKind_);

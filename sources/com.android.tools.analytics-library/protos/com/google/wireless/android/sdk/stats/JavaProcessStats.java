@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.JavaProcessStats}
  */
-public  final class JavaProcessStats extends
+public final class JavaProcessStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.JavaProcessStats)
     JavaProcessStatsOrBuilder {
@@ -129,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 heap_memory_usage = 1;</code>
    * @return Whether the heapMemoryUsage field is set.
    */
+  @java.lang.Override
   public boolean hasHeapMemoryUsage() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -140,6 +141,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 heap_memory_usage = 1;</code>
    * @return The heapMemoryUsage.
    */
+  @java.lang.Override
   public long getHeapMemoryUsage() {
     return heapMemoryUsage_;
   }
@@ -154,6 +156,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 non_heap_memory_usage = 2;</code>
    * @return Whether the nonHeapMemoryUsage field is set.
    */
+  @java.lang.Override
   public boolean hasNonHeapMemoryUsage() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -165,6 +168,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 non_heap_memory_usage = 2;</code>
    * @return The nonHeapMemoryUsage.
    */
+  @java.lang.Override
   public long getNonHeapMemoryUsage() {
     return nonHeapMemoryUsage_;
   }
@@ -179,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 loaded_class_count = 3;</code>
    * @return Whether the loadedClassCount field is set.
    */
+  @java.lang.Override
   public boolean hasLoadedClassCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -190,6 +195,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 loaded_class_count = 3;</code>
    * @return The loadedClassCount.
    */
+  @java.lang.Override
   public int getLoadedClassCount() {
     return loadedClassCount_;
   }
@@ -204,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 thread_count = 4;</code>
    * @return Whether the threadCount field is set.
    */
+  @java.lang.Override
   public boolean hasThreadCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -215,6 +222,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 thread_count = 4;</code>
    * @return The threadCount.
    */
+  @java.lang.Override
   public int getThreadCount() {
     return threadCount_;
   }
@@ -228,6 +236,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GarbageCollectionStats garbage_collection_stats = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GarbageCollectionStats> getGarbageCollectionStatsList() {
     return garbageCollectionStats_;
   }
@@ -238,6 +247,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GarbageCollectionStats garbage_collection_stats = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GarbageCollectionStatsOrBuilder> 
       getGarbageCollectionStatsOrBuilderList() {
     return garbageCollectionStats_;
@@ -249,6 +259,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GarbageCollectionStats garbage_collection_stats = 5;</code>
    */
+  @java.lang.Override
   public int getGarbageCollectionStatsCount() {
     return garbageCollectionStats_.size();
   }
@@ -259,6 +270,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GarbageCollectionStats garbage_collection_stats = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GarbageCollectionStats getGarbageCollectionStats(int index) {
     return garbageCollectionStats_.get(index);
   }
@@ -269,6 +281,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GarbageCollectionStats garbage_collection_stats = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GarbageCollectionStatsOrBuilder getGarbageCollectionStatsOrBuilder(
       int index) {
     return garbageCollectionStats_.get(index);
@@ -733,6 +746,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 heap_memory_usage = 1;</code>
      * @return Whether the heapMemoryUsage field is set.
      */
+    @java.lang.Override
     public boolean hasHeapMemoryUsage() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -744,6 +758,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 heap_memory_usage = 1;</code>
      * @return The heapMemoryUsage.
      */
+    @java.lang.Override
     public long getHeapMemoryUsage() {
       return heapMemoryUsage_;
     }
@@ -786,6 +801,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 non_heap_memory_usage = 2;</code>
      * @return Whether the nonHeapMemoryUsage field is set.
      */
+    @java.lang.Override
     public boolean hasNonHeapMemoryUsage() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -797,6 +813,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 non_heap_memory_usage = 2;</code>
      * @return The nonHeapMemoryUsage.
      */
+    @java.lang.Override
     public long getNonHeapMemoryUsage() {
       return nonHeapMemoryUsage_;
     }
@@ -839,6 +856,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 loaded_class_count = 3;</code>
      * @return Whether the loadedClassCount field is set.
      */
+    @java.lang.Override
     public boolean hasLoadedClassCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -850,6 +868,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 loaded_class_count = 3;</code>
      * @return The loadedClassCount.
      */
+    @java.lang.Override
     public int getLoadedClassCount() {
       return loadedClassCount_;
     }
@@ -892,6 +911,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 thread_count = 4;</code>
      * @return Whether the threadCount field is set.
      */
+    @java.lang.Override
     public boolean hasThreadCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -903,6 +923,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 thread_count = 4;</code>
      * @return The threadCount.
      */
+    @java.lang.Override
     public int getThreadCount() {
       return threadCount_;
     }

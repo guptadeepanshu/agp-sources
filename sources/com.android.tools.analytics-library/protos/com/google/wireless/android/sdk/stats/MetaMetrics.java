@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.MetaMetrics}
  */
-public  final class MetaMetrics extends
+public final class MetaMetrics extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MetaMetrics)
     MetaMetricsOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 failed_connections = 1;</code>
    * @return Whether the failedConnections field is set.
    */
+  @java.lang.Override
   public boolean hasFailedConnections() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -124,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 failed_connections = 1;</code>
    * @return The failedConnections.
    */
+  @java.lang.Override
   public int getFailedConnections() {
     return failedConnections_;
   }
@@ -138,6 +140,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 bytes_sent_in_last_upload = 2;</code>
    * @return Whether the bytesSentInLastUpload field is set.
    */
+  @java.lang.Override
   public boolean hasBytesSentInLastUpload() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -149,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 bytes_sent_in_last_upload = 2;</code>
    * @return The bytesSentInLastUpload.
    */
+  @java.lang.Override
   public long getBytesSentInLastUpload() {
     return bytesSentInLastUpload_;
   }
@@ -164,6 +168,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 failed_server_replies = 3;</code>
    * @return Whether the failedServerReplies field is set.
    */
+  @java.lang.Override
   public boolean hasFailedServerReplies() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -176,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 failed_server_replies = 3;</code>
    * @return The failedServerReplies.
    */
+  @java.lang.Override
   public int getFailedServerReplies() {
     return failedServerReplies_;
   }
@@ -559,6 +565,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 failed_connections = 1;</code>
      * @return Whether the failedConnections field is set.
      */
+    @java.lang.Override
     public boolean hasFailedConnections() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -571,6 +578,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 failed_connections = 1;</code>
      * @return The failedConnections.
      */
+    @java.lang.Override
     public int getFailedConnections() {
       return failedConnections_;
     }
@@ -615,6 +623,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 bytes_sent_in_last_upload = 2;</code>
      * @return Whether the bytesSentInLastUpload field is set.
      */
+    @java.lang.Override
     public boolean hasBytesSentInLastUpload() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -626,6 +635,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 bytes_sent_in_last_upload = 2;</code>
      * @return The bytesSentInLastUpload.
      */
+    @java.lang.Override
     public long getBytesSentInLastUpload() {
       return bytesSentInLastUpload_;
     }
@@ -669,6 +679,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 failed_server_replies = 3;</code>
      * @return Whether the failedServerReplies field is set.
      */
+    @java.lang.Override
     public boolean hasFailedServerReplies() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -681,6 +692,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 failed_server_replies = 3;</code>
      * @return The failedServerReplies.
      */
+    @java.lang.Override
     public int getFailedServerReplies() {
       return failedServerReplies_;
     }

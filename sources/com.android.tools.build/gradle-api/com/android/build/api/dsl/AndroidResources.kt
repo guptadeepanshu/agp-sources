@@ -23,31 +23,36 @@ interface AndroidResources {
     /**
      * Pattern describing assets to be ignored.
      *
-     * See `aapt --help`
+     * This is [ignoreAssetsPatterns] joined by ':'.
      */
     var ignoreAssetsPattern: String?
 
     /**
-     * Extensions of files that will not be stored compressed in the APK. Adding an empty
-     * extension, i.e., setting `noCompress ''` will trivially disable compression
-     * for all files.
+     * Patterns describing assets to be ignored.
      *
-     * Equivalent of the -0 flag. See `aapt --help`
+     * If empty, defaults to `["!.svn", "!.git", "!.ds_store", "!*.scc", ".*", "<dir>_*", "!CVS", "!thumbs.db", "!picasa.ini", "!*~"]`
+     */
+    val ignoreAssetsPatterns: MutableCollection<String>
+
+    /**
+     * File extensions of Android resources, assets, and Java resources to be stored uncompressed in
+     * the APK. Adding an empty extension (e.g., setting `noCompress ''`) will disable compression
+     * for all Android resources, assets, and Java resources.
      */
     val noCompress: MutableCollection<String>
 
     /**
-     * Adds extensions of files that will not be stored compressed in the APK.
-     *
-     * Equivalent of the -0 flag. See `aapt --help`
+     * Adds a file extension of Android resources, assets, and Java resources to be stored
+     * uncompressed in the APK. Adding an empty extension (i.e., `noCompress('')`) will disable
+     * compression for all Android resources, assets, and Java resources.
      */
     @Incubating
     fun noCompress(noCompress: String)
 
     /**
-     * Adds extensions of files that will not be stored compressed in the APK.
-     *
-     * Equivalent of the -0 flag. See `aapt --help`
+     * Adds file extensions of Android resources, assets, and Java resources to be stored
+     * uncompressed in the APK. Adding an empty extension (e.g., `noCompress('')`) will disable
+     * compression for all Android resources, assets, and Java resources.
      */
     @Incubating
     fun noCompress(vararg noCompress: String)

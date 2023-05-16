@@ -29,6 +29,7 @@ import com.android.SdkConstants;
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
+import com.android.build.gradle.internal.lint.LintMode;
 import com.android.build.gradle.internal.lint.LintTool;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.services.BuildServicesKt;
@@ -53,6 +54,7 @@ import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
 import org.gradle.api.artifacts.result.ResolvedArtifactResult;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.EmptyFileVisitor;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemLocation;
@@ -108,8 +110,6 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     private final List<Object> sources = new ArrayList<>();
     private FileTree sourcesFileTree;
 
-    private FileCollection classpath;
-
     @Nested
     public abstract LintTool getLintTool();
 
@@ -122,9 +122,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
     }
 
     @CompileClasspath
-    public FileCollection getClasspath() {
-        return classpath;
-    }
+    public abstract ConfigurableFileCollection getClasspath();
 
     /** Used by the variant API */
     public void source(Object source) {
@@ -217,7 +215,8 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
                 .submit(
                         getWorkerExecutor(),
                         "com.android.tools.lint.annotations.ExtractAnnotationsDriver",
-                        args);
+                        args,
+                        LintMode.EXTRACT_ANNOTATIONS);
     }
 
     private void addArgument(
@@ -367,7 +366,7 @@ public abstract class ExtractAnnotations extends NonIncrementalTask {
 
             task.source(creationConfig.getSources().getJava().getAll());
             task.setEncoding(creationConfig.getGlobal().getCompileOptions().getEncoding());
-            task.classpath = creationConfig.getJavaClasspath(COMPILE_CLASSPATH, CLASSES_JAR, null);
+            task.getClasspath().from(creationConfig.getCompileClasspath()).disallowChanges();
 
             task.libraries =
                     creationConfig

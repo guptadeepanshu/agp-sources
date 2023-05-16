@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleBuildProjectMetrics}
  */
-public  final class GradleBuildProjectMetrics extends
+public final class GradleBuildProjectMetrics extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildProjectMetrics)
     GradleBuildProjectMetricsOrBuilder {
@@ -107,6 +107,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 metrics_time_ns = 1;</code>
    * @return Whether the metricsTimeNs field is set.
    */
+  @java.lang.Override
   public boolean hasMetricsTimeNs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -118,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 metrics_time_ns = 1;</code>
    * @return The metricsTimeNs.
    */
+  @java.lang.Override
   public long getMetricsTimeNs() {
     return metricsTimeNs_;
   }
@@ -132,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 apk_size = 2;</code>
    * @return Whether the apkSize field is set.
    */
+  @java.lang.Override
   public boolean hasApkSize() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -143,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 apk_size = 2;</code>
    * @return The apkSize.
    */
+  @java.lang.Override
   public long getApkSize() {
     return apkSize_;
   }
@@ -157,6 +161,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 resources_ap_size = 3;</code>
    * @return Whether the resourcesApSize field is set.
    */
+  @java.lang.Override
   public boolean hasResourcesApSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -168,6 +173,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 resources_ap_size = 3;</code>
    * @return The resourcesApSize.
    */
+  @java.lang.Override
   public long getResourcesApSize() {
     return resourcesApSize_;
   }
@@ -548,6 +554,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 metrics_time_ns = 1;</code>
      * @return Whether the metricsTimeNs field is set.
      */
+    @java.lang.Override
     public boolean hasMetricsTimeNs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -559,6 +566,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 metrics_time_ns = 1;</code>
      * @return The metricsTimeNs.
      */
+    @java.lang.Override
     public long getMetricsTimeNs() {
       return metricsTimeNs_;
     }
@@ -601,6 +609,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 apk_size = 2;</code>
      * @return Whether the apkSize field is set.
      */
+    @java.lang.Override
     public boolean hasApkSize() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -612,6 +621,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 apk_size = 2;</code>
      * @return The apkSize.
      */
+    @java.lang.Override
     public long getApkSize() {
       return apkSize_;
     }
@@ -654,6 +664,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 resources_ap_size = 3;</code>
      * @return Whether the resourcesApSize field is set.
      */
+    @java.lang.Override
     public boolean hasResourcesApSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -665,6 +676,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 resources_ap_size = 3;</code>
      * @return The resourcesApSize.
      */
+    @java.lang.Override
     public long getResourcesApSize() {
       return resourcesApSize_;
     }

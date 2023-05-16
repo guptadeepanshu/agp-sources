@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorAutomation}
  */
-public  final class EmulatorAutomation extends
+public final class EmulatorAutomation extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorAutomation)
     EmulatorAutomationOrBuilder {
@@ -315,6 +315,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_duration_ms = 1;</code>
    * @return Whether the totalDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasTotalDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -326,6 +327,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_duration_ms = 1;</code>
    * @return The totalDurationMs.
    */
+  @java.lang.Override
   public long getTotalDurationMs() {
     return totalDurationMs_;
   }
@@ -340,6 +342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 macro_playback_count = 2;</code>
    * @return Whether the macroPlaybackCount field is set.
    */
+  @java.lang.Override
   public boolean hasMacroPlaybackCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -351,6 +354,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 macro_playback_count = 2;</code>
    * @return The macroPlaybackCount.
    */
+  @java.lang.Override
   public long getMacroPlaybackCount() {
     return macroPlaybackCount_;
   }
@@ -365,6 +369,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 preview_replay_count = 3;</code>
    * @return Whether the previewReplayCount field is set.
    */
+  @java.lang.Override
   public boolean hasPreviewReplayCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -376,6 +381,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 preview_replay_count = 3;</code>
    * @return The previewReplayCount.
    */
+  @java.lang.Override
   public long getPreviewReplayCount() {
     return previewReplayCount_;
   }
@@ -400,6 +406,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorAutomation.EmulatorAutomationPresetMacro played_preset_macro = 4;</code>
    * @return A list containing the playedPresetMacro.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro> getPlayedPresetMacroList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro>(playedPresetMacro_, playedPresetMacro_converter_);
@@ -410,8 +417,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorAutomation.EmulatorAutomationPresetMacro played_preset_macro = 4;</code>
-   * @param value The playedPresetMacro to add.
+   * @return The count of playedPresetMacro.
    */
+  @java.lang.Override
   public int getPlayedPresetMacroCount() {
     return playedPresetMacro_.size();
   }
@@ -424,6 +432,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The playedPresetMacro at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAutomation.EmulatorAutomationPresetMacro getPlayedPresetMacro(int index) {
     return playedPresetMacro_converter_.convert(playedPresetMacro_.get(index));
   }
@@ -438,6 +447,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 record_macro_count = 5;</code>
    * @return Whether the recordMacroCount field is set.
    */
+  @java.lang.Override
   public boolean hasRecordMacroCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -449,6 +459,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 record_macro_count = 5;</code>
    * @return The recordMacroCount.
    */
+  @java.lang.Override
   public long getRecordMacroCount() {
     return recordMacroCount_;
   }
@@ -463,6 +474,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 delete_macro_count = 6;</code>
    * @return Whether the deleteMacroCount field is set.
    */
+  @java.lang.Override
   public boolean hasDeleteMacroCount() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -474,6 +486,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 delete_macro_count = 6;</code>
    * @return The deleteMacroCount.
    */
+  @java.lang.Override
   public long getDeleteMacroCount() {
     return deleteMacroCount_;
   }
@@ -488,6 +501,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 edit_macro_count = 7;</code>
    * @return Whether the editMacroCount field is set.
    */
+  @java.lang.Override
   public boolean hasEditMacroCount() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -499,6 +513,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 edit_macro_count = 7;</code>
    * @return The editMacroCount.
    */
+  @java.lang.Override
   public long getEditMacroCount() {
     return editMacroCount_;
   }
@@ -995,6 +1010,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_duration_ms = 1;</code>
      * @return Whether the totalDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1006,6 +1022,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_duration_ms = 1;</code>
      * @return The totalDurationMs.
      */
+    @java.lang.Override
     public long getTotalDurationMs() {
       return totalDurationMs_;
     }
@@ -1048,6 +1065,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 macro_playback_count = 2;</code>
      * @return Whether the macroPlaybackCount field is set.
      */
+    @java.lang.Override
     public boolean hasMacroPlaybackCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1059,6 +1077,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 macro_playback_count = 2;</code>
      * @return The macroPlaybackCount.
      */
+    @java.lang.Override
     public long getMacroPlaybackCount() {
       return macroPlaybackCount_;
     }
@@ -1101,6 +1120,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 preview_replay_count = 3;</code>
      * @return Whether the previewReplayCount field is set.
      */
+    @java.lang.Override
     public boolean hasPreviewReplayCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1112,6 +1132,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 preview_replay_count = 3;</code>
      * @return The previewReplayCount.
      */
+    @java.lang.Override
     public long getPreviewReplayCount() {
       return previewReplayCount_;
     }
@@ -1268,6 +1289,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 record_macro_count = 5;</code>
      * @return Whether the recordMacroCount field is set.
      */
+    @java.lang.Override
     public boolean hasRecordMacroCount() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1279,6 +1301,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 record_macro_count = 5;</code>
      * @return The recordMacroCount.
      */
+    @java.lang.Override
     public long getRecordMacroCount() {
       return recordMacroCount_;
     }
@@ -1321,6 +1344,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 delete_macro_count = 6;</code>
      * @return Whether the deleteMacroCount field is set.
      */
+    @java.lang.Override
     public boolean hasDeleteMacroCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1332,6 +1356,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 delete_macro_count = 6;</code>
      * @return The deleteMacroCount.
      */
+    @java.lang.Override
     public long getDeleteMacroCount() {
       return deleteMacroCount_;
     }
@@ -1374,6 +1399,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 edit_macro_count = 7;</code>
      * @return Whether the editMacroCount field is set.
      */
+    @java.lang.Override
     public boolean hasEditMacroCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1385,6 +1411,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 edit_macro_count = 7;</code>
      * @return The editMacroCount.
      */
+    @java.lang.Override
     public long getEditMacroCount() {
       return editMacroCount_;
     }

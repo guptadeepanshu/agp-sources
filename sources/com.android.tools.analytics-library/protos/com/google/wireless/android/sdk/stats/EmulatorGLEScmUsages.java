@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGLEScmUsages}
  */
-public  final class EmulatorGLEScmUsages extends
+public final class EmulatorGLEScmUsages extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGLEScmUsages)
     EmulatorGLEScmUsagesOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_used = 1;</code>
    * @return Whether the isUsed field is set.
    */
+  @java.lang.Override
   public boolean hasIsUsed() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_used = 1;</code>
    * @return The isUsed.
    */
+  @java.lang.Override
   public boolean getIsUsed() {
     return isUsed_;
   }
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool light = 2;</code>
    * @return Whether the light field is set.
    */
+  @java.lang.Override
   public boolean hasLight() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -147,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool light = 2;</code>
    * @return The light.
    */
+  @java.lang.Override
   public boolean getLight() {
     return light_;
   }
@@ -161,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool tex_gen = 3;</code>
    * @return Whether the texGen field is set.
    */
+  @java.lang.Override
   public boolean hasTexGen() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -172,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool tex_gen = 3;</code>
    * @return The texGen.
    */
+  @java.lang.Override
   public boolean getTexGen() {
     return texGen_;
   }
@@ -556,6 +562,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_used = 1;</code>
      * @return Whether the isUsed field is set.
      */
+    @java.lang.Override
     public boolean hasIsUsed() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -567,6 +574,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_used = 1;</code>
      * @return The isUsed.
      */
+    @java.lang.Override
     public boolean getIsUsed() {
       return isUsed_;
     }
@@ -609,6 +617,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool light = 2;</code>
      * @return Whether the light field is set.
      */
+    @java.lang.Override
     public boolean hasLight() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -620,6 +629,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool light = 2;</code>
      * @return The light.
      */
+    @java.lang.Override
     public boolean getLight() {
       return light_;
     }
@@ -662,6 +672,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool tex_gen = 3;</code>
      * @return Whether the texGen field is set.
      */
+    @java.lang.Override
     public boolean hasTexGen() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -673,6 +684,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool tex_gen = 3;</code>
      * @return The texGen.
      */
+    @java.lang.Override
     public boolean getTexGen() {
       return texGen_;
     }

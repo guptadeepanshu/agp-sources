@@ -27,16 +27,13 @@ import com.android.build.gradle.internal.cxx.configure.isCmakeForkVersion
 import com.android.build.gradle.internal.cxx.configure.toCmakeArguments
 import com.android.build.gradle.internal.cxx.configure.toNdkBuildArguments
 import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputOptions
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputOptions.VERBOSE
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputOptions.BUILD_STDOUT
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputOptions.CLEAN_STDOUT
-import com.android.build.gradle.internal.cxx.gradle.generator.NativeBuildOutputOptions.CONFIGURE_STDOUT
 import com.android.build.gradle.internal.cxx.logging.warnln
 import com.android.build.gradle.internal.ndk.AbiInfo
 import com.android.build.gradle.internal.ndk.Stl
 import com.android.build.gradle.tasks.NativeBuildSystem
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
 import com.android.build.gradle.tasks.NativeBuildSystem.NDK_BUILD
+import com.android.build.gradle.tasks.NativeBuildSystem.NINJA
 import com.android.repository.Revision
 import com.android.utils.FileUtils.join
 import java.io.File
@@ -163,6 +160,11 @@ data class CxxModuleModel(
      *   ex, /path/to/ninja/ninja.exe
      */
     val ninjaExe: File?,
+
+    /**
+     * If present, a script to generate build.ninja
+     */
+    val configureScript: File?,
 )
 
 /** The user's CMakeSettings.json file next to CMakeLists.txt */
@@ -204,26 +206,6 @@ val CxxModuleModel.cmakeGenerator : String
         cmake.minimumCmakeVersion.isCmakeForkVersion() -> "Android Gradle - Ninja"
         else -> "Ninja"
     }
-
-/**
- * Call [compute] if logging native configure to lifecycle
- */
-fun <T> CxxModuleModel.ifLogNativeConfigureToLifecycle(compute : () -> T?) =
-    if (outputOptions.contains(VERBOSE) ||
-        outputOptions.contains(CONFIGURE_STDOUT)) compute() else null
-
-/**
- * Call [compute] if logging native build to lifecycle
- */
-fun <T> CxxModuleModel.ifLogNativeBuildToLifecycle(compute : () -> T?) =
-    if (outputOptions.contains(VERBOSE) ||
-        outputOptions.contains(BUILD_STDOUT)) compute() else null
-
-/**
- * Return true if we should log native clean to lifecycle log
- */
-val CxxModuleModel.logNativeCleanToLifecycle : Boolean get() =
-    outputOptions.contains(VERBOSE) || outputOptions.contains(CLEAN_STDOUT)
 
 /**
  * Determine, for CMake, which STL is used based on command-line arguments from the user.
@@ -281,6 +263,7 @@ fun CxxModuleModel.determineUsedStlFromArguments(arguments: List<CommandLineArgu
     return when(buildSystem) {
         CMAKE -> determineUsedStlForCmake(arguments)
         NDK_BUILD -> determineUsedStlForNdkBuild(arguments)
+        NINJA -> Stl.UNKNOWN
         else -> error("$buildSystem")
     }
 }
@@ -292,6 +275,7 @@ fun CxxModuleModel.determineUsedStl(arguments: List<String>): Stl {
     return when(buildSystem) {
         CMAKE -> determineUsedStlForCmake(arguments.toCmakeArguments())
         NDK_BUILD -> determineUsedStlForNdkBuild(arguments.toNdkBuildArguments())
+        NINJA -> Stl.UNKNOWN
         else -> error("$buildSystem")
     }
 }
@@ -301,7 +285,7 @@ fun CxxModuleModel.determineUsedStl(arguments: List<String>): Stl {
  */
 val CxxModuleModel.buildSystemTag : String get() = when (buildSystem) {
     CMAKE -> "cmake"
-    NativeBuildSystem.CUSTOM -> "custom"
+    NINJA -> "ninja"
     NDK_BUILD -> "ndkBuild"
 }
 
@@ -310,7 +294,7 @@ val CxxModuleModel.buildSystemTag : String get() = when (buildSystem) {
  */
 val CxxModuleModel.buildSystemNameForTasks : String get() = when (buildSystem) {
     CMAKE -> "CMake"
-    NativeBuildSystem.CUSTOM -> "Custom"
+    NINJA -> "Ninja"
     NDK_BUILD -> "NdkBuild"
 }
 
@@ -319,9 +303,8 @@ val CxxModuleModel.buildSystemNameForTasks : String get() = when (buildSystem) {
  * Folder name suffix for particular build systems.
  */
 val CxxModuleModel.intermediatesParentDirSuffix : String get() = when(buildSystem) {
-    CMAKE -> "obj"
     NDK_BUILD -> "obj/local"
-    else -> error("$buildSystem")
+    else -> "obj"
 }
 
 

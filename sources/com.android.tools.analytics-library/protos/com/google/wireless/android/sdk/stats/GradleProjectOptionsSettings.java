@@ -15,7 +15,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleProjectOptionsSettings}
  */
-public  final class GradleProjectOptionsSettings extends
+public final class GradleProjectOptionsSettings extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleProjectOptionsSettings)
     GradleProjectOptionsSettingsOrBuilder {
@@ -268,6 +268,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 true_boolean_options = 1;</code>
    * @return A list containing the trueBooleanOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getTrueBooleanOptionsList() {
     return trueBooleanOptions_;
@@ -317,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 false_boolean_options = 2;</code>
    * @return A list containing the falseBooleanOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getFalseBooleanOptionsList() {
     return falseBooleanOptions_;
@@ -360,6 +362,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 true_optional_boolean_options = 3;</code>
    * @return A list containing the trueOptionalBooleanOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getTrueOptionalBooleanOptionsList() {
     return trueOptionalBooleanOptions_;
@@ -405,6 +408,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 false_optional_boolean_options = 4;</code>
    * @return A list containing the falseOptionalBooleanOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getFalseOptionalBooleanOptionsList() {
     return falseOptionalBooleanOptions_;
@@ -446,6 +450,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleIntegerOptionEntry integer_option_values = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry> getIntegerOptionValuesList() {
     return integerOptionValues_;
   }
@@ -458,6 +463,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleIntegerOptionEntry integer_option_values = 5;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleIntegerOptionEntryOrBuilder> 
       getIntegerOptionValuesOrBuilderList() {
     return integerOptionValues_;
@@ -471,6 +477,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleIntegerOptionEntry integer_option_values = 5;</code>
    */
+  @java.lang.Override
   public int getIntegerOptionValuesCount() {
     return integerOptionValues_.size();
   }
@@ -483,6 +490,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleIntegerOptionEntry integer_option_values = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleIntegerOptionEntry getIntegerOptionValues(int index) {
     return integerOptionValues_.get(index);
   }
@@ -495,6 +503,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleIntegerOptionEntry integer_option_values = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleIntegerOptionEntryOrBuilder getIntegerOptionValuesOrBuilder(
       int index) {
     return integerOptionValues_.get(index);
@@ -512,6 +521,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 long_options = 6;</code>
    * @return A list containing the longOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getLongOptionsList() {
     return longOptions_;
@@ -557,6 +567,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 string_options = 7;</code>
    * @return A list containing the stringOptions.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getStringOptionsList() {
     return stringOptions_;

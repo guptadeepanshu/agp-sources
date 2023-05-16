@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AnimationPreviewEvent}
  */
-public  final class AnimationPreviewEvent extends
+public final class AnimationPreviewEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AnimationPreviewEvent)
     AnimationPreviewEventOrBuilder {
@@ -445,7 +445,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent.ToolbarType toolbar_type = 1;</code>
    * @return Whether the toolbarType field is set.
    */
-  public boolean hasToolbarType() {
+  @java.lang.Override public boolean hasToolbarType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -456,7 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent.ToolbarType toolbar_type = 1;</code>
    * @return The toolbarType.
    */
-  public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType getToolbarType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType getToolbarType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.valueOf(toolbarType_);
     return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.UNKNOWN_TOOLBAR_TYPE : result;
@@ -473,7 +473,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent.UserAction user_action = 2;</code>
    * @return Whether the userAction field is set.
    */
-  public boolean hasUserAction() {
+  @java.lang.Override public boolean hasUserAction() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -485,7 +485,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent.UserAction user_action = 2;</code>
    * @return The userAction.
    */
-  public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction getUserAction() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction getUserAction() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.valueOf(userAction_);
     return result == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.UNKNOWN_CONTROL : result;
@@ -841,7 +841,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnimationPreviewEvent.ToolbarType toolbar_type = 1;</code>
      * @return Whether the toolbarType field is set.
      */
-    public boolean hasToolbarType() {
+    @java.lang.Override public boolean hasToolbarType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -852,6 +852,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnimationPreviewEvent.ToolbarType toolbar_type = 1;</code>
      * @return The toolbarType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType getToolbarType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.ToolbarType.valueOf(toolbarType_);
@@ -900,7 +901,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnimationPreviewEvent.UserAction user_action = 2;</code>
      * @return Whether the userAction field is set.
      */
-    public boolean hasUserAction() {
+    @java.lang.Override public boolean hasUserAction() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -912,6 +913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AnimationPreviewEvent.UserAction user_action = 2;</code>
      * @return The userAction.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction getUserAction() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction result = com.google.wireless.android.sdk.stats.AnimationPreviewEvent.UserAction.valueOf(userAction_);

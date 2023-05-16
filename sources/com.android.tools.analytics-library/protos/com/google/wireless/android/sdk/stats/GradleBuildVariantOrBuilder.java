@@ -761,4 +761,61 @@ public interface GradleBuildVariantOrBuilder extends
    * @return The cxxDiagnosticCodes at the given index.
    */
   int getCxxDiagnosticCodes(int index);
+
+  /**
+   * <pre>
+   * whether this variant has unit tests enabled
+   * </pre>
+   *
+   * <code>optional bool has_unit_test = 30;</code>
+   * @return Whether the hasUnitTest field is set.
+   */
+  boolean hasHasUnitTest();
+  /**
+   * <pre>
+   * whether this variant has unit tests enabled
+   * </pre>
+   *
+   * <code>optional bool has_unit_test = 30;</code>
+   * @return The hasUnitTest.
+   */
+  boolean getHasUnitTest();
+
+  /**
+   * <pre>
+   * whether this variant has android tests enabled
+   * </pre>
+   *
+   * <code>optional bool has_android_test = 31;</code>
+   * @return Whether the hasAndroidTest field is set.
+   */
+  boolean hasHasAndroidTest();
+  /**
+   * <pre>
+   * whether this variant has android tests enabled
+   * </pre>
+   *
+   * <code>optional bool has_android_test = 31;</code>
+   * @return The hasAndroidTest.
+   */
+  boolean getHasAndroidTest();
+
+  /**
+   * <pre>
+   * whether this variant has test fixtures enabled
+   * </pre>
+   *
+   * <code>optional bool has_test_fixtures = 32;</code>
+   * @return Whether the hasTestFixtures field is set.
+   */
+  boolean hasHasTestFixtures();
+  /**
+   * <pre>
+   * whether this variant has test fixtures enabled
+   * </pre>
+   *
+   * <code>optional bool has_test_fixtures = 32;</code>
+   * @return The hasTestFixtures.
+   */
+  boolean getHasTestFixtures();
 }

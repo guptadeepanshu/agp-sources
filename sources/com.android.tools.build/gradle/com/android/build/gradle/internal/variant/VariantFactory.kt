@@ -24,6 +24,8 @@ import com.android.build.api.dsl.BuildFeatures
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DataBinding
 import com.android.build.api.variant.ComponentIdentity
+import com.android.build.api.variant.Variant
+import com.android.build.api.variant.VariantBuilder
 import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.VariantBuilderImpl
 import com.android.build.api.variant.impl.VariantImpl
@@ -43,11 +45,11 @@ import com.android.build.gradle.internal.scope.MutableTaskContainer
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.BaseServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantApiServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.options.ProjectOptions
-import com.android.builder.core.VariantType
+import com.android.builder.core.ComponentType
 import org.gradle.api.Project
 
 /**
@@ -63,7 +65,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         globalVariantBuilderConfig: GlobalVariantBuilderConfig,
         componentIdentity: ComponentIdentity,
         variantDslInfo: VariantDslInfo,
-        variantApiServices: VariantApiServices
+        variantBuilderServices: VariantBuilderServices
     ): VariantBuilderT
 
     fun createVariant(
@@ -78,7 +80,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         variantScope: VariantScope,
         variantData: BaseVariantData,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
     ): VariantT
@@ -95,7 +97,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         variantData: TestFixturesVariantData,
         mainVariant: VariantImpl,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig
     ): TestFixturesImpl
@@ -112,7 +114,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         variantData: TestVariantData,
         testedVariantProperties: VariantImpl,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
     ): UnitTestImpl
@@ -129,7 +131,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         variantData: TestVariantData,
         testedVariantProperties: VariantImpl,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
     ): AndroidTestImpl
@@ -141,7 +143,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
         variantSources: VariantSources,
         paths: VariantPathHelper,
         artifacts: ArtifactsImpl,
-        services: VariantPropertiesApiServices,
+        services: VariantServices,
         taskContainer: MutableTaskContainer
     ): BaseVariantData
 
@@ -167,7 +169,7 @@ interface VariantFactory<VariantBuilderT : VariantBuilderImpl, VariantT : Varian
             readOnlyObjectProvider: ReadOnlyObjectProvider): BaseVariantImpl?
 
     val servicesForOldVariantObjectsOnly: BaseServices
-    val variantType: VariantType
+    val componentType: ComponentType
 
     /**
      * Callback before variant creation to allow extra work or validation

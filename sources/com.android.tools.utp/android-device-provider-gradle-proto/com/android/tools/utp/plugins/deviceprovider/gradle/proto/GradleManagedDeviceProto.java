@@ -154,6 +154,38 @@ public final class GradleManagedDeviceProto {
      */
     com.google.protobuf.ByteString
         getGradleDslDeviceNameBytes();
+
+    /**
+     * <pre>
+     * The gpu value passed to the emulator executable to create the managed
+     * device.
+     * </pre>
+     *
+     * <code>string emulator_gpu = 7;</code>
+     * @return The emulatorGpu.
+     */
+    java.lang.String getEmulatorGpu();
+    /**
+     * <pre>
+     * The gpu value passed to the emulator executable to create the managed
+     * device.
+     * </pre>
+     *
+     * <code>string emulator_gpu = 7;</code>
+     * @return The bytes for emulatorGpu.
+     */
+    com.google.protobuf.ByteString
+        getEmulatorGpuBytes();
+
+    /**
+     * <pre>
+     * When enabled, "-verbose" and "-show-kernel" emulator options are added.
+     * </pre>
+     *
+     * <code>bool show_emulator_kernel_logging = 8;</code>
+     * @return The showEmulatorKernelLogging.
+     */
+    boolean getShowEmulatorKernelLogging();
   }
   /**
    * <pre>
@@ -162,7 +194,7 @@ public final class GradleManagedDeviceProto {
    *
    * Protobuf type {@code com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig}
    */
-  public  static final class GradleManagedDeviceConfig extends
+  public static final class GradleManagedDeviceConfig extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:com.android.tools.utp.plugins.deviceprovider.gradle.proto.GradleManagedDeviceConfig)
       GradleManagedDeviceConfigOrBuilder {
@@ -175,6 +207,7 @@ public final class GradleManagedDeviceProto {
       avdName_ = "";
       avdId_ = "";
       gradleDslDeviceName_ = "";
+      emulatorGpu_ = "";
     }
 
     @java.lang.Override
@@ -256,6 +289,17 @@ public final class GradleManagedDeviceProto {
               gradleDslDeviceName_ = s;
               break;
             }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              emulatorGpu_ = s;
+              break;
+            }
+            case 64: {
+
+              showEmulatorKernelLogging_ = input.readBool();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -300,6 +344,7 @@ public final class GradleManagedDeviceProto {
      * <code>.google.protobuf.Any avd_folder = 1;</code>
      * @return Whether the avdFolder field is set.
      */
+    @java.lang.Override
     public boolean hasAvdFolder() {
       return avdFolder_ != null;
     }
@@ -313,6 +358,7 @@ public final class GradleManagedDeviceProto {
      * <code>.google.protobuf.Any avd_folder = 1;</code>
      * @return The avdFolder.
      */
+    @java.lang.Override
     public com.google.protobuf.Any getAvdFolder() {
       return avdFolder_ == null ? com.google.protobuf.Any.getDefaultInstance() : avdFolder_;
     }
@@ -325,6 +371,7 @@ public final class GradleManagedDeviceProto {
      *
      * <code>.google.protobuf.Any avd_folder = 1;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getAvdFolderOrBuilder() {
       return getAvdFolder();
     }
@@ -339,6 +386,7 @@ public final class GradleManagedDeviceProto {
      * <code>string avd_name = 2;</code>
      * @return The avdName.
      */
+    @java.lang.Override
     public java.lang.String getAvdName() {
       java.lang.Object ref = avdName_;
       if (ref instanceof java.lang.String) {
@@ -359,6 +407,7 @@ public final class GradleManagedDeviceProto {
      * <code>string avd_name = 2;</code>
      * @return The bytes for avdName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAvdNameBytes() {
       java.lang.Object ref = avdName_;
@@ -385,6 +434,7 @@ public final class GradleManagedDeviceProto {
      * <code>string avd_id = 3;</code>
      * @return The avdId.
      */
+    @java.lang.Override
     public java.lang.String getAvdId() {
       java.lang.Object ref = avdId_;
       if (ref instanceof java.lang.String) {
@@ -407,6 +457,7 @@ public final class GradleManagedDeviceProto {
      * <code>string avd_id = 3;</code>
      * @return The bytes for avdId.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAvdIdBytes() {
       java.lang.Object ref = avdId_;
@@ -431,6 +482,7 @@ public final class GradleManagedDeviceProto {
      * <code>bool enable_display = 4;</code>
      * @return The enableDisplay.
      */
+    @java.lang.Override
     public boolean getEnableDisplay() {
       return enableDisplay_;
     }
@@ -446,6 +498,7 @@ public final class GradleManagedDeviceProto {
      * <code>.google.protobuf.Any emulator_path = 5;</code>
      * @return Whether the emulatorPath field is set.
      */
+    @java.lang.Override
     public boolean hasEmulatorPath() {
       return emulatorPath_ != null;
     }
@@ -458,6 +511,7 @@ public final class GradleManagedDeviceProto {
      * <code>.google.protobuf.Any emulator_path = 5;</code>
      * @return The emulatorPath.
      */
+    @java.lang.Override
     public com.google.protobuf.Any getEmulatorPath() {
       return emulatorPath_ == null ? com.google.protobuf.Any.getDefaultInstance() : emulatorPath_;
     }
@@ -469,6 +523,7 @@ public final class GradleManagedDeviceProto {
      *
      * <code>.google.protobuf.Any emulator_path = 5;</code>
      */
+    @java.lang.Override
     public com.google.protobuf.AnyOrBuilder getEmulatorPathOrBuilder() {
       return getEmulatorPath();
     }
@@ -483,6 +538,7 @@ public final class GradleManagedDeviceProto {
      * <code>string gradle_dsl_device_name = 6;</code>
      * @return The gradleDslDeviceName.
      */
+    @java.lang.Override
     public java.lang.String getGradleDslDeviceName() {
       java.lang.Object ref = gradleDslDeviceName_;
       if (ref instanceof java.lang.String) {
@@ -503,6 +559,7 @@ public final class GradleManagedDeviceProto {
      * <code>string gradle_dsl_device_name = 6;</code>
      * @return The bytes for gradleDslDeviceName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getGradleDslDeviceNameBytes() {
       java.lang.Object ref = gradleDslDeviceName_;
@@ -515,6 +572,69 @@ public final class GradleManagedDeviceProto {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
+    }
+
+    public static final int EMULATOR_GPU_FIELD_NUMBER = 7;
+    private volatile java.lang.Object emulatorGpu_;
+    /**
+     * <pre>
+     * The gpu value passed to the emulator executable to create the managed
+     * device.
+     * </pre>
+     *
+     * <code>string emulator_gpu = 7;</code>
+     * @return The emulatorGpu.
+     */
+    @java.lang.Override
+    public java.lang.String getEmulatorGpu() {
+      java.lang.Object ref = emulatorGpu_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        emulatorGpu_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The gpu value passed to the emulator executable to create the managed
+     * device.
+     * </pre>
+     *
+     * <code>string emulator_gpu = 7;</code>
+     * @return The bytes for emulatorGpu.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getEmulatorGpuBytes() {
+      java.lang.Object ref = emulatorGpu_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        emulatorGpu_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SHOW_EMULATOR_KERNEL_LOGGING_FIELD_NUMBER = 8;
+    private boolean showEmulatorKernelLogging_;
+    /**
+     * <pre>
+     * When enabled, "-verbose" and "-show-kernel" emulator options are added.
+     * </pre>
+     *
+     * <code>bool show_emulator_kernel_logging = 8;</code>
+     * @return The showEmulatorKernelLogging.
+     */
+    @java.lang.Override
+    public boolean getShowEmulatorKernelLogging() {
+      return showEmulatorKernelLogging_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -549,6 +669,12 @@ public final class GradleManagedDeviceProto {
       if (!getGradleDslDeviceNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 6, gradleDslDeviceName_);
       }
+      if (!getEmulatorGpuBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, emulatorGpu_);
+      }
+      if (showEmulatorKernelLogging_ != false) {
+        output.writeBool(8, showEmulatorKernelLogging_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -578,6 +704,13 @@ public final class GradleManagedDeviceProto {
       }
       if (!getGradleDslDeviceNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, gradleDslDeviceName_);
+      }
+      if (!getEmulatorGpuBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, emulatorGpu_);
+      }
+      if (showEmulatorKernelLogging_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(8, showEmulatorKernelLogging_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -612,6 +745,10 @@ public final class GradleManagedDeviceProto {
       }
       if (!getGradleDslDeviceName()
           .equals(other.getGradleDslDeviceName())) return false;
+      if (!getEmulatorGpu()
+          .equals(other.getEmulatorGpu())) return false;
+      if (getShowEmulatorKernelLogging()
+          != other.getShowEmulatorKernelLogging()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -640,6 +777,11 @@ public final class GradleManagedDeviceProto {
       }
       hash = (37 * hash) + GRADLE_DSL_DEVICE_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getGradleDslDeviceName().hashCode();
+      hash = (37 * hash) + EMULATOR_GPU_FIELD_NUMBER;
+      hash = (53 * hash) + getEmulatorGpu().hashCode();
+      hash = (37 * hash) + SHOW_EMULATOR_KERNEL_LOGGING_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getShowEmulatorKernelLogging());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -797,6 +939,10 @@ public final class GradleManagedDeviceProto {
         }
         gradleDslDeviceName_ = "";
 
+        emulatorGpu_ = "";
+
+        showEmulatorKernelLogging_ = false;
+
         return this;
       }
 
@@ -837,6 +983,8 @@ public final class GradleManagedDeviceProto {
           result.emulatorPath_ = emulatorPathBuilder_.build();
         }
         result.gradleDslDeviceName_ = gradleDslDeviceName_;
+        result.emulatorGpu_ = emulatorGpu_;
+        result.showEmulatorKernelLogging_ = showEmulatorKernelLogging_;
         onBuilt();
         return result;
       }
@@ -905,6 +1053,13 @@ public final class GradleManagedDeviceProto {
         if (!other.getGradleDslDeviceName().isEmpty()) {
           gradleDslDeviceName_ = other.gradleDslDeviceName_;
           onChanged();
+        }
+        if (!other.getEmulatorGpu().isEmpty()) {
+          emulatorGpu_ = other.emulatorGpu_;
+          onChanged();
+        }
+        if (other.getShowEmulatorKernelLogging() != false) {
+          setShowEmulatorKernelLogging(other.getShowEmulatorKernelLogging());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1319,6 +1474,7 @@ public final class GradleManagedDeviceProto {
        * <code>bool enable_display = 4;</code>
        * @return The enableDisplay.
        */
+      @java.lang.Override
       public boolean getEnableDisplay() {
         return enableDisplay_;
       }
@@ -1611,6 +1767,150 @@ public final class GradleManagedDeviceProto {
         onChanged();
         return this;
       }
+
+      private java.lang.Object emulatorGpu_ = "";
+      /**
+       * <pre>
+       * The gpu value passed to the emulator executable to create the managed
+       * device.
+       * </pre>
+       *
+       * <code>string emulator_gpu = 7;</code>
+       * @return The emulatorGpu.
+       */
+      public java.lang.String getEmulatorGpu() {
+        java.lang.Object ref = emulatorGpu_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          emulatorGpu_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The gpu value passed to the emulator executable to create the managed
+       * device.
+       * </pre>
+       *
+       * <code>string emulator_gpu = 7;</code>
+       * @return The bytes for emulatorGpu.
+       */
+      public com.google.protobuf.ByteString
+          getEmulatorGpuBytes() {
+        java.lang.Object ref = emulatorGpu_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          emulatorGpu_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The gpu value passed to the emulator executable to create the managed
+       * device.
+       * </pre>
+       *
+       * <code>string emulator_gpu = 7;</code>
+       * @param value The emulatorGpu to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEmulatorGpu(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        emulatorGpu_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The gpu value passed to the emulator executable to create the managed
+       * device.
+       * </pre>
+       *
+       * <code>string emulator_gpu = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEmulatorGpu() {
+        
+        emulatorGpu_ = getDefaultInstance().getEmulatorGpu();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The gpu value passed to the emulator executable to create the managed
+       * device.
+       * </pre>
+       *
+       * <code>string emulator_gpu = 7;</code>
+       * @param value The bytes for emulatorGpu to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEmulatorGpuBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        emulatorGpu_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean showEmulatorKernelLogging_ ;
+      /**
+       * <pre>
+       * When enabled, "-verbose" and "-show-kernel" emulator options are added.
+       * </pre>
+       *
+       * <code>bool show_emulator_kernel_logging = 8;</code>
+       * @return The showEmulatorKernelLogging.
+       */
+      @java.lang.Override
+      public boolean getShowEmulatorKernelLogging() {
+        return showEmulatorKernelLogging_;
+      }
+      /**
+       * <pre>
+       * When enabled, "-verbose" and "-show-kernel" emulator options are added.
+       * </pre>
+       *
+       * <code>bool show_emulator_kernel_logging = 8;</code>
+       * @param value The showEmulatorKernelLogging to set.
+       * @return This builder for chaining.
+       */
+      public Builder setShowEmulatorKernelLogging(boolean value) {
+        
+        showEmulatorKernelLogging_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * When enabled, "-verbose" and "-show-kernel" emulator options are added.
+       * </pre>
+       *
+       * <code>bool show_emulator_kernel_logging = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearShowEmulatorKernelLogging() {
+        
+        showEmulatorKernelLogging_ = false;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -1681,14 +1981,16 @@ public final class GradleManagedDeviceProto {
       "\n\"gradle_managed_device_config.proto\0229co" +
       "m.android.tools.utp.plugins.deviceprovid" +
       "er.gradle.proto\032\031google/protobuf/any.pro" +
-      "to\"\314\001\n\031GradleManagedDeviceConfig\022(\n\navd_" +
+      "to\"\210\002\n\031GradleManagedDeviceConfig\022(\n\navd_" +
       "folder\030\001 \001(\0132\024.google.protobuf.Any\022\020\n\010av" +
       "d_name\030\002 \001(\t\022\016\n\006avd_id\030\003 \001(\t\022\026\n\016enable_d" +
       "isplay\030\004 \001(\010\022+\n\remulator_path\030\005 \001(\0132\024.go" +
       "ogle.protobuf.Any\022\036\n\026gradle_dsl_device_n" +
-      "ame\030\006 \001(\tBU\n9com.android.tools.utp.plugi" +
-      "ns.deviceprovider.gradle.protoB\030GradleMa" +
-      "nagedDeviceProtob\006proto3"
+      "ame\030\006 \001(\t\022\024\n\014emulator_gpu\030\007 \001(\t\022$\n\034show_" +
+      "emulator_kernel_logging\030\010 \001(\010BU\n9com.and" +
+      "roid.tools.utp.plugins.deviceprovider.gr" +
+      "adle.protoB\030GradleManagedDeviceProtob\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1700,7 +2002,7 @@ public final class GradleManagedDeviceProto {
     internal_static_com_android_tools_utp_plugins_deviceprovider_gradle_proto_GradleManagedDeviceConfig_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_com_android_tools_utp_plugins_deviceprovider_gradle_proto_GradleManagedDeviceConfig_descriptor,
-        new java.lang.String[] { "AvdFolder", "AvdName", "AvdId", "EnableDisplay", "EmulatorPath", "GradleDslDeviceName", });
+        new java.lang.String[] { "AvdFolder", "AvdName", "AvdId", "EnableDisplay", "EmulatorPath", "GradleDslDeviceName", "EmulatorGpu", "ShowEmulatorKernelLogging", });
     com.google.protobuf.AnyProto.getDescriptor();
   }
 

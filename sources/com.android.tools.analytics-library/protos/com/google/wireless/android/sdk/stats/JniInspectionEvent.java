@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.JniInspectionEvent}
  */
-public  final class JniInspectionEvent extends
+public final class JniInspectionEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.JniInspectionEvent)
     JniInspectionEventOrBuilder {
@@ -656,7 +656,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.JniInspectionEvent.PerformanceEvent}
    */
-  public  static final class PerformanceEvent extends
+  public static final class PerformanceEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.JniInspectionEvent.PerformanceEvent)
       PerformanceEventOrBuilder {
@@ -748,6 +748,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 delay_ms = 1;</code>
      * @return Whether the delayMs field is set.
      */
+    @java.lang.Override
     public boolean hasDelayMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -760,6 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 delay_ms = 1;</code>
      * @return The delayMs.
      */
+    @java.lang.Override
     public int getDelayMs() {
       return delayMs_;
     }
@@ -1088,6 +1090,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 delay_ms = 1;</code>
        * @return Whether the delayMs field is set.
        */
+      @java.lang.Override
       public boolean hasDelayMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -1100,6 +1103,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 delay_ms = 1;</code>
        * @return The delayMs.
        */
+      @java.lang.Override
       public int getDelayMs() {
         return delayMs_;
       }
@@ -1194,14 +1198,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent.JniInspectionType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.JniInspectionEvent.JniInspectionType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType result = com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType.UNKNOWN_JNI_INSPECTION_EVENT : result;
@@ -1218,7 +1222,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent.EventCategory event_category = 2;</code>
    * @return Whether the eventCategory field is set.
    */
-  public boolean hasEventCategory() {
+  @java.lang.Override public boolean hasEventCategory() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -1230,7 +1234,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent.EventCategory event_category = 2;</code>
    * @return The eventCategory.
    */
-  public com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory getEventCategory() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory getEventCategory() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory result = com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory.valueOf(eventCategory_);
     return result == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory.UNKNOWN_EVENT_CATEGORY : result;
@@ -1247,6 +1251,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
    * @return Whether the performanceEvent field is set.
    */
+  @java.lang.Override
   public boolean hasPerformanceEvent() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1259,6 +1264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
    * @return The performanceEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent getPerformanceEvent() {
     return performanceEvent_ == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent.getDefaultInstance() : performanceEvent_;
   }
@@ -1270,6 +1276,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JniInspectionEvent.PerformanceEvent performance_event = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEventOrBuilder getPerformanceEventOrBuilder() {
     return performanceEvent_ == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.PerformanceEvent.getDefaultInstance() : performanceEvent_;
   }
@@ -1650,13 +1657,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JniInspectionEvent.JniInspectionType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.JniInspectionEvent.JniInspectionType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType result = com.google.wireless.android.sdk.stats.JniInspectionEvent.JniInspectionType.valueOf(type_);
@@ -1697,7 +1705,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JniInspectionEvent.EventCategory event_category = 2;</code>
      * @return Whether the eventCategory field is set.
      */
-    public boolean hasEventCategory() {
+    @java.lang.Override public boolean hasEventCategory() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1709,6 +1717,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.JniInspectionEvent.EventCategory event_category = 2;</code>
      * @return The eventCategory.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory getEventCategory() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory result = com.google.wireless.android.sdk.stats.JniInspectionEvent.EventCategory.valueOf(eventCategory_);

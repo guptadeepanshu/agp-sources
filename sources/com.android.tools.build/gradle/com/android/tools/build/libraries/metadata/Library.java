@@ -6,7 +6,7 @@ package com.android.tools.build.libraries.metadata;
 /**
  * Protobuf type {@code Library}
  */
-public  final class Library extends
+public final class Library extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:Library)
     LibraryOrBuilder {
@@ -141,7 +141,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code Library.Digests}
    */
-  public  static final class Digests extends
+  public static final class Digests extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Library.Digests)
       DigestsOrBuilder {
@@ -231,6 +231,7 @@ private static final long serialVersionUID = 0L;
      * <code>bytes sha256 = 1;</code>
      * @return The sha256.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getSha256() {
       return sha256_;
     }
@@ -550,6 +551,7 @@ private static final long serialVersionUID = 0L;
        * <code>bytes sha256 = 1;</code>
        * @return The sha256.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getSha256() {
         return sha256_;
       }
@@ -682,6 +684,7 @@ private static final long serialVersionUID = 0L;
    * <code>.MavenLibrary maven_library = 1;</code>
    * @return Whether the mavenLibrary field is set.
    */
+  @java.lang.Override
   public boolean hasMavenLibrary() {
     return libraryOneofCase_ == 1;
   }
@@ -689,6 +692,7 @@ private static final long serialVersionUID = 0L;
    * <code>.MavenLibrary maven_library = 1;</code>
    * @return The mavenLibrary.
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.MavenLibrary getMavenLibrary() {
     if (libraryOneofCase_ == 1) {
        return (com.android.tools.build.libraries.metadata.MavenLibrary) libraryOneof_;
@@ -698,6 +702,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.MavenLibrary maven_library = 1;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.MavenLibraryOrBuilder getMavenLibraryOrBuilder() {
     if (libraryOneofCase_ == 1) {
        return (com.android.tools.build.libraries.metadata.MavenLibrary) libraryOneof_;
@@ -711,6 +716,7 @@ private static final long serialVersionUID = 0L;
    * <code>.Library.Digests digests = 2;</code>
    * @return Whether the digests field is set.
    */
+  @java.lang.Override
   public boolean hasDigests() {
     return digests_ != null;
   }
@@ -718,12 +724,14 @@ private static final long serialVersionUID = 0L;
    * <code>.Library.Digests digests = 2;</code>
    * @return The digests.
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.Library.Digests getDigests() {
     return digests_ == null ? com.android.tools.build.libraries.metadata.Library.Digests.getDefaultInstance() : digests_;
   }
   /**
    * <code>.Library.Digests digests = 2;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.Library.DigestsOrBuilder getDigestsOrBuilder() {
     return getDigests();
   }
@@ -739,6 +747,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Int32Value repo_index = 3;</code>
    * @return Whether the repoIndex field is set.
    */
+  @java.lang.Override
   public boolean hasRepoIndex() {
     return repoIndex_ != null;
   }
@@ -751,6 +760,7 @@ private static final long serialVersionUID = 0L;
    * <code>.google.protobuf.Int32Value repo_index = 3;</code>
    * @return The repoIndex.
    */
+  @java.lang.Override
   public com.google.protobuf.Int32Value getRepoIndex() {
     return repoIndex_ == null ? com.google.protobuf.Int32Value.getDefaultInstance() : repoIndex_;
   }
@@ -762,6 +772,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.google.protobuf.Int32Value repo_index = 3;</code>
    */
+  @java.lang.Override
   public com.google.protobuf.Int32ValueOrBuilder getRepoIndexOrBuilder() {
     return getRepoIndex();
   }
@@ -1175,6 +1186,7 @@ private static final long serialVersionUID = 0L;
      * <code>.MavenLibrary maven_library = 1;</code>
      * @return Whether the mavenLibrary field is set.
      */
+    @java.lang.Override
     public boolean hasMavenLibrary() {
       return libraryOneofCase_ == 1;
     }
@@ -1182,6 +1194,7 @@ private static final long serialVersionUID = 0L;
      * <code>.MavenLibrary maven_library = 1;</code>
      * @return The mavenLibrary.
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.MavenLibrary getMavenLibrary() {
       if (mavenLibraryBuilder_ == null) {
         if (libraryOneofCase_ == 1) {
@@ -1275,6 +1288,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.MavenLibrary maven_library = 1;</code>
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.MavenLibraryOrBuilder getMavenLibraryOrBuilder() {
       if ((libraryOneofCase_ == 1) && (mavenLibraryBuilder_ != null)) {
         return mavenLibraryBuilder_.getMessageOrBuilder();

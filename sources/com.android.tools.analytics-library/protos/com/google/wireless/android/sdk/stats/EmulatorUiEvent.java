@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorUiEvent}
  */
-public  final class EmulatorUiEvent extends
+public final class EmulatorUiEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorUiEvent)
     EmulatorUiEventOrBuilder {
@@ -510,6 +510,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string element_id = 1;</code>
    * @return Whether the elementId field is set.
    */
+  @java.lang.Override
   public boolean hasElementId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -521,6 +522,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string element_id = 1;</code>
    * @return The elementId.
    */
+  @java.lang.Override
   public java.lang.String getElementId() {
     java.lang.Object ref = elementId_;
     if (ref instanceof java.lang.String) {
@@ -543,6 +545,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string element_id = 1;</code>
    * @return The bytes for elementId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getElementIdBytes() {
     java.lang.Object ref = elementId_;
@@ -567,7 +570,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventType type = 2;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -578,7 +581,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventType type = 2;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.UNKONWN_EMULATOR_UI_EVENT_TYPE : result;
@@ -594,7 +597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventContext context = 3;</code>
    * @return Whether the context field is set.
    */
-  public boolean hasContext() {
+  @java.lang.Override public boolean hasContext() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -605,7 +608,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventContext context = 3;</code>
    * @return The context.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext getContext() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext getContext() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.valueOf(context_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.UNKNOWN_EMULATOR_UI_EVENT_CONTEXT : result;
@@ -623,6 +626,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 value = 4;</code>
    * @return Whether the value field is set.
    */
+  @java.lang.Override
   public boolean hasValue() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -636,6 +640,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 value = 4;</code>
    * @return The value.
    */
+  @java.lang.Override
   public long getValue() {
     return value_;
   }
@@ -1150,7 +1155,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventType type = 2;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1161,6 +1166,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventType type = 2;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventType.valueOf(type_);
@@ -1208,7 +1214,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventContext context = 3;</code>
      * @return Whether the context field is set.
      */
-    public boolean hasContext() {
+    @java.lang.Override public boolean hasContext() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1219,6 +1225,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorUiEvent.EmulatorUiEventContext context = 3;</code>
      * @return The context.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext getContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext result = com.google.wireless.android.sdk.stats.EmulatorUiEvent.EmulatorUiEventContext.valueOf(context_);
@@ -1268,6 +1275,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 value = 4;</code>
      * @return Whether the value field is set.
      */
+    @java.lang.Override
     public boolean hasValue() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1281,6 +1289,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 value = 4;</code>
      * @return The value.
      */
+    @java.lang.Override
     public long getValue() {
       return value_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorDetails}
  */
-public  final class EmulatorDetails extends
+public final class EmulatorDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorDetails)
     EmulatorDetailsOrBuilder {
@@ -1339,7 +1339,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture guest_arch = 1;</code>
    * @return Whether the guestArch field is set.
    */
-  public boolean hasGuestArch() {
+  @java.lang.Override public boolean hasGuestArch() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1350,7 +1350,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture guest_arch = 1;</code>
    * @return The guestArch.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getGuestArch() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getGuestArch() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(guestArch_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.UNKNOWN_GUEST_CPU_ARCHITECTURE : result;
@@ -1366,6 +1366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 system_time = 2;</code>
    * @return Whether the systemTime field is set.
    */
+  @java.lang.Override
   public boolean hasSystemTime() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1377,6 +1378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 system_time = 2;</code>
    * @return The systemTime.
    */
+  @java.lang.Override
   public long getSystemTime() {
     return systemTime_;
   }
@@ -1391,6 +1393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 user_time = 3;</code>
    * @return Whether the userTime field is set.
    */
+  @java.lang.Override
   public boolean hasUserTime() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1402,6 +1405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 user_time = 3;</code>
    * @return The userTime.
    */
+  @java.lang.Override
   public long getUserTime() {
     return userTime_;
   }
@@ -1416,6 +1420,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 crashes = 4;</code>
    * @return Whether the crashes field is set.
    */
+  @java.lang.Override
   public boolean hasCrashes() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1427,6 +1432,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 crashes = 4;</code>
    * @return The crashes.
    */
+  @java.lang.Override
   public long getCrashes() {
     return crashes_;
   }
@@ -1441,6 +1447,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 wall_time = 5;</code>
    * @return Whether the wallTime field is set.
    */
+  @java.lang.Override
   public boolean hasWallTime() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1452,6 +1459,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 wall_time = 5;</code>
    * @return The wallTime.
    */
+  @java.lang.Override
   public long getWallTime() {
     return wallTime_;
   }
@@ -1466,6 +1474,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool exit_started = 6;</code>
    * @return Whether the exitStarted field is set.
    */
+  @java.lang.Override
   public boolean hasExitStarted() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1477,6 +1486,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool exit_started = 6;</code>
    * @return The exitStarted.
    */
+  @java.lang.Override
   public boolean getExitStarted() {
     return exitStarted_;
   }
@@ -1491,6 +1501,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 guest_api_level = 7;</code>
    * @return Whether the guestApiLevel field is set.
    */
+  @java.lang.Override
   public boolean hasGuestApiLevel() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1502,6 +1513,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 guest_api_level = 7;</code>
    * @return The guestApiLevel.
    */
+  @java.lang.Override
   public long getGuestApiLevel() {
     return guestApiLevel_;
   }
@@ -1516,6 +1528,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool guest_gpu_enabled = 8;</code>
    * @return Whether the guestGpuEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasGuestGpuEnabled() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1527,6 +1540,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool guest_gpu_enabled = 8;</code>
    * @return The guestGpuEnabled.
    */
+  @java.lang.Override
   public boolean getGuestGpuEnabled() {
     return guestGpuEnabled_;
   }
@@ -1541,6 +1555,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_opengl_alive = 10;</code>
    * @return Whether the isOpenglAlive field is set.
    */
+  @java.lang.Override
   public boolean hasIsOpenglAlive() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1552,6 +1567,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_opengl_alive = 10;</code>
    * @return The isOpenglAlive.
    */
+  @java.lang.Override
   public boolean getIsOpenglAlive() {
     return isOpenglAlive_;
   }
@@ -1566,7 +1582,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorAdbLiveness adb_liveness = 11;</code>
    * @return Whether the adbLiveness field is set.
    */
-  public boolean hasAdbLiveness() {
+  @java.lang.Override public boolean hasAdbLiveness() {
     return ((bitField0_ & 0x00000200) != 0);
   }
   /**
@@ -1577,7 +1593,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorAdbLiveness adb_liveness = 11;</code>
    * @return The adbLiveness.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness getAdbLiveness() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness getAdbLiveness() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness.valueOf(adbLiveness_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness.UNKNOWN_EMULATOR_ADB_LIVENESS : result;
@@ -1593,6 +1609,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
    * @return Whether the guestGl field is set.
    */
+  @java.lang.Override
   public boolean hasGuestGl() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -1604,6 +1621,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
    * @return The guestGl.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo getGuestGl() {
     return guestGl_ == null ? com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo.getDefaultInstance() : guestGl_;
   }
@@ -1614,6 +1632,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorGuestGlInfo guest_gl = 12;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGuestGlInfoOrBuilder getGuestGlOrBuilder() {
     return guestGl_ == null ? com.google.wireless.android.sdk.stats.EmulatorGuestGlInfo.getDefaultInstance() : guestGl_;
   }
@@ -1627,6 +1646,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorGpuInfo host_gpu = 13;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorGpuInfo> getHostGpuList() {
     return hostGpu_;
   }
@@ -1637,6 +1657,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorGpuInfo host_gpu = 13;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorGpuInfoOrBuilder> 
       getHostGpuOrBuilderList() {
     return hostGpu_;
@@ -1648,6 +1669,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorGpuInfo host_gpu = 13;</code>
    */
+  @java.lang.Override
   public int getHostGpuCount() {
     return hostGpu_.size();
   }
@@ -1658,6 +1680,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorGpuInfo host_gpu = 13;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGpuInfo getHostGpu(int index) {
     return hostGpu_.get(index);
   }
@@ -1668,6 +1691,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorGpuInfo host_gpu = 13;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGpuInfoOrBuilder getHostGpuOrBuilder(
       int index) {
     return hostGpu_.get(index);
@@ -1683,7 +1707,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorSessionPhase session_phase = 14;</code>
    * @return Whether the sessionPhase field is set.
    */
-  public boolean hasSessionPhase() {
+  @java.lang.Override public boolean hasSessionPhase() {
     return ((bitField0_ & 0x00000800) != 0);
   }
   /**
@@ -1694,7 +1718,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorSessionPhase session_phase = 14;</code>
    * @return The sessionPhase.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase getSessionPhase() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase getSessionPhase() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase.valueOf(sessionPhase_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase.UNKNOWN_EMULATOR_SESSION_PHASE : result;
@@ -1710,6 +1734,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string core_version = 15;</code>
    * @return Whether the coreVersion field is set.
    */
+  @java.lang.Override
   public boolean hasCoreVersion() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -1721,6 +1746,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string core_version = 15;</code>
    * @return The coreVersion.
    */
+  @java.lang.Override
   public java.lang.String getCoreVersion() {
     java.lang.Object ref = coreVersion_;
     if (ref instanceof java.lang.String) {
@@ -1743,6 +1769,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string core_version = 15;</code>
    * @return The bytes for coreVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCoreVersionBytes() {
     java.lang.Object ref = coreVersion_;
@@ -1767,7 +1794,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorRenderer renderer = 16;</code>
    * @return Whether the renderer field is set.
    */
-  public boolean hasRenderer() {
+  @java.lang.Override public boolean hasRenderer() {
     return ((bitField0_ & 0x00002000) != 0);
   }
   /**
@@ -1778,7 +1805,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorRenderer renderer = 16;</code>
    * @return The renderer.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer getRenderer() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer getRenderer() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer.valueOf(renderer_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer.UNKNOWN_EMULATOR_RENDERER : result;
@@ -1794,6 +1821,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
    * @return Whether the usedFeatures field is set.
    */
+  @java.lang.Override
   public boolean hasUsedFeatures() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -1805,6 +1833,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
    * @return The usedFeatures.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatures getUsedFeatures() {
     return usedFeatures_ == null ? com.google.wireless.android.sdk.stats.EmulatorFeatures.getDefaultInstance() : usedFeatures_;
   }
@@ -1815,6 +1844,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorFeatures used_features = 17;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeaturesOrBuilder getUsedFeaturesOrBuilder() {
     return usedFeatures_ == null ? com.google.wireless.android.sdk.stats.EmulatorFeatures.getDefaultInstance() : usedFeatures_;
   }
@@ -1829,6 +1859,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
    * @return Whether the avdInfo field is set.
    */
+  @java.lang.Override
   public boolean hasAvdInfo() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -1840,6 +1871,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
    * @return The avdInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdInfo getAvdInfo() {
     return avdInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.getDefaultInstance() : avdInfo_;
   }
@@ -1850,6 +1882,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorAvdInfo avd_info = 18;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAvdInfoOrBuilder getAvdInfoOrBuilder() {
     return avdInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorAvdInfo.getDefaultInstance() : avdInfo_;
   }
@@ -1864,6 +1897,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
    * @return Whether the featureFlagState field is set.
    */
+  @java.lang.Override
   public boolean hasFeatureFlagState() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -1875,6 +1909,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
    * @return The featureFlagState.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState getFeatureFlagState() {
     return featureFlagState_ == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.getDefaultInstance() : featureFlagState_;
   }
@@ -1885,6 +1920,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorFeatureFlagState feature_flag_state = 19;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagStateOrBuilder getFeatureFlagStateOrBuilder() {
     return featureFlagState_ == null ? com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.getDefaultInstance() : featureFlagState_;
   }
@@ -1899,7 +1935,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorHypervisor hypervisor = 20;</code>
    * @return Whether the hypervisor field is set.
    */
-  public boolean hasHypervisor() {
+  @java.lang.Override public boolean hasHypervisor() {
     return ((bitField0_ & 0x00020000) != 0);
   }
   /**
@@ -1910,7 +1946,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails.EmulatorHypervisor hypervisor = 20;</code>
    * @return The hypervisor.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor getHypervisor() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor getHypervisor() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor.valueOf(hypervisor_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor.UNKNOWN_HYPERVISOR : result;
@@ -1926,6 +1962,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
    * @return Whether the quickbootLoad field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootLoad() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -1937,6 +1974,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
    * @return The quickbootLoad.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad getQuickbootLoad() {
     return quickbootLoad_ == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.getDefaultInstance() : quickbootLoad_;
   }
@@ -1947,6 +1985,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorQuickbootLoad quickboot_load = 21;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootLoadOrBuilder getQuickbootLoadOrBuilder() {
     return quickbootLoad_ == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootLoad.getDefaultInstance() : quickbootLoad_;
   }
@@ -1957,6 +1996,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
    * @return Whether the quickbootSave field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootSave() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -1964,12 +2004,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
    * @return The quickbootSave.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootSave getQuickbootSave() {
     return quickbootSave_ == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.getDefaultInstance() : quickbootSave_;
   }
   /**
    * <code>optional .android_studio.EmulatorQuickbootSave quickboot_save = 22;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorQuickbootSaveOrBuilder getQuickbootSaveOrBuilder() {
     return quickbootSave_ == null ? com.google.wireless.android.sdk.stats.EmulatorQuickbootSave.getDefaultInstance() : quickbootSave_;
   }
@@ -1984,6 +2026,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
    * @return Whether the glesUsages field is set.
    */
+  @java.lang.Override
   public boolean hasGlesUsages() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -1995,6 +2038,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
    * @return The glesUsages.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESUsages getGlesUsages() {
     return glesUsages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLESUsages.getDefaultInstance() : glesUsages_;
   }
@@ -2005,6 +2049,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorGLESUsages gles_usages = 23;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESUsagesOrBuilder getGlesUsagesOrBuilder() {
     return glesUsages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLESUsages.getDefaultInstance() : glesUsages_;
   }
@@ -2018,6 +2063,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_loads = 24;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorSnapshot> getSnapshotLoadsList() {
     return snapshotLoads_;
   }
@@ -2028,6 +2074,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_loads = 24;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder> 
       getSnapshotLoadsOrBuilderList() {
     return snapshotLoads_;
@@ -2039,6 +2086,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_loads = 24;</code>
    */
+  @java.lang.Override
   public int getSnapshotLoadsCount() {
     return snapshotLoads_.size();
   }
@@ -2049,6 +2097,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_loads = 24;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshotLoads(int index) {
     return snapshotLoads_.get(index);
   }
@@ -2059,6 +2108,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_loads = 24;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotLoadsOrBuilder(
       int index) {
     return snapshotLoads_.get(index);
@@ -2069,12 +2119,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_saves = 25;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorSnapshot> getSnapshotSavesList() {
     return snapshotSaves_;
   }
   /**
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_saves = 25;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder> 
       getSnapshotSavesOrBuilderList() {
     return snapshotSaves_;
@@ -2082,18 +2134,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_saves = 25;</code>
    */
+  @java.lang.Override
   public int getSnapshotSavesCount() {
     return snapshotSaves_.size();
   }
   /**
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_saves = 25;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshot getSnapshotSaves(int index) {
     return snapshotSaves_.get(index);
   }
   /**
    * <code>repeated .android_studio.EmulatorSnapshot snapshot_saves = 25;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotOrBuilder getSnapshotSavesOrBuilder(
       int index) {
     return snapshotSaves_.get(index);
@@ -2109,6 +2164,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
    * @return Whether the snapshotUiCounts field is set.
    */
+  @java.lang.Override
   public boolean hasSnapshotUiCounts() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -2120,6 +2176,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
    * @return The snapshotUiCounts.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts getSnapshotUiCounts() {
     return snapshotUiCounts_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.getDefaultInstance() : snapshotUiCounts_;
   }
@@ -2130,6 +2187,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorSnapshotUICounts snapshot_ui_counts = 26;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorSnapshotUICountsOrBuilder getSnapshotUiCountsOrBuilder() {
     return snapshotUiCounts_ == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotUICounts.getDefaultInstance() : snapshotUiCounts_;
   }
@@ -2144,6 +2202,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
    * @return Whether the camera field is set.
    */
+  @java.lang.Override
   public boolean hasCamera() {
     return ((bitField0_ & 0x00400000) != 0);
   }
@@ -2155,6 +2214,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
    * @return The camera.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorCameraSession getCamera() {
     return camera_ == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.getDefaultInstance() : camera_;
   }
@@ -2165,6 +2225,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorCameraSession camera = 27;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorCameraSessionOrBuilder getCameraOrBuilder() {
     return camera_ == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.getDefaultInstance() : camera_;
   }
@@ -2179,6 +2240,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
    * @return Whether the virtualScene field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualScene() {
     return ((bitField0_ & 0x00800000) != 0);
   }
@@ -2190,6 +2252,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
    * @return The virtualScene.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession getVirtualScene() {
     return virtualScene_ == null ? com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession.getDefaultInstance() : virtualScene_;
   }
@@ -2200,6 +2263,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorVirtualSceneSession virtual_scene = 28;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSessionOrBuilder getVirtualSceneOrBuilder() {
     return virtualScene_ == null ? com.google.wireless.android.sdk.stats.EmulatorVirtualSceneSession.getDefaultInstance() : virtualScene_;
   }
@@ -2214,6 +2278,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
    * @return Whether the bootInfo field is set.
    */
+  @java.lang.Override
   public boolean hasBootInfo() {
     return ((bitField0_ & 0x01000000) != 0);
   }
@@ -2225,6 +2290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
    * @return The bootInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorBootInfo getBootInfo() {
     return bootInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorBootInfo.getDefaultInstance() : bootInfo_;
   }
@@ -2235,6 +2301,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorBootInfo boot_info = 29;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorBootInfoOrBuilder getBootInfoOrBuilder() {
     return bootInfo_ == null ? com.google.wireless.android.sdk.stats.EmulatorBootInfo.getDefaultInstance() : bootInfo_;
   }
@@ -2249,6 +2316,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
    * @return Whether the automation field is set.
    */
+  @java.lang.Override
   public boolean hasAutomation() {
     return ((bitField0_ & 0x02000000) != 0);
   }
@@ -2260,6 +2328,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
    * @return The automation.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAutomation getAutomation() {
     return automation_ == null ? com.google.wireless.android.sdk.stats.EmulatorAutomation.getDefaultInstance() : automation_;
   }
@@ -2270,6 +2339,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorAutomation automation = 30;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorAutomationOrBuilder getAutomationOrBuilder() {
     return automation_ == null ? com.google.wireless.android.sdk.stats.EmulatorAutomation.getDefaultInstance() : automation_;
   }
@@ -2284,6 +2354,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
    * @return Whether the multiDisplay field is set.
    */
+  @java.lang.Override
   public boolean hasMultiDisplay() {
     return ((bitField0_ & 0x04000000) != 0);
   }
@@ -2295,6 +2366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
    * @return The multiDisplay.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMultiDisplay getMultiDisplay() {
     return multiDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorMultiDisplay.getDefaultInstance() : multiDisplay_;
   }
@@ -2305,6 +2377,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorMultiDisplay multi_display = 31;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMultiDisplayOrBuilder getMultiDisplayOrBuilder() {
     return multiDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorMultiDisplay.getDefaultInstance() : multiDisplay_;
   }
@@ -2319,6 +2392,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
    * @return Whether the grpc field is set.
    */
+  @java.lang.Override
   public boolean hasGrpc() {
     return ((bitField0_ & 0x08000000) != 0);
   }
@@ -2330,6 +2404,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
    * @return The grpc.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGrpc getGrpc() {
     return grpc_ == null ? com.google.wireless.android.sdk.stats.EmulatorGrpc.getDefaultInstance() : grpc_;
   }
@@ -2340,6 +2415,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorGrpc grpc = 32;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGrpcOrBuilder getGrpcOrBuilder() {
     return grpc_ == null ? com.google.wireless.android.sdk.stats.EmulatorGrpc.getDefaultInstance() : grpc_;
   }
@@ -2354,6 +2430,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
    * @return Whether the locationV2 field is set.
    */
+  @java.lang.Override
   public boolean hasLocationV2() {
     return ((bitField0_ & 0x10000000) != 0);
   }
@@ -2365,6 +2442,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
    * @return The locationV2.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLocationV2 getLocationV2() {
     return locationV2_ == null ? com.google.wireless.android.sdk.stats.EmulatorLocationV2.getDefaultInstance() : locationV2_;
   }
@@ -2375,6 +2453,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorLocationV2 location_v2 = 33;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLocationV2OrBuilder getLocationV2OrBuilder() {
     return locationV2_ == null ? com.google.wireless.android.sdk.stats.EmulatorLocationV2.getDefaultInstance() : locationV2_;
   }
@@ -2389,6 +2468,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
    * @return Whether the screenshot field is set.
    */
+  @java.lang.Override
   public boolean hasScreenshot() {
     return ((bitField0_ & 0x20000000) != 0);
   }
@@ -2400,6 +2480,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
    * @return The screenshot.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot getScreenshot() {
     return screenshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot.getDefaultInstance() : screenshot_;
   }
@@ -2410,6 +2491,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorStreamScreenshot screenshot = 34;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorStreamScreenshotOrBuilder getScreenshotOrBuilder() {
     return screenshot_ == null ? com.google.wireless.android.sdk.stats.EmulatorStreamScreenshot.getDefaultInstance() : screenshot_;
   }
@@ -2423,6 +2505,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorIcebox icebox = 35;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorIcebox> getIceboxList() {
     return icebox_;
   }
@@ -2433,6 +2516,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorIcebox icebox = 35;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorIceboxOrBuilder> 
       getIceboxOrBuilderList() {
     return icebox_;
@@ -2444,6 +2528,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorIcebox icebox = 35;</code>
    */
+  @java.lang.Override
   public int getIceboxCount() {
     return icebox_.size();
   }
@@ -2454,6 +2539,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorIcebox icebox = 35;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorIcebox getIcebox(int index) {
     return icebox_.get(index);
   }
@@ -2464,6 +2550,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorIcebox icebox = 35;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorIceboxOrBuilder getIceboxOrBuilder(
       int index) {
     return icebox_.get(index);
@@ -2479,6 +2566,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
    * @return Whether the resizableDisplay field is set.
    */
+  @java.lang.Override
   public boolean hasResizableDisplay() {
     return ((bitField0_ & 0x40000000) != 0);
   }
@@ -2490,6 +2578,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
    * @return The resizableDisplay.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResizableDisplay getResizableDisplay() {
     return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
   }
@@ -2500,6 +2589,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorResizableDisplay resizable_display = 36;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResizableDisplayOrBuilder getResizableDisplayOrBuilder() {
     return resizableDisplay_ == null ? com.google.wireless.android.sdk.stats.EmulatorResizableDisplay.getDefaultInstance() : resizableDisplay_;
   }
@@ -3960,7 +4050,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture guest_arch = 1;</code>
      * @return Whether the guestArch field is set.
      */
-    public boolean hasGuestArch() {
+    @java.lang.Override public boolean hasGuestArch() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -3971,6 +4061,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.GuestCpuArchitecture guest_arch = 1;</code>
      * @return The guestArch.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture getGuestArch() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture result = com.google.wireless.android.sdk.stats.EmulatorDetails.GuestCpuArchitecture.valueOf(guestArch_);
@@ -4018,6 +4109,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 system_time = 2;</code>
      * @return Whether the systemTime field is set.
      */
+    @java.lang.Override
     public boolean hasSystemTime() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -4029,6 +4121,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 system_time = 2;</code>
      * @return The systemTime.
      */
+    @java.lang.Override
     public long getSystemTime() {
       return systemTime_;
     }
@@ -4071,6 +4164,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 user_time = 3;</code>
      * @return Whether the userTime field is set.
      */
+    @java.lang.Override
     public boolean hasUserTime() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -4082,6 +4176,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 user_time = 3;</code>
      * @return The userTime.
      */
+    @java.lang.Override
     public long getUserTime() {
       return userTime_;
     }
@@ -4124,6 +4219,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 crashes = 4;</code>
      * @return Whether the crashes field is set.
      */
+    @java.lang.Override
     public boolean hasCrashes() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -4135,6 +4231,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 crashes = 4;</code>
      * @return The crashes.
      */
+    @java.lang.Override
     public long getCrashes() {
       return crashes_;
     }
@@ -4177,6 +4274,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 wall_time = 5;</code>
      * @return Whether the wallTime field is set.
      */
+    @java.lang.Override
     public boolean hasWallTime() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -4188,6 +4286,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 wall_time = 5;</code>
      * @return The wallTime.
      */
+    @java.lang.Override
     public long getWallTime() {
       return wallTime_;
     }
@@ -4230,6 +4329,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool exit_started = 6;</code>
      * @return Whether the exitStarted field is set.
      */
+    @java.lang.Override
     public boolean hasExitStarted() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -4241,6 +4341,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool exit_started = 6;</code>
      * @return The exitStarted.
      */
+    @java.lang.Override
     public boolean getExitStarted() {
       return exitStarted_;
     }
@@ -4283,6 +4384,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 guest_api_level = 7;</code>
      * @return Whether the guestApiLevel field is set.
      */
+    @java.lang.Override
     public boolean hasGuestApiLevel() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -4294,6 +4396,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 guest_api_level = 7;</code>
      * @return The guestApiLevel.
      */
+    @java.lang.Override
     public long getGuestApiLevel() {
       return guestApiLevel_;
     }
@@ -4336,6 +4439,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool guest_gpu_enabled = 8;</code>
      * @return Whether the guestGpuEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasGuestGpuEnabled() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -4347,6 +4451,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool guest_gpu_enabled = 8;</code>
      * @return The guestGpuEnabled.
      */
+    @java.lang.Override
     public boolean getGuestGpuEnabled() {
       return guestGpuEnabled_;
     }
@@ -4389,6 +4494,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_opengl_alive = 10;</code>
      * @return Whether the isOpenglAlive field is set.
      */
+    @java.lang.Override
     public boolean hasIsOpenglAlive() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -4400,6 +4506,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_opengl_alive = 10;</code>
      * @return The isOpenglAlive.
      */
+    @java.lang.Override
     public boolean getIsOpenglAlive() {
       return isOpenglAlive_;
     }
@@ -4442,7 +4549,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorAdbLiveness adb_liveness = 11;</code>
      * @return Whether the adbLiveness field is set.
      */
-    public boolean hasAdbLiveness() {
+    @java.lang.Override public boolean hasAdbLiveness() {
       return ((bitField0_ & 0x00000200) != 0);
     }
     /**
@@ -4453,6 +4560,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorAdbLiveness adb_liveness = 11;</code>
      * @return The adbLiveness.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness getAdbLiveness() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorAdbLiveness.valueOf(adbLiveness_);
@@ -4968,7 +5076,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorSessionPhase session_phase = 14;</code>
      * @return Whether the sessionPhase field is set.
      */
-    public boolean hasSessionPhase() {
+    @java.lang.Override public boolean hasSessionPhase() {
       return ((bitField0_ & 0x00001000) != 0);
     }
     /**
@@ -4979,6 +5087,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorSessionPhase session_phase = 14;</code>
      * @return The sessionPhase.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase getSessionPhase() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorSessionPhase.valueOf(sessionPhase_);
@@ -5134,7 +5243,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorRenderer renderer = 16;</code>
      * @return Whether the renderer field is set.
      */
-    public boolean hasRenderer() {
+    @java.lang.Override public boolean hasRenderer() {
       return ((bitField0_ & 0x00004000) != 0);
     }
     /**
@@ -5145,6 +5254,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorRenderer renderer = 16;</code>
      * @return The renderer.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer getRenderer() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorRenderer.valueOf(renderer_);
@@ -5660,7 +5770,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorHypervisor hypervisor = 20;</code>
      * @return Whether the hypervisor field is set.
      */
-    public boolean hasHypervisor() {
+    @java.lang.Override public boolean hasHypervisor() {
       return ((bitField0_ & 0x00040000) != 0);
     }
     /**
@@ -5671,6 +5781,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorDetails.EmulatorHypervisor hypervisor = 20;</code>
      * @return The hypervisor.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor getHypervisor() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor result = com.google.wireless.android.sdk.stats.EmulatorDetails.EmulatorHypervisor.valueOf(hypervisor_);

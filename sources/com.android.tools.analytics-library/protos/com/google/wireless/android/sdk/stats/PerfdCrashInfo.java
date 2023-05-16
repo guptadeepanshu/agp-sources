@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.PerfdCrashInfo}
  */
-public  final class PerfdCrashInfo extends
+public final class PerfdCrashInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.PerfdCrashInfo)
     PerfdCrashInfoOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated uint64 backstack_address_list = 1;</code>
    * @return A list containing the backstackAddressList.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Long>
       getBackstackAddressListList() {
     return backstackAddressList_;

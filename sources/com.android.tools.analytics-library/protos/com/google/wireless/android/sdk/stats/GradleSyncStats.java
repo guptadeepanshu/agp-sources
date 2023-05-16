@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleSyncStats}
  */
-public  final class GradleSyncStats extends
+public final class GradleSyncStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleSyncStats)
     GradleSyncStatsOrBuilder {
@@ -2303,7 +2303,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.Trigger trigger = 1;</code>
    * @return Whether the trigger field is set.
    */
-  public boolean hasTrigger() {
+  @java.lang.Override public boolean hasTrigger() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -2314,7 +2314,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.Trigger trigger = 1;</code>
    * @return The trigger.
    */
-  public com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger getTrigger() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger getTrigger() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.valueOf(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.TRIGGER_UNKNOWN : result;
@@ -2330,6 +2330,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_time_ms = 2;</code>
    * @return Whether the totalTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasTotalTimeMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -2341,6 +2342,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_time_ms = 2;</code>
    * @return The totalTimeMs.
    */
+  @java.lang.Override
   public long getTotalTimeMs() {
     return totalTimeMs_;
   }
@@ -2355,6 +2357,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gradle_time_ms = 3;</code>
    * @return Whether the gradleTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasGradleTimeMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -2366,6 +2369,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gradle_time_ms = 3;</code>
    * @return The gradleTimeMs.
    */
+  @java.lang.Override
   public long getGradleTimeMs() {
     return gradleTimeMs_;
   }
@@ -2380,6 +2384,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ide_time_ms = 4;</code>
    * @return Whether the ideTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasIdeTimeMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -2391,6 +2396,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 ide_time_ms = 4;</code>
    * @return The ideTimeMs.
    */
+  @java.lang.Override
   public long getIdeTimeMs() {
     return ideTimeMs_;
   }
@@ -2405,6 +2411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool embedded_repo_enabled = 5;</code>
    * @return Whether the embeddedRepoEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasEmbeddedRepoEnabled() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -2416,6 +2423,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool embedded_repo_enabled = 5;</code>
    * @return The embeddedRepoEnabled.
    */
+  @java.lang.Override
   public boolean getEmbeddedRepoEnabled() {
     return embeddedRepoEnabled_;
   }
@@ -2430,7 +2438,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.GradleSyncType sync_type = 6;</code>
    * @return Whether the syncType field is set.
    */
-  public boolean hasSyncType() {
+  @java.lang.Override public boolean hasSyncType() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -2441,7 +2449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.GradleSyncType sync_type = 6;</code>
    * @return The syncType.
    */
-  public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getSyncType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getSyncType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(syncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
@@ -2457,7 +2465,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.GradleSyncType actual_sync_type = 7;</code>
    * @return Whether the actualSyncType field is set.
    */
-  public boolean hasActualSyncType() {
+  @java.lang.Override public boolean hasActualSyncType() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -2468,7 +2476,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats.GradleSyncType actual_sync_type = 7;</code>
    * @return The actualSyncType.
    */
-  public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getActualSyncType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getActualSyncType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(actualSyncType_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.GRADLE_SYNC_TYPE_UNKNOWN : result;
@@ -2485,6 +2493,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string last_known_android_gradle_plugin_version = 8;</code>
    * @return Whether the lastKnownAndroidGradlePluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasLastKnownAndroidGradlePluginVersion() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -2497,6 +2506,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string last_known_android_gradle_plugin_version = 8;</code>
    * @return The lastKnownAndroidGradlePluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getLastKnownAndroidGradlePluginVersion() {
     java.lang.Object ref = lastKnownAndroidGradlePluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -2520,6 +2530,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string last_known_android_gradle_plugin_version = 8;</code>
    * @return The bytes for lastKnownAndroidGradlePluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLastKnownAndroidGradlePluginVersionBytes() {
     java.lang.Object ref = lastKnownAndroidGradlePluginVersion_;
@@ -2544,6 +2555,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_gradle_plugin_version = 9;</code>
    * @return Whether the androidGradlePluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidGradlePluginVersion() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -2555,6 +2567,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_gradle_plugin_version = 9;</code>
    * @return The androidGradlePluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getAndroidGradlePluginVersion() {
     java.lang.Object ref = androidGradlePluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -2577,6 +2590,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_gradle_plugin_version = 9;</code>
    * @return The bytes for androidGradlePluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAndroidGradlePluginVersionBytes() {
     java.lang.Object ref = androidGradlePluginVersion_;
@@ -2601,6 +2615,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool uses_build_gradle = 10;</code>
    * @return Whether the usesBuildGradle field is set.
    */
+  @java.lang.Override
   public boolean hasUsesBuildGradle() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -2612,6 +2627,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool uses_build_gradle = 10;</code>
    * @return The usesBuildGradle.
    */
+  @java.lang.Override
   public boolean getUsesBuildGradle() {
     return usesBuildGradle_;
   }
@@ -2626,6 +2642,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool uses_build_gradle_kts = 11;</code>
    * @return Whether the usesBuildGradleKts field is set.
    */
+  @java.lang.Override
   public boolean hasUsesBuildGradleKts() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -2637,6 +2654,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool uses_build_gradle_kts = 11;</code>
    * @return The usesBuildGradleKts.
    */
+  @java.lang.Override
   public boolean getUsesBuildGradleKts() {
     return usesBuildGradleKts_;
   }
@@ -3223,7 +3241,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.Trigger trigger = 1;</code>
      * @return Whether the trigger field is set.
      */
-    public boolean hasTrigger() {
+    @java.lang.Override public boolean hasTrigger() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -3234,6 +3252,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.Trigger trigger = 1;</code>
      * @return The trigger.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger getTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger result = com.google.wireless.android.sdk.stats.GradleSyncStats.Trigger.valueOf(trigger_);
@@ -3281,6 +3300,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_time_ms = 2;</code>
      * @return Whether the totalTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalTimeMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -3292,6 +3312,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_time_ms = 2;</code>
      * @return The totalTimeMs.
      */
+    @java.lang.Override
     public long getTotalTimeMs() {
       return totalTimeMs_;
     }
@@ -3334,6 +3355,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gradle_time_ms = 3;</code>
      * @return Whether the gradleTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasGradleTimeMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -3345,6 +3367,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gradle_time_ms = 3;</code>
      * @return The gradleTimeMs.
      */
+    @java.lang.Override
     public long getGradleTimeMs() {
       return gradleTimeMs_;
     }
@@ -3387,6 +3410,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ide_time_ms = 4;</code>
      * @return Whether the ideTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasIdeTimeMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -3398,6 +3422,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 ide_time_ms = 4;</code>
      * @return The ideTimeMs.
      */
+    @java.lang.Override
     public long getIdeTimeMs() {
       return ideTimeMs_;
     }
@@ -3440,6 +3465,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool embedded_repo_enabled = 5;</code>
      * @return Whether the embeddedRepoEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasEmbeddedRepoEnabled() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -3451,6 +3477,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool embedded_repo_enabled = 5;</code>
      * @return The embeddedRepoEnabled.
      */
+    @java.lang.Override
     public boolean getEmbeddedRepoEnabled() {
       return embeddedRepoEnabled_;
     }
@@ -3493,7 +3520,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.GradleSyncType sync_type = 6;</code>
      * @return Whether the syncType field is set.
      */
-    public boolean hasSyncType() {
+    @java.lang.Override public boolean hasSyncType() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -3504,6 +3531,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.GradleSyncType sync_type = 6;</code>
      * @return The syncType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getSyncType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(syncType_);
@@ -3551,7 +3579,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.GradleSyncType actual_sync_type = 7;</code>
      * @return Whether the actualSyncType field is set.
      */
-    public boolean hasActualSyncType() {
+    @java.lang.Override public boolean hasActualSyncType() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -3562,6 +3590,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleSyncStats.GradleSyncType actual_sync_type = 7;</code>
      * @return The actualSyncType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType getActualSyncType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType result = com.google.wireless.android.sdk.stats.GradleSyncStats.GradleSyncType.valueOf(actualSyncType_);
@@ -3831,6 +3860,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool uses_build_gradle = 10;</code>
      * @return Whether the usesBuildGradle field is set.
      */
+    @java.lang.Override
     public boolean hasUsesBuildGradle() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -3842,6 +3872,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool uses_build_gradle = 10;</code>
      * @return The usesBuildGradle.
      */
+    @java.lang.Override
     public boolean getUsesBuildGradle() {
       return usesBuildGradle_;
     }
@@ -3884,6 +3915,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool uses_build_gradle_kts = 11;</code>
      * @return Whether the usesBuildGradleKts field is set.
      */
+    @java.lang.Override
     public boolean hasUsesBuildGradleKts() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -3895,6 +3927,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool uses_build_gradle_kts = 11;</code>
      * @return The usesBuildGradleKts.
      */
+    @java.lang.Override
     public boolean getUsesBuildGradleKts() {
       return usesBuildGradleKts_;
     }

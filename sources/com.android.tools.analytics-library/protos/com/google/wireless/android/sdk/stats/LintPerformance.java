@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LintPerformance}
  */
-public  final class LintPerformance extends
+public final class LintPerformance extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LintPerformance)
     LintPerformanceOrBuilder {
@@ -171,6 +171,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 analysis_time_ms = 1;</code>
    * @return Whether the analysisTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasAnalysisTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -182,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 analysis_time_ms = 1;</code>
    * @return The analysisTimeMs.
    */
+  @java.lang.Override
   public long getAnalysisTimeMs() {
     return analysisTimeMs_;
   }
@@ -196,6 +198,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 file_count = 2;</code>
    * @return Whether the fileCount field is set.
    */
+  @java.lang.Override
   public boolean hasFileCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -207,6 +210,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 file_count = 2;</code>
    * @return The fileCount.
    */
+  @java.lang.Override
   public long getFileCount() {
     return fileCount_;
   }
@@ -221,6 +225,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 module_count = 3;</code>
    * @return Whether the moduleCount field is set.
    */
+  @java.lang.Override
   public boolean hasModuleCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -232,6 +237,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 module_count = 3;</code>
    * @return The moduleCount.
    */
+  @java.lang.Override
   public long getModuleCount() {
     return moduleCount_;
   }
@@ -246,6 +252,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 java_source_count = 4;</code>
    * @return Whether the javaSourceCount field is set.
    */
+  @java.lang.Override
   public boolean hasJavaSourceCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -257,6 +264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 java_source_count = 4;</code>
    * @return The javaSourceCount.
    */
+  @java.lang.Override
   public long getJavaSourceCount() {
     return javaSourceCount_;
   }
@@ -271,6 +279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 kotlin_source_count = 5;</code>
    * @return Whether the kotlinSourceCount field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinSourceCount() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -282,6 +291,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 kotlin_source_count = 5;</code>
    * @return The kotlinSourceCount.
    */
+  @java.lang.Override
   public long getKotlinSourceCount() {
     return kotlinSourceCount_;
   }
@@ -296,6 +306,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 resource_file_count = 6;</code>
    * @return Whether the resourceFileCount field is set.
    */
+  @java.lang.Override
   public boolean hasResourceFileCount() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -307,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 resource_file_count = 6;</code>
    * @return The resourceFileCount.
    */
+  @java.lang.Override
   public long getResourceFileCount() {
     return resourceFileCount_;
   }
@@ -322,6 +334,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 test_source_count = 7;</code>
    * @return Whether the testSourceCount field is set.
    */
+  @java.lang.Override
   public boolean hasTestSourceCount() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -334,6 +347,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 test_source_count = 7;</code>
    * @return The testSourceCount.
    */
+  @java.lang.Override
   public long getTestSourceCount() {
     return testSourceCount_;
   }
@@ -348,6 +362,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 initialize_time_ms = 8;</code>
    * @return Whether the initializeTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasInitializeTimeMs() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -359,6 +374,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 initialize_time_ms = 8;</code>
    * @return The initializeTimeMs.
    */
+  @java.lang.Override
   public long getInitializeTimeMs() {
     return initializeTimeMs_;
   }
@@ -373,6 +389,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 register_custom_detectors_time_ms = 9;</code>
    * @return Whether the registerCustomDetectorsTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasRegisterCustomDetectorsTimeMs() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -384,6 +401,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 register_custom_detectors_time_ms = 9;</code>
    * @return The registerCustomDetectorsTimeMs.
    */
+  @java.lang.Override
   public long getRegisterCustomDetectorsTimeMs() {
     return registerCustomDetectorsTimeMs_;
   }
@@ -398,6 +416,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 compute_detectors_time_ms = 10;</code>
    * @return Whether the computeDetectorsTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasComputeDetectorsTimeMs() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -409,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 compute_detectors_time_ms = 10;</code>
    * @return The computeDetectorsTimeMs.
    */
+  @java.lang.Override
   public long getComputeDetectorsTimeMs() {
     return computeDetectorsTimeMs_;
   }
@@ -423,6 +443,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 check_project_time_ms = 11;</code>
    * @return Whether the checkProjectTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasCheckProjectTimeMs() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -434,6 +455,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 check_project_time_ms = 11;</code>
    * @return The checkProjectTimeMs.
    */
+  @java.lang.Override
   public long getCheckProjectTimeMs() {
     return checkProjectTimeMs_;
   }
@@ -448,6 +470,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 extra_phases_time_ms = 12;</code>
    * @return Whether the extraPhasesTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasExtraPhasesTimeMs() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -459,6 +482,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 extra_phases_time_ms = 12;</code>
    * @return The extraPhasesTimeMs.
    */
+  @java.lang.Override
   public long getExtraPhasesTimeMs() {
     return extraPhasesTimeMs_;
   }
@@ -473,6 +497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 report_baseline_issues_time_ms = 13;</code>
    * @return Whether the reportBaselineIssuesTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasReportBaselineIssuesTimeMs() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -484,6 +509,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 report_baseline_issues_time_ms = 13;</code>
    * @return The reportBaselineIssuesTimeMs.
    */
+  @java.lang.Override
   public long getReportBaselineIssuesTimeMs() {
     return reportBaselineIssuesTimeMs_;
   }
@@ -498,6 +524,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 dispose_projects_time_ms = 14;</code>
    * @return Whether the disposeProjectsTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasDisposeProjectsTimeMs() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -509,6 +536,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 dispose_projects_time_ms = 14;</code>
    * @return The disposeProjectsTimeMs.
    */
+  @java.lang.Override
   public long getDisposeProjectsTimeMs() {
     return disposeProjectsTimeMs_;
   }
@@ -523,6 +551,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 report_generation_time_ms = 15;</code>
    * @return Whether the reportGenerationTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasReportGenerationTimeMs() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -534,6 +563,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 report_generation_time_ms = 15;</code>
    * @return The reportGenerationTimeMs.
    */
+  @java.lang.Override
   public long getReportGenerationTimeMs() {
     return reportGenerationTimeMs_;
   }
@@ -1230,6 +1260,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 analysis_time_ms = 1;</code>
      * @return Whether the analysisTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasAnalysisTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1241,6 +1272,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 analysis_time_ms = 1;</code>
      * @return The analysisTimeMs.
      */
+    @java.lang.Override
     public long getAnalysisTimeMs() {
       return analysisTimeMs_;
     }
@@ -1283,6 +1315,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 file_count = 2;</code>
      * @return Whether the fileCount field is set.
      */
+    @java.lang.Override
     public boolean hasFileCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1294,6 +1327,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 file_count = 2;</code>
      * @return The fileCount.
      */
+    @java.lang.Override
     public long getFileCount() {
       return fileCount_;
     }
@@ -1336,6 +1370,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 module_count = 3;</code>
      * @return Whether the moduleCount field is set.
      */
+    @java.lang.Override
     public boolean hasModuleCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1347,6 +1382,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 module_count = 3;</code>
      * @return The moduleCount.
      */
+    @java.lang.Override
     public long getModuleCount() {
       return moduleCount_;
     }
@@ -1389,6 +1425,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 java_source_count = 4;</code>
      * @return Whether the javaSourceCount field is set.
      */
+    @java.lang.Override
     public boolean hasJavaSourceCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1400,6 +1437,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 java_source_count = 4;</code>
      * @return The javaSourceCount.
      */
+    @java.lang.Override
     public long getJavaSourceCount() {
       return javaSourceCount_;
     }
@@ -1442,6 +1480,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 kotlin_source_count = 5;</code>
      * @return Whether the kotlinSourceCount field is set.
      */
+    @java.lang.Override
     public boolean hasKotlinSourceCount() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1453,6 +1492,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 kotlin_source_count = 5;</code>
      * @return The kotlinSourceCount.
      */
+    @java.lang.Override
     public long getKotlinSourceCount() {
       return kotlinSourceCount_;
     }
@@ -1495,6 +1535,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 resource_file_count = 6;</code>
      * @return Whether the resourceFileCount field is set.
      */
+    @java.lang.Override
     public boolean hasResourceFileCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1506,6 +1547,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 resource_file_count = 6;</code>
      * @return The resourceFileCount.
      */
+    @java.lang.Override
     public long getResourceFileCount() {
       return resourceFileCount_;
     }
@@ -1549,6 +1591,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 test_source_count = 7;</code>
      * @return Whether the testSourceCount field is set.
      */
+    @java.lang.Override
     public boolean hasTestSourceCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1561,6 +1604,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 test_source_count = 7;</code>
      * @return The testSourceCount.
      */
+    @java.lang.Override
     public long getTestSourceCount() {
       return testSourceCount_;
     }
@@ -1605,6 +1649,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 initialize_time_ms = 8;</code>
      * @return Whether the initializeTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasInitializeTimeMs() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1616,6 +1661,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 initialize_time_ms = 8;</code>
      * @return The initializeTimeMs.
      */
+    @java.lang.Override
     public long getInitializeTimeMs() {
       return initializeTimeMs_;
     }
@@ -1658,6 +1704,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 register_custom_detectors_time_ms = 9;</code>
      * @return Whether the registerCustomDetectorsTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasRegisterCustomDetectorsTimeMs() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1669,6 +1716,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 register_custom_detectors_time_ms = 9;</code>
      * @return The registerCustomDetectorsTimeMs.
      */
+    @java.lang.Override
     public long getRegisterCustomDetectorsTimeMs() {
       return registerCustomDetectorsTimeMs_;
     }
@@ -1711,6 +1759,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 compute_detectors_time_ms = 10;</code>
      * @return Whether the computeDetectorsTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasComputeDetectorsTimeMs() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1722,6 +1771,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 compute_detectors_time_ms = 10;</code>
      * @return The computeDetectorsTimeMs.
      */
+    @java.lang.Override
     public long getComputeDetectorsTimeMs() {
       return computeDetectorsTimeMs_;
     }
@@ -1764,6 +1814,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 check_project_time_ms = 11;</code>
      * @return Whether the checkProjectTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasCheckProjectTimeMs() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -1775,6 +1826,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 check_project_time_ms = 11;</code>
      * @return The checkProjectTimeMs.
      */
+    @java.lang.Override
     public long getCheckProjectTimeMs() {
       return checkProjectTimeMs_;
     }
@@ -1817,6 +1869,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 extra_phases_time_ms = 12;</code>
      * @return Whether the extraPhasesTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasExtraPhasesTimeMs() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -1828,6 +1881,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 extra_phases_time_ms = 12;</code>
      * @return The extraPhasesTimeMs.
      */
+    @java.lang.Override
     public long getExtraPhasesTimeMs() {
       return extraPhasesTimeMs_;
     }
@@ -1870,6 +1924,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 report_baseline_issues_time_ms = 13;</code>
      * @return Whether the reportBaselineIssuesTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasReportBaselineIssuesTimeMs() {
       return ((bitField0_ & 0x00001000) != 0);
     }
@@ -1881,6 +1936,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 report_baseline_issues_time_ms = 13;</code>
      * @return The reportBaselineIssuesTimeMs.
      */
+    @java.lang.Override
     public long getReportBaselineIssuesTimeMs() {
       return reportBaselineIssuesTimeMs_;
     }
@@ -1923,6 +1979,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 dispose_projects_time_ms = 14;</code>
      * @return Whether the disposeProjectsTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasDisposeProjectsTimeMs() {
       return ((bitField0_ & 0x00002000) != 0);
     }
@@ -1934,6 +1991,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 dispose_projects_time_ms = 14;</code>
      * @return The disposeProjectsTimeMs.
      */
+    @java.lang.Override
     public long getDisposeProjectsTimeMs() {
       return disposeProjectsTimeMs_;
     }
@@ -1976,6 +2034,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 report_generation_time_ms = 15;</code>
      * @return Whether the reportGenerationTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasReportGenerationTimeMs() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -1987,6 +2046,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 report_generation_time_ms = 15;</code>
      * @return The reportGenerationTimeMs.
      */
+    @java.lang.Override
     public long getReportGenerationTimeMs() {
       return reportGenerationTimeMs_;
     }

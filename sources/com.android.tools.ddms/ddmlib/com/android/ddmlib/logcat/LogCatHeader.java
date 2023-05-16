@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,117 +13,140 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.ddmlib.logcat;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
 import com.android.ddmlib.Log.LogLevel;
+
 import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.util.Locale;
 import java.util.Objects;
 
-/**
- * Data class for message header information which gets reported by logcat.
- */
-public final class LogCatHeader {
+public class LogCatHeader {
 
     @NonNull
-    private final LogLevel mLogLevel;
+    private static final DateTimeFormatter
+            EPOCH_TIME_FORMATTER
+            = new DateTimeFormatterBuilder()
+            .appendValue(ChronoField.INSTANT_SECONDS)
+            .appendFraction(ChronoField.MILLI_OF_SECOND, 3, 3, true)
+            .toFormatter(Locale.ROOT);
 
-    private final int mPid;
+    @NonNull private final LogLevel logLevel;
 
-    private final int mTid;
+    private final int pid;
 
-    @NonNull
-    private final String mAppName;
+    private final int tid;
 
-    @NonNull
-    private final String mTag;
+    @NonNull private final String appName;
 
-    @NonNull private final Instant mTimestamp;
+    @NonNull private final String tag;
 
-    public LogCatHeader(
-            @NonNull LogLevel logLevel,
+    @NonNull private final Instant timestamp;
+
+    public LogCatHeader(@NonNull LogLevel level,
             int pid,
             int tid,
-            @NonNull String appName,
+            @NonNull String name,
             @NonNull String tag,
             @NonNull Instant timestamp) {
-        mLogLevel = logLevel;
-        mPid = pid;
-        mTid = tid;
-        mAppName = appName;
-        mTag = tag;
-        mTimestamp = timestamp;
+        logLevel = level;
+        this.pid = pid;
+        this.tid = tid;
+        appName = name;
+        this.tag = tag;
+        this.timestamp = timestamp;
     }
 
     @NonNull
     public LogLevel getLogLevel() {
-        return mLogLevel;
+        return logLevel;
     }
 
     public int getPid() {
-        return mPid;
+        return pid;
     }
 
     public int getTid() {
-        return mTid;
+        return tid;
     }
 
     @NonNull
     public String getAppName() {
-        return mAppName;
+        return appName;
     }
 
     @NonNull
     public String getTag() {
-        return mTag;
+        return tag;
     }
 
     @NonNull
     public Instant getTimestamp() {
-        return mTimestamp;
+        return timestamp;
     }
 
-    @Override
-    public boolean equals(@Nullable Object object) {
-        if (!(object instanceof LogCatHeader)) {
-            return false;
-        }
-
-        LogCatHeader header = (LogCatHeader) object;
-
-        return mLogLevel.equals(header.mLogLevel)
-                && mPid == header.mPid
-                && mTid == header.mTid
-                && mAppName.equals(header.mAppName)
-                && mTag.equals(header.mTag)
-                && Objects.equals(mTimestamp, header.mTimestamp);
+    @NonNull
+    public LogLevel component1() {
+        return getLogLevel();
     }
 
-    @Override
-    public int hashCode() {
-        int hashCode = 17;
+    public int component2() {
+        return getPid();
+    }
 
-        hashCode = 31 * hashCode + mLogLevel.hashCode();
-        hashCode = 31 * hashCode + mPid;
-        hashCode = 31 * hashCode + mTid;
-        hashCode = 31 * hashCode + mAppName.hashCode();
-        hashCode = 31 * hashCode + mTag.hashCode();
-        hashCode = 31 * hashCode + Objects.hashCode(mTimestamp);
+    public int component3() {
+        return getTid();
+    }
 
-        return hashCode;
+    @NonNull
+    public String component4() {
+        return getAppName();
+    }
+
+    @NonNull
+    public String component5() {
+        return getTag();
+    }
+
+    @NonNull
+    public Instant component6() {
+        return getTimestamp();
     }
 
     @Override
     public String toString() {
-        return LogCatLongEpochMessageParser.EPOCH_TIME_FORMATTER.format(mTimestamp)
-                + ": "
-                + mLogLevel.getPriorityLetter()
-                + '/'
-                + mTag
-                + '('
-                + mPid
-                + ')';
+        String epoch = EPOCH_TIME_FORMATTER.format(timestamp);
+        char priority = logLevel.getPriorityLetter();
+        return String.format(Locale.ROOT,
+                             "%s: %c/%s(%d:%d) %s",
+                             epoch,
+                             priority,
+                             tag,
+                             pid,
+                             tid,
+                             appName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(logLevel, pid, tid, appName, tag, timestamp);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LogCatHeader)) {
+            return false;
+        }
+        LogCatHeader other = (LogCatHeader)obj;
+        return logLevel == other.logLevel &&
+               pid == other.pid &&
+               tid == other.tid &&
+               appName.equals(other.appName) &&
+               tag.equals(other.tag) &&
+               timestamp.equals(other.timestamp);
     }
 }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorBootInfo}
  */
-public  final class EmulatorBootInfo extends
+public final class EmulatorBootInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorBootInfo)
     EmulatorBootInfoOrBuilder {
@@ -219,7 +219,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorBootInfo.BootStatus boot_status = 1;</code>
    * @return Whether the bootStatus field is set.
    */
-  public boolean hasBootStatus() {
+  @java.lang.Override public boolean hasBootStatus() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -230,7 +230,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorBootInfo.BootStatus boot_status = 1;</code>
    * @return The bootStatus.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus getBootStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus getBootStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus result = com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus.valueOf(bootStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus.UNKNOWN_STATUS : result;
@@ -246,6 +246,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -257,6 +258,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 2;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -613,7 +615,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorBootInfo.BootStatus boot_status = 1;</code>
      * @return Whether the bootStatus field is set.
      */
-    public boolean hasBootStatus() {
+    @java.lang.Override public boolean hasBootStatus() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -624,6 +626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorBootInfo.BootStatus boot_status = 1;</code>
      * @return The bootStatus.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus getBootStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus result = com.google.wireless.android.sdk.stats.EmulatorBootInfo.BootStatus.valueOf(bootStatus_);
@@ -671,6 +674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -682,6 +686,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }

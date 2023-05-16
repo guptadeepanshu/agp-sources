@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.LldbSessionStartDetails}
  */
-public  final class LldbSessionStartDetails extends
+public final class LldbSessionStartDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LldbSessionStartDetails)
     LldbSessionStartDetailsOrBuilder {
@@ -281,6 +281,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return Whether the debugSessionId field is set.
    */
+  @java.lang.Override
   public boolean hasDebugSessionId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -292,6 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return The debugSessionId.
    */
+  @java.lang.Override
   public java.lang.String getDebugSessionId() {
     java.lang.Object ref = debugSessionId_;
     if (ref instanceof java.lang.String) {
@@ -314,6 +316,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string debug_session_id = 1;</code>
    * @return The bytes for debugSessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDebugSessionIdBytes() {
     java.lang.Object ref = debugSessionId_;
@@ -338,7 +341,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 2;</code>
    * @return Whether the debuggerType field is set.
    */
-  public boolean hasDebuggerType() {
+  @java.lang.Override public boolean hasDebuggerType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -349,7 +352,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 2;</code>
    * @return The debuggerType.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.UNKNOWN_DEBUGGER_TYPE : result;
@@ -365,7 +368,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 3;</code>
    * @return Whether the runConfigurationType field is set.
    */
-  public boolean hasRunConfigurationType() {
+  @java.lang.Override public boolean hasRunConfigurationType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -376,7 +379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 3;</code>
    * @return The runConfigurationType.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.UNKNOWN_RUN_CONFIGURATION_TYPE : result;
@@ -392,6 +395,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool auto_debugger = 4;</code>
    * @return Whether the autoDebugger field is set.
    */
+  @java.lang.Override
   public boolean hasAutoDebugger() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -403,6 +407,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool auto_debugger = 4;</code>
    * @return The autoDebugger.
    */
+  @java.lang.Override
   public boolean getAutoDebugger() {
     return autoDebugger_;
   }
@@ -417,6 +422,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
    * @return Whether the deviceInfo field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceInfo() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -428,6 +434,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
    * @return The deviceInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfo getDeviceInfo() {
     return deviceInfo_ == null ? com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance() : deviceInfo_;
   }
@@ -438,6 +445,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DeviceInfo device_info = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder() {
     return deviceInfo_ == null ? com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance() : deviceInfo_;
   }
@@ -452,6 +460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_version = 6;</code>
    * @return Whether the lldbVersion field is set.
    */
+  @java.lang.Override
   public boolean hasLldbVersion() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -463,6 +472,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_version = 6;</code>
    * @return The lldbVersion.
    */
+  @java.lang.Override
   public java.lang.String getLldbVersion() {
     java.lang.Object ref = lldbVersion_;
     if (ref instanceof java.lang.String) {
@@ -485,6 +495,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_version = 6;</code>
    * @return The bytes for lldbVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLldbVersionBytes() {
     java.lang.Object ref = lldbVersion_;
@@ -509,7 +520,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionStartDetails.StarterType starter_type = 7;</code>
    * @return Whether the starterType field is set.
    */
-  public boolean hasStarterType() {
+  @java.lang.Override public boolean hasStarterType() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -520,7 +531,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionStartDetails.StarterType starter_type = 7;</code>
    * @return The starterType.
    */
-  public com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType getStarterType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType getStarterType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.valueOf(starterType_);
     return result == null ? com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.UNKNOWN_STARTER_TYPE : result;
@@ -1116,7 +1127,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 2;</code>
      * @return Whether the debuggerType field is set.
      */
-    public boolean hasDebuggerType() {
+    @java.lang.Override public boolean hasDebuggerType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1127,6 +1138,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 2;</code>
      * @return The debuggerType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
@@ -1174,7 +1186,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 3;</code>
      * @return Whether the runConfigurationType field is set.
      */
-    public boolean hasRunConfigurationType() {
+    @java.lang.Override public boolean hasRunConfigurationType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1185,6 +1197,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 3;</code>
      * @return The runConfigurationType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
@@ -1232,6 +1245,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool auto_debugger = 4;</code>
      * @return Whether the autoDebugger field is set.
      */
+    @java.lang.Override
     public boolean hasAutoDebugger() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1243,6 +1257,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool auto_debugger = 4;</code>
      * @return The autoDebugger.
      */
+    @java.lang.Override
     public boolean getAutoDebugger() {
       return autoDebugger_;
     }
@@ -1549,7 +1564,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LldbSessionStartDetails.StarterType starter_type = 7;</code>
      * @return Whether the starterType field is set.
      */
-    public boolean hasStarterType() {
+    @java.lang.Override public boolean hasStarterType() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -1560,6 +1575,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LldbSessionStartDetails.StarterType starter_type = 7;</code>
      * @return The starterType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType getStarterType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType result = com.google.wireless.android.sdk.stats.LldbSessionStartDetails.StarterType.valueOf(starterType_);

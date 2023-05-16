@@ -137,7 +137,6 @@ class UtpConfigFactory {
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnDevice(device, testData)
                     },
-                    device.name,
                     coverageOutputDir,
                     shardConfig
                 )
@@ -194,10 +193,14 @@ class UtpConfigFactory {
         additionalTestOutputDir: File?,
         useOrchestrator: Boolean,
         testResultListenerServerMetadata: UtpTestResultListenerServerMetadata,
+        emulatorGpuFlag: String,
+        showEmulatorKernelLogging: Boolean,
         shardConfig: ShardConfig? = null
     ): RunnerConfigProto.RunnerConfig {
         return RunnerConfigProto.RunnerConfig.newBuilder().apply {
-            addDevice(createGradleManagedDevice(device, utpDependencies))
+            addDevice(
+                createGradleManagedDevice(
+                    device, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging))
             addTestFixture(
                 createTestFixture(
                     null, null, appApks, additionalInstallOptions, helperApks, testData,
@@ -207,7 +210,7 @@ class UtpConfigFactory {
                     additionalTestOutputDir?.let {
                         findAdditionalTestOutputDirectoryOnManagedDevice(device, testData)
                     },
-                    device.deviceName, coverageOutputDir, shardConfig
+                    coverageOutputDir, shardConfig
                 )
             )
             singleDeviceExecutor = createSingleDeviceExecutor(device.id, shardConfig)
@@ -262,19 +265,24 @@ class UtpConfigFactory {
 
     private fun createGradleManagedDevice(
         managedDevice: UtpManagedDevice,
-        utpDependencies: UtpDependencies
+        utpDependencies: UtpDependencies,
+        emulatorGpuFlag: String,
+        showEmulatorKernelLogging: Boolean,
     ): DeviceProto.Device {
         return DeviceProto.Device.newBuilder().apply {
             deviceIdBuilder.apply {
                 id = managedDevice.id
             }
-            provider = createGradleDeviceProvider(managedDevice, utpDependencies)
+            provider = createGradleDeviceProvider(
+                managedDevice, utpDependencies, emulatorGpuFlag, showEmulatorKernelLogging)
         }.build()
     }
 
     private fun createGradleDeviceProvider(
         deviceInfo: UtpManagedDevice,
-        utpDependencies: UtpDependencies
+        utpDependencies: UtpDependencies,
+        emulatorGpuFlag: String,
+        showEmulatorKernelLogging: Boolean,
     ): ExtensionProto.Extension {
         return ANDROID_DEVICE_PROVIDER_GRADLE.toExtensionProto(
             utpDependencies, GradleManagedAndroidDeviceProviderConfig::newBuilder) {
@@ -289,6 +297,8 @@ class UtpConfigFactory {
                     path = deviceInfo.emulatorPath
                 }.build())
                 gradleDslDeviceName = deviceInfo.deviceName
+                emulatorGpu = emulatorGpuFlag
+                this.showEmulatorKernelLogging = showEmulatorKernelLogging
             }
             adbServerPort = DEFAULT_ADB_SERVER_PORT
         }
@@ -315,7 +325,6 @@ class UtpConfigFactory {
         useOrchestrator: Boolean,
         additionalTestOutputDir: File?,
         additionalTestOutputOnDeviceDir: String?,
-        deviceName: String,
         coverageOutputDir: File,
         shardConfig: ShardConfig?
     ): FixtureProto.TestFixture {
@@ -364,13 +373,12 @@ class UtpConfigFactory {
             addHostPlugin(createAndroidTestLogcatPlugin(utpDependencies))
             if (testData.isTestCoverageEnabled) {
                 addHostPlugin(createAndroidTestCoveragePlugin(
-                    deviceName, coverageOutputDir, useOrchestrator, testData, utpDependencies
+                    coverageOutputDir, useOrchestrator, testData, utpDependencies
                 ))
             }
             if (additionalTestOutputDir != null) {
                 addHostPlugin(
                     createAdditionalTestOutputPlugin(
-                        deviceName,
                         additionalTestOutputDir,
                         additionalTestOutputOnDeviceDir,
                         utpDependencies))
@@ -574,7 +582,6 @@ class UtpConfigFactory {
      * and this new implementation is compatible with it (a drop-in replacemant).
      */
     private fun createAndroidTestCoveragePlugin(
-        deviceName: String,
         coverageOutputDir: File,
         useOrchestrator: Boolean,
         testData: StaticTestData,
@@ -588,8 +595,7 @@ class UtpConfigFactory {
             } else {
                 singleCoverageFile = coverageFilePath
             }
-            outputDirectoryOnHost = coverageOutputDir.absolutePath +
-                    File.separator + deviceName + File.separator
+            outputDirectoryOnHost = coverageOutputDir.absolutePath + File.separator
             runAsPackageName = testData.instrumentationTargetPackageId
             useTestStorageService = testData.instrumentationRunnerArguments.getOrDefault(
                 "useTestStorageService", "false").toBoolean()
@@ -613,14 +619,13 @@ class UtpConfigFactory {
     }
 
     private fun createAdditionalTestOutputPlugin(
-        deviceName: String,
         additionalTestOutputDir: File,
         additionalTestOutputOnDeviceDir: String?,
         utpDependencies:UtpDependencies): ExtensionProto.Extension {
         return ANDROID_TEST_ADDITIONAL_TEST_OUTPUT_PLUGIN.toExtensionProto(
             utpDependencies, AndroidAdditionalTestOutputConfig::newBuilder) {
             additionalOutputDirectoryOnHost =
-                additionalTestOutputDir.absolutePath + File.separator + deviceName + File.separator
+                additionalTestOutputDir.absolutePath + File.separator
             additionalTestOutputOnDeviceDir?.let {
                 additionalOutputDirectoryOnDevice = it
             }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CppHeadersViewEvent}
  */
-public  final class CppHeadersViewEvent extends
+public final class CppHeadersViewEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CppHeadersViewEvent)
     CppHeadersViewEventOrBuilder {
@@ -224,7 +224,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CppHeadersViewEvent.CppHeadersViewEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -236,7 +236,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CppHeadersViewEvent.CppHeadersViewEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.UNKNOWN_CPP_HEADERS_VIEW_EVENT : result;
@@ -252,6 +252,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_duration_ms = 2;</code>
    * @return Whether the eventDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasEventDurationMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -263,6 +264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 event_duration_ms = 2;</code>
    * @return The eventDurationMs.
    */
+  @java.lang.Override
   public long getEventDurationMs() {
     return eventDurationMs_;
   }
@@ -278,6 +280,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 node_immediate_children = 3;</code>
    * @return Whether the nodeImmediateChildren field is set.
    */
+  @java.lang.Override
   public boolean hasNodeImmediateChildren() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -290,6 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 node_immediate_children = 3;</code>
    * @return The nodeImmediateChildren.
    */
+  @java.lang.Override
   public int getNodeImmediateChildren() {
     return nodeImmediateChildren_;
   }
@@ -672,7 +676,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CppHeadersViewEvent.CppHeadersViewEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -684,6 +688,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CppHeadersViewEvent.CppHeadersViewEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType result = com.google.wireless.android.sdk.stats.CppHeadersViewEvent.CppHeadersViewEventType.valueOf(type_);
@@ -733,6 +738,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_duration_ms = 2;</code>
      * @return Whether the eventDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasEventDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -744,6 +750,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 event_duration_ms = 2;</code>
      * @return The eventDurationMs.
      */
+    @java.lang.Override
     public long getEventDurationMs() {
       return eventDurationMs_;
     }
@@ -787,6 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 node_immediate_children = 3;</code>
      * @return Whether the nodeImmediateChildren field is set.
      */
+    @java.lang.Override
     public boolean hasNodeImmediateChildren() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -799,6 +807,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 node_immediate_children = 3;</code>
      * @return The nodeImmediateChildren.
      */
+    @java.lang.Override
     public int getNodeImmediateChildren() {
       return nodeImmediateChildren_;
     }

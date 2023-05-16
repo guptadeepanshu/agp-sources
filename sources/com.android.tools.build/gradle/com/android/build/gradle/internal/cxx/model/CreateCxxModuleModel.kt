@@ -17,9 +17,7 @@
 package com.android.build.gradle.internal.cxx.model
 
 import com.android.SdkConstants.CMAKE_DIR_PROPERTY
-import com.android.SdkConstants.CURRENT_PLATFORM
 import com.android.SdkConstants.NDK_SYMLINK_DIR
-import com.android.SdkConstants.PLATFORM_WINDOWS
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.cxx.configure.CmakeLocator
 import com.android.build.gradle.internal.cxx.configure.CmakeVersionRequirements
@@ -30,8 +28,10 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import com.android.build.gradle.internal.cxx.configure.ndkMetaAbisFile
 import com.android.build.gradle.internal.cxx.configure.trySymlinkNdk
 import com.android.build.gradle.internal.cxx.gradle.generator.CxxConfigurationParameters
+import com.android.build.gradle.internal.cxx.os.exe
 import com.android.build.gradle.internal.cxx.timing.time
 import com.android.build.gradle.tasks.NativeBuildSystem.CMAKE
+import com.android.build.gradle.tasks.NativeBuildSystem.NINJA
 import com.android.prefs.AndroidLocationsProvider
 import com.android.utils.FileUtils.join
 import java.io.File
@@ -94,7 +94,6 @@ fun createCxxModuleModel(
 
     val project = time("create-project-model") { createCxxProjectModel(sdkComponents, configurationParameters) }
     val ndkMetaAbiList = time("create-ndk-meta-abi-list") { NdkAbiFile(ndkMetaAbisFile(ndkFolder)).abiInfoList }
-    val exe = if (CURRENT_PLATFORM == PLATFORM_WINDOWS) ".exe" else ""
     val cmake = time("create-cmake-model") {
         if (configurationParameters.buildSystem == CMAKE) {
             val cmakeFolder =
@@ -120,7 +119,7 @@ fun createCxxModuleModel(
     }
 
     val ninjaExe = when(configurationParameters.buildSystem) {
-        CMAKE -> {
+        NINJA, CMAKE -> {
             ninjaLocator.findNinjaPath(
                 cmake?.cmakeExe?.parentFile,
                 sdkComponents.sdkDirectoryProvider.get().asFile
@@ -142,7 +141,10 @@ fun createCxxModuleModel(
         ndkSupportedAbiList = ndk.supportedAbis,
         ndkDefaultAbiList = ndk.defaultAbis,
         ndkDefaultStl = ndk.ndkInfo.getDefaultStl(configurationParameters.buildSystem),
-        makeFile = configurationParameters.makeFile,
+        makeFile = configurationParameters.moduleRootFolder.resolve(configurationParameters.makeFile).normalize(),
+        configureScript = configurationParameters.configureScript?.let { configureScript ->
+            configurationParameters.moduleRootFolder.resolve(configureScript).normalize()
+        },
         buildSystem = configurationParameters.buildSystem,
         intermediatesBaseFolder = intermediatesBaseFolder,
         intermediatesFolder = intermediatesFolder,

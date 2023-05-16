@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.process;
  *
  * Protobuf type {@code EncodedExecuteProcess}
  */
-public  final class EncodedExecuteProcess extends
+public final class EncodedExecuteProcess extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedExecuteProcess)
     EncodedExecuteProcessOrBuilder {
@@ -136,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 executable_id = 1;</code>
    * @return The executableId.
    */
+  @java.lang.Override
   public int getExecutableId() {
     return executableId_;
   }
@@ -146,6 +147,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 args_id = 2;</code>
    * @return The argsId.
    */
+  @java.lang.Override
   public int getArgsId() {
     return argsId_;
   }
@@ -156,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 description_id = 3;</code>
    * @return The descriptionId.
    */
+  @java.lang.Override
   public int getDescriptionId() {
     return descriptionId_;
   }
@@ -166,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 environment_keys_id = 4;</code>
    * @return The environmentKeysId.
    */
+  @java.lang.Override
   public int getEnvironmentKeysId() {
     return environmentKeysId_;
   }
@@ -176,6 +180,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 environment_values_id = 5;</code>
    * @return The environmentValuesId.
    */
+  @java.lang.Override
   public int getEnvironmentValuesId() {
     return environmentValuesId_;
   }
@@ -186,6 +191,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 jvm_class_path_id = 6;</code>
    * @return The jvmClassPathId.
    */
+  @java.lang.Override
   public int getJvmClassPathId() {
     return jvmClassPathId_;
   }
@@ -196,6 +202,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 jvm_main_class_id = 7;</code>
    * @return The jvmMainClassId.
    */
+  @java.lang.Override
   public int getJvmMainClassId() {
     return jvmMainClassId_;
   }
@@ -206,6 +213,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 jvm_args_id = 8;</code>
    * @return The jvmArgsId.
    */
+  @java.lang.Override
   public int getJvmArgsId() {
     return jvmArgsId_;
   }
@@ -216,6 +224,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 exit_code = 9;</code>
    * @return The exitCode.
    */
+  @java.lang.Override
   public int getExitCode() {
     return exitCode_;
   }
@@ -668,6 +677,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 executable_id = 1;</code>
      * @return The executableId.
      */
+    @java.lang.Override
     public int getExecutableId() {
       return executableId_;
     }
@@ -698,6 +708,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 args_id = 2;</code>
      * @return The argsId.
      */
+    @java.lang.Override
     public int getArgsId() {
       return argsId_;
     }
@@ -728,6 +739,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 description_id = 3;</code>
      * @return The descriptionId.
      */
+    @java.lang.Override
     public int getDescriptionId() {
       return descriptionId_;
     }
@@ -758,6 +770,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 environment_keys_id = 4;</code>
      * @return The environmentKeysId.
      */
+    @java.lang.Override
     public int getEnvironmentKeysId() {
       return environmentKeysId_;
     }
@@ -788,6 +801,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 environment_values_id = 5;</code>
      * @return The environmentValuesId.
      */
+    @java.lang.Override
     public int getEnvironmentValuesId() {
       return environmentValuesId_;
     }
@@ -818,6 +832,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 jvm_class_path_id = 6;</code>
      * @return The jvmClassPathId.
      */
+    @java.lang.Override
     public int getJvmClassPathId() {
       return jvmClassPathId_;
     }
@@ -848,6 +863,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 jvm_main_class_id = 7;</code>
      * @return The jvmMainClassId.
      */
+    @java.lang.Override
     public int getJvmMainClassId() {
       return jvmMainClassId_;
     }
@@ -878,6 +894,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 jvm_args_id = 8;</code>
      * @return The jvmArgsId.
      */
+    @java.lang.Override
     public int getJvmArgsId() {
       return jvmArgsId_;
     }
@@ -908,6 +925,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 exit_code = 9;</code>
      * @return The exitCode.
      */
+    @java.lang.Override
     public int getExitCode() {
       return exitCode_;
     }

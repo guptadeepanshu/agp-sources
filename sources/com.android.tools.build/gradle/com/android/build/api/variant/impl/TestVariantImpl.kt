@@ -42,7 +42,7 @@ import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.variant.BaseVariantData
 import com.android.build.gradle.internal.variant.VariantPathHelper
@@ -66,7 +66,7 @@ open class TestVariantImpl @Inject constructor(
     variantScope: VariantScope,
     variantData: BaseVariantData,
     transformManager: TransformManager,
-    internalServices: VariantPropertiesApiServices,
+    internalServices: VariantServices,
     taskCreationServices: TaskCreationServices,
     globalTaskCreationConfig: GlobalTaskCreationConfig
 ) : VariantImpl(
@@ -171,11 +171,13 @@ open class TestVariantImpl @Inject constructor(
         get() = variantDslInfo.instrumentationRunnerArguments
 
     override val isTestCoverageEnabled: Boolean
-        get() = variantDslInfo.isTestCoverageEnabled
+        get() = variantDslInfo.isAndroidTestCoverageEnabled
 
     override val shouldPackageDesugarLibDex: Boolean = delegate.isCoreLibraryDesugaringEnabled(this)
     override val debuggable: Boolean
         get() = delegate.isDebuggable
+    override val profileable: Boolean
+        get() = delegate.isProfileable
 
     override val shouldPackageProfilerDependencies: Boolean = false
     override val advancedProfilingTransforms: List<String> = emptyList()
@@ -190,6 +192,9 @@ open class TestVariantImpl @Inject constructor(
             )
         }
     }
+
+    override val useJacocoTransformInstrumentation: Boolean
+        get() = false
 
     // ---------------------------------------------------------------------------------------------
     // DO NOT USE, only present for old variant API.

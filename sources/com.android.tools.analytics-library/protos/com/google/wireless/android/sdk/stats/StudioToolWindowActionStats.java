@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioToolWindowActionStats}
  */
-public  final class StudioToolWindowActionStats extends
+public final class StudioToolWindowActionStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioToolWindowActionStats)
     StudioToolWindowActionStatsOrBuilder {
@@ -411,6 +411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tool_window_id = 1;</code>
    * @return Whether the toolWindowId field is set.
    */
+  @java.lang.Override
   public boolean hasToolWindowId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -423,6 +424,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tool_window_id = 1;</code>
    * @return The toolWindowId.
    */
+  @java.lang.Override
   public java.lang.String getToolWindowId() {
     java.lang.Object ref = toolWindowId_;
     if (ref instanceof java.lang.String) {
@@ -446,6 +448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tool_window_id = 1;</code>
    * @return The bytes for toolWindowId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getToolWindowIdBytes() {
     java.lang.Object ref = toolWindowId_;
@@ -466,14 +469,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioToolWindowActionStats.EventType event_type = 2;</code>
    * @return Whether the eventType field is set.
    */
-  public boolean hasEventType() {
+  @java.lang.Override public boolean hasEventType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>optional .android_studio.StudioToolWindowActionStats.EventType event_type = 2;</code>
    * @return The eventType.
    */
-  public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.valueOf(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.UNKNOWN_EVENT_TYPE : result;
@@ -489,7 +492,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
    * @return Whether the toolWindowType field is set.
    */
-  public boolean hasToolWindowType() {
+  @java.lang.Override public boolean hasToolWindowType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -500,7 +503,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
    * @return The toolWindowType.
    */
-  public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.UNKNOWN_TOOL_WINDOW_TYPE : result;
@@ -992,13 +995,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioToolWindowActionStats.EventType event_type = 2;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>optional .android_studio.StudioToolWindowActionStats.EventType event_type = 2;</code>
      * @return The eventType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.EventType.valueOf(eventType_);
@@ -1038,7 +1042,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
      * @return Whether the toolWindowType field is set.
      */
-    public boolean hasToolWindowType() {
+    @java.lang.Override public boolean hasToolWindowType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1049,6 +1053,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioToolWindowActionStats.ToolWindowType tool_window_type = 3;</code>
      * @return The toolWindowType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType getToolWindowType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType result = com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.ToolWindowType.valueOf(toolWindowType_);

@@ -47,18 +47,12 @@ public class TraceUtils {
      */
     @NonNull
     public static String getCurrentStack(int numberOfTopFramesToRemove) {
-        StringWriter stringWriter = new StringWriter();
-        try (PrintWriter writer = new PrintWriter(stringWriter)) {
-            Throwable throwable =
-                    new Throwable() {
-                        @Override
-                        public String toString() {
-                            return "";
-                        }
-                    };
-            throwable.printStackTrace(writer);
-        }
-        String fullStack = stringWriter.toString();
+        String fullStack = getStackTrace(new Throwable() {
+            @Override
+            public String toString() {
+                return "";
+            }
+        });
         // Remove our own frame and numberOfTopFramesToRemove frames requested by the caller.
         int start = 0;
         if (numberOfTopFramesToRemove < 0) {
@@ -100,6 +94,23 @@ public class TraceUtils {
                 ? "null"
                 : String.format(
                         "%s@%08X", obj.getClass().getSimpleName(), System.identityHashCode(obj));
+    }
+
+    /**
+     * Returns a string containing comma-separated simple IDs of the elements of the given
+     * iterable. Each simple ID is the object's class name without the package part, '@'
+     * separator, and the hexadecimal identity hash code, e.g. AndroidResGroupNode@5A1D1719.
+     */
+    @NonNull
+    public static String getSimpleIds(@NonNull Iterable<?> iterable) {
+        StringBuilder result = new StringBuilder();
+        for (Object element : iterable) {
+            if (result.length() > 0) {
+                result.append(", ");
+            }
+            result.append(getSimpleId(element));
+        }
+        return result.toString();
     }
 
     /** Returns the current time as a yyyy-MM-dd HH:mm:ss.SSS string. */

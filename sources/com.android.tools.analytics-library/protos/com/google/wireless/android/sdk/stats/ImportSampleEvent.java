@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ImportSampleEvent}
  */
-public  final class ImportSampleEvent extends
+public final class ImportSampleEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ImportSampleEvent)
     ImportSampleEventOrBuilder {
@@ -105,6 +105,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string import_sample_id = 1;</code>
    * @return Whether the importSampleId field is set.
    */
+  @java.lang.Override
   public boolean hasImportSampleId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -118,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string import_sample_id = 1;</code>
    * @return The importSampleId.
    */
+  @java.lang.Override
   public java.lang.String getImportSampleId() {
     java.lang.Object ref = importSampleId_;
     if (ref instanceof java.lang.String) {
@@ -142,6 +144,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string import_sample_id = 1;</code>
    * @return The bytes for importSampleId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getImportSampleIdBytes() {
     java.lang.Object ref = importSampleId_;

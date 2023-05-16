@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutEditorRenderResult}
  */
-public  final class LayoutEditorRenderResult extends
+public final class LayoutEditorRenderResult extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutEditorRenderResult)
     LayoutEditorRenderResultOrBuilder {
@@ -21,6 +21,7 @@ private static final long serialVersionUID = 0L;
   }
   private LayoutEditorRenderResult() {
     trigger_ = 0;
+    deviceId_ = "";
   }
 
   @java.lang.Override
@@ -94,6 +95,12 @@ private static final long serialVersionUID = 0L;
           case 64: {
             bitField0_ |= 0x00000040;
             fidelityWarningCount_ = input.readInt32();
+            break;
+          }
+          case 74: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x00000080;
+            deviceId_ = bs;
             break;
           }
           default: {
@@ -294,7 +301,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorRenderResult.Trigger trigger = 1;</code>
    * @return Whether the trigger field is set.
    */
-  public boolean hasTrigger() {
+  @java.lang.Override public boolean hasTrigger() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -305,7 +312,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorRenderResult.Trigger trigger = 1;</code>
    * @return The trigger.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger getTrigger() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger getTrigger() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.valueOf(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.UNKNOWN_TRIGGER : result;
@@ -321,6 +328,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 result_code = 2;</code>
    * @return Whether the resultCode field is set.
    */
+  @java.lang.Override
   public boolean hasResultCode() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -332,6 +340,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 result_code = 2;</code>
    * @return The resultCode.
    */
+  @java.lang.Override
   public int getResultCode() {
     return resultCode_;
   }
@@ -346,6 +355,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_render_time_ms = 4;</code>
    * @return Whether the totalRenderTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasTotalRenderTimeMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -357,6 +367,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_render_time_ms = 4;</code>
    * @return The totalRenderTimeMs.
    */
+  @java.lang.Override
   public long getTotalRenderTimeMs() {
     return totalRenderTimeMs_;
   }
@@ -371,6 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 component_count = 5;</code>
    * @return Whether the componentCount field is set.
    */
+  @java.lang.Override
   public boolean hasComponentCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -382,6 +394,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 component_count = 5;</code>
    * @return The componentCount.
    */
+  @java.lang.Override
   public int getComponentCount() {
     return componentCount_;
   }
@@ -396,6 +409,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 total_issue_count = 6;</code>
    * @return Whether the totalIssueCount field is set.
    */
+  @java.lang.Override
   public boolean hasTotalIssueCount() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -407,6 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 total_issue_count = 6;</code>
    * @return The totalIssueCount.
    */
+  @java.lang.Override
   public int getTotalIssueCount() {
     return totalIssueCount_;
   }
@@ -421,6 +436,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 error_count = 7;</code>
    * @return Whether the errorCount field is set.
    */
+  @java.lang.Override
   public boolean hasErrorCount() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -432,6 +448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 error_count = 7;</code>
    * @return The errorCount.
    */
+  @java.lang.Override
   public int getErrorCount() {
     return errorCount_;
   }
@@ -446,6 +463,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 fidelity_warning_count = 8;</code>
    * @return Whether the fidelityWarningCount field is set.
    */
+  @java.lang.Override
   public boolean hasFidelityWarningCount() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -457,8 +475,81 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 fidelity_warning_count = 8;</code>
    * @return The fidelityWarningCount.
    */
+  @java.lang.Override
   public int getFidelityWarningCount() {
     return fidelityWarningCount_;
+  }
+
+  public static final int DEVICE_ID_FIELD_NUMBER = 9;
+  private volatile java.lang.Object deviceId_;
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return Whether the deviceId field is set.
+   */
+  @java.lang.Override
+  public boolean hasDeviceId() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return The deviceId.
+   */
+  @java.lang.Override
+  public java.lang.String getDeviceId() {
+    java.lang.Object ref = deviceId_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        deviceId_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+   * "wearos_square", "tv_4k".
+   * Device ids are built-in in the sdk and studio. There is no enum or list of
+   * them. For all custom android virtual devices (AVDs), they should be
+   * recorded as "_custom_avd".
+   * </pre>
+   *
+   * <code>optional string device_id = 9;</code>
+   * @return The bytes for deviceId.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getDeviceIdBytes() {
+    java.lang.Object ref = deviceId_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      deviceId_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -496,6 +587,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       output.writeInt32(8, fidelityWarningCount_);
     }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 9, deviceId_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -532,6 +626,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(8, fidelityWarningCount_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, deviceId_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -582,6 +679,11 @@ private static final long serialVersionUID = 0L;
       if (getFidelityWarningCount()
           != other.getFidelityWarningCount()) return false;
     }
+    if (hasDeviceId() != other.hasDeviceId()) return false;
+    if (hasDeviceId()) {
+      if (!getDeviceId()
+          .equals(other.getDeviceId())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -621,6 +723,10 @@ private static final long serialVersionUID = 0L;
     if (hasFidelityWarningCount()) {
       hash = (37 * hash) + FIDELITY_WARNING_COUNT_FIELD_NUMBER;
       hash = (53 * hash) + getFidelityWarningCount();
+    }
+    if (hasDeviceId()) {
+      hash = (37 * hash) + DEVICE_ID_FIELD_NUMBER;
+      hash = (53 * hash) + getDeviceId().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -773,6 +879,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000020);
       fidelityWarningCount_ = 0;
       bitField0_ = (bitField0_ & ~0x00000040);
+      deviceId_ = "";
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -829,6 +937,10 @@ private static final long serialVersionUID = 0L;
         result.fidelityWarningCount_ = fidelityWarningCount_;
         to_bitField0_ |= 0x00000040;
       }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        to_bitField0_ |= 0x00000080;
+      }
+      result.deviceId_ = deviceId_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -899,6 +1011,11 @@ private static final long serialVersionUID = 0L;
       if (other.hasFidelityWarningCount()) {
         setFidelityWarningCount(other.getFidelityWarningCount());
       }
+      if (other.hasDeviceId()) {
+        bitField0_ |= 0x00000080;
+        deviceId_ = other.deviceId_;
+        onChanged();
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -938,7 +1055,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorRenderResult.Trigger trigger = 1;</code>
      * @return Whether the trigger field is set.
      */
-    public boolean hasTrigger() {
+    @java.lang.Override public boolean hasTrigger() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -949,6 +1066,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorRenderResult.Trigger trigger = 1;</code>
      * @return The trigger.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger getTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger result = com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.Trigger.valueOf(trigger_);
@@ -996,6 +1114,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 result_code = 2;</code>
      * @return Whether the resultCode field is set.
      */
+    @java.lang.Override
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1007,6 +1126,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 result_code = 2;</code>
      * @return The resultCode.
      */
+    @java.lang.Override
     public int getResultCode() {
       return resultCode_;
     }
@@ -1049,6 +1169,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_render_time_ms = 4;</code>
      * @return Whether the totalRenderTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalRenderTimeMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1060,6 +1181,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_render_time_ms = 4;</code>
      * @return The totalRenderTimeMs.
      */
+    @java.lang.Override
     public long getTotalRenderTimeMs() {
       return totalRenderTimeMs_;
     }
@@ -1102,6 +1224,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 component_count = 5;</code>
      * @return Whether the componentCount field is set.
      */
+    @java.lang.Override
     public boolean hasComponentCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1113,6 +1236,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 component_count = 5;</code>
      * @return The componentCount.
      */
+    @java.lang.Override
     public int getComponentCount() {
       return componentCount_;
     }
@@ -1155,6 +1279,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 total_issue_count = 6;</code>
      * @return Whether the totalIssueCount field is set.
      */
+    @java.lang.Override
     public boolean hasTotalIssueCount() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1166,6 +1291,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 total_issue_count = 6;</code>
      * @return The totalIssueCount.
      */
+    @java.lang.Override
     public int getTotalIssueCount() {
       return totalIssueCount_;
     }
@@ -1208,6 +1334,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 error_count = 7;</code>
      * @return Whether the errorCount field is set.
      */
+    @java.lang.Override
     public boolean hasErrorCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1219,6 +1346,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 error_count = 7;</code>
      * @return The errorCount.
      */
+    @java.lang.Override
     public int getErrorCount() {
       return errorCount_;
     }
@@ -1261,6 +1389,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 fidelity_warning_count = 8;</code>
      * @return Whether the fidelityWarningCount field is set.
      */
+    @java.lang.Override
     public boolean hasFidelityWarningCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1272,6 +1401,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 fidelity_warning_count = 8;</code>
      * @return The fidelityWarningCount.
      */
+    @java.lang.Override
     public int getFidelityWarningCount() {
       return fidelityWarningCount_;
     }
@@ -1301,6 +1431,138 @@ private static final long serialVersionUID = 0L;
     public Builder clearFidelityWarningCount() {
       bitField0_ = (bitField0_ & ~0x00000040);
       fidelityWarningCount_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object deviceId_ = "";
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @return Whether the deviceId field is set.
+     */
+    public boolean hasDeviceId() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @return The deviceId.
+     */
+    public java.lang.String getDeviceId() {
+      java.lang.Object ref = deviceId_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          deviceId_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @return The bytes for deviceId.
+     */
+    public com.google.protobuf.ByteString
+        getDeviceIdBytes() {
+      java.lang.Object ref = deviceId_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        deviceId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @param value The deviceId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceId(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+      deviceId_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearDeviceId() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      deviceId_ = getDefaultInstance().getDeviceId();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * The id of rendered device, such as "pixel", "pixel_3", "pixel_3_xl",
+     * "wearos_square", "tv_4k".
+     * Device ids are built-in in the sdk and studio. There is no enum or list of
+     * them. For all custom android virtual devices (AVDs), they should be
+     * recorded as "_custom_avd".
+     * </pre>
+     *
+     * <code>optional string device_id = 9;</code>
+     * @param value The bytes for deviceId to set.
+     * @return This builder for chaining.
+     */
+    public Builder setDeviceIdBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+      deviceId_ = value;
       onChanged();
       return this;
     }

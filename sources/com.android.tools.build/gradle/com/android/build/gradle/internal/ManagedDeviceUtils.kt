@@ -17,15 +17,17 @@
 package com.android.build.gradle.internal
 
 import com.android.build.api.dsl.DeviceGroup
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.dsl.ManagedVirtualDevice
+import com.android.build.gradle.options.ProjectOptions
+import com.android.build.gradle.options.StringOption
 import com.android.prefs.AndroidLocationsProvider
+import com.android.testing.utils.computeVendorString
 import com.android.utils.CpuArchitecture
 import com.android.utils.osArchitecture
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ProviderFactory
-import java.io.File
 
 private const val GRADLE_AVD_DIRECTORY_PATH = "gradle/avd"
 
@@ -50,10 +52,17 @@ fun computeAvdName(device: ManagedVirtualDevice): String =
 
 fun computeAvdName(
     apiLevel: Int,
-    vendor: String,
+    imageSource: String,
     abi: String,
-    hardwareProfile: String) =
-    "dev${apiLevel}_${vendor}_${abi}_${hardwareProfile.replace(' ', '_')}"
+    hardwareProfile: String
+): String {
+    val sanitizedProfile = sanitizeProfileName(hardwareProfile)
+    val vendor = computeVendorString(imageSource)
+    return "dev${apiLevel}_${vendor}_${abi}_$sanitizedProfile"
+}
+
+fun sanitizeProfileName(hardwareProfile: String) =
+    hardwareProfile.replace(Regex("[() ]"), "_")
 
 fun setupTaskName(device: ManagedVirtualDevice): String = "${device.name}Setup"
 
@@ -63,7 +72,7 @@ fun managedDeviceGroupAllVariantsTaskName(deviceGroup: DeviceGroup): String =
     "${deviceGroup.name}GroupCheck"
 
 fun managedDeviceGroupSingleVariantTaskName(
-    creationConfig: VariantCreationConfig, deviceGroup: DeviceGroup): String =
+    creationConfig: InstrumentedTestCreationConfig, deviceGroup: DeviceGroup): String =
     creationConfig.computeTaskName("${deviceGroup.name}Group")
 
 fun computeAbiFromArchitecture(device: ManagedVirtualDevice): String =
@@ -73,16 +82,21 @@ fun computeAbiFromArchitecture(device: ManagedVirtualDevice): String =
         device.systemImageSource
     )
 
-fun computeAbiFromArchitecture(require64Bit: Boolean, apiLevel: Int, vendor: String): String {
-    val cpuArchitecture = osArchitecture
-    return when {
-        cpuArchitecture == CpuArchitecture.ARM
-            || cpuArchitecture == CpuArchitecture.X86_ON_ARM-> "arm64-v8a"
-        require64Bit -> "x86_64"
-        (vendor == "aosp-atd" || vendor == "google-atd") && apiLevel <= 30 -> "x86"
-        // system-images;android-30;default;x86 does not exist, but the google images do.
-        vendor == "aosp" && apiLevel <= 29 -> "x86"
-        vendor == "google" && apiLevel <= 30 -> "x86"
-        else -> "x86_64"
-    }
+fun computeAbiFromArchitecture(
+    require64Bit: Boolean,
+    apiLevel: Int,
+    vendor: String,
+    cpuArch: CpuArchitecture = osArchitecture
+): String = when {
+    cpuArch == CpuArchitecture.ARM
+            || cpuArch == CpuArchitecture.X86_ON_ARM-> "arm64-v8a"
+    require64Bit -> "x86_64"
+    // Neither system-images;android-30;default;x86 nor system-images;android-26;default;x86
+    // exist, but the google images do.
+    vendor == "aosp" && apiLevel in listOf(26, 30) -> "x86_64"
+    apiLevel <= 30 -> "x86"
+    else -> "x86_64"
 }
+
+fun computeManagedDeviceEmulatorMode(projectOptions: ProjectOptions) =
+    projectOptions[StringOption.GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE] ?: "auto-no-window"

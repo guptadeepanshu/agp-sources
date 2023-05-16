@@ -51,7 +51,7 @@ public final class AppProcessesProto {
   /**
    * Protobuf type {@code adb.proto.ProcessEntry}
    */
-  public  static final class ProcessEntry extends
+  public static final class ProcessEntry extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:adb.proto.ProcessEntry)
       ProcessEntryOrBuilder {
@@ -153,6 +153,7 @@ public final class AppProcessesProto {
      * <code>int64 pid = 1;</code>
      * @return The pid.
      */
+    @java.lang.Override
     public long getPid() {
       return pid_;
     }
@@ -163,6 +164,7 @@ public final class AppProcessesProto {
      * <code>bool debuggable = 2;</code>
      * @return The debuggable.
      */
+    @java.lang.Override
     public boolean getDebuggable() {
       return debuggable_;
     }
@@ -173,6 +175,7 @@ public final class AppProcessesProto {
      * <code>bool profileable = 3;</code>
      * @return The profileable.
      */
+    @java.lang.Override
     public boolean getProfileable() {
       return profileable_;
     }
@@ -183,6 +186,7 @@ public final class AppProcessesProto {
      * <code>string architecture = 4;</code>
      * @return The architecture.
      */
+    @java.lang.Override
     public java.lang.String getArchitecture() {
       java.lang.Object ref = architecture_;
       if (ref instanceof java.lang.String) {
@@ -199,6 +203,7 @@ public final class AppProcessesProto {
      * <code>string architecture = 4;</code>
      * @return The bytes for architecture.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getArchitectureBytes() {
       java.lang.Object ref = architecture_;
@@ -574,6 +579,7 @@ public final class AppProcessesProto {
        * <code>int64 pid = 1;</code>
        * @return The pid.
        */
+      @java.lang.Override
       public long getPid() {
         return pid_;
       }
@@ -604,6 +610,7 @@ public final class AppProcessesProto {
        * <code>bool debuggable = 2;</code>
        * @return The debuggable.
        */
+      @java.lang.Override
       public boolean getDebuggable() {
         return debuggable_;
       }
@@ -634,6 +641,7 @@ public final class AppProcessesProto {
        * <code>bool profileable = 3;</code>
        * @return The profileable.
        */
+      @java.lang.Override
       public boolean getProfileable() {
         return profileable_;
       }
@@ -818,7 +826,7 @@ public final class AppProcessesProto {
   /**
    * Protobuf type {@code adb.proto.AppProcesses}
    */
-  public  static final class AppProcesses extends
+  public static final class AppProcesses extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:adb.proto.AppProcesses)
       AppProcessesOrBuilder {
@@ -911,12 +919,14 @@ public final class AppProcessesProto {
     /**
      * <code>repeated .adb.proto.ProcessEntry process = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.server.adb.protos.AppProcessesProto.ProcessEntry> getProcessList() {
       return process_;
     }
     /**
      * <code>repeated .adb.proto.ProcessEntry process = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.server.adb.protos.AppProcessesProto.ProcessEntryOrBuilder> 
         getProcessOrBuilderList() {
       return process_;
@@ -924,18 +934,21 @@ public final class AppProcessesProto {
     /**
      * <code>repeated .adb.proto.ProcessEntry process = 1;</code>
      */
+    @java.lang.Override
     public int getProcessCount() {
       return process_.size();
     }
     /**
      * <code>repeated .adb.proto.ProcessEntry process = 1;</code>
      */
+    @java.lang.Override
     public com.android.server.adb.protos.AppProcessesProto.ProcessEntry getProcess(int index) {
       return process_.get(index);
     }
     /**
      * <code>repeated .adb.proto.ProcessEntry process = 1;</code>
      */
+    @java.lang.Override
     public com.android.server.adb.protos.AppProcessesProto.ProcessEntryOrBuilder getProcessOrBuilder(
         int index) {
       return process_.get(index);

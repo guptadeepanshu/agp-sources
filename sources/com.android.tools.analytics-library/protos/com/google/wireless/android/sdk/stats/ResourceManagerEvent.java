@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ResourceManagerEvent}
  */
-public  final class ResourceManagerEvent extends
+public final class ResourceManagerEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ResourceManagerEvent)
     ResourceManagerEventOrBuilder {
@@ -810,14 +810,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ResourceManagerEvent.Kind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.ResourceManagerEvent.Kind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind result = com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind.UNKNOWN_EVENT_KIND : result;
@@ -829,14 +829,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ResourceManagerEvent.ResourceType resource_type = 2;</code>
    * @return Whether the resourceType field is set.
    */
-  public boolean hasResourceType() {
+  @java.lang.Override public boolean hasResourceType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>optional .android_studio.ResourceManagerEvent.ResourceType resource_type = 2;</code>
    * @return The resourceType.
    */
-  public com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType getResourceType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType getResourceType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType result = com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType.valueOf(resourceType_);
     return result == null ? com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType.UNKNOWN : result;
@@ -1188,13 +1188,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ResourceManagerEvent.Kind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.ResourceManagerEvent.Kind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind result = com.google.wireless.android.sdk.stats.ResourceManagerEvent.Kind.valueOf(kind_);
@@ -1230,13 +1231,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ResourceManagerEvent.ResourceType resource_type = 2;</code>
      * @return Whether the resourceType field is set.
      */
-    public boolean hasResourceType() {
+    @java.lang.Override public boolean hasResourceType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>optional .android_studio.ResourceManagerEvent.ResourceType resource_type = 2;</code>
      * @return The resourceType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType getResourceType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType result = com.google.wireless.android.sdk.stats.ResourceManagerEvent.ResourceType.valueOf(resourceType_);

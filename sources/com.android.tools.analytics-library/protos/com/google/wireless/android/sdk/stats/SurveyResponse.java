@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.SurveyResponse}
  */
-public  final class SurveyResponse extends
+public final class SurveyResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.SurveyResponse)
     SurveyResponseOrBuilder {
@@ -130,6 +130,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return Whether the name field is set.
    */
+  @java.lang.Override
   public boolean hasName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -143,6 +144,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -167,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -191,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 responses = 2;</code>
    * @return A list containing the responses.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getResponsesList() {
     return responses_;

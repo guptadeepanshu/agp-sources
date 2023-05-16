@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EnergyEventCount}
  */
-public  final class EnergyEventCount extends
+public final class EnergyEventCount extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EnergyEventCount)
     EnergyEventCountOrBuilder {
@@ -106,14 +106,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EnergyEvent.Type result = com.google.wireless.android.sdk.stats.EnergyEvent.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EnergyEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -125,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count = 2;</code>
    * @return Whether the count field is set.
    */
+  @java.lang.Override
   public boolean hasCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -132,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count = 2;</code>
    * @return The count.
    */
+  @java.lang.Override
   public int getCount() {
     return count_;
   }
@@ -479,13 +481,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EnergyEvent.Type result = com.google.wireless.android.sdk.stats.EnergyEvent.Type.valueOf(type_);
@@ -521,6 +524,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count = 2;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -528,6 +532,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count = 2;</code>
      * @return The count.
      */
+    @java.lang.Override
     public int getCount() {
       return count_;
     }

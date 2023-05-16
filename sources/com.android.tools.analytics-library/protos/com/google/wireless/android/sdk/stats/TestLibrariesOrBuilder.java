@@ -821,6 +821,93 @@ public interface TestLibrariesOrBuilder extends
 
   /**
    * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return Whether the composeUiTestVersion field is set.
+   */
+  boolean hasComposeUiTestVersion();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return The composeUiTestVersion.
+   */
+  java.lang.String getComposeUiTestVersion();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_version = 38;</code>
+   * @return The bytes for composeUiTestVersion.
+   */
+  com.google.protobuf.ByteString
+      getComposeUiTestVersionBytes();
+
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return Whether the composeUiTestJunit4Version field is set.
+   */
+  boolean hasComposeUiTestJunit4Version();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return The composeUiTestJunit4Version.
+   */
+  java.lang.String getComposeUiTestJunit4Version();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-junit4".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_junit4_version = 39;</code>
+   * @return The bytes for composeUiTestJunit4Version.
+   */
+  com.google.protobuf.ByteString
+      getComposeUiTestJunit4VersionBytes();
+
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return Whether the composeUiTestManifestVersion field is set.
+   */
+  boolean hasComposeUiTestManifestVersion();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return The composeUiTestManifestVersion.
+   */
+  java.lang.String getComposeUiTestManifestVersion();
+  /**
+   * <pre>
+   * "androidx.compose.ui:ui-test-manifest".
+   * </pre>
+   *
+   * <code>optional string compose_ui_test_manifest_version = 40;</code>
+   * @return The bytes for composeUiTestManifestVersion.
+   */
+  com.google.protobuf.ByteString
+      getComposeUiTestManifestVersionBytes();
+
+  /**
+   * <pre>
    * "org.robolectric:robolectric".
    * </pre>
    *

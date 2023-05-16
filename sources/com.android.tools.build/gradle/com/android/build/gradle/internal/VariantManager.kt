@@ -27,7 +27,6 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.TestedExtension
 import com.android.build.api.extension.impl.VariantApiOperationsRegistrar
 import com.android.build.api.variant.AndroidComponentsExtension
-import com.android.build.api.variant.AndroidTest
 import com.android.build.api.variant.HasAndroidTestBuilder
 import com.android.build.api.variant.HasTestFixturesBuilder
 import com.android.build.api.variant.TestFixtures
@@ -41,7 +40,6 @@ import com.android.build.api.variant.impl.HasTestFixtures
 import com.android.build.api.variant.impl.VariantBuilderImpl
 import com.android.build.api.variant.impl.VariantImpl
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.TestedAndroidConfig
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.api.ReadOnlyObjectProvider
 import com.android.build.gradle.internal.api.VariantFilter
@@ -52,7 +50,6 @@ import com.android.build.gradle.internal.core.VariantDslInfoBuilder.Companion.ge
 import com.android.build.gradle.internal.core.VariantDslInfoImpl
 import com.android.build.gradle.internal.crash.ExternalApiUsageException
 import com.android.build.gradle.internal.dependency.VariantDependenciesBuilder
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import com.android.build.gradle.internal.dsl.CommonExtensionImpl
 import com.android.build.gradle.internal.dsl.DefaultConfig
@@ -70,9 +67,9 @@ import com.android.build.gradle.internal.services.DslServices
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
-import com.android.build.gradle.internal.services.VariantApiServices
-import com.android.build.gradle.internal.services.VariantApiServicesImpl
-import com.android.build.gradle.internal.services.VariantPropertiesApiServicesImpl
+import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.internal.services.VariantBuilderServicesImpl
+import com.android.build.gradle.internal.services.VariantServicesImpl
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfigImpl.Companion.toExecutionEnum
@@ -89,8 +86,8 @@ import com.android.build.gradle.internal.variant.VariantPathHelper
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.SigningOptions
 import com.android.builder.core.AbstractProductFlavor.DimensionRequest
-import com.android.builder.core.VariantType
-import com.android.builder.core.VariantTypeImpl
+import com.android.builder.core.ComponentType
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.errors.IssueReporter
 import com.android.builder.model.TestOptions
@@ -121,15 +118,15 @@ class VariantManager<
     @Deprecated("Use dslExtension")  private val oldExtension: BaseExtension,
     private val dslExtension: CommonExtensionT,
     private val androidComponentsExtension: AndroidComponentsT,
-    val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<CommonExtension<*, *, *, *>, VariantBuilder, Variant>,
+    val variantApiOperationsRegistrar: VariantApiOperationsRegistrar<CommonExtensionT, VariantBuilder, Variant>,
     private val variantFactory: VariantFactory<VariantBuilderT, VariantT>,
     private val variantInputModel: VariantInputModel<DefaultConfig, BuildType, ProductFlavor, SigningConfig>,
     val globalTaskCreationConfig: GlobalTaskCreationConfig,
     private val projectServices: ProjectServices
 ) {
 
-    private val variantApiServices: VariantApiServices
-    private val variantPropertiesApiServices: VariantPropertiesApiServicesImpl
+    private val variantBuilderServices: VariantBuilderServices
+    private val variantPropertiesApiServices: VariantServicesImpl
     private val taskCreationServices: TaskCreationServices
     private val variantFilter: VariantFilter
     private val variants: MutableList<ComponentInfo<VariantBuilderT, VariantT>> =
@@ -246,7 +243,7 @@ class VariantManager<
         // FIXME we should lock the variant API properties after all the beforeVariants, and
         // before any onVariants to avoid cross access between the two.
         // This means changing the way to run beforeVariants vs onVariants.
-        variantApiServices.lockValues()
+        variantBuilderServices.lockValues()
     }
 
     private val testBuildTypeData: BuildTypeData<BuildType>?
@@ -263,21 +260,13 @@ class VariantManager<
             return testBuildTypeData
         }
 
-    enum class NativeBuiltType { CMAKE, NDK_BUILD }
-
-    private fun configuredNativeBuilder(): NativeBuiltType? {
-        if (dslExtension.externalNativeBuild.ndkBuild.path != null) return NativeBuiltType.NDK_BUILD
-        if (dslExtension.externalNativeBuild.cmake.path != null) return NativeBuiltType.CMAKE
-        return null;
-    }
-
     private fun createVariant(
         dimensionCombination: DimensionCombination,
         buildTypeData: BuildTypeData<BuildType>,
         productFlavorDataList: List<ProductFlavorData<ProductFlavor>>,
-        variantType: VariantType,
+        componentType: ComponentType,
         globalConfig: GlobalVariantBuilderConfig,
-    ): VariantComponentInfo<VariantBuilderT, VariantT>? {
+    ): VariantComponentInfo<CommonExtensionT, VariantBuilderT, VariantT>? {
         // entry point for a given buildType/Flavors/VariantType combo.
         // Need to run the new variant API to selectively ignore variants.
         // in order to do this, we need access to the VariantDslInfo, to create a
@@ -285,7 +274,7 @@ class VariantManager<
         val defaultConfigSourceProvider = defaultConfig.sourceSet
         val variantDslInfoBuilder = getBuilder<CommonExtensionT>(
                 dimensionCombination,
-                variantType,
+                componentType,
                 defaultConfig.defaultConfig,
                 defaultConfigSourceProvider,
                 buildTypeData.buildType,
@@ -293,10 +282,9 @@ class VariantManager<
                 signingOverride,
                 getLazyManifestParser(
                         defaultConfigSourceProvider.manifestFile,
-                        variantType.requiresManifest) { canParseManifest() },
+                        componentType.requiresManifest) { canParseManifest() },
                 dslServices,
                 variantPropertiesApiServices,
-                configuredNativeBuilder(),
                 oldExtension,
                 dslExtension,
                 hasDynamicFeatures = hasDynamicFeatures(),
@@ -316,7 +304,7 @@ class VariantManager<
         // create the Variant object so that we can run the action which may interrupt the creation
         // (in case of enabled = false)
         val variantBuilder = variantFactory.createVariantBuilder(
-            globalConfig, componentIdentity, variantDslInfo, variantApiServices,
+            globalConfig, componentIdentity, variantDslInfo, variantBuilderServices,
         )
 
         // now that we have the variant, create the analytics object,
@@ -328,7 +316,7 @@ class VariantManager<
                 project.path, variantBuilder.name)
 
         val userVisibleVariantBuilder =
-                variantBuilder.createUserVisibleVariantObject<VariantBuilder>(
+            variantBuilder.createUserVisibleVariantObject<VariantBuilder>(
                         projectServices,
                         profileEnabledVariantBuilder,
                 )
@@ -440,22 +428,24 @@ class VariantManager<
         )
 
         return VariantComponentInfo(
-                variantBuilder,
-                variantApiObject,
-                profileEnabledVariantBuilder,
-                variantApiOperationsRegistrar)
+            variantBuilder,
+            variantApiObject,
+            profileEnabledVariantBuilder,
+            variantApiOperationsRegistrar,
+            variantDslInfo
+        )
     }
 
     private fun createCompoundSourceSets(
             productFlavorList: List<ProductFlavorData<ProductFlavor>>,
             variantDslInfoBuilder: VariantDslInfoBuilder<CommonExtensionT>) {
-        val variantType = variantDslInfoBuilder.variantType
+        val componentType = variantDslInfoBuilder.componentType
         if (productFlavorList.isNotEmpty() /* && !variantConfig.getType().isSingleBuildType()*/) {
             val variantSourceSet = variantInputModel
                     .sourceSetManager
                     .setUpSourceSet(
-                            computeSourceSetName(variantDslInfoBuilder.name, variantType),
-                            variantType.isTestComponent) as DefaultAndroidSourceSet
+                            computeSourceSetName(variantDslInfoBuilder.name, componentType),
+                            componentType.isTestComponent) as DefaultAndroidSourceSet
             variantDslInfoBuilder.variantSourceProvider = variantSourceSet
         }
         if (productFlavorList.size > 1) {
@@ -463,8 +453,8 @@ class VariantManager<
                     .sourceSetManager
                     .setUpSourceSet(
                             computeSourceSetName(variantDslInfoBuilder.flavorName,
-                                                    variantType),
-                            variantType.isTestComponent) as DefaultAndroidSourceSet
+                                                    componentType),
+                            componentType.isTestComponent) as DefaultAndroidSourceSet
             variantDslInfoBuilder.multiFlavorSourceProvider = multiFlavorSourceSet
         }
     }
@@ -474,13 +464,13 @@ class VariantManager<
         dimensionCombination: DimensionCombination,
         buildTypeData: BuildTypeData<BuildType>,
         productFlavorDataList: List<ProductFlavorData<ProductFlavor>>,
-        mainComponentInfo: VariantComponentInfo<VariantBuilderT, VariantT>
+        mainComponentInfo: VariantComponentInfo<CommonExtensionT, VariantBuilderT, VariantT>
     ): TestFixturesImpl {
-        val testFixturesVariantType = VariantTypeImpl.TEST_FIXTURES
+        val testFixturesComponentType = ComponentTypeImpl.TEST_FIXTURES
         val testFixturesSourceSet = variantInputModel.defaultConfigData.testFixturesSourceSet!!
         val variantDslInfoBuilder = getBuilder(
             dimensionCombination,
-            testFixturesVariantType,
+            testFixturesComponentType,
             variantInputModel.defaultConfigData.defaultConfig,
             testFixturesSourceSet,
             buildTypeData.buildType,
@@ -488,7 +478,7 @@ class VariantManager<
             signingOverride,
             getLazyManifestParser(
                 testFixturesSourceSet.manifestFile,
-                testFixturesVariantType.requiresManifest) { canParseManifest() },
+                testFixturesComponentType.requiresManifest) { canParseManifest() },
             dslServices,
             variantPropertiesApiServices,
             oldExtension = oldExtension,
@@ -497,9 +487,9 @@ class VariantManager<
             testFixtureMainVariantName = mainComponentInfo.variant.name
         )
 
-        variantDslInfoBuilder.productionVariant = mainComponentInfo.variant.variantDslInfo as VariantDslInfoImpl
+        variantDslInfoBuilder.productionVariant = mainComponentInfo.variantDslInfo as VariantDslInfoImpl
 
-        val productFlavorList = mainComponentInfo.variant.variantDslInfo.productFlavorList
+        val productFlavorList = mainComponentInfo.variantDslInfo.productFlavorList
 
         // We must first add the flavors to the variant builder, in order to get the proper
         // variant-specific and multi-flavor name as we add/create the variant providers later.
@@ -575,6 +565,7 @@ class VariantManager<
             .addSourceSets(testFixturesVariantSourceSets)
             .setFlavorSelection(getFlavorSelection(variantDslInfo))
             .overrideVariantNameAttribute(mainComponentInfo.variant.name)
+            .setMainVariant(mainComponentInfo.variant)
             .build()
         val pathHelper =
             VariantPathHelper(
@@ -652,8 +643,8 @@ class VariantManager<
         dimensionCombination: DimensionCombination,
         buildTypeData: BuildTypeData<BuildType>,
         productFlavorDataList: List<ProductFlavorData<ProductFlavor>>,
-        testedComponentInfo: VariantComponentInfo<VariantBuilderT, VariantT>,
-        variantType: VariantType,
+        testedComponentInfo: VariantComponentInfo<CommonExtensionT, VariantBuilderT, VariantT>,
+        componentType: ComponentType,
         testFixturesEnabled: Boolean,
         inconsistentTestAppId: Boolean
     ): TestComponentImpl? {
@@ -663,28 +654,28 @@ class VariantManager<
         // to return @Nullable and the constructor is @NonNull on this parameter,
         // but it's never the case on defaultConfigData
         // The constructor does a runtime check on the instances so we should be safe.
-        val testSourceSet = variantInputModel.defaultConfigData.getTestSourceSet(variantType)
+        val testSourceSet = variantInputModel.defaultConfigData.getTestSourceSet(componentType)
         val variantDslInfoBuilder = getBuilder(
                 dimensionCombination,
-                variantType,
+                componentType,
                 variantInputModel.defaultConfigData.defaultConfig,
                 testSourceSet!!,
                 buildTypeData.buildType,
-                buildTypeData.getTestSourceSet(variantType),
+                buildTypeData.getTestSourceSet(componentType),
                 signingOverride,
                 getLazyManifestParser(
                         testSourceSet.manifestFile,
-                        variantType.requiresManifest) { canParseManifest() },
+                        componentType.requiresManifest) { canParseManifest() },
                 dslServices,
                 variantPropertiesApiServices,
                 oldExtension = oldExtension,
                 extension = dslExtension,
                 hasDynamicFeatures = hasDynamicFeatures())
         variantDslInfoBuilder.productionVariant =
-                testedComponentInfo.variant.variantDslInfo as VariantDslInfoImpl
+                testedComponentInfo.variantDslInfo as VariantDslInfoImpl
         variantDslInfoBuilder.inconsistentTestAppId = inconsistentTestAppId
 
-        val productFlavorList = testedComponentInfo.variant.variantDslInfo.productFlavorList
+        val productFlavorList = testedComponentInfo.variantDslInfo.productFlavorList
 
         // We must first add the flavors to the variant builder, in order to get the proper
         // variant-specific and multi-flavor name as we add/create the variant providers later.
@@ -693,13 +684,13 @@ class VariantManager<
             productFlavors[productFlavor.name]?.let {
             variantDslInfoBuilder.addProductFlavor(
                     it.productFlavor,
-                    it.getTestSourceSet(variantType)!!)
+                    it.getTestSourceSet(componentType)!!)
             }
         }
         val variantDslInfo = variantDslInfoBuilder.createVariantDslInfo(
                 project.layout.buildDirectory)
         val apiAccessStats = testedComponentInfo.stats
-        if (variantType.isApk
+        if (componentType.isApk
             && testedComponentInfo.variantBuilder is HasAndroidTestBuilder) {
             // this is ANDROID_TEST
             if (!testedComponentInfo.variantBuilder.enableAndroidTest) {
@@ -734,7 +725,7 @@ class VariantManager<
         }
 
         // 2. the build type.
-        val buildTypeConfigurationProvider = buildTypeData.getTestSourceSet(variantType)
+        val buildTypeConfigurationProvider = buildTypeData.getTestSourceSet(componentType)
         buildTypeConfigurationProvider?.let {
             testVariantSourceSets.add(it)
         }
@@ -747,13 +738,13 @@ class VariantManager<
         // 4. the flavors.
         for (productFlavor in testProductFlavors) {
             variantInputModel.productFlavors[productFlavor.name]?.let {
-                testVariantSourceSets.add(it.getTestSourceSet(variantType))
+                testVariantSourceSets.add(it.getTestSourceSet(componentType))
             }
         }
 
         // now add the default config
         testVariantSourceSets.add(
-                variantInputModel.defaultConfigData.getTestSourceSet(variantType))
+                variantInputModel.defaultConfigData.getTestSourceSet(componentType))
 
         // If the variant being tested is a library variant, VariantDependencies must be
         // computed after the tasks for the tested variant is created.  Therefore, the
@@ -804,7 +795,7 @@ class VariantManager<
                 dslExtension.buildFeatures, dslExtension.dataBinding, dslServices.projectOptions)
 
         // this is ANDROID_TEST
-        val testComponent = if (variantType.isApk) {
+        val testComponent = if (componentType.isApk) {
             val androidTest = variantFactory.createAndroidTest(
                 variantDslInfo.componentIdentity,
                 testBuildFeatureValues,
@@ -846,7 +837,7 @@ class VariantManager<
         // register
         testedComponentInfo
                 .variant
-                .testComponents[variantDslInfo.variantType] = testComponent
+                .testComponents[variantDslInfo.componentType] = testComponent
         return testComponent
     }
 
@@ -862,7 +853,7 @@ class VariantManager<
         inconsistentTestAppId: Boolean,
         globalConfig: GlobalVariantBuilderConfig,
     ) {
-        val variantType = variantFactory.variantType
+        val componentType = variantFactory.componentType
 
         // first run the old variantFilter API
         // This acts on buildtype/flavor only, and applies in one pass to prod/tests.
@@ -879,7 +870,7 @@ class VariantManager<
         var ignore = false
         oldExtension.variantFilter?.let {
             variantFilter.reset(
-                    dimensionCombination, defaultConfig, buildType, variantType, productFlavorList)
+                    dimensionCombination, defaultConfig, buildType, componentType, productFlavorList)
             try {
                 // variantFilterAction != null always true here.
                 it.execute(variantFilter)
@@ -894,7 +885,7 @@ class VariantManager<
                     dimensionCombination,
                     buildTypeData,
                     productFlavorDataList,
-                    variantType,
+                    componentType,
                     globalConfig
             )?.let { variantInfo ->
                 addVariant(variantInfo)
@@ -933,14 +924,14 @@ class VariantManager<
                     (variant as HasTestFixtures).testFixtures = testFixtures
                 }
 
-                if (variantFactory.variantType.hasTestComponents) {
+                if (variantFactory.componentType.hasTestComponents) {
                     if (buildTypeData == testBuildTypeData) {
                         val androidTest = createTestComponents(
                                 dimensionCombination,
                                 buildTypeData,
                                 productFlavorDataList,
                                 variantInfo,
-                                VariantTypeImpl.ANDROID_TEST,
+                                ComponentTypeImpl.ANDROID_TEST,
                                 testFixturesEnabledForVariant,
                                 inconsistentTestAppId
                         )
@@ -954,7 +945,7 @@ class VariantManager<
                         buildTypeData,
                         productFlavorDataList,
                         variantInfo,
-                        VariantTypeImpl.UNIT_TEST,
+                        ComponentTypeImpl.UNIT_TEST,
                         testFixturesEnabledForVariant,
                         false
                     )
@@ -993,7 +984,7 @@ class VariantManager<
 
                 variantApiOperationsRegistrar.dslExtensions.forEach { registeredExtension ->
                     registeredExtension.configurator.invoke(variantExtensionConfig).let {
-                        variantBuilder.registerExtension<Any>(
+                        variantBuilder.registerExtension(
                             if (it is GeneratedSubclass) it.publicType() else it.javaClass,
                             it
                         )
@@ -1011,10 +1002,13 @@ class VariantManager<
                         .setMinifyEnabled(variant.minifiedEnabled)
                         .setUseMultidex(variant.isMultiDexEnabled)
                         .setUseLegacyMultidex(variant.dexingType.isLegacyMultiDexMode())
-                        .setVariantType(variant.variantType.analyticsVariantType)
+                        .setVariantType(variant.componentType.analyticsVariantType)
                         .setDexBuilder(GradleBuildVariant.DexBuilderTool.D8_DEXER)
                         .setDexMerger(GradleBuildVariant.DexMergerTool.D8_MERGER)
                         .setCoreLibraryDesugaringEnabled(variant.isCoreLibraryDesugaringEnabled)
+                        .setHasUnitTest(variant.unitTest != null)
+                        .setHasAndroidTest((variant as? HasAndroidTest)?.androidTest != null)
+                        .setHasTestFixtures((variant as? HasTestFixtures)?.testFixtures != null)
                         .testExecution = AnalyticsUtil.toProto(dslExtension.testOptions.execution.toExecutionEnum() ?: TestOptions.Execution.HOST)
 
                     if (variant.minifiedEnabled) {
@@ -1142,8 +1136,8 @@ class VariantManager<
     init {
         signingOverride = createSigningOverride()
         variantFilter = VariantFilter(ReadOnlyObjectProvider())
-        variantApiServices = VariantApiServicesImpl(projectServices)
-        variantPropertiesApiServices = VariantPropertiesApiServicesImpl(
+        variantBuilderServices = VariantBuilderServicesImpl(projectServices)
+        variantPropertiesApiServices = VariantServicesImpl(
             projectServices,
             // detects whether we are running the plugin under unit test mode
             forUnitTesting = project.hasProperty("_agp_internal_test_mode_")

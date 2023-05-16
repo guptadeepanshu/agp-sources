@@ -20,7 +20,6 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
 import com.android.build.api.extension.impl.DslLifecycleComponentsOperationsRegistrar
 import com.android.build.gradle.internal.SdkComponentsBuildService
-import com.android.build.gradle.internal.TaskManager
 import com.android.build.gradle.internal.dependency.AndroidAttributes
 import com.android.build.gradle.internal.dependency.ModelArtifactCompatibilityRule
 import com.android.build.gradle.internal.dsl.LintImpl
@@ -37,6 +36,7 @@ import com.android.build.gradle.internal.lint.AndroidLintTask
 import com.android.build.gradle.internal.lint.AndroidLintTextOutputTask
 import com.android.build.gradle.internal.lint.LintFixBuildService
 import com.android.build.gradle.internal.lint.LintFromMaven
+import com.android.build.gradle.internal.lint.LintMode
 import com.android.build.gradle.internal.lint.LintModelWriterTask
 import com.android.build.gradle.internal.lint.LintTaskManager
 import com.android.build.gradle.internal.lint.getLocalCustomLintChecks
@@ -56,7 +56,6 @@ import com.android.build.gradle.internal.services.StringCachingBuildService
 import com.android.build.gradle.internal.tasks.LintModelMetadataTask
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.TaskCreationServicesImpl
-import com.android.build.gradle.internal.services.VariantPropertiesApiServicesImpl
 import com.android.build.gradle.options.Option
 import com.android.build.gradle.options.ProjectOptionService
 import com.android.build.gradle.options.SyncOptions
@@ -136,6 +135,19 @@ abstract class LintPlugin : Plugin<Project> {
             lintTask.configure { task ->
                 task.configureForStandalone(taskCreationServices, artifacts, lintOptions!!)
             }
+            val updateLintBaselineTask =
+                project.tasks.register("updateLintBaseline", AndroidLintTask::class.java) { task ->
+                    task.description = "Updates the lint baseline for project `${project.name}`."
+                    task.configureForStandalone(
+                        taskCreationServices,
+                        javaConvention,
+                        customLintChecks,
+                        lintOptions!!,
+                        artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
+                        artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                        LintMode.UPDATE_BASELINE
+                    )
+                }
             project.tasks.register("lintReport", AndroidLintTask::class.java) { task ->
                 task.description = "Generates the lint report for project `${project.name}`"
                 task.configureForStandalone(
@@ -144,8 +156,10 @@ abstract class LintPlugin : Plugin<Project> {
                     customLintChecks,
                     lintOptions!!,
                     artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
-                    artifacts.getOutputPath(InternalArtifactType.LINT_MODEL)
+                    artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                    LintMode.REPORTING
                 )
+                task.mustRunAfter(updateLintBaselineTask)
             }.also {
                 AndroidLintTask.VariantCreationAction.registerLintIntermediateArtifacts(
                     it,
@@ -177,8 +191,10 @@ abstract class LintPlugin : Plugin<Project> {
                     lintOptions!!,
                     artifacts.get(InternalArtifactType.LINT_VITAL_PARTIAL_RESULTS),
                     artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                    LintMode.REPORTING,
                     fatalOnly = true
                 )
+                task.mustRunAfter(updateLintBaselineTask)
             }.also {
                 AndroidLintTask.VariantCreationAction.registerLintIntermediateArtifacts(
                     it,
@@ -196,9 +212,12 @@ abstract class LintPlugin : Plugin<Project> {
                     lintOptions!!,
                     artifacts.get(InternalArtifactType.LINT_PARTIAL_RESULTS),
                     artifacts.getOutputPath(InternalArtifactType.LINT_MODEL),
+                    LintMode.REPORTING,
                     autoFix = true
                 )
+                task.mustRunAfter(updateLintBaselineTask)
             }
+
             val lintAnalysisTask = project.tasks.register("lintAnalyze", AndroidLintAnalysisTask::class.java) { task ->
                 task.description = "Runs lint analysis for project `${project.name}`"
                 task.configureForStandalone(

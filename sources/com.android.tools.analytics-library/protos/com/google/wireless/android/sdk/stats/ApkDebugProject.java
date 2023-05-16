@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ApkDebugProject}
  */
-public  final class ApkDebugProject extends
+public final class ApkDebugProject extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ApkDebugProject)
     ApkDebugProjectOrBuilder {
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string package_id = 1;</code>
    * @return Whether the packageId field is set.
    */
+  @java.lang.Override
   public boolean hasPackageId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string package_id = 1;</code>
    * @return The packageId.
    */
+  @java.lang.Override
   public java.lang.String getPackageId() {
     java.lang.Object ref = packageId_;
     if (ref instanceof java.lang.String) {
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string package_id = 1;</code>
    * @return The bytes for packageId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getPackageIdBytes() {
     java.lang.Object ref = packageId_;

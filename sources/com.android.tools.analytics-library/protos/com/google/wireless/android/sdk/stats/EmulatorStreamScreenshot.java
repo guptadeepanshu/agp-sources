@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorStreamScreenshot}
  */
-public  final class EmulatorStreamScreenshot extends
+public final class EmulatorStreamScreenshot extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorStreamScreenshot)
     EmulatorStreamScreenshotOrBuilder {
@@ -119,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 size = 1;</code>
    * @return Whether the size field is set.
    */
+  @java.lang.Override
   public boolean hasSize() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -130,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 size = 1;</code>
    * @return The size.
    */
+  @java.lang.Override
   public int getSize() {
     return size_;
   }
@@ -145,6 +147,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
    * @return Whether the deliveryDelay field is set.
    */
+  @java.lang.Override
   public boolean hasDeliveryDelay() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -157,6 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
    * @return The deliveryDelay.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getDeliveryDelay() {
     return deliveryDelay_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : deliveryDelay_;
   }
@@ -168,6 +172,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator delivery_delay = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeliveryDelayOrBuilder() {
     return deliveryDelay_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : deliveryDelay_;
   }
@@ -182,6 +187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 frames = 3;</code>
    * @return Whether the frames field is set.
    */
+  @java.lang.Override
   public boolean hasFrames() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -193,6 +199,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 frames = 3;</code>
    * @return The frames.
    */
+  @java.lang.Override
   public int getFrames() {
     return frames_;
   }
@@ -583,6 +590,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 size = 1;</code>
      * @return Whether the size field is set.
      */
+    @java.lang.Override
     public boolean hasSize() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -594,6 +602,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 size = 1;</code>
      * @return The size.
      */
+    @java.lang.Override
     public int getSize() {
       return size_;
     }
@@ -801,6 +810,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 frames = 3;</code>
      * @return Whether the frames field is set.
      */
+    @java.lang.Override
     public boolean hasFrames() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -812,6 +822,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 frames = 3;</code>
      * @return The frames.
      */
+    @java.lang.Override
     public int getFrames() {
       return frames_;
     }

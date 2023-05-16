@@ -20,6 +20,7 @@ import com.android.build.api.dsl.AndroidResources
 import com.android.build.api.dsl.CompileOptions
 import com.android.build.api.variant.impl.SourcesImpl
 import com.android.build.api.dsl.Lint
+import com.android.build.api.variant.impl.SourceDirectoriesImpl
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.android.build.gradle.internal.scope.BuildFeatureValues
 import com.android.build.gradle.internal.utils.toImmutableList
@@ -116,6 +117,7 @@ internal fun DslProductFlavor.convert(features: BuildFeatureValues) = ProductFla
 internal fun DslBuildType.convert(features: BuildFeatureValues) = BuildTypeImpl(
     name = name,
     isDebuggable = isDebuggable,
+    isProfileable = isProfileable,
     isTestCoverageEnabled = isTestCoverageEnabled,
     isPseudoLocalesEnabled = isPseudoLocalesEnabled,
     isJniDebuggable = isJniDebuggable,
@@ -209,20 +211,21 @@ internal fun DefaultAndroidSourceSet.convert(
 ) = SourceProviderImpl(
     name = name,
     manifestFile = manifestFile,
-    javaDirectories = sources.java.variantSourcesForModel {
-              it.isUserAdded && it.shouldBeAddedToIdeModel
-    },
-    kotlinDirectories = kotlinDirectories,
+    javaDirectories = variantSourcesForModel(sources.java),
+    kotlinDirectories = variantSourcesForModel(sources.kotlin),
     resourcesDirectories = resourcesDirectories,
     aidlDirectories = if (features.aidl) aidlDirectories else null,
     renderscriptDirectories = if (features.renderScript) renderscriptDirectories else null,
-    resDirectories = if (features.androidResources) resDirectories else null,
-    assetsDirectories = assetsDirectories,
-    jniLibsDirectories = jniLibsDirectories,
-    shadersDirectories = if (features.shaders) shadersDirectories else null,
+    resDirectories = if (features.androidResources) variantSourcesForModel(sources.res) else null,
+    assetsDirectories = variantSourcesForModel(sources.assets),
+    jniLibsDirectories = variantSourcesForModel(sources.jniLibs),
+    shadersDirectories = sources.shaders?.let { variantSourcesForModel(it) },
     mlModelsDirectories = if (features.mlModelBinding) mlModelsDirectories else null,
     customDirectories = customDirectories,
 )
+
+private fun variantSourcesForModel(sourceDirectories: SourceDirectoriesImpl) =
+    sourceDirectories.variantSourcesForModel { it.shouldBeAddedToIdeModel }
 
 internal fun AndroidResources.convert() = AaptOptionsImpl(
     namespacing = if (namespaced) REQUIRED else DISABLED

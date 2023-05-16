@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorLiveMode}
  */
-public  final class DynamicLayoutInspectorLiveMode extends
+public final class DynamicLayoutInspectorLiveMode extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorLiveMode)
     DynamicLayoutInspectorLiveModeOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 refresh_button_clicks = 1;</code>
    * @return Whether the refreshButtonClicks field is set.
    */
+  @java.lang.Override
   public boolean hasRefreshButtonClicks() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 refresh_button_clicks = 1;</code>
    * @return The refreshButtonClicks.
    */
+  @java.lang.Override
   public int getRefreshButtonClicks() {
     return refreshButtonClicks_;
   }
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_live_updates = 2;</code>
    * @return Whether the clicksWithLiveUpdates field is set.
    */
+  @java.lang.Override
   public boolean hasClicksWithLiveUpdates() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -147,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_with_live_updates = 2;</code>
    * @return The clicksWithLiveUpdates.
    */
+  @java.lang.Override
   public int getClicksWithLiveUpdates() {
     return clicksWithLiveUpdates_;
   }
@@ -161,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_without_live_updates = 3;</code>
    * @return Whether the clicksWithoutLiveUpdates field is set.
    */
+  @java.lang.Override
   public boolean hasClicksWithoutLiveUpdates() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -172,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 clicks_without_live_updates = 3;</code>
    * @return The clicksWithoutLiveUpdates.
    */
+  @java.lang.Override
   public int getClicksWithoutLiveUpdates() {
     return clicksWithoutLiveUpdates_;
   }
@@ -553,6 +559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 refresh_button_clicks = 1;</code>
      * @return Whether the refreshButtonClicks field is set.
      */
+    @java.lang.Override
     public boolean hasRefreshButtonClicks() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -564,6 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 refresh_button_clicks = 1;</code>
      * @return The refreshButtonClicks.
      */
+    @java.lang.Override
     public int getRefreshButtonClicks() {
       return refreshButtonClicks_;
     }
@@ -606,6 +614,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_live_updates = 2;</code>
      * @return Whether the clicksWithLiveUpdates field is set.
      */
+    @java.lang.Override
     public boolean hasClicksWithLiveUpdates() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -617,6 +626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_with_live_updates = 2;</code>
      * @return The clicksWithLiveUpdates.
      */
+    @java.lang.Override
     public int getClicksWithLiveUpdates() {
       return clicksWithLiveUpdates_;
     }
@@ -659,6 +669,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_without_live_updates = 3;</code>
      * @return Whether the clicksWithoutLiveUpdates field is set.
      */
+    @java.lang.Override
     public boolean hasClicksWithoutLiveUpdates() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -670,6 +681,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 clicks_without_live_updates = 3;</code>
      * @return The clicksWithoutLiveUpdates.
      */
+    @java.lang.Override
     public int getClicksWithoutLiveUpdates() {
       return clicksWithoutLiveUpdates_;
     }

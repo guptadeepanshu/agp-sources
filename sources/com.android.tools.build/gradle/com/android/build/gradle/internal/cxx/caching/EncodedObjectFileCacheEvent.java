@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code EncodedObjectFileCacheEvent}
  */
-public  final class EncodedObjectFileCacheEvent extends
+public final class EncodedObjectFileCacheEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedObjectFileCacheEvent)
     EncodedObjectFileCacheEventOrBuilder {
@@ -134,14 +134,14 @@ private static final long serialVersionUID = 0L;
    * <code>.ObjectFileCacheEvent.Outcome outcome = 1;</code>
    * @return The enum numeric value on the wire for outcome.
    */
-  public int getOutcomeValue() {
+  @java.lang.Override public int getOutcomeValue() {
     return outcome_;
   }
   /**
    * <code>.ObjectFileCacheEvent.Outcome outcome = 1;</code>
    * @return The outcome.
    */
-  public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome getOutcome() {
+  @java.lang.Override public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome getOutcome() {
     @SuppressWarnings("deprecation")
     com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.valueOf(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.UNRECOGNIZED : result;
@@ -153,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 key_display_name_id = 2;</code>
    * @return The keyDisplayNameId.
    */
+  @java.lang.Override
   public int getKeyDisplayNameId() {
     return keyDisplayNameId_;
   }
@@ -163,6 +164,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 key_hash_code_id = 3;</code>
    * @return The keyHashCodeId.
    */
+  @java.lang.Override
   public int getKeyHashCodeId() {
     return keyHashCodeId_;
   }
@@ -173,6 +175,7 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedCompilation compilation = 4;</code>
    * @return Whether the compilation field is set.
    */
+  @java.lang.Override
   public boolean hasCompilation() {
     return compilation_ != null;
   }
@@ -180,12 +183,14 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedCompilation compilation = 4;</code>
    * @return The compilation.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedCompilation getCompilation() {
     return compilation_ == null ? com.android.build.gradle.internal.cxx.caching.EncodedCompilation.getDefaultInstance() : compilation_;
   }
   /**
    * <code>.EncodedCompilation compilation = 4;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedCompilationOrBuilder getCompilationOrBuilder() {
     return getCompilation();
   }
@@ -196,6 +201,7 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedCompilation hashed_compilation = 5;</code>
    * @return Whether the hashedCompilation field is set.
    */
+  @java.lang.Override
   public boolean hasHashedCompilation() {
     return hashedCompilation_ != null;
   }
@@ -203,12 +209,14 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedCompilation hashed_compilation = 5;</code>
    * @return The hashedCompilation.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedCompilation getHashedCompilation() {
     return hashedCompilation_ == null ? com.android.build.gradle.internal.cxx.caching.EncodedCompilation.getDefaultInstance() : hashedCompilation_;
   }
   /**
    * <code>.EncodedCompilation hashed_compilation = 5;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedCompilationOrBuilder getHashedCompilationOrBuilder() {
     return getHashedCompilation();
   }
@@ -618,7 +626,7 @@ private static final long serialVersionUID = 0L;
      * <code>.ObjectFileCacheEvent.Outcome outcome = 1;</code>
      * @return The enum numeric value on the wire for outcome.
      */
-    public int getOutcomeValue() {
+    @java.lang.Override public int getOutcomeValue() {
       return outcome_;
     }
     /**
@@ -627,6 +635,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
+      
       outcome_ = value;
       onChanged();
       return this;
@@ -635,6 +644,7 @@ private static final long serialVersionUID = 0L;
      * <code>.ObjectFileCacheEvent.Outcome outcome = 1;</code>
      * @return The outcome.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome getOutcome() {
       @SuppressWarnings("deprecation")
       com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome result = com.android.build.gradle.internal.cxx.caching.ObjectFileCacheEvent.Outcome.valueOf(outcome_);
@@ -670,6 +680,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 key_display_name_id = 2;</code>
      * @return The keyDisplayNameId.
      */
+    @java.lang.Override
     public int getKeyDisplayNameId() {
       return keyDisplayNameId_;
     }
@@ -700,6 +711,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 key_hash_code_id = 3;</code>
      * @return The keyHashCodeId.
      */
+    @java.lang.Override
     public int getKeyHashCodeId() {
       return keyHashCodeId_;
     }

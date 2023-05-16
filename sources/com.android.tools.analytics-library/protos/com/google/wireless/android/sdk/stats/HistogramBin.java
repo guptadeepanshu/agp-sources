@@ -14,7 +14,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.HistogramBin}
  */
-public  final class HistogramBin extends
+public final class HistogramBin extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.HistogramBin)
     HistogramBinOrBuilder {
@@ -121,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start = 1;</code>
    * @return Whether the start field is set.
    */
+  @java.lang.Override
   public boolean hasStart() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -133,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start = 1;</code>
    * @return The start.
    */
+  @java.lang.Override
   public long getStart() {
     return start_;
   }
@@ -148,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end = 2;</code>
    * @return Whether the end field is set.
    */
+  @java.lang.Override
   public boolean hasEnd() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -160,6 +163,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end = 2;</code>
    * @return The end.
    */
+  @java.lang.Override
   public long getEnd() {
     return end_;
   }
@@ -175,6 +179,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 samples = 3;</code>
    * @return Whether the samples field is set.
    */
+  @java.lang.Override
   public boolean hasSamples() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -187,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 samples = 3;</code>
    * @return The samples.
    */
+  @java.lang.Override
   public long getSamples() {
     return samples_;
   }
@@ -203,6 +209,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_samples = 4;</code>
    * @return Whether the totalSamples field is set.
    */
+  @java.lang.Override
   public boolean hasTotalSamples() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -216,6 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_samples = 4;</code>
    * @return The totalSamples.
    */
+  @java.lang.Override
   public long getTotalSamples() {
     return totalSamples_;
   }
@@ -631,6 +639,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start = 1;</code>
      * @return Whether the start field is set.
      */
+    @java.lang.Override
     public boolean hasStart() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -643,6 +652,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start = 1;</code>
      * @return The start.
      */
+    @java.lang.Override
     public long getStart() {
       return start_;
     }
@@ -688,6 +698,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end = 2;</code>
      * @return Whether the end field is set.
      */
+    @java.lang.Override
     public boolean hasEnd() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -700,6 +711,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end = 2;</code>
      * @return The end.
      */
+    @java.lang.Override
     public long getEnd() {
       return end_;
     }
@@ -745,6 +757,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 samples = 3;</code>
      * @return Whether the samples field is set.
      */
+    @java.lang.Override
     public boolean hasSamples() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -757,6 +770,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 samples = 3;</code>
      * @return The samples.
      */
+    @java.lang.Override
     public long getSamples() {
       return samples_;
     }
@@ -803,6 +817,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_samples = 4;</code>
      * @return Whether the totalSamples field is set.
      */
+    @java.lang.Override
     public boolean hasTotalSamples() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -816,6 +831,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_samples = 4;</code>
      * @return The totalSamples.
      */
+    @java.lang.Override
     public long getTotalSamples() {
       return totalSamples_;
     }

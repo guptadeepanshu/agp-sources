@@ -29,13 +29,12 @@ import com.android.build.api.variant.ResValue
 import com.android.build.api.variant.impl.MutableAndroidVersion
 import com.android.build.gradle.api.JavaCompileOptions
 import com.android.build.gradle.internal.ProguardFileType
-import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.options.ProjectOptions
 import com.android.builder.core.AbstractProductFlavor
-import com.android.builder.core.VariantType
+import com.android.builder.core.ComponentType
 import com.android.builder.dexing.DexingType
 import com.android.builder.model.VectorDrawablesOptions
 import com.google.common.collect.ImmutableMap
@@ -58,7 +57,7 @@ interface VariantDslInfo {
 
     val componentIdentity: ComponentIdentity
 
-    val variantType: VariantType
+    val componentType: ComponentType
 
     /** The list of product flavors. Items earlier in the list override later items.  */
     val productFlavorList: List<ProductFlavor>
@@ -66,91 +65,9 @@ interface VariantDslInfo {
     /**
      * Optional tested config in case this variant is used for testing another variant.
      *
-     * @see VariantType.isTestComponent
+     * @see ComponentType.isTestComponent
      */
     val testedVariant: VariantDslInfo?
-
-    /**
-     * Returns a full name that includes the given splits name.
-     *
-     * @param splitName the split name
-     * @return a unique name made up of the variant and split names.
-     */
-    fun computeFullNameWithSplits(splitName: String): String
-
-    /**
-     * Returns the expected output file name for the variant.
-     *
-     * @param archivesBaseName the project's archiveBaseName
-     * @param baseName the variant baseName
-     */
-    fun getOutputFileName(archivesBaseName: String, baseName: String): String {
-        // we only know if it is signed during configuration, if its the base module.
-        // Otherwise, don't differentiate between signed and unsigned.
-        // we only know if it is signed during configuration, if its the base module.
-        // Otherwise, don't differentiate between signed and unsigned.
-        val suffix =
-            if (isSigningReady || !variantType.isBaseModule)
-                SdkConstants.DOT_ANDROID_PACKAGE
-            else "-unsigned.apk"
-        return archivesBaseName + "-" + baseName + suffix
-    }
-
-    /**
-     * Returns the full, unique name of the variant, including BuildType, flavors and test, dash
-     * separated. (similar to full name but with dashes)
-     *
-     * @return the name of the variant
-     */
-    val baseName : String
-    /**
-     * Returns a base name that includes the given splits name.
-     *
-     * @param splitName the split name
-     * @return a unique name made up of the variant and split names.
-     */
-    fun computeBaseNameWithSplits(splitName: String): String
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test.
-     *
-     *
-     * This always uses forward slashes ('/') as separator on all platform.
-     *
-     * @return the directory name for the variant
-     */
-    val dirName: String
-
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test.
-     *
-     * @return the directory name for the variant
-     */
-    val directorySegments: Collection<String?>
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test, and splits.
-     *
-     *
-     * This always uses forward slashes ('/') as separator on all platform.
-     *
-     * @return the directory name for the variant
-     */
-    fun computeDirNameWithSplits(vararg splitNames: String): String
-
-    /**
-     * Return the names of the applied flavors.
-     *
-     *
-     * The list contains the dimension names as well.
-     *
-     * @return the list, possibly empty if there are no flavors.
-     */
-    val flavorNamesWithDimensionNames: List<String>
 
     fun hasFlavors(): Boolean
 
@@ -158,11 +75,13 @@ interface VariantDslInfo {
      * The namespace of the generated R and BuildConfig classes. Also, the namespace used to resolve
      * any relative class names that are declared in the AndroidManifest.xml.
      *
-     * For test components, this is set to the tested variant's [testNamespace] value or to the
-     * tested variant's [namespace] + ".test"
+     * For test components, this is set to the `testNamespace` DSL value, if present, or else to the
+     * DSL's `namespace` + ".test", if present, or else to the `package` attribute in the test
+     * AndroidManifest.xml, if present, or else to the `package` attribute in the main
+     * AndroidManifest.xml with ".test" appended.
      *
-     * Otherwise, this value comes from the namespace DSL element, if present, or from the `package`
-     * attribute in the source AndroidManifest.xml if not specified in the DSL.
+     * For non-test components, this value comes from the namespace DSL element, if present, or from
+     * the `package` attribute in the source AndroidManifest.xml if not specified in the DSL.
      */
     val namespace: Provider<String>
 
@@ -257,9 +176,9 @@ interface VariantDslInfo {
      */
     fun getResValues(): Map<ResValue.Key, ResValue>
 
-    val isTestCoverageEnabled: Boolean
-
     val isUnitTestCoverageEnabled: Boolean
+
+    val isAndroidTestCoverageEnabled: Boolean
 
     /**
      * Returns the merged manifest placeholders. All product flavors are merged first, then build
@@ -286,7 +205,7 @@ interface VariantDslInfo {
      */
     val targetDeployApiFromIDE: Int?
 
-    val nativeBuildSystem: VariantManager.NativeBuiltType?
+    val nativeBuildSystem: NativeBuiltType?
 
     val ndkConfig: MergedNdkConfig
 
@@ -316,6 +235,8 @@ interface VariantDslInfo {
 
     val isEmbedMicroApp: Boolean
 
+    val isProfileable: Boolean
+
     val isPseudoLocalesEnabled: Boolean
 
     val isCrunchPngs: Boolean?
@@ -342,6 +263,17 @@ interface VariantDslInfo {
     val transforms: List<Transform>
 
     val lintOptions: Lint
+
+    /**
+     * Returns the component ids of those external library dependencies whose keep rules are ignored
+     * when building the project.
+     */
+    val ignoredLibraryKeepRules: Set<String>
+
+    /**
+     * Returns whether to ignore all keep rules from external library dependencies.
+     */
+    val ignoreAllLibraryKeepRules: Boolean
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //  APIs below should only be used at CreationConfig/Variant instantiation time       //
@@ -416,4 +348,6 @@ interface VariantDslInfo {
 
     // DO NOT USE, Use CreationConfig and subtypes methods.
     val experimentalProperties: Map<String, Any>
+
+    val externalNativeExperimentalProperties: Map<String, Any>
 }

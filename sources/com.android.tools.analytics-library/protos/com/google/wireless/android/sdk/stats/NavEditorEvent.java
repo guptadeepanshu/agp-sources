@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.NavEditorEvent}
  */
-public  final class NavEditorEvent extends
+public final class NavEditorEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavEditorEvent)
     NavEditorEventOrBuilder {
@@ -392,7 +392,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>SELECT_DESIGN_TAB = 2 [deprecated = true];</code>
      */
-    public static final int SELECT_DESIGN_TAB_VALUE = 2;
+    @java.lang.Deprecated public static final int SELECT_DESIGN_TAB_VALUE = 2;
     /**
      * <pre>
      * Deprecated by LayoutEditorEventType.SELECT_TEXT_MODE
@@ -400,7 +400,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>SELECT_XML_TAB = 3 [deprecated = true];</code>
      */
-    public static final int SELECT_XML_TAB_VALUE = 3;
+    @java.lang.Deprecated public static final int SELECT_XML_TAB_VALUE = 3;
     /**
      * <code>CREATE_ACTION = 4;</code>
      */
@@ -524,7 +524,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>ZOOM_IN = 30 [deprecated = true];</code>
      */
-    public static final int ZOOM_IN_VALUE = 30;
+    @java.lang.Deprecated public static final int ZOOM_IN_VALUE = 30;
     /**
      * <pre>
      * Deprecated by LayoutEditorEventType.ZOOM_OUT
@@ -532,7 +532,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>ZOOM_OUT = 31 [deprecated = true];</code>
      */
-    public static final int ZOOM_OUT_VALUE = 31;
+    @java.lang.Deprecated public static final int ZOOM_OUT_VALUE = 31;
     /**
      * <pre>
      * Deprecated by LayoutEditorEventType.ZOOM_FIT
@@ -540,7 +540,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>ZOOM_FIT = 32 [deprecated = true];</code>
      */
-    public static final int ZOOM_FIT_VALUE = 32;
+    @java.lang.Deprecated public static final int ZOOM_FIT_VALUE = 32;
     /**
      * <code>CUT = 33;</code>
      */
@@ -948,7 +948,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.NavEditorEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -959,7 +959,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.NavEditorEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.UNKNOWN_EVENT_TYPE : result;
@@ -975,7 +975,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.Source source = 2;</code>
    * @return Whether the source field is set.
    */
-  public boolean hasSource() {
+  @java.lang.Override public boolean hasSource() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -986,7 +986,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.Source source = 2;</code>
    * @return The source.
    */
-  public com.google.wireless.android.sdk.stats.NavEditorEvent.Source getSource() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.Source getSource() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.valueOf(source_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.Source.UNKNOWN : result;
@@ -1002,6 +1002,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
    * @return Whether the propertyInfo field is set.
    */
+  @java.lang.Override
   public boolean hasPropertyInfo() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1013,6 +1014,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
    * @return The propertyInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavPropertyInfo getPropertyInfo() {
     return propertyInfo_ == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.getDefaultInstance() : propertyInfo_;
   }
@@ -1023,6 +1025,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavPropertyInfo property_info = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavPropertyInfoOrBuilder getPropertyInfoOrBuilder() {
     return propertyInfo_ == null ? com.google.wireless.android.sdk.stats.NavPropertyInfo.getDefaultInstance() : propertyInfo_;
   }
@@ -1037,6 +1040,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
    * @return Whether the actionInfo field is set.
    */
+  @java.lang.Override
   public boolean hasActionInfo() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1048,6 +1052,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
    * @return The actionInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavActionInfo getActionInfo() {
     return actionInfo_ == null ? com.google.wireless.android.sdk.stats.NavActionInfo.getDefaultInstance() : actionInfo_;
   }
@@ -1058,6 +1063,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavActionInfo action_info = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavActionInfoOrBuilder getActionInfoOrBuilder() {
     return actionInfo_ == null ? com.google.wireless.android.sdk.stats.NavActionInfo.getDefaultInstance() : actionInfo_;
   }
@@ -1073,6 +1079,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
    * @return Whether the destinationInfo field is set.
    */
+  @java.lang.Override
   public boolean hasDestinationInfo() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1085,6 +1092,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
    * @return The destinationInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavDestinationInfo getDestinationInfo() {
     return destinationInfo_ == null ? com.google.wireless.android.sdk.stats.NavDestinationInfo.getDefaultInstance() : destinationInfo_;
   }
@@ -1096,6 +1104,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavDestinationInfo destination_info = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavDestinationInfoOrBuilder getDestinationInfoOrBuilder() {
     return destinationInfo_ == null ? com.google.wireless.android.sdk.stats.NavDestinationInfo.getDefaultInstance() : destinationInfo_;
   }
@@ -1110,6 +1119,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
    * @return Whether the schemaInfo field is set.
    */
+  @java.lang.Override
   public boolean hasSchemaInfo() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1121,6 +1131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
    * @return The schemaInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSchemaInfo getSchemaInfo() {
     return schemaInfo_ == null ? com.google.wireless.android.sdk.stats.NavSchemaInfo.getDefaultInstance() : schemaInfo_;
   }
@@ -1131,6 +1142,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavSchemaInfo schema_info = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSchemaInfoOrBuilder getSchemaInfoOrBuilder() {
     return schemaInfo_ == null ? com.google.wireless.android.sdk.stats.NavSchemaInfo.getDefaultInstance() : schemaInfo_;
   }
@@ -1145,6 +1157,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavigationContents contents = 7;</code>
    * @return Whether the contents field is set.
    */
+  @java.lang.Override
   public boolean hasContents() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1156,6 +1169,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavigationContents contents = 7;</code>
    * @return The contents.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavigationContents getContents() {
     return contents_ == null ? com.google.wireless.android.sdk.stats.NavigationContents.getDefaultInstance() : contents_;
   }
@@ -1166,6 +1180,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavigationContents contents = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavigationContentsOrBuilder getContentsOrBuilder() {
     return contents_ == null ? com.google.wireless.android.sdk.stats.NavigationContents.getDefaultInstance() : contents_;
   }
@@ -1180,7 +1195,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.NavEditorMode mode = 8;</code>
    * @return Whether the mode field is set.
    */
-  public boolean hasMode() {
+  @java.lang.Override public boolean hasMode() {
     return ((bitField0_ & 0x00000080) != 0);
   }
   /**
@@ -1191,7 +1206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent.NavEditorMode mode = 8;</code>
    * @return The mode.
    */
-  public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode getMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode getMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.valueOf(mode_);
     return result == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.UNKNOWN_MODE : result;
@@ -1741,7 +1756,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.NavEditorEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1752,6 +1767,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.NavEditorEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorEventType.valueOf(type_);
@@ -1799,7 +1815,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.Source source = 2;</code>
      * @return Whether the source field is set.
      */
-    public boolean hasSource() {
+    @java.lang.Override public boolean hasSource() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1810,6 +1826,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.Source source = 2;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.Source getSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavEditorEvent.Source result = com.google.wireless.android.sdk.stats.NavEditorEvent.Source.valueOf(source_);
@@ -2646,7 +2663,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.NavEditorMode mode = 8;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000080) != 0);
     }
     /**
@@ -2657,6 +2674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavEditorEvent.NavEditorMode mode = 8;</code>
      * @return The mode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode result = com.google.wireless.android.sdk.stats.NavEditorEvent.NavEditorMode.valueOf(mode_);

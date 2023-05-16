@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.TasksConfigurationIssuesAnalyzerData}
  */
-public  final class TasksConfigurationIssuesAnalyzerData extends
+public final class TasksConfigurationIssuesAnalyzerData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TasksConfigurationIssuesAnalyzerData)
     TasksConfigurationIssuesAnalyzerDataOrBuilder {
@@ -202,7 +202,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData}
    */
-  public  static final class TasksSharingOutputData extends
+  public static final class TasksSharingOutputData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData)
       TasksSharingOutputDataOrBuilder {
@@ -313,6 +313,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttributionPluginIdentifier plugins_created_sharing_output_tasks = 1 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public java.util.List<com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier> getPluginsCreatedSharingOutputTasksList() {
       return pluginsCreatedSharingOutputTasks_;
     }
@@ -324,6 +325,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttributionPluginIdentifier plugins_created_sharing_output_tasks = 1 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public java.util.List<? extends com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder> 
         getPluginsCreatedSharingOutputTasksOrBuilderList() {
       return pluginsCreatedSharingOutputTasks_;
@@ -336,6 +338,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttributionPluginIdentifier plugins_created_sharing_output_tasks = 1 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public int getPluginsCreatedSharingOutputTasksCount() {
       return pluginsCreatedSharingOutputTasks_.size();
     }
@@ -347,6 +350,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttributionPluginIdentifier plugins_created_sharing_output_tasks = 1 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginsCreatedSharingOutputTasks(int index) {
       return pluginsCreatedSharingOutputTasks_.get(index);
     }
@@ -358,6 +362,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttributionPluginIdentifier plugins_created_sharing_output_tasks = 1 [deprecated = true];</code>
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginsCreatedSharingOutputTasksOrBuilder(
         int index) {
       return pluginsCreatedSharingOutputTasks_.get(index);
@@ -372,6 +377,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttribuitionTaskIdentifier tasks_sharing_output = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier> getTasksSharingOutputList() {
       return tasksSharingOutput_;
     }
@@ -382,6 +388,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttribuitionTaskIdentifier tasks_sharing_output = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder> 
         getTasksSharingOutputOrBuilderList() {
       return tasksSharingOutput_;
@@ -393,6 +400,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttribuitionTaskIdentifier tasks_sharing_output = 2;</code>
      */
+    @java.lang.Override
     public int getTasksSharingOutputCount() {
       return tasksSharingOutput_.size();
     }
@@ -403,6 +411,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttribuitionTaskIdentifier tasks_sharing_output = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifier getTasksSharingOutput(int index) {
       return tasksSharingOutput_.get(index);
     }
@@ -413,6 +422,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.BuildAttribuitionTaskIdentifier tasks_sharing_output = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttribuitionTaskIdentifierOrBuilder getTasksSharingOutputOrBuilder(
         int index) {
       return tasksSharingOutput_.get(index);
@@ -1522,6 +1532,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData tasks_sharing_output_data = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData> getTasksSharingOutputDataList() {
     return tasksSharingOutputData_;
   }
@@ -1532,6 +1543,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData tasks_sharing_output_data = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputDataOrBuilder> 
       getTasksSharingOutputDataOrBuilderList() {
     return tasksSharingOutputData_;
@@ -1543,6 +1555,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData tasks_sharing_output_data = 1;</code>
    */
+  @java.lang.Override
   public int getTasksSharingOutputDataCount() {
     return tasksSharingOutputData_.size();
   }
@@ -1553,6 +1566,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData tasks_sharing_output_data = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData getTasksSharingOutputData(int index) {
     return tasksSharingOutputData_.get(index);
   }
@@ -1563,6 +1577,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputData tasks_sharing_output_data = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.TasksSharingOutputDataOrBuilder getTasksSharingOutputDataOrBuilder(
       int index) {
     return tasksSharingOutputData_.get(index);

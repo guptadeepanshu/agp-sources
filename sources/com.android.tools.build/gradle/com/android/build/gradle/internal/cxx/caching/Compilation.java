@@ -14,7 +14,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code Compilation}
  */
-public  final class Compilation extends
+public final class Compilation extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:Compilation)
     CompilationOrBuilder {
@@ -125,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>string working_directory = 1;</code>
    * @return The workingDirectory.
    */
+  @java.lang.Override
   public java.lang.String getWorkingDirectory() {
     java.lang.Object ref = workingDirectory_;
     if (ref instanceof java.lang.String) {
@@ -145,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>string working_directory = 1;</code>
    * @return The bytes for workingDirectory.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getWorkingDirectoryBytes() {
     java.lang.Object ref = workingDirectory_;
@@ -169,6 +171,7 @@ private static final long serialVersionUID = 0L;
    * <code>.ObjectFileKey object_file_key = 2;</code>
    * @return Whether the objectFileKey field is set.
    */
+  @java.lang.Override
   public boolean hasObjectFileKey() {
     return objectFileKey_ != null;
   }
@@ -180,6 +183,7 @@ private static final long serialVersionUID = 0L;
    * <code>.ObjectFileKey object_file_key = 2;</code>
    * @return The objectFileKey.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.ObjectFileKey getObjectFileKey() {
     return objectFileKey_ == null ? com.android.build.gradle.internal.cxx.caching.ObjectFileKey.getDefaultInstance() : objectFileKey_;
   }
@@ -190,6 +194,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.ObjectFileKey object_file_key = 2;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.ObjectFileKeyOrBuilder getObjectFileKeyOrBuilder() {
     return getObjectFileKey();
   }
@@ -204,6 +209,7 @@ private static final long serialVersionUID = 0L;
    * <code>string object_file = 3;</code>
    * @return The objectFile.
    */
+  @java.lang.Override
   public java.lang.String getObjectFile() {
     java.lang.Object ref = objectFile_;
     if (ref instanceof java.lang.String) {
@@ -224,6 +230,7 @@ private static final long serialVersionUID = 0L;
    * <code>string object_file = 3;</code>
    * @return The bytes for objectFile.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getObjectFileBytes() {
     java.lang.Object ref = objectFile_;

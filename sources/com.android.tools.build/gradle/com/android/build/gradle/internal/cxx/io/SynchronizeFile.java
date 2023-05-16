@@ -6,7 +6,7 @@ package com.android.build.gradle.internal.cxx.io;
 /**
  * Protobuf type {@code SynchronizeFile}
  */
-public  final class SynchronizeFile extends
+public final class SynchronizeFile extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:SynchronizeFile)
     SynchronizeFileOrBuilder {
@@ -212,6 +212,10 @@ private static final long serialVersionUID = 0L;
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -413,6 +417,10 @@ private static final long serialVersionUID = 0L;
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -457,6 +465,7 @@ private static final long serialVersionUID = 0L;
    * <code>string working_directory = 1;</code>
    * @return The workingDirectory.
    */
+  @java.lang.Override
   public java.lang.String getWorkingDirectory() {
     java.lang.Object ref = workingDirectory_;
     if (ref instanceof java.lang.String) {
@@ -477,6 +486,7 @@ private static final long serialVersionUID = 0L;
    * <code>string working_directory = 1;</code>
    * @return The bytes for workingDirectory.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getWorkingDirectoryBytes() {
     java.lang.Object ref = workingDirectory_;
@@ -501,6 +511,7 @@ private static final long serialVersionUID = 0L;
    * <code>string source_file = 2;</code>
    * @return The sourceFile.
    */
+  @java.lang.Override
   public java.lang.String getSourceFile() {
     java.lang.Object ref = sourceFile_;
     if (ref instanceof java.lang.String) {
@@ -521,6 +532,7 @@ private static final long serialVersionUID = 0L;
    * <code>string source_file = 2;</code>
    * @return The bytes for sourceFile.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSourceFileBytes() {
     java.lang.Object ref = sourceFile_;
@@ -545,6 +557,7 @@ private static final long serialVersionUID = 0L;
    * <code>string destination_file = 3;</code>
    * @return The destinationFile.
    */
+  @java.lang.Override
   public java.lang.String getDestinationFile() {
     java.lang.Object ref = destinationFile_;
     if (ref instanceof java.lang.String) {
@@ -565,6 +578,7 @@ private static final long serialVersionUID = 0L;
    * <code>string destination_file = 3;</code>
    * @return The bytes for destinationFile.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDestinationFileBytes() {
     java.lang.Object ref = destinationFile_;
@@ -589,7 +603,7 @@ private static final long serialVersionUID = 0L;
    * <code>.SynchronizeFile.Comparison initial_file_comparison = 4;</code>
    * @return The enum numeric value on the wire for initialFileComparison.
    */
-  public int getInitialFileComparisonValue() {
+  @java.lang.Override public int getInitialFileComparisonValue() {
     return initialFileComparison_;
   }
   /**
@@ -600,7 +614,7 @@ private static final long serialVersionUID = 0L;
    * <code>.SynchronizeFile.Comparison initial_file_comparison = 4;</code>
    * @return The initialFileComparison.
    */
-  public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison getInitialFileComparison() {
+  @java.lang.Override public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison getInitialFileComparison() {
     @SuppressWarnings("deprecation")
     com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.valueOf(initialFileComparison_);
     return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.UNRECOGNIZED : result;
@@ -616,7 +630,7 @@ private static final long serialVersionUID = 0L;
    * <code>.SynchronizeFile.Outcome outcome = 5;</code>
    * @return The enum numeric value on the wire for outcome.
    */
-  public int getOutcomeValue() {
+  @java.lang.Override public int getOutcomeValue() {
     return outcome_;
   }
   /**
@@ -627,7 +641,7 @@ private static final long serialVersionUID = 0L;
    * <code>.SynchronizeFile.Outcome outcome = 5;</code>
    * @return The outcome.
    */
-  public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome getOutcome() {
+  @java.lang.Override public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome getOutcome() {
     @SuppressWarnings("deprecation")
     com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.valueOf(outcome_);
     return result == null ? com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.UNRECOGNIZED : result;
@@ -1298,7 +1312,7 @@ private static final long serialVersionUID = 0L;
      * <code>.SynchronizeFile.Comparison initial_file_comparison = 4;</code>
      * @return The enum numeric value on the wire for initialFileComparison.
      */
-    public int getInitialFileComparisonValue() {
+    @java.lang.Override public int getInitialFileComparisonValue() {
       return initialFileComparison_;
     }
     /**
@@ -1311,6 +1325,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setInitialFileComparisonValue(int value) {
+      
       initialFileComparison_ = value;
       onChanged();
       return this;
@@ -1323,6 +1338,7 @@ private static final long serialVersionUID = 0L;
      * <code>.SynchronizeFile.Comparison initial_file_comparison = 4;</code>
      * @return The initialFileComparison.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison getInitialFileComparison() {
       @SuppressWarnings("deprecation")
       com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Comparison.valueOf(initialFileComparison_);
@@ -1370,7 +1386,7 @@ private static final long serialVersionUID = 0L;
      * <code>.SynchronizeFile.Outcome outcome = 5;</code>
      * @return The enum numeric value on the wire for outcome.
      */
-    public int getOutcomeValue() {
+    @java.lang.Override public int getOutcomeValue() {
       return outcome_;
     }
     /**
@@ -1383,6 +1399,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setOutcomeValue(int value) {
+      
       outcome_ = value;
       onChanged();
       return this;
@@ -1395,6 +1412,7 @@ private static final long serialVersionUID = 0L;
      * <code>.SynchronizeFile.Outcome outcome = 5;</code>
      * @return The outcome.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome getOutcome() {
       @SuppressWarnings("deprecation")
       com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome result = com.android.build.gradle.internal.cxx.io.SynchronizeFile.Outcome.valueOf(outcome_);

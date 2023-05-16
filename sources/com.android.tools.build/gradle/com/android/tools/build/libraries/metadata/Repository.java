@@ -10,7 +10,7 @@ package com.android.tools.build.libraries.metadata;
  *
  * Protobuf type {@code Repository}
  */
-public  final class Repository extends
+public final class Repository extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:Repository)
     RepositoryOrBuilder {
@@ -158,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>.MavenRepo maven_repo = 1;</code>
    * @return Whether the mavenRepo field is set.
    */
+  @java.lang.Override
   public boolean hasMavenRepo() {
     return repoOneofCase_ == 1;
   }
@@ -165,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>.MavenRepo maven_repo = 1;</code>
    * @return The mavenRepo.
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.MavenRepo getMavenRepo() {
     if (repoOneofCase_ == 1) {
        return (com.android.tools.build.libraries.metadata.MavenRepo) repoOneof_;
@@ -174,6 +176,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.MavenRepo maven_repo = 1;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.MavenRepoOrBuilder getMavenRepoOrBuilder() {
     if (repoOneofCase_ == 1) {
        return (com.android.tools.build.libraries.metadata.MavenRepo) repoOneof_;
@@ -186,6 +189,7 @@ private static final long serialVersionUID = 0L;
    * <code>.IvyRepo ivy_repo = 2;</code>
    * @return Whether the ivyRepo field is set.
    */
+  @java.lang.Override
   public boolean hasIvyRepo() {
     return repoOneofCase_ == 2;
   }
@@ -193,6 +197,7 @@ private static final long serialVersionUID = 0L;
    * <code>.IvyRepo ivy_repo = 2;</code>
    * @return The ivyRepo.
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.IvyRepo getIvyRepo() {
     if (repoOneofCase_ == 2) {
        return (com.android.tools.build.libraries.metadata.IvyRepo) repoOneof_;
@@ -202,6 +207,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.IvyRepo ivy_repo = 2;</code>
    */
+  @java.lang.Override
   public com.android.tools.build.libraries.metadata.IvyRepoOrBuilder getIvyRepoOrBuilder() {
     if (repoOneofCase_ == 2) {
        return (com.android.tools.build.libraries.metadata.IvyRepo) repoOneof_;
@@ -588,6 +594,7 @@ private static final long serialVersionUID = 0L;
      * <code>.MavenRepo maven_repo = 1;</code>
      * @return Whether the mavenRepo field is set.
      */
+    @java.lang.Override
     public boolean hasMavenRepo() {
       return repoOneofCase_ == 1;
     }
@@ -595,6 +602,7 @@ private static final long serialVersionUID = 0L;
      * <code>.MavenRepo maven_repo = 1;</code>
      * @return The mavenRepo.
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.MavenRepo getMavenRepo() {
       if (mavenRepoBuilder_ == null) {
         if (repoOneofCase_ == 1) {
@@ -688,6 +696,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.MavenRepo maven_repo = 1;</code>
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.MavenRepoOrBuilder getMavenRepoOrBuilder() {
       if ((repoOneofCase_ == 1) && (mavenRepoBuilder_ != null)) {
         return mavenRepoBuilder_.getMessageOrBuilder();
@@ -726,6 +735,7 @@ private static final long serialVersionUID = 0L;
      * <code>.IvyRepo ivy_repo = 2;</code>
      * @return Whether the ivyRepo field is set.
      */
+    @java.lang.Override
     public boolean hasIvyRepo() {
       return repoOneofCase_ == 2;
     }
@@ -733,6 +743,7 @@ private static final long serialVersionUID = 0L;
      * <code>.IvyRepo ivy_repo = 2;</code>
      * @return The ivyRepo.
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.IvyRepo getIvyRepo() {
       if (ivyRepoBuilder_ == null) {
         if (repoOneofCase_ == 2) {
@@ -826,6 +837,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.IvyRepo ivy_repo = 2;</code>
      */
+    @java.lang.Override
     public com.android.tools.build.libraries.metadata.IvyRepoOrBuilder getIvyRepoOrBuilder() {
       if ((repoOneofCase_ == 2) && (ivyRepoBuilder_ != null)) {
         return ivyRepoBuilder_.getMessageOrBuilder();

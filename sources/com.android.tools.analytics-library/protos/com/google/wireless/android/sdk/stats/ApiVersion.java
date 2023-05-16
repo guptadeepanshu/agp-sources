@@ -12,7 +12,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ApiVersion}
  */
-public  final class ApiVersion extends
+public final class ApiVersion extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ApiVersion)
     ApiVersionOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 api_level = 1;</code>
    * @return Whether the apiLevel field is set.
    */
+  @java.lang.Override
   public boolean hasApiLevel() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -113,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 api_level = 1;</code>
    * @return The apiLevel.
    */
+  @java.lang.Override
   public long getApiLevel() {
     return apiLevel_;
   }
@@ -123,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string codename = 2;</code>
    * @return Whether the codename field is set.
    */
+  @java.lang.Override
   public boolean hasCodename() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -130,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string codename = 2;</code>
    * @return The codename.
    */
+  @java.lang.Override
   public java.lang.String getCodename() {
     java.lang.Object ref = codename_;
     if (ref instanceof java.lang.String) {
@@ -148,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string codename = 2;</code>
    * @return The bytes for codename.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCodenameBytes() {
     java.lang.Object ref = codename_;
@@ -514,6 +519,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 api_level = 1;</code>
      * @return Whether the apiLevel field is set.
      */
+    @java.lang.Override
     public boolean hasApiLevel() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -521,6 +527,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 api_level = 1;</code>
      * @return The apiLevel.
      */
+    @java.lang.Override
     public long getApiLevel() {
       return apiLevel_;
     }

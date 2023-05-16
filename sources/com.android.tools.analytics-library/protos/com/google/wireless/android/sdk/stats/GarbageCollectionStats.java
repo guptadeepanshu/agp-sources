@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GarbageCollectionStats}
  */
-public  final class GarbageCollectionStats extends
+public final class GarbageCollectionStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GarbageCollectionStats)
     GarbageCollectionStatsOrBuilder {
@@ -113,6 +113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return Whether the name field is set.
    */
+  @java.lang.Override
   public boolean hasName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -124,6 +125,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The name.
    */
+  @java.lang.Override
   public java.lang.String getName() {
     java.lang.Object ref = name_;
     if (ref instanceof java.lang.String) {
@@ -146,6 +148,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string name = 1;</code>
    * @return The bytes for name.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getNameBytes() {
     java.lang.Object ref = name_;
@@ -170,6 +173,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_collections = 2;</code>
    * @return Whether the gcCollections field is set.
    */
+  @java.lang.Override
   public boolean hasGcCollections() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -181,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_collections = 2;</code>
    * @return The gcCollections.
    */
+  @java.lang.Override
   public long getGcCollections() {
     return gcCollections_;
   }
@@ -195,6 +200,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time = 3;</code>
    * @return Whether the gcTime field is set.
    */
+  @java.lang.Override
   public boolean hasGcTime() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -206,6 +212,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time = 3;</code>
    * @return The gcTime.
    */
+  @java.lang.Override
   public long getGcTime() {
     return gcTime_;
   }
@@ -698,6 +705,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_collections = 2;</code>
      * @return Whether the gcCollections field is set.
      */
+    @java.lang.Override
     public boolean hasGcCollections() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -709,6 +717,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_collections = 2;</code>
      * @return The gcCollections.
      */
+    @java.lang.Override
     public long getGcCollections() {
       return gcCollections_;
     }
@@ -751,6 +760,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time = 3;</code>
      * @return Whether the gcTime field is set.
      */
+    @java.lang.Override
     public boolean hasGcTime() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -762,6 +772,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time = 3;</code>
      * @return The gcTime.
      */
+    @java.lang.Override
     public long getGcTime() {
       return gcTime_;
     }

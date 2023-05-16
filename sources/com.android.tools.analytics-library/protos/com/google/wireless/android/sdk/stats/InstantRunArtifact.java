@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.InstantRunArtifact}
  */
-public  final class InstantRunArtifact extends
+public final class InstantRunArtifact extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.InstantRunArtifact)
     InstantRunArtifactOrBuilder {
@@ -343,14 +343,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunArtifact.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.InstantRunArtifact.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.InstantRunArtifact.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.InstantRunArtifact.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.InstantRunArtifact.Type result = com.google.wireless.android.sdk.stats.InstantRunArtifact.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.InstantRunArtifact.Type.MAIN : result;
@@ -679,13 +679,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.InstantRunArtifact.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.InstantRunArtifact.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.InstantRunArtifact.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.InstantRunArtifact.Type result = com.google.wireless.android.sdk.stats.InstantRunArtifact.Type.valueOf(type_);

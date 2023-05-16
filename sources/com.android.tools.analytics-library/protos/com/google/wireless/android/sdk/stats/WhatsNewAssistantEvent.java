@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.WhatsNewAssistantEvent}
  */
-@java.lang.Deprecated public  final class WhatsNewAssistantEvent extends
+@java.lang.Deprecated public final class WhatsNewAssistantEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.WhatsNewAssistantEvent)
     WhatsNewAssistantEventOrBuilder {
@@ -282,7 +282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantEvent.WhatsNewAssistantEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -293,7 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantEvent.WhatsNewAssistantEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType.UNKNOWN_EVENT_TYPE : result;
@@ -626,7 +626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantEvent.WhatsNewAssistantEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -637,6 +637,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WhatsNewAssistantEvent.WhatsNewAssistantEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType result = com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.WhatsNewAssistantEventType.valueOf(type_);

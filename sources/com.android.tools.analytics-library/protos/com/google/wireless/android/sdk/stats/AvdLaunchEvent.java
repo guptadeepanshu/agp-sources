@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.AvdLaunchEvent}
  */
-public  final class AvdLaunchEvent extends
+public final class AvdLaunchEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AvdLaunchEvent)
     AvdLaunchEventOrBuilder {
@@ -355,7 +355,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent.LaunchType launch_type = 1;</code>
    * @return Whether the launchType field is set.
    */
-  public boolean hasLaunchType() {
+  @java.lang.Override public boolean hasLaunchType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -366,7 +366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent.LaunchType launch_type = 1;</code>
    * @return The launchType.
    */
-  public com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType getLaunchType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType getLaunchType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType result = com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType.valueOf(launchType_);
     return result == null ? com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType.UNKNOWN_LAUNCH_TYPE : result;
@@ -382,7 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent.AvdClass avd_class = 2;</code>
    * @return Whether the avdClass field is set.
    */
-  public boolean hasAvdClass() {
+  @java.lang.Override public boolean hasAvdClass() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -393,7 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent.AvdClass avd_class = 2;</code>
    * @return The avdClass.
    */
-  public com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass getAvdClass() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass getAvdClass() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass result = com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass.valueOf(avdClass_);
     return result == null ? com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass.UNKNOWN_AVD_CLASS : result;
@@ -745,7 +745,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AvdLaunchEvent.LaunchType launch_type = 1;</code>
      * @return Whether the launchType field is set.
      */
-    public boolean hasLaunchType() {
+    @java.lang.Override public boolean hasLaunchType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -756,6 +756,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AvdLaunchEvent.LaunchType launch_type = 1;</code>
      * @return The launchType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType getLaunchType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType result = com.google.wireless.android.sdk.stats.AvdLaunchEvent.LaunchType.valueOf(launchType_);
@@ -803,7 +804,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AvdLaunchEvent.AvdClass avd_class = 2;</code>
      * @return Whether the avdClass field is set.
      */
-    public boolean hasAvdClass() {
+    @java.lang.Override public boolean hasAvdClass() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -814,6 +815,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AvdLaunchEvent.AvdClass avd_class = 2;</code>
      * @return The avdClass.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass getAvdClass() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass result = com.google.wireless.android.sdk.stats.AvdLaunchEvent.AvdClass.valueOf(avdClass_);

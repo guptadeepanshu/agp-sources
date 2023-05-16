@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGLESUsages}
  */
-public  final class EmulatorGLESUsages extends
+public final class EmulatorGLESUsages extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGLESUsages)
     EmulatorGLESUsagesOrBuilder {
@@ -122,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
    * @return Whether the gles1Usages field is set.
    */
+  @java.lang.Override
   public boolean hasGles1Usages() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -133,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
    * @return The gles1Usages.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages getGles1Usages() {
     return gles1Usages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.getDefaultInstance() : gles1Usages_;
   }
@@ -143,6 +145,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorGLEScmUsages gles_1_usages = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLEScmUsagesOrBuilder getGles1UsagesOrBuilder() {
     return gles1Usages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLEScmUsages.getDefaultInstance() : gles1Usages_;
   }
@@ -157,6 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
    * @return Whether the gles30Usages field is set.
    */
+  @java.lang.Override
   public boolean hasGles30Usages() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -168,6 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
    * @return The gles30Usages.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages getGles30Usages() {
     return gles30Usages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.getDefaultInstance() : gles30Usages_;
   }
@@ -178,6 +183,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorGLESv30Usages gles_3_0_usages = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorGLESv30UsagesOrBuilder getGles30UsagesOrBuilder() {
     return gles30Usages_ == null ? com.google.wireless.android.sdk.stats.EmulatorGLESv30Usages.getDefaultInstance() : gles30Usages_;
   }

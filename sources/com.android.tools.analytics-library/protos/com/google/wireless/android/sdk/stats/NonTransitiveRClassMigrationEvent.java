@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.NonTransitiveRClassMigrationEvent}
  */
-public  final class NonTransitiveRClassMigrationEvent extends
+public final class NonTransitiveRClassMigrationEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NonTransitiveRClassMigrationEvent)
     NonTransitiveRClassMigrationEventOrBuilder {
@@ -262,6 +262,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string migration_uuid = 1;</code>
    * @return Whether the migrationUuid field is set.
    */
+  @java.lang.Override
   public boolean hasMigrationUuid() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -273,6 +274,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string migration_uuid = 1;</code>
    * @return The migrationUuid.
    */
+  @java.lang.Override
   public java.lang.String getMigrationUuid() {
     java.lang.Object ref = migrationUuid_;
     if (ref instanceof java.lang.String) {
@@ -295,6 +297,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string migration_uuid = 1;</code>
    * @return The bytes for migrationUuid.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMigrationUuidBytes() {
     java.lang.Object ref = migrationUuid_;
@@ -319,7 +322,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind kind = 2;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -330,7 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind kind = 2;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.UNKNOWN_MIGRATION_EVENT_KIND : result;
@@ -347,6 +350,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usages = 3;</code>
    * @return Whether the usages field is set.
    */
+  @java.lang.Override
   public boolean hasUsages() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -359,6 +363,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usages = 3;</code>
    * @return The usages.
    */
+  @java.lang.Override
   public int getUsages() {
     return usages_;
   }
@@ -848,7 +853,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind kind = 2;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -859,6 +864,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind kind = 2;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind result = com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.NonTransitiveRClassMigrationEventKind.valueOf(kind_);
@@ -907,6 +913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usages = 3;</code>
      * @return Whether the usages field is set.
      */
+    @java.lang.Override
     public boolean hasUsages() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -919,6 +926,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usages = 3;</code>
      * @return The usages.
      */
+    @java.lang.Override
     public int getUsages() {
       return usages_;
     }

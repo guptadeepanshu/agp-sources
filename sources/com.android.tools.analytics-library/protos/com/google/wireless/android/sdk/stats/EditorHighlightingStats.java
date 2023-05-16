@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EditorHighlightingStats}
  */
-public  final class EditorHighlightingStats extends
+public final class EditorHighlightingStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EditorHighlightingStats)
     EditorHighlightingStatsOrBuilder {
@@ -139,7 +139,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.EditorHighlightingStats.Stats}
    */
-  public  static final class Stats extends
+  public static final class Stats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.EditorHighlightingStats.Stats)
       StatsOrBuilder {
@@ -247,14 +247,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return Whether the fileType field is set.
      */
-    public boolean hasFileType() {
+    @java.lang.Override public boolean hasFileType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return The fileType.
      */
-    public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
@@ -270,6 +270,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram histogram = 2;</code>
      * @return Whether the histogram field is set.
      */
+    @java.lang.Override
     public boolean hasHistogram() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -281,6 +282,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram histogram = 2;</code>
      * @return The histogram.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Histogram getHistogram() {
       return histogram_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : histogram_;
     }
@@ -291,6 +293,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.Histogram histogram = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getHistogramOrBuilder() {
       return histogram_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : histogram_;
     }
@@ -647,13 +650,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return Whether the fileType field is set.
        */
-      public boolean hasFileType() {
+      @java.lang.Override public boolean hasFileType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return The fileType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
@@ -897,12 +901,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EditorHighlightingStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EditorHighlightingStats.Stats> getByFileTypeList() {
     return byFileType_;
   }
   /**
    * <code>repeated .android_studio.EditorHighlightingStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EditorHighlightingStats.StatsOrBuilder> 
       getByFileTypeOrBuilderList() {
     return byFileType_;
@@ -910,18 +916,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.EditorHighlightingStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public int getByFileTypeCount() {
     return byFileType_.size();
   }
   /**
    * <code>repeated .android_studio.EditorHighlightingStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorHighlightingStats.Stats getByFileType(int index) {
     return byFileType_.get(index);
   }
   /**
    * <code>repeated .android_studio.EditorHighlightingStats.Stats by_file_type = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorHighlightingStats.StatsOrBuilder getByFileTypeOrBuilder(
       int index) {
     return byFileType_.get(index);

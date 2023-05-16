@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.AppInspectionEvent}
  */
-public  final class AppInspectionEvent extends
+public final class AppInspectionEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent)
     AppInspectionEventOrBuilder {
@@ -488,7 +488,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AppInspectionEvent.EnvironmentMetadata}
    */
-  public  static final class EnvironmentMetadata extends
+  public static final class EnvironmentMetadata extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.EnvironmentMetadata)
       EnvironmentMetadataOrBuilder {
@@ -580,6 +580,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 num_processes = 1;</code>
      * @return Whether the numProcesses field is set.
      */
+    @java.lang.Override
     public boolean hasNumProcesses() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -587,6 +588,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 num_processes = 1;</code>
      * @return The numProcesses.
      */
+    @java.lang.Override
     public int getNumProcesses() {
       return numProcesses_;
     }
@@ -597,6 +599,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 num_devices = 2;</code>
      * @return Whether the numDevices field is set.
      */
+    @java.lang.Override
     public boolean hasNumDevices() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -604,6 +607,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 num_devices = 2;</code>
      * @return The numDevices.
      */
+    @java.lang.Override
     public int getNumDevices() {
       return numDevices_;
     }
@@ -952,6 +956,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 num_processes = 1;</code>
        * @return Whether the numProcesses field is set.
        */
+      @java.lang.Override
       public boolean hasNumProcesses() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -959,6 +964,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 num_processes = 1;</code>
        * @return The numProcesses.
        */
+      @java.lang.Override
       public int getNumProcesses() {
         return numProcesses_;
       }
@@ -989,6 +995,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 num_devices = 2;</code>
        * @return Whether the numDevices field is set.
        */
+      @java.lang.Override
       public boolean hasNumDevices() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -996,6 +1003,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 num_devices = 2;</code>
        * @return The numDevices.
        */
+      @java.lang.Override
       public int getNumDevices() {
         return numDevices_;
       }
@@ -1277,7 +1285,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AppInspectionEvent.DatabaseInspectorEvent}
    */
-  public  static final class DatabaseInspectorEvent extends
+  public static final class DatabaseInspectorEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.DatabaseInspectorEvent)
       DatabaseInspectorEventOrBuilder {
@@ -2150,7 +2158,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata}
      */
-    public  static final class OfflineModeMetadata extends
+    public static final class OfflineModeMetadata extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata)
         OfflineModeMetadataOrBuilder {
@@ -2246,6 +2254,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 total_download_time_ms = 1;</code>
        * @return Whether the totalDownloadTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasTotalDownloadTimeMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -2257,6 +2266,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 total_download_time_ms = 1;</code>
        * @return The totalDownloadTimeMs.
        */
+      @java.lang.Override
       public int getTotalDownloadTimeMs() {
         return totalDownloadTimeMs_;
       }
@@ -2271,6 +2281,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_download_size_bytes = 2;</code>
        * @return Whether the totalDownloadSizeBytes field is set.
        */
+      @java.lang.Override
       public boolean hasTotalDownloadSizeBytes() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -2282,6 +2293,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_download_size_bytes = 2;</code>
        * @return The totalDownloadSizeBytes.
        */
+      @java.lang.Override
       public long getTotalDownloadSizeBytes() {
         return totalDownloadSizeBytes_;
       }
@@ -2639,6 +2651,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 total_download_time_ms = 1;</code>
          * @return Whether the totalDownloadTimeMs field is set.
          */
+        @java.lang.Override
         public boolean hasTotalDownloadTimeMs() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -2650,6 +2663,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 total_download_time_ms = 1;</code>
          * @return The totalDownloadTimeMs.
          */
+        @java.lang.Override
         public int getTotalDownloadTimeMs() {
           return totalDownloadTimeMs_;
         }
@@ -2692,6 +2706,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int64 total_download_size_bytes = 2;</code>
          * @return Whether the totalDownloadSizeBytes field is set.
          */
+        @java.lang.Override
         public boolean hasTotalDownloadSizeBytes() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -2703,6 +2718,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int64 total_download_size_bytes = 2;</code>
          * @return The totalDownloadSizeBytes.
          */
+        @java.lang.Override
         public long getTotalDownloadSizeBytes() {
           return totalDownloadSizeBytes_;
         }
@@ -2818,7 +2834,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent}
      */
-    public  static final class ExportDialogOpenedEvent extends
+    public static final class ExportDialogOpenedEvent extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent)
         ExportDialogOpenedEventOrBuilder {
@@ -3040,7 +3056,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin origin = 1;</code>
        * @return Whether the origin field is set.
        */
-      public boolean hasOrigin() {
+      @java.lang.Override public boolean hasOrigin() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -3051,7 +3067,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin origin = 1;</code>
        * @return The origin.
        */
-      public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin getOrigin() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin getOrigin() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin.valueOf(origin_);
         return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin.UNKNOWN_ORIGIN : result;
@@ -3383,7 +3399,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin origin = 1;</code>
          * @return Whether the origin field is set.
          */
-        public boolean hasOrigin() {
+        @java.lang.Override public boolean hasOrigin() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -3394,6 +3410,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin origin = 1;</code>
          * @return The origin.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin getOrigin() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.Origin.valueOf(origin_);
@@ -3590,7 +3607,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent}
      */
-    public  static final class ExportOperationCompletedEvent extends
+    public static final class ExportOperationCompletedEvent extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent)
         ExportOperationCompletedEventOrBuilder {
@@ -4222,7 +4239,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source source = 1;</code>
        * @return Whether the source field is set.
        */
-      public boolean hasSource() {
+      @java.lang.Override public boolean hasSource() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -4233,7 +4250,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source source = 1;</code>
        * @return The source.
        */
-      public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source getSource() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source getSource() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source.valueOf(source_);
         return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source.UNKNOWN_SOURCE : result;
@@ -4249,7 +4266,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat source_format = 2;</code>
        * @return Whether the sourceFormat field is set.
        */
-      public boolean hasSourceFormat() {
+      @java.lang.Override public boolean hasSourceFormat() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -4260,7 +4277,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat source_format = 2;</code>
        * @return The sourceFormat.
        */
-      public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat getSourceFormat() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat getSourceFormat() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat.valueOf(sourceFormat_);
         return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat.UNKNOWN_SOURCE_FORMAT : result;
@@ -4276,7 +4293,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination destination = 3;</code>
        * @return Whether the destination field is set.
        */
-      public boolean hasDestination() {
+      @java.lang.Override public boolean hasDestination() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -4287,7 +4304,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination destination = 3;</code>
        * @return The destination.
        */
-      public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination getDestination() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination getDestination() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination.valueOf(destination_);
         return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination.UNKNOWN_DESTINATION : result;
@@ -4303,6 +4320,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 export_duration_ms = 4;</code>
        * @return Whether the exportDurationMs field is set.
        */
+      @java.lang.Override
       public boolean hasExportDurationMs() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -4314,6 +4332,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 export_duration_ms = 4;</code>
        * @return The exportDurationMs.
        */
+      @java.lang.Override
       public int getExportDurationMs() {
         return exportDurationMs_;
       }
@@ -4328,7 +4347,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome outcome = 5;</code>
        * @return Whether the outcome field is set.
        */
-      public boolean hasOutcome() {
+      @java.lang.Override public boolean hasOutcome() {
         return ((bitField0_ & 0x00000010) != 0);
       }
       /**
@@ -4339,7 +4358,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome outcome = 5;</code>
        * @return The outcome.
        */
-      public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome getOutcome() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome getOutcome() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome.valueOf(outcome_);
         return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome.UNKNOWN_OUTCOME : result;
@@ -4768,7 +4787,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source source = 1;</code>
          * @return Whether the source field is set.
          */
-        public boolean hasSource() {
+        @java.lang.Override public boolean hasSource() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -4779,6 +4798,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source source = 1;</code>
          * @return The source.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source getSource() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Source.valueOf(source_);
@@ -4826,7 +4846,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat source_format = 2;</code>
          * @return Whether the sourceFormat field is set.
          */
-        public boolean hasSourceFormat() {
+        @java.lang.Override public boolean hasSourceFormat() {
           return ((bitField0_ & 0x00000002) != 0);
         }
         /**
@@ -4837,6 +4857,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat source_format = 2;</code>
          * @return The sourceFormat.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat getSourceFormat() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.SourceFormat.valueOf(sourceFormat_);
@@ -4884,7 +4905,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination destination = 3;</code>
          * @return Whether the destination field is set.
          */
-        public boolean hasDestination() {
+        @java.lang.Override public boolean hasDestination() {
           return ((bitField0_ & 0x00000004) != 0);
         }
         /**
@@ -4895,6 +4916,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination destination = 3;</code>
          * @return The destination.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination getDestination() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Destination.valueOf(destination_);
@@ -4942,6 +4964,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 export_duration_ms = 4;</code>
          * @return Whether the exportDurationMs field is set.
          */
+        @java.lang.Override
         public boolean hasExportDurationMs() {
           return ((bitField0_ & 0x00000008) != 0);
         }
@@ -4953,6 +4976,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 export_duration_ms = 4;</code>
          * @return The exportDurationMs.
          */
+        @java.lang.Override
         public int getExportDurationMs() {
           return exportDurationMs_;
         }
@@ -4995,7 +5019,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome outcome = 5;</code>
          * @return Whether the outcome field is set.
          */
-        public boolean hasOutcome() {
+        @java.lang.Override public boolean hasOutcome() {
           return ((bitField0_ & 0x00000010) != 0);
         }
         /**
@@ -5006,6 +5030,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome outcome = 5;</code>
          * @return The outcome.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome getOutcome() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.Outcome.valueOf(outcome_);
@@ -5107,7 +5132,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -5118,7 +5143,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.Type type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -5134,7 +5159,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind error_kind = 2;</code>
      * @return Whether the errorKind field is set.
      */
-    public boolean hasErrorKind() {
+    @java.lang.Override public boolean hasErrorKind() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -5145,7 +5170,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind error_kind = 2;</code>
      * @return The errorKind.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind getErrorKind() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind getErrorKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind.valueOf(errorKind_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind.UNKNOWN_ERROR_KIND : result;
@@ -5161,7 +5186,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.TargetType target_type = 3;</code>
      * @return Whether the targetType field is set.
      */
-    public boolean hasTargetType() {
+    @java.lang.Override public boolean hasTargetType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -5172,7 +5197,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.TargetType target_type = 3;</code>
      * @return The targetType.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType getTargetType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType getTargetType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType.valueOf(targetType_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType.UNKNOWN_TARGET_TYPE : result;
@@ -5188,7 +5213,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.StatementContext statement_context = 4;</code>
      * @return Whether the statementContext field is set.
      */
-    public boolean hasStatementContext() {
+    @java.lang.Override public boolean hasStatementContext() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -5199,7 +5224,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.StatementContext statement_context = 4;</code>
      * @return The statementContext.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext getStatementContext() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext getStatementContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext.valueOf(statementContext_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext.UNKNOWN_STATEMENT_CONTEXT : result;
@@ -5215,6 +5240,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool live_updating_enabled = 5;</code>
      * @return Whether the liveUpdatingEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasLiveUpdatingEnabled() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -5226,6 +5252,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool live_updating_enabled = 5;</code>
      * @return The liveUpdatingEnabled.
      */
+    @java.lang.Override
     public boolean getLiveUpdatingEnabled() {
       return liveUpdatingEnabled_;
     }
@@ -5241,7 +5268,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState connectivity_state = 6;</code>
      * @return Whether the connectivityState field is set.
      */
-    public boolean hasConnectivityState() {
+    @java.lang.Override public boolean hasConnectivityState() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -5253,7 +5280,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState connectivity_state = 6;</code>
      * @return The connectivityState.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState getConnectivityState() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState getConnectivityState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState.valueOf(connectivityState_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState.UNKNOWN_CONNECTIVITY_STATE : result;
@@ -5269,6 +5296,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
      * @return Whether the offlineModeMetadata field is set.
      */
+    @java.lang.Override
     public boolean hasOfflineModeMetadata() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -5280,6 +5308,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
      * @return The offlineModeMetadata.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata getOfflineModeMetadata() {
       return offlineModeMetadata_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata.getDefaultInstance() : offlineModeMetadata_;
     }
@@ -5290,6 +5319,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata offline_mode_metadata = 7;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadataOrBuilder getOfflineModeMetadataOrBuilder() {
       return offlineModeMetadata_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.OfflineModeMetadata.getDefaultInstance() : offlineModeMetadata_;
     }
@@ -5304,6 +5334,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
      * @return Whether the exportDialogOpenedEvent field is set.
      */
+    @java.lang.Override
     public boolean hasExportDialogOpenedEvent() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -5315,6 +5346,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
      * @return The exportDialogOpenedEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent getExportDialogOpenedEvent() {
       return exportDialogOpenedEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.getDefaultInstance() : exportDialogOpenedEvent_;
     }
@@ -5325,6 +5357,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent export_dialog_opened_event = 8;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEventOrBuilder getExportDialogOpenedEventOrBuilder() {
       return exportDialogOpenedEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportDialogOpenedEvent.getDefaultInstance() : exportDialogOpenedEvent_;
     }
@@ -5339,6 +5372,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
      * @return Whether the exportCompletedEvent field is set.
      */
+    @java.lang.Override
     public boolean hasExportCompletedEvent() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -5350,6 +5384,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
      * @return The exportCompletedEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent getExportCompletedEvent() {
       return exportCompletedEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.getDefaultInstance() : exportCompletedEvent_;
     }
@@ -5360,6 +5395,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent export_completed_event = 9;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEventOrBuilder getExportCompletedEventOrBuilder() {
       return exportCompletedEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ExportOperationCompletedEvent.getDefaultInstance() : exportCompletedEvent_;
     }
@@ -5910,7 +5946,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.Type type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -5921,6 +5957,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.Type type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Type.valueOf(type_);
@@ -5968,7 +6005,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind error_kind = 2;</code>
        * @return Whether the errorKind field is set.
        */
-      public boolean hasErrorKind() {
+      @java.lang.Override public boolean hasErrorKind() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -5979,6 +6016,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind error_kind = 2;</code>
        * @return The errorKind.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind getErrorKind() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ErrorKind.valueOf(errorKind_);
@@ -6026,7 +6064,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.TargetType target_type = 3;</code>
        * @return Whether the targetType field is set.
        */
-      public boolean hasTargetType() {
+      @java.lang.Override public boolean hasTargetType() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -6037,6 +6075,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.TargetType target_type = 3;</code>
        * @return The targetType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType getTargetType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.TargetType.valueOf(targetType_);
@@ -6084,7 +6123,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.StatementContext statement_context = 4;</code>
        * @return Whether the statementContext field is set.
        */
-      public boolean hasStatementContext() {
+      @java.lang.Override public boolean hasStatementContext() {
         return ((bitField0_ & 0x00000008) != 0);
       }
       /**
@@ -6095,6 +6134,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.StatementContext statement_context = 4;</code>
        * @return The statementContext.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext getStatementContext() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.StatementContext.valueOf(statementContext_);
@@ -6142,6 +6182,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool live_updating_enabled = 5;</code>
        * @return Whether the liveUpdatingEnabled field is set.
        */
+      @java.lang.Override
       public boolean hasLiveUpdatingEnabled() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -6153,6 +6194,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool live_updating_enabled = 5;</code>
        * @return The liveUpdatingEnabled.
        */
+      @java.lang.Override
       public boolean getLiveUpdatingEnabled() {
         return liveUpdatingEnabled_;
       }
@@ -6196,7 +6238,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState connectivity_state = 6;</code>
        * @return Whether the connectivityState field is set.
        */
-      public boolean hasConnectivityState() {
+      @java.lang.Override public boolean hasConnectivityState() {
         return ((bitField0_ & 0x00000020) != 0);
       }
       /**
@@ -6208,6 +6250,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState connectivity_state = 6;</code>
        * @return The connectivityState.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState getConnectivityState() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState result = com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.ConnectivityState.valueOf(connectivityState_);
@@ -6870,7 +6913,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AppInspectionEvent.WorkManagerInspectorEvent}
    */
-  public  static final class WorkManagerInspectorEvent extends
+  public static final class WorkManagerInspectorEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.WorkManagerInspectorEvent)
       WorkManagerInspectorEventOrBuilder {
@@ -7544,7 +7587,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo}
      */
-    public  static final class ChainInfo extends
+    public static final class ChainInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo)
         ChainInfoOrBuilder {
@@ -7650,6 +7693,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 worker_count = 1;</code>
        * @return Whether the workerCount field is set.
        */
+      @java.lang.Override
       public boolean hasWorkerCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -7661,6 +7705,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 worker_count = 1;</code>
        * @return The workerCount.
        */
+      @java.lang.Override
       public int getWorkerCount() {
         return workerCount_;
       }
@@ -7675,6 +7720,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 dependency_count = 2;</code>
        * @return Whether the dependencyCount field is set.
        */
+      @java.lang.Override
       public boolean hasDependencyCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -7686,6 +7732,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 dependency_count = 2;</code>
        * @return The dependencyCount.
        */
+      @java.lang.Override
       public int getDependencyCount() {
         return dependencyCount_;
       }
@@ -7700,6 +7747,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_depth = 3;</code>
        * @return Whether the maxDepth field is set.
        */
+      @java.lang.Override
       public boolean hasMaxDepth() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -7711,6 +7759,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_depth = 3;</code>
        * @return The maxDepth.
        */
+      @java.lang.Override
       public int getMaxDepth() {
         return maxDepth_;
       }
@@ -7725,6 +7774,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_width = 4;</code>
        * @return Whether the maxWidth field is set.
        */
+      @java.lang.Override
       public boolean hasMaxWidth() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -7736,6 +7786,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_width = 4;</code>
        * @return The maxWidth.
        */
+      @java.lang.Override
       public int getMaxWidth() {
         return maxWidth_;
       }
@@ -8142,6 +8193,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 worker_count = 1;</code>
          * @return Whether the workerCount field is set.
          */
+        @java.lang.Override
         public boolean hasWorkerCount() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -8153,6 +8205,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 worker_count = 1;</code>
          * @return The workerCount.
          */
+        @java.lang.Override
         public int getWorkerCount() {
           return workerCount_;
         }
@@ -8195,6 +8248,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 dependency_count = 2;</code>
          * @return Whether the dependencyCount field is set.
          */
+        @java.lang.Override
         public boolean hasDependencyCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -8206,6 +8260,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 dependency_count = 2;</code>
          * @return The dependencyCount.
          */
+        @java.lang.Override
         public int getDependencyCount() {
           return dependencyCount_;
         }
@@ -8248,6 +8303,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_depth = 3;</code>
          * @return Whether the maxDepth field is set.
          */
+        @java.lang.Override
         public boolean hasMaxDepth() {
           return ((bitField0_ & 0x00000004) != 0);
         }
@@ -8259,6 +8315,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_depth = 3;</code>
          * @return The maxDepth.
          */
+        @java.lang.Override
         public int getMaxDepth() {
           return maxDepth_;
         }
@@ -8301,6 +8358,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_width = 4;</code>
          * @return Whether the maxWidth field is set.
          */
+        @java.lang.Override
         public boolean hasMaxWidth() {
           return ((bitField0_ & 0x00000008) != 0);
         }
@@ -8312,6 +8370,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_width = 4;</code>
          * @return The maxWidth.
          */
+        @java.lang.Override
         public int getMaxWidth() {
           return maxWidth_;
         }
@@ -8408,7 +8467,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -8419,7 +8478,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Type type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -8435,7 +8494,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Context context = 2;</code>
      * @return Whether the context field is set.
      */
-    public boolean hasContext() {
+    @java.lang.Override public boolean hasContext() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -8446,7 +8505,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Context context = 2;</code>
      * @return The context.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context getContext() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context getContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context.valueOf(context_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context.UNKNOWN_CONTEXT : result;
@@ -8462,7 +8521,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Mode mode = 3;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -8473,7 +8532,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Mode mode = 3;</code>
      * @return The mode.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode getMode() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode.valueOf(mode_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode.UNKNOWN_MODE : result;
@@ -8491,6 +8550,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
      * @return Whether the chainInfo field is set.
      */
+    @java.lang.Override
     public boolean hasChainInfo() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -8504,6 +8564,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
      * @return The chainInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo getChainInfo() {
       return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
     }
@@ -8516,6 +8577,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo chain_info = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
       return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
     }
@@ -8929,7 +8991,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Type type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -8940,6 +9002,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Type type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Type.valueOf(type_);
@@ -8987,7 +9050,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Context context = 2;</code>
        * @return Whether the context field is set.
        */
-      public boolean hasContext() {
+      @java.lang.Override public boolean hasContext() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -8998,6 +9061,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Context context = 2;</code>
        * @return The context.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context getContext() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Context.valueOf(context_);
@@ -9045,7 +9109,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Mode mode = 3;</code>
        * @return Whether the mode field is set.
        */
-      public boolean hasMode() {
+      @java.lang.Override public boolean hasMode() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -9056,6 +9120,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent.Mode mode = 3;</code>
        * @return The mode.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode getMode() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Mode.valueOf(mode_);
@@ -9342,7 +9407,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AppInspectionEvent.NetworkInspectorEvent}
    */
-  public  static final class NetworkInspectorEvent extends
+  public static final class NetworkInspectorEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.NetworkInspectorEvent)
       NetworkInspectorEventOrBuilder {
@@ -9611,14 +9676,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -9946,13 +10011,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent.Type type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Type.valueOf(type_);
@@ -10136,7 +10202,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent}
    */
-  public  static final class BackgroundTaskInspectorEvent extends
+  public static final class BackgroundTaskInspectorEvent extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent)
       BackgroundTaskInspectorEventOrBuilder {
@@ -10914,7 +10980,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo}
      */
-    public  static final class ChainInfo extends
+    public static final class ChainInfo extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo)
         ChainInfoOrBuilder {
@@ -11020,6 +11086,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 worker_count = 1;</code>
        * @return Whether the workerCount field is set.
        */
+      @java.lang.Override
       public boolean hasWorkerCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -11031,6 +11098,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 worker_count = 1;</code>
        * @return The workerCount.
        */
+      @java.lang.Override
       public int getWorkerCount() {
         return workerCount_;
       }
@@ -11045,6 +11113,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 dependency_count = 2;</code>
        * @return Whether the dependencyCount field is set.
        */
+      @java.lang.Override
       public boolean hasDependencyCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -11056,6 +11125,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 dependency_count = 2;</code>
        * @return The dependencyCount.
        */
+      @java.lang.Override
       public int getDependencyCount() {
         return dependencyCount_;
       }
@@ -11070,6 +11140,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_depth = 3;</code>
        * @return Whether the maxDepth field is set.
        */
+      @java.lang.Override
       public boolean hasMaxDepth() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -11081,6 +11152,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_depth = 3;</code>
        * @return The maxDepth.
        */
+      @java.lang.Override
       public int getMaxDepth() {
         return maxDepth_;
       }
@@ -11095,6 +11167,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_width = 4;</code>
        * @return Whether the maxWidth field is set.
        */
+      @java.lang.Override
       public boolean hasMaxWidth() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -11106,6 +11179,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_width = 4;</code>
        * @return The maxWidth.
        */
+      @java.lang.Override
       public int getMaxWidth() {
         return maxWidth_;
       }
@@ -11512,6 +11586,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 worker_count = 1;</code>
          * @return Whether the workerCount field is set.
          */
+        @java.lang.Override
         public boolean hasWorkerCount() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -11523,6 +11598,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 worker_count = 1;</code>
          * @return The workerCount.
          */
+        @java.lang.Override
         public int getWorkerCount() {
           return workerCount_;
         }
@@ -11565,6 +11641,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 dependency_count = 2;</code>
          * @return Whether the dependencyCount field is set.
          */
+        @java.lang.Override
         public boolean hasDependencyCount() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -11576,6 +11653,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 dependency_count = 2;</code>
          * @return The dependencyCount.
          */
+        @java.lang.Override
         public int getDependencyCount() {
           return dependencyCount_;
         }
@@ -11618,6 +11696,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_depth = 3;</code>
          * @return Whether the maxDepth field is set.
          */
+        @java.lang.Override
         public boolean hasMaxDepth() {
           return ((bitField0_ & 0x00000004) != 0);
         }
@@ -11629,6 +11708,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_depth = 3;</code>
          * @return The maxDepth.
          */
+        @java.lang.Override
         public int getMaxDepth() {
           return maxDepth_;
         }
@@ -11671,6 +11751,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_width = 4;</code>
          * @return Whether the maxWidth field is set.
          */
+        @java.lang.Override
         public boolean hasMaxWidth() {
           return ((bitField0_ & 0x00000008) != 0);
         }
@@ -11682,6 +11763,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional int32 max_width = 4;</code>
          * @return The maxWidth.
          */
+        @java.lang.Override
         public int getMaxWidth() {
           return maxWidth_;
         }
@@ -11778,7 +11860,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -11789,7 +11871,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -11805,7 +11887,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
      * @return Whether the context field is set.
      */
-    public boolean hasContext() {
+    @java.lang.Override public boolean hasContext() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -11816,7 +11898,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
      * @return The context.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.valueOf(context_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.UNKNOWN_CONTEXT : result;
@@ -11832,7 +11914,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
      * @return Whether the mode field is set.
      */
-    public boolean hasMode() {
+    @java.lang.Override public boolean hasMode() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -11843,7 +11925,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
      * @return The mode.
      */
-    public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.valueOf(mode_);
       return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.UNKNOWN_MODE : result;
@@ -11861,6 +11943,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
      * @return Whether the chainInfo field is set.
      */
+    @java.lang.Override
     public boolean hasChainInfo() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -11874,6 +11957,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
      * @return The chainInfo.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo getChainInfo() {
       return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
     }
@@ -11886,6 +11970,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo chain_info = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfoOrBuilder getChainInfoOrBuilder() {
       return chainInfo_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.ChainInfo.getDefaultInstance() : chainInfo_;
     }
@@ -12298,7 +12383,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -12309,6 +12394,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Type type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Type.valueOf(type_);
@@ -12356,7 +12442,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
        * @return Whether the context field is set.
        */
-      public boolean hasContext() {
+      @java.lang.Override public boolean hasContext() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -12367,6 +12453,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Context context = 2;</code>
        * @return The context.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context getContext() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Context.valueOf(context_);
@@ -12414,7 +12501,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
        * @return Whether the mode field is set.
        */
-      public boolean hasMode() {
+      @java.lang.Override public boolean hasMode() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -12425,6 +12512,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode mode = 3;</code>
        * @return The mode.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode getMode() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode result = com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Mode.valueOf(mode_);
@@ -12745,7 +12833,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -12756,7 +12844,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.AppInspectionEvent.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AppInspectionEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -12768,9 +12856,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    * @return Whether the databaseInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDatabaseInspectorEvent() {
     return inspectorEventCase_ == 2;
   }
@@ -12779,9 +12868,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    * @return The databaseInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent getDatabaseInspectorEvent() {
     if (inspectorEventCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent) inspectorEvent_;
@@ -12793,8 +12883,9 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder getDatabaseInspectorEventOrBuilder() {
     if (inspectorEventCase_ == 2) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent) inspectorEvent_;
@@ -12808,9 +12899,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    * @return Whether the workManagerInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasWorkManagerInspectorEvent() {
     return inspectorEventCase_ == 3;
   }
@@ -12819,9 +12911,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    * @return The workManagerInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent getWorkManagerInspectorEvent() {
     if (inspectorEventCase_ == 3) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent) inspectorEvent_;
@@ -12833,8 +12926,9 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder getWorkManagerInspectorEventOrBuilder() {
     if (inspectorEventCase_ == 3) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent) inspectorEvent_;
@@ -12848,9 +12942,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    * @return Whether the networkInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasNetworkInspectorEvent() {
     return inspectorEventCase_ == 4;
   }
@@ -12859,9 +12954,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    * @return The networkInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent() {
     if (inspectorEventCase_ == 4) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
@@ -12873,8 +12969,9 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
     if (inspectorEventCase_ == 4) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent) inspectorEvent_;
@@ -12888,9 +12985,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    * @return Whether the backgroundTaskInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasBackgroundTaskInspectorEvent() {
     return inspectorEventCase_ == 5;
   }
@@ -12899,9 +12997,10 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    * @return The backgroundTaskInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent() {
     if (inspectorEventCase_ == 5) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
@@ -12913,8 +13012,9 @@ private static final long serialVersionUID = 0L;
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
     if (inspectorEventCase_ == 5) {
        return (com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent) inspectorEvent_;
@@ -12932,7 +13032,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.ErrorKind error_kind = 101;</code>
    * @return Whether the errorKind field is set.
    */
-  public boolean hasErrorKind() {
+  @java.lang.Override public boolean hasErrorKind() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -12943,7 +13043,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.ErrorKind error_kind = 101;</code>
    * @return The errorKind.
    */
-  public com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind getErrorKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind getErrorKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind result = com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind.valueOf(errorKind_);
     return result == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind.UNKNOWN_ERROR_KIND : result;
@@ -12959,6 +13059,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
    * @return Whether the environmentMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasEnvironmentMetadata() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -12970,6 +13071,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
    * @return The environmentMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata getEnvironmentMetadata() {
     return environmentMetadata_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.getDefaultInstance() : environmentMetadata_;
   }
@@ -12980,6 +13082,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AppInspectionEvent.EnvironmentMetadata environment_metadata = 102;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadataOrBuilder getEnvironmentMetadataOrBuilder() {
     return environmentMetadata_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.EnvironmentMetadata.getDefaultInstance() : environmentMetadata_;
   }
@@ -13500,7 +13603,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -13511,6 +13614,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.Type result = com.google.wireless.android.sdk.stats.AppInspectionEvent.Type.valueOf(type_);
@@ -13556,9 +13660,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      * @return Whether the databaseInspectorEvent field is set.
      */
+    @java.lang.Override
     public boolean hasDatabaseInspectorEvent() {
       return inspectorEventCase_ == 2;
     }
@@ -13567,9 +13672,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      * @return The databaseInspectorEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent getDatabaseInspectorEvent() {
       if (databaseInspectorEventBuilder_ == null) {
         if (inspectorEventCase_ == 2) {
@@ -13588,7 +13694,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     public Builder setDatabaseInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent value) {
       if (databaseInspectorEventBuilder_ == null) {
@@ -13608,7 +13714,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     public Builder setDatabaseInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder builderForValue) {
@@ -13626,7 +13732,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     public Builder mergeDatabaseInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent value) {
       if (databaseInspectorEventBuilder_ == null) {
@@ -13652,7 +13758,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     public Builder clearDatabaseInspectorEvent() {
       if (databaseInspectorEventBuilder_ == null) {
@@ -13675,7 +13781,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder getDatabaseInspectorEventBuilder() {
       return getDatabaseInspectorEventFieldBuilder().getBuilder();
@@ -13685,8 +13791,9 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder getDatabaseInspectorEventOrBuilder() {
       if ((inspectorEventCase_ == 2) && (databaseInspectorEventBuilder_ != null)) {
         return databaseInspectorEventBuilder_.getMessageOrBuilder();
@@ -13702,7 +13809,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the database inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+     * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder> 
@@ -13730,9 +13837,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      * @return Whether the workManagerInspectorEvent field is set.
      */
+    @java.lang.Override
     public boolean hasWorkManagerInspectorEvent() {
       return inspectorEventCase_ == 3;
     }
@@ -13741,9 +13849,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      * @return The workManagerInspectorEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent getWorkManagerInspectorEvent() {
       if (workManagerInspectorEventBuilder_ == null) {
         if (inspectorEventCase_ == 3) {
@@ -13762,7 +13871,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     public Builder setWorkManagerInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent value) {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -13782,7 +13891,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     public Builder setWorkManagerInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder builderForValue) {
@@ -13800,7 +13909,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     public Builder mergeWorkManagerInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent value) {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -13826,7 +13935,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     public Builder clearWorkManagerInspectorEvent() {
       if (workManagerInspectorEventBuilder_ == null) {
@@ -13849,7 +13958,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder getWorkManagerInspectorEventBuilder() {
       return getWorkManagerInspectorEventFieldBuilder().getBuilder();
@@ -13859,8 +13968,9 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder getWorkManagerInspectorEventOrBuilder() {
       if ((inspectorEventCase_ == 3) && (workManagerInspectorEventBuilder_ != null)) {
         return workManagerInspectorEventBuilder_.getMessageOrBuilder();
@@ -13876,7 +13986,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the WorkManager inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+     * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder> 
@@ -13904,9 +14014,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      * @return Whether the networkInspectorEvent field is set.
      */
+    @java.lang.Override
     public boolean hasNetworkInspectorEvent() {
       return inspectorEventCase_ == 4;
     }
@@ -13915,9 +14026,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      * @return The networkInspectorEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent() {
       if (networkInspectorEventBuilder_ == null) {
         if (inspectorEventCase_ == 4) {
@@ -13936,7 +14048,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     public Builder setNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
       if (networkInspectorEventBuilder_ == null) {
@@ -13956,7 +14068,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     public Builder setNetworkInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder builderForValue) {
@@ -13974,7 +14086,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     public Builder mergeNetworkInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent value) {
       if (networkInspectorEventBuilder_ == null) {
@@ -14000,7 +14112,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     public Builder clearNetworkInspectorEvent() {
       if (networkInspectorEventBuilder_ == null) {
@@ -14023,7 +14135,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder getNetworkInspectorEventBuilder() {
       return getNetworkInspectorEventFieldBuilder().getBuilder();
@@ -14033,8 +14145,9 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder() {
       if ((inspectorEventCase_ == 4) && (networkInspectorEventBuilder_ != null)) {
         return networkInspectorEventBuilder_.getMessageOrBuilder();
@@ -14050,7 +14163,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with the Network inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+     * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder> 
@@ -14078,9 +14191,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      * @return Whether the backgroundTaskInspectorEvent field is set.
      */
+    @java.lang.Override
     public boolean hasBackgroundTaskInspectorEvent() {
       return inspectorEventCase_ == 5;
     }
@@ -14089,9 +14203,10 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      * @return The backgroundTaskInspectorEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent() {
       if (backgroundTaskInspectorEventBuilder_ == null) {
         if (inspectorEventCase_ == 5) {
@@ -14110,7 +14225,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     public Builder setBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -14130,7 +14245,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     public Builder setBackgroundTaskInspectorEvent(
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder builderForValue) {
@@ -14148,7 +14263,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     public Builder mergeBackgroundTaskInspectorEvent(com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent value) {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -14174,7 +14289,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     public Builder clearBackgroundTaskInspectorEvent() {
       if (backgroundTaskInspectorEventBuilder_ == null) {
@@ -14197,7 +14312,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder getBackgroundTaskInspectorEventBuilder() {
       return getBackgroundTaskInspectorEventFieldBuilder().getBuilder();
@@ -14207,8 +14322,9 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder() {
       if ((inspectorEventCase_ == 5) && (backgroundTaskInspectorEventBuilder_ != null)) {
         return backgroundTaskInspectorEventBuilder_.getMessageOrBuilder();
@@ -14224,7 +14340,7 @@ private static final long serialVersionUID = 0L;
      * Event associated with the user interacting with background task inspector
      * </pre>
      *
-     * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+     * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
      */
     private com.google.protobuf.SingleFieldBuilderV3<
         com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent.Builder, com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder> 
@@ -14254,7 +14370,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.ErrorKind error_kind = 101;</code>
      * @return Whether the errorKind field is set.
      */
-    public boolean hasErrorKind() {
+    @java.lang.Override public boolean hasErrorKind() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -14265,6 +14381,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppInspectionEvent.ErrorKind error_kind = 101;</code>
      * @return The errorKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind getErrorKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind result = com.google.wireless.android.sdk.stats.AppInspectionEvent.ErrorKind.valueOf(errorKind_);

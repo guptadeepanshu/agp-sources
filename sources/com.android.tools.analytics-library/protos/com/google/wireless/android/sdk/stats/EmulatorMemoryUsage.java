@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorMemoryUsage}
  */
-public  final class EmulatorMemoryUsage extends
+public final class EmulatorMemoryUsage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorMemoryUsage)
     EmulatorMemoryUsageOrBuilder {
@@ -127,6 +127,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 resident_memory = 1;</code>
    * @return Whether the residentMemory field is set.
    */
+  @java.lang.Override
   public boolean hasResidentMemory() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -134,6 +135,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 resident_memory = 1;</code>
    * @return The residentMemory.
    */
+  @java.lang.Override
   public long getResidentMemory() {
     return residentMemory_;
   }
@@ -144,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 resident_memory_max = 2;</code>
    * @return Whether the residentMemoryMax field is set.
    */
+  @java.lang.Override
   public boolean hasResidentMemoryMax() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -151,6 +154,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 resident_memory_max = 2;</code>
    * @return The residentMemoryMax.
    */
+  @java.lang.Override
   public long getResidentMemoryMax() {
     return residentMemoryMax_;
   }
@@ -161,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 virtual_memory = 3;</code>
    * @return Whether the virtualMemory field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualMemory() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -168,6 +173,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 virtual_memory = 3;</code>
    * @return The virtualMemory.
    */
+  @java.lang.Override
   public long getVirtualMemory() {
     return virtualMemory_;
   }
@@ -178,6 +184,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 virtual_memory_max = 4;</code>
    * @return Whether the virtualMemoryMax field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualMemoryMax() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -185,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 virtual_memory_max = 4;</code>
    * @return The virtualMemoryMax.
    */
+  @java.lang.Override
   public long getVirtualMemoryMax() {
     return virtualMemoryMax_;
   }
@@ -195,6 +203,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_phys_memory = 5;</code>
    * @return Whether the totalPhysMemory field is set.
    */
+  @java.lang.Override
   public boolean hasTotalPhysMemory() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -202,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_phys_memory = 5;</code>
    * @return The totalPhysMemory.
    */
+  @java.lang.Override
   public long getTotalPhysMemory() {
     return totalPhysMemory_;
   }
@@ -212,6 +222,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_page_file = 6;</code>
    * @return Whether the totalPageFile field is set.
    */
+  @java.lang.Override
   public boolean hasTotalPageFile() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -219,6 +230,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_page_file = 6;</code>
    * @return The totalPageFile.
    */
+  @java.lang.Override
   public long getTotalPageFile() {
     return totalPageFile_;
   }
@@ -229,6 +241,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_guest_memory = 7;</code>
    * @return Whether the totalGuestMemory field is set.
    */
+  @java.lang.Override
   public boolean hasTotalGuestMemory() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -236,6 +249,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 total_guest_memory = 7;</code>
    * @return The totalGuestMemory.
    */
+  @java.lang.Override
   public long getTotalGuestMemory() {
     return totalGuestMemory_;
   }
@@ -720,6 +734,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 resident_memory = 1;</code>
      * @return Whether the residentMemory field is set.
      */
+    @java.lang.Override
     public boolean hasResidentMemory() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -727,6 +742,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 resident_memory = 1;</code>
      * @return The residentMemory.
      */
+    @java.lang.Override
     public long getResidentMemory() {
       return residentMemory_;
     }
@@ -757,6 +773,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 resident_memory_max = 2;</code>
      * @return Whether the residentMemoryMax field is set.
      */
+    @java.lang.Override
     public boolean hasResidentMemoryMax() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -764,6 +781,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 resident_memory_max = 2;</code>
      * @return The residentMemoryMax.
      */
+    @java.lang.Override
     public long getResidentMemoryMax() {
       return residentMemoryMax_;
     }
@@ -794,6 +812,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 virtual_memory = 3;</code>
      * @return Whether the virtualMemory field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualMemory() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -801,6 +820,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 virtual_memory = 3;</code>
      * @return The virtualMemory.
      */
+    @java.lang.Override
     public long getVirtualMemory() {
       return virtualMemory_;
     }
@@ -831,6 +851,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 virtual_memory_max = 4;</code>
      * @return Whether the virtualMemoryMax field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualMemoryMax() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -838,6 +859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 virtual_memory_max = 4;</code>
      * @return The virtualMemoryMax.
      */
+    @java.lang.Override
     public long getVirtualMemoryMax() {
       return virtualMemoryMax_;
     }
@@ -868,6 +890,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_phys_memory = 5;</code>
      * @return Whether the totalPhysMemory field is set.
      */
+    @java.lang.Override
     public boolean hasTotalPhysMemory() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -875,6 +898,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_phys_memory = 5;</code>
      * @return The totalPhysMemory.
      */
+    @java.lang.Override
     public long getTotalPhysMemory() {
       return totalPhysMemory_;
     }
@@ -905,6 +929,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_page_file = 6;</code>
      * @return Whether the totalPageFile field is set.
      */
+    @java.lang.Override
     public boolean hasTotalPageFile() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -912,6 +937,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_page_file = 6;</code>
      * @return The totalPageFile.
      */
+    @java.lang.Override
     public long getTotalPageFile() {
       return totalPageFile_;
     }
@@ -942,6 +968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_guest_memory = 7;</code>
      * @return Whether the totalGuestMemory field is set.
      */
+    @java.lang.Override
     public boolean hasTotalGuestMemory() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -949,6 +976,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 total_guest_memory = 7;</code>
      * @return The totalGuestMemory.
      */
+    @java.lang.Override
     public long getTotalGuestMemory() {
       return totalGuestMemory_;
     }

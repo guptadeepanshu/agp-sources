@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.LaunchTaskDetail}
  */
-public  final class LaunchTaskDetail extends
+public final class LaunchTaskDetail extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LaunchTaskDetail)
     LaunchTaskDetailOrBuilder {
@@ -134,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return Whether the id field is set.
    */
+  @java.lang.Override
   public boolean hasId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -145,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public java.lang.String getId() {
     java.lang.Object ref = id_;
     if (ref instanceof java.lang.String) {
@@ -167,6 +169,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string id = 1;</code>
    * @return The bytes for id.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIdBytes() {
     java.lang.Object ref = id_;
@@ -191,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start_timestamp_ms = 2;</code>
    * @return Whether the startTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasStartTimestampMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -202,6 +206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start_timestamp_ms = 2;</code>
    * @return The startTimestampMs.
    */
+  @java.lang.Override
   public long getStartTimestampMs() {
     return startTimestampMs_;
   }
@@ -216,6 +221,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_timestamp_ms = 3;</code>
    * @return Whether the endTimestampMs field is set.
    */
+  @java.lang.Override
   public boolean hasEndTimestampMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -227,6 +233,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 end_timestamp_ms = 3;</code>
    * @return The endTimestampMs.
    */
+  @java.lang.Override
   public long getEndTimestampMs() {
     return endTimestampMs_;
   }
@@ -240,6 +247,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ArtifactDetail> getArtifactList() {
     return artifact_;
   }
@@ -250,6 +258,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.ArtifactDetailOrBuilder> 
       getArtifactOrBuilderList() {
     return artifact_;
@@ -261,6 +270,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact = 4;</code>
    */
+  @java.lang.Override
   public int getArtifactCount() {
     return artifact_.size();
   }
@@ -271,6 +281,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactDetail getArtifact(int index) {
     return artifact_.get(index);
   }
@@ -281,6 +292,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactDetailOrBuilder getArtifactOrBuilder(
       int index) {
     return artifact_.get(index);
@@ -296,6 +308,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 tid = 5;</code>
    * @return Whether the tid field is set.
    */
+  @java.lang.Override
   public boolean hasTid() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -307,6 +320,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 tid = 5;</code>
    * @return The tid.
    */
+  @java.lang.Override
   public int getTid() {
     return tid_;
   }
@@ -325,6 +339,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string status = 6;</code>
    * @return Whether the status field is set.
    */
+  @java.lang.Override
   public boolean hasStatus() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -340,6 +355,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string status = 6;</code>
    * @return The status.
    */
+  @java.lang.Override
   public java.lang.String getStatus() {
     java.lang.Object ref = status_;
     if (ref instanceof java.lang.String) {
@@ -366,6 +382,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string status = 6;</code>
    * @return The bytes for status.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getStatusBytes() {
     java.lang.Object ref = status_;
@@ -970,6 +987,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start_timestamp_ms = 2;</code>
      * @return Whether the startTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasStartTimestampMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -981,6 +999,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start_timestamp_ms = 2;</code>
      * @return The startTimestampMs.
      */
+    @java.lang.Override
     public long getStartTimestampMs() {
       return startTimestampMs_;
     }
@@ -1023,6 +1042,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_timestamp_ms = 3;</code>
      * @return Whether the endTimestampMs field is set.
      */
+    @java.lang.Override
     public boolean hasEndTimestampMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1034,6 +1054,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 end_timestamp_ms = 3;</code>
      * @return The endTimestampMs.
      */
+    @java.lang.Override
     public long getEndTimestampMs() {
       return endTimestampMs_;
     }
@@ -1388,6 +1409,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 tid = 5;</code>
      * @return Whether the tid field is set.
      */
+    @java.lang.Override
     public boolean hasTid() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1399,6 +1421,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 tid = 5;</code>
      * @return The tid.
      */
+    @java.lang.Override
     public int getTid() {
       return tid_;
     }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleBuildProfile}
  */
-public  final class GradleBuildProfile extends
+public final class GradleBuildProfile extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildProfile)
     GradleBuildProfileOrBuilder {
@@ -239,6 +239,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return Whether the gradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasGradleVersion() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -251,6 +252,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return The gradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getGradleVersion() {
     java.lang.Object ref = gradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -274,6 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return The bytes for gradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGradleVersionBytes() {
     java.lang.Object ref = gradleVersion_;
@@ -299,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_name = 6;</code>
    * @return Whether the osName field is set.
    */
+  @java.lang.Override
   public boolean hasOsName() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -311,6 +315,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_name = 6;</code>
    * @return The osName.
    */
+  @java.lang.Override
   public java.lang.String getOsName() {
     java.lang.Object ref = osName_;
     if (ref instanceof java.lang.String) {
@@ -334,6 +339,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_name = 6;</code>
    * @return The bytes for osName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getOsNameBytes() {
     java.lang.Object ref = osName_;
@@ -359,6 +365,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_version = 7;</code>
    * @return Whether the osVersion field is set.
    */
+  @java.lang.Override
   public boolean hasOsVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -371,6 +378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_version = 7;</code>
    * @return The osVersion.
    */
+  @java.lang.Override
   public java.lang.String getOsVersion() {
     java.lang.Object ref = osVersion_;
     if (ref instanceof java.lang.String) {
@@ -394,6 +402,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string os_version = 7;</code>
    * @return The bytes for osVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getOsVersionBytes() {
     java.lang.Object ref = osVersion_;
@@ -419,6 +428,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_version = 8;</code>
    * @return Whether the javaVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJavaVersion() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -431,6 +441,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_version = 8;</code>
    * @return The javaVersion.
    */
+  @java.lang.Override
   public java.lang.String getJavaVersion() {
     java.lang.Object ref = javaVersion_;
     if (ref instanceof java.lang.String) {
@@ -454,6 +465,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_version = 8;</code>
    * @return The bytes for javaVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJavaVersionBytes() {
     java.lang.Object ref = javaVersion_;
@@ -479,6 +491,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_vm_version = 9;</code>
    * @return Whether the javaVmVersion field is set.
    */
+  @java.lang.Override
   public boolean hasJavaVmVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -491,6 +504,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_vm_version = 9;</code>
    * @return The javaVmVersion.
    */
+  @java.lang.Override
   public java.lang.String getJavaVmVersion() {
     java.lang.Object ref = javaVmVersion_;
     if (ref instanceof java.lang.String) {
@@ -514,6 +528,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string java_vm_version = 9;</code>
    * @return The bytes for javaVmVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJavaVmVersionBytes() {
     java.lang.Object ref = javaVmVersion_;
@@ -538,6 +553,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 max_memory = 10;</code>
    * @return Whether the maxMemory field is set.
    */
+  @java.lang.Override
   public boolean hasMaxMemory() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -549,6 +565,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 max_memory = 10;</code>
    * @return The maxMemory.
    */
+  @java.lang.Override
   public long getMaxMemory() {
     return maxMemory_;
   }
@@ -565,6 +582,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_time = 11;</code>
    * @return Whether the buildTime field is set.
    */
+  @java.lang.Override
   public boolean hasBuildTime() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -578,6 +596,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_time = 11;</code>
    * @return The buildTime.
    */
+  @java.lang.Override
   public long getBuildTime() {
     return buildTime_;
   }
@@ -593,6 +612,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
    * @return Whether the gcCount field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasGcCount() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -605,6 +625,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_count = 12 [deprecated = true];</code>
    * @return The gcCount.
    */
+  @java.lang.Override
   @java.lang.Deprecated public long getGcCount() {
     return gcCount_;
   }
@@ -620,6 +641,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
    * @return Whether the gcTime field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasGcTime() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -632,6 +654,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 gc_time = 13 [deprecated = true];</code>
    * @return The gcTime.
    */
+  @java.lang.Override
   @java.lang.Deprecated public long getGcTime() {
     return gcTime_;
   }
@@ -645,6 +668,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProject project = 14;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildProject> getProjectList() {
     return project_;
   }
@@ -655,6 +679,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProject project = 14;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleBuildProjectOrBuilder> 
       getProjectOrBuilderList() {
     return project_;
@@ -666,6 +691,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProject project = 14;</code>
    */
+  @java.lang.Override
   public int getProjectCount() {
     return project_.size();
   }
@@ -676,6 +702,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProject project = 14;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProject getProject(int index) {
     return project_.get(index);
   }
@@ -686,6 +713,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProject project = 14;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProjectOrBuilder getProjectOrBuilder(
       int index) {
     return project_.get(index);
@@ -700,6 +728,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildMemorySample memory_sample = 15;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildMemorySample> getMemorySampleList() {
     return memorySample_;
   }
@@ -710,6 +739,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildMemorySample memory_sample = 15;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleBuildMemorySampleOrBuilder> 
       getMemorySampleOrBuilderList() {
     return memorySample_;
@@ -721,6 +751,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildMemorySample memory_sample = 15;</code>
    */
+  @java.lang.Override
   public int getMemorySampleCount() {
     return memorySample_.size();
   }
@@ -731,6 +762,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildMemorySample memory_sample = 15;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildMemorySample getMemorySample(int index) {
     return memorySample_.get(index);
   }
@@ -741,6 +773,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildMemorySample memory_sample = 15;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildMemorySampleOrBuilder getMemorySampleOrBuilder(
       int index) {
     return memorySample_.get(index);
@@ -755,6 +788,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProfileSpan span = 16;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildProfileSpan> getSpanList() {
     return span_;
   }
@@ -765,6 +799,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProfileSpan span = 16;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleBuildProfileSpanOrBuilder> 
       getSpanOrBuilderList() {
     return span_;
@@ -776,6 +811,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProfileSpan span = 16;</code>
    */
+  @java.lang.Override
   public int getSpanCount() {
     return span_.size();
   }
@@ -786,6 +822,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProfileSpan span = 16;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan getSpan(int index) {
     return span_.get(index);
   }
@@ -796,6 +833,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildProfileSpan span = 16;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProfileSpanOrBuilder getSpanOrBuilder(
       int index) {
     return span_.get(index);
@@ -811,6 +849,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
    * @return Whether the instantRunStatus field is set.
    */
+  @java.lang.Override
   public boolean hasInstantRunStatus() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -822,6 +861,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
    * @return The instantRunStatus.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunStatus getInstantRunStatus() {
     return instantRunStatus_ == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.getDefaultInstance() : instantRunStatus_;
   }
@@ -832,6 +872,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.InstantRunStatus instant_run_status = 17;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunStatusOrBuilder getInstantRunStatusOrBuilder() {
     return instantRunStatus_ == null ? com.google.wireless.android.sdk.stats.InstantRunStatus.getDefaultInstance() : instantRunStatus_;
   }
@@ -851,6 +892,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 18;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -867,6 +909,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 18;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -894,6 +937,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 18;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -989,6 +1033,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool compose_enabled = 20;</code>
    * @return Whether the composeEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasComposeEnabled() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -1000,6 +1045,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool compose_enabled = 20;</code>
    * @return The composeEnabled.
    */
+  @java.lang.Override
   public boolean getComposeEnabled() {
     return composeEnabled_;
   }
@@ -1014,6 +1060,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool configuration_caching_enabled = 21;</code>
    * @return Whether the configurationCachingEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasConfigurationCachingEnabled() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -1025,6 +1072,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool configuration_caching_enabled = 21;</code>
    * @return The configurationCachingEnabled.
    */
+  @java.lang.Override
   public boolean getConfigurationCachingEnabled() {
     return configurationCachingEnabled_;
   }
@@ -1039,6 +1087,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool parallel_task_execution = 22;</code>
    * @return Whether the parallelTaskExecution field is set.
    */
+  @java.lang.Override
   public boolean hasParallelTaskExecution() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -1050,6 +1099,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool parallel_task_execution = 22;</code>
    * @return The parallelTaskExecution.
    */
+  @java.lang.Override
   public boolean getParallelTaskExecution() {
     return parallelTaskExecution_;
   }
@@ -2497,6 +2547,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 max_memory = 10;</code>
      * @return Whether the maxMemory field is set.
      */
+    @java.lang.Override
     public boolean hasMaxMemory() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2508,6 +2559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 max_memory = 10;</code>
      * @return The maxMemory.
      */
+    @java.lang.Override
     public long getMaxMemory() {
       return maxMemory_;
     }
@@ -2552,6 +2604,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_time = 11;</code>
      * @return Whether the buildTime field is set.
      */
+    @java.lang.Override
     public boolean hasBuildTime() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -2565,6 +2618,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_time = 11;</code>
      * @return The buildTime.
      */
+    @java.lang.Override
     public long getBuildTime() {
       return buildTime_;
     }
@@ -2612,6 +2666,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
      * @return Whether the gcCount field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasGcCount() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -2624,6 +2679,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_count = 12 [deprecated = true];</code>
      * @return The gcCount.
      */
+    @java.lang.Override
     @java.lang.Deprecated public long getGcCount() {
       return gcCount_;
     }
@@ -2669,6 +2725,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
      * @return Whether the gcTime field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasGcTime() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2681,6 +2738,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 gc_time = 13 [deprecated = true];</code>
      * @return The gcTime.
      */
+    @java.lang.Override
     @java.lang.Deprecated public long getGcTime() {
       return gcTime_;
     }
@@ -4145,6 +4203,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool compose_enabled = 20;</code>
      * @return Whether the composeEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasComposeEnabled() {
       return ((bitField0_ & 0x00008000) != 0);
     }
@@ -4156,6 +4215,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool compose_enabled = 20;</code>
      * @return The composeEnabled.
      */
+    @java.lang.Override
     public boolean getComposeEnabled() {
       return composeEnabled_;
     }
@@ -4198,6 +4258,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool configuration_caching_enabled = 21;</code>
      * @return Whether the configurationCachingEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasConfigurationCachingEnabled() {
       return ((bitField0_ & 0x00010000) != 0);
     }
@@ -4209,6 +4270,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool configuration_caching_enabled = 21;</code>
      * @return The configurationCachingEnabled.
      */
+    @java.lang.Override
     public boolean getConfigurationCachingEnabled() {
       return configurationCachingEnabled_;
     }
@@ -4251,6 +4313,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool parallel_task_execution = 22;</code>
      * @return Whether the parallelTaskExecution field is set.
      */
+    @java.lang.Override
     public boolean hasParallelTaskExecution() {
       return ((bitField0_ & 0x00020000) != 0);
     }
@@ -4262,6 +4325,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool parallel_task_execution = 22;</code>
      * @return The parallelTaskExecution.
      */
+    @java.lang.Override
     public boolean getParallelTaskExecution() {
       return parallelTaskExecution_;
     }

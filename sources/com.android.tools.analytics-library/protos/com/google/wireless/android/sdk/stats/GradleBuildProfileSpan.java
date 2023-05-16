@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleBuildProfileSpan}
  */
-public  final class GradleBuildProfileSpan extends
+public final class GradleBuildProfileSpan extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildProfileSpan)
     GradleBuildProfileSpanOrBuilder {
@@ -975,11 +975,11 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>INITIAL_METADATA = 100 [deprecated = true];</code>
      */
-    public static final int INITIAL_METADATA_VALUE = 100;
+    @java.lang.Deprecated public static final int INITIAL_METADATA_VALUE = 100;
     /**
      * <code>FINAL_METADATA = 101 [deprecated = true];</code>
      */
-    public static final int FINAL_METADATA_VALUE = 101;
+    @java.lang.Deprecated public static final int FINAL_METADATA_VALUE = 101;
     /**
      * <code>GENERAL_CONFIG = 102;</code>
      */
@@ -1073,79 +1073,79 @@ private static final long serialVersionUID = 0L;
      *
      * <code>APP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK = 1000 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 1000;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 1000;
     /**
      * <code>APP_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK = 1001 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 1001;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 1001;
     /**
      * <code>APP_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK = 1002 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 1002;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 1002;
     /**
      * <code>APP_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK = 1003 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 1003;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 1003;
     /**
      * <code>APP_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK = 1004 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 1004;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 1004;
     /**
      * <code>APP_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK = 1005 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 1005;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 1005;
     /**
      * <code>APP_TASK_MANAGER_CREATE_PROCESS_RES_TASK = 1006 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 1006;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 1006;
     /**
      * <code>APP_TASK_MANAGER_CREATE_AIDL_TASK = 1007 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 1007;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 1007;
     /**
      * <code>APP_TASK_MANAGER_CREATE_COMPILE_TASK = 1008 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 1008;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 1008;
     /**
      * <code>APP_TASK_MANAGER_CREATE_NDK_TASK = 1009 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 1009;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 1009;
     /**
      * <code>APP_TASK_MANAGER_CREATE_SPLIT_TASK = 1010 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 1010;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 1010;
     /**
      * <code>APP_TASK_MANAGER_CREATE_PACKAGING_TASK = 1011 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 1011;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 1011;
     /**
      * <code>APP_TASK_MANAGER_CREATE_PREPROCESS_RESOURCES_TASK = 1012 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_PREPROCESS_RESOURCES_TASK_VALUE = 1012;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_PREPROCESS_RESOURCES_TASK_VALUE = 1012;
     /**
      * <code>APP_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK = 1013 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK_VALUE = 1013;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK_VALUE = 1013;
     /**
      * <code>APP_TASK_MANAGER_CREATE_LINT_TASK = 1014 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 1014;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 1014;
     /**
      * <code>APP_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK = 1015 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 1015;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 1015;
     /**
      * <code>APP_TASK_MANAGER_CREATE_SHADER_TASK = 1016 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 1016;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 1016;
     /**
      * <code>APP_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK = 1017 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 1017;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 1017;
     /**
      * <code>APP_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK = 1018 [deprecated = true];</code>
      */
-    public static final int APP_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK_VALUE = 1018;
+    @java.lang.Deprecated public static final int APP_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK_VALUE = 1018;
     /**
      * <pre>
      * LibraryTaskManager per variant tasks.
@@ -1153,83 +1153,83 @@ private static final long serialVersionUID = 0L;
      *
      * <code>LIB_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK = 2000 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 2000;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 2000;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK = 2001 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 2001;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 2001;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK = 2002 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 2002;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 2002;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK = 2003 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 2003;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 2003;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK = 2004 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 2004;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 2004;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK = 2005 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 2005;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 2005;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_PROCESS_RES_TASK = 2006 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 2006;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 2006;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_AIDL_TASK = 2007 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 2007;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 2007;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_COMPILE_TASK = 2008 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 2008;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 2008;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_NDK_TASK = 2009 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 2009;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 2009;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_SPLIT_TASK = 2010 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 2010;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 2010;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_PACKAGING_TASK = 2011 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 2011;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 2011;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_MERGE_PROGUARD_FILE_TASK = 2012 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_MERGE_PROGUARD_FILE_TASK_VALUE = 2012;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_MERGE_PROGUARD_FILE_TASK_VALUE = 2012;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_POST_COMPILATION_TASK = 2013 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_POST_COMPILATION_TASK_VALUE = 2013;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_POST_COMPILATION_TASK_VALUE = 2013;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_PROGUARD_TASK = 2014 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_PROGUARD_TASK_VALUE = 2014;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_PROGUARD_TASK_VALUE = 2014;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_PACKAGE_LOCAL_JAR = 2015 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_PACKAGE_LOCAL_JAR_VALUE = 2015;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_PACKAGE_LOCAL_JAR_VALUE = 2015;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK = 2016 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK_VALUE = 2016;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_BACKPORT_RESOURCES_TASK_VALUE = 2016;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_LINT_TASK = 2017 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 2017;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 2017;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_SHADER_TASK = 2018 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 2018;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 2018;
     /**
      * <code>LIB_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK = 2019 [deprecated = true];</code>
      */
-    public static final int LIB_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 2019;
+    @java.lang.Deprecated public static final int LIB_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 2019;
     /**
      * <pre>
      * Task execution: Deprecated, use TASK_EXECUTION and
@@ -1239,111 +1239,111 @@ private static final long serialVersionUID = 0L;
      *
      * <code>GENERIC_TASK_EXECUTION = 3000 [deprecated = true];</code>
      */
-    public static final int GENERIC_TASK_EXECUTION_VALUE = 3000;
+    @java.lang.Deprecated public static final int GENERIC_TASK_EXECUTION_VALUE = 3000;
     /**
      * <code>TASK_AIDL_COMPILE = 3001 [deprecated = true];</code>
      */
-    public static final int TASK_AIDL_COMPILE_VALUE = 3001;
+    @java.lang.Deprecated public static final int TASK_AIDL_COMPILE_VALUE = 3001;
     /**
      * <code>TASK_DELETE = 3002 [deprecated = true];</code>
      */
-    public static final int TASK_DELETE_VALUE = 3002;
+    @java.lang.Deprecated public static final int TASK_DELETE_VALUE = 3002;
     /**
      * <code>TASK_CHECK_MANIFEST = 3003 [deprecated = true];</code>
      */
-    public static final int TASK_CHECK_MANIFEST_VALUE = 3003;
+    @java.lang.Deprecated public static final int TASK_CHECK_MANIFEST_VALUE = 3003;
     /**
      * <code>TASK_PREPARE_DEPENDENCIES_TASK = 3004 [deprecated = true];</code>
      */
-    public static final int TASK_PREPARE_DEPENDENCIES_TASK_VALUE = 3004;
+    @java.lang.Deprecated public static final int TASK_PREPARE_DEPENDENCIES_TASK_VALUE = 3004;
     /**
      * <code>TASK_RENDERSCRIPT_COMPILE = 3005 [deprecated = true];</code>
      */
-    public static final int TASK_RENDERSCRIPT_COMPILE_VALUE = 3005;
+    @java.lang.Deprecated public static final int TASK_RENDERSCRIPT_COMPILE_VALUE = 3005;
     /**
      * <code>TASK_GENERATE_BUILD_CONFIG = 3006 [deprecated = true];</code>
      */
-    public static final int TASK_GENERATE_BUILD_CONFIG_VALUE = 3006;
+    @java.lang.Deprecated public static final int TASK_GENERATE_BUILD_CONFIG_VALUE = 3006;
     /**
      * <code>TASK_MERGE_ASSETS = 3007 [deprecated = true];</code>
      */
-    public static final int TASK_MERGE_ASSETS_VALUE = 3007;
+    @java.lang.Deprecated public static final int TASK_MERGE_ASSETS_VALUE = 3007;
     /**
      * <code>TASK_GENERATE_RES_VALUES = 3008 [deprecated = true];</code>
      */
-    public static final int TASK_GENERATE_RES_VALUES_VALUE = 3008;
+    @java.lang.Deprecated public static final int TASK_GENERATE_RES_VALUES_VALUE = 3008;
     /**
      * <code>TASK_MERGE_RESOURCES = 3009 [deprecated = true];</code>
      */
-    public static final int TASK_MERGE_RESOURCES_VALUE = 3009;
+    @java.lang.Deprecated public static final int TASK_MERGE_RESOURCES_VALUE = 3009;
     /**
      * <code>TASK_MERGE_MANIFESTS = 3010 [deprecated = true];</code>
      */
-    public static final int TASK_MERGE_MANIFESTS_VALUE = 3010;
+    @java.lang.Deprecated public static final int TASK_MERGE_MANIFESTS_VALUE = 3010;
     /**
      * <code>TASK_PROCESS_ANDROID_RESOURCES = 3011 [deprecated = true];</code>
      */
-    public static final int TASK_PROCESS_ANDROID_RESOURCES_VALUE = 3011;
+    @java.lang.Deprecated public static final int TASK_PROCESS_ANDROID_RESOURCES_VALUE = 3011;
     /**
      * <code>TASK_JAVA_COMPILE = 3012 [deprecated = true];</code>
      */
-    public static final int TASK_JAVA_COMPILE_VALUE = 3012;
+    @java.lang.Deprecated public static final int TASK_JAVA_COMPILE_VALUE = 3012;
     /**
      * <code>TASK_NDK_COMPILE = 3013 [deprecated = true];</code>
      */
-    public static final int TASK_NDK_COMPILE_VALUE = 3013;
+    @java.lang.Deprecated public static final int TASK_NDK_COMPILE_VALUE = 3013;
     /**
      * <code>TASK_PRE_DEX = 3014 [deprecated = true];</code>
      */
-    public static final int TASK_PRE_DEX_VALUE = 3014;
+    @java.lang.Deprecated public static final int TASK_PRE_DEX_VALUE = 3014;
     /**
      * <code>TASK_DEX = 3015 [deprecated = true];</code>
      */
-    public static final int TASK_DEX_VALUE = 3015;
+    @java.lang.Deprecated public static final int TASK_DEX_VALUE = 3015;
     /**
      * <code>TASK_PACKAGE_SPLIT_RES = 3016 [deprecated = true];</code>
      */
-    public static final int TASK_PACKAGE_SPLIT_RES_VALUE = 3016;
+    @java.lang.Deprecated public static final int TASK_PACKAGE_SPLIT_RES_VALUE = 3016;
     /**
      * <code>TASK_PROCESS_RESOURCES = 3017 [deprecated = true];</code>
      */
-    public static final int TASK_PROCESS_RESOURCES_VALUE = 3017;
+    @java.lang.Deprecated public static final int TASK_PROCESS_RESOURCES_VALUE = 3017;
     /**
      * <code>TASK_VALIDATE_SIGNING_TASK = 3018 [deprecated = true];</code>
      */
-    public static final int TASK_VALIDATE_SIGNING_TASK_VALUE = 3018;
+    @java.lang.Deprecated public static final int TASK_VALIDATE_SIGNING_TASK_VALUE = 3018;
     /**
      * <code>TASK_PACKAGE_APPLICATION = 3019 [deprecated = true];</code>
      */
-    public static final int TASK_PACKAGE_APPLICATION_VALUE = 3019;
+    @java.lang.Deprecated public static final int TASK_PACKAGE_APPLICATION_VALUE = 3019;
     /**
      * <code>TASK_SPLIT_ZIP_ALIGN = 3020 [deprecated = true];</code>
      */
-    public static final int TASK_SPLIT_ZIP_ALIGN_VALUE = 3020;
+    @java.lang.Deprecated public static final int TASK_SPLIT_ZIP_ALIGN_VALUE = 3020;
     /**
      * <code>TASK_ZIP_ALIGN = 3021 [deprecated = true];</code>
      */
-    public static final int TASK_ZIP_ALIGN_VALUE = 3021;
+    @java.lang.Deprecated public static final int TASK_ZIP_ALIGN_VALUE = 3021;
     /**
      * <code>TASK_COPY = 3022 [deprecated = true];</code>
      */
-    public static final int TASK_COPY_VALUE = 3022;
+    @java.lang.Deprecated public static final int TASK_COPY_VALUE = 3022;
     /**
      * <code>TASK_LINT = 3023 [deprecated = true];</code>
      */
-    public static final int TASK_LINT_VALUE = 3023;
+    @java.lang.Deprecated public static final int TASK_LINT_VALUE = 3023;
     /**
      * <code>TASK_FILE_VERIFICATION = 3026 [deprecated = true];</code>
      */
-    public static final int TASK_FILE_VERIFICATION_VALUE = 3026;
+    @java.lang.Deprecated public static final int TASK_FILE_VERIFICATION_VALUE = 3026;
     /**
      * <code>TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS_PER_ABI = 3027 [deprecated = true];</code>
      */
-    public static final int TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS_PER_ABI_VALUE = 3027;
+    @java.lang.Deprecated public static final int TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS_PER_ABI_VALUE = 3027;
     /**
      * <code>TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS = 3028 [deprecated = true];</code>
      */
-    public static final int TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS_VALUE = 3028;
+    @java.lang.Deprecated public static final int TASK_EXTERNAL_NATIVE_BUILD_GENERATE_JSON_PROCESS_VALUE = 3028;
     /**
      * <pre>
      * Transform execution
@@ -1363,63 +1363,63 @@ private static final long serialVersionUID = 0L;
      *
      * <code>ATOM_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK = 4000 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 4000;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 4000;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK = 4001 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 4001;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 4001;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK = 4002 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 4002;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 4002;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK = 4003 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 4003;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 4003;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK = 4004 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 4004;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 4004;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK = 4005 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 4005;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 4005;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_PROCESS_RES_TASK = 4006 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 4006;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 4006;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_AIDL_TASK = 4007 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 4007;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 4007;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_SHADER_TASK = 4008 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 4008;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 4008;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_NDK_TASK = 4009 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 4009;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 4009;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK = 4010 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 4010;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 4010;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK = 4011 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 4011;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 4011;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_COMPILE_TASK = 4012 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 4012;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 4012;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_BUNDLING_TASK = 4013 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_BUNDLING_TASK_VALUE = 4013;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_BUNDLING_TASK_VALUE = 4013;
     /**
      * <code>ATOM_TASK_MANAGER_CREATE_LINT_TASK = 4014 [deprecated = true];</code>
      */
-    public static final int ATOM_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 4014;
+    @java.lang.Deprecated public static final int ATOM_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 4014;
     /**
      * <pre>
      * InstantAppTaskManager per variant tasks.
@@ -1427,19 +1427,19 @@ private static final long serialVersionUID = 0L;
      *
      * <code>INSTANTAPP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK = 5000 [deprecated = true];</code>
      */
-    public static final int INSTANTAPP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 5000;
+    @java.lang.Deprecated public static final int INSTANTAPP_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 5000;
     /**
      * <code>INSTANTAPP_TASK_MANAGER_CREATE_ATOM_PACKAGING_TASKS = 5001 [deprecated = true];</code>
      */
-    public static final int INSTANTAPP_TASK_MANAGER_CREATE_ATOM_PACKAGING_TASKS_VALUE = 5001;
+    @java.lang.Deprecated public static final int INSTANTAPP_TASK_MANAGER_CREATE_ATOM_PACKAGING_TASKS_VALUE = 5001;
     /**
      * <code>INSTANTAPP_TASK_MANAGER_CREATE_PROCESS_RES_TASK = 5002 [deprecated = true];</code>
      */
-    public static final int INSTANTAPP_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 5002;
+    @java.lang.Deprecated public static final int INSTANTAPP_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 5002;
     /**
      * <code>INSTANTAPP_TASK_MANAGER_CREATE_PACKAGING_TASK = 5003 [deprecated = true];</code>
      */
-    public static final int INSTANTAPP_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 5003;
+    @java.lang.Deprecated public static final int INSTANTAPP_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 5003;
     /**
      * <pre>
      * FeatureTaskManager per variant tasks.
@@ -1447,79 +1447,79 @@ private static final long serialVersionUID = 0L;
      *
      * <code>FEATURE_TASK_MANAGER_CREATE_BASE_TASKS = 6000 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_BASE_TASKS_VALUE = 6000;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_BASE_TASKS_VALUE = 6000;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_NON_BASE_TASKS = 6001 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_NON_BASE_TASKS_VALUE = 6001;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_NON_BASE_TASKS_VALUE = 6001;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK = 6002 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 6002;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_MANIFEST_TASK_VALUE = 6002;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK = 6003 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 6003;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_GENERATE_RES_VALUES_TASK_VALUE = 6003;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK = 6004 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 6004;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_CREATE_RENDERSCRIPT_TASK_VALUE = 6004;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK = 6005 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 6005;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_RESOURCES_TASK_VALUE = 6005;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK = 6006 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 6006;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_ASSETS_TASK_VALUE = 6006;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK = 6007 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 6007;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_BUILD_CONFIG_TASK_VALUE = 6007;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_PROCESS_RES_TASK = 6008 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 6008;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_PROCESS_RES_TASK_VALUE = 6008;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_AIDL_TASK = 6009 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 6009;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_AIDL_TASK_VALUE = 6009;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_SHADER_TASK = 6010 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 6010;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_SHADER_TASK_VALUE = 6010;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_NDK_TASK = 6011 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 6011;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_NDK_TASK_VALUE = 6011;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK = 6012 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 6012;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_EXTERNAL_NATIVE_BUILD_TASK_VALUE = 6012;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK = 6013 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 6013;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_MERGE_JNILIBS_FOLDERS_TASK_VALUE = 6013;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_COMPILE_TASK = 6014 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 6014;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_COMPILE_TASK_VALUE = 6014;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK = 6015 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK_VALUE = 6015;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_STRIP_NATIVE_LIBRARY_TASK_VALUE = 6015;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_SPLIT_TASK = 6016 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 6016;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_SPLIT_TASK_VALUE = 6016;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_PACKAGING_TASK = 6017 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 6017;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_PACKAGING_TASK_VALUE = 6017;
     /**
      * <code>FEATURE_TASK_MANAGER_CREATE_LINT_TASK = 6018 [deprecated = true];</code>
      */
-    public static final int FEATURE_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 6018;
+    @java.lang.Deprecated public static final int FEATURE_TASK_MANAGER_CREATE_LINT_TASK_VALUE = 6018;
 
 
     public final int getNumber() {
@@ -1746,6 +1746,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 id = 1;</code>
    * @return Whether the id field is set.
    */
+  @java.lang.Override
   public boolean hasId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -1760,6 +1761,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public long getId() {
     return id_;
   }
@@ -1775,6 +1777,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 parent_id = 2;</code>
    * @return Whether the parentId field is set.
    */
+  @java.lang.Override
   public boolean hasParentId() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1787,6 +1790,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 parent_id = 2;</code>
    * @return The parentId.
    */
+  @java.lang.Override
   public long getParentId() {
     return parentId_;
   }
@@ -1801,6 +1805,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start_time_in_ms = 3;</code>
    * @return Whether the startTimeInMs field is set.
    */
+  @java.lang.Override
   public boolean hasStartTimeInMs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1812,6 +1817,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 start_time_in_ms = 3;</code>
    * @return The startTimeInMs.
    */
+  @java.lang.Override
   public long getStartTimeInMs() {
     return startTimeInMs_;
   }
@@ -1826,6 +1832,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_in_ms = 4;</code>
    * @return Whether the durationInMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationInMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1837,6 +1844,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 duration_in_ms = 4;</code>
    * @return The durationInMs.
    */
+  @java.lang.Override
   public long getDurationInMs() {
     return durationInMs_;
   }
@@ -1851,7 +1859,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProfileSpan.ExecutionType type = 5;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -1862,7 +1870,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProfileSpan.ExecutionType type = 5;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.SOME_RANDOM_PROCESSING : result;
@@ -1880,6 +1888,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
    * @return Whether the transform field is set.
    */
+  @java.lang.Override
   public boolean hasTransform() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1893,6 +1902,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
    * @return The transform.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTransformExecution getTransform() {
     return transform_ == null ? com.google.wireless.android.sdk.stats.GradleTransformExecution.getDefaultInstance() : transform_;
   }
@@ -1905,6 +1915,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleTransformExecution transform = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTransformExecutionOrBuilder getTransformOrBuilder() {
     return transform_ == null ? com.google.wireless.android.sdk.stats.GradleTransformExecution.getDefaultInstance() : transform_;
   }
@@ -1920,6 +1931,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
    * @return Whether the task field is set.
    */
+  @java.lang.Override
   public boolean hasTask() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1932,6 +1944,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
    * @return The task.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTaskExecution getTask() {
     return task_ == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.getDefaultInstance() : task_;
   }
@@ -1943,6 +1956,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleTaskExecution task = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleTaskExecutionOrBuilder getTaskOrBuilder() {
     return task_ == null ? com.google.wireless.android.sdk.stats.GradleTaskExecution.getDefaultInstance() : task_;
   }
@@ -1959,6 +1973,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 project = 7;</code>
    * @return Whether the project field is set.
    */
+  @java.lang.Override
   public boolean hasProject() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1972,6 +1987,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 project = 7;</code>
    * @return The project.
    */
+  @java.lang.Override
   public long getProject() {
     return project_;
   }
@@ -1988,6 +2004,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 variant = 8;</code>
    * @return Whether the variant field is set.
    */
+  @java.lang.Override
   public boolean hasVariant() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -2001,6 +2018,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 variant = 8;</code>
    * @return The variant.
    */
+  @java.lang.Override
   public long getVariant() {
     return variant_;
   }
@@ -2019,6 +2037,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 thread_id = 10;</code>
    * @return Whether the threadId field is set.
    */
+  @java.lang.Override
   public boolean hasThreadId() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -2034,6 +2053,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 thread_id = 10;</code>
    * @return The threadId.
    */
+  @java.lang.Override
   public long getThreadId() {
     return threadId_;
   }
@@ -2618,6 +2638,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 id = 1;</code>
      * @return Whether the id field is set.
      */
+    @java.lang.Override
     public boolean hasId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -2632,6 +2653,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public long getId() {
       return id_;
     }
@@ -2681,6 +2703,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 parent_id = 2;</code>
      * @return Whether the parentId field is set.
      */
+    @java.lang.Override
     public boolean hasParentId() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2693,6 +2716,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 parent_id = 2;</code>
      * @return The parentId.
      */
+    @java.lang.Override
     public long getParentId() {
       return parentId_;
     }
@@ -2737,6 +2761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start_time_in_ms = 3;</code>
      * @return Whether the startTimeInMs field is set.
      */
+    @java.lang.Override
     public boolean hasStartTimeInMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2748,6 +2773,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 start_time_in_ms = 3;</code>
      * @return The startTimeInMs.
      */
+    @java.lang.Override
     public long getStartTimeInMs() {
       return startTimeInMs_;
     }
@@ -2790,6 +2816,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_in_ms = 4;</code>
      * @return Whether the durationInMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationInMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2801,6 +2828,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 duration_in_ms = 4;</code>
      * @return The durationInMs.
      */
+    @java.lang.Override
     public long getDurationInMs() {
       return durationInMs_;
     }
@@ -2843,7 +2871,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProfileSpan.ExecutionType type = 5;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -2854,6 +2882,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProfileSpan.ExecutionType type = 5;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType result = com.google.wireless.android.sdk.stats.GradleBuildProfileSpan.ExecutionType.valueOf(type_);
@@ -3242,6 +3271,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 project = 7;</code>
      * @return Whether the project field is set.
      */
+    @java.lang.Override
     public boolean hasProject() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -3255,6 +3285,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 project = 7;</code>
      * @return The project.
      */
+    @java.lang.Override
     public long getProject() {
       return project_;
     }
@@ -3303,6 +3334,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 variant = 8;</code>
      * @return Whether the variant field is set.
      */
+    @java.lang.Override
     public boolean hasVariant() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -3316,6 +3348,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 variant = 8;</code>
      * @return The variant.
      */
+    @java.lang.Override
     public long getVariant() {
       return variant_;
     }
@@ -3366,6 +3399,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 thread_id = 10;</code>
      * @return Whether the threadId field is set.
      */
+    @java.lang.Override
     public boolean hasThreadId() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -3381,6 +3415,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 thread_id = 10;</code>
      * @return The threadId.
      */
+    @java.lang.Override
     public long getThreadId() {
       return threadId_;
     }

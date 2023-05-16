@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.RunStartData}
  */
-public  final class RunStartData extends
+public final class RunStartData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.RunStartData)
     RunStartDataOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_activity_id = 1;</code>
    * @return Whether the ideActivityId field is set.
    */
+  @java.lang.Override
   public boolean hasIdeActivityId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 ide_activity_id = 1;</code>
    * @return The ideActivityId.
    */
+  @java.lang.Override
   public int getIdeActivityId() {
     return ideActivityId_;
   }
@@ -142,6 +144,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return Whether the executor field is set.
    */
+  @java.lang.Override
   public boolean hasExecutor() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -153,6 +156,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return The executor.
    */
+  @java.lang.Override
   public java.lang.String getExecutor() {
     java.lang.Object ref = executor_;
     if (ref instanceof java.lang.String) {
@@ -175,6 +179,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string executor = 2;</code>
    * @return The bytes for executor.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getExecutorBytes() {
     java.lang.Object ref = executor_;
@@ -199,6 +204,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_configuration = 3;</code>
    * @return Whether the runConfiguration field is set.
    */
+  @java.lang.Override
   public boolean hasRunConfiguration() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -210,6 +216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_configuration = 3;</code>
    * @return The runConfiguration.
    */
+  @java.lang.Override
   public java.lang.String getRunConfiguration() {
     java.lang.Object ref = runConfiguration_;
     if (ref instanceof java.lang.String) {
@@ -232,6 +239,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_configuration = 3;</code>
    * @return The bytes for runConfiguration.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRunConfigurationBytes() {
     java.lang.Object ref = runConfiguration_;
@@ -626,6 +634,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_activity_id = 1;</code>
      * @return Whether the ideActivityId field is set.
      */
+    @java.lang.Override
     public boolean hasIdeActivityId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -638,6 +647,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 ide_activity_id = 1;</code>
      * @return The ideActivityId.
      */
+    @java.lang.Override
     public int getIdeActivityId() {
       return ideActivityId_;
     }

@@ -24,12 +24,16 @@ import com.android.build.gradle.internal.scope.VariantScope
 import com.android.sdklib.AndroidVersion.VersionCodes
 import kotlin.math.max
 
-open class ApkCreationConfigImpl(
-    override val config: ApkCreationConfig,
+open class ApkCreationConfigImpl<T: ApkCreationConfig>(
+    config: T,
     dslInfo: VariantDslInfo
-): ConsumableCreationConfigImpl(config, dslInfo) {
+): ConsumableCreationConfigImpl<T>(config, dslInfo) {
 
-    val isDebuggable = variantDslInfo.isDebuggable
+    val isDebuggable: Boolean
+        get() = variantDslInfo.isDebuggable
+
+    val isProfileable: Boolean
+        get() = variantDslInfo.isProfileable
 
     override val needsShrinkDesugarLibrary: Boolean
         get() {

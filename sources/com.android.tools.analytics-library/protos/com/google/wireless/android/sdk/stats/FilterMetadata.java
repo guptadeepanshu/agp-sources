@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.FilterMetadata}
  */
-public  final class FilterMetadata extends
+public final class FilterMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.FilterMetadata)
     FilterMetadataOrBuilder {
@@ -434,7 +434,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FilterMetadata.View active_view = 1;</code>
    * @return Whether the activeView field is set.
    */
-  public boolean hasActiveView() {
+  @java.lang.Override public boolean hasActiveView() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -445,7 +445,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FilterMetadata.View active_view = 1;</code>
    * @return The activeView.
    */
-  public com.google.wireless.android.sdk.stats.FilterMetadata.View getActiveView() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.FilterMetadata.View getActiveView() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.valueOf(activeView_);
     return result == null ? com.google.wireless.android.sdk.stats.FilterMetadata.View.UNKNOWN_FILTER_VIEW : result;
@@ -462,6 +462,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 features_used = 2;</code>
    * @return Whether the featuresUsed field is set.
    */
+  @java.lang.Override
   public boolean hasFeaturesUsed() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -474,6 +475,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 features_used = 2;</code>
    * @return The featuresUsed.
    */
+  @java.lang.Override
   public long getFeaturesUsed() {
     return featuresUsed_;
   }
@@ -488,6 +490,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 matched_elements = 3;</code>
    * @return Whether the matchedElements field is set.
    */
+  @java.lang.Override
   public boolean hasMatchedElements() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -499,6 +502,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 matched_elements = 3;</code>
    * @return The matchedElements.
    */
+  @java.lang.Override
   public int getMatchedElements() {
     return matchedElements_;
   }
@@ -513,6 +517,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_elements = 4;</code>
    * @return Whether the totalElements field is set.
    */
+  @java.lang.Override
   public boolean hasTotalElements() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -524,6 +529,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_elements = 4;</code>
    * @return The totalElements.
    */
+  @java.lang.Override
   public int getTotalElements() {
     return totalElements_;
   }
@@ -538,6 +544,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 search_length = 5;</code>
    * @return Whether the searchLength field is set.
    */
+  @java.lang.Override
   public boolean hasSearchLength() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -549,6 +556,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 search_length = 5;</code>
    * @return The searchLength.
    */
+  @java.lang.Override
   public int getSearchLength() {
     return searchLength_;
   }
@@ -980,7 +988,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.FilterMetadata.View active_view = 1;</code>
      * @return Whether the activeView field is set.
      */
-    public boolean hasActiveView() {
+    @java.lang.Override public boolean hasActiveView() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -991,6 +999,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.FilterMetadata.View active_view = 1;</code>
      * @return The activeView.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.FilterMetadata.View getActiveView() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.FilterMetadata.View result = com.google.wireless.android.sdk.stats.FilterMetadata.View.valueOf(activeView_);
@@ -1039,6 +1048,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 features_used = 2;</code>
      * @return Whether the featuresUsed field is set.
      */
+    @java.lang.Override
     public boolean hasFeaturesUsed() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1051,6 +1061,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 features_used = 2;</code>
      * @return The featuresUsed.
      */
+    @java.lang.Override
     public long getFeaturesUsed() {
       return featuresUsed_;
     }
@@ -1095,6 +1106,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 matched_elements = 3;</code>
      * @return Whether the matchedElements field is set.
      */
+    @java.lang.Override
     public boolean hasMatchedElements() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1106,6 +1118,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 matched_elements = 3;</code>
      * @return The matchedElements.
      */
+    @java.lang.Override
     public int getMatchedElements() {
       return matchedElements_;
     }
@@ -1148,6 +1161,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_elements = 4;</code>
      * @return Whether the totalElements field is set.
      */
+    @java.lang.Override
     public boolean hasTotalElements() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1159,6 +1173,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_elements = 4;</code>
      * @return The totalElements.
      */
+    @java.lang.Override
     public int getTotalElements() {
       return totalElements_;
     }
@@ -1201,6 +1216,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 search_length = 5;</code>
      * @return Whether the searchLength field is set.
      */
+    @java.lang.Override
     public boolean hasSearchLength() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1212,6 +1228,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 search_length = 5;</code>
      * @return The searchLength.
      */
+    @java.lang.Override
     public int getSearchLength() {
       return searchLength_;
     }

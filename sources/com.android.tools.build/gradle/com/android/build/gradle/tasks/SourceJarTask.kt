@@ -22,16 +22,13 @@ import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.getOutputPath
 import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import org.gradle.api.Project
 import org.gradle.api.attributes.DocsType
 import org.gradle.api.file.DuplicatesStrategy
-import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.util.PatternSet
 import org.gradle.work.DisableCachingByDefault
-import java.util.concurrent.Callable
 
 @DisableCachingByDefault
 abstract class SourceJarTask : Jar(), VariantAwareTask {
@@ -73,7 +70,11 @@ abstract class SourceJarTask : Jar(), VariantAwareTask {
             task.isPreserveFileTimestamps = false
 
             val javaSource = computeJavaSource(creationConfig, task.project)
-            val kotlinSource = computeKotlinSource(task.project)
+            val kotlinSource = task.project.files(
+                creationConfig.sources.kotlin.all
+            ).asFileTree.matching(
+                PatternSet().include("**/*.kt")
+            )
 
             task.from(javaSource, kotlinSource)
 
@@ -88,13 +89,6 @@ abstract class SourceJarTask : Jar(), VariantAwareTask {
             task.archiveFileName.set(outputFile.name)
             task.destinationDirectory.set(outputFile.parentFile)
             task.archiveExtension.set(SdkConstants.EXT_JAR)
-        }
-
-        private fun computeKotlinSource(project: Project): FileTree {
-            val sources = Callable {
-                listOf(creationConfig.variantSources.getSourceFiles { it.kotlinDirectories} ) }
-            val kotlinSourceFilter = PatternSet().include("**/*.kt")
-            return project.files(sources).asFileTree.matching(kotlinSourceFilter)
         }
     }
 }

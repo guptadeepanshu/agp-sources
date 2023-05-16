@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorPerformanceStats}
  */
-public  final class EmulatorPerformanceStats extends
+public final class EmulatorPerformanceStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorPerformanceStats)
     EmulatorPerformanceStatsOrBuilder {
@@ -157,6 +157,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator> getEstimatorList() {
     return estimator_;
   }
@@ -167,6 +168,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorPercentileEstimatorOrBuilder> 
       getEstimatorOrBuilderList() {
     return estimator_;
@@ -178,6 +180,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public int getEstimatorCount() {
     return estimator_.size();
   }
@@ -188,6 +191,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorPercentileEstimator getEstimator(int index) {
     return estimator_.get(index);
   }
@@ -198,6 +202,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorPercentileEstimator estimator = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorPercentileEstimatorOrBuilder getEstimatorOrBuilder(
       int index) {
     return estimator_.get(index);
@@ -212,6 +217,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorMemoryUsage memory_usage = 2 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.util.List<com.google.wireless.android.sdk.stats.EmulatorMemoryUsage> getMemoryUsageList() {
     return memoryUsage_;
   }
@@ -222,6 +228,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorMemoryUsage memory_usage = 2 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder> 
       getMemoryUsageOrBuilderList() {
     return memoryUsage_;
@@ -233,6 +240,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorMemoryUsage memory_usage = 2 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public int getMemoryUsageCount() {
     return memoryUsage_.size();
   }
@@ -243,6 +251,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorMemoryUsage memory_usage = 2 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EmulatorMemoryUsage getMemoryUsage(int index) {
     return memoryUsage_.get(index);
   }
@@ -253,6 +262,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorMemoryUsage memory_usage = 2 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder getMemoryUsageOrBuilder(
       int index) {
     return memoryUsage_.get(index);
@@ -269,6 +279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 process_uptime_us = 3;</code>
    * @return Whether the processUptimeUs field is set.
    */
+  @java.lang.Override
   public boolean hasProcessUptimeUs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -281,6 +292,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 process_uptime_us = 3;</code>
    * @return The processUptimeUs.
    */
+  @java.lang.Override
   public long getProcessUptimeUs() {
     return processUptimeUs_;
   }
@@ -295,6 +307,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
    * @return Whether the resourceUsage field is set.
    */
+  @java.lang.Override
   public boolean hasResourceUsage() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -306,6 +319,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
    * @return The resourceUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResourceUsage getResourceUsage() {
     return resourceUsage_ == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.getDefaultInstance() : resourceUsage_;
   }
@@ -316,6 +330,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorResourceUsage resource_usage = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResourceUsageOrBuilder getResourceUsageOrBuilder() {
     return resourceUsage_ == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.getDefaultInstance() : resourceUsage_;
   }
@@ -326,6 +341,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
    * @return Whether the latencyStats field is set.
    */
+  @java.lang.Override
   public boolean hasLatencyStats() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -333,12 +349,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
    * @return The latencyStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLatencyStats getLatencyStats() {
     return latencyStats_ == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.getDefaultInstance() : latencyStats_;
   }
   /**
    * <code>optional .android_studio.EmulatorLatencyStats latency_stats = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorLatencyStatsOrBuilder getLatencyStatsOrBuilder() {
     return latencyStats_ == null ? com.google.wireless.android.sdk.stats.EmulatorLatencyStats.getDefaultInstance() : latencyStats_;
   }
@@ -354,6 +372,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 guest_uptime_us = 6;</code>
    * @return Whether the guestUptimeUs field is set.
    */
+  @java.lang.Override
   public boolean hasGuestUptimeUs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -366,6 +385,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 guest_uptime_us = 6;</code>
    * @return The guestUptimeUs.
    */
+  @java.lang.Override
   public long getGuestUptimeUs() {
     return guestUptimeUs_;
   }
@@ -1527,6 +1547,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 process_uptime_us = 3;</code>
      * @return Whether the processUptimeUs field is set.
      */
+    @java.lang.Override
     public boolean hasProcessUptimeUs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1539,6 +1560,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 process_uptime_us = 3;</code>
      * @return The processUptimeUs.
      */
+    @java.lang.Override
     public long getProcessUptimeUs() {
       return processUptimeUs_;
     }
@@ -1860,6 +1882,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 guest_uptime_us = 6;</code>
      * @return Whether the guestUptimeUs field is set.
      */
+    @java.lang.Override
     public boolean hasGuestUptimeUs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1872,6 +1895,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 guest_uptime_us = 6;</code>
      * @return The guestUptimeUs.
      */
+    @java.lang.Override
     public long getGuestUptimeUs() {
       return guestUptimeUs_;
     }

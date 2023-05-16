@@ -168,4 +168,36 @@ public interface GradleAndroidModuleOrBuilder extends
    * @return The signingConfigCount.
    */
   long getSigningConfigCount();
+
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return Whether the requiredHardware field is set.
+   */
+  boolean hasRequiredHardware();
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return The requiredHardware.
+   */
+  java.lang.String getRequiredHardware();
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return The bytes for requiredHardware.
+   */
+  com.google.protobuf.ByteString
+      getRequiredHardwareBytes();
 }

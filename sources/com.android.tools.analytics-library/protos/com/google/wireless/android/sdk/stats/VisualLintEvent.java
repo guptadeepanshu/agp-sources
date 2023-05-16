@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.VisualLintEvent}
  */
-public  final class VisualLintEvent extends
+public final class VisualLintEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.VisualLintEvent)
     VisualLintEventOrBuilder {
@@ -394,7 +394,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent.IssueType issue_type = 1;</code>
    * @return Whether the issueType field is set.
    */
-  public boolean hasIssueType() {
+  @java.lang.Override public boolean hasIssueType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -405,7 +405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent.IssueType issue_type = 1;</code>
    * @return The issueType.
    */
-  public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType getIssueType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType getIssueType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.valueOf(issueType_);
     return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.UNKNOWN_TYPE : result;
@@ -421,7 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent.IssueEvent issue_event = 2;</code>
    * @return Whether the issueEvent field is set.
    */
-  public boolean hasIssueEvent() {
+  @java.lang.Override public boolean hasIssueEvent() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -432,7 +432,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent.IssueEvent issue_event = 2;</code>
    * @return The issueEvent.
    */
-  public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.valueOf(issueEvent_);
     return result == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.UNKNOWN_EVENT : result;
@@ -788,7 +788,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.VisualLintEvent.IssueType issue_type = 1;</code>
      * @return Whether the issueType field is set.
      */
-    public boolean hasIssueType() {
+    @java.lang.Override public boolean hasIssueType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -799,6 +799,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.VisualLintEvent.IssueType issue_type = 1;</code>
      * @return The issueType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType getIssueType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueType.valueOf(issueType_);
@@ -846,7 +847,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.VisualLintEvent.IssueEvent issue_event = 2;</code>
      * @return Whether the issueEvent field is set.
      */
-    public boolean hasIssueEvent() {
+    @java.lang.Override public boolean hasIssueEvent() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -857,6 +858,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.VisualLintEvent.IssueEvent issue_event = 2;</code>
      * @return The issueEvent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent getIssueEvent() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent result = com.google.wireless.android.sdk.stats.VisualLintEvent.IssueEvent.valueOf(issueEvent_);

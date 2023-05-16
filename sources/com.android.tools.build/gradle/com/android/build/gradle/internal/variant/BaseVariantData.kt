@@ -29,7 +29,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts.ConsumedCon
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.scope.InternalArtifactType.JAVA_RES
 import com.android.build.gradle.internal.scope.MutableTaskContainer
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.google.common.base.MoreObjects
 import org.gradle.api.Task
 import org.gradle.api.file.ConfigurableFileCollection
@@ -48,7 +48,7 @@ abstract class BaseVariantData(
     protected val variantSources: VariantSources,
     protected val paths: VariantPathHelper,
     protected val artifacts: ArtifactsImpl,
-    protected val services: VariantPropertiesApiServices,
+    protected val services: VariantServices,
     val taskContainer: MutableTaskContainer
 ) {
 
@@ -77,10 +77,11 @@ abstract class BaseVariantData(
     abstract val description: String
 
     fun getGeneratedBytecode(generatorKey: Any?): FileCollection {
-        return if (generatorKey == null) {
+        val fileCollection = if (generatorKey == null) {
             allPreJavacGeneratedBytecode
         } else preJavacGeneratedBytecodeMap?.get(generatorKey)
             ?: throw RuntimeException("Bytecode generator key not found")
+        return fileCollection.filter { it.exists() }
     }
 
     fun addJavaSourceFoldersToModel(generatedSourceFolder: File) {
@@ -188,44 +189,6 @@ abstract class BaseVariantData(
         }
     }
 
-    val allRawAndroidResources: FileCollection by lazy {
-        val allRes: ConfigurableFileCollection = services.fileCollection().builtBy(
-            listOfNotNull(
-                taskContainer.generateResValuesTask,
-                taskContainer.generateApkDataTask,
-                extraGeneratedResFolders.builtBy
-            )
-        )
-
-        allRes.from(
-            variantDependencies
-                .getArtifactCollection(
-                    ConsumedConfigType.RUNTIME_CLASSPATH,
-                    ArtifactScope.ALL,
-                    AndroidArtifacts.ArtifactType.ANDROID_RES
-                )
-                .artifactFiles
-        )
-
-        allRes.from(
-            services.fileCollection(
-                artifacts.get(InternalArtifactType.RENDERSCRIPT_GENERATED_RES),
-                artifacts.get(InternalArtifactType.GENERATED_RES),
-                extraGeneratedResFolders
-            )
-        )
-
-        taskContainer.generateApkDataTask?.let {
-            allRes.from(artifacts.get(InternalArtifactType.MICRO_APK_RES))
-        }
-
-        for (sourceSet in androidResources.values) {
-            allRes.from(sourceSet)
-        }
-
-        allRes
-    }
-
     /**
      * Defines the discoverability attributes of filters.
      */
@@ -253,11 +216,6 @@ abstract class BaseVariantData(
          */
         abstract fun getConfiguredFilters(splits: Splits): Collection<String>
     }
-
-    val androidResources: Map<String, FileCollection>
-        get() = variantSources
-            .sortedSourceProviders
-            .associate { it.name to (it as AndroidSourceSet).res.getBuildableArtifact() }
 
     override fun toString(): String {
         return MoreObjects.toStringHelper(this)

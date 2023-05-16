@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AndroidTestRetentionEvent}
  */
-public  final class AndroidTestRetentionEvent extends
+public final class AndroidTestRetentionEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidTestRetentionEvent)
     AndroidTestRetentionEventOrBuilder {
@@ -149,7 +149,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AndroidTestRetentionEvent.SnapshotCompatibility}
    */
-  public  static final class SnapshotCompatibility extends
+  public static final class SnapshotCompatibility extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AndroidTestRetentionEvent.SnapshotCompatibility)
       SnapshotCompatibilityOrBuilder {
@@ -393,7 +393,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = 1;</code>
      * @return Whether the result field is set.
      */
-    public boolean hasResult() {
+    @java.lang.Override public boolean hasResult() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -404,7 +404,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = 1;</code>
      * @return The result.
      */
-    public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result getResult() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result getResult() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.valueOf(result_);
       return result == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.UNKNOWN_FAILURE : result;
@@ -421,7 +421,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason emulator_check_failure_reason = 2;</code>
      * @return Whether the emulatorCheckFailureReason field is set.
      */
-    public boolean hasEmulatorCheckFailureReason() {
+    @java.lang.Override public boolean hasEmulatorCheckFailureReason() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -433,7 +433,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorSnapshotFailureReason emulator_check_failure_reason = 2;</code>
      * @return The emulatorCheckFailureReason.
      */
-    public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getEmulatorCheckFailureReason() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getEmulatorCheckFailureReason() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(emulatorCheckFailureReason_);
       return result == null ? com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.EMULATOR_SNAPSHOT_FAILURE_REASON_UNSPECIFIED : result;
@@ -789,7 +789,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = 1;</code>
        * @return Whether the result field is set.
        */
-      public boolean hasResult() {
+      @java.lang.Override public boolean hasResult() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -800,6 +800,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = 1;</code>
        * @return The result.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result getResult() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result result = com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.Result.valueOf(result_);
@@ -848,7 +849,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EmulatorSnapshotFailureReason emulator_check_failure_reason = 2;</code>
        * @return Whether the emulatorCheckFailureReason field is set.
        */
-      public boolean hasEmulatorCheckFailureReason() {
+      @java.lang.Override public boolean hasEmulatorCheckFailureReason() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -860,6 +861,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EmulatorSnapshotFailureReason emulator_check_failure_reason = 2;</code>
        * @return The emulatorCheckFailureReason.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason getEmulatorCheckFailureReason() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason result = com.google.wireless.android.sdk.stats.EmulatorSnapshotFailureReason.valueOf(emulatorCheckFailureReason_);
@@ -959,6 +961,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
    * @return Whether the snapshotCompatibility field is set.
    */
+  @java.lang.Override
   public boolean hasSnapshotCompatibility() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -966,12 +969,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
    * @return The snapshotCompatibility.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility getSnapshotCompatibility() {
     return snapshotCompatibility_ == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.getDefaultInstance() : snapshotCompatibility_;
   }
   /**
    * <code>optional .android_studio.AndroidTestRetentionEvent.SnapshotCompatibility snapshot_compatibility = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibilityOrBuilder getSnapshotCompatibilityOrBuilder() {
     return snapshotCompatibility_ == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.SnapshotCompatibility.getDefaultInstance() : snapshotCompatibility_;
   }

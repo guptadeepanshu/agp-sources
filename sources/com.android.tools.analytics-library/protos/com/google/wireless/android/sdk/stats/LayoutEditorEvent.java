@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutEditorEvent}
  */
-public  final class LayoutEditorEvent extends
+public final class LayoutEditorEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutEditorEvent)
     LayoutEditorEventOrBuilder {
@@ -807,7 +807,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorEvent.LayoutEditorEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -818,7 +818,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorEvent.LayoutEditorEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType result = com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType.UNKNOWN_EVENT_TYPE : result;
@@ -834,6 +834,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState state = 2;</code>
    * @return Whether the state field is set.
    */
+  @java.lang.Override
   public boolean hasState() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -845,6 +846,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorState state = 2;</code>
    * @return The state.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorState getState() {
     return state_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.getDefaultInstance() : state_;
   }
@@ -855,6 +857,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutEditorState state = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorStateOrBuilder getStateOrBuilder() {
     return state_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorState.getDefaultInstance() : state_;
   }
@@ -869,6 +872,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
    * @return Whether the renderResult field is set.
    */
+  @java.lang.Override
   public boolean hasRenderResult() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -880,6 +884,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
    * @return The renderResult.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorRenderResult getRenderResult() {
     return renderResult_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.getDefaultInstance() : renderResult_;
   }
@@ -890,6 +895,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutEditorRenderResult render_result = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorRenderResultOrBuilder getRenderResultOrBuilder() {
     return renderResult_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorRenderResult.getDefaultInstance() : renderResult_;
   }
@@ -904,6 +910,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
    * @return Whether the paletteEvent field is set.
    */
+  @java.lang.Override
   public boolean hasPaletteEvent() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -915,6 +922,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
    * @return The paletteEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutPaletteEvent getPaletteEvent() {
     return paletteEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.getDefaultInstance() : paletteEvent_;
   }
@@ -925,6 +933,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutPaletteEvent palette_event = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutPaletteEventOrBuilder getPaletteEventOrBuilder() {
     return paletteEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.getDefaultInstance() : paletteEvent_;
   }
@@ -939,6 +948,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
    * @return Whether the attributeChangeEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAttributeChangeEvent() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -950,6 +960,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
    * @return The attributeChangeEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent getAttributeChangeEvent() {
     return attributeChangeEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.getDefaultInstance() : attributeChangeEvent_;
   }
@@ -960,6 +971,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutAttributeChangeEvent attribute_change_event = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutAttributeChangeEventOrBuilder getAttributeChangeEventOrBuilder() {
     return attributeChangeEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutAttributeChangeEvent.getDefaultInstance() : attributeChangeEvent_;
   }
@@ -974,6 +986,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
    * @return Whether the favoriteChangeEvent field is set.
    */
+  @java.lang.Override
   public boolean hasFavoriteChangeEvent() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -985,6 +998,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
    * @return The favoriteChangeEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent getFavoriteChangeEvent() {
     return favoriteChangeEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent.getDefaultInstance() : favoriteChangeEvent_;
   }
@@ -995,6 +1009,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutFavoriteAttributeChangeEvent favorite_change_event = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEventOrBuilder getFavoriteChangeEventOrBuilder() {
     return favoriteChangeEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutFavoriteAttributeChangeEvent.getDefaultInstance() : favoriteChangeEvent_;
   }
@@ -1009,6 +1024,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
    * @return Whether the atfAuditResult field is set.
    */
+  @java.lang.Override
   public boolean hasAtfAuditResult() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1020,6 +1036,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
    * @return The atfAuditResult.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfAuditResult getAtfAuditResult() {
     return atfAuditResult_ == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.getDefaultInstance() : atfAuditResult_;
   }
@@ -1030,6 +1047,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AtfAuditResult atf_audit_result = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfAuditResultOrBuilder getAtfAuditResultOrBuilder() {
     return atfAuditResult_ == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.getDefaultInstance() : atfAuditResult_;
   }
@@ -1044,6 +1062,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
    * @return Whether the applyAtfFixEvent field is set.
    */
+  @java.lang.Override
   public boolean hasApplyAtfFixEvent() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1055,6 +1074,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
    * @return The applyAtfFixEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyAtfFixEvent getApplyAtfFixEvent() {
     return applyAtfFixEvent_ == null ? com.google.wireless.android.sdk.stats.ApplyAtfFixEvent.getDefaultInstance() : applyAtfFixEvent_;
   }
@@ -1065,6 +1085,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ApplyAtfFixEvent apply_atf_fix_event = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyAtfFixEventOrBuilder getApplyAtfFixEventOrBuilder() {
     return applyAtfFixEvent_ == null ? com.google.wireless.android.sdk.stats.ApplyAtfFixEvent.getDefaultInstance() : applyAtfFixEvent_;
   }
@@ -1079,6 +1100,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
    * @return Whether the ignoreAtfResultEvent field is set.
    */
+  @java.lang.Override
   public boolean hasIgnoreAtfResultEvent() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1090,6 +1112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
    * @return The ignoreAtfResultEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent getIgnoreAtfResultEvent() {
     return ignoreAtfResultEvent_ == null ? com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent.getDefaultInstance() : ignoreAtfResultEvent_;
   }
@@ -1100,6 +1123,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.IgnoreAtfResultEvent ignore_atf_result_event = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IgnoreAtfResultEventOrBuilder getIgnoreAtfResultEventOrBuilder() {
     return ignoreAtfResultEvent_ == null ? com.google.wireless.android.sdk.stats.IgnoreAtfResultEvent.getDefaultInstance() : ignoreAtfResultEvent_;
   }
@@ -1114,6 +1138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
    * @return Whether the undoAppliedAtfFixEvent field is set.
    */
+  @java.lang.Override
   public boolean hasUndoAppliedAtfFixEvent() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -1125,6 +1150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
    * @return The undoAppliedAtfFixEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent getUndoAppliedAtfFixEvent() {
     return undoAppliedAtfFixEvent_ == null ? com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent.getDefaultInstance() : undoAppliedAtfFixEvent_;
   }
@@ -1135,6 +1161,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UndoAppliedAtfFixEvent undo_applied_atf_fix_event = 10;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEventOrBuilder getUndoAppliedAtfFixEventOrBuilder() {
     return undoAppliedAtfFixEvent_ == null ? com.google.wireless.android.sdk.stats.UndoAppliedAtfFixEvent.getDefaultInstance() : undoAppliedAtfFixEvent_;
   }
@@ -1149,6 +1176,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
    * @return Whether the animationPreviewEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAnimationPreviewEvent() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -1160,6 +1188,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
    * @return The animationPreviewEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnimationPreviewEvent getAnimationPreviewEvent() {
     return animationPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.getDefaultInstance() : animationPreviewEvent_;
   }
@@ -1170,6 +1199,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AnimationPreviewEvent animation_preview_event = 11;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnimationPreviewEventOrBuilder getAnimationPreviewEventOrBuilder() {
     return animationPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.AnimationPreviewEvent.getDefaultInstance() : animationPreviewEvent_;
   }
@@ -1184,6 +1214,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
    * @return Whether the visualLintEvent field is set.
    */
+  @java.lang.Override
   public boolean hasVisualLintEvent() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -1195,6 +1226,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
    * @return The visualLintEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VisualLintEvent getVisualLintEvent() {
     return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
   }
@@ -1205,6 +1237,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.VisualLintEvent visual_lint_event = 12;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VisualLintEventOrBuilder getVisualLintEventOrBuilder() {
     return visualLintEvent_ == null ? com.google.wireless.android.sdk.stats.VisualLintEvent.getDefaultInstance() : visualLintEvent_;
   }
@@ -1909,7 +1942,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorEvent.LayoutEditorEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1920,6 +1953,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutEditorEvent.LayoutEditorEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType result = com.google.wireless.android.sdk.stats.LayoutEditorEvent.LayoutEditorEventType.valueOf(type_);

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.ArtifactDetail}
  */
-public  final class ArtifactDetail extends
+public final class ArtifactDetail extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ArtifactDetail)
     ArtifactDetailOrBuilder {
@@ -97,6 +97,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 size = 1;</code>
    * @return Whether the size field is set.
    */
+  @java.lang.Override
   public boolean hasSize() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -108,6 +109,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 size = 1;</code>
    * @return The size.
    */
+  @java.lang.Override
   public long getSize() {
     return size_;
   }
@@ -436,6 +438,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 size = 1;</code>
      * @return Whether the size field is set.
      */
+    @java.lang.Override
     public boolean hasSize() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -447,6 +450,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 size = 1;</code>
      * @return The size.
      */
+    @java.lang.Override
     public long getSize() {
       return size_;
     }

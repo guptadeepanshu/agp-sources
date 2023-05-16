@@ -22,7 +22,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code StructuredLogRecord}
  */
-public  final class StructuredLogRecord extends
+public final class StructuredLogRecord extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:StructuredLogRecord)
     StructuredLogRecordOrBuilder {
@@ -186,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>.NewString new_string = 1;</code>
    * @return Whether the newString field is set.
    */
+  @java.lang.Override
   public boolean hasNewString() {
     return recordCase_ == 1;
   }
@@ -193,6 +194,7 @@ private static final long serialVersionUID = 0L;
    * <code>.NewString new_string = 1;</code>
    * @return The newString.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.NewString getNewString() {
     if (recordCase_ == 1) {
        return (com.android.build.gradle.internal.cxx.logging.NewString) record_;
@@ -202,6 +204,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.NewString new_string = 1;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.NewStringOrBuilder getNewStringOrBuilder() {
     if (recordCase_ == 1) {
        return (com.android.build.gradle.internal.cxx.logging.NewString) record_;
@@ -214,6 +217,7 @@ private static final long serialVersionUID = 0L;
    * <code>.NewList new_list = 2;</code>
    * @return Whether the newList field is set.
    */
+  @java.lang.Override
   public boolean hasNewList() {
     return recordCase_ == 2;
   }
@@ -221,6 +225,7 @@ private static final long serialVersionUID = 0L;
    * <code>.NewList new_list = 2;</code>
    * @return The newList.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.NewList getNewList() {
     if (recordCase_ == 2) {
        return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
@@ -230,6 +235,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.NewList new_list = 2;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.NewListOrBuilder getNewListOrBuilder() {
     if (recordCase_ == 2) {
        return (com.android.build.gradle.internal.cxx.logging.NewList) record_;
@@ -242,6 +248,7 @@ private static final long serialVersionUID = 0L;
    * <code>.PayloadHeader payload_header = 3;</code>
    * @return Whether the payloadHeader field is set.
    */
+  @java.lang.Override
   public boolean hasPayloadHeader() {
     return recordCase_ == 3;
   }
@@ -249,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>.PayloadHeader payload_header = 3;</code>
    * @return The payloadHeader.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.PayloadHeader getPayloadHeader() {
     if (recordCase_ == 3) {
        return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
@@ -258,6 +266,7 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.PayloadHeader payload_header = 3;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder() {
     if (recordCase_ == 3) {
        return (com.android.build.gradle.internal.cxx.logging.PayloadHeader) record_;
@@ -682,6 +691,7 @@ private static final long serialVersionUID = 0L;
      * <code>.NewString new_string = 1;</code>
      * @return Whether the newString field is set.
      */
+    @java.lang.Override
     public boolean hasNewString() {
       return recordCase_ == 1;
     }
@@ -689,6 +699,7 @@ private static final long serialVersionUID = 0L;
      * <code>.NewString new_string = 1;</code>
      * @return The newString.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.NewString getNewString() {
       if (newStringBuilder_ == null) {
         if (recordCase_ == 1) {
@@ -782,6 +793,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.NewString new_string = 1;</code>
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.NewStringOrBuilder getNewStringOrBuilder() {
       if ((recordCase_ == 1) && (newStringBuilder_ != null)) {
         return newStringBuilder_.getMessageOrBuilder();
@@ -820,6 +832,7 @@ private static final long serialVersionUID = 0L;
      * <code>.NewList new_list = 2;</code>
      * @return Whether the newList field is set.
      */
+    @java.lang.Override
     public boolean hasNewList() {
       return recordCase_ == 2;
     }
@@ -827,6 +840,7 @@ private static final long serialVersionUID = 0L;
      * <code>.NewList new_list = 2;</code>
      * @return The newList.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.NewList getNewList() {
       if (newListBuilder_ == null) {
         if (recordCase_ == 2) {
@@ -920,6 +934,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.NewList new_list = 2;</code>
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.NewListOrBuilder getNewListOrBuilder() {
       if ((recordCase_ == 2) && (newListBuilder_ != null)) {
         return newListBuilder_.getMessageOrBuilder();
@@ -958,6 +973,7 @@ private static final long serialVersionUID = 0L;
      * <code>.PayloadHeader payload_header = 3;</code>
      * @return Whether the payloadHeader field is set.
      */
+    @java.lang.Override
     public boolean hasPayloadHeader() {
       return recordCase_ == 3;
     }
@@ -965,6 +981,7 @@ private static final long serialVersionUID = 0L;
      * <code>.PayloadHeader payload_header = 3;</code>
      * @return The payloadHeader.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.PayloadHeader getPayloadHeader() {
       if (payloadHeaderBuilder_ == null) {
         if (recordCase_ == 3) {
@@ -1058,6 +1075,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>.PayloadHeader payload_header = 3;</code>
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.PayloadHeaderOrBuilder getPayloadHeaderOrBuilder() {
       if ((recordCase_ == 3) && (payloadHeaderBuilder_ != null)) {
         return payloadHeaderBuilder_.getMessageOrBuilder();

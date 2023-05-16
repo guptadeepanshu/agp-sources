@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.TestRun}
  */
-public  final class TestRun extends
+public final class TestRun extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TestRun)
     TestRunOrBuilder {
@@ -563,7 +563,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.TestRun.AutomaticSnapshotOnFailure}
    */
-  public  static final class AutomaticSnapshotOnFailure extends
+  public static final class AutomaticSnapshotOnFailure extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.TestRun.AutomaticSnapshotOnFailure)
       AutomaticSnapshotOnFailureOrBuilder {
@@ -800,14 +800,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
      * @return Whether the enabled field is set.
      */
-    public boolean hasEnabled() {
+    @java.lang.Override public boolean hasEnabled() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
      * @return The enabled.
      */
-    public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
       return result == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.UNSPECIFIED : result;
@@ -1135,13 +1135,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
        * @return Whether the enabled field is set.
        */
-      public boolean hasEnabled() {
+      @java.lang.Override public boolean hasEnabled() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure.Enabled enabled = 1;</code>
        * @return The enabled.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled getEnabled() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled result = com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.Enabled.valueOf(enabled_);
@@ -1235,7 +1236,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestInvocationType test_invocation_type = 1;</code>
    * @return Whether the testInvocationType field is set.
    */
-  public boolean hasTestInvocationType() {
+  @java.lang.Override public boolean hasTestInvocationType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1246,7 +1247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestInvocationType test_invocation_type = 1;</code>
    * @return The testInvocationType.
    */
-  public com.google.wireless.android.sdk.stats.TestRun.TestInvocationType getTestInvocationType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestInvocationType getTestInvocationType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.valueOf(testInvocationType_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.UNKNOWN_TEST_INVOCATION_TYPE : result;
@@ -1262,6 +1263,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tests_executed = 2;</code>
    * @return Whether the numberOfTestsExecuted field is set.
    */
+  @java.lang.Override
   public boolean hasNumberOfTestsExecuted() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1273,6 +1275,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 number_of_tests_executed = 2;</code>
    * @return The numberOfTestsExecuted.
    */
+  @java.lang.Override
   public int getNumberOfTestsExecuted() {
     return numberOfTestsExecuted_;
   }
@@ -1287,7 +1290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestKind test_kind = 3;</code>
    * @return Whether the testKind field is set.
    */
-  public boolean hasTestKind() {
+  @java.lang.Override public boolean hasTestKind() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -1298,7 +1301,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestKind test_kind = 3;</code>
    * @return The testKind.
    */
-  public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestKind.UNKNOWN_TEST_KIND : result;
@@ -1315,6 +1318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool crashed = 4;</code>
    * @return Whether the crashed field is set.
    */
+  @java.lang.Override
   public boolean hasCrashed() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1327,6 +1331,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool crashed = 4;</code>
    * @return The crashed.
    */
+  @java.lang.Override
   public boolean getCrashed() {
     return crashed_;
   }
@@ -1341,6 +1346,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 5;</code>
    * @return Whether the gradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasGradleVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1352,6 +1358,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 5;</code>
    * @return The gradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getGradleVersion() {
     java.lang.Object ref = gradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -1374,6 +1381,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 5;</code>
    * @return The bytes for gradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGradleVersionBytes() {
     java.lang.Object ref = gradleVersion_;
@@ -1398,6 +1406,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool code_coverage_enabled = 6;</code>
    * @return Whether the codeCoverageEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasCodeCoverageEnabled() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1409,6 +1418,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool code_coverage_enabled = 6;</code>
    * @return The codeCoverageEnabled.
    */
+  @java.lang.Override
   public boolean getCodeCoverageEnabled() {
     return codeCoverageEnabled_;
   }
@@ -1423,6 +1433,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
    * @return Whether the testLibraries field is set.
    */
+  @java.lang.Override
   public boolean hasTestLibraries() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1434,6 +1445,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
    * @return The testLibraries.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestLibraries getTestLibraries() {
     return testLibraries_ == null ? com.google.wireless.android.sdk.stats.TestLibraries.getDefaultInstance() : testLibraries_;
   }
@@ -1444,6 +1456,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TestLibraries test_libraries = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestLibrariesOrBuilder getTestLibrariesOrBuilder() {
     return testLibraries_ == null ? com.google.wireless.android.sdk.stats.TestLibraries.getDefaultInstance() : testLibraries_;
   }
@@ -1458,7 +1471,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestExecution test_execution = 8;</code>
    * @return Whether the testExecution field is set.
    */
-  public boolean hasTestExecution() {
+  @java.lang.Override public boolean hasTestExecution() {
     return ((bitField0_ & 0x00000080) != 0);
   }
   /**
@@ -1469,7 +1482,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.TestExecution test_execution = 8;</code>
    * @return The testExecution.
    */
-  public com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.valueOf(testExecution_);
     return result == null ? com.google.wireless.android.sdk.stats.TestRun.TestExecution.UNKNOWN_TEST_EXECUTION : result;
@@ -1487,6 +1500,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
    * @return Whether the automaticSnapshotOnFailure field is set.
    */
+  @java.lang.Override
   public boolean hasAutomaticSnapshotOnFailure() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1500,6 +1514,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
    * @return The automaticSnapshotOnFailure.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure getAutomaticSnapshotOnFailure() {
     return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
   }
@@ -1512,6 +1527,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TestRun.AutomaticSnapshotOnFailure automatic_snapshot_on_failure = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailureOrBuilder getAutomaticSnapshotOnFailureOrBuilder() {
     return automaticSnapshotOnFailure_ == null ? com.google.wireless.android.sdk.stats.TestRun.AutomaticSnapshotOnFailure.getDefaultInstance() : automaticSnapshotOnFailure_;
   }
@@ -2061,7 +2077,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestInvocationType test_invocation_type = 1;</code>
      * @return Whether the testInvocationType field is set.
      */
-    public boolean hasTestInvocationType() {
+    @java.lang.Override public boolean hasTestInvocationType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -2072,6 +2088,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestInvocationType test_invocation_type = 1;</code>
      * @return The testInvocationType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestInvocationType getTestInvocationType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TestRun.TestInvocationType result = com.google.wireless.android.sdk.stats.TestRun.TestInvocationType.valueOf(testInvocationType_);
@@ -2119,6 +2136,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tests_executed = 2;</code>
      * @return Whether the numberOfTestsExecuted field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfTestsExecuted() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2130,6 +2148,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 number_of_tests_executed = 2;</code>
      * @return The numberOfTestsExecuted.
      */
+    @java.lang.Override
     public int getNumberOfTestsExecuted() {
       return numberOfTestsExecuted_;
     }
@@ -2172,7 +2191,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestKind test_kind = 3;</code>
      * @return Whether the testKind field is set.
      */
-    public boolean hasTestKind() {
+    @java.lang.Override public boolean hasTestKind() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -2183,6 +2202,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestKind test_kind = 3;</code>
      * @return The testKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestKind getTestKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TestRun.TestKind result = com.google.wireless.android.sdk.stats.TestRun.TestKind.valueOf(testKind_);
@@ -2231,6 +2251,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool crashed = 4;</code>
      * @return Whether the crashed field is set.
      */
+    @java.lang.Override
     public boolean hasCrashed() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2243,6 +2264,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool crashed = 4;</code>
      * @return The crashed.
      */
+    @java.lang.Override
     public boolean getCrashed() {
       return crashed_;
     }
@@ -2395,6 +2417,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool code_coverage_enabled = 6;</code>
      * @return Whether the codeCoverageEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasCodeCoverageEnabled() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2406,6 +2429,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool code_coverage_enabled = 6;</code>
      * @return The codeCoverageEnabled.
      */
+    @java.lang.Override
     public boolean getCodeCoverageEnabled() {
       return codeCoverageEnabled_;
     }
@@ -2604,7 +2628,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestExecution test_execution = 8;</code>
      * @return Whether the testExecution field is set.
      */
-    public boolean hasTestExecution() {
+    @java.lang.Override public boolean hasTestExecution() {
       return ((bitField0_ & 0x00000080) != 0);
     }
     /**
@@ -2615,6 +2639,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TestRun.TestExecution test_execution = 8;</code>
      * @return The testExecution.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.TestRun.TestExecution getTestExecution() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TestRun.TestExecution result = com.google.wireless.android.sdk.stats.TestRun.TestExecution.valueOf(testExecution_);

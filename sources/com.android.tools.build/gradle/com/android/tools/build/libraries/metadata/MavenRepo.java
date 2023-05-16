@@ -6,7 +6,7 @@ package com.android.tools.build.libraries.metadata;
 /**
  * Protobuf type {@code MavenRepo}
  */
-public  final class MavenRepo extends
+public final class MavenRepo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:MavenRepo)
     MavenRepoOrBuilder {
@@ -97,6 +97,7 @@ private static final long serialVersionUID = 0L;
    * <code>string url = 1;</code>
    * @return The url.
    */
+  @java.lang.Override
   public java.lang.String getUrl() {
     java.lang.Object ref = url_;
     if (ref instanceof java.lang.String) {
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>string url = 1;</code>
    * @return The bytes for url.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getUrlBytes() {
     java.lang.Object ref = url_;

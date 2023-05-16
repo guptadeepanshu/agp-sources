@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleLibrary}
  */
-public  final class GradleLibrary extends
+public final class GradleLibrary extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleLibrary)
     GradleLibraryOrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 jar_dependency_count = 1;</code>
    * @return Whether the jarDependencyCount field is set.
    */
+  @java.lang.Override
   public boolean hasJarDependencyCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 jar_dependency_count = 1;</code>
    * @return The jarDependencyCount.
    */
+  @java.lang.Override
   public long getJarDependencyCount() {
     return jarDependencyCount_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 aar_dependency_count = 2;</code>
    * @return Whether the aarDependencyCount field is set.
    */
+  @java.lang.Override
   public boolean hasAarDependencyCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 aar_dependency_count = 2;</code>
    * @return The aarDependencyCount.
    */
+  @java.lang.Override
   public long getAarDependencyCount() {
     return aarDependencyCount_;
   }
@@ -500,6 +504,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 jar_dependency_count = 1;</code>
      * @return Whether the jarDependencyCount field is set.
      */
+    @java.lang.Override
     public boolean hasJarDependencyCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -511,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 jar_dependency_count = 1;</code>
      * @return The jarDependencyCount.
      */
+    @java.lang.Override
     public long getJarDependencyCount() {
       return jarDependencyCount_;
     }
@@ -553,6 +559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 aar_dependency_count = 2;</code>
      * @return Whether the aarDependencyCount field is set.
      */
+    @java.lang.Override
     public boolean hasAarDependencyCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -564,6 +571,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 aar_dependency_count = 2;</code>
      * @return The aarDependencyCount.
      */
+    @java.lang.Override
     public long getAarDependencyCount() {
       return aarDependencyCount_;
     }

@@ -12,7 +12,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AndroidView}
  */
-public  final class AndroidView extends
+public final class AndroidView extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidView)
     AndroidViewOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tag_name = 1;</code>
    * @return Whether the tagName field is set.
    */
+  @java.lang.Override
   public boolean hasTagName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -130,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tag_name = 1;</code>
    * @return The tagName.
    */
+  @java.lang.Override
   public java.lang.String getTagName() {
     java.lang.Object ref = tagName_;
     if (ref instanceof java.lang.String) {
@@ -159,6 +161,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string tag_name = 1;</code>
    * @return The bytes for tagName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTagNameBytes() {
     java.lang.Object ref = tagName_;

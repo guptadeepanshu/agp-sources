@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.attribution;
  *
  * Protobuf type {@code AttributionKey}
  */
-public  final class AttributionKey extends
+public final class AttributionKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:AttributionKey)
     AttributionKeyOrBuilder {
@@ -112,6 +112,7 @@ private static final long serialVersionUID = 0L;
    * <code>string module = 1;</code>
    * @return The module.
    */
+  @java.lang.Override
   public java.lang.String getModule() {
     java.lang.Object ref = module_;
     if (ref instanceof java.lang.String) {
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>string module = 1;</code>
    * @return The bytes for module.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModuleBytes() {
     java.lang.Object ref = module_;
@@ -148,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>string variant = 2;</code>
    * @return The variant.
    */
+  @java.lang.Override
   public java.lang.String getVariant() {
     java.lang.Object ref = variant_;
     if (ref instanceof java.lang.String) {
@@ -164,6 +167,7 @@ private static final long serialVersionUID = 0L;
    * <code>string variant = 2;</code>
    * @return The bytes for variant.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVariantBytes() {
     java.lang.Object ref = variant_;
@@ -184,6 +188,7 @@ private static final long serialVersionUID = 0L;
    * <code>string abi = 3;</code>
    * @return The abi.
    */
+  @java.lang.Override
   public java.lang.String getAbi() {
     java.lang.Object ref = abi_;
     if (ref instanceof java.lang.String) {
@@ -200,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>string abi = 3;</code>
    * @return The bytes for abi.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAbiBytes() {
     java.lang.Object ref = abi_;

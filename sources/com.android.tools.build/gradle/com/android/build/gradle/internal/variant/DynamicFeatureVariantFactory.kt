@@ -35,11 +35,11 @@ import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesIm
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantApiServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.options.ProjectOptions
-import com.android.builder.core.VariantTypeImpl
+import com.android.builder.core.ComponentTypeImpl
 
 internal class DynamicFeatureVariantFactory(
     projectServices: ProjectServices,
@@ -51,7 +51,7 @@ internal class DynamicFeatureVariantFactory(
         globalVariantBuilderConfig: GlobalVariantBuilderConfig,
         componentIdentity: ComponentIdentity,
         variantDslInfo: VariantDslInfo,
-        variantApiServices: VariantApiServices
+        variantBuilderServices: VariantBuilderServices
     ): DynamicFeatureVariantBuilderImpl {
         return projectServices
             .objectFactory
@@ -60,7 +60,7 @@ internal class DynamicFeatureVariantFactory(
                 globalVariantBuilderConfig,
                 variantDslInfo,
                 componentIdentity,
-                variantApiServices
+                variantBuilderServices
             )
     }
 
@@ -76,7 +76,7 @@ internal class DynamicFeatureVariantFactory(
         variantScope: VariantScope,
         variantData: BaseVariantData,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
         ): DynamicFeatureVariantImpl {
@@ -94,7 +94,7 @@ internal class DynamicFeatureVariantFactory(
                 variantScope,
                 variantData,
                 transformManager,
-                variantPropertiesApiServices,
+                variantServices,
                 taskCreationServices,
                 globalConfig,
             )
@@ -152,6 +152,6 @@ internal class DynamicFeatureVariantFactory(
         )
     }
 
-    override val variantType
-        get() = VariantTypeImpl.OPTIONAL_APK
+    override val componentType
+        get() = ComponentTypeImpl.OPTIONAL_APK
 }

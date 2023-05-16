@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CpuImportTraceMetadata}
  */
-public  final class CpuImportTraceMetadata extends
+public final class CpuImportTraceMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CpuImportTraceMetadata)
     CpuImportTraceMetadataOrBuilder {
@@ -365,7 +365,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata.ImportStatus import_status = 1;</code>
    * @return Whether the importStatus field is set.
    */
-  public boolean hasImportStatus() {
+  @java.lang.Override public boolean hasImportStatus() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -376,7 +376,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata.ImportStatus import_status = 1;</code>
    * @return The importStatus.
    */
-  public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus getImportStatus() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus getImportStatus() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.valueOf(importStatus_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.UNDEFINED_IMPORT_TRACE_STATUS : result;
@@ -393,7 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata.Technology technology = 2;</code>
    * @return Whether the technology field is set.
    */
-  public boolean hasTechnology() {
+  @java.lang.Override public boolean hasTechnology() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -405,7 +405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata.Technology technology = 2;</code>
    * @return The technology.
    */
-  public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.valueOf(technology_);
     return result == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.UNKNOWN_TECHNOLOGY : result;
@@ -761,7 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuImportTraceMetadata.ImportStatus import_status = 1;</code>
      * @return Whether the importStatus field is set.
      */
-    public boolean hasImportStatus() {
+    @java.lang.Override public boolean hasImportStatus() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -772,6 +772,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuImportTraceMetadata.ImportStatus import_status = 1;</code>
      * @return The importStatus.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus getImportStatus() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.ImportStatus.valueOf(importStatus_);
@@ -820,7 +821,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuImportTraceMetadata.Technology technology = 2;</code>
      * @return Whether the technology field is set.
      */
-    public boolean hasTechnology() {
+    @java.lang.Override public boolean hasTechnology() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -832,6 +833,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.CpuImportTraceMetadata.Technology technology = 2;</code>
      * @return The technology.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology getTechnology() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology result = com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.Technology.valueOf(technology_);

@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.IdePluginInfo}
  */
-public  final class IdePluginInfo extends
+public final class IdePluginInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.IdePluginInfo)
     IdePluginInfoOrBuilder {
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IdePlugin plugins = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.IdePlugin> getPluginsList() {
     return plugins_;
   }
@@ -113,6 +114,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IdePlugin plugins = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.IdePluginOrBuilder> 
       getPluginsOrBuilderList() {
     return plugins_;
@@ -124,6 +126,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IdePlugin plugins = 1;</code>
    */
+  @java.lang.Override
   public int getPluginsCount() {
     return plugins_.size();
   }
@@ -134,6 +137,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IdePlugin plugins = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IdePlugin getPlugins(int index) {
     return plugins_.get(index);
   }
@@ -144,6 +148,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IdePlugin plugins = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IdePluginOrBuilder getPluginsOrBuilder(
       int index) {
     return plugins_.get(index);

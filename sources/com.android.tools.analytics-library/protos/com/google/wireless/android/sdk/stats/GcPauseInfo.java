@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GcPauseInfo}
  */
-public  final class GcPauseInfo extends
+public final class GcPauseInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GcPauseInfo)
     GcPauseInfoOrBuilder {
@@ -281,7 +281,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GcPauseInfo.GcType collector_type = 1;</code>
    * @return Whether the collectorType field is set.
    */
-  public boolean hasCollectorType() {
+  @java.lang.Override public boolean hasCollectorType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -292,7 +292,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GcPauseInfo.GcType collector_type = 1;</code>
    * @return The collectorType.
    */
-  public com.google.wireless.android.sdk.stats.GcPauseInfo.GcType getCollectorType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GcPauseInfo.GcType getCollectorType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.valueOf(collectorType_);
     return result == null ? com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.UNKNOWN : result;
@@ -308,6 +308,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
    * @return Whether the pauseTimesMs field is set.
    */
+  @java.lang.Override
   public boolean hasPauseTimesMs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -319,6 +320,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
    * @return The pauseTimesMs.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.Histogram getPauseTimesMs() {
     return pauseTimesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : pauseTimesMs_;
   }
@@ -329,6 +331,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.Histogram pause_times_ms = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramOrBuilder getPauseTimesMsOrBuilder() {
     return pauseTimesMs_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : pauseTimesMs_;
   }
@@ -693,7 +696,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GcPauseInfo.GcType collector_type = 1;</code>
      * @return Whether the collectorType field is set.
      */
-    public boolean hasCollectorType() {
+    @java.lang.Override public boolean hasCollectorType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -704,6 +707,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GcPauseInfo.GcType collector_type = 1;</code>
      * @return The collectorType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GcPauseInfo.GcType getCollectorType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GcPauseInfo.GcType result = com.google.wireless.android.sdk.stats.GcPauseInfo.GcType.valueOf(collectorType_);

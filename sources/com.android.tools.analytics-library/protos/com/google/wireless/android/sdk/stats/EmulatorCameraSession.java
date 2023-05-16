@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorCameraSession}
  */
-public  final class EmulatorCameraSession extends
+public final class EmulatorCameraSession extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorCameraSession)
     EmulatorCameraSessionOrBuilder {
@@ -658,7 +658,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -669,7 +669,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.EMULATOR_CAMERA_TYPE_UNSPECIFIED : result;
@@ -685,7 +685,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraDirection direction = 2;</code>
    * @return Whether the direction field is set.
    */
-  public boolean hasDirection() {
+  @java.lang.Override public boolean hasDirection() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -696,7 +696,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraDirection direction = 2;</code>
    * @return The direction.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection getDirection() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection getDirection() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.valueOf(direction_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.EMULATOR_CAMERA_DIRECTION_UNSPECIFIED : result;
@@ -712,6 +712,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 width = 3;</code>
    * @return Whether the width field is set.
    */
+  @java.lang.Override
   public boolean hasWidth() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -723,6 +724,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 width = 3;</code>
    * @return The width.
    */
+  @java.lang.Override
   public int getWidth() {
     return width_;
   }
@@ -737,6 +739,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 height = 4;</code>
    * @return Whether the height field is set.
    */
+  @java.lang.Override
   public boolean hasHeight() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -748,6 +751,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 height = 4;</code>
    * @return The height.
    */
+  @java.lang.Override
   public int getHeight() {
     return height_;
   }
@@ -762,6 +766,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional fixed32 pixel_format = 5;</code>
    * @return Whether the pixelFormat field is set.
    */
+  @java.lang.Override
   public boolean hasPixelFormat() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -773,6 +778,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional fixed32 pixel_format = 5;</code>
    * @return The pixelFormat.
    */
+  @java.lang.Override
   public int getPixelFormat() {
     return pixelFormat_;
   }
@@ -787,7 +793,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraStartResult start_result = 6;</code>
    * @return Whether the startResult field is set.
    */
-  public boolean hasStartResult() {
+  @java.lang.Override public boolean hasStartResult() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -798,7 +804,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraStartResult start_result = 6;</code>
    * @return The startResult.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult getStartResult() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult getStartResult() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.valueOf(startResult_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.EMULATOR_CAMERA_START_SUCCESS : result;
@@ -814,6 +820,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 startup_time_ms = 7;</code>
    * @return Whether the startupTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasStartupTimeMs() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -825,6 +832,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 startup_time_ms = 7;</code>
    * @return The startupTimeMs.
    */
+  @java.lang.Override
   public long getStartupTimeMs() {
     return startupTimeMs_;
   }
@@ -839,6 +847,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 8;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -850,6 +859,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 8;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -864,6 +874,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double average_framerate = 9;</code>
    * @return Whether the averageFramerate field is set.
    */
+  @java.lang.Override
   public boolean hasAverageFramerate() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -875,6 +886,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double average_framerate = 9;</code>
    * @return The averageFramerate.
    */
+  @java.lang.Override
   public double getAverageFramerate() {
     return averageFramerate_;
   }
@@ -890,6 +902,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string virtual_scene_name = 10;</code>
    * @return Whether the virtualSceneName field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualSceneName() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -902,6 +915,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string virtual_scene_name = 10;</code>
    * @return The virtualSceneName.
    */
+  @java.lang.Override
   public java.lang.String getVirtualSceneName() {
     java.lang.Object ref = virtualSceneName_;
     if (ref instanceof java.lang.String) {
@@ -925,6 +939,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string virtual_scene_name = 10;</code>
    * @return The bytes for virtualSceneName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getVirtualSceneNameBytes() {
     java.lang.Object ref = virtualSceneName_;
@@ -1493,7 +1508,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1504,6 +1519,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraType.valueOf(type_);
@@ -1551,7 +1567,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraDirection direction = 2;</code>
      * @return Whether the direction field is set.
      */
-    public boolean hasDirection() {
+    @java.lang.Override public boolean hasDirection() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1562,6 +1578,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraDirection direction = 2;</code>
      * @return The direction.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection getDirection() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraDirection.valueOf(direction_);
@@ -1609,6 +1626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 width = 3;</code>
      * @return Whether the width field is set.
      */
+    @java.lang.Override
     public boolean hasWidth() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1620,6 +1638,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 width = 3;</code>
      * @return The width.
      */
+    @java.lang.Override
     public int getWidth() {
       return width_;
     }
@@ -1662,6 +1681,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 height = 4;</code>
      * @return Whether the height field is set.
      */
+    @java.lang.Override
     public boolean hasHeight() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1673,6 +1693,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 height = 4;</code>
      * @return The height.
      */
+    @java.lang.Override
     public int getHeight() {
       return height_;
     }
@@ -1715,6 +1736,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional fixed32 pixel_format = 5;</code>
      * @return Whether the pixelFormat field is set.
      */
+    @java.lang.Override
     public boolean hasPixelFormat() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1726,6 +1748,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional fixed32 pixel_format = 5;</code>
      * @return The pixelFormat.
      */
+    @java.lang.Override
     public int getPixelFormat() {
       return pixelFormat_;
     }
@@ -1768,7 +1791,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraStartResult start_result = 6;</code>
      * @return Whether the startResult field is set.
      */
-    public boolean hasStartResult() {
+    @java.lang.Override public boolean hasStartResult() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -1779,6 +1802,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorCameraSession.EmulatorCameraStartResult start_result = 6;</code>
      * @return The startResult.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult getStartResult() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult result = com.google.wireless.android.sdk.stats.EmulatorCameraSession.EmulatorCameraStartResult.valueOf(startResult_);
@@ -1826,6 +1850,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 startup_time_ms = 7;</code>
      * @return Whether the startupTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasStartupTimeMs() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1837,6 +1862,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 startup_time_ms = 7;</code>
      * @return The startupTimeMs.
      */
+    @java.lang.Override
     public long getStartupTimeMs() {
       return startupTimeMs_;
     }
@@ -1879,6 +1905,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 8;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1890,6 +1917,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 8;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -1932,6 +1960,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double average_framerate = 9;</code>
      * @return Whether the averageFramerate field is set.
      */
+    @java.lang.Override
     public boolean hasAverageFramerate() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1943,6 +1972,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double average_framerate = 9;</code>
      * @return The averageFramerate.
      */
+    @java.lang.Override
     public double getAverageFramerate() {
       return averageFramerate_;
     }

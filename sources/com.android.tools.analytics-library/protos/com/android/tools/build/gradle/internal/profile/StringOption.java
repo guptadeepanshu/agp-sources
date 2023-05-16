@@ -161,6 +161,14 @@ public enum StringOption
    * <code>IDE_AGDE_VERSION = 37;</code>
    */
   IDE_AGDE_VERSION(37),
+  /**
+   * <code>PROFILING_MODE = 38;</code>
+   */
+  PROFILING_MODE(38),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE = 39;</code>
+   */
+  GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE(39),
   UNRECOGNIZED(-1),
   ;
 
@@ -171,7 +179,7 @@ public enum StringOption
   /**
    * <code>BUILD_CACHE_DIR = 1 [deprecated = true];</code>
    */
-  public static final int BUILD_CACHE_DIR_VALUE = 1;
+  @java.lang.Deprecated public static final int BUILD_CACHE_DIR_VALUE = 1;
   /**
    * <code>IDE_BUILD_TARGET_DENSITY = 2;</code>
    */
@@ -316,6 +324,14 @@ public enum StringOption
    * <code>IDE_AGDE_VERSION = 37;</code>
    */
   public static final int IDE_AGDE_VERSION_VALUE = 37;
+  /**
+   * <code>PROFILING_MODE = 38;</code>
+   */
+  public static final int PROFILING_MODE_VALUE = 38;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE = 39;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE_VALUE = 39;
 
 
   public final int getNumber() {
@@ -380,6 +396,8 @@ public enum StringOption
       case 35: return IDE_CHECK_JETIFIER_RESULT_FILE;
       case 36: return AAPT2_FROM_MAVEN_PLATFORM_OVERRIDE;
       case 37: return IDE_AGDE_VERSION;
+      case 38: return PROFILING_MODE;
+      case 39: return GRADLE_MANAGED_DEVICE_EMULATOR_GPU_MODE;
       default: return null;
     }
   }
@@ -398,6 +416,10 @@ public enum StringOption
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor

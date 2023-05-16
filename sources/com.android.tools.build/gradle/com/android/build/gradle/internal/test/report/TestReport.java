@@ -15,6 +15,7 @@
  */
 package com.android.build.gradle.internal.test.report;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.Closeables;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,9 +25,11 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
+import kotlin.text.StringsKt;
 import org.gradle.api.GradleException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -39,12 +42,16 @@ import org.xml.sax.InputSource;
 public class TestReport {
     private final HtmlReportRenderer htmlRenderer = new HtmlReportRenderer();
     private final ReportType reportType;
-    private final File resultDir;
+    private final List<File> resultDirs;
     private final File reportDir;
 
     public TestReport(ReportType reportType, File resultDir, File reportDir) {
+        this(reportType, ImmutableList.of(resultDir), reportDir);
+    }
+
+    public TestReport(ReportType reportType, List<File> resultDirs, File reportDir) {
         this.reportType = reportType;
-        this.resultDir = resultDir;
+        this.resultDirs = resultDirs;
         this.reportDir = reportDir;
         htmlRenderer.requireResource(getClass().getResource("report.js"));
         htmlRenderer.requireResource(getClass().getResource("base-style.css"));
@@ -59,12 +66,14 @@ public class TestReport {
 
     private AllTestResults loadModel() {
         AllTestResults model = new AllTestResults();
-        if (resultDir.exists()) {
-            File[] files = resultDir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.getName().startsWith("TEST-") && file.getName().endsWith(".xml")) {
-                        mergeFromFile(file, model);
+        for (File resultDir : resultDirs) {
+            if (resultDir.exists()) {
+                File[] files = resultDir.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.getName().startsWith("TEST-") && file.getName().endsWith(".xml")) {
+                            mergeFromFile(file, model);
+                        }
                     }
                 }
             }
@@ -125,14 +134,27 @@ public class TestReport {
                 model.addTest(className, testName, 0, deviceName, projectName, flavorName).ignored();
             }
             String suiteClassName = document.getDocumentElement().getAttribute("name");
-            ClassTestResults suiteResults = model.addTestClass(suiteClassName);
-            NodeList stdOutElements = document.getElementsByTagName("system-out");
-            for (int i = 0; i < stdOutElements.getLength(); i++) {
-                suiteResults.addStandardOutput(stdOutElements.item(i).getTextContent());
-            }
-            NodeList stdErrElements = document.getElementsByTagName("system-err");
-            for (int i = 0; i < stdErrElements.getLength(); i++) {
-                suiteResults.addStandardError(stdErrElements.item(i).getTextContent());
+            if (!StringsKt.isBlank(suiteClassName)) {
+                ClassTestResults suiteResults = model.addTestClass(suiteClassName);
+                NodeList stdOutElements = document.getElementsByTagName("system-out");
+                for (int i = 0; i < stdOutElements.getLength(); i++) {
+                    suiteResults.addStandardOutput(
+                            deviceName, stdOutElements.item(i).getTextContent());
+                }
+                NodeList stdErrElements = document.getElementsByTagName("system-err");
+                for (int i = 0; i < stdErrElements.getLength(); i++) {
+                    suiteResults.addStandardError(
+                            deviceName, stdErrElements.item(i).getTextContent());
+                }
+            } else {
+                NodeList stdOutElements = document.getElementsByTagName("system-out");
+                for (int i = 0; i < stdOutElements.getLength(); i++) {
+                    model.addStandardOutput(deviceName, stdOutElements.item(i).getTextContent());
+                }
+                NodeList stdErrElements = document.getElementsByTagName("system-err");
+                for (int i = 0; i < stdErrElements.getLength(); i++) {
+                    model.addStandardError(deviceName, stdErrElements.item(i).getTextContent());
+                }
             }
         } catch (Exception e) {
             throw new GradleException(String.format("Could not load test results from '%s'.", file), e);

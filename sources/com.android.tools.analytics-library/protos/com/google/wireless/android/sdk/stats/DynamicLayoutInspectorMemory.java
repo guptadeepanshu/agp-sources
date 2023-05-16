@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorMemory}
  */
-public  final class DynamicLayoutInspectorMemory extends
+public final class DynamicLayoutInspectorMemory extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorMemory)
     DynamicLayoutInspectorMemoryOrBuilder {
@@ -175,7 +175,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.DynamicLayoutInspectorMemory.Snapshot}
    */
-  public  static final class Snapshot extends
+  public static final class Snapshot extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorMemory.Snapshot)
       SnapshotOrBuilder {
@@ -276,6 +276,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool skia_image = 1;</code>
      * @return Whether the skiaImage field is set.
      */
+    @java.lang.Override
     public boolean hasSkiaImage() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -287,6 +288,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool skia_image = 1;</code>
      * @return The skiaImage.
      */
+    @java.lang.Override
     public boolean getSkiaImage() {
       return skiaImage_;
     }
@@ -301,6 +303,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 capture_size_mb = 2;</code>
      * @return Whether the captureSizeMb field is set.
      */
+    @java.lang.Override
     public boolean hasCaptureSizeMb() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -312,6 +315,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 capture_size_mb = 2;</code>
      * @return The captureSizeMb.
      */
+    @java.lang.Override
     public long getCaptureSizeMb() {
       return captureSizeMb_;
     }
@@ -326,6 +330,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 measurement_duration_ms = 3;</code>
      * @return Whether the measurementDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasMeasurementDurationMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -337,6 +342,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 measurement_duration_ms = 3;</code>
      * @return The measurementDurationMs.
      */
+    @java.lang.Override
     public long getMeasurementDurationMs() {
       return measurementDurationMs_;
     }
@@ -717,6 +723,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool skia_image = 1;</code>
        * @return Whether the skiaImage field is set.
        */
+      @java.lang.Override
       public boolean hasSkiaImage() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -728,6 +735,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool skia_image = 1;</code>
        * @return The skiaImage.
        */
+      @java.lang.Override
       public boolean getSkiaImage() {
         return skiaImage_;
       }
@@ -770,6 +778,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 capture_size_mb = 2;</code>
        * @return Whether the captureSizeMb field is set.
        */
+      @java.lang.Override
       public boolean hasCaptureSizeMb() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -781,6 +790,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 capture_size_mb = 2;</code>
        * @return The captureSizeMb.
        */
+      @java.lang.Override
       public long getCaptureSizeMb() {
         return captureSizeMb_;
       }
@@ -823,6 +833,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 measurement_duration_ms = 3;</code>
        * @return Whether the measurementDurationMs field is set.
        */
+      @java.lang.Override
       public boolean hasMeasurementDurationMs() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -834,6 +845,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 measurement_duration_ms = 3;</code>
        * @return The measurementDurationMs.
        */
+      @java.lang.Override
       public long getMeasurementDurationMs() {
         return measurementDurationMs_;
       }
@@ -930,6 +942,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
    * @return Whether the initialSnapshot field is set.
    */
+  @java.lang.Override
   public boolean hasInitialSnapshot() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -941,6 +954,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
    * @return The initialSnapshot.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getInitialSnapshot() {
     return initialSnapshot_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance() : initialSnapshot_;
   }
@@ -951,6 +965,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot initial_snapshot = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getInitialSnapshotOrBuilder() {
     return initialSnapshot_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance() : initialSnapshot_;
   }
@@ -965,6 +980,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
    * @return Whether the largestSnapshot field is set.
    */
+  @java.lang.Override
   public boolean hasLargestSnapshot() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -976,6 +992,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
    * @return The largestSnapshot.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot getLargestSnapshot() {
     return largestSnapshot_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance() : largestSnapshot_;
   }
@@ -986,6 +1003,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorMemory.Snapshot largest_snapshot = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.SnapshotOrBuilder getLargestSnapshotOrBuilder() {
     return largestSnapshot_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorMemory.Snapshot.getDefaultInstance() : largestSnapshot_;
   }

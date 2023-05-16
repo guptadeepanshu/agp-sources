@@ -29,6 +29,7 @@ import com.android.build.gradle.internal.component.ApkCreationConfig;
 import com.android.build.gradle.internal.component.ComponentCreationConfig;
 import com.android.build.gradle.internal.component.ConsumableCreationConfig;
 import com.android.build.gradle.internal.component.TestCreationConfig;
+import com.android.build.gradle.internal.component.TestVariantCreationConfig;
 import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask;
 import com.android.build.gradle.internal.tasks.SigningConfigVersionsWriterTask;
@@ -41,9 +42,9 @@ import com.android.build.gradle.tasks.CheckTestedAppObfuscation;
 import com.android.build.gradle.tasks.ManifestProcessorTask;
 import com.android.build.gradle.tasks.ProcessTestManifest;
 import com.android.build.gradle.tasks.sync.TestModuleVariantModelTask;
-import com.android.builder.core.VariantType;
+import com.android.builder.core.ComponentType;
 import com.google.common.base.Preconditions;
-import java.util.List;
+import java.util.Collection;
 import org.gradle.api.Project;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
@@ -60,9 +61,9 @@ public class TestApplicationTaskManager
 
     public TestApplicationTaskManager(
             @NonNull Project project,
-            @NonNull List<ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>> variants,
-            @NonNull List<TestComponentImpl> testComponents,
-            @NonNull List<TestFixturesImpl> testFixturesComponents,
+            @NonNull Collection<? extends ComponentInfo<TestVariantBuilderImpl, TestVariantImpl>> variants,
+            @NonNull Collection<? extends TestComponentImpl> testComponents,
+            @NonNull Collection<? extends TestFixturesImpl> testFixturesComponents,
             @NonNull GlobalTaskCreationConfig globalConfig,
             @NonNull TaskManagerConfig localConfig,
             @NonNull BaseExtension extension) {
@@ -119,11 +120,18 @@ public class TestApplicationTaskManager
                             @NonNull
                             @Override
                             public String getName() {
-                                return super.getName() + VariantType.ANDROID_TEST_SUFFIX;
+                                return super.getName() + ComponentType.ANDROID_TEST_SUFFIX;
                             }
                         });
 
         taskFactory.configure(CONNECTED_ANDROID_TEST, task -> task.dependsOn(instrumentTestTask));
+
+        createTestDevicesForVariant(
+                testVariantProperties,
+                testData,
+                null,
+                testVariantProperties.getName(),
+                ComponentType.ANDROID_TEST_SUFFIX);
     }
 
     @Override
@@ -134,7 +142,8 @@ public class TestApplicationTaskManager
         } else {
             TaskProvider<CheckTestedAppObfuscation> checkObfuscation =
                     taskFactory.register(
-                            new CheckTestedAppObfuscation.CreationAction(creationConfig));
+                            new CheckTestedAppObfuscation.CreationAction(
+                                    (TestVariantCreationConfig) creationConfig));
             Preconditions.checkNotNull(creationConfig.getTaskContainer().getJavacTask());
             TaskFactoryUtils.dependsOn(
                     creationConfig.getTaskContainer().getJavacTask(), checkObfuscation);

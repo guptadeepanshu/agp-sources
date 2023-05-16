@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2011 The Android Open Source Project
+ * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,84 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.ddmlib.logcat;
 
 import com.android.annotations.NonNull;
-import com.android.ddmlib.Log.LogLevel;
-import java.time.Instant;
 
-/**
- * Model a single log message output from {@code logcat -v long}.
- *
- * Every message is furthermore associated with a {@link LogCatHeader} which contains additionally
- * meta information about the message.
- */
-public final class LogCatMessage {
+import java.util.Objects;
+
+public class LogCatMessage {
 
     @NonNull
-    private final LogCatHeader mHeader;
+    private final LogCatHeader header;
 
     @NonNull
-    private final String mMessage;
+    private final String message;
 
-    /**
-     * Construct an immutable log message object.
-     */
-    public LogCatMessage(@NonNull LogCatHeader header, @NonNull String msg) {
-        mHeader = header;
-        mMessage = msg;
+    public LogCatMessage(@NonNull LogCatHeader header, @NonNull String message) {
+        this.header = header;
+        this.message = message;
     }
-
-    /**
-     * Helper constructor to generate a dummy message, useful if we want to add message from code
-     * that matches the logcat format.
-     */
-    public LogCatMessage(@NonNull LogLevel logLevel, @NonNull String message) {
-        this(new LogCatHeader(logLevel, -1, -1, "", "", Instant.EPOCH), message);
-    }
-
 
     @NonNull
     public LogCatHeader getHeader() {
-        return mHeader;
+        return header;
     }
 
     @NonNull
     public String getMessage() {
-        return mMessage;
-    }
-
-    @NonNull
-    public LogLevel getLogLevel() {
-        return mHeader.getLogLevel();
-    }
-
-    public int getPid() {
-        return mHeader.getPid();
-    }
-
-    public int getTid() {
-        return mHeader.getTid();
-    }
-
-    @NonNull
-    public String getAppName() {
-        return mHeader.getAppName();
-    }
-
-    @NonNull
-    public String getTag() {
-        return mHeader.getTag();
-    }
-
-    @NonNull
-    public Instant getTimestamp() {
-        return mHeader.getTimestamp();
+        return message;
     }
 
     @Override
     public String toString() {
-        return mHeader.toString() + ": " + mMessage;
+        return String.format("%s: %s", header, message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(header, message);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LogCatMessage)) {
+            return false;
+        }
+        LogCatMessage other = (LogCatMessage)obj;
+        return Objects.equals(header, other.header) &&
+               Objects.equals(message, other.message);
     }
 }

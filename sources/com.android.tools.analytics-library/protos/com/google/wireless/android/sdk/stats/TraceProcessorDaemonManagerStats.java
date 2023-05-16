@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.TraceProcessorDaemonManagerStats}
  */
-public  final class TraceProcessorDaemonManagerStats extends
+public final class TraceProcessorDaemonManagerStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TraceProcessorDaemonManagerStats)
     TraceProcessorDaemonManagerStatsOrBuilder {
@@ -97,6 +97,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 time_to_spawn_ms = 1;</code>
    * @return Whether the timeToSpawnMs field is set.
    */
+  @java.lang.Override
   public boolean hasTimeToSpawnMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -108,6 +109,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 time_to_spawn_ms = 1;</code>
    * @return The timeToSpawnMs.
    */
+  @java.lang.Override
   public long getTimeToSpawnMs() {
     return timeToSpawnMs_;
   }
@@ -436,6 +438,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 time_to_spawn_ms = 1;</code>
      * @return Whether the timeToSpawnMs field is set.
      */
+    @java.lang.Override
     public boolean hasTimeToSpawnMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -447,6 +450,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 time_to_spawn_ms = 1;</code>
      * @return The timeToSpawnMs.
      */
+    @java.lang.Override
     public long getTimeToSpawnMs() {
       return timeToSpawnMs_;
     }

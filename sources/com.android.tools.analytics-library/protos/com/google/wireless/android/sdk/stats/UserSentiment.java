@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.UserSentiment}
  */
-public  final class UserSentiment extends
+public final class UserSentiment extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UserSentiment)
     UserSentimentOrBuilder {
@@ -395,7 +395,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment.SentimentState state = 1;</code>
    * @return Whether the state field is set.
    */
-  public boolean hasState() {
+  @java.lang.Override public boolean hasState() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -406,7 +406,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment.SentimentState state = 1;</code>
    * @return The state.
    */
-  public com.google.wireless.android.sdk.stats.UserSentiment.SentimentState getState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.UserSentiment.SentimentState getState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.UserSentiment.SentimentState result = com.google.wireless.android.sdk.stats.UserSentiment.SentimentState.valueOf(state_);
     return result == null ? com.google.wireless.android.sdk.stats.UserSentiment.SentimentState.UNKNOWN_SENTIMENT_STATE : result;
@@ -422,7 +422,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment.SatisfactionLevel level = 2;</code>
    * @return Whether the level field is set.
    */
-  public boolean hasLevel() {
+  @java.lang.Override public boolean hasLevel() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -433,7 +433,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment.SatisfactionLevel level = 2;</code>
    * @return The level.
    */
-  public com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel getLevel() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel getLevel() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel result = com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel.valueOf(level_);
     return result == null ? com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel.UNKNOWN_SATISFACTION_LEVEL : result;
@@ -789,7 +789,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UserSentiment.SentimentState state = 1;</code>
      * @return Whether the state field is set.
      */
-    public boolean hasState() {
+    @java.lang.Override public boolean hasState() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -800,6 +800,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UserSentiment.SentimentState state = 1;</code>
      * @return The state.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.UserSentiment.SentimentState getState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UserSentiment.SentimentState result = com.google.wireless.android.sdk.stats.UserSentiment.SentimentState.valueOf(state_);
@@ -847,7 +848,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UserSentiment.SatisfactionLevel level = 2;</code>
      * @return Whether the level field is set.
      */
-    public boolean hasLevel() {
+    @java.lang.Override public boolean hasLevel() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -858,6 +859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UserSentiment.SatisfactionLevel level = 2;</code>
      * @return The level.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel getLevel() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel result = com.google.wireless.android.sdk.stats.UserSentiment.SatisfactionLevel.valueOf(level_);

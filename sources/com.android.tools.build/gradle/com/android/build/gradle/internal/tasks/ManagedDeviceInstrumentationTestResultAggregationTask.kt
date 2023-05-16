@@ -16,19 +16,24 @@
 
 package com.android.build.gradle.internal.tasks
 
-import com.android.build.gradle.internal.component.VariantCreationConfig
+import com.android.build.gradle.internal.component.InstrumentedTestCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
+import com.android.build.gradle.internal.test.report.ReportType
+import com.android.build.gradle.internal.test.report.TestReport
 import com.android.build.gradle.internal.testing.utp.UtpTestSuiteResultMerger
 import com.google.testing.platform.proto.api.core.TestSuiteResultProto.TestSuiteResult
 import java.io.File
 import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.internal.logging.ConsoleRenderer
 import org.gradle.work.DisableCachingByDefault
 
 /**
@@ -44,32 +49,45 @@ abstract class ManagedDeviceInstrumentationTestResultAggregationTask: NonIncreme
     @get:OutputFile
     abstract val outputTestResultProto: RegularFileProperty
 
+    @get:OutputDirectory
+    abstract val outputTestReportHtmlDir: DirectoryProperty
+
     override fun doTaskAction() {
         val resultProtos = inputTestResultProtos.filter(File::exists)
         if (!resultProtos.isEmpty) {
             val resultMerger = UtpTestSuiteResultMerger()
             resultProtos.forEach { resultProtoFile ->
-                val proto = TestSuiteResult.parseFrom(resultProtoFile.inputStream())
+                val proto = resultProtoFile.inputStream().use {
+                    TestSuiteResult.parseFrom(it)
+                }
                 resultMerger.merge(proto)
             }
 
             val mergedTestResultPbFile = outputTestResultProto.get().asFile
-            resultMerger.result.writeTo(mergedTestResultPbFile.outputStream())
-            logger.lifecycle(
-                "\nTest results saved as ${mergedTestResultPbFile.toURI()}.\n" +
-                "Inspect these results in Android Studio by selecting Run > Import Tests " +
-                "From File from the menu bar and importing test-result.pb."
-            )
+            mergedTestResultPbFile.outputStream().use {
+                resultMerger.result.writeTo(it)
+            }
         }
+
+        TestReport(
+            ReportType.SINGLE_FLAVOR,
+            inputTestResultProtos.mapNotNull(File::getParentFile).filter(File::exists).toList(),
+            outputTestReportHtmlDir.get().asFile
+        ).generateReport()
+
+        val reportUrl = ConsoleRenderer().asClickableFileUrl(
+            File(outputTestReportHtmlDir.get().asFile, "index.html"))
+        logger.lifecycle("Test execution completed. See the report at: $reportUrl")
     }
 
     class CreationAction(
-        creationConfig: VariantCreationConfig,
+        creationConfig: InstrumentedTestCreationConfig,
         private val deviceTestResultFiles: List<File>,
         private val testResultOutputFile: File,
+        private val testReportHtmlOutputDir: File,
     ) : VariantTaskCreationAction<
             ManagedDeviceInstrumentationTestResultAggregationTask,
-            VariantCreationConfig>(creationConfig) {
+            InstrumentedTestCreationConfig>(creationConfig) {
 
         override val name: String
             get() = computeTaskName("merge", "TestResultProtos")
@@ -85,6 +103,14 @@ abstract class ManagedDeviceInstrumentationTestResultAggregationTask: NonIncreme
                 .withName(testResultOutputFile.name)
                 .atLocation(testResultOutputFile.parentFile.absolutePath)
                 .on(InternalArtifactType.MANAGED_DEVICE_ANDROID_TEST_MERGED_RESULTS_PROTO)
+
+            creationConfig.artifacts
+                .setInitialProvider(
+                    taskProvider,
+                    ManagedDeviceInstrumentationTestResultAggregationTask::outputTestReportHtmlDir)
+                .withName("allDevices")
+                .atLocation(testReportHtmlOutputDir.absolutePath)
+                .on(InternalArtifactType.MANAGED_DEVICE_ANDROID_TEST_MERGED_RESULTS_REPORT)
         }
 
         override fun configure(task: ManagedDeviceInstrumentationTestResultAggregationTask) {

@@ -468,16 +468,7 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
         addResourceConfigurations(config)
     }
 
-    override val javaCompileOptions: JavaCompileOptions =
-        dslServices.newInstance(JavaCompileOptions::class.java, dslServices)
-
-    override fun javaCompileOptions(action: com.android.build.api.dsl.JavaCompileOptions.() -> Unit) {
-        action.invoke(javaCompileOptions)
-    }
-
-    fun javaCompileOptions(action: Action<JavaCompileOptions>) {
-        action.execute(javaCompileOptions)
-    }
+    abstract override val javaCompileOptions: JavaCompileOptions
 
     override val shaders: ShaderOptions =
         dslServices.newInstance(ShaderOptions::class.java)
@@ -489,16 +480,6 @@ abstract class BaseFlavor(name: String, private val dslServices: DslServices) :
 
     override fun shaders(action: Shaders.() -> Unit) {
         action.invoke(shaders)
-    }
-
-    override val aarMetadata: AarMetadata = dslServices.newInstance(AarMetadata::class.java)
-
-    override fun aarMetadata(action: com.android.build.api.dsl.AarMetadata.() -> Unit) {
-        action.invoke(aarMetadata)
-    }
-
-    override fun aarMetadata(action: Action<com.android.build.api.dsl.AarMetadata>) {
-        action.execute(aarMetadata)
     }
 
     /**

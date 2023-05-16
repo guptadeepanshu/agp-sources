@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.WearPairingEvent}
  */
-public  final class WearPairingEvent extends
+public final class WearPairingEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.WearPairingEvent)
     WearPairingEventOrBuilder {
@@ -293,7 +293,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WearPairingEvent.EventKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -304,7 +304,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WearPairingEvent.EventKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind result = com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind.UNSPECIFIED : result;
@@ -636,7 +636,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WearPairingEvent.EventKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -647,6 +647,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.WearPairingEvent.EventKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind result = com.google.wireless.android.sdk.stats.WearPairingEvent.EventKind.valueOf(kind_);

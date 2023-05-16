@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGrpc}
  */
-public  final class EmulatorGrpc extends
+public final class EmulatorGrpc extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGrpc)
     EmulatorGrpcOrBuilder {
@@ -150,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 call_id = 1;</code>
    * @return Whether the callId field is set.
    */
+  @java.lang.Override
   public boolean hasCallId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -161,6 +162,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 call_id = 1;</code>
    * @return The callId.
    */
+  @java.lang.Override
   public int getCallId() {
     return callId_;
   }
@@ -175,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 requests = 2;</code>
    * @return Whether the requests field is set.
    */
+  @java.lang.Override
   public boolean hasRequests() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -186,6 +189,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 requests = 2;</code>
    * @return The requests.
    */
+  @java.lang.Override
   public int getRequests() {
     return requests_;
   }
@@ -200,6 +204,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 failures = 3;</code>
    * @return Whether the failures field is set.
    */
+  @java.lang.Override
   public boolean hasFailures() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -211,6 +216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 failures = 3;</code>
    * @return The failures.
    */
+  @java.lang.Override
   public int getFailures() {
     return failures_;
   }
@@ -225,6 +231,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
    * @return Whether the rcvBytesEstimate field is set.
    */
+  @java.lang.Override
   public boolean hasRcvBytesEstimate() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -236,6 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
    * @return The rcvBytesEstimate.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getRcvBytesEstimate() {
     return rcvBytesEstimate_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : rcvBytesEstimate_;
   }
@@ -246,6 +254,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator rcv_bytes_estimate = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getRcvBytesEstimateOrBuilder() {
     return rcvBytesEstimate_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : rcvBytesEstimate_;
   }
@@ -260,6 +269,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
    * @return Whether the sndBytesEstimate field is set.
    */
+  @java.lang.Override
   public boolean hasSndBytesEstimate() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -271,6 +281,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
    * @return The sndBytesEstimate.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getSndBytesEstimate() {
     return sndBytesEstimate_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : sndBytesEstimate_;
   }
@@ -281,6 +292,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator snd_bytes_estimate = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getSndBytesEstimateOrBuilder() {
     return sndBytesEstimate_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : sndBytesEstimate_;
   }
@@ -295,6 +307,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
    * @return Whether the duration field is set.
    */
+  @java.lang.Override
   public boolean hasDuration() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -306,6 +319,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
    * @return The duration.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getDuration() {
     return duration_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : duration_;
   }
@@ -316,6 +330,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator duration = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDurationOrBuilder() {
     return duration_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : duration_;
   }
@@ -799,6 +814,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 call_id = 1;</code>
      * @return Whether the callId field is set.
      */
+    @java.lang.Override
     public boolean hasCallId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -810,6 +826,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 call_id = 1;</code>
      * @return The callId.
      */
+    @java.lang.Override
     public int getCallId() {
       return callId_;
     }
@@ -852,6 +869,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 requests = 2;</code>
      * @return Whether the requests field is set.
      */
+    @java.lang.Override
     public boolean hasRequests() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -863,6 +881,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 requests = 2;</code>
      * @return The requests.
      */
+    @java.lang.Override
     public int getRequests() {
       return requests_;
     }
@@ -905,6 +924,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 failures = 3;</code>
      * @return Whether the failures field is set.
      */
+    @java.lang.Override
     public boolean hasFailures() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -916,6 +936,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 failures = 3;</code>
      * @return The failures.
      */
+    @java.lang.Override
     public int getFailures() {
       return failures_;
     }

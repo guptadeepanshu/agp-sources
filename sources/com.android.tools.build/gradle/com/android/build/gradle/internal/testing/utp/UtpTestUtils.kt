@@ -21,21 +21,20 @@ import com.android.build.gradle.internal.testing.CustomTestRunListener
 import com.android.build.gradle.internal.testing.utp.worker.RunUtpWorkAction
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
-import com.android.builder.core.VariantType
+import com.android.builder.core.ComponentType
 import com.android.prefs.AndroidLocationsSingleton
 import com.android.tools.utp.plugins.result.listener.gradle.proto.GradleAndroidTestResultListenerProto
 import com.android.utils.ILogger
 import com.google.common.io.Files
 import com.google.testing.platform.proto.api.config.RunnerConfigProto
 import com.google.testing.platform.proto.api.core.ErrorDetailProto
-import com.google.testing.platform.proto.api.core.TestStatusProto
+import com.google.testing.platform.proto.api.core.TestStatusProto.TestStatus
 import com.google.testing.platform.proto.api.core.TestSuiteResultProto
 import com.google.testing.platform.proto.api.service.ServerConfigProto
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentHashMap
 import java.util.logging.Level
-import kotlin.math.min
 import org.gradle.api.logging.Logging
 import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
@@ -153,14 +152,14 @@ fun runUtpTestSuiteAndWait(
 
                 val resultsProto = resultsProto
                 val testPassed = if (resultsProto != null) {
-                    val testResultPbFile = File(config.utpOutputDir, TEST_RESULT_PB_FILE_NAME)
-                    resultsProto.writeTo(testResultPbFile.outputStream())
-                    val testFailed = resultsProto.hasPlatformError() ||
-                            resultsProto.testResultList.any { testCaseResult ->
-                                testCaseResult.testStatus == TestStatusProto.TestStatus.FAILED
-                                        || testCaseResult.testStatus == TestStatusProto.TestStatus.ERROR
-                            }
-                    !testFailed
+                    File(config.utpOutputDir, TEST_RESULT_PB_FILE_NAME).outputStream().use {
+                        resultsProto.writeTo(it)
+                    }
+                    val testSuitePassed = resultsProto.testStatus.isPassedOrSkipped()
+                    val hasAnyFailedTestCase = resultsProto.testResultList.any { testCaseResult ->
+                        !testCaseResult.testStatus.isPassedOrSkipped()
+                    }
+                    testSuitePassed && !hasAnyFailedTestCase && !resultsProto.hasPlatformError()
                 } else {
                     logger.error(null, "Failed to receive the UTP test results")
                     false
@@ -176,6 +175,15 @@ fun runUtpTestSuiteAndWait(
         return postProcessCallback.map {
             it()
         }.toList()
+    }
+}
+
+private fun TestStatus.isPassedOrSkipped(): Boolean {
+    return when (this) {
+        TestStatus.PASSED,
+        TestStatus.IGNORED,
+        TestStatus.SKIPPED -> true
+        else -> false
     }
 }
 
@@ -251,12 +259,12 @@ fun getUtpPreferenceRootDir(): File {
 /**
  * Returns true when UTP should be enabled, false otherwise.
  *
- * @param variantType a variant type of the tested APK. Null when it is unknown.
+ * @param componentType a variant type of the tested APK. Null when it is unknown.
  */
 fun shouldEnableUtp(
     projectOptions: ProjectOptions,
     testOptions: TestOptions?,
-    variantType: VariantType?,
+    componentType: ComponentType?,
 ): Boolean {
     if (projectOptions[BooleanOption.ENABLE_TEST_SHARDING]) {
         Logging.getLogger("UtpTestUtils").warn(
@@ -265,7 +273,7 @@ fun shouldEnableUtp(
                     "supported by ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM yet.")
         return false
     }
-    if (variantType != null && variantType.isDynamicFeature) {
+    if (componentType != null && componentType.isDynamicFeature) {
         Logging.getLogger("UtpTestUtils").warn(
             "Disabling ANDROID_TEST_USES_UNIFIED_TEST_PLATFORM option because " +
                     "this is a dynamic-feature module. Dynamic-feature module is not " +
@@ -294,34 +302,36 @@ private fun hasEmulatorTimeoutException(error: ErrorDetailProto.ErrorDetail): Bo
 }
 
 /**
- * Finds the root cause of the Platform Error if it came form the Managed Device
- * Android Provider.
+ * Finds the root cause of the Platform Error and returns the error message.
  */
 fun getPlatformErrorMessage(resultsProto: TestSuiteResultProto.TestSuiteResult?): String {
     resultsProto ?: return UNKNOWN_PLATFORM_ERROR_MESSAGE
-    return getPlatformErrorMessage(resultsProto.platformError.errorDetail)
+    return getPlatformErrorMessage(resultsProto.platformError.errorDetail).toString()
 }
 
 /**
- * Finds the root cause of the Platform Error if it came form the Managed Device
- * Android Provider.
+ * Finds the root cause of the Platform Error and returns the error message.
  *
  * @param error the top level error detail to be analyzed.
- * @return if [error] is from the managed device plugin, the message of the error is returned. Will
- * otherwise check the cause of the error detail. If no cause is from the managed device plugin a
- * default error message is returned.
  */
-private fun getPlatformErrorMessage(error : ErrorDetailProto.ErrorDetail) : String =
-    when {
-        getExceptionFromStackTrace(error.summary.stackTrace).contains("EmulatorTimeoutException") ->
-            """
-                PLATFORM ERROR:
-                ${error.summary.errorMessage}
-            """.trimIndent()
-        error.hasCause() ->
-            getPlatformErrorMessage(error.cause)
-        else -> UNKNOWN_PLATFORM_ERROR_MESSAGE
+private fun getPlatformErrorMessage(
+    error : ErrorDetailProto.ErrorDetail,
+    errorMessageBuilder: StringBuilder = StringBuilder()) : StringBuilder {
+    if (error.hasCause()) {
+        if (error.summary.errorMessage.isNotBlank()) {
+            errorMessageBuilder.append("${error.summary.errorMessage}\n")
+        }
+        getPlatformErrorMessage(error.cause, errorMessageBuilder)
+    } else {
+        if (error.summary.errorMessage.isNotBlank()) {
+            errorMessageBuilder.append("${error.summary.errorMessage}\n")
+        } else {
+            errorMessageBuilder.append("$UNKNOWN_PLATFORM_ERROR_MESSAGE\n")
+        }
+        errorMessageBuilder.append(error.summary.stackTrace)
     }
+    return errorMessageBuilder
+}
 
 /**
  * Attempts to get a simple string by which the exception can be easily parsed.

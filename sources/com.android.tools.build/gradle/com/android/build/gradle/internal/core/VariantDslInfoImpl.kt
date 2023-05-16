@@ -42,21 +42,26 @@ import com.android.build.gradle.internal.PostprocessingFeatures
 import com.android.build.gradle.internal.ProguardFileType
 import com.android.build.gradle.internal.VariantManager
 import com.android.build.gradle.internal.core.MergedFlavor.Companion.mergeFlavors
+import com.android.build.gradle.internal.cxx.configure.ninja
 import com.android.build.gradle.internal.dsl.BuildType.PostProcessingConfiguration
 import com.android.build.gradle.internal.dsl.CoreExternalNativeBuildOptions
 import com.android.build.gradle.internal.dsl.CoreNdkOptions
 import com.android.build.gradle.internal.dsl.DefaultConfig
+import com.android.build.gradle.internal.dsl.OptimizationImpl
 import com.android.build.gradle.internal.dsl.SigningConfig
 import com.android.build.gradle.internal.manifest.ManifestDataProvider
+import com.android.build.gradle.internal.profile.ProfilingMode
 import com.android.build.gradle.internal.publishing.VariantPublishingInfo
 import com.android.build.gradle.internal.services.DslServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.testFixtures.testFixturesFeatureName
 import com.android.build.gradle.internal.variant.DimensionCombination
 import com.android.build.gradle.options.IntegerOption
+import com.android.build.gradle.options.StringOption
 import com.android.build.gradle.options.Version
 import com.android.builder.core.AbstractProductFlavor
-import com.android.builder.core.VariantType
+import com.android.builder.core.BuilderConstants
+import com.android.builder.core.ComponentType
 import com.android.builder.dexing.DexingType
 import com.android.builder.dexing.isLegacyMultiDexMode
 import com.android.builder.errors.IssueReporter
@@ -89,7 +94,7 @@ import java.util.concurrent.Callable
  */
 open class VariantDslInfoImpl internal constructor(
     override val componentIdentity: ComponentIdentity,
-    final override val variantType: VariantType,
+    final override val componentType: ComponentType,
     private val defaultConfig: DefaultConfig,
     /**
      * Public because this is needed by the old Variant API. Nothing else should touch this.
@@ -108,9 +113,8 @@ open class VariantDslInfoImpl internal constructor(
     val dataProvider: ManifestDataProvider,
     @Deprecated("Only used for merged flavor")
     private val dslServices: DslServices,
-    private val services: VariantPropertiesApiServices,
+    private val services: VariantServices,
     private val buildDirectory: DirectoryProperty,
-    override val nativeBuildSystem: VariantManager.NativeBuiltType?,
     override val publishInfo: VariantPublishingInfo?,
     override val experimentalProperties: Map<String, Any>,
     /**
@@ -122,7 +126,7 @@ open class VariantDslInfoImpl internal constructor(
     private val extension: CommonExtension<*,*,*,*>
 ): VariantDslInfo, DimensionCombination {
 
-    private val dslNamespaceProvider: Provider<String>? = extension.getDslNamespace(variantType)?.let {
+    private val dslNamespaceProvider: Provider<String>? = extension.getDslNamespace(componentType)?.let {
         services.provider { it }
     }
 
@@ -149,156 +153,22 @@ open class VariantDslInfoImpl internal constructor(
     /**
      * Optional tested config in case this variant is used for testing another variant.
      *
-     * @see VariantType.isTestComponent
+     * @see ComponentType.isTestComponent
      */
     override val testedVariant: VariantDslInfo?
-        get() = if (variantType.isTestComponent) { productionVariant } else null
+        get() = if (componentType.isTestComponent) { productionVariant } else null
 
     private val mergedNdkConfig = MergedNdkConfig()
     private val mergedExternalNativeBuildOptions =
         MergedExternalNativeBuildOptions()
-    private val mergedJavaCompileOptions = MergedJavaCompileOptions(dslServices)
+    private val mergedJavaCompileOptions =
+        dslServices.newDecoratedInstance(MergedJavaCompileOptions::class.java, dslServices)
     private val mergedAarMetadata = MergedAarMetadata()
+    private val mergedOptimization = MergedOptimization()
 
     init {
         mergeOptions()
     }
-
-    /**
-     * Returns a full name that includes the given splits name.
-     *
-     * @param splitName the split name
-     * @return a unique name made up of the variant and split names.
-     */
-    override fun computeFullNameWithSplits(splitName: String): String {
-        return VariantDslInfoBuilder.computeFullNameWithSplits(
-            componentIdentity,
-            variantType,
-            splitName
-        )
-    }
-
-    /**
-     * Returns the full, unique name of the variant, including BuildType, flavors and test, dash
-     * separated. (similar to full name but with dashes)
-     *
-     * @return the name of the variant
-     */
-    override val baseName: String by lazy {
-        VariantDslInfoBuilder.computeBaseName(this, variantType)
-    }
-
-    /**
-     * Returns a base name that includes the given splits name.
-     *
-     * @param splitName the split name
-     * @return a unique name made up of the variant and split names.
-     */
-    override fun computeBaseNameWithSplits(splitName: String): String {
-        val sb = StringBuilder()
-        if (productFlavorList.isNotEmpty()) {
-            for (pf in productFlavorList) {
-                sb.append(pf.name).append('-')
-            }
-        }
-        sb.append(splitName).append('-')
-        sb.append(buildTypeObj.name)
-        if (variantType.isNestedComponent) {
-            sb.append('-').append(variantType.prefix)
-        }
-        return sb.toString()
-    }
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test.
-     *
-     *
-     * This always uses forward slashes ('/') as separator on all platform.
-     *
-     * @return the directory name for the variant
-     */
-    override val dirName: String by lazy {
-        Joiner.on('/').join(directorySegments)
-    }
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test.
-     *
-     * @return the directory name for the variant
-     */
-    override val directorySegments: Collection<String?> by lazy {
-        val builder =
-            ImmutableList.builder<String>()
-        if (variantType.isNestedComponent) {
-            builder.add(variantType.prefix)
-        }
-        if (productFlavorList.isNotEmpty()) {
-            builder.add(
-                combineAsCamelCase(
-                    productFlavorList, ProductFlavor::getName
-                )
-            )
-        }
-        builder.add(buildTypeObj.name)
-        builder.build()
-    }
-
-    /**
-     * Returns a unique directory name (can include multiple folders) for the variant, based on
-     * build type, flavor and test, and splits.
-     *
-     *
-     * This always uses forward slashes ('/') as separator on all platform.
-     *
-     * @return the directory name for the variant
-     */
-    override fun computeDirNameWithSplits(vararg splitNames: String): String {
-        val sb = StringBuilder()
-        if (variantType.isNestedComponent) {
-            sb.append(variantType.prefix).append("/")
-        }
-        if (productFlavorList.isNotEmpty()) {
-            for (flavor in productFlavorList) {
-                sb.append(flavor.name)
-            }
-            sb.append('/')
-        }
-        for (splitName in splitNames) {
-            sb.append(splitName).append('/')
-        }
-        sb.append(buildTypeObj.name)
-        return sb.toString()
-    }
-
-    /**
-     * Return the names of the applied flavors.
-     *
-     *
-     * The list contains the dimension names as well.
-     *
-     * @return the list, possibly empty if there are no flavors.
-     */
-    override val flavorNamesWithDimensionNames: List<String>
-        get() {
-            if (productFlavorList.isEmpty()) {
-                return emptyList()
-            }
-            val names: List<String>
-            val count = productFlavorList.size
-            if (count > 1) {
-                names =
-                    Lists.newArrayListWithCapacity(count * 2)
-                for (i in 0 until count) {
-                    names.add(productFlavorList[i].name)
-                    names.add(productFlavorList[i].dimension)
-                }
-            } else {
-                names = listOf(productFlavorList[0].name)
-            }
-            return names
-        }
 
     override fun hasFlavors(): Boolean {
         return productFlavorList.isNotEmpty()
@@ -310,16 +180,23 @@ open class VariantDslInfoImpl internal constructor(
         when {
             // -------------
             // Special case for test components
-            // The namespace is the tested component's testNamespace or else the tested component's
-            // namespace + ".test"
+            // We first look for a value specified via the DSL - either testNamespace or namespace +
+            // ".test". Otherwise, we use the package attribute from either the test manifest or the
+            // main manifest (appending ".test" if from the main manifest).
             testedVariant != null -> {
-                dslNamespaceProvider ?: testedVariant.namespace.map { "$it.test" }
+                dslNamespaceProvider
+                    ?: extension.namespace?.let { services.provider {"$it.test" } }
+                    ?: testedVariant.namespace.flatMap { testedVariantNamespace ->
+                        dataProvider.manifestData.map { manifestData ->
+                            manifestData.packageName ?: "$testedVariantNamespace.test"
+                        }
+                    }
             }
 
             // -------------
             // Special case for test fixtures
             // Namespace is always derived from the parent variant's namespace
-            variantType.isTestFixturesComponent -> {
+            componentType.isTestFixturesComponent -> {
                 val parentVariant =
                         productionVariant
                                 ?: throw RuntimeException("null parentVariantImpl in test-fixtures VariantDslInfoImpl")
@@ -333,7 +210,7 @@ open class VariantDslInfoImpl internal constructor(
             // all is declared in the DSL.
             // TODO(b/170945282, b/172361895) Remove this special case - users should use namespace
             //  DSL instead of testApplicationId DSL for this... currently a warning
-            variantType.isSeparateTestProject -> {
+            componentType.isSeparateTestProject -> {
                 if (dslNamespaceProvider != null) {
                     dslNamespaceProvider
                 } else {
@@ -378,7 +255,7 @@ open class VariantDslInfoImpl internal constructor(
         if (inconsistentTestAppId) {
             namespace
         } else {
-            if (!variantType.isTestComponent) {
+            if (!componentType.isTestComponent) {
                 throw RuntimeException("namespaceForR should only be used by test variants")
             }
 
@@ -431,7 +308,7 @@ open class VariantDslInfoImpl internal constructor(
     private fun initApplicationId(): Provider<String> {
         // -------------
         // Special case for test components and separate test sub-projects
-        if (variantType.isForTesting) {
+        if (componentType.isForTesting) {
             // get first non null testAppId from flavors/default config
             val testAppIdFromFlavors =
                 productFlavorList.asSequence().map { it.testApplicationId }
@@ -509,7 +386,7 @@ open class VariantDslInfoImpl internal constructor(
     override val versionName: Provider<String?>
         get() {
             // This value is meaningless for tests
-            if (variantType.isForTesting) {
+            if (componentType.isForTesting) {
                 val callable: Callable<String?> = Callable { null }
                 return services.provider(callable)
             }
@@ -572,7 +449,7 @@ open class VariantDslInfoImpl internal constructor(
     override val versionCode: Provider<Int?>
         get() {
             // This value is meaningless for tests
-            if (variantType.isForTesting) {
+            if (componentType.isForTesting) {
                 val callable: Callable<Int?> = Callable { null }
                 return services.provider(callable)
             }
@@ -600,7 +477,7 @@ open class VariantDslInfoImpl internal constructor(
         }
 
     override fun getInstrumentationRunner(dexingType: DexingType): Provider<String> {
-            if (!variantType.isForTesting) {
+            if (!componentType.isForTesting) {
                 throw RuntimeException("instrumentationRunner is not available to non-test variant")
             }
 
@@ -633,7 +510,7 @@ open class VariantDslInfoImpl internal constructor(
     override val instrumentationRunnerArguments: Map<String, String>
         get() {
             val variantDslInfo: VariantDslInfoImpl =
-                if (variantType.isTestComponent) {
+                if (componentType.isTestComponent) {
                     productionVariant!!
                 } else {
                     this
@@ -643,7 +520,7 @@ open class VariantDslInfoImpl internal constructor(
 
     override val handleProfiling: Provider<Boolean>
         get() {
-            if (!variantType.isForTesting) {
+            if (!componentType.isForTesting) {
                 throw RuntimeException("handleProfiling is not available to non-test variant")
             }
 
@@ -664,7 +541,7 @@ open class VariantDslInfoImpl internal constructor(
 
     override val functionalTest: Provider<Boolean>
         get() {
-            if (!variantType.isForTesting) {
+            if (!componentType.isForTesting) {
                 throw RuntimeException("functionalTest is not available to non-test variant")
             }
 
@@ -685,7 +562,7 @@ open class VariantDslInfoImpl internal constructor(
 
     override val testLabel: Provider<String?>
         get() {
-            if (!variantType.isForTesting) {
+            if (!componentType.isForTesting) {
                 throw RuntimeException("handleProfiling is not available to non-test variant")
             }
 
@@ -807,13 +684,15 @@ open class VariantDslInfoImpl internal constructor(
 
     override val signingConfig: SigningConfig?
         get() {
-            if (variantType.isDynamicFeature) {
+            if (componentType.isDynamicFeature ||
+                testedVariant?.componentType?.isDynamicFeature == true
+            ) {
                 return null
             }
-            // cast builder.SigningConfig to dsl.SigningConfig because MergedFlavor merges
-            // dsl.SigningConfig of ProductFlavor objects
-            val dslSigningConfig: SigningConfig? =
-                ((buildTypeObj as? ApplicationBuildType)?.signingConfig ?: mergedFlavor.signingConfig) as SigningConfig?
+            val dslSigningConfig =
+                (buildTypeObj as? ApplicationBuildType)?.signingConfig
+                    ?: mergedFlavor.signingConfig
+
             signingConfigOverride?.let {
                 // use enableV1 and enableV2 from the DSL if the override values are null
                 if (it.enableV1Signing == null) {
@@ -827,7 +706,10 @@ open class VariantDslInfoImpl internal constructor(
                 it.enableV4Signing = dslSigningConfig?.enableV4Signing
                 return it
             }
-            return dslSigningConfig
+            if (dslSigningConfig == null && (isProfileable || isDebuggable)) {
+                return extension.signingConfigs.findByName(BuilderConstants.DEBUG) as SigningConfig?
+            }
+            return dslSigningConfig as SigningConfig?
         }
 
     override val isSigningReady: Boolean
@@ -836,8 +718,8 @@ open class VariantDslInfoImpl internal constructor(
             return signingConfig != null && signingConfig.isSigningReady
         }
 
-    override val isTestCoverageEnabled: Boolean
-        get() = buildTypeObj.isTestCoverageEnabled // so far, blindly override the build type placeholders
+    override val isAndroidTestCoverageEnabled: Boolean
+        get() = buildTypeObj.enableAndroidTestCoverage || buildTypeObj.isTestCoverageEnabled
 
     override val isUnitTestCoverageEnabled: Boolean
         get() = buildTypeObj.enableUnitTestCoverage || buildTypeObj.isTestCoverageEnabled
@@ -890,7 +772,7 @@ open class VariantDslInfoImpl internal constructor(
 
     // dynamic features can always be build in native multidex mode
     override val dexingType: DexingType?
-        get() = if (variantType.isDynamicFeature) {
+        get() = if (componentType.isDynamicFeature) {
             if ((buildTypeObj as? ApplicationBuildType)?.multiDexEnabled != null ||
                 mergedFlavor.multiDexEnabled != null
             ) {
@@ -923,7 +805,7 @@ open class VariantDslInfoImpl internal constructor(
 
     /** Returns true if the variant output is a bundle.  */
     override val isBundled: Boolean
-        get() = variantType.isAar // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
+        get() = componentType.isAar // Consider runtime API passed from the IDE only if multi-dex is enabled and the app is debuggable.
 
     /**
      * Returns the API to which device/emulator we're deploying via the IDE or null if not.
@@ -953,14 +835,27 @@ open class VariantDslInfoImpl internal constructor(
             { externalNativeBuild as CoreExternalNativeBuildOptions },
             { externalNativeBuild as CoreExternalNativeBuildOptions }
         )
-        if (variantType.isAar) {
+        if (componentType.isAar) {
             computeMergedOptions(
                 mergedAarMetadata,
                 { (this as LibraryVariantDimension).aarMetadata },
                 { (this as LibraryVariantDimension).aarMetadata }
             )
         }
+        computeMergedOptions(
+            mergedOptimization,
+            { optimization as OptimizationImpl },
+            { optimization as OptimizationImpl }
+        )
     }
+
+    override val nativeBuildSystem: NativeBuiltType?
+        get() {
+            if (externalNativeExperimentalProperties.ninja.path != null) return NativeBuiltType.NINJA
+            if (extension.externalNativeBuild.ndkBuild.path != null) return NativeBuiltType.NDK_BUILD
+            if (extension.externalNativeBuild.cmake.path != null) return NativeBuiltType.CMAKE
+            return null
+        }
 
     override val ndkConfig: MergedNdkConfig
         get() = mergedNdkConfig
@@ -978,7 +873,7 @@ open class VariantDslInfoImpl internal constructor(
      * others.
      */
     override val supportedAbis: Set<String>
-        get() = if (variantType.isDynamicFeature) setOf() else mergedNdkConfig.abiFilters
+        get() = if (componentType.isDynamicFeature) setOf() else mergedNdkConfig.abiFilters
 
     override fun getProguardFiles(into: ListProperty<RegularFile>) {
         val result: MutableList<File> = ArrayList(mergedProguardFiles(ProguardFileType.EXPLICIT))
@@ -1056,7 +951,7 @@ open class VariantDslInfoImpl internal constructor(
     private var _postProcessingOptions: PostProcessingOptions =
             if ((buildTypeObj as com.android.build.gradle.internal.dsl.BuildType).postProcessingConfiguration == PostProcessingConfiguration.POSTPROCESSING_BLOCK) {
                 PostProcessingBlockOptions(
-                    buildTypeObj.postprocessing, variantType.isTestComponent
+                    buildTypeObj.postprocessing, componentType.isTestComponent
                 )
             } else object : PostProcessingOptions {
                 override fun getProguardFiles(type: ProguardFileType): Collection<File> =
@@ -1163,10 +1058,53 @@ open class VariantDslInfoImpl internal constructor(
         }
 
     override val isDebuggable: Boolean
-        get() = (buildTypeObj as? ApplicationBuildType)?.isDebuggable ?: false
+        get() = ProfilingMode.getProfilingModeType(
+            services.projectOptions[StringOption.PROFILING_MODE]
+        ).isDebuggable
+            ?: (buildTypeObj as? ApplicationBuildType)?.isDebuggable
+            ?: false
 
     override val isEmbedMicroApp: Boolean
         get() = (buildTypeObj as? ApplicationBuildType)?.isEmbedMicroApp ?: false
+
+    override val isProfileable: Boolean
+        get() {
+            val fromProfilingModeOption = ProfilingMode.getProfilingModeType(
+                services.projectOptions[StringOption.PROFILING_MODE]
+            ).isProfileable
+            val fromBuildType = (buildTypeObj as? ApplicationBuildType)?.isProfileable
+            // When profileable is enabled from the profilingMode option, it ensures all profileable
+            // features are supported, therefore the compileSdk => 30.
+            val minProfileableSdk = 30
+            val compileSdk = extension.compileSdk ?: minProfileableSdk
+            if ((fromProfilingModeOption == true || fromBuildType == true)
+                && compileSdk < minProfileableSdk
+            ) {
+                services.issueReporter.reportError(IssueReporter.Type.COMPILE_SDK_VERSION_TOO_LOW,
+                    """'profileable' is enabled with compile SDK <30.
+                        Recommended action: If possible, upgrade compileSdk from ${minSdkVersion.apiLevel} to 30."""
+                        .trimIndent()
+                )
+            }
+            return when {
+                fromProfilingModeOption != null -> {
+                    fromProfilingModeOption
+                }
+                fromBuildType == true && isDebuggable -> {
+                    val projectName = services.projectInfo.name
+                    val message =
+                        ":$projectName build type '${buildTypeObj.name}' can only have debuggable or profileable enabled.\n" +
+                                "Only one of these options can be used at a time.\n" +
+                                "Recommended action: Only set one of debuggable=true and profileable=true.\n"
+                    services.issueReporter.reportWarning(IssueReporter.Type.GENERIC, message)
+                    // Disable profileable when profileable and debuggable are both enabled.
+                    false
+                }
+                else -> {
+                    fromBuildType == true
+                }
+            }
+        }
 
     override val isPseudoLocalesEnabled: Boolean
         get() = buildTypeObj.isPseudoLocalesEnabled
@@ -1219,6 +1157,23 @@ open class VariantDslInfoImpl internal constructor(
     override val lintOptions: Lint
         get() = extension.lint
 
+    override val ignoredLibraryKeepRules: Set<String>
+        get() = mergedOptimization.ignoredLibraryKeepRules
+
+    override val ignoreAllLibraryKeepRules: Boolean
+        get() = mergedOptimization.ignoreAllLibraryKeepRules
+
+    override val externalNativeExperimentalProperties: Map<String, Any>
+        get() {
+            // merge global and variant properties
+            val mergedProperties = mutableMapOf<String, Any>()
+            mergedProperties.putAll(extension.externalNativeBuild.experimentalProperties)
+            mergedProperties.putAll(
+                mergedExternalNativeBuildOptions.externalNativeExperimentalProperties
+            )
+            return mergedProperties
+        }
+
     companion object {
 
         const val DEFAULT_TEST_RUNNER = "android.test.InstrumentationTestRunner"
@@ -1234,10 +1189,10 @@ open class VariantDslInfoImpl internal constructor(
             } else fullOption.substring(0, pos)
         }
 
-        private fun CommonExtension<*, *, *, *>.getDslNamespace(variantType: VariantType): String? {
-            return if (variantType.isTestComponent) {
+        private fun CommonExtension<*, *, *, *>.getDslNamespace(componentType: ComponentType): String? {
+            return if (componentType.isTestComponent) {
                 (this as TestedExtension).testNamespace
-            } else if (variantType.isTestFixturesComponent) {
+            } else if (componentType.isTestFixturesComponent) {
                 null
             } else {
                 namespace

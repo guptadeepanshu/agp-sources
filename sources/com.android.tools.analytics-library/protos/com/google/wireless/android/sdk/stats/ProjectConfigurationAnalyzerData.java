@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ProjectConfigurationAnalyzerData}
  */
-public  final class ProjectConfigurationAnalyzerData extends
+public final class ProjectConfigurationAnalyzerData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ProjectConfigurationAnalyzerData)
     ProjectConfigurationAnalyzerDataOrBuilder {
@@ -168,7 +168,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData}
    */
-  public  static final class PluginConfigurationData extends
+  public static final class PluginConfigurationData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData)
       PluginConfigurationDataOrBuilder {
@@ -272,6 +272,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 plugin_configuration_time_ms = 1;</code>
      * @return Whether the pluginConfigurationTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasPluginConfigurationTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -283,6 +284,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 plugin_configuration_time_ms = 1;</code>
      * @return The pluginConfigurationTimeMs.
      */
+    @java.lang.Override
     public long getPluginConfigurationTimeMs() {
       return pluginConfigurationTimeMs_;
     }
@@ -297,6 +299,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      * @return Whether the pluginIdentifier field is set.
      */
+    @java.lang.Override
     public boolean hasPluginIdentifier() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -308,6 +311,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      * @return The pluginIdentifier.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier getPluginIdentifier() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -318,6 +322,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.BuildAttributionPluginIdentifier plugin_identifier = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifierOrBuilder getPluginIdentifierOrBuilder() {
       return pluginIdentifier_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionPluginIdentifier.getDefaultInstance() : pluginIdentifier_;
     }
@@ -684,6 +689,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 plugin_configuration_time_ms = 1;</code>
        * @return Whether the pluginConfigurationTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasPluginConfigurationTimeMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -695,6 +701,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 plugin_configuration_time_ms = 1;</code>
        * @return The pluginConfigurationTimeMs.
        */
+      @java.lang.Override
       public long getPluginConfigurationTimeMs() {
         return pluginConfigurationTimeMs_;
       }
@@ -981,7 +988,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep}
    */
-  public  static final class ConfigurationStep extends
+  public static final class ConfigurationStep extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep)
       ConfigurationStepOrBuilder {
@@ -1217,7 +1224,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1228,7 +1235,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType result = com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType.UNKNOWN_STEP : result;
@@ -1244,6 +1251,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 configuration_time_ms = 2;</code>
      * @return Whether the configurationTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasConfigurationTimeMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1255,6 +1263,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 configuration_time_ms = 2;</code>
      * @return The configurationTimeMs.
      */
+    @java.lang.Override
     public long getConfigurationTimeMs() {
       return configurationTimeMs_;
     }
@@ -1607,7 +1616,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -1618,6 +1627,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType result = com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep.StepType.valueOf(type_);
@@ -1665,6 +1675,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 configuration_time_ms = 2;</code>
        * @return Whether the configurationTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasConfigurationTimeMs() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1676,6 +1687,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 configuration_time_ms = 2;</code>
        * @return The configurationTimeMs.
        */
+      @java.lang.Override
       public long getConfigurationTimeMs() {
         return configurationTimeMs_;
       }
@@ -1879,7 +1891,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData}
    */
-  public  static final class ProjectConfigurationData extends
+  public static final class ProjectConfigurationData extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData)
       ProjectConfigurationDataOrBuilder {
@@ -1996,6 +2008,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 configuration_time_ms = 1;</code>
      * @return Whether the configurationTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasConfigurationTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -2007,6 +2020,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 configuration_time_ms = 1;</code>
      * @return The configurationTimeMs.
      */
+    @java.lang.Override
     public long getConfigurationTimeMs() {
       return configurationTimeMs_;
     }
@@ -2020,6 +2034,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData plugins_configuration_data = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.PluginConfigurationData> getPluginsConfigurationDataList() {
       return pluginsConfigurationData_;
     }
@@ -2030,6 +2045,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData plugins_configuration_data = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.PluginConfigurationDataOrBuilder> 
         getPluginsConfigurationDataOrBuilderList() {
       return pluginsConfigurationData_;
@@ -2041,6 +2057,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData plugins_configuration_data = 2;</code>
      */
+    @java.lang.Override
     public int getPluginsConfigurationDataCount() {
       return pluginsConfigurationData_.size();
     }
@@ -2051,6 +2068,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData plugins_configuration_data = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.PluginConfigurationData getPluginsConfigurationData(int index) {
       return pluginsConfigurationData_.get(index);
     }
@@ -2061,6 +2079,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.PluginConfigurationData plugins_configuration_data = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.PluginConfigurationDataOrBuilder getPluginsConfigurationDataOrBuilder(
         int index) {
       return pluginsConfigurationData_.get(index);
@@ -2075,6 +2094,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep configuration_steps = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep> getConfigurationStepsList() {
       return configurationSteps_;
     }
@@ -2085,6 +2105,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep configuration_steps = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStepOrBuilder> 
         getConfigurationStepsOrBuilderList() {
       return configurationSteps_;
@@ -2096,6 +2117,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep configuration_steps = 3;</code>
      */
+    @java.lang.Override
     public int getConfigurationStepsCount() {
       return configurationSteps_.size();
     }
@@ -2106,6 +2128,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep configuration_steps = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStep getConfigurationSteps(int index) {
       return configurationSteps_.get(index);
     }
@@ -2116,6 +2139,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ConfigurationStep configuration_steps = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ConfigurationStepOrBuilder getConfigurationStepsOrBuilder(
         int index) {
       return configurationSteps_.get(index);
@@ -2559,6 +2583,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 configuration_time_ms = 1;</code>
        * @return Whether the configurationTimeMs field is set.
        */
+      @java.lang.Override
       public boolean hasConfigurationTimeMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -2570,6 +2595,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 configuration_time_ms = 1;</code>
        * @return The configurationTimeMs.
        */
+      @java.lang.Override
       public long getConfigurationTimeMs() {
         return configurationTimeMs_;
       }
@@ -3289,6 +3315,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData project_configuration_data = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData> getProjectConfigurationDataList() {
     return projectConfigurationData_;
   }
@@ -3299,6 +3326,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData project_configuration_data = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder> 
       getProjectConfigurationDataOrBuilderList() {
     return projectConfigurationData_;
@@ -3310,6 +3338,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData project_configuration_data = 1;</code>
    */
+  @java.lang.Override
   public int getProjectConfigurationDataCount() {
     return projectConfigurationData_.size();
   }
@@ -3320,6 +3349,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData project_configuration_data = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData getProjectConfigurationData(int index) {
     return projectConfigurationData_.get(index);
   }
@@ -3330,6 +3360,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData project_configuration_data = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder getProjectConfigurationDataOrBuilder(
       int index) {
     return projectConfigurationData_.get(index);
@@ -3346,6 +3377,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
    * @return Whether the overallConfigurationData field is set.
    */
+  @java.lang.Override
   public boolean hasOverallConfigurationData() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -3358,6 +3390,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
    * @return The overallConfigurationData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData getOverallConfigurationData() {
     return overallConfigurationData_ == null ? com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData.getDefaultInstance() : overallConfigurationData_;
   }
@@ -3369,6 +3402,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData.ProjectConfigurationData overall_configuration_data = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationDataOrBuilder getOverallConfigurationDataOrBuilder() {
     return overallConfigurationData_ == null ? com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.ProjectConfigurationData.getDefaultInstance() : overallConfigurationData_;
   }

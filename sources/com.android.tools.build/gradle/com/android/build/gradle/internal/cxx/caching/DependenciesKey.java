@@ -13,7 +13,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code DependenciesKey}
  */
-public  final class DependenciesKey extends
+public final class DependenciesKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:DependenciesKey)
     DependenciesKeyOrBuilder {
@@ -118,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>string source_file = 1;</code>
    * @return The sourceFile.
    */
+  @java.lang.Override
   public java.lang.String getSourceFile() {
     java.lang.Object ref = sourceFile_;
     if (ref instanceof java.lang.String) {
@@ -138,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>string source_file = 1;</code>
    * @return The bytes for sourceFile.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSourceFileBytes() {
     java.lang.Object ref = sourceFile_;

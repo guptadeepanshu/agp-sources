@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ParallelAndroidTestReportUiEvent}
  */
-public  final class ParallelAndroidTestReportUiEvent extends
+public final class ParallelAndroidTestReportUiEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ParallelAndroidTestReportUiEvent)
     ParallelAndroidTestReportUiEventOrBuilder {
@@ -373,7 +373,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.ParallelAndroidTestReportUiEvent.UserInteraction}
    */
-  public  static final class UserInteraction extends
+  public static final class UserInteraction extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.ParallelAndroidTestReportUiEvent.UserInteraction)
       UserInteractionOrBuilder {
@@ -703,14 +703,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType type = 1;</code>
      * @return The type.
      */
-    public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType getType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.valueOf(type_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.UNKNOWN_UI_INTERACTION : result;
@@ -726,7 +726,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UiElement ui_element = 2;</code>
      * @return Whether the uiElement field is set.
      */
-    public boolean hasUiElement() {
+    @java.lang.Override public boolean hasUiElement() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -737,7 +737,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UiElement ui_element = 2;</code>
      * @return The uiElement.
      */
-    public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getUiElement() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getUiElement() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.valueOf(uiElement_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.UNKNOWN_UI_ELEMENT : result;
@@ -749,14 +749,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = 3;</code>
      * @return Whether the result field is set.
      */
-    public boolean hasResult() {
+    @java.lang.Override public boolean hasResult() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
      * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = 3;</code>
      * @return The result.
      */
-    public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType getResult() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType getResult() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.valueOf(result_);
       return result == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.UNKNOWN_UI_INTERACTION_RESULT : result;
@@ -1132,13 +1132,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType type = 1;</code>
        * @return Whether the type field is set.
        */
-      public boolean hasType() {
+      @java.lang.Override public boolean hasType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType getType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionType.valueOf(type_);
@@ -1178,7 +1179,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UiElement ui_element = 2;</code>
        * @return Whether the uiElement field is set.
        */
-      public boolean hasUiElement() {
+      @java.lang.Override public boolean hasUiElement() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -1189,6 +1190,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UiElement ui_element = 2;</code>
        * @return The uiElement.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getUiElement() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement.valueOf(uiElement_);
@@ -1232,13 +1234,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = 3;</code>
        * @return Whether the result field is set.
        */
-      public boolean hasResult() {
+      @java.lang.Override public boolean hasResult() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
        * <code>optional .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = 3;</code>
        * @return The result.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType getResult() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType result = com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction.UserInteractionResultType.valueOf(result_);
@@ -1341,6 +1344,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UiElement impressions = 1;</code>
    * @return A list containing the impressions.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement> getImpressionsList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement>(impressions_, impressions_converter_);
@@ -1351,8 +1355,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UiElement impressions = 1;</code>
-   * @param value The impressions to add.
+   * @return The count of impressions.
    */
+  @java.lang.Override
   public int getImpressionsCount() {
     return impressions_.size();
   }
@@ -1365,6 +1370,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The impressions at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UiElement getImpressions(int index) {
     return impressions_converter_.convert(impressions_.get(index));
   }
@@ -1378,6 +1384,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction interactions = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction> getInteractionsList() {
     return interactions_;
   }
@@ -1388,6 +1395,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction interactions = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteractionOrBuilder> 
       getInteractionsOrBuilderList() {
     return interactions_;
@@ -1399,6 +1407,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction interactions = 2;</code>
    */
+  @java.lang.Override
   public int getInteractionsCount() {
     return interactions_.size();
   }
@@ -1409,6 +1418,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction interactions = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteraction getInteractions(int index) {
     return interactions_.get(index);
   }
@@ -1419,6 +1429,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ParallelAndroidTestReportUiEvent.UserInteraction interactions = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.UserInteractionOrBuilder getInteractionsOrBuilder(
       int index) {
     return interactions_.get(index);

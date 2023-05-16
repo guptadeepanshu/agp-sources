@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.UpgradeAssistantEventInfo}
  */
-public  final class UpgradeAssistantEventInfo extends
+public final class UpgradeAssistantEventInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.UpgradeAssistantEventInfo)
     UpgradeAssistantEventInfoOrBuilder {
@@ -265,7 +265,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantEventInfo.UpgradeAssistantEventKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -276,7 +276,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantEventInfo.UpgradeAssistantEventKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.UNKNOWN_UPGRADE_ASSISTANT_EVENT_KIND : result;
@@ -294,6 +294,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usages = 2;</code>
    * @return Whether the usages field is set.
    */
+  @java.lang.Override
   public boolean hasUsages() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -307,6 +308,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 usages = 2;</code>
    * @return The usages.
    */
+  @java.lang.Override
   public int getUsages() {
     return usages_;
   }
@@ -323,6 +325,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 files = 3;</code>
    * @return Whether the files field is set.
    */
+  @java.lang.Override
   public boolean hasFiles() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -336,6 +339,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 files = 3;</code>
    * @return The files.
    */
+  @java.lang.Override
   public int getFiles() {
     return files_;
   }
@@ -712,7 +716,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantEventInfo.UpgradeAssistantEventKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -723,6 +727,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.UpgradeAssistantEventInfo.UpgradeAssistantEventKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind result = com.google.wireless.android.sdk.stats.UpgradeAssistantEventInfo.UpgradeAssistantEventKind.valueOf(kind_);
@@ -772,6 +777,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usages = 2;</code>
      * @return Whether the usages field is set.
      */
+    @java.lang.Override
     public boolean hasUsages() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -785,6 +791,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 usages = 2;</code>
      * @return The usages.
      */
+    @java.lang.Override
     public int getUsages() {
       return usages_;
     }
@@ -833,6 +840,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 files = 3;</code>
      * @return Whether the files field is set.
      */
+    @java.lang.Override
     public boolean hasFiles() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -846,6 +854,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 files = 3;</code>
      * @return The files.
      */
+    @java.lang.Override
     public int getFiles() {
       return files_;
     }

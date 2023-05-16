@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AtfResultDetail}
  */
-public  final class AtfResultDetail extends
+public final class AtfResultDetail extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AtfResultDetail)
     AtfResultDetailOrBuilder {
@@ -116,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string check_name = 1;</code>
    * @return Whether the checkName field is set.
    */
+  @java.lang.Override
   public boolean hasCheckName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -127,6 +128,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string check_name = 1;</code>
    * @return The checkName.
    */
+  @java.lang.Override
   public java.lang.String getCheckName() {
     java.lang.Object ref = checkName_;
     if (ref instanceof java.lang.String) {
@@ -149,6 +151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string check_name = 1;</code>
    * @return The bytes for checkName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCheckNameBytes() {
     java.lang.Object ref = checkName_;
@@ -173,7 +176,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
    * @return Whether the resultType field is set.
    */
-  public boolean hasResultType() {
+  @java.lang.Override public boolean hasResultType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -184,7 +187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
    * @return The resultType.
    */
-  public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);
     return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.UNKNOWN : result;
@@ -650,7 +653,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
      * @return Whether the resultType field is set.
      */
-    public boolean hasResultType() {
+    @java.lang.Override public boolean hasResultType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -661,6 +664,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
      * @return The resultType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);

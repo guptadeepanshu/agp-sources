@@ -35,8 +35,11 @@ import com.android.build.gradle.internal.tasks.factory.TaskManagerConfig
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.internal.tasks.featuresplit.FeatureSetMetadataWriterTask
 import com.android.build.gradle.internal.variant.ComponentInfo
+import com.android.build.gradle.internal.variant.VariantModel
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.tasks.sync.ApplicationVariantModelTask
+import com.android.build.gradle.tasks.sync.AppIdListTask
+import com.android.builder.core.ComponentType
 import org.gradle.api.Action
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ArtifactView
@@ -46,9 +49,9 @@ import org.gradle.api.file.FileCollection
 
 class ApplicationTaskManager(
     project: Project,
-    variants: List<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>,
-    testComponents: List<TestComponentImpl>,
-    testFixturesComponents: List<TestFixturesImpl>,
+    private val variants: Collection<ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>>,
+    testComponents: Collection<TestComponentImpl>,
+    testFixturesComponents: Collection<TestFixturesImpl>,
     globalConfig: GlobalTaskCreationConfig,
     localConfig: TaskManagerConfig,
     extension: BaseExtension,
@@ -61,6 +64,18 @@ class ApplicationTaskManager(
     localConfig,
     extension,
 ) {
+
+    override fun createTopLevelTasks(componentType: ComponentType, variantModel: VariantModel) {
+        super.createTopLevelTasks(componentType, variantModel)
+        taskFactory.register(
+            AppIdListTask.CreationAction(
+                globalConfig,
+                variants.associate {
+                    it.variant.name to it.variant.applicationId
+                }
+            )
+        )
+    }
 
     override fun doCreateTasksForVariant(
         variantInfo: ComponentInfo<ApplicationVariantBuilderImpl, ApplicationVariantImpl>
@@ -106,7 +121,7 @@ class ApplicationTaskManager(
 
         handleMicroApp(variant)
 
-        val publishInfo = variant.variantDslInfo.publishInfo!!
+        val publishInfo = variant.publishInfo!!
 
         for (component in publishInfo.components) {
             val configType = if (component.type == AbstractPublishing.Type.APK) {
@@ -124,11 +139,10 @@ class ApplicationTaskManager(
 
     /** Configure variantData to generate embedded wear application.  */
     private fun handleMicroApp(appVariant: ApplicationVariantImpl) {
-        val variantDslInfo = appVariant.variantDslInfo
-        val variantType = appVariant.variantType
-        if (variantType.isBaseModule) {
-            val unbundledWearApp: Boolean? = variantDslInfo.isWearAppUnbundled
-            if (unbundledWearApp != true && variantDslInfo.isEmbedMicroApp) {
+        val componentType = appVariant.componentType
+        if (componentType.isBaseModule) {
+            val unbundledWearApp: Boolean? = appVariant.isWearAppUnbundled
+            if (unbundledWearApp != true && appVariant.embedsMicroApp) {
                 val wearApp =
                         appVariant.variantDependencies.wearAppConfiguration
                         ?: error("Wear app with no wearApp configuration")
@@ -240,7 +254,7 @@ class ApplicationTaskManager(
         if (!debuggable) {
             taskFactory.register(PerModuleReportDependenciesTask.CreationAction(variant))
         }
-        if (variant.variantType.isBaseModule) {
+        if (variant.componentType.isBaseModule) {
             taskFactory.register(ParseIntegrityConfigTask.CreationAction(variant))
             taskFactory.register(PackageBundleTask.CreationAction(variant))
             if (!debuggable) {

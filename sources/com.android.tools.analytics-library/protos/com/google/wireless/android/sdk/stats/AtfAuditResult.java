@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AtfAuditResult}
  */
-public  final class AtfAuditResult extends
+public final class AtfAuditResult extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AtfAuditResult)
     AtfAuditResultOrBuilder {
@@ -399,7 +399,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AtfAuditResult.AtfResultCount}
    */
-  public  static final class AtfResultCount extends
+  public static final class AtfResultCount extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AtfAuditResult.AtfResultCount)
       AtfResultCountOrBuilder {
@@ -660,6 +660,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string check_name = 1;</code>
      * @return Whether the checkName field is set.
      */
+    @java.lang.Override
     public boolean hasCheckName() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -672,6 +673,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string check_name = 1;</code>
      * @return The checkName.
      */
+    @java.lang.Override
     public java.lang.String getCheckName() {
       java.lang.Object ref = checkName_;
       if (ref instanceof java.lang.String) {
@@ -695,6 +697,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string check_name = 1;</code>
      * @return The bytes for checkName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCheckNameBytes() {
       java.lang.Object ref = checkName_;
@@ -719,7 +722,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
      * @return Whether the resultType field is set.
      */
-    public boolean hasResultType() {
+    @java.lang.Override public boolean hasResultType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -730,7 +733,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
      * @return The resultType.
      */
-    public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);
       return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.UNKNOWN : result;
@@ -746,6 +749,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool error_expanded = 3;</code>
      * @return Whether the errorExpanded field is set.
      */
+    @java.lang.Override
     public boolean hasErrorExpanded() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -757,6 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool error_expanded = 3;</code>
      * @return The errorExpanded.
      */
+    @java.lang.Override
     public boolean getErrorExpanded() {
       return errorExpanded_;
     }
@@ -770,6 +775,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.AtfFixDetail fixes = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.AtfFixDetail> getFixesList() {
       return fixes_;
     }
@@ -780,6 +786,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.AtfFixDetail fixes = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder> 
         getFixesOrBuilderList() {
       return fixes_;
@@ -791,6 +798,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.AtfFixDetail fixes = 4;</code>
      */
+    @java.lang.Override
     public int getFixesCount() {
       return fixes_.size();
     }
@@ -801,6 +809,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.AtfFixDetail fixes = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfFixDetail getFixes(int index) {
       return fixes_.get(index);
     }
@@ -811,6 +820,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.AtfFixDetail fixes = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfFixDetailOrBuilder getFixesOrBuilder(
         int index) {
       return fixes_.get(index);
@@ -1363,7 +1373,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
        * @return Whether the resultType field is set.
        */
-      public boolean hasResultType() {
+      @java.lang.Override public boolean hasResultType() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -1374,6 +1384,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AtfAuditResult.AtfResultCount.CheckResultType result_type = 2;</code>
        * @return The resultType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType getResultType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType result = com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount.CheckResultType.valueOf(resultType_);
@@ -1421,6 +1432,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool error_expanded = 3;</code>
        * @return Whether the errorExpanded field is set.
        */
+      @java.lang.Override
       public boolean hasErrorExpanded() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1432,6 +1444,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool error_expanded = 3;</code>
        * @return The errorExpanded.
        */
+      @java.lang.Override
       public boolean getErrorExpanded() {
         return errorExpanded_;
       }
@@ -1840,7 +1853,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult.Trigger trigger = 1;</code>
    * @return Whether the trigger field is set.
    */
-  public boolean hasTrigger() {
+  @java.lang.Override public boolean hasTrigger() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1851,7 +1864,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AtfAuditResult.Trigger trigger = 1;</code>
    * @return The trigger.
    */
-  public com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger getTrigger() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger getTrigger() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.valueOf(trigger_);
     return result == null ? com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.UNKNOWN_TRIGGER : result;
@@ -1866,6 +1879,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AtfAuditResult.AtfResultCount counts = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount> getCountsList() {
     return counts_;
   }
@@ -1876,6 +1890,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AtfAuditResult.AtfResultCount counts = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCountOrBuilder> 
       getCountsOrBuilderList() {
     return counts_;
@@ -1887,6 +1902,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AtfAuditResult.AtfResultCount counts = 2;</code>
    */
+  @java.lang.Override
   public int getCountsCount() {
     return counts_.size();
   }
@@ -1897,6 +1913,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AtfAuditResult.AtfResultCount counts = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCount getCounts(int index) {
     return counts_.get(index);
   }
@@ -1907,6 +1924,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AtfAuditResult.AtfResultCount counts = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AtfAuditResult.AtfResultCountOrBuilder getCountsOrBuilder(
       int index) {
     return counts_.get(index);
@@ -1922,6 +1940,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool render_result = 3;</code>
    * @return Whether the renderResult field is set.
    */
+  @java.lang.Override
   public boolean hasRenderResult() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1933,6 +1952,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool render_result = 3;</code>
    * @return The renderResult.
    */
+  @java.lang.Override
   public boolean getRenderResult() {
     return renderResult_;
   }
@@ -1947,6 +1967,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 component_count = 4;</code>
    * @return Whether the componentCount field is set.
    */
+  @java.lang.Override
   public boolean hasComponentCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1958,6 +1979,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 component_count = 4;</code>
    * @return The componentCount.
    */
+  @java.lang.Override
   public int getComponentCount() {
     return componentCount_;
   }
@@ -1972,6 +1994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 audit_duration_ms = 5;</code>
    * @return Whether the auditDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasAuditDurationMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1983,6 +2006,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 audit_duration_ms = 5;</code>
    * @return The auditDurationMs.
    */
+  @java.lang.Override
   public long getAuditDurationMs() {
     return auditDurationMs_;
   }
@@ -1997,6 +2021,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_render_time_ms = 6;</code>
    * @return Whether the totalRenderTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasTotalRenderTimeMs() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -2008,6 +2033,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_render_time_ms = 6;</code>
    * @return The totalRenderTimeMs.
    */
+  @java.lang.Override
   public long getTotalRenderTimeMs() {
     return totalRenderTimeMs_;
   }
@@ -2022,6 +2048,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 error_count = 7;</code>
    * @return Whether the errorCount field is set.
    */
+  @java.lang.Override
   public boolean hasErrorCount() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -2033,6 +2060,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 error_count = 7;</code>
    * @return The errorCount.
    */
+  @java.lang.Override
   public int getErrorCount() {
     return errorCount_;
   }
@@ -2546,7 +2574,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.Trigger trigger = 1;</code>
      * @return Whether the trigger field is set.
      */
-    public boolean hasTrigger() {
+    @java.lang.Override public boolean hasTrigger() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -2557,6 +2585,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AtfAuditResult.Trigger trigger = 1;</code>
      * @return The trigger.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger getTrigger() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger result = com.google.wireless.android.sdk.stats.AtfAuditResult.Trigger.valueOf(trigger_);
@@ -2916,6 +2945,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool render_result = 3;</code>
      * @return Whether the renderResult field is set.
      */
+    @java.lang.Override
     public boolean hasRenderResult() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -2927,6 +2957,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool render_result = 3;</code>
      * @return The renderResult.
      */
+    @java.lang.Override
     public boolean getRenderResult() {
       return renderResult_;
     }
@@ -2969,6 +3000,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 component_count = 4;</code>
      * @return Whether the componentCount field is set.
      */
+    @java.lang.Override
     public boolean hasComponentCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -2980,6 +3012,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 component_count = 4;</code>
      * @return The componentCount.
      */
+    @java.lang.Override
     public int getComponentCount() {
       return componentCount_;
     }
@@ -3022,6 +3055,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 audit_duration_ms = 5;</code>
      * @return Whether the auditDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasAuditDurationMs() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -3033,6 +3067,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 audit_duration_ms = 5;</code>
      * @return The auditDurationMs.
      */
+    @java.lang.Override
     public long getAuditDurationMs() {
       return auditDurationMs_;
     }
@@ -3075,6 +3110,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_render_time_ms = 6;</code>
      * @return Whether the totalRenderTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalRenderTimeMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -3086,6 +3122,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_render_time_ms = 6;</code>
      * @return The totalRenderTimeMs.
      */
+    @java.lang.Override
     public long getTotalRenderTimeMs() {
       return totalRenderTimeMs_;
     }
@@ -3128,6 +3165,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 error_count = 7;</code>
      * @return Whether the errorCount field is set.
      */
+    @java.lang.Override
     public boolean hasErrorCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -3139,6 +3177,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 error_count = 7;</code>
      * @return The errorCount.
      */
+    @java.lang.Override
     public int getErrorCount() {
       return errorCount_;
     }

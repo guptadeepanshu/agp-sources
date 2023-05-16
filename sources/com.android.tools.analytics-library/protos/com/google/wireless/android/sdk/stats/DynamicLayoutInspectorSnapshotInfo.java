@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DynamicLayoutInspectorSnapshotInfo}
  */
-public  final class DynamicLayoutInspectorSnapshotInfo extends
+public final class DynamicLayoutInspectorSnapshotInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DynamicLayoutInspectorSnapshotInfo)
     DynamicLayoutInspectorSnapshotInfoOrBuilder {
@@ -240,6 +240,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 snapshot_version = 1;</code>
    * @return Whether the snapshotVersion field is set.
    */
+  @java.lang.Override
   public boolean hasSnapshotVersion() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -255,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 snapshot_version = 1;</code>
    * @return The snapshotVersion.
    */
+  @java.lang.Override
   public int getSnapshotVersion() {
     return snapshotVersion_;
   }
@@ -269,7 +271,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo.SaveSource save_source = 2;</code>
    * @return Whether the saveSource field is set.
    */
-  public boolean hasSaveSource() {
+  @java.lang.Override public boolean hasSaveSource() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -280,7 +282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo.SaveSource save_source = 2;</code>
    * @return The saveSource.
    */
-  public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource getSaveSource() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource getSaveSource() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.valueOf(saveSource_);
     return result == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.UNKNOWN : result;
@@ -296,6 +298,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string save_version = 3;</code>
    * @return Whether the saveVersion field is set.
    */
+  @java.lang.Override
   public boolean hasSaveVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -307,6 +310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string save_version = 3;</code>
    * @return The saveVersion.
    */
+  @java.lang.Override
   public java.lang.String getSaveVersion() {
     java.lang.Object ref = saveVersion_;
     if (ref instanceof java.lang.String) {
@@ -329,6 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string save_version = 3;</code>
    * @return The bytes for saveVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getSaveVersionBytes() {
     java.lang.Object ref = saveVersion_;
@@ -353,6 +358,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool live_when_saved = 4;</code>
    * @return Whether the liveWhenSaved field is set.
    */
+  @java.lang.Override
   public boolean hasLiveWhenSaved() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -364,6 +370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool live_when_saved = 4;</code>
    * @return The liveWhenSaved.
    */
+  @java.lang.Override
   public boolean getLiveWhenSaved() {
     return liveWhenSaved_;
   }
@@ -378,6 +385,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 save_duration_ms = 5;</code>
    * @return Whether the saveDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasSaveDurationMs() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -389,6 +397,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 save_duration_ms = 5;</code>
    * @return The saveDurationMs.
    */
+  @java.lang.Override
   public int getSaveDurationMs() {
     return saveDurationMs_;
   }
@@ -403,6 +412,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 load_duration_ms = 6;</code>
    * @return Whether the loadDurationMs field is set.
    */
+  @java.lang.Override
   public boolean hasLoadDurationMs() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -414,6 +424,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 load_duration_ms = 6;</code>
    * @return The loadDurationMs.
    */
+  @java.lang.Override
   public int getLoadDurationMs() {
     return loadDurationMs_;
   }
@@ -875,6 +886,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 snapshot_version = 1;</code>
      * @return Whether the snapshotVersion field is set.
      */
+    @java.lang.Override
     public boolean hasSnapshotVersion() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -890,6 +902,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 snapshot_version = 1;</code>
      * @return The snapshotVersion.
      */
+    @java.lang.Override
     public int getSnapshotVersion() {
       return snapshotVersion_;
     }
@@ -940,7 +953,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo.SaveSource save_source = 2;</code>
      * @return Whether the saveSource field is set.
      */
-    public boolean hasSaveSource() {
+    @java.lang.Override public boolean hasSaveSource() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -951,6 +964,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DynamicLayoutInspectorSnapshotInfo.SaveSource save_source = 2;</code>
      * @return The saveSource.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource getSaveSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource result = com.google.wireless.android.sdk.stats.DynamicLayoutInspectorSnapshotInfo.SaveSource.valueOf(saveSource_);
@@ -1106,6 +1120,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool live_when_saved = 4;</code>
      * @return Whether the liveWhenSaved field is set.
      */
+    @java.lang.Override
     public boolean hasLiveWhenSaved() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1117,6 +1132,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool live_when_saved = 4;</code>
      * @return The liveWhenSaved.
      */
+    @java.lang.Override
     public boolean getLiveWhenSaved() {
       return liveWhenSaved_;
     }
@@ -1159,6 +1175,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 save_duration_ms = 5;</code>
      * @return Whether the saveDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasSaveDurationMs() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1170,6 +1187,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 save_duration_ms = 5;</code>
      * @return The saveDurationMs.
      */
+    @java.lang.Override
     public int getSaveDurationMs() {
       return saveDurationMs_;
     }
@@ -1212,6 +1230,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 load_duration_ms = 6;</code>
      * @return Whether the loadDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasLoadDurationMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1223,6 +1242,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 load_duration_ms = 6;</code>
      * @return The loadDurationMs.
      */
+    @java.lang.Override
     public int getLoadDurationMs() {
       return loadDurationMs_;
     }

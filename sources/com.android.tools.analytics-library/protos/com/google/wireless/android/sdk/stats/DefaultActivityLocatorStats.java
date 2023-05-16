@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DefaultActivityLocatorStats}
  */
-public  final class DefaultActivityLocatorStats extends
+public final class DefaultActivityLocatorStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DefaultActivityLocatorStats)
     DefaultActivityLocatorStatsOrBuilder {
@@ -117,6 +117,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool blocks_ui_thread = 1;</code>
    * @return Whether the blocksUiThread field is set.
    */
+  @java.lang.Override
   public boolean hasBlocksUiThread() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -128,6 +129,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool blocks_ui_thread = 1;</code>
    * @return The blocksUiThread.
    */
+  @java.lang.Override
   public boolean getBlocksUiThread() {
     return blocksUiThread_;
   }
@@ -142,6 +144,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool index_based = 2;</code>
    * @return Whether the indexBased field is set.
    */
+  @java.lang.Override
   public boolean hasIndexBased() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -153,6 +156,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool index_based = 2;</code>
    * @return The indexBased.
    */
+  @java.lang.Override
   public boolean getIndexBased() {
     return indexBased_;
   }
@@ -168,6 +172,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool used_potentially_stale_manifest = 3;</code>
    * @return Whether the usedPotentiallyStaleManifest field is set.
    */
+  @java.lang.Override
   public boolean hasUsedPotentiallyStaleManifest() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -180,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool used_potentially_stale_manifest = 3;</code>
    * @return The usedPotentiallyStaleManifest.
    */
+  @java.lang.Override
   public boolean getUsedPotentiallyStaleManifest() {
     return usedPotentiallyStaleManifest_;
   }
@@ -195,6 +201,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_ms = 4;</code>
    * @return Whether the latencyMs field is set.
    */
+  @java.lang.Override
   public boolean hasLatencyMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -207,6 +214,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 latency_ms = 4;</code>
    * @return The latencyMs.
    */
+  @java.lang.Override
   public long getLatencyMs() {
     return latencyMs_;
   }
@@ -618,6 +626,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool blocks_ui_thread = 1;</code>
      * @return Whether the blocksUiThread field is set.
      */
+    @java.lang.Override
     public boolean hasBlocksUiThread() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -629,6 +638,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool blocks_ui_thread = 1;</code>
      * @return The blocksUiThread.
      */
+    @java.lang.Override
     public boolean getBlocksUiThread() {
       return blocksUiThread_;
     }
@@ -671,6 +681,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool index_based = 2;</code>
      * @return Whether the indexBased field is set.
      */
+    @java.lang.Override
     public boolean hasIndexBased() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -682,6 +693,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool index_based = 2;</code>
      * @return The indexBased.
      */
+    @java.lang.Override
     public boolean getIndexBased() {
       return indexBased_;
     }
@@ -725,6 +737,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool used_potentially_stale_manifest = 3;</code>
      * @return Whether the usedPotentiallyStaleManifest field is set.
      */
+    @java.lang.Override
     public boolean hasUsedPotentiallyStaleManifest() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -737,6 +750,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool used_potentially_stale_manifest = 3;</code>
      * @return The usedPotentiallyStaleManifest.
      */
+    @java.lang.Override
     public boolean getUsedPotentiallyStaleManifest() {
       return usedPotentiallyStaleManifest_;
     }
@@ -782,6 +796,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_ms = 4;</code>
      * @return Whether the latencyMs field is set.
      */
+    @java.lang.Override
     public boolean hasLatencyMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -794,6 +809,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 latency_ms = 4;</code>
      * @return The latencyMs.
      */
+    @java.lang.Override
     public long getLatencyMs() {
       return latencyMs_;
     }

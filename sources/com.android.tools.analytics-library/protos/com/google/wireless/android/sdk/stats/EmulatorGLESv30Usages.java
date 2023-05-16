@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorGLESv30Usages}
  */
-public  final class EmulatorGLESv30Usages extends
+public final class EmulatorGLESv30Usages extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorGLESv30Usages)
     EmulatorGLESv30UsagesOrBuilder {
@@ -126,6 +126,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_used = 1;</code>
    * @return Whether the isUsed field is set.
    */
+  @java.lang.Override
   public boolean hasIsUsed() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -137,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_used = 1;</code>
    * @return The isUsed.
    */
+  @java.lang.Override
   public boolean getIsUsed() {
     return isUsed_;
   }
@@ -151,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool fence_sync = 2;</code>
    * @return Whether the fenceSync field is set.
    */
+  @java.lang.Override
   public boolean hasFenceSync() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -162,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool fence_sync = 2;</code>
    * @return The fenceSync.
    */
+  @java.lang.Override
   public boolean getFenceSync() {
     return fenceSync_;
   }
@@ -176,6 +180,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool framebuffer_texture_layer = 3;</code>
    * @return Whether the framebufferTextureLayer field is set.
    */
+  @java.lang.Override
   public boolean hasFramebufferTextureLayer() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -187,6 +192,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool framebuffer_texture_layer = 3;</code>
    * @return The framebufferTextureLayer.
    */
+  @java.lang.Override
   public boolean getFramebufferTextureLayer() {
     return framebufferTextureLayer_;
   }
@@ -201,6 +207,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool renderbuffer_storage_multisample = 4;</code>
    * @return Whether the renderbufferStorageMultisample field is set.
    */
+  @java.lang.Override
   public boolean hasRenderbufferStorageMultisample() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -212,6 +219,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool renderbuffer_storage_multisample = 4;</code>
    * @return The renderbufferStorageMultisample.
    */
+  @java.lang.Override
   public boolean getRenderbufferStorageMultisample() {
     return renderbufferStorageMultisample_;
   }
@@ -226,6 +234,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool gen_transform_feedbacks = 5;</code>
    * @return Whether the genTransformFeedbacks field is set.
    */
+  @java.lang.Override
   public boolean hasGenTransformFeedbacks() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -237,6 +246,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool gen_transform_feedbacks = 5;</code>
    * @return The genTransformFeedbacks.
    */
+  @java.lang.Override
   public boolean getGenTransformFeedbacks() {
     return genTransformFeedbacks_;
   }
@@ -251,6 +261,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool begin_query = 6;</code>
    * @return Whether the beginQuery field is set.
    */
+  @java.lang.Override
   public boolean hasBeginQuery() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -262,6 +273,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool begin_query = 6;</code>
    * @return The beginQuery.
    */
+  @java.lang.Override
   public boolean getBeginQuery() {
     return beginQuery_;
   }
@@ -724,6 +736,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_used = 1;</code>
      * @return Whether the isUsed field is set.
      */
+    @java.lang.Override
     public boolean hasIsUsed() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -735,6 +748,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_used = 1;</code>
      * @return The isUsed.
      */
+    @java.lang.Override
     public boolean getIsUsed() {
       return isUsed_;
     }
@@ -777,6 +791,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool fence_sync = 2;</code>
      * @return Whether the fenceSync field is set.
      */
+    @java.lang.Override
     public boolean hasFenceSync() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -788,6 +803,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool fence_sync = 2;</code>
      * @return The fenceSync.
      */
+    @java.lang.Override
     public boolean getFenceSync() {
       return fenceSync_;
     }
@@ -830,6 +846,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool framebuffer_texture_layer = 3;</code>
      * @return Whether the framebufferTextureLayer field is set.
      */
+    @java.lang.Override
     public boolean hasFramebufferTextureLayer() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -841,6 +858,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool framebuffer_texture_layer = 3;</code>
      * @return The framebufferTextureLayer.
      */
+    @java.lang.Override
     public boolean getFramebufferTextureLayer() {
       return framebufferTextureLayer_;
     }
@@ -883,6 +901,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool renderbuffer_storage_multisample = 4;</code>
      * @return Whether the renderbufferStorageMultisample field is set.
      */
+    @java.lang.Override
     public boolean hasRenderbufferStorageMultisample() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -894,6 +913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool renderbuffer_storage_multisample = 4;</code>
      * @return The renderbufferStorageMultisample.
      */
+    @java.lang.Override
     public boolean getRenderbufferStorageMultisample() {
       return renderbufferStorageMultisample_;
     }
@@ -936,6 +956,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool gen_transform_feedbacks = 5;</code>
      * @return Whether the genTransformFeedbacks field is set.
      */
+    @java.lang.Override
     public boolean hasGenTransformFeedbacks() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -947,6 +968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool gen_transform_feedbacks = 5;</code>
      * @return The genTransformFeedbacks.
      */
+    @java.lang.Override
     public boolean getGenTransformFeedbacks() {
       return genTransformFeedbacks_;
     }
@@ -989,6 +1011,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool begin_query = 6;</code>
      * @return Whether the beginQuery field is set.
      */
+    @java.lang.Override
     public boolean hasBeginQuery() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1000,6 +1023,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool begin_query = 6;</code>
      * @return The beginQuery.
      */
+    @java.lang.Override
     public boolean getBeginQuery() {
       return beginQuery_;
     }

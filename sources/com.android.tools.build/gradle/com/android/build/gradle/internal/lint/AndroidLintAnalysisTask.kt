@@ -21,16 +21,17 @@ import com.android.build.api.artifact.impl.ArtifactsImpl
 import com.android.build.api.dsl.Lint
 import com.android.build.gradle.internal.SdkComponentsBuildService
 import com.android.build.gradle.internal.component.ComponentCreationConfig
-import com.android.build.gradle.internal.component.ConsumableCreationConfig
+import com.android.build.gradle.internal.component.VariantCreationConfig
 import com.android.build.gradle.internal.publishing.AndroidArtifacts
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.services.AndroidLocationsBuildService
 import com.android.build.gradle.internal.services.TaskCreationServices
 import com.android.build.gradle.internal.services.getBuildService
 import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
 import com.android.build.gradle.internal.utils.fromDisallowChanges
+import com.android.build.gradle.internal.utils.getDesugaredMethods
 import com.android.build.gradle.internal.utils.setDisallowChanges
+import com.android.ide.common.repository.GradleVersion
 import com.android.tools.lint.model.LintModelSerialization
 import com.android.utils.FileUtils
 import com.google.common.annotations.VisibleForTesting
@@ -48,9 +49,13 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskProvider
 import java.io.File
 import java.util.Collections
@@ -104,6 +109,11 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
     @get:Nested
     abstract val environmentVariableInputs: EnvironmentVariableInputs
 
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    @get:Optional
+    abstract val desugaredMethodsFiles: ConfigurableFileCollection
+
     override fun doTaskAction() {
         lintTool.lintClassLoaderBuildService.get().shouldDispose = true
         writeLintModelFile()
@@ -113,14 +123,20 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             arguments = generateCommandLineArguments(),
             android = android.get(),
             fatalOnly = fatalOnly.get(),
-            await = false
+            await = false,
+            lintMode = LintMode.ANALYSIS
         )
     }
 
     private fun writeLintModelFile() {
         val module = projectInputs.convertToLintModelModule()
 
-        val variant = variantInputs.toLintModel(module, partialResultsDirectory.get().asFile)
+        val variant =
+            variantInputs.toLintModel(
+                module,
+                partialResultsDirectory.get().asFile,
+                desugaredMethodsFiles.files
+            )
 
         val destination = lintModelDirectory.get().asFile.also { FileUtils.cleanOutputDir(it) }
 
@@ -142,7 +158,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
             arguments += "--fatalOnly"
         }
         arguments += listOf("--jdk-home", systemPropertyInputs.javaHome.get())
-        arguments += listOf("--sdk-home", androidSdkHome.get())
+        androidSdkHome.orNull?.let { arguments.add("--sdk-home", it) }
 
         arguments += "--lint-model"
         arguments += listOf(lintModelDirectory.get().asFile.absolutePath).asLintPaths()
@@ -166,6 +182,14 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         arguments.add("--client-id", "gradle")
         arguments.add("--client-name", "AGP")
         arguments.add("--client-version", Version.ANDROID_GRADLE_PLUGIN_VERSION)
+
+        // Pass --offline flag only if lint version is 30.3.0-beta01 or higher because earlier
+        // versions of lint don't accept that flag.
+        if (offline.get()
+            && GradleVersion.tryParse(lintTool.version.get())
+                ?.isAtLeast(30, 3, 0, "beta", 1, false) == true) {
+            arguments += "--offline"
+        }
 
         return Collections.unmodifiableList(arguments)
     }
@@ -200,7 +224,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
     /**
      * CreationAction for the lintVitalAnalyzeVariant task. Does not use the variant with tests
      */
-    class LintVitalCreationAction(variant: ConsumableCreationConfig) :
+    class LintVitalCreationAction(variant: VariantCreationConfig) :
         VariantCreationAction(VariantWithTests(
             variant,
             androidTest = null,
@@ -269,14 +293,24 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                     creationConfig.global.lintOptions.checkOnly
                 }
             )
-            task.projectInputs.initialize(variant, isForAnalysis = true)
+            task.projectInputs.initialize(variant, LintMode.ANALYSIS)
             task.variantInputs.initialize(
                 variant,
                 checkDependencies = false,
                 warnIfProjectTreatedAsExternalDependency = false,
-                isForAnalysis = true
+                LintMode.ANALYSIS
             )
             task.lintTool.initialize(creationConfig.services)
+            task.desugaredMethodsFiles.from(
+                getDesugaredMethods(
+                    task.project,
+                    creationConfig.global.compileOptions.isCoreLibraryDesugaringEnabled,
+                    creationConfig.minSdkVersion,
+                    creationConfig.global.compileSdkHashString,
+                    creationConfig.global.bootClasspath
+                )
+            )
+            task.desugaredMethodsFiles.disallowChanges()
         }
     }
 
@@ -288,21 +322,18 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
         this.androidGradlePluginVersion.setDisallowChanges(Version.ANDROID_GRADLE_PLUGIN_VERSION)
         val sdkComponentsBuildService =
             getBuildService<SdkComponentsBuildService>(buildServiceRegistry)
-        this.androidSdkHome.setDisallowChanges(
-            sdkComponentsBuildService.flatMap { it.sdkDirectoryProvider }
-                .map { it.asFile.absolutePath }
-        )
-        this.offline.setDisallowChanges(project.gradle.startParameter.isOffline)
+
         this.android.setDisallowChanges(isAndroid)
+        if(isAndroid) {
+            this.androidSdkHome.set(
+                sdkComponentsBuildService.flatMap { it.sdkDirectoryProvider }
+                    .map { it.asFile.absolutePath }
+            )
+        }
+        this.androidSdkHome.disallowChanges()
+        this.offline.setDisallowChanges(project.gradle.startParameter.isOffline)
 
-        val locationBuildService =
-                getBuildService<AndroidLocationsBuildService>(buildServiceRegistry)
-
-        this.lintRuleJars.from(
-            // TODO(b/197755365) stop including these jars in AGP 7.2
-            AndroidLintTask.getGlobalLintJarsInPrefsDir(project, locationBuildService)
-        )
-        // Also include Lint jars set via the environment variable ANDROID_LINT_JARS
+        // Include Lint jars set via the environment variable ANDROID_LINT_JARS
         val globalLintJarsFromEnvVariable: Provider<List<String>> =
                 project.providers.environmentVariable(ANDROID_LINT_JARS_ENVIRONMENT_VARIABLE)
                         .orElse("")
@@ -319,8 +350,8 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                     .orElse(false)
             )
         }
-        systemPropertyInputs.initialize(project.providers, isForAnalysis = true)
-        environmentVariableInputs.initialize(project.providers, isForAnalysis = true)
+        systemPropertyInputs.initialize(project.providers, LintMode.ANALYSIS)
+        environmentVariableInputs.initialize(project.providers, LintMode.ANALYSIS)
     }
 
     fun configureForStandalone(
@@ -342,7 +373,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 project,
                 javaPluginConvention,
                 lintOptions,
-                isForAnalysis = true
+                LintMode.ANALYSIS
             )
         this.variantInputs
             .initializeForStandalone(
@@ -351,7 +382,7 @@ abstract class AndroidLintAnalysisTask : NonIncrementalTask() {
                 taskCreationServices.projectOptions,
                 fatalOnly,
                 checkDependencies = false,
-                isForAnalysis = true
+                LintMode.ANALYSIS
             )
         this.lintRuleJars.fromDisallowChanges(customLintChecksConfig)
         this.lintModelDirectory

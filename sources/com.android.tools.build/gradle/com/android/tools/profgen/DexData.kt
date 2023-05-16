@@ -18,10 +18,8 @@ package com.android.tools.profgen
 
 import java.io.File
 import java.io.InputStream
-import java.io.PrintStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
-
 
 class Apk internal constructor(val dexes: List<DexFile>, val name: String = "")
 
@@ -66,7 +64,6 @@ class DexFile internal constructor(
     internal val classDefPool = IntArray(header.classDefs.size)
 
     companion object : Comparator<DexFile> {
-
         override fun compare(o1: DexFile?, o2: DexFile?): Int {
             return when {
                 o1 == null && o2 == null -> 0
@@ -75,7 +72,6 @@ class DexFile internal constructor(
                 else -> o1.name.compareTo(o2.name)
             }
         }
-
     }
 }
 
@@ -110,17 +106,7 @@ internal data class DexMethod(
 ) {
     val returnType: String get() = prototype.returnType
     val parameters: String = prototype.parameters.joinToString("")
-    fun print(os: PrintStream) = with(os) {
-        print(parent)
-        print("->")
-        print(name)
-        print('(')
-        print(parameters)
-        print(')')
-        print(returnType)
-    }
-
-    override fun toString(): String = buildString {
+    fun print(os: Appendable): Appendable = with(os) {
         append(parent)
         append("->")
         append(name)
@@ -129,6 +115,8 @@ internal data class DexMethod(
         append(')')
         append(returnType)
     }
+
+    override fun toString(): String = buildString { print(this) }
 }
 
 /**
@@ -179,9 +167,9 @@ internal operator fun DexFileData.plus(other: DexFileData?): DexFileData {
 internal class MutableDexFileData(
     val classIdSetSize: Int,
     val typeIdSetSize: Int,
-    val hotMethodRegionSize: Int,
     val numMethodIds: Int,
     val dexFile: DexFile,
+    var hotMethodRegionSize: Int,
     val classIdSet: MutableSet<Int>,
     val typeIdSet: MutableSet<Int>,
     val methods: MutableMap<Int, MethodData>,
@@ -199,10 +187,10 @@ internal data class MethodData(var flags: Int) {
     inline fun isFlagSet(flag: Int): Boolean {
         return flags and flag == flag
     }
-    fun print(os: PrintStream) = with(os) {
-        if (isFlagSet(MethodFlags.HOT)) print(HOT)
-        if (isFlagSet(MethodFlags.STARTUP)) print(STARTUP)
-        if (isFlagSet(MethodFlags.POST_STARTUP)) print(POST_STARTUP)
+    fun print(os: Appendable) = with(os) {
+        if (isFlagSet(MethodFlags.HOT)) append(HOT)
+        if (isFlagSet(MethodFlags.STARTUP)) append(STARTUP)
+        if (isFlagSet(MethodFlags.POST_STARTUP)) append(POST_STARTUP)
     }
 }
 
@@ -246,3 +234,56 @@ internal fun splitParameters(parameters: String): List<String> {
     }
     return result
 }
+
+/**
+ * A list of known [ReadableFileSection] types.
+ */
+internal enum class FileSectionType(val value: Long) {
+
+    /** Represents a dex file section. This is a required file section type. */
+    DEX_FILES(0L),
+
+    /**
+     * Optional file sections. The only ones we care about are [CLASSES] and [METHODS].
+     * Listing [EXTRA_DESCRIPTORS] & [AGGREGATION_COUNT] for completeness.
+     */
+    EXTRA_DESCRIPTORS(1L),
+    CLASSES(2L),
+    METHODS(3L),
+    AGGREGATION_COUNT(4L);
+
+    companion object {
+        fun parse(value: Long): FileSectionType {
+            val type = values().firstOrNull {
+                it.value == value
+            }
+
+            return type
+                ?: throw IllegalArgumentException("Unsupported FileSection type $value")
+        }
+    }
+}
+
+/**
+ * A Readable Profile Section for ART profiles on Android 12.
+ */
+internal data class ReadableFileSection(
+    val type: FileSectionType,
+    val span: Span,
+    val inflateSize: Int,
+) {
+
+    fun isCompressed(): Boolean {
+        return inflateSize != 0
+    }
+}
+
+/**
+ * A Writable Profile Section for ART profiles on Android 12.
+ */
+internal class WritableFileSection(
+    val type: FileSectionType,
+    val expectedInflateSize: Int,
+    val contents: ByteArray,
+    val needsCompression: Boolean,
+)

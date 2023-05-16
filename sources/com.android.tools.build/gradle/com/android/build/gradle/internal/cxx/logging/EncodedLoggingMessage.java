@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code EncodedLoggingMessage}
  */
-public  final class EncodedLoggingMessage extends
+public final class EncodedLoggingMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedLoggingMessage)
     EncodedLoggingMessageOrBuilder {
@@ -118,14 +118,14 @@ private static final long serialVersionUID = 0L;
    * <code>.LoggingMessage.LoggingLevel level = 1;</code>
    * @return The enum numeric value on the wire for level.
    */
-  public int getLevelValue() {
+  @java.lang.Override public int getLevelValue() {
     return level_;
   }
   /**
    * <code>.LoggingMessage.LoggingLevel level = 1;</code>
    * @return The level.
    */
-  public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
+  @java.lang.Override public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
     @SuppressWarnings("deprecation")
     com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
     return result == null ? com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED : result;
@@ -137,6 +137,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 message_id = 2;</code>
    * @return The messageId.
    */
+  @java.lang.Override
   public int getMessageId() {
     return messageId_;
   }
@@ -147,6 +148,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 file_id = 3;</code>
    * @return The fileId.
    */
+  @java.lang.Override
   public int getFileId() {
     return fileId_;
   }
@@ -157,6 +159,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 tag_id = 4;</code>
    * @return The tagId.
    */
+  @java.lang.Override
   public int getTagId() {
     return tagId_;
   }
@@ -167,6 +170,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 diagnostic_code = 5;</code>
    * @return The diagnosticCode.
    */
+  @java.lang.Override
   public int getDiagnosticCode() {
     return diagnosticCode_;
   }
@@ -550,7 +554,7 @@ private static final long serialVersionUID = 0L;
      * <code>.LoggingMessage.LoggingLevel level = 1;</code>
      * @return The enum numeric value on the wire for level.
      */
-    public int getLevelValue() {
+    @java.lang.Override public int getLevelValue() {
       return level_;
     }
     /**
@@ -559,6 +563,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLevelValue(int value) {
+      
       level_ = value;
       onChanged();
       return this;
@@ -567,6 +572,7 @@ private static final long serialVersionUID = 0L;
      * <code>.LoggingMessage.LoggingLevel level = 1;</code>
      * @return The level.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
       @SuppressWarnings("deprecation")
       com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
@@ -602,6 +608,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 message_id = 2;</code>
      * @return The messageId.
      */
+    @java.lang.Override
     public int getMessageId() {
       return messageId_;
     }
@@ -632,6 +639,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 file_id = 3;</code>
      * @return The fileId.
      */
+    @java.lang.Override
     public int getFileId() {
       return fileId_;
     }
@@ -662,6 +670,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 tag_id = 4;</code>
      * @return The tagId.
      */
+    @java.lang.Override
     public int getTagId() {
       return tagId_;
     }
@@ -692,6 +701,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 diagnostic_code = 5;</code>
      * @return The diagnosticCode.
      */
+    @java.lang.Override
     public int getDiagnosticCode() {
       return diagnosticCode_;
     }

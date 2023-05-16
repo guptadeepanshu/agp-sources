@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.IntellijIndexingStats}
  */
-public  final class IntellijIndexingStats extends
+public final class IntellijIndexingStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.IntellijIndexingStats)
     IntellijIndexingStatsOrBuilder {
@@ -492,7 +492,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.IntellijIndexingStats.OperationStats}
    */
-  public  static final class OperationStats extends
+  public static final class OperationStats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.IntellijIndexingStats.OperationStats)
       OperationStatsOrBuilder {
@@ -616,7 +616,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijIndexingStats.Operation operation = 1;</code>
      * @return Whether the operation field is set.
      */
-    public boolean hasOperation() {
+    @java.lang.Override public boolean hasOperation() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -627,7 +627,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijIndexingStats.Operation operation = 1;</code>
      * @return The operation.
      */
-    public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation getOperation() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation getOperation() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.valueOf(operation_);
       return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.UNKNOWN_OPERATION : result;
@@ -643,6 +643,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_cpu_nanos = 2;</code>
      * @return Whether the totalCpuNanos field is set.
      */
+    @java.lang.Override
     public boolean hasTotalCpuNanos() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -654,6 +655,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_cpu_nanos = 2;</code>
      * @return The totalCpuNanos.
      */
+    @java.lang.Override
     public long getTotalCpuNanos() {
       return totalCpuNanos_;
     }
@@ -668,6 +670,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_wall_nanos = 3;</code>
      * @return Whether the totalWallNanos field is set.
      */
+    @java.lang.Override
     public boolean hasTotalWallNanos() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -679,6 +682,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_wall_nanos = 3;</code>
      * @return The totalWallNanos.
      */
+    @java.lang.Override
     public long getTotalWallNanos() {
       return totalWallNanos_;
     }
@@ -693,6 +697,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 max_cpu_nanos = 4;</code>
      * @return Whether the maxCpuNanos field is set.
      */
+    @java.lang.Override
     public boolean hasMaxCpuNanos() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -704,6 +709,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 max_cpu_nanos = 4;</code>
      * @return The maxCpuNanos.
      */
+    @java.lang.Override
     public int getMaxCpuNanos() {
       return maxCpuNanos_;
     }
@@ -718,6 +724,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 max_wall_nanos = 5;</code>
      * @return Whether the maxWallNanos field is set.
      */
+    @java.lang.Override
     public boolean hasMaxWallNanos() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -729,6 +736,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 max_wall_nanos = 5;</code>
      * @return The maxWallNanos.
      */
+    @java.lang.Override
     public int getMaxWallNanos() {
       return maxWallNanos_;
     }
@@ -743,6 +751,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 total_count = 6;</code>
      * @return Whether the totalCount field is set.
      */
+    @java.lang.Override
     public boolean hasTotalCount() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -754,6 +763,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 total_count = 6;</code>
      * @return The totalCount.
      */
+    @java.lang.Override
     public int getTotalCount() {
       return totalCount_;
     }
@@ -1211,7 +1221,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.IntellijIndexingStats.Operation operation = 1;</code>
        * @return Whether the operation field is set.
        */
-      public boolean hasOperation() {
+      @java.lang.Override public boolean hasOperation() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -1222,6 +1232,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.IntellijIndexingStats.Operation operation = 1;</code>
        * @return The operation.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation getOperation() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Operation.valueOf(operation_);
@@ -1269,6 +1280,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_cpu_nanos = 2;</code>
        * @return Whether the totalCpuNanos field is set.
        */
+      @java.lang.Override
       public boolean hasTotalCpuNanos() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1280,6 +1292,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_cpu_nanos = 2;</code>
        * @return The totalCpuNanos.
        */
+      @java.lang.Override
       public long getTotalCpuNanos() {
         return totalCpuNanos_;
       }
@@ -1322,6 +1335,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_wall_nanos = 3;</code>
        * @return Whether the totalWallNanos field is set.
        */
+      @java.lang.Override
       public boolean hasTotalWallNanos() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1333,6 +1347,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_wall_nanos = 3;</code>
        * @return The totalWallNanos.
        */
+      @java.lang.Override
       public long getTotalWallNanos() {
         return totalWallNanos_;
       }
@@ -1375,6 +1390,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_cpu_nanos = 4;</code>
        * @return Whether the maxCpuNanos field is set.
        */
+      @java.lang.Override
       public boolean hasMaxCpuNanos() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1386,6 +1402,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_cpu_nanos = 4;</code>
        * @return The maxCpuNanos.
        */
+      @java.lang.Override
       public int getMaxCpuNanos() {
         return maxCpuNanos_;
       }
@@ -1428,6 +1445,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_wall_nanos = 5;</code>
        * @return Whether the maxWallNanos field is set.
        */
+      @java.lang.Override
       public boolean hasMaxWallNanos() {
         return ((bitField0_ & 0x00000010) != 0);
       }
@@ -1439,6 +1457,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 max_wall_nanos = 5;</code>
        * @return The maxWallNanos.
        */
+      @java.lang.Override
       public int getMaxWallNanos() {
         return maxWallNanos_;
       }
@@ -1481,6 +1500,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 total_count = 6;</code>
        * @return Whether the totalCount field is set.
        */
+      @java.lang.Override
       public boolean hasTotalCount() {
         return ((bitField0_ & 0x00000020) != 0);
       }
@@ -1492,6 +1512,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int32 total_count = 6;</code>
        * @return The totalCount.
        */
+      @java.lang.Override
       public int getTotalCount() {
         return totalCount_;
       }
@@ -1651,7 +1672,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.IntellijIndexingStats.IndexStats}
    */
-  public  static final class IndexStats extends
+  public static final class IndexStats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.IntellijIndexingStats.IndexStats)
       IndexStatsOrBuilder {
@@ -1763,7 +1784,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijIndexingStats.Index index = 1;</code>
      * @return Whether the index field is set.
      */
-    public boolean hasIndex() {
+    @java.lang.Override public boolean hasIndex() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1774,7 +1795,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.IntellijIndexingStats.Index index = 1;</code>
      * @return The index.
      */
-    public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index getIndex() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index getIndex() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.valueOf(index_);
       return result == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.UNKNOWN_INDEX : result;
@@ -1789,6 +1810,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.IntellijIndexingStats.OperationStats operation_stats = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats> getOperationStatsList() {
       return operationStats_;
     }
@@ -1799,6 +1821,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.IntellijIndexingStats.OperationStats operation_stats = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStatsOrBuilder> 
         getOperationStatsOrBuilderList() {
       return operationStats_;
@@ -1810,6 +1833,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.IntellijIndexingStats.OperationStats operation_stats = 2;</code>
      */
+    @java.lang.Override
     public int getOperationStatsCount() {
       return operationStats_.size();
     }
@@ -1820,6 +1844,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.IntellijIndexingStats.OperationStats operation_stats = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStats getOperationStats(int index) {
       return operationStats_.get(index);
     }
@@ -1830,6 +1855,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.IntellijIndexingStats.OperationStats operation_stats = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.IntellijIndexingStats.OperationStatsOrBuilder getOperationStatsOrBuilder(
         int index) {
       return operationStats_.get(index);
@@ -2216,7 +2242,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.IntellijIndexingStats.Index index = 1;</code>
        * @return Whether the index field is set.
        */
-      public boolean hasIndex() {
+      @java.lang.Override public boolean hasIndex() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -2227,6 +2253,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.IntellijIndexingStats.Index index = 1;</code>
        * @return The index.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index getIndex() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index result = com.google.wireless.android.sdk.stats.IntellijIndexingStats.Index.valueOf(index_);
@@ -2640,6 +2667,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 duration_ms = 1;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -2651,6 +2679,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 duration_ms = 1;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public int getDurationMs() {
     return durationMs_;
   }
@@ -2665,6 +2694,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 file_count = 2;</code>
    * @return Whether the fileCount field is set.
    */
+  @java.lang.Override
   public boolean hasFileCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -2676,6 +2706,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 file_count = 2;</code>
    * @return The fileCount.
    */
+  @java.lang.Override
   public int getFileCount() {
     return fileCount_;
   }
@@ -2690,6 +2721,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 indexer_threads = 3;</code>
    * @return Whether the indexerThreads field is set.
    */
+  @java.lang.Override
   public boolean hasIndexerThreads() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -2701,6 +2733,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 indexer_threads = 3;</code>
    * @return The indexerThreads.
    */
+  @java.lang.Override
   public int getIndexerThreads() {
     return indexerThreads_;
   }
@@ -2714,6 +2747,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijIndexingStats.IndexStats index_stats = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats> getIndexStatsList() {
     return indexStats_;
   }
@@ -2724,6 +2758,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijIndexingStats.IndexStats index_stats = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStatsOrBuilder> 
       getIndexStatsOrBuilderList() {
     return indexStats_;
@@ -2735,6 +2770,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijIndexingStats.IndexStats index_stats = 4;</code>
    */
+  @java.lang.Override
   public int getIndexStatsCount() {
     return indexStats_.size();
   }
@@ -2745,6 +2781,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijIndexingStats.IndexStats index_stats = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStats getIndexStats(int index) {
     return indexStats_.get(index);
   }
@@ -2755,6 +2792,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijIndexingStats.IndexStats index_stats = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijIndexingStats.IndexStatsOrBuilder getIndexStatsOrBuilder(
       int index) {
     return indexStats_.get(index);
@@ -3192,6 +3230,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 duration_ms = 1;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -3203,6 +3242,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 duration_ms = 1;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public int getDurationMs() {
       return durationMs_;
     }
@@ -3245,6 +3285,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 file_count = 2;</code>
      * @return Whether the fileCount field is set.
      */
+    @java.lang.Override
     public boolean hasFileCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -3256,6 +3297,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 file_count = 2;</code>
      * @return The fileCount.
      */
+    @java.lang.Override
     public int getFileCount() {
       return fileCount_;
     }
@@ -3298,6 +3340,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 indexer_threads = 3;</code>
      * @return Whether the indexerThreads field is set.
      */
+    @java.lang.Override
     public boolean hasIndexerThreads() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -3309,6 +3352,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 indexer_threads = 3;</code>
      * @return The indexerThreads.
      */
+    @java.lang.Override
     public int getIndexerThreads() {
       return indexerThreads_;
     }

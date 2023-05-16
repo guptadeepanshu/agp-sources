@@ -31,7 +31,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    * @return Whether the databaseInspectorEvent field is set.
    */
   boolean hasDatabaseInspectorEvent();
@@ -40,7 +40,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    * @return The databaseInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEvent getDatabaseInspectorEvent();
@@ -49,7 +49,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the database inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
+   * <code>.android_studio.AppInspectionEvent.DatabaseInspectorEvent database_inspector_event = 2;</code>
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.DatabaseInspectorEventOrBuilder getDatabaseInspectorEventOrBuilder();
 
@@ -58,7 +58,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    * @return Whether the workManagerInspectorEvent field is set.
    */
   boolean hasWorkManagerInspectorEvent();
@@ -67,7 +67,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    * @return The workManagerInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEvent getWorkManagerInspectorEvent();
@@ -76,7 +76,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the WorkManager inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
+   * <code>.android_studio.AppInspectionEvent.WorkManagerInspectorEvent work_manager_inspector_event = 3;</code>
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.WorkManagerInspectorEventOrBuilder getWorkManagerInspectorEventOrBuilder();
 
@@ -85,7 +85,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    * @return Whether the networkInspectorEvent field is set.
    */
   boolean hasNetworkInspectorEvent();
@@ -94,7 +94,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    * @return The networkInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEvent getNetworkInspectorEvent();
@@ -103,7 +103,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with the Network inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
+   * <code>.android_studio.AppInspectionEvent.NetworkInspectorEvent network_inspector_event = 4;</code>
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.NetworkInspectorEventOrBuilder getNetworkInspectorEventOrBuilder();
 
@@ -112,7 +112,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    * @return Whether the backgroundTaskInspectorEvent field is set.
    */
   boolean hasBackgroundTaskInspectorEvent();
@@ -121,7 +121,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    * @return The backgroundTaskInspectorEvent.
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEvent getBackgroundTaskInspectorEvent();
@@ -130,7 +130,7 @@ public interface AppInspectionEventOrBuilder extends
    * Event associated with the user interacting with background task inspector
    * </pre>
    *
-   * <code>optional .android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
+   * <code>.android_studio.AppInspectionEvent.BackgroundTaskInspectorEvent background_task_inspector_event = 5;</code>
    */
   com.google.wireless.android.sdk.stats.AppInspectionEvent.BackgroundTaskInspectorEventOrBuilder getBackgroundTaskInspectorEventOrBuilder();
 

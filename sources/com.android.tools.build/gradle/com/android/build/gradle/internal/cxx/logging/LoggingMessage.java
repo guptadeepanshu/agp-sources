@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.logging;
  *
  * Protobuf type {@code LoggingMessage}
  */
-public  final class LoggingMessage extends
+public final class LoggingMessage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:LoggingMessage)
     LoggingMessageOrBuilder {
@@ -215,6 +215,10 @@ private static final long serialVersionUID = 0L;
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -255,14 +259,14 @@ private static final long serialVersionUID = 0L;
    * <code>.LoggingMessage.LoggingLevel level = 1;</code>
    * @return The enum numeric value on the wire for level.
    */
-  public int getLevelValue() {
+  @java.lang.Override public int getLevelValue() {
     return level_;
   }
   /**
    * <code>.LoggingMessage.LoggingLevel level = 1;</code>
    * @return The level.
    */
-  public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
+  @java.lang.Override public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
     @SuppressWarnings("deprecation")
     com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
     return result == null ? com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.UNRECOGNIZED : result;
@@ -274,6 +278,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The message.
    */
+  @java.lang.Override
   public java.lang.String getMessage() {
     java.lang.Object ref = message_;
     if (ref instanceof java.lang.String) {
@@ -290,6 +295,7 @@ private static final long serialVersionUID = 0L;
    * <code>string message = 2;</code>
    * @return The bytes for message.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getMessageBytes() {
     java.lang.Object ref = message_;
@@ -310,6 +316,7 @@ private static final long serialVersionUID = 0L;
    * <code>string file = 3;</code>
    * @return The file.
    */
+  @java.lang.Override
   public java.lang.String getFile() {
     java.lang.Object ref = file_;
     if (ref instanceof java.lang.String) {
@@ -326,6 +333,7 @@ private static final long serialVersionUID = 0L;
    * <code>string file = 3;</code>
    * @return The bytes for file.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFileBytes() {
     java.lang.Object ref = file_;
@@ -346,6 +354,7 @@ private static final long serialVersionUID = 0L;
    * <code>string tag = 4;</code>
    * @return The tag.
    */
+  @java.lang.Override
   public java.lang.String getTag() {
     java.lang.Object ref = tag_;
     if (ref instanceof java.lang.String) {
@@ -362,6 +371,7 @@ private static final long serialVersionUID = 0L;
    * <code>string tag = 4;</code>
    * @return The bytes for tag.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getTagBytes() {
     java.lang.Object ref = tag_;
@@ -382,6 +392,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 diagnostic_code = 5;</code>
    * @return The diagnosticCode.
    */
+  @java.lang.Override
   public int getDiagnosticCode() {
     return diagnosticCode_;
   }
@@ -765,7 +776,7 @@ private static final long serialVersionUID = 0L;
      * <code>.LoggingMessage.LoggingLevel level = 1;</code>
      * @return The enum numeric value on the wire for level.
      */
-    public int getLevelValue() {
+    @java.lang.Override public int getLevelValue() {
       return level_;
     }
     /**
@@ -774,6 +785,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder setLevelValue(int value) {
+      
       level_ = value;
       onChanged();
       return this;
@@ -782,6 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>.LoggingMessage.LoggingLevel level = 1;</code>
      * @return The level.
      */
+    @java.lang.Override
     public com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel getLevel() {
       @SuppressWarnings("deprecation")
       com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel result = com.android.build.gradle.internal.cxx.logging.LoggingMessage.LoggingLevel.valueOf(level_);
@@ -1045,6 +1058,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 diagnostic_code = 5;</code>
      * @return The diagnosticCode.
      */
+    @java.lang.Override
     public int getDiagnosticCode() {
       return diagnosticCode_;
     }

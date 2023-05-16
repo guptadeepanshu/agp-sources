@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.TypingLatencyStats}
  */
-public  final class TypingLatencyStats extends
+public final class TypingLatencyStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TypingLatencyStats)
     TypingLatencyStatsOrBuilder {
@@ -196,7 +196,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.TypingLatencyStats.LatencyRecord}
    */
-  public  static final class LatencyRecord extends
+  public static final class LatencyRecord extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.TypingLatencyStats.LatencyRecord)
       LatencyRecordOrBuilder {
@@ -319,14 +319,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return Whether the fileType field is set.
      */
-    public boolean hasFileType() {
+    @java.lang.Override public boolean hasFileType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EditorFileType file_type = 1;</code>
      * @return The fileType.
      */
-    public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
       return result == null ? com.google.wireless.android.sdk.stats.EditorFileType.UNKNOWN : result;
@@ -342,6 +342,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_keys_typed = 2;</code>
      * @return Whether the totalKeysTyped field is set.
      */
+    @java.lang.Override
     public boolean hasTotalKeysTyped() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -353,6 +354,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_keys_typed = 2;</code>
      * @return The totalKeysTyped.
      */
+    @java.lang.Override
     public long getTotalKeysTyped() {
       return totalKeysTyped_;
     }
@@ -367,6 +369,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_latency_ms = 3;</code>
      * @return Whether the totalLatencyMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalLatencyMs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -378,6 +381,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_latency_ms = 3;</code>
      * @return The totalLatencyMs.
      */
+    @java.lang.Override
     public long getTotalLatencyMs() {
       return totalLatencyMs_;
     }
@@ -392,6 +396,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 max_latency_ms = 4;</code>
      * @return Whether the maxLatencyMs field is set.
      */
+    @java.lang.Override
     public boolean hasMaxLatencyMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -403,6 +408,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 max_latency_ms = 4;</code>
      * @return The maxLatencyMs.
      */
+    @java.lang.Override
     public long getMaxLatencyMs() {
       return maxLatencyMs_;
     }
@@ -417,6 +423,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram histogram = 5;</code>
      * @return Whether the histogram field is set.
      */
+    @java.lang.Override
     public boolean hasHistogram() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -428,6 +435,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.Histogram histogram = 5;</code>
      * @return The histogram.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.Histogram getHistogram() {
       return histogram_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : histogram_;
     }
@@ -438,6 +446,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.Histogram histogram = 5;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.HistogramOrBuilder getHistogramOrBuilder() {
       return histogram_ == null ? com.google.wireless.android.sdk.stats.Histogram.getDefaultInstance() : histogram_;
     }
@@ -872,13 +881,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return Whether the fileType field is set.
        */
-      public boolean hasFileType() {
+      @java.lang.Override public boolean hasFileType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.EditorFileType file_type = 1;</code>
        * @return The fileType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.EditorFileType getFileType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.EditorFileType result = com.google.wireless.android.sdk.stats.EditorFileType.valueOf(fileType_);
@@ -918,6 +928,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_keys_typed = 2;</code>
        * @return Whether the totalKeysTyped field is set.
        */
+      @java.lang.Override
       public boolean hasTotalKeysTyped() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -929,6 +940,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_keys_typed = 2;</code>
        * @return The totalKeysTyped.
        */
+      @java.lang.Override
       public long getTotalKeysTyped() {
         return totalKeysTyped_;
       }
@@ -971,6 +983,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_latency_ms = 3;</code>
        * @return Whether the totalLatencyMs field is set.
        */
+      @java.lang.Override
       public boolean hasTotalLatencyMs() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -982,6 +995,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 total_latency_ms = 3;</code>
        * @return The totalLatencyMs.
        */
+      @java.lang.Override
       public long getTotalLatencyMs() {
         return totalLatencyMs_;
       }
@@ -1024,6 +1038,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 max_latency_ms = 4;</code>
        * @return Whether the maxLatencyMs field is set.
        */
+      @java.lang.Override
       public boolean hasMaxLatencyMs() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1035,6 +1050,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 max_latency_ms = 4;</code>
        * @return The maxLatencyMs.
        */
+      @java.lang.Override
       public long getMaxLatencyMs() {
         return maxLatencyMs_;
       }
@@ -1285,6 +1301,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TypingLatencyStats.LatencyRecord latency_records = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecord> getLatencyRecordsList() {
     return latencyRecords_;
   }
@@ -1295,6 +1312,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TypingLatencyStats.LatencyRecord latency_records = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecordOrBuilder> 
       getLatencyRecordsOrBuilderList() {
     return latencyRecords_;
@@ -1306,6 +1324,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TypingLatencyStats.LatencyRecord latency_records = 1;</code>
    */
+  @java.lang.Override
   public int getLatencyRecordsCount() {
     return latencyRecords_.size();
   }
@@ -1316,6 +1335,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TypingLatencyStats.LatencyRecord latency_records = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecord getLatencyRecords(int index) {
     return latencyRecords_.get(index);
   }
@@ -1326,6 +1346,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.TypingLatencyStats.LatencyRecord latency_records = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TypingLatencyStats.LatencyRecordOrBuilder getLatencyRecordsOrBuilder(
       int index) {
     return latencyRecords_.get(index);

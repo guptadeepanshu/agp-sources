@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleBuildSplits}
  */
-public  final class GradleBuildSplits extends
+public final class GradleBuildSplits extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildSplits)
     GradleBuildSplitsOrBuilder {
@@ -361,6 +361,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool density_enabled = 1;</code>
    * @return Whether the densityEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasDensityEnabled() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -372,6 +373,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool density_enabled = 1;</code>
    * @return The densityEnabled.
    */
+  @java.lang.Override
   public boolean getDensityEnabled() {
     return densityEnabled_;
   }
@@ -388,6 +390,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
    * @return Whether the densityAuto field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasDensityAuto() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -401,6 +404,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool density_auto = 2 [deprecated = true];</code>
    * @return The densityAuto.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean getDensityAuto() {
     return densityAuto_;
   }
@@ -427,6 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.GradleBuildSplits.CompatibleScreenSize density_compatible_screens = 3;</code>
    * @return A list containing the densityCompatibleScreens.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize> getDensityCompatibleScreensList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize>(densityCompatibleScreens_, densityCompatibleScreens_converter_);
@@ -439,8 +444,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.GradleBuildSplits.CompatibleScreenSize density_compatible_screens = 3;</code>
-   * @param value The densityCompatibleScreens to add.
+   * @return The count of densityCompatibleScreens.
    */
+  @java.lang.Override
   public int getDensityCompatibleScreensCount() {
     return densityCompatibleScreens_.size();
   }
@@ -455,6 +461,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The densityCompatibleScreens at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildSplits.CompatibleScreenSize getDensityCompatibleScreens(int index) {
     return densityCompatibleScreens_converter_.convert(densityCompatibleScreens_.get(index));
   }
@@ -474,6 +481,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 density_values = 4;</code>
    * @return A list containing the densityValues.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getDensityValuesList() {
     return densityValues_;
@@ -522,6 +530,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool language_enabled = 5;</code>
    * @return Whether the languageEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasLanguageEnabled() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -533,6 +542,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool language_enabled = 5;</code>
    * @return The languageEnabled.
    */
+  @java.lang.Override
   public boolean getLanguageEnabled() {
     return languageEnabled_;
   }
@@ -549,6 +559,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
    * @return Whether the languageAuto field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasLanguageAuto() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -562,6 +573,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool language_auto = 6 [deprecated = true];</code>
    * @return The languageAuto.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean getLanguageAuto() {
     return languageAuto_;
   }
@@ -635,6 +647,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abi_enabled = 8;</code>
    * @return Whether the abiEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasAbiEnabled() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -646,6 +659,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abi_enabled = 8;</code>
    * @return The abiEnabled.
    */
+  @java.lang.Override
   public boolean getAbiEnabled() {
     return abiEnabled_;
   }
@@ -661,6 +675,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abi_enable_universal_apk = 9;</code>
    * @return Whether the abiEnableUniversalApk field is set.
    */
+  @java.lang.Override
   public boolean hasAbiEnableUniversalApk() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -673,6 +688,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool abi_enable_universal_apk = 9;</code>
    * @return The abiEnableUniversalApk.
    */
+  @java.lang.Override
   public boolean getAbiEnableUniversalApk() {
     return abiEnableUniversalApk_;
   }
@@ -699,6 +715,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.DeviceInfo.ApplicationBinaryInterface abi_filters = 10;</code>
    * @return A list containing the abiFilters.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface> getAbiFiltersList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface>(abiFilters_, abiFilters_converter_);
@@ -711,8 +728,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.DeviceInfo.ApplicationBinaryInterface abi_filters = 10;</code>
-   * @param value The abiFilters to add.
+   * @return The count of abiFilters.
    */
+  @java.lang.Override
   public int getAbiFiltersCount() {
     return abiFilters_.size();
   }
@@ -727,6 +745,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The abiFilters at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfo.ApplicationBinaryInterface getAbiFilters(int index) {
     return abiFilters_converter_.convert(abiFilters_.get(index));
   }
@@ -1322,6 +1341,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool density_enabled = 1;</code>
      * @return Whether the densityEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasDensityEnabled() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1333,6 +1353,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool density_enabled = 1;</code>
      * @return The densityEnabled.
      */
+    @java.lang.Override
     public boolean getDensityEnabled() {
       return densityEnabled_;
     }
@@ -1377,6 +1398,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
      * @return Whether the densityAuto field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasDensityAuto() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1390,6 +1412,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool density_auto = 2 [deprecated = true];</code>
      * @return The densityAuto.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean getDensityAuto() {
       return densityAuto_;
     }
@@ -1706,6 +1729,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool language_enabled = 5;</code>
      * @return Whether the languageEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasLanguageEnabled() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1717,6 +1741,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool language_enabled = 5;</code>
      * @return The languageEnabled.
      */
+    @java.lang.Override
     public boolean getLanguageEnabled() {
       return languageEnabled_;
     }
@@ -1761,6 +1786,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
      * @return Whether the languageAuto field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasLanguageAuto() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1774,6 +1800,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool language_auto = 6 [deprecated = true];</code>
      * @return The languageAuto.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean getLanguageAuto() {
       return languageAuto_;
     }
@@ -1983,6 +2010,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abi_enabled = 8;</code>
      * @return Whether the abiEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasAbiEnabled() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1994,6 +2022,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abi_enabled = 8;</code>
      * @return The abiEnabled.
      */
+    @java.lang.Override
     public boolean getAbiEnabled() {
       return abiEnabled_;
     }
@@ -2037,6 +2066,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abi_enable_universal_apk = 9;</code>
      * @return Whether the abiEnableUniversalApk field is set.
      */
+    @java.lang.Override
     public boolean hasAbiEnableUniversalApk() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2049,6 +2079,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool abi_enable_universal_apk = 9;</code>
      * @return The abiEnableUniversalApk.
      */
+    @java.lang.Override
     public boolean getAbiEnableUniversalApk() {
       return abiEnableUniversalApk_;
     }

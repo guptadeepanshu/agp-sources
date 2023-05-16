@@ -11,7 +11,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code EncodedObjectFileKey}
  */
-public  final class EncodedObjectFileKey extends
+public final class EncodedObjectFileKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:EncodedObjectFileKey)
     EncodedObjectFileKeyOrBuilder {
@@ -130,6 +130,7 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedDependenciesKey dependency_key = 1;</code>
    * @return Whether the dependencyKey field is set.
    */
+  @java.lang.Override
   public boolean hasDependencyKey() {
     return dependencyKey_ != null;
   }
@@ -137,12 +138,14 @@ private static final long serialVersionUID = 0L;
    * <code>.EncodedDependenciesKey dependency_key = 1;</code>
    * @return The dependencyKey.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedDependenciesKey getDependencyKey() {
     return dependencyKey_ == null ? com.android.build.gradle.internal.cxx.caching.EncodedDependenciesKey.getDefaultInstance() : dependencyKey_;
   }
   /**
    * <code>.EncodedDependenciesKey dependency_key = 1;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.EncodedDependenciesKeyOrBuilder getDependencyKeyOrBuilder() {
     return getDependencyKey();
   }
@@ -153,6 +156,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated int32 dependency_ids = 2;</code>
    * @return A list containing the dependencyIds.
    */
+  @java.lang.Override
   public java.util.List<java.lang.Integer>
       getDependencyIdsList() {
     return dependencyIds_;

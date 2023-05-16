@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.PercentileBucket}
  */
-public  final class PercentileBucket extends
+public final class PercentileBucket extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.PercentileBucket)
     PercentileBucketOrBuilder {
@@ -111,6 +111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double target_percentile = 1;</code>
    * @return Whether the targetPercentile field is set.
    */
+  @java.lang.Override
   public boolean hasTargetPercentile() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -122,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double target_percentile = 1;</code>
    * @return The targetPercentile.
    */
+  @java.lang.Override
   public double getTargetPercentile() {
     return targetPercentile_;
   }
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double value = 2;</code>
    * @return Whether the value field is set.
    */
+  @java.lang.Override
   public boolean hasValue() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -147,6 +150,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional double value = 2;</code>
    * @return The value.
    */
+  @java.lang.Override
   public double getValue() {
     return value_;
   }
@@ -161,6 +165,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 count = 3;</code>
    * @return Whether the count field is set.
    */
+  @java.lang.Override
   public boolean hasCount() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -172,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 count = 3;</code>
    * @return The count.
    */
+  @java.lang.Override
   public long getCount() {
     return count_;
   }
@@ -558,6 +564,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double target_percentile = 1;</code>
      * @return Whether the targetPercentile field is set.
      */
+    @java.lang.Override
     public boolean hasTargetPercentile() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -569,6 +576,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double target_percentile = 1;</code>
      * @return The targetPercentile.
      */
+    @java.lang.Override
     public double getTargetPercentile() {
       return targetPercentile_;
     }
@@ -611,6 +619,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double value = 2;</code>
      * @return Whether the value field is set.
      */
+    @java.lang.Override
     public boolean hasValue() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -622,6 +631,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional double value = 2;</code>
      * @return The value.
      */
+    @java.lang.Override
     public double getValue() {
       return value_;
     }
@@ -664,6 +674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 count = 3;</code>
      * @return Whether the count field is set.
      */
+    @java.lang.Override
     public boolean hasCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -675,6 +686,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 count = 3;</code>
      * @return The count.
      */
+    @java.lang.Override
     public long getCount() {
       return count_;
     }

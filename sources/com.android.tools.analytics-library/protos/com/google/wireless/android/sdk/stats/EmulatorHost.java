@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorHost}
  */
-public  final class EmulatorHost extends
+public final class EmulatorHost extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorHost)
     EmulatorHostOrBuilder {
@@ -149,6 +149,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cpu_manufacturer = 1;</code>
    * @return Whether the cpuManufacturer field is set.
    */
+  @java.lang.Override
   public boolean hasCpuManufacturer() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -161,6 +162,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cpu_manufacturer = 1;</code>
    * @return The cpuManufacturer.
    */
+  @java.lang.Override
   public java.lang.String getCpuManufacturer() {
     java.lang.Object ref = cpuManufacturer_;
     if (ref instanceof java.lang.String) {
@@ -184,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cpu_manufacturer = 1;</code>
    * @return The bytes for cpuManufacturer.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCpuManufacturerBytes() {
     java.lang.Object ref = cpuManufacturer_;
@@ -208,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virt_support = 2;</code>
    * @return Whether the virtSupport field is set.
    */
+  @java.lang.Override
   public boolean hasVirtSupport() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -219,6 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool virt_support = 2;</code>
    * @return The virtSupport.
    */
+  @java.lang.Override
   public boolean getVirtSupport() {
     return virtSupport_;
   }
@@ -233,6 +238,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool running_in_vm = 3;</code>
    * @return Whether the runningInVm field is set.
    */
+  @java.lang.Override
   public boolean hasRunningInVm() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -244,6 +250,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool running_in_vm = 3;</code>
    * @return The runningInVm.
    */
+  @java.lang.Override
   public boolean getRunningInVm() {
     return runningInVm_;
   }
@@ -259,6 +266,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 os_bit_count = 4;</code>
    * @return Whether the osBitCount field is set.
    */
+  @java.lang.Override
   public boolean hasOsBitCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -271,6 +279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 os_bit_count = 4;</code>
    * @return The osBitCount.
    */
+  @java.lang.Override
   public long getOsBitCount() {
     return osBitCount_;
   }
@@ -288,6 +297,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_stepping = 5;</code>
    * @return Whether the cpuidStepping field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidStepping() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -302,6 +312,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_stepping = 5;</code>
    * @return The cpuidStepping.
    */
+  @java.lang.Override
   public int getCpuidStepping() {
     return cpuidStepping_;
   }
@@ -316,6 +327,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_model = 6;</code>
    * @return Whether the cpuidModel field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidModel() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -327,6 +339,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_model = 6;</code>
    * @return The cpuidModel.
    */
+  @java.lang.Override
   public int getCpuidModel() {
     return cpuidModel_;
   }
@@ -341,6 +354,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_family = 7;</code>
    * @return Whether the cpuidFamily field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidFamily() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -352,6 +366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_family = 7;</code>
    * @return The cpuidFamily.
    */
+  @java.lang.Override
   public int getCpuidFamily() {
     return cpuidFamily_;
   }
@@ -366,6 +381,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_type = 8;</code>
    * @return Whether the cpuidType field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidType() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -377,6 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_type = 8;</code>
    * @return The cpuidType.
    */
+  @java.lang.Override
   public int getCpuidType() {
     return cpuidType_;
   }
@@ -391,6 +408,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_extmodel = 9;</code>
    * @return Whether the cpuidExtmodel field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidExtmodel() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -402,6 +420,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_extmodel = 9;</code>
    * @return The cpuidExtmodel.
    */
+  @java.lang.Override
   public int getCpuidExtmodel() {
     return cpuidExtmodel_;
   }
@@ -416,6 +435,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_extfamily = 10;</code>
    * @return Whether the cpuidExtfamily field is set.
    */
+  @java.lang.Override
   public boolean hasCpuidExtfamily() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -427,6 +447,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 cpuid_extfamily = 10;</code>
    * @return The cpuidExtfamily.
    */
+  @java.lang.Override
   public int getCpuidExtfamily() {
     return cpuidExtfamily_;
   }
@@ -1101,6 +1122,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virt_support = 2;</code>
      * @return Whether the virtSupport field is set.
      */
+    @java.lang.Override
     public boolean hasVirtSupport() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1112,6 +1134,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool virt_support = 2;</code>
      * @return The virtSupport.
      */
+    @java.lang.Override
     public boolean getVirtSupport() {
       return virtSupport_;
     }
@@ -1154,6 +1177,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool running_in_vm = 3;</code>
      * @return Whether the runningInVm field is set.
      */
+    @java.lang.Override
     public boolean hasRunningInVm() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1165,6 +1189,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool running_in_vm = 3;</code>
      * @return The runningInVm.
      */
+    @java.lang.Override
     public boolean getRunningInVm() {
       return runningInVm_;
     }
@@ -1208,6 +1233,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 os_bit_count = 4;</code>
      * @return Whether the osBitCount field is set.
      */
+    @java.lang.Override
     public boolean hasOsBitCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1220,6 +1246,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 os_bit_count = 4;</code>
      * @return The osBitCount.
      */
+    @java.lang.Override
     public long getOsBitCount() {
       return osBitCount_;
     }
@@ -1267,6 +1294,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_stepping = 5;</code>
      * @return Whether the cpuidStepping field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidStepping() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1281,6 +1309,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_stepping = 5;</code>
      * @return The cpuidStepping.
      */
+    @java.lang.Override
     public int getCpuidStepping() {
       return cpuidStepping_;
     }
@@ -1329,6 +1358,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_model = 6;</code>
      * @return Whether the cpuidModel field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidModel() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1340,6 +1370,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_model = 6;</code>
      * @return The cpuidModel.
      */
+    @java.lang.Override
     public int getCpuidModel() {
       return cpuidModel_;
     }
@@ -1382,6 +1413,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_family = 7;</code>
      * @return Whether the cpuidFamily field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidFamily() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1393,6 +1425,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_family = 7;</code>
      * @return The cpuidFamily.
      */
+    @java.lang.Override
     public int getCpuidFamily() {
       return cpuidFamily_;
     }
@@ -1435,6 +1468,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_type = 8;</code>
      * @return Whether the cpuidType field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidType() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1446,6 +1480,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_type = 8;</code>
      * @return The cpuidType.
      */
+    @java.lang.Override
     public int getCpuidType() {
       return cpuidType_;
     }
@@ -1488,6 +1523,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_extmodel = 9;</code>
      * @return Whether the cpuidExtmodel field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidExtmodel() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1499,6 +1535,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_extmodel = 9;</code>
      * @return The cpuidExtmodel.
      */
+    @java.lang.Override
     public int getCpuidExtmodel() {
       return cpuidExtmodel_;
     }
@@ -1541,6 +1578,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_extfamily = 10;</code>
      * @return Whether the cpuidExtfamily field is set.
      */
+    @java.lang.Override
     public boolean hasCpuidExtfamily() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1552,6 +1590,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 cpuid_extfamily = 10;</code>
      * @return The cpuidExtfamily.
      */
+    @java.lang.Override
     public int getCpuidExtfamily() {
       return cpuidExtfamily_;
     }

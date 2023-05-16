@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.NavDestinationInfo}
  */
-public  final class NavDestinationInfo extends
+public final class NavDestinationInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavDestinationInfo)
     NavDestinationInfoOrBuilder {
@@ -229,7 +229,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavDestinationInfo.DestinationType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -240,7 +240,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavDestinationInfo.DestinationType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.UNKNOWN : result;
@@ -256,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_class = 2;</code>
    * @return Whether the hasClass field is set.
    */
+  @java.lang.Override
   public boolean hasHasClass() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -267,6 +268,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_class = 2;</code>
    * @return The hasClass.
    */
+  @java.lang.Override
   public boolean getHasClass() {
     return hasClass_;
   }
@@ -281,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_layout = 3;</code>
    * @return Whether the hasLayout field is set.
    */
+  @java.lang.Override
   public boolean hasHasLayout() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -292,6 +295,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_layout = 3;</code>
    * @return The hasLayout.
    */
+  @java.lang.Override
   public boolean getHasLayout() {
     return hasLayout_;
   }
@@ -670,7 +674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavDestinationInfo.DestinationType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -681,6 +685,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavDestinationInfo.DestinationType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType result = com.google.wireless.android.sdk.stats.NavDestinationInfo.DestinationType.valueOf(type_);
@@ -728,6 +733,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_class = 2;</code>
      * @return Whether the hasClass field is set.
      */
+    @java.lang.Override
     public boolean hasHasClass() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -739,6 +745,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_class = 2;</code>
      * @return The hasClass.
      */
+    @java.lang.Override
     public boolean getHasClass() {
       return hasClass_;
     }
@@ -781,6 +788,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_layout = 3;</code>
      * @return Whether the hasLayout field is set.
      */
+    @java.lang.Override
     public boolean hasHasLayout() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -792,6 +800,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_layout = 3;</code>
      * @return The hasLayout.
      */
+    @java.lang.Override
     public boolean getHasLayout() {
       return hasLayout_;
     }

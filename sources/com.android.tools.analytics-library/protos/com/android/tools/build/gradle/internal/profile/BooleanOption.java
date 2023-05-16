@@ -606,8 +606,9 @@ public enum BooleanOption
    */
   ENABLE_ART_PROFILES(146),
   /**
-   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147;</code>
+   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147 [deprecated = true];</code>
    */
+  @java.lang.Deprecated
   ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION(147),
   /**
    * <code>FORCE_DETERMINISTIC_APK = 148;</code>
@@ -621,6 +622,22 @@ public enum BooleanOption
    * <code>UNINSTALL_INCOMPATIBLE_APKS = 150;</code>
    */
   UNINSTALL_INCOMPATIBLE_APKS(150),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING = 151;</code>
+   */
+  GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING(151),
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES = 152;</code>
+   */
+  GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES(152),
+  /**
+   * <code>MISSING_LINT_BASELINE_IS_EMPTY_BASELINE = 153;</code>
+   */
+  MISSING_LINT_BASELINE_IS_EMPTY_BASELINE(153),
+  /**
+   * <code>LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL = 154;</code>
+   */
+  LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL(154),
   UNRECOGNIZED(-1),
   ;
 
@@ -643,7 +660,7 @@ public enum BooleanOption
   /**
    * <code>ENABLE_BUILD_CACHE = 4 [deprecated = true];</code>
    */
-  public static final int ENABLE_BUILD_CACHE_VALUE = 4;
+  @java.lang.Deprecated public static final int ENABLE_BUILD_CACHE_VALUE = 4;
   /**
    * <code>ENABLE_PROFILE_JSON = 5;</code>
    */
@@ -807,7 +824,7 @@ public enum BooleanOption
   /**
    * <code>ENABLE_R8_DEPRECATED = 45 [deprecated = true];</code>
    */
-  public static final int ENABLE_R8_DEPRECATED_VALUE = 45;
+  @java.lang.Deprecated public static final int ENABLE_R8_DEPRECATED_VALUE = 45;
   /**
    * <code>ENABLE_R8_DESUGARING = 46;</code>
    */
@@ -875,7 +892,7 @@ public enum BooleanOption
   /**
    * <code>NAMESPACED_R_CLASS = 62 [deprecated = true];</code>
    */
-  public static final int NAMESPACED_R_CLASS_VALUE = 62;
+  @java.lang.Deprecated public static final int NAMESPACED_R_CLASS_VALUE = 62;
   /**
    * <code>ENABLE_DEXING_ARTIFACT_TRANSFORM = 63;</code>
    */
@@ -959,15 +976,15 @@ public enum BooleanOption
   /**
    * <code>PRECOMPILE_REMOTE_RESOURCES = 83 [deprecated = true];</code>
    */
-  public static final int PRECOMPILE_REMOTE_RESOURCES_VALUE = 83;
+  @java.lang.Deprecated public static final int PRECOMPILE_REMOTE_RESOURCES_VALUE = 83;
   /**
    * <code>ENABLE_VIEW_BINDING = 84 [deprecated = true];</code>
    */
-  public static final int ENABLE_VIEW_BINDING_VALUE = 84;
+  @java.lang.Deprecated public static final int ENABLE_VIEW_BINDING_VALUE = 84;
   /**
    * <code>GENERATE_R_JAVA = 85 [deprecated = true];</code>
    */
-  public static final int GENERATE_R_JAVA_VALUE = 85;
+  @java.lang.Deprecated public static final int GENERATE_R_JAVA_VALUE = 85;
   /**
    * <code>ENABLE_CMAKE_BUILD_COHABITATION = 86;</code>
    */
@@ -991,7 +1008,7 @@ public enum BooleanOption
   /**
    * <code>PRECOMPILE_LOCAL_RESOURCES = 91 [deprecated = true];</code>
    */
-  public static final int PRECOMPILE_LOCAL_RESOURCES_VALUE = 91;
+  @java.lang.Deprecated public static final int PRECOMPILE_LOCAL_RESOURCES_VALUE = 91;
   /**
    * <code>ENABLE_ADDITIONAL_ANDROID_TEST_OUTPUT = 92;</code>
    */
@@ -1083,7 +1100,7 @@ public enum BooleanOption
   /**
    * <code>ENABLE_MLKIT = 114 [deprecated = true];</code>
    */
-  public static final int ENABLE_MLKIT_VALUE = 114;
+  @java.lang.Deprecated public static final int ENABLE_MLKIT_VALUE = 114;
   /**
    * <code>DISABLE_MEMOIZATION = 115;</code>
    */
@@ -1119,7 +1136,7 @@ public enum BooleanOption
   /**
    * <code>ANDROID_TEST_USES_RETENTION = 123 [deprecated = true];</code>
    */
-  public static final int ANDROID_TEST_USES_RETENTION_VALUE = 123;
+  @java.lang.Deprecated public static final int ANDROID_TEST_USES_RETENTION_VALUE = 123;
   /**
    * <code>ENABLE_AAR_METADATA = 124;</code>
    */
@@ -1213,9 +1230,9 @@ public enum BooleanOption
    */
   public static final int ENABLE_ART_PROFILES_VALUE = 146;
   /**
-   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147;</code>
+   * <code>ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION = 147 [deprecated = true];</code>
    */
-  public static final int ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION_VALUE = 147;
+  @java.lang.Deprecated public static final int ENABLE_JACOCO_TRANSFORM_INSTRUMENTATION_VALUE = 147;
   /**
    * <code>FORCE_DETERMINISTIC_APK = 148;</code>
    */
@@ -1228,6 +1245,22 @@ public enum BooleanOption
    * <code>UNINSTALL_INCOMPATIBLE_APKS = 150;</code>
    */
   public static final int UNINSTALL_INCOMPATIBLE_APKS_VALUE = 150;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING = 151;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING_VALUE = 151;
+  /**
+   * <code>GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES = 152;</code>
+   */
+  public static final int GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES_VALUE = 152;
+  /**
+   * <code>MISSING_LINT_BASELINE_IS_EMPTY_BASELINE = 153;</code>
+   */
+  public static final int MISSING_LINT_BASELINE_IS_EMPTY_BASELINE_VALUE = 153;
+  /**
+   * <code>LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL = 154;</code>
+   */
+  public static final int LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL_VALUE = 154;
 
 
   public final int getNumber() {
@@ -1405,6 +1438,10 @@ public enum BooleanOption
       case 148: return FORCE_DETERMINISTIC_APK;
       case 149: return DISABLE_MINSDKLIBRARY_CHECK;
       case 150: return UNINSTALL_INCOMPATIBLE_APKS;
+      case 151: return GRADLE_MANAGED_DEVICE_EMULATOR_SHOW_KERNEL_LOGGING;
+      case 152: return GRADLE_MANAGED_DEVICE_ALLOW_OLD_API_LEVEL_DEVICES;
+      case 153: return MISSING_LINT_BASELINE_IS_EMPTY_BASELINE;
+      case 154: return LEGACY_TRANSFORM_TASK_FORCE_NON_INCREMENTAL;
       default: return null;
     }
   }
@@ -1423,6 +1460,10 @@ public enum BooleanOption
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor

@@ -31,7 +31,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.StringPool}
    */
-  public  static final class StringPool extends
+  public static final class StringPool extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.StringPool)
       StringPoolOrBuilder {
@@ -117,6 +117,7 @@ public final class Resources {
      * <code>bytes data = 1;</code>
      * @return The data.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString getData() {
       return data_;
     }
@@ -432,6 +433,7 @@ public final class Resources {
        * <code>bytes data = 1;</code>
        * @return The data.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
@@ -535,7 +537,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.SourcePosition}
    */
-  public  static final class SourcePosition extends
+  public static final class SourcePosition extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.SourcePosition)
       SourcePositionOrBuilder {
@@ -625,6 +627,7 @@ public final class Resources {
      * <code>uint32 line_number = 1;</code>
      * @return The lineNumber.
      */
+    @java.lang.Override
     public int getLineNumber() {
       return lineNumber_;
     }
@@ -635,6 +638,7 @@ public final class Resources {
      * <code>uint32 column_number = 2;</code>
      * @return The columnNumber.
      */
+    @java.lang.Override
     public int getColumnNumber() {
       return columnNumber_;
     }
@@ -967,6 +971,7 @@ public final class Resources {
        * <code>uint32 line_number = 1;</code>
        * @return The lineNumber.
        */
+      @java.lang.Override
       public int getLineNumber() {
         return lineNumber_;
       }
@@ -997,6 +1002,7 @@ public final class Resources {
        * <code>uint32 column_number = 2;</code>
        * @return The columnNumber.
        */
+      @java.lang.Override
       public int getColumnNumber() {
         return columnNumber_;
       }
@@ -1110,7 +1116,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Source}
    */
-  public  static final class Source extends
+  public static final class Source extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Source)
       SourceOrBuilder {
@@ -1212,6 +1218,7 @@ public final class Resources {
      * <code>uint32 path_idx = 1;</code>
      * @return The pathIdx.
      */
+    @java.lang.Override
     public int getPathIdx() {
       return pathIdx_;
     }
@@ -1222,6 +1229,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition position = 2;</code>
      * @return Whether the position field is set.
      */
+    @java.lang.Override
     public boolean hasPosition() {
       return position_ != null;
     }
@@ -1229,12 +1237,14 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition position = 2;</code>
      * @return The position.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePosition getPosition() {
       return position_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : position_;
     }
     /**
      * <code>.aapt.pb.SourcePosition position = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePositionOrBuilder getPositionOrBuilder() {
       return getPosition();
     }
@@ -1584,6 +1594,7 @@ public final class Resources {
        * <code>uint32 path_idx = 1;</code>
        * @return The pathIdx.
        */
+      @java.lang.Override
       public int getPathIdx() {
         return pathIdx_;
       }
@@ -1823,7 +1834,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.ToolFingerprint}
    */
-  public  static final class ToolFingerprint extends
+  public static final class ToolFingerprint extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.ToolFingerprint)
       ToolFingerprintOrBuilder {
@@ -1917,6 +1928,7 @@ public final class Resources {
      * <code>string tool = 1;</code>
      * @return The tool.
      */
+    @java.lang.Override
     public java.lang.String getTool() {
       java.lang.Object ref = tool_;
       if (ref instanceof java.lang.String) {
@@ -1933,6 +1945,7 @@ public final class Resources {
      * <code>string tool = 1;</code>
      * @return The bytes for tool.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getToolBytes() {
       java.lang.Object ref = tool_;
@@ -1953,6 +1966,7 @@ public final class Resources {
      * <code>string version = 2;</code>
      * @return The version.
      */
+    @java.lang.Override
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
       if (ref instanceof java.lang.String) {
@@ -1969,6 +1983,7 @@ public final class Resources {
      * <code>string version = 2;</code>
      * @return The bytes for version.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getVersionBytes() {
       java.lang.Object ref = version_;
@@ -2683,7 +2698,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.ResourceTable}
    */
-  public  static final class ResourceTable extends
+  public static final class ResourceTable extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.ResourceTable)
       ResourceTableOrBuilder {
@@ -2821,6 +2836,7 @@ public final class Resources {
      * <code>.aapt.pb.StringPool source_pool = 1;</code>
      * @return Whether the sourcePool field is set.
      */
+    @java.lang.Override
     public boolean hasSourcePool() {
       return sourcePool_ != null;
     }
@@ -2833,6 +2849,7 @@ public final class Resources {
      * <code>.aapt.pb.StringPool source_pool = 1;</code>
      * @return The sourcePool.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StringPool getSourcePool() {
       return sourcePool_ == null ? com.android.aapt.Resources.StringPool.getDefaultInstance() : sourcePool_;
     }
@@ -2844,6 +2861,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.StringPool source_pool = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StringPoolOrBuilder getSourcePoolOrBuilder() {
       return getSourcePool();
     }
@@ -2857,6 +2875,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Package package = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Package> getPackageList() {
       return package_;
     }
@@ -2867,6 +2886,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Package package = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.PackageOrBuilder> 
         getPackageOrBuilderList() {
       return package_;
@@ -2878,6 +2898,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Package package = 2;</code>
      */
+    @java.lang.Override
     public int getPackageCount() {
       return package_.size();
     }
@@ -2888,6 +2909,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Package package = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Package getPackage(int index) {
       return package_.get(index);
     }
@@ -2898,6 +2920,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Package package = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.PackageOrBuilder getPackageOrBuilder(
         int index) {
       return package_.get(index);
@@ -2912,6 +2935,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Overlayable overlayable = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Overlayable> getOverlayableList() {
       return overlayable_;
     }
@@ -2922,6 +2946,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Overlayable overlayable = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.OverlayableOrBuilder> 
         getOverlayableOrBuilderList() {
       return overlayable_;
@@ -2933,6 +2958,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Overlayable overlayable = 3;</code>
      */
+    @java.lang.Override
     public int getOverlayableCount() {
       return overlayable_.size();
     }
@@ -2943,6 +2969,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Overlayable overlayable = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Overlayable getOverlayable(int index) {
       return overlayable_.get(index);
     }
@@ -2953,6 +2980,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Overlayable overlayable = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.OverlayableOrBuilder getOverlayableOrBuilder(
         int index) {
       return overlayable_.get(index);
@@ -2967,6 +2995,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ToolFingerprint tool_fingerprint = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.ToolFingerprint> getToolFingerprintList() {
       return toolFingerprint_;
     }
@@ -2977,6 +3006,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ToolFingerprint tool_fingerprint = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.ToolFingerprintOrBuilder> 
         getToolFingerprintOrBuilderList() {
       return toolFingerprint_;
@@ -2988,6 +3018,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ToolFingerprint tool_fingerprint = 4;</code>
      */
+    @java.lang.Override
     public int getToolFingerprintCount() {
       return toolFingerprint_.size();
     }
@@ -2998,6 +3029,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ToolFingerprint tool_fingerprint = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ToolFingerprint getToolFingerprint(int index) {
       return toolFingerprint_.get(index);
     }
@@ -3008,6 +3040,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ToolFingerprint tool_fingerprint = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ToolFingerprintOrBuilder getToolFingerprintOrBuilder(
         int index) {
       return toolFingerprint_.get(index);
@@ -4668,7 +4701,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.PackageId}
    */
-  public  static final class PackageId extends
+  public static final class PackageId extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.PackageId)
       PackageIdOrBuilder {
@@ -4753,6 +4786,7 @@ public final class Resources {
      * <code>uint32 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -5068,6 +5102,7 @@ public final class Resources {
        * <code>uint32 id = 1;</code>
        * @return The id.
        */
+      @java.lang.Override
       public int getId() {
         return id_;
       }
@@ -5265,7 +5300,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Package}
    */
-  public  static final class Package extends
+  public static final class Package extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Package)
       PackageOrBuilder {
@@ -5389,6 +5424,7 @@ public final class Resources {
      * <code>.aapt.pb.PackageId package_id = 1;</code>
      * @return Whether the packageId field is set.
      */
+    @java.lang.Override
     public boolean hasPackageId() {
       return packageId_ != null;
     }
@@ -5406,6 +5442,7 @@ public final class Resources {
      * <code>.aapt.pb.PackageId package_id = 1;</code>
      * @return The packageId.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.PackageId getPackageId() {
       return packageId_ == null ? com.android.aapt.Resources.PackageId.getDefaultInstance() : packageId_;
     }
@@ -5422,6 +5459,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.PackageId package_id = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.PackageIdOrBuilder getPackageIdOrBuilder() {
       return getPackageId();
     }
@@ -5436,6 +5474,7 @@ public final class Resources {
      * <code>string package_name = 2;</code>
      * @return The packageName.
      */
+    @java.lang.Override
     public java.lang.String getPackageName() {
       java.lang.Object ref = packageName_;
       if (ref instanceof java.lang.String) {
@@ -5456,6 +5495,7 @@ public final class Resources {
      * <code>string package_name = 2;</code>
      * @return The bytes for packageName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPackageNameBytes() {
       java.lang.Object ref = packageName_;
@@ -5479,6 +5519,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Type type = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Type> getTypeList() {
       return type_;
     }
@@ -5489,6 +5530,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Type type = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.TypeOrBuilder> 
         getTypeOrBuilderList() {
       return type_;
@@ -5500,6 +5542,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Type type = 3;</code>
      */
+    @java.lang.Override
     public int getTypeCount() {
       return type_.size();
     }
@@ -5510,6 +5553,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Type type = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Type getType(int index) {
       return type_.get(index);
     }
@@ -5520,6 +5564,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Type type = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.TypeOrBuilder getTypeOrBuilder(
         int index) {
       return type_.get(index);
@@ -6604,7 +6649,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.TypeId}
    */
-  public  static final class TypeId extends
+  public static final class TypeId extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.TypeId)
       TypeIdOrBuilder {
@@ -6689,6 +6734,7 @@ public final class Resources {
      * <code>uint32 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -7004,6 +7050,7 @@ public final class Resources {
        * <code>uint32 id = 1;</code>
        * @return The id.
        */
+      @java.lang.Override
       public int getId() {
         return id_;
       }
@@ -7186,7 +7233,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Type}
    */
-  public  static final class Type extends
+  public static final class Type extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Type)
       TypeOrBuilder {
@@ -7304,6 +7351,7 @@ public final class Resources {
      * <code>.aapt.pb.TypeId type_id = 1;</code>
      * @return Whether the typeId field is set.
      */
+    @java.lang.Override
     public boolean hasTypeId() {
       return typeId_ != null;
     }
@@ -7315,6 +7363,7 @@ public final class Resources {
      * <code>.aapt.pb.TypeId type_id = 1;</code>
      * @return The typeId.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.TypeId getTypeId() {
       return typeId_ == null ? com.android.aapt.Resources.TypeId.getDefaultInstance() : typeId_;
     }
@@ -7325,6 +7374,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.TypeId type_id = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.TypeIdOrBuilder getTypeIdOrBuilder() {
       return getTypeId();
     }
@@ -7340,6 +7390,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -7361,6 +7412,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -7384,6 +7436,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Entry> getEntryList() {
       return entry_;
     }
@@ -7394,6 +7447,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.EntryOrBuilder> 
         getEntryOrBuilderList() {
       return entry_;
@@ -7405,6 +7459,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public int getEntryCount() {
       return entry_.size();
     }
@@ -7415,6 +7470,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Entry getEntry(int index) {
       return entry_.get(index);
     }
@@ -7425,6 +7481,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.EntryOrBuilder getEntryOrBuilder(
         int index) {
       return entry_.get(index);
@@ -8525,7 +8582,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Visibility}
    */
-  public  static final class Visibility extends
+  public static final class Visibility extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Visibility)
       VisibilityOrBuilder {
@@ -8752,6 +8809,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -8792,14 +8853,14 @@ public final class Resources {
      * <code>.aapt.pb.Visibility.Level level = 1;</code>
      * @return The enum numeric value on the wire for level.
      */
-    public int getLevelValue() {
+    @java.lang.Override public int getLevelValue() {
       return level_;
     }
     /**
      * <code>.aapt.pb.Visibility.Level level = 1;</code>
      * @return The level.
      */
-    public com.android.aapt.Resources.Visibility.Level getLevel() {
+    @java.lang.Override public com.android.aapt.Resources.Visibility.Level getLevel() {
       @SuppressWarnings("deprecation")
       com.android.aapt.Resources.Visibility.Level result = com.android.aapt.Resources.Visibility.Level.valueOf(level_);
       return result == null ? com.android.aapt.Resources.Visibility.Level.UNRECOGNIZED : result;
@@ -8815,6 +8876,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 2;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -8826,6 +8888,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 2;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
@@ -8836,6 +8899,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source source = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -8850,6 +8914,7 @@ public final class Resources {
      * <code>string comment = 3;</code>
      * @return The comment.
      */
+    @java.lang.Override
     public java.lang.String getComment() {
       java.lang.Object ref = comment_;
       if (ref instanceof java.lang.String) {
@@ -8870,6 +8935,7 @@ public final class Resources {
      * <code>string comment = 3;</code>
      * @return The bytes for comment.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCommentBytes() {
       java.lang.Object ref = comment_;
@@ -8896,6 +8962,7 @@ public final class Resources {
      * <code>bool staged_api = 4;</code>
      * @return The stagedApi.
      */
+    @java.lang.Override
     public boolean getStagedApi() {
       return stagedApi_;
     }
@@ -9275,7 +9342,7 @@ public final class Resources {
        * <code>.aapt.pb.Visibility.Level level = 1;</code>
        * @return The enum numeric value on the wire for level.
        */
-      public int getLevelValue() {
+      @java.lang.Override public int getLevelValue() {
         return level_;
       }
       /**
@@ -9284,6 +9351,7 @@ public final class Resources {
        * @return This builder for chaining.
        */
       public Builder setLevelValue(int value) {
+        
         level_ = value;
         onChanged();
         return this;
@@ -9292,6 +9360,7 @@ public final class Resources {
        * <code>.aapt.pb.Visibility.Level level = 1;</code>
        * @return The level.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Visibility.Level getLevel() {
         @SuppressWarnings("deprecation")
         com.android.aapt.Resources.Visibility.Level result = com.android.aapt.Resources.Visibility.Level.valueOf(level_);
@@ -9584,6 +9653,7 @@ public final class Resources {
        * <code>bool staged_api = 4;</code>
        * @return The stagedApi.
        */
+      @java.lang.Override
       public boolean getStagedApi() {
         return stagedApi_;
       }
@@ -9732,7 +9802,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.AllowNew}
    */
-  public  static final class AllowNew extends
+  public static final class AllowNew extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.AllowNew)
       AllowNewOrBuilder {
@@ -9836,6 +9906,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -9847,6 +9918,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
@@ -9857,6 +9929,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source source = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -9871,6 +9944,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The comment.
      */
+    @java.lang.Override
     public java.lang.String getComment() {
       java.lang.Object ref = comment_;
       if (ref instanceof java.lang.String) {
@@ -9891,6 +9965,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The bytes for comment.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCommentBytes() {
       java.lang.Object ref = comment_;
@@ -10623,7 +10698,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Overlayable}
    */
-  public  static final class Overlayable extends
+  public static final class Overlayable extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Overlayable)
       OverlayableOrBuilder {
@@ -10734,6 +10809,7 @@ public final class Resources {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -10754,6 +10830,7 @@ public final class Resources {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -10778,6 +10855,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 2;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -10789,6 +10867,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 2;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
@@ -10799,6 +10878,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source source = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -10813,6 +10893,7 @@ public final class Resources {
      * <code>string actor = 3;</code>
      * @return The actor.
      */
+    @java.lang.Override
     public java.lang.String getActor() {
       java.lang.Object ref = actor_;
       if (ref instanceof java.lang.String) {
@@ -10833,6 +10914,7 @@ public final class Resources {
      * <code>string actor = 3;</code>
      * @return The bytes for actor.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getActorBytes() {
       java.lang.Object ref = actor_;
@@ -11717,7 +11799,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.OverlayableItem}
    */
-  public  static final class OverlayableItem extends
+  public static final class OverlayableItem extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.OverlayableItem)
       OverlayableItemOrBuilder {
@@ -11986,6 +12068,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -12030,6 +12116,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -12041,6 +12128,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
@@ -12051,6 +12139,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source source = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -12065,6 +12154,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The comment.
      */
+    @java.lang.Override
     public java.lang.String getComment() {
       java.lang.Object ref = comment_;
       if (ref instanceof java.lang.String) {
@@ -12085,6 +12175,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The bytes for comment.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCommentBytes() {
       java.lang.Object ref = comment_;
@@ -12119,6 +12210,7 @@ public final class Resources {
      * <code>repeated .aapt.pb.OverlayableItem.Policy policy = 3;</code>
      * @return A list containing the policy.
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.OverlayableItem.Policy> getPolicyList() {
       return new com.google.protobuf.Internal.ListAdapter<
           java.lang.Integer, com.android.aapt.Resources.OverlayableItem.Policy>(policy_, policy_converter_);
@@ -12129,8 +12221,9 @@ public final class Resources {
      * </pre>
      *
      * <code>repeated .aapt.pb.OverlayableItem.Policy policy = 3;</code>
-     * @param value The policy to add.
+     * @return The count of policy.
      */
+    @java.lang.Override
     public int getPolicyCount() {
       return policy_.size();
     }
@@ -12143,6 +12236,7 @@ public final class Resources {
      * @param index The index of the element to return.
      * @return The policy at the given index.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.OverlayableItem.Policy getPolicy(int index) {
       return policy_converter_.convert(policy_.get(index));
     }
@@ -12154,6 +12248,7 @@ public final class Resources {
      * <code>repeated .aapt.pb.OverlayableItem.Policy policy = 3;</code>
      * @return A list containing the enum numeric values on the wire for policy.
      */
+    @java.lang.Override
     public java.util.List<java.lang.Integer>
     getPolicyValueList() {
       return policy_;
@@ -12167,6 +12262,7 @@ public final class Resources {
      * @param index The index of the value to return.
      * @return The enum numeric value on the wire of policy at the given index.
      */
+    @java.lang.Override
     public int getPolicyValue(int index) {
       return policy_.get(index);
     }
@@ -12183,6 +12279,7 @@ public final class Resources {
      * <code>uint32 overlayable_idx = 4;</code>
      * @return The overlayableIdx.
      */
+    @java.lang.Override
     public int getOverlayableIdx() {
       return overlayableIdx_;
     }
@@ -13033,6 +13130,7 @@ public final class Resources {
        * <code>uint32 overlayable_idx = 4;</code>
        * @return The overlayableIdx.
        */
+      @java.lang.Override
       public int getOverlayableIdx() {
         return overlayableIdx_;
       }
@@ -13152,7 +13250,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.StagedId}
    */
-  public  static final class StagedId extends
+  public static final class StagedId extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.StagedId)
       StagedIdOrBuilder {
@@ -13250,6 +13348,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -13257,12 +13356,14 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
     /**
      * <code>.aapt.pb.Source source = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -13273,6 +13374,7 @@ public final class Resources {
      * <code>uint32 staged_id = 2;</code>
      * @return The stagedId.
      */
+    @java.lang.Override
     public int getStagedId() {
       return stagedId_;
     }
@@ -13737,6 +13839,7 @@ public final class Resources {
        * <code>uint32 staged_id = 2;</code>
        * @return The stagedId.
        */
+      @java.lang.Override
       public int getStagedId() {
         return stagedId_;
       }
@@ -13831,7 +13934,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.EntryId}
    */
-  public  static final class EntryId extends
+  public static final class EntryId extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.EntryId)
       EntryIdOrBuilder {
@@ -13916,6 +14019,7 @@ public final class Resources {
      * <code>uint32 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -14231,6 +14335,7 @@ public final class Resources {
        * <code>uint32 id = 1;</code>
        * @return The id.
        */
+      @java.lang.Override
       public int getId() {
         return id_;
       }
@@ -14539,7 +14644,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Entry}
    */
-  public  static final class Entry extends
+  public static final class Entry extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Entry)
       EntryOrBuilder {
@@ -14712,6 +14817,7 @@ public final class Resources {
      * <code>.aapt.pb.EntryId entry_id = 1;</code>
      * @return Whether the entryId field is set.
      */
+    @java.lang.Override
     public boolean hasEntryId() {
       return entryId_ != null;
     }
@@ -14726,6 +14832,7 @@ public final class Resources {
      * <code>.aapt.pb.EntryId entry_id = 1;</code>
      * @return The entryId.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.EntryId getEntryId() {
       return entryId_ == null ? com.android.aapt.Resources.EntryId.getDefaultInstance() : entryId_;
     }
@@ -14739,6 +14846,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.EntryId entry_id = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.EntryIdOrBuilder getEntryIdOrBuilder() {
       return getEntryId();
     }
@@ -14754,6 +14862,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -14775,6 +14884,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -14799,6 +14909,7 @@ public final class Resources {
      * <code>.aapt.pb.Visibility visibility = 3;</code>
      * @return Whether the visibility field is set.
      */
+    @java.lang.Override
     public boolean hasVisibility() {
       return visibility_ != null;
     }
@@ -14810,6 +14921,7 @@ public final class Resources {
      * <code>.aapt.pb.Visibility visibility = 3;</code>
      * @return The visibility.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Visibility getVisibility() {
       return visibility_ == null ? com.android.aapt.Resources.Visibility.getDefaultInstance() : visibility_;
     }
@@ -14820,6 +14932,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Visibility visibility = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.VisibilityOrBuilder getVisibilityOrBuilder() {
       return getVisibility();
     }
@@ -14835,6 +14948,7 @@ public final class Resources {
      * <code>.aapt.pb.AllowNew allow_new = 4;</code>
      * @return Whether the allowNew field is set.
      */
+    @java.lang.Override
     public boolean hasAllowNew() {
       return allowNew_ != null;
     }
@@ -14847,6 +14961,7 @@ public final class Resources {
      * <code>.aapt.pb.AllowNew allow_new = 4;</code>
      * @return The allowNew.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.AllowNew getAllowNew() {
       return allowNew_ == null ? com.android.aapt.Resources.AllowNew.getDefaultInstance() : allowNew_;
     }
@@ -14858,6 +14973,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.AllowNew allow_new = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.AllowNewOrBuilder getAllowNewOrBuilder() {
       return getAllowNew();
     }
@@ -14872,6 +14988,7 @@ public final class Resources {
      * <code>.aapt.pb.OverlayableItem overlayable_item = 5;</code>
      * @return Whether the overlayableItem field is set.
      */
+    @java.lang.Override
     public boolean hasOverlayableItem() {
       return overlayableItem_ != null;
     }
@@ -14883,6 +15000,7 @@ public final class Resources {
      * <code>.aapt.pb.OverlayableItem overlayable_item = 5;</code>
      * @return The overlayableItem.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.OverlayableItem getOverlayableItem() {
       return overlayableItem_ == null ? com.android.aapt.Resources.OverlayableItem.getDefaultInstance() : overlayableItem_;
     }
@@ -14893,6 +15011,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.OverlayableItem overlayable_item = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.OverlayableItemOrBuilder getOverlayableItemOrBuilder() {
       return getOverlayableItem();
     }
@@ -14907,6 +15026,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ConfigValue config_value = 6;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.ConfigValue> getConfigValueList() {
       return configValue_;
     }
@@ -14918,6 +15038,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ConfigValue config_value = 6;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.ConfigValueOrBuilder> 
         getConfigValueOrBuilderList() {
       return configValue_;
@@ -14930,6 +15051,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ConfigValue config_value = 6;</code>
      */
+    @java.lang.Override
     public int getConfigValueCount() {
       return configValue_.size();
     }
@@ -14941,6 +15063,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ConfigValue config_value = 6;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ConfigValue getConfigValue(int index) {
       return configValue_.get(index);
     }
@@ -14952,6 +15075,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.ConfigValue config_value = 6;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ConfigValueOrBuilder getConfigValueOrBuilder(
         int index) {
       return configValue_.get(index);
@@ -14967,6 +15091,7 @@ public final class Resources {
      * <code>.aapt.pb.StagedId staged_id = 7;</code>
      * @return Whether the stagedId field is set.
      */
+    @java.lang.Override
     public boolean hasStagedId() {
       return stagedId_ != null;
     }
@@ -14978,6 +15103,7 @@ public final class Resources {
      * <code>.aapt.pb.StagedId staged_id = 7;</code>
      * @return The stagedId.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StagedId getStagedId() {
       return stagedId_ == null ? com.android.aapt.Resources.StagedId.getDefaultInstance() : stagedId_;
     }
@@ -14988,6 +15114,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.StagedId staged_id = 7;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StagedIdOrBuilder getStagedIdOrBuilder() {
       return getStagedId();
     }
@@ -16842,7 +16969,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.ConfigValue}
    */
-  public  static final class ConfigValue extends
+  public static final class ConfigValue extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.ConfigValue)
       ConfigValueOrBuilder {
@@ -16948,6 +17075,7 @@ public final class Resources {
      * <code>.aapt.pb.Configuration config = 1;</code>
      * @return Whether the config field is set.
      */
+    @java.lang.Override
     public boolean hasConfig() {
       return config_ != null;
     }
@@ -16955,12 +17083,14 @@ public final class Resources {
      * <code>.aapt.pb.Configuration config = 1;</code>
      * @return The config.
      */
+    @java.lang.Override
     public com.android.aapt.ConfigurationOuterClass.Configuration getConfig() {
       return config_ == null ? com.android.aapt.ConfigurationOuterClass.Configuration.getDefaultInstance() : config_;
     }
     /**
      * <code>.aapt.pb.Configuration config = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.ConfigurationOuterClass.ConfigurationOrBuilder getConfigOrBuilder() {
       return getConfig();
     }
@@ -16971,6 +17101,7 @@ public final class Resources {
      * <code>.aapt.pb.Value value = 2;</code>
      * @return Whether the value field is set.
      */
+    @java.lang.Override
     public boolean hasValue() {
       return value_ != null;
     }
@@ -16978,12 +17109,14 @@ public final class Resources {
      * <code>.aapt.pb.Value value = 2;</code>
      * @return The value.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Value getValue() {
       return value_ == null ? com.android.aapt.Resources.Value.getDefaultInstance() : value_;
     }
     /**
      * <code>.aapt.pb.Value value = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ValueOrBuilder getValueOrBuilder() {
       return getValue();
     }
@@ -17727,7 +17860,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Value}
    */
-  public  static final class Value extends
+  public static final class Value extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Value)
       ValueOrBuilder {
@@ -17905,6 +18038,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -17916,6 +18050,7 @@ public final class Resources {
      * <code>.aapt.pb.Source source = 1;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getSource() {
       return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
     }
@@ -17926,6 +18061,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source source = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -17940,6 +18076,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The comment.
      */
+    @java.lang.Override
     public java.lang.String getComment() {
       java.lang.Object ref = comment_;
       if (ref instanceof java.lang.String) {
@@ -17960,6 +18097,7 @@ public final class Resources {
      * <code>string comment = 2;</code>
      * @return The bytes for comment.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getCommentBytes() {
       java.lang.Object ref = comment_;
@@ -17984,6 +18122,7 @@ public final class Resources {
      * <code>bool weak = 3;</code>
      * @return The weak.
      */
+    @java.lang.Override
     public boolean getWeak() {
       return weak_;
     }
@@ -17993,6 +18132,7 @@ public final class Resources {
      * <code>.aapt.pb.Item item = 4;</code>
      * @return Whether the item field is set.
      */
+    @java.lang.Override
     public boolean hasItem() {
       return valueCase_ == 4;
     }
@@ -18000,6 +18140,7 @@ public final class Resources {
      * <code>.aapt.pb.Item item = 4;</code>
      * @return The item.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Item getItem() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.Item) value_;
@@ -18009,6 +18150,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Item item = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ItemOrBuilder getItemOrBuilder() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.Item) value_;
@@ -18021,6 +18163,7 @@ public final class Resources {
      * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
      * @return Whether the compoundValue field is set.
      */
+    @java.lang.Override
     public boolean hasCompoundValue() {
       return valueCase_ == 5;
     }
@@ -18028,6 +18171,7 @@ public final class Resources {
      * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
      * @return The compoundValue.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.CompoundValue getCompoundValue() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.CompoundValue) value_;
@@ -18037,6 +18181,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.CompoundValueOrBuilder getCompoundValueOrBuilder() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.CompoundValue) value_;
@@ -18742,6 +18887,7 @@ public final class Resources {
        * <code>bool weak = 3;</code>
        * @return The weak.
        */
+      @java.lang.Override
       public boolean getWeak() {
         return weak_;
       }
@@ -18781,6 +18927,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return Whether the item field is set.
        */
+      @java.lang.Override
       public boolean hasItem() {
         return valueCase_ == 4;
       }
@@ -18788,6 +18935,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return The item.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Item getItem() {
         if (itemBuilder_ == null) {
           if (valueCase_ == 4) {
@@ -18881,6 +19029,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Item item = 4;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ItemOrBuilder getItemOrBuilder() {
         if ((valueCase_ == 4) && (itemBuilder_ != null)) {
           return itemBuilder_.getMessageOrBuilder();
@@ -18919,6 +19068,7 @@ public final class Resources {
        * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
        * @return Whether the compoundValue field is set.
        */
+      @java.lang.Override
       public boolean hasCompoundValue() {
         return valueCase_ == 5;
       }
@@ -18926,6 +19076,7 @@ public final class Resources {
        * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
        * @return The compoundValue.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.CompoundValue getCompoundValue() {
         if (compoundValueBuilder_ == null) {
           if (valueCase_ == 5) {
@@ -19019,6 +19170,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.CompoundValue compound_value = 5;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.CompoundValueOrBuilder getCompoundValueOrBuilder() {
         if ((valueCase_ == 5) && (compoundValueBuilder_ != null)) {
           return compoundValueBuilder_.getMessageOrBuilder();
@@ -19223,7 +19375,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Item}
    */
-  public  static final class Item extends
+  public static final class Item extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Item)
       ItemOrBuilder {
@@ -19451,6 +19603,7 @@ public final class Resources {
      * <code>.aapt.pb.Reference ref = 1;</code>
      * @return Whether the ref field is set.
      */
+    @java.lang.Override
     public boolean hasRef() {
       return valueCase_ == 1;
     }
@@ -19458,6 +19611,7 @@ public final class Resources {
      * <code>.aapt.pb.Reference ref = 1;</code>
      * @return The ref.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Reference getRef() {
       if (valueCase_ == 1) {
          return (com.android.aapt.Resources.Reference) value_;
@@ -19467,6 +19621,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Reference ref = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ReferenceOrBuilder getRefOrBuilder() {
       if (valueCase_ == 1) {
          return (com.android.aapt.Resources.Reference) value_;
@@ -19479,6 +19634,7 @@ public final class Resources {
      * <code>.aapt.pb.String str = 2;</code>
      * @return Whether the str field is set.
      */
+    @java.lang.Override
     public boolean hasStr() {
       return valueCase_ == 2;
     }
@@ -19486,6 +19642,7 @@ public final class Resources {
      * <code>.aapt.pb.String str = 2;</code>
      * @return The str.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.String getStr() {
       if (valueCase_ == 2) {
          return (com.android.aapt.Resources.String) value_;
@@ -19495,6 +19652,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.String str = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StringOrBuilder getStrOrBuilder() {
       if (valueCase_ == 2) {
          return (com.android.aapt.Resources.String) value_;
@@ -19507,6 +19665,7 @@ public final class Resources {
      * <code>.aapt.pb.RawString raw_str = 3;</code>
      * @return Whether the rawStr field is set.
      */
+    @java.lang.Override
     public boolean hasRawStr() {
       return valueCase_ == 3;
     }
@@ -19514,6 +19673,7 @@ public final class Resources {
      * <code>.aapt.pb.RawString raw_str = 3;</code>
      * @return The rawStr.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.RawString getRawStr() {
       if (valueCase_ == 3) {
          return (com.android.aapt.Resources.RawString) value_;
@@ -19523,6 +19683,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.RawString raw_str = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.RawStringOrBuilder getRawStrOrBuilder() {
       if (valueCase_ == 3) {
          return (com.android.aapt.Resources.RawString) value_;
@@ -19535,6 +19696,7 @@ public final class Resources {
      * <code>.aapt.pb.StyledString styled_str = 4;</code>
      * @return Whether the styledStr field is set.
      */
+    @java.lang.Override
     public boolean hasStyledStr() {
       return valueCase_ == 4;
     }
@@ -19542,6 +19704,7 @@ public final class Resources {
      * <code>.aapt.pb.StyledString styled_str = 4;</code>
      * @return The styledStr.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyledString getStyledStr() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.StyledString) value_;
@@ -19551,6 +19714,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.StyledString styled_str = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyledStringOrBuilder getStyledStrOrBuilder() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.StyledString) value_;
@@ -19563,6 +19727,7 @@ public final class Resources {
      * <code>.aapt.pb.FileReference file = 5;</code>
      * @return Whether the file field is set.
      */
+    @java.lang.Override
     public boolean hasFile() {
       return valueCase_ == 5;
     }
@@ -19570,6 +19735,7 @@ public final class Resources {
      * <code>.aapt.pb.FileReference file = 5;</code>
      * @return The file.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.FileReference getFile() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.FileReference) value_;
@@ -19579,6 +19745,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.FileReference file = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.FileReferenceOrBuilder getFileOrBuilder() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.FileReference) value_;
@@ -19591,6 +19758,7 @@ public final class Resources {
      * <code>.aapt.pb.Id id = 6;</code>
      * @return Whether the id field is set.
      */
+    @java.lang.Override
     public boolean hasId() {
       return valueCase_ == 6;
     }
@@ -19598,6 +19766,7 @@ public final class Resources {
      * <code>.aapt.pb.Id id = 6;</code>
      * @return The id.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Id getId() {
       if (valueCase_ == 6) {
          return (com.android.aapt.Resources.Id) value_;
@@ -19607,6 +19776,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Id id = 6;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.IdOrBuilder getIdOrBuilder() {
       if (valueCase_ == 6) {
          return (com.android.aapt.Resources.Id) value_;
@@ -19619,6 +19789,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive prim = 7;</code>
      * @return Whether the prim field is set.
      */
+    @java.lang.Override
     public boolean hasPrim() {
       return valueCase_ == 7;
     }
@@ -19626,6 +19797,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive prim = 7;</code>
      * @return The prim.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Primitive getPrim() {
       if (valueCase_ == 7) {
          return (com.android.aapt.Resources.Primitive) value_;
@@ -19635,6 +19807,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Primitive prim = 7;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.PrimitiveOrBuilder getPrimOrBuilder() {
       if (valueCase_ == 7) {
          return (com.android.aapt.Resources.Primitive) value_;
@@ -20153,6 +20326,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference ref = 1;</code>
        * @return Whether the ref field is set.
        */
+      @java.lang.Override
       public boolean hasRef() {
         return valueCase_ == 1;
       }
@@ -20160,6 +20334,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference ref = 1;</code>
        * @return The ref.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Reference getRef() {
         if (refBuilder_ == null) {
           if (valueCase_ == 1) {
@@ -20253,6 +20428,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Reference ref = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ReferenceOrBuilder getRefOrBuilder() {
         if ((valueCase_ == 1) && (refBuilder_ != null)) {
           return refBuilder_.getMessageOrBuilder();
@@ -20291,6 +20467,7 @@ public final class Resources {
        * <code>.aapt.pb.String str = 2;</code>
        * @return Whether the str field is set.
        */
+      @java.lang.Override
       public boolean hasStr() {
         return valueCase_ == 2;
       }
@@ -20298,6 +20475,7 @@ public final class Resources {
        * <code>.aapt.pb.String str = 2;</code>
        * @return The str.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.String getStr() {
         if (strBuilder_ == null) {
           if (valueCase_ == 2) {
@@ -20391,6 +20569,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.String str = 2;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.StringOrBuilder getStrOrBuilder() {
         if ((valueCase_ == 2) && (strBuilder_ != null)) {
           return strBuilder_.getMessageOrBuilder();
@@ -20429,6 +20608,7 @@ public final class Resources {
        * <code>.aapt.pb.RawString raw_str = 3;</code>
        * @return Whether the rawStr field is set.
        */
+      @java.lang.Override
       public boolean hasRawStr() {
         return valueCase_ == 3;
       }
@@ -20436,6 +20616,7 @@ public final class Resources {
        * <code>.aapt.pb.RawString raw_str = 3;</code>
        * @return The rawStr.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.RawString getRawStr() {
         if (rawStrBuilder_ == null) {
           if (valueCase_ == 3) {
@@ -20529,6 +20710,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.RawString raw_str = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.RawStringOrBuilder getRawStrOrBuilder() {
         if ((valueCase_ == 3) && (rawStrBuilder_ != null)) {
           return rawStrBuilder_.getMessageOrBuilder();
@@ -20567,6 +20749,7 @@ public final class Resources {
        * <code>.aapt.pb.StyledString styled_str = 4;</code>
        * @return Whether the styledStr field is set.
        */
+      @java.lang.Override
       public boolean hasStyledStr() {
         return valueCase_ == 4;
       }
@@ -20574,6 +20757,7 @@ public final class Resources {
        * <code>.aapt.pb.StyledString styled_str = 4;</code>
        * @return The styledStr.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.StyledString getStyledStr() {
         if (styledStrBuilder_ == null) {
           if (valueCase_ == 4) {
@@ -20667,6 +20851,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.StyledString styled_str = 4;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.StyledStringOrBuilder getStyledStrOrBuilder() {
         if ((valueCase_ == 4) && (styledStrBuilder_ != null)) {
           return styledStrBuilder_.getMessageOrBuilder();
@@ -20705,6 +20890,7 @@ public final class Resources {
        * <code>.aapt.pb.FileReference file = 5;</code>
        * @return Whether the file field is set.
        */
+      @java.lang.Override
       public boolean hasFile() {
         return valueCase_ == 5;
       }
@@ -20712,6 +20898,7 @@ public final class Resources {
        * <code>.aapt.pb.FileReference file = 5;</code>
        * @return The file.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.FileReference getFile() {
         if (fileBuilder_ == null) {
           if (valueCase_ == 5) {
@@ -20805,6 +20992,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.FileReference file = 5;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.FileReferenceOrBuilder getFileOrBuilder() {
         if ((valueCase_ == 5) && (fileBuilder_ != null)) {
           return fileBuilder_.getMessageOrBuilder();
@@ -20843,6 +21031,7 @@ public final class Resources {
        * <code>.aapt.pb.Id id = 6;</code>
        * @return Whether the id field is set.
        */
+      @java.lang.Override
       public boolean hasId() {
         return valueCase_ == 6;
       }
@@ -20850,6 +21039,7 @@ public final class Resources {
        * <code>.aapt.pb.Id id = 6;</code>
        * @return The id.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Id getId() {
         if (idBuilder_ == null) {
           if (valueCase_ == 6) {
@@ -20943,6 +21133,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Id id = 6;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.IdOrBuilder getIdOrBuilder() {
         if ((valueCase_ == 6) && (idBuilder_ != null)) {
           return idBuilder_.getMessageOrBuilder();
@@ -20981,6 +21172,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive prim = 7;</code>
        * @return Whether the prim field is set.
        */
+      @java.lang.Override
       public boolean hasPrim() {
         return valueCase_ == 7;
       }
@@ -20988,6 +21180,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive prim = 7;</code>
        * @return The prim.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Primitive getPrim() {
         if (primBuilder_ == null) {
           if (valueCase_ == 7) {
@@ -21081,6 +21274,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Primitive prim = 7;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.PrimitiveOrBuilder getPrimOrBuilder() {
         if ((valueCase_ == 7) && (primBuilder_ != null)) {
           return primBuilder_.getMessageOrBuilder();
@@ -21270,7 +21464,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.CompoundValue}
    */
-  public  static final class CompoundValue extends
+  public static final class CompoundValue extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.CompoundValue)
       CompoundValueOrBuilder {
@@ -21482,6 +21676,7 @@ public final class Resources {
      * <code>.aapt.pb.Attribute attr = 1;</code>
      * @return Whether the attr field is set.
      */
+    @java.lang.Override
     public boolean hasAttr() {
       return valueCase_ == 1;
     }
@@ -21489,6 +21684,7 @@ public final class Resources {
      * <code>.aapt.pb.Attribute attr = 1;</code>
      * @return The attr.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Attribute getAttr() {
       if (valueCase_ == 1) {
          return (com.android.aapt.Resources.Attribute) value_;
@@ -21498,6 +21694,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Attribute attr = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.AttributeOrBuilder getAttrOrBuilder() {
       if (valueCase_ == 1) {
          return (com.android.aapt.Resources.Attribute) value_;
@@ -21510,6 +21707,7 @@ public final class Resources {
      * <code>.aapt.pb.Style style = 2;</code>
      * @return Whether the style field is set.
      */
+    @java.lang.Override
     public boolean hasStyle() {
       return valueCase_ == 2;
     }
@@ -21517,6 +21715,7 @@ public final class Resources {
      * <code>.aapt.pb.Style style = 2;</code>
      * @return The style.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Style getStyle() {
       if (valueCase_ == 2) {
          return (com.android.aapt.Resources.Style) value_;
@@ -21526,6 +21725,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Style style = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleOrBuilder getStyleOrBuilder() {
       if (valueCase_ == 2) {
          return (com.android.aapt.Resources.Style) value_;
@@ -21538,6 +21738,7 @@ public final class Resources {
      * <code>.aapt.pb.Styleable styleable = 3;</code>
      * @return Whether the styleable field is set.
      */
+    @java.lang.Override
     public boolean hasStyleable() {
       return valueCase_ == 3;
     }
@@ -21545,6 +21746,7 @@ public final class Resources {
      * <code>.aapt.pb.Styleable styleable = 3;</code>
      * @return The styleable.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Styleable getStyleable() {
       if (valueCase_ == 3) {
          return (com.android.aapt.Resources.Styleable) value_;
@@ -21554,6 +21756,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Styleable styleable = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleableOrBuilder getStyleableOrBuilder() {
       if (valueCase_ == 3) {
          return (com.android.aapt.Resources.Styleable) value_;
@@ -21566,6 +21769,7 @@ public final class Resources {
      * <code>.aapt.pb.Array array = 4;</code>
      * @return Whether the array field is set.
      */
+    @java.lang.Override
     public boolean hasArray() {
       return valueCase_ == 4;
     }
@@ -21573,6 +21777,7 @@ public final class Resources {
      * <code>.aapt.pb.Array array = 4;</code>
      * @return The array.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Array getArray() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.Array) value_;
@@ -21582,6 +21787,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Array array = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ArrayOrBuilder getArrayOrBuilder() {
       if (valueCase_ == 4) {
          return (com.android.aapt.Resources.Array) value_;
@@ -21594,6 +21800,7 @@ public final class Resources {
      * <code>.aapt.pb.Plural plural = 5;</code>
      * @return Whether the plural field is set.
      */
+    @java.lang.Override
     public boolean hasPlural() {
       return valueCase_ == 5;
     }
@@ -21601,6 +21808,7 @@ public final class Resources {
      * <code>.aapt.pb.Plural plural = 5;</code>
      * @return The plural.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Plural getPlural() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.Plural) value_;
@@ -21610,6 +21818,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Plural plural = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.PluralOrBuilder getPluralOrBuilder() {
       if (valueCase_ == 5) {
          return (com.android.aapt.Resources.Plural) value_;
@@ -21622,6 +21831,7 @@ public final class Resources {
      * <code>.aapt.pb.MacroBody macro = 6;</code>
      * @return Whether the macro field is set.
      */
+    @java.lang.Override
     public boolean hasMacro() {
       return valueCase_ == 6;
     }
@@ -21629,6 +21839,7 @@ public final class Resources {
      * <code>.aapt.pb.MacroBody macro = 6;</code>
      * @return The macro.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.MacroBody getMacro() {
       if (valueCase_ == 6) {
          return (com.android.aapt.Resources.MacroBody) value_;
@@ -21638,6 +21849,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.MacroBody macro = 6;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.MacroBodyOrBuilder getMacroOrBuilder() {
       if (valueCase_ == 6) {
          return (com.android.aapt.Resources.MacroBody) value_;
@@ -22130,6 +22342,7 @@ public final class Resources {
        * <code>.aapt.pb.Attribute attr = 1;</code>
        * @return Whether the attr field is set.
        */
+      @java.lang.Override
       public boolean hasAttr() {
         return valueCase_ == 1;
       }
@@ -22137,6 +22350,7 @@ public final class Resources {
        * <code>.aapt.pb.Attribute attr = 1;</code>
        * @return The attr.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Attribute getAttr() {
         if (attrBuilder_ == null) {
           if (valueCase_ == 1) {
@@ -22230,6 +22444,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Attribute attr = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.AttributeOrBuilder getAttrOrBuilder() {
         if ((valueCase_ == 1) && (attrBuilder_ != null)) {
           return attrBuilder_.getMessageOrBuilder();
@@ -22268,6 +22483,7 @@ public final class Resources {
        * <code>.aapt.pb.Style style = 2;</code>
        * @return Whether the style field is set.
        */
+      @java.lang.Override
       public boolean hasStyle() {
         return valueCase_ == 2;
       }
@@ -22275,6 +22491,7 @@ public final class Resources {
        * <code>.aapt.pb.Style style = 2;</code>
        * @return The style.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Style getStyle() {
         if (styleBuilder_ == null) {
           if (valueCase_ == 2) {
@@ -22368,6 +22585,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Style style = 2;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.StyleOrBuilder getStyleOrBuilder() {
         if ((valueCase_ == 2) && (styleBuilder_ != null)) {
           return styleBuilder_.getMessageOrBuilder();
@@ -22406,6 +22624,7 @@ public final class Resources {
        * <code>.aapt.pb.Styleable styleable = 3;</code>
        * @return Whether the styleable field is set.
        */
+      @java.lang.Override
       public boolean hasStyleable() {
         return valueCase_ == 3;
       }
@@ -22413,6 +22632,7 @@ public final class Resources {
        * <code>.aapt.pb.Styleable styleable = 3;</code>
        * @return The styleable.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Styleable getStyleable() {
         if (styleableBuilder_ == null) {
           if (valueCase_ == 3) {
@@ -22506,6 +22726,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Styleable styleable = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.StyleableOrBuilder getStyleableOrBuilder() {
         if ((valueCase_ == 3) && (styleableBuilder_ != null)) {
           return styleableBuilder_.getMessageOrBuilder();
@@ -22544,6 +22765,7 @@ public final class Resources {
        * <code>.aapt.pb.Array array = 4;</code>
        * @return Whether the array field is set.
        */
+      @java.lang.Override
       public boolean hasArray() {
         return valueCase_ == 4;
       }
@@ -22551,6 +22773,7 @@ public final class Resources {
        * <code>.aapt.pb.Array array = 4;</code>
        * @return The array.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Array getArray() {
         if (arrayBuilder_ == null) {
           if (valueCase_ == 4) {
@@ -22644,6 +22867,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Array array = 4;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ArrayOrBuilder getArrayOrBuilder() {
         if ((valueCase_ == 4) && (arrayBuilder_ != null)) {
           return arrayBuilder_.getMessageOrBuilder();
@@ -22682,6 +22906,7 @@ public final class Resources {
        * <code>.aapt.pb.Plural plural = 5;</code>
        * @return Whether the plural field is set.
        */
+      @java.lang.Override
       public boolean hasPlural() {
         return valueCase_ == 5;
       }
@@ -22689,6 +22914,7 @@ public final class Resources {
        * <code>.aapt.pb.Plural plural = 5;</code>
        * @return The plural.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Plural getPlural() {
         if (pluralBuilder_ == null) {
           if (valueCase_ == 5) {
@@ -22782,6 +23008,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Plural plural = 5;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.PluralOrBuilder getPluralOrBuilder() {
         if ((valueCase_ == 5) && (pluralBuilder_ != null)) {
           return pluralBuilder_.getMessageOrBuilder();
@@ -22820,6 +23047,7 @@ public final class Resources {
        * <code>.aapt.pb.MacroBody macro = 6;</code>
        * @return Whether the macro field is set.
        */
+      @java.lang.Override
       public boolean hasMacro() {
         return valueCase_ == 6;
       }
@@ -22827,6 +23055,7 @@ public final class Resources {
        * <code>.aapt.pb.MacroBody macro = 6;</code>
        * @return The macro.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.MacroBody getMacro() {
         if (macroBuilder_ == null) {
           if (valueCase_ == 6) {
@@ -22920,6 +23149,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.MacroBody macro = 6;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.MacroBodyOrBuilder getMacroOrBuilder() {
         if ((valueCase_ == 6) && (macroBuilder_ != null)) {
           return macroBuilder_.getMessageOrBuilder();
@@ -23021,7 +23251,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Boolean}
    */
-  public  static final class Boolean extends
+  public static final class Boolean extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Boolean)
       BooleanOrBuilder {
@@ -23106,6 +23336,7 @@ public final class Resources {
      * <code>bool value = 1;</code>
      * @return The value.
      */
+    @java.lang.Override
     public boolean getValue() {
       return value_;
     }
@@ -23422,6 +23653,7 @@ public final class Resources {
        * <code>bool value = 1;</code>
        * @return The value.
        */
+      @java.lang.Override
       public boolean getValue() {
         return value_;
       }
@@ -23609,7 +23841,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Reference}
    */
-  public  static final class Reference extends
+  public static final class Reference extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Reference)
       ReferenceOrBuilder {
@@ -23816,6 +24048,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -23856,14 +24092,14 @@ public final class Resources {
      * <code>.aapt.pb.Reference.Type type = 1;</code>
      * @return The enum numeric value on the wire for type.
      */
-    public int getTypeValue() {
+    @java.lang.Override public int getTypeValue() {
       return type_;
     }
     /**
      * <code>.aapt.pb.Reference.Type type = 1;</code>
      * @return The type.
      */
-    public com.android.aapt.Resources.Reference.Type getType() {
+    @java.lang.Override public com.android.aapt.Resources.Reference.Type getType() {
       @SuppressWarnings("deprecation")
       com.android.aapt.Resources.Reference.Type result = com.android.aapt.Resources.Reference.Type.valueOf(type_);
       return result == null ? com.android.aapt.Resources.Reference.Type.UNRECOGNIZED : result;
@@ -23879,6 +24115,7 @@ public final class Resources {
      * <code>uint32 id = 2;</code>
      * @return The id.
      */
+    @java.lang.Override
     public int getId() {
       return id_;
     }
@@ -23893,6 +24130,7 @@ public final class Resources {
      * <code>string name = 3;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -23913,6 +24151,7 @@ public final class Resources {
      * <code>string name = 3;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -23937,6 +24176,7 @@ public final class Resources {
      * <code>bool private = 4;</code>
      * @return The private.
      */
+    @java.lang.Override
     public boolean getPrivate() {
       return private_;
     }
@@ -23951,6 +24191,7 @@ public final class Resources {
      * <code>.aapt.pb.Boolean is_dynamic = 5;</code>
      * @return Whether the isDynamic field is set.
      */
+    @java.lang.Override
     public boolean hasIsDynamic() {
       return isDynamic_ != null;
     }
@@ -23962,6 +24203,7 @@ public final class Resources {
      * <code>.aapt.pb.Boolean is_dynamic = 5;</code>
      * @return The isDynamic.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Boolean getIsDynamic() {
       return isDynamic_ == null ? com.android.aapt.Resources.Boolean.getDefaultInstance() : isDynamic_;
     }
@@ -23972,6 +24214,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Boolean is_dynamic = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.BooleanOrBuilder getIsDynamicOrBuilder() {
       return getIsDynamic();
     }
@@ -23986,6 +24229,7 @@ public final class Resources {
      * <code>uint32 type_flags = 6;</code>
      * @return The typeFlags.
      */
+    @java.lang.Override
     public int getTypeFlags() {
       return typeFlags_;
     }
@@ -24001,6 +24245,7 @@ public final class Resources {
      * <code>bool allow_raw = 7;</code>
      * @return The allowRaw.
      */
+    @java.lang.Override
     public boolean getAllowRaw() {
       return allowRaw_;
     }
@@ -24432,7 +24677,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference.Type type = 1;</code>
        * @return The enum numeric value on the wire for type.
        */
-      public int getTypeValue() {
+      @java.lang.Override public int getTypeValue() {
         return type_;
       }
       /**
@@ -24441,6 +24686,7 @@ public final class Resources {
        * @return This builder for chaining.
        */
       public Builder setTypeValue(int value) {
+        
         type_ = value;
         onChanged();
         return this;
@@ -24449,6 +24695,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference.Type type = 1;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Reference.Type getType() {
         @SuppressWarnings("deprecation")
         com.android.aapt.Resources.Reference.Type result = com.android.aapt.Resources.Reference.Type.valueOf(type_);
@@ -24488,6 +24735,7 @@ public final class Resources {
        * <code>uint32 id = 2;</code>
        * @return The id.
        */
+      @java.lang.Override
       public int getId() {
         return id_;
       }
@@ -24626,6 +24874,7 @@ public final class Resources {
        * <code>bool private = 4;</code>
        * @return The private.
        */
+      @java.lang.Override
       public boolean getPrivate() {
         return private_;
       }
@@ -24823,6 +25072,7 @@ public final class Resources {
        * <code>uint32 type_flags = 6;</code>
        * @return The typeFlags.
        */
+      @java.lang.Override
       public int getTypeFlags() {
         return typeFlags_;
       }
@@ -24866,6 +25116,7 @@ public final class Resources {
        * <code>bool allow_raw = 7;</code>
        * @return The allowRaw.
        */
+      @java.lang.Override
       public boolean getAllowRaw() {
         return allowRaw_;
       }
@@ -24965,7 +25216,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Id}
    */
-  public  static final class Id extends
+  public static final class Id extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Id)
       IdOrBuilder {
@@ -25404,7 +25655,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.String}
    */
-  public  static final class String extends
+  public static final class String extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.String)
       StringOrBuilder {
@@ -25491,6 +25742,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -25507,6 +25759,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -25980,7 +26233,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.RawString}
    */
-  public  static final class RawString extends
+  public static final class RawString extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.RawString)
       RawStringOrBuilder {
@@ -26067,6 +26320,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -26083,6 +26337,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -26588,7 +26843,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.StyledString}
    */
-  public  static final class StyledString extends
+  public static final class StyledString extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.StyledString)
       StyledStringOrBuilder {
@@ -26736,7 +26991,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.StyledString.Span}
      */
-    public  static final class Span extends
+    public static final class Span extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.StyledString.Span)
         SpanOrBuilder {
@@ -26838,6 +27093,7 @@ public final class Resources {
        * <code>string tag = 1;</code>
        * @return The tag.
        */
+      @java.lang.Override
       public java.lang.String getTag() {
         java.lang.Object ref = tag_;
         if (ref instanceof java.lang.String) {
@@ -26859,6 +27115,7 @@ public final class Resources {
        * <code>string tag = 1;</code>
        * @return The bytes for tag.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTagBytes() {
         java.lang.Object ref = tag_;
@@ -26883,6 +27140,7 @@ public final class Resources {
        * <code>uint32 first_char = 2;</code>
        * @return The firstChar.
        */
+      @java.lang.Override
       public int getFirstChar() {
         return firstChar_;
       }
@@ -26897,6 +27155,7 @@ public final class Resources {
        * <code>uint32 last_char = 3;</code>
        * @return The lastChar.
        */
+      @java.lang.Override
       public int getLastChar() {
         return lastChar_;
       }
@@ -27351,6 +27610,7 @@ public final class Resources {
          * <code>uint32 first_char = 2;</code>
          * @return The firstChar.
          */
+        @java.lang.Override
         public int getFirstChar() {
           return firstChar_;
         }
@@ -27393,6 +27653,7 @@ public final class Resources {
          * <code>uint32 last_char = 3;</code>
          * @return The lastChar.
          */
+        @java.lang.Override
         public int getLastChar() {
           return lastChar_;
         }
@@ -27488,6 +27749,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -27508,6 +27770,7 @@ public final class Resources {
      * <code>string value = 1;</code>
      * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -27527,12 +27790,14 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.StyledString.Span span = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.StyledString.Span> getSpanList() {
       return span_;
     }
     /**
      * <code>repeated .aapt.pb.StyledString.Span span = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.StyledString.SpanOrBuilder> 
         getSpanOrBuilderList() {
       return span_;
@@ -27540,18 +27805,21 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.StyledString.Span span = 2;</code>
      */
+    @java.lang.Override
     public int getSpanCount() {
       return span_.size();
     }
     /**
      * <code>repeated .aapt.pb.StyledString.Span span = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyledString.Span getSpan(int index) {
       return span_.get(index);
     }
     /**
      * <code>repeated .aapt.pb.StyledString.Span span = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyledString.SpanOrBuilder getSpanOrBuilder(
         int index) {
       return span_.get(index);
@@ -28360,7 +28628,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.FileReference}
    */
-  public  static final class FileReference extends
+  public static final class FileReference extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.FileReference)
       FileReferenceOrBuilder {
@@ -28536,6 +28804,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -28580,6 +28852,7 @@ public final class Resources {
      * <code>string path = 1;</code>
      * @return The path.
      */
+    @java.lang.Override
     public java.lang.String getPath() {
       java.lang.Object ref = path_;
       if (ref instanceof java.lang.String) {
@@ -28600,6 +28873,7 @@ public final class Resources {
      * <code>string path = 1;</code>
      * @return The bytes for path.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPathBytes() {
       java.lang.Object ref = path_;
@@ -28625,7 +28899,7 @@ public final class Resources {
      * <code>.aapt.pb.FileReference.Type type = 2;</code>
      * @return The enum numeric value on the wire for type.
      */
-    public int getTypeValue() {
+    @java.lang.Override public int getTypeValue() {
       return type_;
     }
     /**
@@ -28637,7 +28911,7 @@ public final class Resources {
      * <code>.aapt.pb.FileReference.Type type = 2;</code>
      * @return The type.
      */
-    public com.android.aapt.Resources.FileReference.Type getType() {
+    @java.lang.Override public com.android.aapt.Resources.FileReference.Type getType() {
       @SuppressWarnings("deprecation")
       com.android.aapt.Resources.FileReference.Type result = com.android.aapt.Resources.FileReference.Type.valueOf(type_);
       return result == null ? com.android.aapt.Resources.FileReference.Type.UNRECOGNIZED : result;
@@ -29071,7 +29345,7 @@ public final class Resources {
        * <code>.aapt.pb.FileReference.Type type = 2;</code>
        * @return The enum numeric value on the wire for type.
        */
-      public int getTypeValue() {
+      @java.lang.Override public int getTypeValue() {
         return type_;
       }
       /**
@@ -29085,6 +29359,7 @@ public final class Resources {
        * @return This builder for chaining.
        */
       public Builder setTypeValue(int value) {
+        
         type_ = value;
         onChanged();
         return this;
@@ -29098,6 +29373,7 @@ public final class Resources {
        * <code>.aapt.pb.FileReference.Type type = 2;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.FileReference.Type getType() {
         @SuppressWarnings("deprecation")
         com.android.aapt.Resources.FileReference.Type result = com.android.aapt.Resources.FileReference.Type.valueOf(type_);
@@ -29226,10 +29502,20 @@ public final class Resources {
 
     /**
      * <code>float float_value = 3;</code>
+     * @return Whether the floatValue field is set.
+     */
+    boolean hasFloatValue();
+    /**
+     * <code>float float_value = 3;</code>
      * @return The floatValue.
      */
     float getFloatValue();
 
+    /**
+     * <code>uint32 dimension_value = 13;</code>
+     * @return Whether the dimensionValue field is set.
+     */
+    boolean hasDimensionValue();
     /**
      * <code>uint32 dimension_value = 13;</code>
      * @return The dimensionValue.
@@ -29238,10 +29524,20 @@ public final class Resources {
 
     /**
      * <code>uint32 fraction_value = 14;</code>
+     * @return Whether the fractionValue field is set.
+     */
+    boolean hasFractionValue();
+    /**
+     * <code>uint32 fraction_value = 14;</code>
      * @return The fractionValue.
      */
     int getFractionValue();
 
+    /**
+     * <code>int32 int_decimal_value = 6;</code>
+     * @return Whether the intDecimalValue field is set.
+     */
+    boolean hasIntDecimalValue();
     /**
      * <code>int32 int_decimal_value = 6;</code>
      * @return The intDecimalValue.
@@ -29250,10 +29546,20 @@ public final class Resources {
 
     /**
      * <code>uint32 int_hexadecimal_value = 7;</code>
+     * @return Whether the intHexadecimalValue field is set.
+     */
+    boolean hasIntHexadecimalValue();
+    /**
+     * <code>uint32 int_hexadecimal_value = 7;</code>
      * @return The intHexadecimalValue.
      */
     int getIntHexadecimalValue();
 
+    /**
+     * <code>bool boolean_value = 8;</code>
+     * @return Whether the booleanValue field is set.
+     */
+    boolean hasBooleanValue();
     /**
      * <code>bool boolean_value = 8;</code>
      * @return The booleanValue.
@@ -29262,10 +29568,20 @@ public final class Resources {
 
     /**
      * <code>uint32 color_argb8_value = 9;</code>
+     * @return Whether the colorArgb8Value field is set.
+     */
+    boolean hasColorArgb8Value();
+    /**
+     * <code>uint32 color_argb8_value = 9;</code>
      * @return The colorArgb8Value.
      */
     int getColorArgb8Value();
 
+    /**
+     * <code>uint32 color_rgb8_value = 10;</code>
+     * @return Whether the colorRgb8Value field is set.
+     */
+    boolean hasColorRgb8Value();
     /**
      * <code>uint32 color_rgb8_value = 10;</code>
      * @return The colorRgb8Value.
@@ -29274,10 +29590,20 @@ public final class Resources {
 
     /**
      * <code>uint32 color_argb4_value = 11;</code>
+     * @return Whether the colorArgb4Value field is set.
+     */
+    boolean hasColorArgb4Value();
+    /**
+     * <code>uint32 color_argb4_value = 11;</code>
      * @return The colorArgb4Value.
      */
     int getColorArgb4Value();
 
+    /**
+     * <code>uint32 color_rgb4_value = 12;</code>
+     * @return Whether the colorRgb4Value field is set.
+     */
+    boolean hasColorRgb4Value();
     /**
      * <code>uint32 color_rgb4_value = 12;</code>
      * @return The colorRgb4Value.
@@ -29286,10 +29612,20 @@ public final class Resources {
 
     /**
      * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
+     * @return Whether the dimensionValueDeprecated field is set.
+     */
+    @java.lang.Deprecated boolean hasDimensionValueDeprecated();
+    /**
+     * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
      * @return The dimensionValueDeprecated.
      */
     @java.lang.Deprecated float getDimensionValueDeprecated();
 
+    /**
+     * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
+     * @return Whether the fractionValueDeprecated field is set.
+     */
+    @java.lang.Deprecated boolean hasFractionValueDeprecated();
     /**
      * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
      * @return The fractionValueDeprecated.
@@ -29306,7 +29642,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Primitive}
    */
-  public  static final class Primitive extends
+  public static final class Primitive extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Primitive)
       PrimitiveOrBuilder {
@@ -29475,7 +29811,7 @@ public final class Resources {
     /**
      * Protobuf type {@code aapt.pb.Primitive.NullType}
      */
-    public  static final class NullType extends
+    public static final class NullType extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Primitive.NullType)
         NullTypeOrBuilder {
@@ -29893,7 +30229,7 @@ public final class Resources {
     /**
      * Protobuf type {@code aapt.pb.Primitive.EmptyType}
      */
-    public  static final class EmptyType extends
+    public static final class EmptyType extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Primitive.EmptyType)
         EmptyTypeOrBuilder {
@@ -30374,6 +30710,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
      * @return Whether the nullValue field is set.
      */
+    @java.lang.Override
     public boolean hasNullValue() {
       return oneofValueCase_ == 1;
     }
@@ -30381,6 +30718,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
      * @return The nullValue.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Primitive.NullType getNullValue() {
       if (oneofValueCase_ == 1) {
          return (com.android.aapt.Resources.Primitive.NullType) oneofValue_;
@@ -30390,6 +30728,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Primitive.NullTypeOrBuilder getNullValueOrBuilder() {
       if (oneofValueCase_ == 1) {
          return (com.android.aapt.Resources.Primitive.NullType) oneofValue_;
@@ -30402,6 +30741,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
      * @return Whether the emptyValue field is set.
      */
+    @java.lang.Override
     public boolean hasEmptyValue() {
       return oneofValueCase_ == 2;
     }
@@ -30409,6 +30749,7 @@ public final class Resources {
      * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
      * @return The emptyValue.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Primitive.EmptyType getEmptyValue() {
       if (oneofValueCase_ == 2) {
          return (com.android.aapt.Resources.Primitive.EmptyType) oneofValue_;
@@ -30418,6 +30759,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Primitive.EmptyTypeOrBuilder getEmptyValueOrBuilder() {
       if (oneofValueCase_ == 2) {
          return (com.android.aapt.Resources.Primitive.EmptyType) oneofValue_;
@@ -30428,8 +30770,17 @@ public final class Resources {
     public static final int FLOAT_VALUE_FIELD_NUMBER = 3;
     /**
      * <code>float float_value = 3;</code>
+     * @return Whether the floatValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasFloatValue() {
+      return oneofValueCase_ == 3;
+    }
+    /**
+     * <code>float float_value = 3;</code>
      * @return The floatValue.
      */
+    @java.lang.Override
     public float getFloatValue() {
       if (oneofValueCase_ == 3) {
         return (java.lang.Float) oneofValue_;
@@ -30440,8 +30791,17 @@ public final class Resources {
     public static final int DIMENSION_VALUE_FIELD_NUMBER = 13;
     /**
      * <code>uint32 dimension_value = 13;</code>
+     * @return Whether the dimensionValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasDimensionValue() {
+      return oneofValueCase_ == 13;
+    }
+    /**
+     * <code>uint32 dimension_value = 13;</code>
      * @return The dimensionValue.
      */
+    @java.lang.Override
     public int getDimensionValue() {
       if (oneofValueCase_ == 13) {
         return (java.lang.Integer) oneofValue_;
@@ -30452,8 +30812,17 @@ public final class Resources {
     public static final int FRACTION_VALUE_FIELD_NUMBER = 14;
     /**
      * <code>uint32 fraction_value = 14;</code>
+     * @return Whether the fractionValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasFractionValue() {
+      return oneofValueCase_ == 14;
+    }
+    /**
+     * <code>uint32 fraction_value = 14;</code>
      * @return The fractionValue.
      */
+    @java.lang.Override
     public int getFractionValue() {
       if (oneofValueCase_ == 14) {
         return (java.lang.Integer) oneofValue_;
@@ -30464,8 +30833,17 @@ public final class Resources {
     public static final int INT_DECIMAL_VALUE_FIELD_NUMBER = 6;
     /**
      * <code>int32 int_decimal_value = 6;</code>
+     * @return Whether the intDecimalValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasIntDecimalValue() {
+      return oneofValueCase_ == 6;
+    }
+    /**
+     * <code>int32 int_decimal_value = 6;</code>
      * @return The intDecimalValue.
      */
+    @java.lang.Override
     public int getIntDecimalValue() {
       if (oneofValueCase_ == 6) {
         return (java.lang.Integer) oneofValue_;
@@ -30476,8 +30854,17 @@ public final class Resources {
     public static final int INT_HEXADECIMAL_VALUE_FIELD_NUMBER = 7;
     /**
      * <code>uint32 int_hexadecimal_value = 7;</code>
+     * @return Whether the intHexadecimalValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasIntHexadecimalValue() {
+      return oneofValueCase_ == 7;
+    }
+    /**
+     * <code>uint32 int_hexadecimal_value = 7;</code>
      * @return The intHexadecimalValue.
      */
+    @java.lang.Override
     public int getIntHexadecimalValue() {
       if (oneofValueCase_ == 7) {
         return (java.lang.Integer) oneofValue_;
@@ -30488,8 +30875,17 @@ public final class Resources {
     public static final int BOOLEAN_VALUE_FIELD_NUMBER = 8;
     /**
      * <code>bool boolean_value = 8;</code>
+     * @return Whether the booleanValue field is set.
+     */
+    @java.lang.Override
+    public boolean hasBooleanValue() {
+      return oneofValueCase_ == 8;
+    }
+    /**
+     * <code>bool boolean_value = 8;</code>
      * @return The booleanValue.
      */
+    @java.lang.Override
     public boolean getBooleanValue() {
       if (oneofValueCase_ == 8) {
         return (java.lang.Boolean) oneofValue_;
@@ -30500,8 +30896,17 @@ public final class Resources {
     public static final int COLOR_ARGB8_VALUE_FIELD_NUMBER = 9;
     /**
      * <code>uint32 color_argb8_value = 9;</code>
+     * @return Whether the colorArgb8Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasColorArgb8Value() {
+      return oneofValueCase_ == 9;
+    }
+    /**
+     * <code>uint32 color_argb8_value = 9;</code>
      * @return The colorArgb8Value.
      */
+    @java.lang.Override
     public int getColorArgb8Value() {
       if (oneofValueCase_ == 9) {
         return (java.lang.Integer) oneofValue_;
@@ -30512,8 +30917,17 @@ public final class Resources {
     public static final int COLOR_RGB8_VALUE_FIELD_NUMBER = 10;
     /**
      * <code>uint32 color_rgb8_value = 10;</code>
+     * @return Whether the colorRgb8Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasColorRgb8Value() {
+      return oneofValueCase_ == 10;
+    }
+    /**
+     * <code>uint32 color_rgb8_value = 10;</code>
      * @return The colorRgb8Value.
      */
+    @java.lang.Override
     public int getColorRgb8Value() {
       if (oneofValueCase_ == 10) {
         return (java.lang.Integer) oneofValue_;
@@ -30524,8 +30938,17 @@ public final class Resources {
     public static final int COLOR_ARGB4_VALUE_FIELD_NUMBER = 11;
     /**
      * <code>uint32 color_argb4_value = 11;</code>
+     * @return Whether the colorArgb4Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasColorArgb4Value() {
+      return oneofValueCase_ == 11;
+    }
+    /**
+     * <code>uint32 color_argb4_value = 11;</code>
      * @return The colorArgb4Value.
      */
+    @java.lang.Override
     public int getColorArgb4Value() {
       if (oneofValueCase_ == 11) {
         return (java.lang.Integer) oneofValue_;
@@ -30536,8 +30959,17 @@ public final class Resources {
     public static final int COLOR_RGB4_VALUE_FIELD_NUMBER = 12;
     /**
      * <code>uint32 color_rgb4_value = 12;</code>
+     * @return Whether the colorRgb4Value field is set.
+     */
+    @java.lang.Override
+    public boolean hasColorRgb4Value() {
+      return oneofValueCase_ == 12;
+    }
+    /**
+     * <code>uint32 color_rgb4_value = 12;</code>
      * @return The colorRgb4Value.
      */
+    @java.lang.Override
     public int getColorRgb4Value() {
       if (oneofValueCase_ == 12) {
         return (java.lang.Integer) oneofValue_;
@@ -30548,8 +30980,17 @@ public final class Resources {
     public static final int DIMENSION_VALUE_DEPRECATED_FIELD_NUMBER = 4;
     /**
      * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
+     * @return Whether the dimensionValueDeprecated field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasDimensionValueDeprecated() {
+      return oneofValueCase_ == 4;
+    }
+    /**
+     * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
      * @return The dimensionValueDeprecated.
      */
+    @java.lang.Override
     @java.lang.Deprecated public float getDimensionValueDeprecated() {
       if (oneofValueCase_ == 4) {
         return (java.lang.Float) oneofValue_;
@@ -30560,8 +31001,17 @@ public final class Resources {
     public static final int FRACTION_VALUE_DEPRECATED_FIELD_NUMBER = 5;
     /**
      * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
+     * @return Whether the fractionValueDeprecated field is set.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public boolean hasFractionValueDeprecated() {
+      return oneofValueCase_ == 5;
+    }
+    /**
+     * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
      * @return The fractionValueDeprecated.
      */
+    @java.lang.Override
     @java.lang.Deprecated public float getFractionValueDeprecated() {
       if (oneofValueCase_ == 5) {
         return (java.lang.Float) oneofValue_;
@@ -31244,6 +31694,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
        * @return Whether the nullValue field is set.
        */
+      @java.lang.Override
       public boolean hasNullValue() {
         return oneofValueCase_ == 1;
       }
@@ -31251,6 +31702,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
        * @return The nullValue.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Primitive.NullType getNullValue() {
         if (nullValueBuilder_ == null) {
           if (oneofValueCase_ == 1) {
@@ -31344,6 +31796,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Primitive.NullType null_value = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Primitive.NullTypeOrBuilder getNullValueOrBuilder() {
         if ((oneofValueCase_ == 1) && (nullValueBuilder_ != null)) {
           return nullValueBuilder_.getMessageOrBuilder();
@@ -31382,6 +31835,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
        * @return Whether the emptyValue field is set.
        */
+      @java.lang.Override
       public boolean hasEmptyValue() {
         return oneofValueCase_ == 2;
       }
@@ -31389,6 +31843,7 @@ public final class Resources {
        * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
        * @return The emptyValue.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Primitive.EmptyType getEmptyValue() {
         if (emptyValueBuilder_ == null) {
           if (oneofValueCase_ == 2) {
@@ -31482,6 +31937,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.Primitive.EmptyType empty_value = 2;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Primitive.EmptyTypeOrBuilder getEmptyValueOrBuilder() {
         if ((oneofValueCase_ == 2) && (emptyValueBuilder_ != null)) {
           return emptyValueBuilder_.getMessageOrBuilder();
@@ -31514,6 +31970,13 @@ public final class Resources {
         return emptyValueBuilder_;
       }
 
+      /**
+       * <code>float float_value = 3;</code>
+       * @return Whether the floatValue field is set.
+       */
+      public boolean hasFloatValue() {
+        return oneofValueCase_ == 3;
+      }
       /**
        * <code>float float_value = 3;</code>
        * @return The floatValue.
@@ -31550,6 +32013,13 @@ public final class Resources {
 
       /**
        * <code>uint32 dimension_value = 13;</code>
+       * @return Whether the dimensionValue field is set.
+       */
+      public boolean hasDimensionValue() {
+        return oneofValueCase_ == 13;
+      }
+      /**
+       * <code>uint32 dimension_value = 13;</code>
        * @return The dimensionValue.
        */
       public int getDimensionValue() {
@@ -31582,6 +32052,13 @@ public final class Resources {
         return this;
       }
 
+      /**
+       * <code>uint32 fraction_value = 14;</code>
+       * @return Whether the fractionValue field is set.
+       */
+      public boolean hasFractionValue() {
+        return oneofValueCase_ == 14;
+      }
       /**
        * <code>uint32 fraction_value = 14;</code>
        * @return The fractionValue.
@@ -31618,6 +32095,13 @@ public final class Resources {
 
       /**
        * <code>int32 int_decimal_value = 6;</code>
+       * @return Whether the intDecimalValue field is set.
+       */
+      public boolean hasIntDecimalValue() {
+        return oneofValueCase_ == 6;
+      }
+      /**
+       * <code>int32 int_decimal_value = 6;</code>
        * @return The intDecimalValue.
        */
       public int getIntDecimalValue() {
@@ -31650,6 +32134,13 @@ public final class Resources {
         return this;
       }
 
+      /**
+       * <code>uint32 int_hexadecimal_value = 7;</code>
+       * @return Whether the intHexadecimalValue field is set.
+       */
+      public boolean hasIntHexadecimalValue() {
+        return oneofValueCase_ == 7;
+      }
       /**
        * <code>uint32 int_hexadecimal_value = 7;</code>
        * @return The intHexadecimalValue.
@@ -31686,6 +32177,13 @@ public final class Resources {
 
       /**
        * <code>bool boolean_value = 8;</code>
+       * @return Whether the booleanValue field is set.
+       */
+      public boolean hasBooleanValue() {
+        return oneofValueCase_ == 8;
+      }
+      /**
+       * <code>bool boolean_value = 8;</code>
        * @return The booleanValue.
        */
       public boolean getBooleanValue() {
@@ -31718,6 +32216,13 @@ public final class Resources {
         return this;
       }
 
+      /**
+       * <code>uint32 color_argb8_value = 9;</code>
+       * @return Whether the colorArgb8Value field is set.
+       */
+      public boolean hasColorArgb8Value() {
+        return oneofValueCase_ == 9;
+      }
       /**
        * <code>uint32 color_argb8_value = 9;</code>
        * @return The colorArgb8Value.
@@ -31754,6 +32259,13 @@ public final class Resources {
 
       /**
        * <code>uint32 color_rgb8_value = 10;</code>
+       * @return Whether the colorRgb8Value field is set.
+       */
+      public boolean hasColorRgb8Value() {
+        return oneofValueCase_ == 10;
+      }
+      /**
+       * <code>uint32 color_rgb8_value = 10;</code>
        * @return The colorRgb8Value.
        */
       public int getColorRgb8Value() {
@@ -31786,6 +32298,13 @@ public final class Resources {
         return this;
       }
 
+      /**
+       * <code>uint32 color_argb4_value = 11;</code>
+       * @return Whether the colorArgb4Value field is set.
+       */
+      public boolean hasColorArgb4Value() {
+        return oneofValueCase_ == 11;
+      }
       /**
        * <code>uint32 color_argb4_value = 11;</code>
        * @return The colorArgb4Value.
@@ -31822,6 +32341,13 @@ public final class Resources {
 
       /**
        * <code>uint32 color_rgb4_value = 12;</code>
+       * @return Whether the colorRgb4Value field is set.
+       */
+      public boolean hasColorRgb4Value() {
+        return oneofValueCase_ == 12;
+      }
+      /**
+       * <code>uint32 color_rgb4_value = 12;</code>
        * @return The colorRgb4Value.
        */
       public int getColorRgb4Value() {
@@ -31856,6 +32382,13 @@ public final class Resources {
 
       /**
        * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
+       * @return Whether the dimensionValueDeprecated field is set.
+       */
+      @java.lang.Deprecated public boolean hasDimensionValueDeprecated() {
+        return oneofValueCase_ == 4;
+      }
+      /**
+       * <code>float dimension_value_deprecated = 4 [deprecated = true];</code>
        * @return The dimensionValueDeprecated.
        */
       @java.lang.Deprecated public float getDimensionValueDeprecated() {
@@ -31888,6 +32421,13 @@ public final class Resources {
         return this;
       }
 
+      /**
+       * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
+       * @return Whether the fractionValueDeprecated field is set.
+       */
+      @java.lang.Deprecated public boolean hasFractionValueDeprecated() {
+        return oneofValueCase_ == 5;
+      }
       /**
        * <code>float fraction_value_deprecated = 5 [deprecated = true];</code>
        * @return The fractionValueDeprecated.
@@ -32067,7 +32607,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Attribute}
    */
-  public  static final class Attribute extends
+  public static final class Attribute extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Attribute)
       AttributeOrBuilder {
@@ -32430,6 +32970,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -32572,7 +33116,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.Attribute.Symbol}
      */
-    public  static final class Symbol extends
+    public static final class Symbol extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Attribute.Symbol)
         SymbolOrBuilder {
@@ -32699,6 +33243,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -32710,6 +33255,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Source getSource() {
         return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
       }
@@ -32720,6 +33266,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Source source = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -32734,6 +33281,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The comment.
        */
+      @java.lang.Override
       public java.lang.String getComment() {
         java.lang.Object ref = comment_;
         if (ref instanceof java.lang.String) {
@@ -32754,6 +33302,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The bytes for comment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCommentBytes() {
         java.lang.Object ref = comment_;
@@ -32779,6 +33328,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference name = 3;</code>
        * @return Whether the name field is set.
        */
+      @java.lang.Override
       public boolean hasName() {
         return name_ != null;
       }
@@ -32791,6 +33341,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference name = 3;</code>
        * @return The name.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Reference getName() {
         return name_ == null ? com.android.aapt.Resources.Reference.getDefaultInstance() : name_;
       }
@@ -32802,6 +33353,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Reference name = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ReferenceOrBuilder getNameOrBuilder() {
         return getName();
       }
@@ -32816,6 +33368,7 @@ public final class Resources {
        * <code>uint32 value = 4;</code>
        * @return The value.
        */
+      @java.lang.Override
       public int getValue() {
         return value_;
       }
@@ -32830,6 +33383,7 @@ public final class Resources {
        * <code>uint32 type = 5;</code>
        * @return The type.
        */
+      @java.lang.Override
       public int getType() {
         return type_;
       }
@@ -33658,6 +34212,7 @@ public final class Resources {
          * <code>uint32 value = 4;</code>
          * @return The value.
          */
+        @java.lang.Override
         public int getValue() {
           return value_;
         }
@@ -33700,6 +34255,7 @@ public final class Resources {
          * <code>uint32 type = 5;</code>
          * @return The type.
          */
+        @java.lang.Override
         public int getType() {
           return type_;
         }
@@ -33796,6 +34352,7 @@ public final class Resources {
      * <code>uint32 format_flags = 1;</code>
      * @return The formatFlags.
      */
+    @java.lang.Override
     public int getFormatFlags() {
       return formatFlags_;
     }
@@ -33811,6 +34368,7 @@ public final class Resources {
      * <code>int32 min_int = 2;</code>
      * @return The minInt.
      */
+    @java.lang.Override
     public int getMinInt() {
       return minInt_;
     }
@@ -33826,6 +34384,7 @@ public final class Resources {
      * <code>int32 max_int = 3;</code>
      * @return The maxInt.
      */
+    @java.lang.Override
     public int getMaxInt() {
       return maxInt_;
     }
@@ -33840,6 +34399,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Attribute.Symbol symbol = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Attribute.Symbol> getSymbolList() {
       return symbol_;
     }
@@ -33851,6 +34411,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Attribute.Symbol symbol = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.Attribute.SymbolOrBuilder> 
         getSymbolOrBuilderList() {
       return symbol_;
@@ -33863,6 +34424,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Attribute.Symbol symbol = 4;</code>
      */
+    @java.lang.Override
     public int getSymbolCount() {
       return symbol_.size();
     }
@@ -33874,6 +34436,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Attribute.Symbol symbol = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Attribute.Symbol getSymbol(int index) {
       return symbol_.get(index);
     }
@@ -33885,6 +34448,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Attribute.Symbol symbol = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Attribute.SymbolOrBuilder getSymbolOrBuilder(
         int index) {
       return symbol_.get(index);
@@ -34297,6 +34861,7 @@ public final class Resources {
        * <code>uint32 format_flags = 1;</code>
        * @return The formatFlags.
        */
+      @java.lang.Override
       public int getFormatFlags() {
         return formatFlags_;
       }
@@ -34342,6 +34907,7 @@ public final class Resources {
        * <code>int32 min_int = 2;</code>
        * @return The minInt.
        */
+      @java.lang.Override
       public int getMinInt() {
         return minInt_;
       }
@@ -34387,6 +34953,7 @@ public final class Resources {
        * <code>int32 max_int = 3;</code>
        * @return The maxInt.
        */
+      @java.lang.Override
       public int getMaxInt() {
         return maxInt_;
       }
@@ -34913,7 +35480,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Style}
    */
-  public  static final class Style extends
+  public static final class Style extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Style)
       StyleOrBuilder {
@@ -35139,7 +35706,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.Style.Entry}
      */
-    public  static final class Entry extends
+    public static final class Entry extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Style.Entry)
         EntryOrBuilder {
@@ -35269,6 +35836,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -35280,6 +35848,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Source getSource() {
         return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
       }
@@ -35290,6 +35859,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Source source = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -35304,6 +35874,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The comment.
        */
+      @java.lang.Override
       public java.lang.String getComment() {
         java.lang.Object ref = comment_;
         if (ref instanceof java.lang.String) {
@@ -35324,6 +35895,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The bytes for comment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCommentBytes() {
         java.lang.Object ref = comment_;
@@ -35348,6 +35920,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference key = 3;</code>
        * @return Whether the key field is set.
        */
+      @java.lang.Override
       public boolean hasKey() {
         return key_ != null;
       }
@@ -35359,6 +35932,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference key = 3;</code>
        * @return The key.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Reference getKey() {
         return key_ == null ? com.android.aapt.Resources.Reference.getDefaultInstance() : key_;
       }
@@ -35369,6 +35943,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Reference key = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ReferenceOrBuilder getKeyOrBuilder() {
         return getKey();
       }
@@ -35383,6 +35958,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return Whether the item field is set.
        */
+      @java.lang.Override
       public boolean hasItem() {
         return item_ != null;
       }
@@ -35394,6 +35970,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return The item.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Item getItem() {
         return item_ == null ? com.android.aapt.Resources.Item.getDefaultInstance() : item_;
       }
@@ -35404,6 +35981,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Item item = 4;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ItemOrBuilder getItemOrBuilder() {
         return getItem();
       }
@@ -36427,6 +37005,7 @@ public final class Resources {
      * <code>.aapt.pb.Reference parent = 1;</code>
      * @return Whether the parent field is set.
      */
+    @java.lang.Override
     public boolean hasParent() {
       return parent_ != null;
     }
@@ -36438,6 +37017,7 @@ public final class Resources {
      * <code>.aapt.pb.Reference parent = 1;</code>
      * @return The parent.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Reference getParent() {
       return parent_ == null ? com.android.aapt.Resources.Reference.getDefaultInstance() : parent_;
     }
@@ -36448,6 +37028,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Reference parent = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ReferenceOrBuilder getParentOrBuilder() {
       return getParent();
     }
@@ -36462,6 +37043,7 @@ public final class Resources {
      * <code>.aapt.pb.Source parent_source = 2;</code>
      * @return Whether the parentSource field is set.
      */
+    @java.lang.Override
     public boolean hasParentSource() {
       return parentSource_ != null;
     }
@@ -36473,6 +37055,7 @@ public final class Resources {
      * <code>.aapt.pb.Source parent_source = 2;</code>
      * @return The parentSource.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Source getParentSource() {
       return parentSource_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : parentSource_;
     }
@@ -36483,6 +37066,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Source parent_source = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourceOrBuilder getParentSourceOrBuilder() {
       return getParentSource();
     }
@@ -36496,6 +37080,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Style.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Style.Entry> getEntryList() {
       return entry_;
     }
@@ -36506,6 +37091,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Style.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.Style.EntryOrBuilder> 
         getEntryOrBuilderList() {
       return entry_;
@@ -36517,6 +37103,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Style.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public int getEntryCount() {
       return entry_.size();
     }
@@ -36527,6 +37114,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Style.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Style.Entry getEntry(int index) {
       return entry_.get(index);
     }
@@ -36537,6 +37125,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Style.Entry entry = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Style.EntryOrBuilder getEntryOrBuilder(
         int index) {
       return entry_.get(index);
@@ -37678,7 +38267,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Styleable}
    */
-  public  static final class Styleable extends
+  public static final class Styleable extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Styleable)
       StyleableOrBuilder {
@@ -37851,7 +38440,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.Styleable.Entry}
      */
-    public  static final class Entry extends
+    public static final class Entry extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Styleable.Entry)
         EntryOrBuilder {
@@ -37968,6 +38557,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -37979,6 +38569,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Source getSource() {
         return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
       }
@@ -37989,6 +38580,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Source source = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -38003,6 +38595,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The comment.
        */
+      @java.lang.Override
       public java.lang.String getComment() {
         java.lang.Object ref = comment_;
         if (ref instanceof java.lang.String) {
@@ -38023,6 +38616,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The bytes for comment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCommentBytes() {
         java.lang.Object ref = comment_;
@@ -38047,6 +38641,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference attr = 3;</code>
        * @return Whether the attr field is set.
        */
+      @java.lang.Override
       public boolean hasAttr() {
         return attr_ != null;
       }
@@ -38058,6 +38653,7 @@ public final class Resources {
        * <code>.aapt.pb.Reference attr = 3;</code>
        * @return The attr.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Reference getAttr() {
         return attr_ == null ? com.android.aapt.Resources.Reference.getDefaultInstance() : attr_;
       }
@@ -38068,6 +38664,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Reference attr = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ReferenceOrBuilder getAttrOrBuilder() {
         return getAttr();
       }
@@ -38905,6 +39502,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Styleable.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Styleable.Entry> getEntryList() {
       return entry_;
     }
@@ -38915,6 +39513,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Styleable.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.Styleable.EntryOrBuilder> 
         getEntryOrBuilderList() {
       return entry_;
@@ -38926,6 +39525,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Styleable.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public int getEntryCount() {
       return entry_.size();
     }
@@ -38936,6 +39536,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Styleable.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Styleable.Entry getEntry(int index) {
       return entry_.get(index);
     }
@@ -38946,6 +39547,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Styleable.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Styleable.EntryOrBuilder getEntryOrBuilder(
         int index) {
       return entry_.get(index);
@@ -39717,7 +40319,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Array}
    */
-  public  static final class Array extends
+  public static final class Array extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Array)
       ArrayOrBuilder {
@@ -39890,7 +40492,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.Array.Element}
      */
-    public  static final class Element extends
+    public static final class Element extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Array.Element)
         ElementOrBuilder {
@@ -40007,6 +40609,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -40018,6 +40621,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Source getSource() {
         return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
       }
@@ -40028,6 +40632,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Source source = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -40042,6 +40647,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The comment.
        */
+      @java.lang.Override
       public java.lang.String getComment() {
         java.lang.Object ref = comment_;
         if (ref instanceof java.lang.String) {
@@ -40062,6 +40668,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The bytes for comment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCommentBytes() {
         java.lang.Object ref = comment_;
@@ -40086,6 +40693,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 3;</code>
        * @return Whether the item field is set.
        */
+      @java.lang.Override
       public boolean hasItem() {
         return item_ != null;
       }
@@ -40097,6 +40705,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 3;</code>
        * @return The item.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Item getItem() {
         return item_ == null ? com.android.aapt.Resources.Item.getDefaultInstance() : item_;
       }
@@ -40107,6 +40716,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Item item = 3;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ItemOrBuilder getItemOrBuilder() {
         return getItem();
       }
@@ -40944,6 +41554,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Array.Element element = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Array.Element> getElementList() {
       return element_;
     }
@@ -40954,6 +41565,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Array.Element element = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.Array.ElementOrBuilder> 
         getElementOrBuilderList() {
       return element_;
@@ -40965,6 +41577,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Array.Element element = 1;</code>
      */
+    @java.lang.Override
     public int getElementCount() {
       return element_.size();
     }
@@ -40975,6 +41588,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Array.Element element = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Array.Element getElement(int index) {
       return element_.get(index);
     }
@@ -40985,6 +41599,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Array.Element element = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Array.ElementOrBuilder getElementOrBuilder(
         int index) {
       return element_.get(index);
@@ -41755,7 +42370,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.Plural}
    */
-  public  static final class Plural extends
+  public static final class Plural extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.Plural)
       PluralOrBuilder {
@@ -41953,6 +42568,10 @@ public final class Resources {
 
       public final com.google.protobuf.Descriptors.EnumValueDescriptor
           getValueDescriptor() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalStateException(
+              "Can't get the descriptor of an unrecognized enum value.");
+        }
         return getDescriptor().getValues().get(ordinal());
       }
       public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -42091,7 +42710,7 @@ public final class Resources {
      *
      * Protobuf type {@code aapt.pb.Plural.Entry}
      */
-    public  static final class Entry extends
+    public static final class Entry extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.Plural.Entry)
         EntryOrBuilder {
@@ -42215,6 +42834,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -42226,6 +42846,7 @@ public final class Resources {
        * <code>.aapt.pb.Source source = 1;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Source getSource() {
         return source_ == null ? com.android.aapt.Resources.Source.getDefaultInstance() : source_;
       }
@@ -42236,6 +42857,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Source source = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourceOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -42250,6 +42872,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The comment.
        */
+      @java.lang.Override
       public java.lang.String getComment() {
         java.lang.Object ref = comment_;
         if (ref instanceof java.lang.String) {
@@ -42270,6 +42893,7 @@ public final class Resources {
        * <code>string comment = 2;</code>
        * @return The bytes for comment.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getCommentBytes() {
         java.lang.Object ref = comment_;
@@ -42294,7 +42918,7 @@ public final class Resources {
        * <code>.aapt.pb.Plural.Arity arity = 3;</code>
        * @return The enum numeric value on the wire for arity.
        */
-      public int getArityValue() {
+      @java.lang.Override public int getArityValue() {
         return arity_;
       }
       /**
@@ -42305,7 +42929,7 @@ public final class Resources {
        * <code>.aapt.pb.Plural.Arity arity = 3;</code>
        * @return The arity.
        */
-      public com.android.aapt.Resources.Plural.Arity getArity() {
+      @java.lang.Override public com.android.aapt.Resources.Plural.Arity getArity() {
         @SuppressWarnings("deprecation")
         com.android.aapt.Resources.Plural.Arity result = com.android.aapt.Resources.Plural.Arity.valueOf(arity_);
         return result == null ? com.android.aapt.Resources.Plural.Arity.UNRECOGNIZED : result;
@@ -42321,6 +42945,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return Whether the item field is set.
        */
+      @java.lang.Override
       public boolean hasItem() {
         return item_ != null;
       }
@@ -42332,6 +42957,7 @@ public final class Resources {
        * <code>.aapt.pb.Item item = 4;</code>
        * @return The item.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.Item getItem() {
         return item_ == null ? com.android.aapt.Resources.Item.getDefaultInstance() : item_;
       }
@@ -42342,6 +42968,7 @@ public final class Resources {
        *
        * <code>.aapt.pb.Item item = 4;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.ItemOrBuilder getItemOrBuilder() {
         return getItem();
       }
@@ -42988,7 +43615,7 @@ public final class Resources {
          * <code>.aapt.pb.Plural.Arity arity = 3;</code>
          * @return The enum numeric value on the wire for arity.
          */
-        public int getArityValue() {
+        @java.lang.Override public int getArityValue() {
           return arity_;
         }
         /**
@@ -43001,6 +43628,7 @@ public final class Resources {
          * @return This builder for chaining.
          */
         public Builder setArityValue(int value) {
+          
           arity_ = value;
           onChanged();
           return this;
@@ -43013,6 +43641,7 @@ public final class Resources {
          * <code>.aapt.pb.Plural.Arity arity = 3;</code>
          * @return The arity.
          */
+        @java.lang.Override
         public com.android.aapt.Resources.Plural.Arity getArity() {
           @SuppressWarnings("deprecation")
           com.android.aapt.Resources.Plural.Arity result = com.android.aapt.Resources.Plural.Arity.valueOf(arity_);
@@ -43267,6 +43896,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Plural.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.Plural.Entry> getEntryList() {
       return entry_;
     }
@@ -43277,6 +43907,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Plural.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.Plural.EntryOrBuilder> 
         getEntryOrBuilderList() {
       return entry_;
@@ -43288,6 +43919,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Plural.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public int getEntryCount() {
       return entry_.size();
     }
@@ -43298,6 +43930,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Plural.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Plural.Entry getEntry(int index) {
       return entry_.get(index);
     }
@@ -43308,6 +43941,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.Plural.Entry entry = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Plural.EntryOrBuilder getEntryOrBuilder(
         int index) {
       return entry_.get(index);
@@ -44044,6 +44678,11 @@ public final class Resources {
 
     /**
      * <code>string text = 2;</code>
+     * @return Whether the text field is set.
+     */
+    boolean hasText();
+    /**
+     * <code>string text = 2;</code>
      * @return The text.
      */
     java.lang.String getText();
@@ -44091,7 +44730,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.XmlNode}
    */
-  public  static final class XmlNode extends
+  public static final class XmlNode extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.XmlNode)
       XmlNodeOrBuilder {
@@ -44244,6 +44883,7 @@ public final class Resources {
      * <code>.aapt.pb.XmlElement element = 1;</code>
      * @return Whether the element field is set.
      */
+    @java.lang.Override
     public boolean hasElement() {
       return nodeCase_ == 1;
     }
@@ -44251,6 +44891,7 @@ public final class Resources {
      * <code>.aapt.pb.XmlElement element = 1;</code>
      * @return The element.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlElement getElement() {
       if (nodeCase_ == 1) {
          return (com.android.aapt.Resources.XmlElement) node_;
@@ -44260,6 +44901,7 @@ public final class Resources {
     /**
      * <code>.aapt.pb.XmlElement element = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlElementOrBuilder getElementOrBuilder() {
       if (nodeCase_ == 1) {
          return (com.android.aapt.Resources.XmlElement) node_;
@@ -44268,6 +44910,13 @@ public final class Resources {
     }
 
     public static final int TEXT_FIELD_NUMBER = 2;
+    /**
+     * <code>string text = 2;</code>
+     * @return Whether the text field is set.
+     */
+    public boolean hasText() {
+      return nodeCase_ == 2;
+    }
     /**
      * <code>string text = 2;</code>
      * @return The text.
@@ -44322,6 +44971,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -44333,6 +44983,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePosition getSource() {
       return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
     }
@@ -44343,6 +44994,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -44754,6 +45406,7 @@ public final class Resources {
        * <code>.aapt.pb.XmlElement element = 1;</code>
        * @return Whether the element field is set.
        */
+      @java.lang.Override
       public boolean hasElement() {
         return nodeCase_ == 1;
       }
@@ -44761,6 +45414,7 @@ public final class Resources {
        * <code>.aapt.pb.XmlElement element = 1;</code>
        * @return The element.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.XmlElement getElement() {
         if (elementBuilder_ == null) {
           if (nodeCase_ == 1) {
@@ -44854,6 +45508,7 @@ public final class Resources {
       /**
        * <code>.aapt.pb.XmlElement element = 1;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.XmlElementOrBuilder getElementOrBuilder() {
         if ((nodeCase_ == 1) && (elementBuilder_ != null)) {
           return elementBuilder_.getMessageOrBuilder();
@@ -44888,8 +45543,17 @@ public final class Resources {
 
       /**
        * <code>string text = 2;</code>
+       * @return Whether the text field is set.
+       */
+      @java.lang.Override
+      public boolean hasText() {
+        return nodeCase_ == 2;
+      }
+      /**
+       * <code>string text = 2;</code>
        * @return The text.
        */
+      @java.lang.Override
       public java.lang.String getText() {
         java.lang.Object ref = "";
         if (nodeCase_ == 2) {
@@ -44911,6 +45575,7 @@ public final class Resources {
        * <code>string text = 2;</code>
        * @return The bytes for text.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getTextBytes() {
         java.lang.Object ref = "";
@@ -45363,7 +46028,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.XmlElement}
    */
-  public  static final class XmlElement extends
+  public static final class XmlElement extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.XmlElement)
       XmlElementOrBuilder {
@@ -45500,6 +46165,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNamespace namespace_declaration = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.XmlNamespace> getNamespaceDeclarationList() {
       return namespaceDeclaration_;
     }
@@ -45510,6 +46176,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNamespace namespace_declaration = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.XmlNamespaceOrBuilder> 
         getNamespaceDeclarationOrBuilderList() {
       return namespaceDeclaration_;
@@ -45521,6 +46188,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNamespace namespace_declaration = 1;</code>
      */
+    @java.lang.Override
     public int getNamespaceDeclarationCount() {
       return namespaceDeclaration_.size();
     }
@@ -45531,6 +46199,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNamespace namespace_declaration = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlNamespace getNamespaceDeclaration(int index) {
       return namespaceDeclaration_.get(index);
     }
@@ -45541,6 +46210,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNamespace namespace_declaration = 1;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlNamespaceOrBuilder getNamespaceDeclarationOrBuilder(
         int index) {
       return namespaceDeclaration_.get(index);
@@ -45556,6 +46226,7 @@ public final class Resources {
      * <code>string namespace_uri = 2;</code>
      * @return The namespaceUri.
      */
+    @java.lang.Override
     public java.lang.String getNamespaceUri() {
       java.lang.Object ref = namespaceUri_;
       if (ref instanceof java.lang.String) {
@@ -45576,6 +46247,7 @@ public final class Resources {
      * <code>string namespace_uri = 2;</code>
      * @return The bytes for namespaceUri.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceUriBytes() {
       java.lang.Object ref = namespaceUri_;
@@ -45600,6 +46272,7 @@ public final class Resources {
      * <code>string name = 3;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -45620,6 +46293,7 @@ public final class Resources {
      * <code>string name = 3;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -45643,6 +46317,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlAttribute attribute = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.XmlAttribute> getAttributeList() {
       return attribute_;
     }
@@ -45653,6 +46328,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlAttribute attribute = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.XmlAttributeOrBuilder> 
         getAttributeOrBuilderList() {
       return attribute_;
@@ -45664,6 +46340,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlAttribute attribute = 4;</code>
      */
+    @java.lang.Override
     public int getAttributeCount() {
       return attribute_.size();
     }
@@ -45674,6 +46351,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlAttribute attribute = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlAttribute getAttribute(int index) {
       return attribute_.get(index);
     }
@@ -45684,6 +46362,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlAttribute attribute = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlAttributeOrBuilder getAttributeOrBuilder(
         int index) {
       return attribute_.get(index);
@@ -45698,6 +46377,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNode child = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.XmlNode> getChildList() {
       return child_;
     }
@@ -45708,6 +46388,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNode child = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.XmlNodeOrBuilder> 
         getChildOrBuilderList() {
       return child_;
@@ -45719,6 +46400,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNode child = 5;</code>
      */
+    @java.lang.Override
     public int getChildCount() {
       return child_.size();
     }
@@ -45729,6 +46411,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNode child = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlNode getChild(int index) {
       return child_.get(index);
     }
@@ -45739,6 +46422,7 @@ public final class Resources {
      *
      * <code>repeated .aapt.pb.XmlNode child = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.XmlNodeOrBuilder getChildOrBuilder(
         int index) {
       return child_.get(index);
@@ -47476,7 +48160,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.XmlNamespace}
    */
-  public  static final class XmlNamespace extends
+  public static final class XmlNamespace extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.XmlNamespace)
       XmlNamespaceOrBuilder {
@@ -47583,6 +48267,7 @@ public final class Resources {
      * <code>string prefix = 1;</code>
      * @return The prefix.
      */
+    @java.lang.Override
     public java.lang.String getPrefix() {
       java.lang.Object ref = prefix_;
       if (ref instanceof java.lang.String) {
@@ -47599,6 +48284,7 @@ public final class Resources {
      * <code>string prefix = 1;</code>
      * @return The bytes for prefix.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPrefixBytes() {
       java.lang.Object ref = prefix_;
@@ -47619,6 +48305,7 @@ public final class Resources {
      * <code>string uri = 2;</code>
      * @return The uri.
      */
+    @java.lang.Override
     public java.lang.String getUri() {
       java.lang.Object ref = uri_;
       if (ref instanceof java.lang.String) {
@@ -47635,6 +48322,7 @@ public final class Resources {
      * <code>string uri = 2;</code>
      * @return The bytes for uri.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getUriBytes() {
       java.lang.Object ref = uri_;
@@ -47659,6 +48347,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -47670,6 +48359,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePosition getSource() {
       return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
     }
@@ -47680,6 +48370,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.SourcePosition source = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -48507,7 +49198,7 @@ public final class Resources {
    *
    * Protobuf type {@code aapt.pb.XmlAttribute}
    */
-  public  static final class XmlAttribute extends
+  public static final class XmlAttribute extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.XmlAttribute)
       XmlAttributeOrBuilder {
@@ -48639,6 +49330,7 @@ public final class Resources {
      * <code>string namespace_uri = 1;</code>
      * @return The namespaceUri.
      */
+    @java.lang.Override
     public java.lang.String getNamespaceUri() {
       java.lang.Object ref = namespaceUri_;
       if (ref instanceof java.lang.String) {
@@ -48655,6 +49347,7 @@ public final class Resources {
      * <code>string namespace_uri = 1;</code>
      * @return The bytes for namespaceUri.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNamespaceUriBytes() {
       java.lang.Object ref = namespaceUri_;
@@ -48675,6 +49368,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -48691,6 +49385,7 @@ public final class Resources {
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -48711,6 +49406,7 @@ public final class Resources {
      * <code>string value = 3;</code>
      * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -48727,6 +49423,7 @@ public final class Resources {
      * <code>string value = 3;</code>
      * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -48751,6 +49448,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 4;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -48762,6 +49460,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 4;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePosition getSource() {
       return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
     }
@@ -48772,6 +49471,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.SourcePosition source = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -48786,6 +49486,7 @@ public final class Resources {
      * <code>uint32 resource_id = 5;</code>
      * @return The resourceId.
      */
+    @java.lang.Override
     public int getResourceId() {
       return resourceId_;
     }
@@ -48800,6 +49501,7 @@ public final class Resources {
      * <code>.aapt.pb.Item compiled_item = 6;</code>
      * @return Whether the compiledItem field is set.
      */
+    @java.lang.Override
     public boolean hasCompiledItem() {
       return compiledItem_ != null;
     }
@@ -48811,6 +49513,7 @@ public final class Resources {
      * <code>.aapt.pb.Item compiled_item = 6;</code>
      * @return The compiledItem.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.Item getCompiledItem() {
       return compiledItem_ == null ? com.android.aapt.Resources.Item.getDefaultInstance() : compiledItem_;
     }
@@ -48821,6 +49524,7 @@ public final class Resources {
      *
      * <code>.aapt.pb.Item compiled_item = 6;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.ItemOrBuilder getCompiledItemOrBuilder() {
       return getCompiledItem();
     }
@@ -49634,6 +50338,7 @@ public final class Resources {
        * <code>uint32 resource_id = 5;</code>
        * @return The resourceId.
        */
+      @java.lang.Override
       public int getResourceId() {
         return resourceId_;
       }
@@ -49971,7 +50676,7 @@ public final class Resources {
   /**
    * Protobuf type {@code aapt.pb.MacroBody}
    */
-  public  static final class MacroBody extends
+  public static final class MacroBody extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.MacroBody)
       MacroBodyOrBuilder {
@@ -50111,6 +50816,7 @@ public final class Resources {
      * <code>string raw_string = 1;</code>
      * @return The rawString.
      */
+    @java.lang.Override
     public java.lang.String getRawString() {
       java.lang.Object ref = rawString_;
       if (ref instanceof java.lang.String) {
@@ -50127,6 +50833,7 @@ public final class Resources {
      * <code>string raw_string = 1;</code>
      * @return The bytes for rawString.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getRawStringBytes() {
       java.lang.Object ref = rawString_;
@@ -50147,6 +50854,7 @@ public final class Resources {
      * <code>.aapt.pb.StyleString style_string = 2;</code>
      * @return Whether the styleString field is set.
      */
+    @java.lang.Override
     public boolean hasStyleString() {
       return styleString_ != null;
     }
@@ -50154,12 +50862,14 @@ public final class Resources {
      * <code>.aapt.pb.StyleString style_string = 2;</code>
      * @return The styleString.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleString getStyleString() {
       return styleString_ == null ? com.android.aapt.Resources.StyleString.getDefaultInstance() : styleString_;
     }
     /**
      * <code>.aapt.pb.StyleString style_string = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleStringOrBuilder getStyleStringOrBuilder() {
       return getStyleString();
     }
@@ -50169,12 +50879,14 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.UntranslatableSection> getUntranslatableSectionsList() {
       return untranslatableSections_;
     }
     /**
      * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.UntranslatableSectionOrBuilder> 
         getUntranslatableSectionsOrBuilderList() {
       return untranslatableSections_;
@@ -50182,18 +50894,21 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
      */
+    @java.lang.Override
     public int getUntranslatableSectionsCount() {
       return untranslatableSections_.size();
     }
     /**
      * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.UntranslatableSection getUntranslatableSections(int index) {
       return untranslatableSections_.get(index);
     }
     /**
      * <code>repeated .aapt.pb.UntranslatableSection untranslatable_sections = 3;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.UntranslatableSectionOrBuilder getUntranslatableSectionsOrBuilder(
         int index) {
       return untranslatableSections_.get(index);
@@ -50204,12 +50919,14 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.NamespaceAlias> getNamespaceStackList() {
       return namespaceStack_;
     }
     /**
      * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.NamespaceAliasOrBuilder> 
         getNamespaceStackOrBuilderList() {
       return namespaceStack_;
@@ -50217,18 +50934,21 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
      */
+    @java.lang.Override
     public int getNamespaceStackCount() {
       return namespaceStack_.size();
     }
     /**
      * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.NamespaceAlias getNamespaceStack(int index) {
       return namespaceStack_.get(index);
     }
     /**
      * <code>repeated .aapt.pb.NamespaceAlias namespace_stack = 4;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.NamespaceAliasOrBuilder getNamespaceStackOrBuilder(
         int index) {
       return namespaceStack_.get(index);
@@ -50240,6 +50960,7 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 5;</code>
      * @return Whether the source field is set.
      */
+    @java.lang.Override
     public boolean hasSource() {
       return source_ != null;
     }
@@ -50247,12 +50968,14 @@ public final class Resources {
      * <code>.aapt.pb.SourcePosition source = 5;</code>
      * @return The source.
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePosition getSource() {
       return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
     }
     /**
      * <code>.aapt.pb.SourcePosition source = 5;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
       return getSource();
     }
@@ -51614,7 +52337,7 @@ public final class Resources {
   /**
    * Protobuf type {@code aapt.pb.NamespaceAlias}
    */
-  public  static final class NamespaceAlias extends
+  public static final class NamespaceAlias extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.NamespaceAlias)
       NamespaceAliasOrBuilder {
@@ -51713,6 +52436,7 @@ public final class Resources {
      * <code>string prefix = 1;</code>
      * @return The prefix.
      */
+    @java.lang.Override
     public java.lang.String getPrefix() {
       java.lang.Object ref = prefix_;
       if (ref instanceof java.lang.String) {
@@ -51729,6 +52453,7 @@ public final class Resources {
      * <code>string prefix = 1;</code>
      * @return The bytes for prefix.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPrefixBytes() {
       java.lang.Object ref = prefix_;
@@ -51749,6 +52474,7 @@ public final class Resources {
      * <code>string package_name = 2;</code>
      * @return The packageName.
      */
+    @java.lang.Override
     public java.lang.String getPackageName() {
       java.lang.Object ref = packageName_;
       if (ref instanceof java.lang.String) {
@@ -51765,6 +52491,7 @@ public final class Resources {
      * <code>string package_name = 2;</code>
      * @return The bytes for packageName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPackageNameBytes() {
       java.lang.Object ref = packageName_;
@@ -51785,6 +52512,7 @@ public final class Resources {
      * <code>bool is_private = 3;</code>
      * @return The isPrivate.
      */
+    @java.lang.Override
     public boolean getIsPrivate() {
       return isPrivate_;
     }
@@ -52283,6 +53011,7 @@ public final class Resources {
        * <code>bool is_private = 3;</code>
        * @return The isPrivate.
        */
+      @java.lang.Override
       public boolean getIsPrivate() {
         return isPrivate_;
       }
@@ -52403,7 +53132,7 @@ public final class Resources {
   /**
    * Protobuf type {@code aapt.pb.StyleString}
    */
-  public  static final class StyleString extends
+  public static final class StyleString extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.StyleString)
       StyleStringOrBuilder {
@@ -52529,7 +53258,7 @@ public final class Resources {
     /**
      * Protobuf type {@code aapt.pb.StyleString.Span}
      */
-    public  static final class Span extends
+    public static final class Span extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.StyleString.Span)
         SpanOrBuilder {
@@ -52626,6 +53355,7 @@ public final class Resources {
        * <code>string name = 1;</code>
        * @return The name.
        */
+      @java.lang.Override
       public java.lang.String getName() {
         java.lang.Object ref = name_;
         if (ref instanceof java.lang.String) {
@@ -52642,6 +53372,7 @@ public final class Resources {
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getNameBytes() {
         java.lang.Object ref = name_;
@@ -52662,6 +53393,7 @@ public final class Resources {
        * <code>uint32 start_index = 2;</code>
        * @return The startIndex.
        */
+      @java.lang.Override
       public int getStartIndex() {
         return startIndex_;
       }
@@ -52672,6 +53404,7 @@ public final class Resources {
        * <code>uint32 end_index = 3;</code>
        * @return The endIndex.
        */
+      @java.lang.Override
       public int getEndIndex() {
         return endIndex_;
       }
@@ -53093,6 +53826,7 @@ public final class Resources {
          * <code>uint32 start_index = 2;</code>
          * @return The startIndex.
          */
+        @java.lang.Override
         public int getStartIndex() {
           return startIndex_;
         }
@@ -53123,6 +53857,7 @@ public final class Resources {
          * <code>uint32 end_index = 3;</code>
          * @return The endIndex.
          */
+        @java.lang.Override
         public int getEndIndex() {
           return endIndex_;
         }
@@ -53206,6 +53941,7 @@ public final class Resources {
      * <code>string str = 1;</code>
      * @return The str.
      */
+    @java.lang.Override
     public java.lang.String getStr() {
       java.lang.Object ref = str_;
       if (ref instanceof java.lang.String) {
@@ -53222,6 +53958,7 @@ public final class Resources {
      * <code>string str = 1;</code>
      * @return The bytes for str.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getStrBytes() {
       java.lang.Object ref = str_;
@@ -53241,12 +53978,14 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<com.android.aapt.Resources.StyleString.Span> getSpansList() {
       return spans_;
     }
     /**
      * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.android.aapt.Resources.StyleString.SpanOrBuilder> 
         getSpansOrBuilderList() {
       return spans_;
@@ -53254,18 +53993,21 @@ public final class Resources {
     /**
      * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
      */
+    @java.lang.Override
     public int getSpansCount() {
       return spans_.size();
     }
     /**
      * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleString.Span getSpans(int index) {
       return spans_.get(index);
     }
     /**
      * <code>repeated .aapt.pb.StyleString.Span spans = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.Resources.StyleString.SpanOrBuilder getSpansOrBuilder(
         int index) {
       return spans_.get(index);
@@ -54017,7 +54759,7 @@ public final class Resources {
   /**
    * Protobuf type {@code aapt.pb.UntranslatableSection}
    */
-  public  static final class UntranslatableSection extends
+  public static final class UntranslatableSection extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.UntranslatableSection)
       UntranslatableSectionOrBuilder {
@@ -54107,6 +54849,7 @@ public final class Resources {
      * <code>uint64 start_index = 1;</code>
      * @return The startIndex.
      */
+    @java.lang.Override
     public long getStartIndex() {
       return startIndex_;
     }
@@ -54117,6 +54860,7 @@ public final class Resources {
      * <code>uint64 end_index = 2;</code>
      * @return The endIndex.
      */
+    @java.lang.Override
     public long getEndIndex() {
       return endIndex_;
     }
@@ -54447,6 +55191,7 @@ public final class Resources {
        * <code>uint64 start_index = 1;</code>
        * @return The startIndex.
        */
+      @java.lang.Override
       public long getStartIndex() {
         return startIndex_;
       }
@@ -54477,6 +55222,7 @@ public final class Resources {
        * <code>uint64 end_index = 2;</code>
        * @return The endIndex.
        */
+      @java.lang.Override
       public long getEndIndex() {
         return endIndex_;
       }

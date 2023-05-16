@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.NavActionInfo}
  */
-public  final class NavActionInfo extends
+public final class NavActionInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavActionInfo)
     NavActionInfoOrBuilder {
@@ -253,7 +253,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavActionInfo.ActionType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -264,7 +264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavActionInfo.ActionType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.NavActionInfo.ActionType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavActionInfo.ActionType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.UNKNOWN : result;
@@ -280,6 +280,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_pop = 2;</code>
    * @return Whether the hasPop field is set.
    */
+  @java.lang.Override
   public boolean hasHasPop() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -291,6 +292,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool has_pop = 2;</code>
    * @return The hasPop.
    */
+  @java.lang.Override
   public boolean getHasPop() {
     return hasPop_;
   }
@@ -305,6 +307,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool inclusive = 3;</code>
    * @return Whether the inclusive field is set.
    */
+  @java.lang.Override
   public boolean hasInclusive() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -316,6 +319,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool inclusive = 3;</code>
    * @return The inclusive.
    */
+  @java.lang.Override
   public boolean getInclusive() {
     return inclusive_;
   }
@@ -330,6 +334,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_from_source = 4;</code>
    * @return Whether the countFromSource field is set.
    */
+  @java.lang.Override
   public boolean hasCountFromSource() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -341,6 +346,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_from_source = 4;</code>
    * @return The countFromSource.
    */
+  @java.lang.Override
   public int getCountFromSource() {
     return countFromSource_;
   }
@@ -355,6 +361,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_to_destination = 5;</code>
    * @return Whether the countToDestination field is set.
    */
+  @java.lang.Override
   public boolean hasCountToDestination() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -366,6 +373,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_to_destination = 5;</code>
    * @return The countToDestination.
    */
+  @java.lang.Override
   public int getCountToDestination() {
     return countToDestination_;
   }
@@ -380,6 +388,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_same = 6;</code>
    * @return Whether the countSame field is set.
    */
+  @java.lang.Override
   public boolean hasCountSame() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -391,6 +400,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 count_same = 6;</code>
    * @return The countSame.
    */
+  @java.lang.Override
   public int getCountSame() {
     return countSame_;
   }
@@ -844,7 +854,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavActionInfo.ActionType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -855,6 +865,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavActionInfo.ActionType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavActionInfo.ActionType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavActionInfo.ActionType result = com.google.wireless.android.sdk.stats.NavActionInfo.ActionType.valueOf(type_);
@@ -902,6 +913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_pop = 2;</code>
      * @return Whether the hasPop field is set.
      */
+    @java.lang.Override
     public boolean hasHasPop() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -913,6 +925,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool has_pop = 2;</code>
      * @return The hasPop.
      */
+    @java.lang.Override
     public boolean getHasPop() {
       return hasPop_;
     }
@@ -955,6 +968,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool inclusive = 3;</code>
      * @return Whether the inclusive field is set.
      */
+    @java.lang.Override
     public boolean hasInclusive() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -966,6 +980,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool inclusive = 3;</code>
      * @return The inclusive.
      */
+    @java.lang.Override
     public boolean getInclusive() {
       return inclusive_;
     }
@@ -1008,6 +1023,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_from_source = 4;</code>
      * @return Whether the countFromSource field is set.
      */
+    @java.lang.Override
     public boolean hasCountFromSource() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1019,6 +1035,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_from_source = 4;</code>
      * @return The countFromSource.
      */
+    @java.lang.Override
     public int getCountFromSource() {
       return countFromSource_;
     }
@@ -1061,6 +1078,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_to_destination = 5;</code>
      * @return Whether the countToDestination field is set.
      */
+    @java.lang.Override
     public boolean hasCountToDestination() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1072,6 +1090,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_to_destination = 5;</code>
      * @return The countToDestination.
      */
+    @java.lang.Override
     public int getCountToDestination() {
       return countToDestination_;
     }
@@ -1114,6 +1133,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_same = 6;</code>
      * @return Whether the countSame field is set.
      */
+    @java.lang.Override
     public boolean hasCountSame() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1125,6 +1145,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 count_same = 6;</code>
      * @return The countSame.
      */
+    @java.lang.Override
     public int getCountSame() {
       return countSame_;
     }

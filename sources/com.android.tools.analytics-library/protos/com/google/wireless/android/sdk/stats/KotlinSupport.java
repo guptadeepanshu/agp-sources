@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.KotlinSupport}
  */
-public  final class KotlinSupport extends
+public final class KotlinSupport extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.KotlinSupport)
     KotlinSupportOrBuilder {
@@ -117,6 +117,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool include_kotlin_support = 1;</code>
    * @return Whether the includeKotlinSupport field is set.
    */
+  @java.lang.Override
   public boolean hasIncludeKotlinSupport() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -130,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool include_kotlin_support = 1;</code>
    * @return The includeKotlinSupport.
    */
+  @java.lang.Override
   public boolean getIncludeKotlinSupport() {
     return includeKotlinSupport_;
   }
@@ -144,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_support_version = 2;</code>
    * @return Whether the kotlinSupportVersion field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinSupportVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -155,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_support_version = 2;</code>
    * @return The kotlinSupportVersion.
    */
+  @java.lang.Override
   public java.lang.String getKotlinSupportVersion() {
     java.lang.Object ref = kotlinSupportVersion_;
     if (ref instanceof java.lang.String) {
@@ -177,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_support_version = 2;</code>
    * @return The bytes for kotlinSupportVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getKotlinSupportVersionBytes() {
     java.lang.Object ref = kotlinSupportVersion_;
@@ -201,6 +206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_ktx_version = 3;</code>
    * @return Whether the androidKtxVersion field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidKtxVersion() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -212,6 +218,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_ktx_version = 3;</code>
    * @return The androidKtxVersion.
    */
+  @java.lang.Override
   public java.lang.String getAndroidKtxVersion() {
     java.lang.Object ref = androidKtxVersion_;
     if (ref instanceof java.lang.String) {
@@ -234,6 +241,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_ktx_version = 3;</code>
    * @return The bytes for androidKtxVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAndroidKtxVersionBytes() {
     java.lang.Object ref = androidKtxVersion_;
@@ -630,6 +638,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool include_kotlin_support = 1;</code>
      * @return Whether the includeKotlinSupport field is set.
      */
+    @java.lang.Override
     public boolean hasIncludeKotlinSupport() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -643,6 +652,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool include_kotlin_support = 1;</code>
      * @return The includeKotlinSupport.
      */
+    @java.lang.Override
     public boolean getIncludeKotlinSupport() {
       return includeKotlinSupport_;
     }

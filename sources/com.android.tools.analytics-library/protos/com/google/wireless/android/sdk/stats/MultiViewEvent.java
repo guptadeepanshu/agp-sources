@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.MultiViewEvent}
  */
-public  final class MultiViewEvent extends
+public final class MultiViewEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MultiViewEvent)
     MultiViewEventOrBuilder {
@@ -157,6 +157,18 @@ private static final long serialVersionUID = 0L;
      * <code>OPEN_WEAR_DEVICES = 7;</code>
      */
     OPEN_WEAR_DEVICES(7),
+    /**
+     * <code>OPEN_REFERENCE_DEVICES = 8;</code>
+     */
+    OPEN_REFERENCE_DEVICES(8),
+    /**
+     * <pre>
+     * Select custom category which is created by user.
+     * </pre>
+     *
+     * <code>OPEN_USER_DEFINED_CUSTOM_SETS = 9;</code>
+     */
+    OPEN_USER_DEFINED_CUSTOM_SETS(9),
     ;
 
     /**
@@ -195,6 +207,18 @@ private static final long serialVersionUID = 0L;
      * <code>OPEN_WEAR_DEVICES = 7;</code>
      */
     public static final int OPEN_WEAR_DEVICES_VALUE = 7;
+    /**
+     * <code>OPEN_REFERENCE_DEVICES = 8;</code>
+     */
+    public static final int OPEN_REFERENCE_DEVICES_VALUE = 8;
+    /**
+     * <pre>
+     * Select custom category which is created by user.
+     * </pre>
+     *
+     * <code>OPEN_USER_DEFINED_CUSTOM_SETS = 9;</code>
+     */
+    public static final int OPEN_USER_DEFINED_CUSTOM_SETS_VALUE = 9;
 
 
     public final int getNumber() {
@@ -225,6 +249,8 @@ private static final long serialVersionUID = 0L;
         case 5: return OPEN_LARGE_FONT;
         case 6: return OPEN_LARGE_DISPLAY;
         case 7: return OPEN_WEAR_DEVICES;
+        case 8: return OPEN_REFERENCE_DEVICES;
+        case 9: return OPEN_USER_DEFINED_CUSTOM_SETS;
         default: return null;
       }
     }
@@ -403,7 +429,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent.MultiViewEventType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -414,7 +440,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent.MultiViewEventType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.UNKNOWN_EVENT_TYPE : result;
@@ -430,7 +456,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
    * @return Whether the associatedSplitEditorMode field is set.
    */
-  public boolean hasAssociatedSplitEditorMode() {
+  @java.lang.Override public boolean hasAssociatedSplitEditorMode() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -441,7 +467,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
    * @return The associatedSplitEditorMode.
    */
-  public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);
     return result == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.UNKNOWN_MODE : result;
@@ -798,7 +824,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MultiViewEvent.MultiViewEventType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -809,6 +835,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MultiViewEvent.MultiViewEventType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType result = com.google.wireless.android.sdk.stats.MultiViewEvent.MultiViewEventType.valueOf(type_);
@@ -856,7 +883,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
      * @return Whether the associatedSplitEditorMode field is set.
      */
-    public boolean hasAssociatedSplitEditorMode() {
+    @java.lang.Override public boolean hasAssociatedSplitEditorMode() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -867,6 +894,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MultiViewEvent.AssociatedSplitEditorMode associated_split_editor_mode = 2;</code>
      * @return The associatedSplitEditorMode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode getAssociatedSplitEditorMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode result = com.google.wireless.android.sdk.stats.MultiViewEvent.AssociatedSplitEditorMode.valueOf(associatedSplitEditorMode_);

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AppLinksAssistantEvent}
  */
-public  final class AppLinksAssistantEvent extends
+public final class AppLinksAssistantEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AppLinksAssistantEvent)
     AppLinksAssistantEventOrBuilder {
@@ -780,6 +780,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -792,6 +793,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -815,6 +817,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 1;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -842,6 +845,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 2;</code>
    * @return Whether the appId field is set.
    */
+  @java.lang.Override
   public boolean hasAppId() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -856,6 +860,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 2;</code>
    * @return The appId.
    */
+  @java.lang.Override
   public java.lang.String getAppId() {
     java.lang.Object ref = appId_;
     if (ref instanceof java.lang.String) {
@@ -881,6 +886,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 2;</code>
    * @return The bytes for appId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAppIdBytes() {
     java.lang.Object ref = appId_;
@@ -905,7 +911,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.EventSource event_source = 3;</code>
    * @return Whether the eventSource field is set.
    */
-  public boolean hasEventSource() {
+  @java.lang.Override public boolean hasEventSource() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -916,7 +922,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.EventSource event_source = 3;</code>
    * @return The eventSource.
    */
-  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource getEventSource() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource getEventSource() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource.valueOf(eventSource_);
     return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource.ASSISTANT_SIDE_PANEL : result;
@@ -932,7 +938,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.EventState event_state = 4;</code>
    * @return Whether the eventState field is set.
    */
-  public boolean hasEventState() {
+  @java.lang.Override public boolean hasEventState() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -943,7 +949,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.EventState event_state = 4;</code>
    * @return The eventState.
    */
-  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState getEventState() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState getEventState() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState.valueOf(eventState_);
     return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState.OPENED : result;
@@ -960,6 +966,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool existing_app_links = 5;</code>
    * @return Whether the existingAppLinks field is set.
    */
+  @java.lang.Override
   public boolean hasExistingAppLinks() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -972,6 +979,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool existing_app_links = 5;</code>
    * @return The existingAppLinks.
    */
+  @java.lang.Override
   public boolean getExistingAppLinks() {
     return existingAppLinks_;
   }
@@ -986,6 +994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 assistant_panel_open_duration = 6;</code>
    * @return Whether the assistantPanelOpenDuration field is set.
    */
+  @java.lang.Override
   public boolean hasAssistantPanelOpenDuration() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -997,6 +1006,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 assistant_panel_open_duration = 6;</code>
    * @return The assistantPanelOpenDuration.
    */
+  @java.lang.Override
   public long getAssistantPanelOpenDuration() {
     return assistantPanelOpenDuration_;
   }
@@ -1014,7 +1024,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.PathType app_link_path_type = 7;</code>
    * @return Whether the appLinkPathType field is set.
    */
-  public boolean hasAppLinkPathType() {
+  @java.lang.Override public boolean hasAppLinkPathType() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -1028,7 +1038,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent.PathType app_link_path_type = 7;</code>
    * @return The appLinkPathType.
    */
-  public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType getAppLinkPathType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType getAppLinkPathType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType.valueOf(appLinkPathType_);
     return result == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType.PATH : result;
@@ -1044,6 +1054,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool new_activity_linked = 8;</code>
    * @return Whether the newActivityLinked field is set.
    */
+  @java.lang.Override
   public boolean hasNewActivityLinked() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1055,6 +1066,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool new_activity_linked = 8;</code>
    * @return The newActivityLinked.
    */
+  @java.lang.Override
   public boolean getNewActivityLinked() {
     return newActivityLinked_;
   }
@@ -1069,6 +1081,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool new_host_linked = 9;</code>
    * @return Whether the newHostLinked field is set.
    */
+  @java.lang.Override
   public boolean hasNewHostLinked() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1080,6 +1093,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool new_host_linked = 9;</code>
    * @return The newHostLinked.
    */
+  @java.lang.Override
   public boolean getNewHostLinked() {
     return newHostLinked_;
   }
@@ -1097,6 +1111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 10;</code>
    * @return Whether the rawProjectId field is set.
    */
+  @java.lang.Override
   public boolean hasRawProjectId() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -1111,6 +1126,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 10;</code>
    * @return The rawProjectId.
    */
+  @java.lang.Override
   public java.lang.String getRawProjectId() {
     java.lang.Object ref = rawProjectId_;
     if (ref instanceof java.lang.String) {
@@ -1136,6 +1152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 10;</code>
    * @return The bytes for rawProjectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRawProjectIdBytes() {
     java.lang.Object ref = rawProjectId_;
@@ -1946,7 +1963,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.EventSource event_source = 3;</code>
      * @return Whether the eventSource field is set.
      */
-    public boolean hasEventSource() {
+    @java.lang.Override public boolean hasEventSource() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1957,6 +1974,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.EventSource event_source = 3;</code>
      * @return The eventSource.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource getEventSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventSource.valueOf(eventSource_);
@@ -2004,7 +2022,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.EventState event_state = 4;</code>
      * @return Whether the eventState field is set.
      */
-    public boolean hasEventState() {
+    @java.lang.Override public boolean hasEventState() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -2015,6 +2033,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.EventState event_state = 4;</code>
      * @return The eventState.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState getEventState() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.EventState.valueOf(eventState_);
@@ -2063,6 +2082,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool existing_app_links = 5;</code>
      * @return Whether the existingAppLinks field is set.
      */
+    @java.lang.Override
     public boolean hasExistingAppLinks() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2075,6 +2095,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool existing_app_links = 5;</code>
      * @return The existingAppLinks.
      */
+    @java.lang.Override
     public boolean getExistingAppLinks() {
       return existingAppLinks_;
     }
@@ -2119,6 +2140,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 assistant_panel_open_duration = 6;</code>
      * @return Whether the assistantPanelOpenDuration field is set.
      */
+    @java.lang.Override
     public boolean hasAssistantPanelOpenDuration() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -2130,6 +2152,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 assistant_panel_open_duration = 6;</code>
      * @return The assistantPanelOpenDuration.
      */
+    @java.lang.Override
     public long getAssistantPanelOpenDuration() {
       return assistantPanelOpenDuration_;
     }
@@ -2175,7 +2198,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.PathType app_link_path_type = 7;</code>
      * @return Whether the appLinkPathType field is set.
      */
-    public boolean hasAppLinkPathType() {
+    @java.lang.Override public boolean hasAppLinkPathType() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -2189,6 +2212,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AppLinksAssistantEvent.PathType app_link_path_type = 7;</code>
      * @return The appLinkPathType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType getAppLinkPathType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType result = com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.PathType.valueOf(appLinkPathType_);
@@ -2242,6 +2266,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool new_activity_linked = 8;</code>
      * @return Whether the newActivityLinked field is set.
      */
+    @java.lang.Override
     public boolean hasNewActivityLinked() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -2253,6 +2278,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool new_activity_linked = 8;</code>
      * @return The newActivityLinked.
      */
+    @java.lang.Override
     public boolean getNewActivityLinked() {
       return newActivityLinked_;
     }
@@ -2295,6 +2321,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool new_host_linked = 9;</code>
      * @return Whether the newHostLinked field is set.
      */
+    @java.lang.Override
     public boolean hasNewHostLinked() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -2306,6 +2333,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool new_host_linked = 9;</code>
      * @return The newHostLinked.
      */
+    @java.lang.Override
     public boolean getNewHostLinked() {
       return newHostLinked_;
     }

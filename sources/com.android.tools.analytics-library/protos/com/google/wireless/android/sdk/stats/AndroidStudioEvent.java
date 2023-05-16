@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.AndroidStudioEvent}
  */
-public  final class AndroidStudioEvent extends
+public final class AndroidStudioEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidStudioEvent)
     AndroidStudioEventOrBuilder {
@@ -37,6 +37,8 @@ private static final long serialVersionUID = 0L;
     gradleSyncIssues_ = java.util.Collections.emptyList();
     offeredQuickFixes_ = java.util.Collections.emptyList();
     emulatorUiEvents_ = java.util.Collections.emptyList();
+    rawProjectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    projectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
   }
 
   @java.lang.Override
@@ -1769,6 +1771,102 @@ private static final long serialVersionUID = 0L;
             bitField4_ |= 0x00000008;
             break;
           }
+          case 1098: {
+            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000010) != 0)) {
+              subBuilder = splittingTabsUsageEvent_.toBuilder();
+            }
+            splittingTabsUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(splittingTabsUsageEvent_);
+              splittingTabsUsageEvent_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000010;
+            break;
+          }
+          case 1106: {
+            com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000020) != 0)) {
+              subBuilder = logcatUsageEvent_.toBuilder();
+            }
+            logcatUsageEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.LogcatUsageEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(logcatUsageEvent_);
+              logcatUsageEvent_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000020;
+            break;
+          }
+          case 1114: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            if (!((mutable_bitField4_ & 0x00000400) != 0)) {
+              rawProjectIds_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField4_ |= 0x00000400;
+            }
+            rawProjectIds_.add(bs);
+            break;
+          }
+          case 1122: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            if (!((mutable_bitField4_ & 0x00000800) != 0)) {
+              projectIds_ = new com.google.protobuf.LazyStringArrayList();
+              mutable_bitField4_ |= 0x00000800;
+            }
+            projectIds_.add(bs);
+            break;
+          }
+          case 1130: {
+            com.google.wireless.android.sdk.stats.OSMetrics.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000040) != 0)) {
+              subBuilder = osMetrics_.toBuilder();
+            }
+            osMetrics_ = input.readMessage(com.google.wireless.android.sdk.stats.OSMetrics.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(osMetrics_);
+              osMetrics_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000040;
+            break;
+          }
+          case 1138: {
+            com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000080) != 0)) {
+              subBuilder = sdkIndexLibraryDetails_.toBuilder();
+            }
+            sdkIndexLibraryDetails_ = input.readMessage(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(sdkIndexLibraryDetails_);
+              sdkIndexLibraryDetails_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000080;
+            break;
+          }
+          case 1146: {
+            com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000100) != 0)) {
+              subBuilder = editorPickerEvent_.toBuilder();
+            }
+            editorPickerEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.EditorPickerEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(editorPickerEvent_);
+              editorPickerEvent_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000100;
+            break;
+          }
+          case 1154: {
+            com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder subBuilder = null;
+            if (((bitField4_ & 0x00000200) != 0)) {
+              subBuilder = composeMultiPreviewEvent_.toBuilder();
+            }
+            composeMultiPreviewEvent_ = input.readMessage(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(composeMultiPreviewEvent_);
+              composeMultiPreviewEvent_ = subBuilder.buildPartial();
+            }
+            bitField4_ |= 0x00000200;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -1795,6 +1893,12 @@ private static final long serialVersionUID = 0L;
       }
       if (((mutable_bitField3_ & 0x00020000) != 0)) {
         emulatorUiEvents_ = java.util.Collections.unmodifiableList(emulatorUiEvents_);
+      }
+      if (((mutable_bitField4_ & 0x00000400) != 0)) {
+        rawProjectIds_ = rawProjectIds_.getUnmodifiableView();
+      }
+      if (((mutable_bitField4_ & 0x00000800) != 0)) {
+        projectIds_ = projectIds_.getUnmodifiableView();
       }
       this.unknownFields = unknownFields.build();
       makeExtensionsImmutable();
@@ -2048,6 +2152,30 @@ private static final long serialVersionUID = 0L;
      * <code>PROJECT_SYSTEM = 27;</code>
      */
     PROJECT_SYSTEM(27),
+    /**
+     * <pre>
+     * The event is related to Splitting Tabs tool windows
+     * </pre>
+     *
+     * <code>SPLITTING_TABS = 28;</code>
+     */
+    SPLITTING_TABS(28),
+    /**
+     * <pre>
+     * The event is related to Logcat tool window
+     * </pre>
+     *
+     * <code>LOGCAT = 29;</code>
+     */
+    LOGCAT(29),
+    /**
+     * <pre>
+     * The event is related to Google Play SDK Index
+     * </pre>
+     *
+     * <code>GOOGLE_PLAY_SDK_INDEX = 30;</code>
+     */
+    GOOGLE_PLAY_SDK_INDEX(30),
     ;
 
     /**
@@ -2099,7 +2227,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>PROFILING = 5 [deprecated = true];</code>
      */
-    public static final int PROFILING_VALUE = 5;
+    @java.lang.Deprecated public static final int PROFILING_VALUE = 5;
     /**
      * <pre>
      * The event is related to Performance Monitoring.
@@ -2108,7 +2236,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>MONITOR = 6 [deprecated = true];</code>
      */
-    public static final int MONITOR_VALUE = 6;
+    @java.lang.Deprecated public static final int MONITOR_VALUE = 6;
     /**
      * <pre>
      * The event is related to the SDK Manager.
@@ -2132,7 +2260,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>THEME_EDITOR = 9 [deprecated = true];</code>
      */
-    public static final int THEME_EDITOR_VALUE = 9;
+    @java.lang.Deprecated public static final int THEME_EDITOR_VALUE = 9;
     /**
      * <code>APP_INDEXING = 10;</code>
      */
@@ -2225,7 +2353,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>GPU_PROFILER = 21 [deprecated = true];</code>
      */
-    public static final int GPU_PROFILER_VALUE = 21;
+    @java.lang.Deprecated public static final int GPU_PROFILER_VALUE = 21;
     /**
      * <pre>
      * the event is related to the test recorder (Cassette)
@@ -2266,7 +2394,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>DEPRECATED_CMAKE_EDITING_EVENT = 26 [deprecated = true];</code>
      */
-    public static final int DEPRECATED_CMAKE_EDITING_EVENT_VALUE = 26;
+    @java.lang.Deprecated public static final int DEPRECATED_CMAKE_EDITING_EVENT_VALUE = 26;
     /**
      * <pre>
      * The event is related to Android Studio Projects
@@ -2275,6 +2403,30 @@ private static final long serialVersionUID = 0L;
      * <code>PROJECT_SYSTEM = 27;</code>
      */
     public static final int PROJECT_SYSTEM_VALUE = 27;
+    /**
+     * <pre>
+     * The event is related to Splitting Tabs tool windows
+     * </pre>
+     *
+     * <code>SPLITTING_TABS = 28;</code>
+     */
+    public static final int SPLITTING_TABS_VALUE = 28;
+    /**
+     * <pre>
+     * The event is related to Logcat tool window
+     * </pre>
+     *
+     * <code>LOGCAT = 29;</code>
+     */
+    public static final int LOGCAT_VALUE = 29;
+    /**
+     * <pre>
+     * The event is related to Google Play SDK Index
+     * </pre>
+     *
+     * <code>GOOGLE_PLAY_SDK_INDEX = 30;</code>
+     */
+    public static final int GOOGLE_PLAY_SDK_INDEX_VALUE = 30;
 
 
     public final int getNumber() {
@@ -2325,6 +2477,9 @@ private static final long serialVersionUID = 0L;
         case 25: return APK_DEBUG;
         case 26: return DEPRECATED_CMAKE_EDITING_EVENT;
         case 27: return PROJECT_SYSTEM;
+        case 28: return SPLITTING_TABS;
+        case 29: return LOGCAT;
+        case 30: return GOOGLE_PLAY_SDK_INDEX;
         default: return null;
       }
     }
@@ -4177,6 +4332,111 @@ private static final long serialVersionUID = 0L;
      * <code>COROUTINE_DEBUGGER = 244;</code>
      */
     COROUTINE_DEBUGGER(244),
+    /**
+     * <pre>
+     * Event related to usage of Splitting Tabs tool windows
+     * </pre>
+     *
+     * <code>SPLITTING_TABS_USAGE = 245;</code>
+     */
+    SPLITTING_TABS_USAGE(245),
+    /**
+     * <pre>
+     * Event related to usage of the Logcat tool window
+     * </pre>
+     *
+     * <code>LOGCAT_USAGE = 246;</code>
+     */
+    LOGCAT_USAGE(246),
+    /**
+     * <pre>
+     * OS-level metrics
+     * </pre>
+     *
+     * <code>OS_METRICS = 247;</code>
+     */
+    OS_METRICS(247),
+    /**
+     * <pre>
+     * Events related to Google Play SDK Index
+     * SDK Index was loaded correctly
+     * </pre>
+     *
+     * <code>SDK_INDEX_LOADED_CORRECTLY = 248;</code>
+     */
+    SDK_INDEX_LOADED_CORRECTLY(248),
+    /**
+     * <pre>
+     * Error while reading SDK Index from cache or network
+     * </pre>
+     *
+     * <code>SDK_INDEX_CACHING_ERROR = 249;</code>
+     */
+    SDK_INDEX_CACHING_ERROR(249),
+    /**
+     * <pre>
+     * Error while reading SDK Index from default resource
+     * </pre>
+     *
+     * <code>SDK_INDEX_DEFAULT_DATA_ERROR = 250;</code>
+     */
+    SDK_INDEX_DEFAULT_DATA_ERROR(250),
+    /**
+     * <pre>
+     * Link provided by the SDK Index was used
+     * </pre>
+     *
+     * <code>SDK_INDEX_LINK_FOLLOWED = 251;</code>
+     */
+    SDK_INDEX_LINK_FOLLOWED(251),
+    /**
+     * <pre>
+     * Library has critical issues in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES = 252;</code>
+     */
+    SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES(252),
+    /**
+     * <pre>
+     * Library has is marked as outdated in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_IS_OUTDATED = 253;</code>
+     */
+    SDK_INDEX_LIBRARY_IS_OUTDATED(253),
+    /**
+     * <pre>
+     * Library has is marked as non compliant in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_IS_NON_COMPLIANT = 254;</code>
+     */
+    SDK_INDEX_LIBRARY_IS_NON_COMPLIANT(254),
+    /**
+     * <pre>
+     * Event related to Pickers invoked from the Editor's gutter
+     * </pre>
+     *
+     * <code>EDITOR_PICKER = 255;</code>
+     */
+    EDITOR_PICKER(255),
+    /**
+     * <pre>
+     * Event type used when raw_project_ids set
+     * </pre>
+     *
+     * <code>PROJECT_IDS = 256;</code>
+     */
+    PROJECT_IDS(256),
+    /**
+     * <pre>
+     * Event related to Compose MultiPreview
+     * </pre>
+     *
+     * <code>COMPOSE_MULTI_PREVIEW = 257;</code>
+     */
+    COMPOSE_MULTI_PREVIEW(257),
     ;
 
     /**
@@ -4295,7 +4555,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>MONITOR_ACTIVATED = 14 [deprecated = true];</code>
      */
-    public static final int MONITOR_ACTIVATED_VALUE = 14;
+    @java.lang.Deprecated public static final int MONITOR_ACTIVATED_VALUE = 14;
     /**
      * <pre>
      * Performance monitoring is running.
@@ -4304,7 +4564,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>MONITOR_RUNNING = 15 [deprecated = true];</code>
      */
-    public static final int MONITOR_RUNNING_VALUE = 15;
+    @java.lang.Deprecated public static final int MONITOR_RUNNING_VALUE = 15;
     /**
      * <pre>
      * The user selected an action from the SDK Manager Toolbar.
@@ -4344,7 +4604,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>THEME_EDITOR_OPEN = 20 [deprecated = true];</code>
      */
-    public static final int THEME_EDITOR_OPEN_VALUE = 20;
+    @java.lang.Deprecated public static final int THEME_EDITOR_OPEN_VALUE = 20;
     /**
      * <pre>
      * A deep link was created for app indexing.
@@ -4417,7 +4677,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>LLDB_SESSION_FAILED = 29 [deprecated = true];</code>
      */
-    public static final int LLDB_SESSION_FAILED_VALUE = 29;
+    @java.lang.Deprecated public static final int LLDB_SESSION_FAILED_VALUE = 29;
     /**
      * <pre>
      * Deprecated, use DEBUG_SESSION_ENDED instead.
@@ -4426,7 +4686,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>LLDB_SESSION_COMPLETED = 30 [deprecated = true];</code>
      */
-    public static final int LLDB_SESSION_COMPLETED_VALUE = 30;
+    @java.lang.Deprecated public static final int LLDB_SESSION_COMPLETED_VALUE = 30;
     /**
      * <pre>
      * SDK Manager QuickFix Wizard is invoked to install LLDB package.
@@ -5185,7 +5445,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>WHATS_NEW_ASSISTANT_EVENT = 130 [deprecated = true];</code>
      */
-    public static final int WHATS_NEW_ASSISTANT_EVENT_VALUE = 130;
+    @java.lang.Deprecated public static final int WHATS_NEW_ASSISTANT_EVENT_VALUE = 130;
     /**
      * <pre>
      * Indexing operation event.
@@ -5217,7 +5477,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>STUDIO_RUN_EVENT = 134 [deprecated = true];</code>
      */
-    public static final int STUDIO_RUN_EVENT_VALUE = 134;
+    @java.lang.Deprecated public static final int STUDIO_RUN_EVENT_VALUE = 134;
     /**
      * <pre>
      * The event is related to count files in a search scope
@@ -5761,7 +6021,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>AUTO_IMPORT_EVENT = 219 [deprecated = true];</code>
      */
-    public static final int AUTO_IMPORT_EVENT_VALUE = 219;
+    @java.lang.Deprecated public static final int AUTO_IMPORT_EVENT_VALUE = 219;
     /**
      * <pre>
      * Event related to file usage data
@@ -5964,6 +6224,111 @@ private static final long serialVersionUID = 0L;
      * <code>COROUTINE_DEBUGGER = 244;</code>
      */
     public static final int COROUTINE_DEBUGGER_VALUE = 244;
+    /**
+     * <pre>
+     * Event related to usage of Splitting Tabs tool windows
+     * </pre>
+     *
+     * <code>SPLITTING_TABS_USAGE = 245;</code>
+     */
+    public static final int SPLITTING_TABS_USAGE_VALUE = 245;
+    /**
+     * <pre>
+     * Event related to usage of the Logcat tool window
+     * </pre>
+     *
+     * <code>LOGCAT_USAGE = 246;</code>
+     */
+    public static final int LOGCAT_USAGE_VALUE = 246;
+    /**
+     * <pre>
+     * OS-level metrics
+     * </pre>
+     *
+     * <code>OS_METRICS = 247;</code>
+     */
+    public static final int OS_METRICS_VALUE = 247;
+    /**
+     * <pre>
+     * Events related to Google Play SDK Index
+     * SDK Index was loaded correctly
+     * </pre>
+     *
+     * <code>SDK_INDEX_LOADED_CORRECTLY = 248;</code>
+     */
+    public static final int SDK_INDEX_LOADED_CORRECTLY_VALUE = 248;
+    /**
+     * <pre>
+     * Error while reading SDK Index from cache or network
+     * </pre>
+     *
+     * <code>SDK_INDEX_CACHING_ERROR = 249;</code>
+     */
+    public static final int SDK_INDEX_CACHING_ERROR_VALUE = 249;
+    /**
+     * <pre>
+     * Error while reading SDK Index from default resource
+     * </pre>
+     *
+     * <code>SDK_INDEX_DEFAULT_DATA_ERROR = 250;</code>
+     */
+    public static final int SDK_INDEX_DEFAULT_DATA_ERROR_VALUE = 250;
+    /**
+     * <pre>
+     * Link provided by the SDK Index was used
+     * </pre>
+     *
+     * <code>SDK_INDEX_LINK_FOLLOWED = 251;</code>
+     */
+    public static final int SDK_INDEX_LINK_FOLLOWED_VALUE = 251;
+    /**
+     * <pre>
+     * Library has critical issues in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES = 252;</code>
+     */
+    public static final int SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES_VALUE = 252;
+    /**
+     * <pre>
+     * Library has is marked as outdated in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_IS_OUTDATED = 253;</code>
+     */
+    public static final int SDK_INDEX_LIBRARY_IS_OUTDATED_VALUE = 253;
+    /**
+     * <pre>
+     * Library has is marked as non compliant in the SDK Index
+     * </pre>
+     *
+     * <code>SDK_INDEX_LIBRARY_IS_NON_COMPLIANT = 254;</code>
+     */
+    public static final int SDK_INDEX_LIBRARY_IS_NON_COMPLIANT_VALUE = 254;
+    /**
+     * <pre>
+     * Event related to Pickers invoked from the Editor's gutter
+     * </pre>
+     *
+     * <code>EDITOR_PICKER = 255;</code>
+     */
+    public static final int EDITOR_PICKER_VALUE = 255;
+    /**
+     * <pre>
+     * Event type used when raw_project_ids set
+     * </pre>
+     *
+     * <code>PROJECT_IDS = 256;</code>
+     */
+    public static final int PROJECT_IDS_VALUE = 256;
+    /**
+     * <pre>
+     * Event related to Compose MultiPreview
+     * </pre>
+     *
+     * <code>COMPOSE_MULTI_PREVIEW = 257;</code>
+     */
+    public static final int COMPOSE_MULTI_PREVIEW_VALUE = 257;
 
 
     public final int getNumber() {
@@ -6226,6 +6591,19 @@ private static final long serialVersionUID = 0L;
         case 242: return OPTOUT_METRICS;
         case 243: return GRADLE_VERSION_CATALOG_DETECTOR;
         case 244: return COROUTINE_DEBUGGER;
+        case 245: return SPLITTING_TABS_USAGE;
+        case 246: return LOGCAT_USAGE;
+        case 247: return OS_METRICS;
+        case 248: return SDK_INDEX_LOADED_CORRECTLY;
+        case 249: return SDK_INDEX_CACHING_ERROR;
+        case 250: return SDK_INDEX_DEFAULT_DATA_ERROR;
+        case 251: return SDK_INDEX_LINK_FOLLOWED;
+        case 252: return SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES;
+        case 253: return SDK_INDEX_LIBRARY_IS_OUTDATED;
+        case 254: return SDK_INDEX_LIBRARY_IS_NON_COMPLIANT;
+        case 255: return EDITOR_PICKER;
+        case 256: return PROJECT_IDS;
+        case 257: return COMPOSE_MULTI_PREVIEW;
         default: return null;
       }
     }
@@ -7303,6 +7681,10 @@ private static final long serialVersionUID = 0L;
      * <code>GOOGLE_PAY_ACTIVITY = 65;</code>
      */
     GOOGLE_PAY_ACTIVITY(65),
+    /**
+     * <code>WEAR_OS_COMPOSE_ACTIVITY = 66;</code>
+     */
+    WEAR_OS_COMPOSE_ACTIVITY(66),
     ;
 
     /**
@@ -7432,7 +7814,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>ALWAYS_ON_WEAR_ACTIVITY = 30 [deprecated = true];</code>
      */
-    public static final int ALWAYS_ON_WEAR_ACTIVITY_VALUE = 30;
+    @java.lang.Deprecated public static final int ALWAYS_ON_WEAR_ACTIVITY_VALUE = 30;
     /**
      * <code>RES_FOLDER = 31;</code>
      */
@@ -7456,19 +7838,19 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>ANDROID_INSTANT_APP_PROJECT = 36 [deprecated = true];</code>
      */
-    public static final int ANDROID_INSTANT_APP_PROJECT_VALUE = 36;
+    @java.lang.Deprecated public static final int ANDROID_INSTANT_APP_PROJECT_VALUE = 36;
     /**
      * <code>ANDROID_INSTANT_APP_MODULE = 37 [deprecated = true];</code>
      */
-    public static final int ANDROID_INSTANT_APP_MODULE_VALUE = 37;
+    @java.lang.Deprecated public static final int ANDROID_INSTANT_APP_MODULE_VALUE = 37;
     /**
      * <code>ANDROID_INSTANT_APP_BUNDLE_PROJECT = 38 [deprecated = true];</code>
      */
-    public static final int ANDROID_INSTANT_APP_BUNDLE_PROJECT_VALUE = 38;
+    @java.lang.Deprecated public static final int ANDROID_INSTANT_APP_BUNDLE_PROJECT_VALUE = 38;
     /**
      * <code>ANDROID_INSTANT_APP_DYNAMIC_MODULE = 39 [deprecated = true];</code>
      */
-    public static final int ANDROID_INSTANT_APP_DYNAMIC_MODULE_VALUE = 39;
+    @java.lang.Deprecated public static final int ANDROID_INSTANT_APP_DYNAMIC_MODULE_VALUE = 39;
     /**
      * <code>BENCHMARK_LIBRARY_MODULE = 40;</code>
      */
@@ -7528,7 +7910,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>THINGS_MODULE = 54 [deprecated = true];</code>
      */
-    public static final int THINGS_MODULE_VALUE = 54;
+    @java.lang.Deprecated public static final int THINGS_MODULE_VALUE = 54;
     /**
      * <code>AUTOMOTIVE_MEDIA_SERVICE = 55;</code>
      */
@@ -7540,7 +7922,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>THINGS_ACTIVITY = 57 [deprecated = true];</code>
      */
-    public static final int THINGS_ACTIVITY_VALUE = 57;
+    @java.lang.Deprecated public static final int THINGS_ACTIVITY_VALUE = 57;
     /**
      * <code>WATCH_GOOGLE_MAPS_ACTIVITY = 58;</code>
      */
@@ -7573,6 +7955,10 @@ private static final long serialVersionUID = 0L;
      * <code>GOOGLE_PAY_ACTIVITY = 65;</code>
      */
     public static final int GOOGLE_PAY_ACTIVITY_VALUE = 65;
+    /**
+     * <code>WEAR_OS_COMPOSE_ACTIVITY = 66;</code>
+     */
+    public static final int WEAR_OS_COMPOSE_ACTIVITY_VALUE = 66;
 
 
     public final int getNumber() {
@@ -7661,6 +8047,7 @@ private static final long serialVersionUID = 0L;
         case 63: return RESPONSIVE_ACTIVITY;
         case 64: return MACROBENCHMARK_LIBRARY_MODULE;
         case 65: return GOOGLE_PAY_ACTIVITY;
+        case 66: return WEAR_OS_COMPOSE_ACTIVITY;
         default: return null;
       }
     }
@@ -8665,6 +9052,14 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_COMPILE_SDK_VERSION_TOO_HIGH = 56;</code>
      */
     TYPE_COMPILE_SDK_VERSION_TOO_HIGH(56),
+    /**
+     * <pre>
+     * A higher compileSdk is required for compilation.
+     * </pre>
+     *
+     * <code>TYPE_COMPILE_SDK_VERSION_TOO_LOW = 57;</code>
+     */
+    TYPE_COMPILE_SDK_VERSION_TOO_LOW(57),
     ;
 
     /**
@@ -8855,7 +9250,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>TYPE_DEPRECATED_CONFIGURATION = 29 [deprecated = true];</code>
      */
-    public static final int TYPE_DEPRECATED_CONFIGURATION_VALUE = 29;
+    @java.lang.Deprecated public static final int TYPE_DEPRECATED_CONFIGURATION_VALUE = 29;
     /**
      * <pre>
      * Indicates that the project uses a deprecated DSL value.
@@ -8866,7 +9261,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>TYPE_DEPRECATED_DSLVALUE = 30 [deprecated = true];</code>
      */
-    public static final int TYPE_DEPRECATED_DSLVALUE_VALUE = 30;
+    @java.lang.Deprecated public static final int TYPE_DEPRECATED_DSLVALUE_VALUE = 30;
     /**
      * <pre>
      * Indicates that the project contains the min sdk in the android manifest
@@ -9061,6 +9456,14 @@ private static final long serialVersionUID = 0L;
      * <code>TYPE_COMPILE_SDK_VERSION_TOO_HIGH = 56;</code>
      */
     public static final int TYPE_COMPILE_SDK_VERSION_TOO_HIGH_VALUE = 56;
+    /**
+     * <pre>
+     * A higher compileSdk is required for compilation.
+     * </pre>
+     *
+     * <code>TYPE_COMPILE_SDK_VERSION_TOO_LOW = 57;</code>
+     */
+    public static final int TYPE_COMPILE_SDK_VERSION_TOO_LOW_VALUE = 57;
 
 
     public final int getNumber() {
@@ -9140,6 +9543,7 @@ private static final long serialVersionUID = 0L;
         case 54: return TYPE_JCENTER_IS_DEPRECATED;
         case 55: return TYPE_AGP_USED_JAVA_VERSION_TOO_LOW;
         case 56: return TYPE_COMPILE_SDK_VERSION_TOO_HIGH;
+        case 57: return TYPE_COMPILE_SDK_VERSION_TOO_LOW;
         default: return null;
       }
     }
@@ -9840,7 +10244,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.AndroidStudioEvent.TemplatesUsage}
    */
-  public  static final class TemplatesUsage extends
+  public static final class TemplatesUsage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AndroidStudioEvent.TemplatesUsage)
       TemplatesUsageOrBuilder {
@@ -10023,7 +10427,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent}
      */
-    public  static final class TemplateComponent extends
+    public static final class TemplateComponent extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent)
         TemplateComponentOrBuilder {
@@ -10128,7 +10532,7 @@ private static final long serialVersionUID = 0L;
        * <pre>
        * The different template components (eg Activities, Fragments, Services,
        * etc) the template engine could be asked to render
-       * Next ID: 60
+       * Next ID: 61
        * </pre>
        *
        * Protobuf enum {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType}
@@ -10236,6 +10640,10 @@ private static final long serialVersionUID = 0L;
          * <code>GOOGLE_PAY_ACTIVITY = 58;</code>
          */
         GOOGLE_PAY_ACTIVITY(58),
+        /**
+         * <code>CPP_GAME_ACTIVITY = 60;</code>
+         */
+        CPP_GAME_ACTIVITY(60),
         /**
          * <code>FRAGMENT_LIST = 23;</code>
          */
@@ -10458,7 +10866,7 @@ private static final long serialVersionUID = 0L;
         /**
          * <code>THINGS_EMPTY_ACTIVITY = 19 [deprecated = true];</code>
          */
-        public static final int THINGS_EMPTY_ACTIVITY_VALUE = 19;
+        @java.lang.Deprecated public static final int THINGS_EMPTY_ACTIVITY_VALUE = 19;
         /**
          * <code>VIEW_MODEL_ACTIVITY = 20;</code>
          */
@@ -10479,6 +10887,10 @@ private static final long serialVersionUID = 0L;
          * <code>GOOGLE_PAY_ACTIVITY = 58;</code>
          */
         public static final int GOOGLE_PAY_ACTIVITY_VALUE = 58;
+        /**
+         * <code>CPP_GAME_ACTIVITY = 60;</code>
+         */
+        public static final int CPP_GAME_ACTIVITY_VALUE = 60;
         /**
          * <code>FRAGMENT_LIST = 23;</code>
          */
@@ -10578,7 +10990,7 @@ private static final long serialVersionUID = 0L;
         /**
          * <code>APP_ACTIONS_XML_FILE = 47 [deprecated = true];</code>
          */
-        public static final int APP_ACTIONS_XML_FILE_VALUE = 47;
+        @java.lang.Deprecated public static final int APP_ACTIONS_XML_FILE_VALUE = 47;
         /**
          * <code>LAYOUT_XML_FILE = 48;</code>
          */
@@ -10666,6 +11078,7 @@ private static final long serialVersionUID = 0L;
             case 22: return CPP_EMPTY_ACTIVITY;
             case 57: return RESPONSIVE_ACTIVITY;
             case 58: return GOOGLE_PAY_ACTIVITY;
+            case 60: return CPP_GAME_ACTIVITY;
             case 23: return FRAGMENT_LIST;
             case 24: return FRAGMENT_BLANK;
             case 25: return FRAGMENT_FULLSCREEN;
@@ -10907,7 +11320,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType template_type = 1;</code>
        * @return Whether the templateType field is set.
        */
-      public boolean hasTemplateType() {
+      @java.lang.Override public boolean hasTemplateType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -10919,7 +11332,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType template_type = 1;</code>
        * @return The templateType.
        */
-      public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType getTemplateType() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType getTemplateType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType.valueOf(templateType_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType.UNKNOWN_TEMPLATE : result;
@@ -10936,7 +11349,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext wizard_ui_context = 2;</code>
        * @return Whether the wizardUiContext field is set.
        */
-      public boolean hasWizardUiContext() {
+      @java.lang.Override public boolean hasWizardUiContext() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -10948,7 +11361,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext wizard_ui_context = 2;</code>
        * @return The wizardUiContext.
        */
-      public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext getWizardUiContext() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext getWizardUiContext() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.valueOf(wizardUiContext_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.UNKNOWN_UI_CONTEXT : result;
@@ -11308,7 +11721,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType template_type = 1;</code>
          * @return Whether the templateType field is set.
          */
-        public boolean hasTemplateType() {
+        @java.lang.Override public boolean hasTemplateType() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -11320,6 +11733,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType template_type = 1;</code>
          * @return The templateType.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType getTemplateType() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.TemplateType.valueOf(templateType_);
@@ -11370,7 +11784,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext wizard_ui_context = 2;</code>
          * @return Whether the wizardUiContext field is set.
          */
-        public boolean hasWizardUiContext() {
+        @java.lang.Override public boolean hasWizardUiContext() {
           return ((bitField0_ & 0x00000002) != 0);
         }
         /**
@@ -11382,6 +11796,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext wizard_ui_context = 2;</code>
          * @return The wizardUiContext.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext getWizardUiContext() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.WizardUiContext.valueOf(wizardUiContext_);
@@ -11546,7 +11961,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule}
      */
-    public  static final class TemplateModule extends
+    public static final class TemplateModule extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule)
         TemplateModuleOrBuilder {
@@ -11763,7 +12178,7 @@ private static final long serialVersionUID = 0L;
         /**
          * <code>ANDROID_THINGS = 9 [deprecated = true];</code>
          */
-        public static final int ANDROID_THINGS_VALUE = 9;
+        @java.lang.Deprecated public static final int ANDROID_THINGS_VALUE = 9;
         /**
          * <code>IMPORT_GRADLE = 10;</code>
          */
@@ -11992,7 +12407,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType module_type = 1;</code>
        * @return Whether the moduleType field is set.
        */
-      public boolean hasModuleType() {
+      @java.lang.Override public boolean hasModuleType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -12005,7 +12420,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType module_type = 1;</code>
        * @return The moduleType.
        */
-      public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType getModuleType() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType getModuleType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType.valueOf(moduleType_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType.UNKNOWN : result;
@@ -12021,6 +12436,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 min_sdk = 2;</code>
        * @return Whether the minSdk field is set.
        */
+      @java.lang.Override
       public boolean hasMinSdk() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -12032,6 +12448,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 min_sdk = 2;</code>
        * @return The minSdk.
        */
+      @java.lang.Override
       public int getMinSdk() {
         return minSdk_;
       }
@@ -12046,7 +12463,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel bytecode_level = 3;</code>
        * @return Whether the bytecodeLevel field is set.
        */
-      public boolean hasBytecodeLevel() {
+      @java.lang.Override public boolean hasBytecodeLevel() {
         return ((bitField0_ & 0x00000004) != 0);
       }
       /**
@@ -12057,7 +12474,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel bytecode_level = 3;</code>
        * @return The bytecodeLevel.
        */
-      public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel getBytecodeLevel() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel getBytecodeLevel() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel.valueOf(bytecodeLevel_);
         return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel.LEVEL_6 : result;
@@ -12440,7 +12857,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType module_type = 1;</code>
          * @return Whether the moduleType field is set.
          */
-        public boolean hasModuleType() {
+        @java.lang.Override public boolean hasModuleType() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -12453,6 +12870,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType module_type = 1;</code>
          * @return The moduleType.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType getModuleType() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.ModuleType.valueOf(moduleType_);
@@ -12504,6 +12922,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 min_sdk = 2;</code>
          * @return Whether the minSdk field is set.
          */
+        @java.lang.Override
         public boolean hasMinSdk() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -12515,6 +12934,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional uint32 min_sdk = 2;</code>
          * @return The minSdk.
          */
+        @java.lang.Override
         public int getMinSdk() {
           return minSdk_;
         }
@@ -12557,7 +12977,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel bytecode_level = 3;</code>
          * @return Whether the bytecodeLevel field is set.
          */
-        public boolean hasBytecodeLevel() {
+        @java.lang.Override public boolean hasBytecodeLevel() {
           return ((bitField0_ & 0x00000004) != 0);
         }
         /**
@@ -12568,6 +12988,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel bytecode_level = 3;</code>
          * @return The bytecodeLevel.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel getBytecodeLevel() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.BytecodeLevel.valueOf(bytecodeLevel_);
@@ -12707,7 +13128,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.AndroidStudioEvent.TemplatesUsage.TemplateProject}
      */
-    public  static final class TemplateProject extends
+    public static final class TemplateProject extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.AndroidStudioEvent.TemplatesUsage.TemplateProject)
         TemplateProjectOrBuilder {
@@ -12803,6 +13224,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool uses_legacy_support = 1;</code>
        * @return Whether the usesLegacySupport field is set.
        */
+      @java.lang.Override
       public boolean hasUsesLegacySupport() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -12814,6 +13236,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool uses_legacy_support = 1;</code>
        * @return The usesLegacySupport.
        */
+      @java.lang.Override
       public boolean getUsesLegacySupport() {
         return usesLegacySupport_;
       }
@@ -12828,6 +13251,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool uses_build_gradle_kts = 2;</code>
        * @return Whether the usesBuildGradleKts field is set.
        */
+      @java.lang.Override
       public boolean hasUsesBuildGradleKts() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -12839,6 +13263,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional bool uses_build_gradle_kts = 2;</code>
        * @return The usesBuildGradleKts.
        */
+      @java.lang.Override
       public boolean getUsesBuildGradleKts() {
         return usesBuildGradleKts_;
       }
@@ -13197,6 +13622,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool uses_legacy_support = 1;</code>
          * @return Whether the usesLegacySupport field is set.
          */
+        @java.lang.Override
         public boolean hasUsesLegacySupport() {
           return ((bitField0_ & 0x00000001) != 0);
         }
@@ -13208,6 +13634,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool uses_legacy_support = 1;</code>
          * @return The usesLegacySupport.
          */
+        @java.lang.Override
         public boolean getUsesLegacySupport() {
           return usesLegacySupport_;
         }
@@ -13250,6 +13677,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool uses_build_gradle_kts = 2;</code>
          * @return Whether the usesBuildGradleKts field is set.
          */
+        @java.lang.Override
         public boolean hasUsesBuildGradleKts() {
           return ((bitField0_ & 0x00000002) != 0);
         }
@@ -13261,6 +13689,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional bool uses_build_gradle_kts = 2;</code>
          * @return The usesBuildGradleKts.
          */
+        @java.lang.Override
         public boolean getUsesBuildGradleKts() {
           return usesBuildGradleKts_;
         }
@@ -13357,6 +13786,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent template_component = 1;</code>
      * @return Whether the templateComponent field is set.
      */
+    @java.lang.Override
     public boolean hasTemplateComponent() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -13368,6 +13798,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent template_component = 1;</code>
      * @return The templateComponent.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent getTemplateComponent() {
       return templateComponent_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.getDefaultInstance() : templateComponent_;
     }
@@ -13378,6 +13809,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateComponent template_component = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponentOrBuilder getTemplateComponentOrBuilder() {
       return templateComponent_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateComponent.getDefaultInstance() : templateComponent_;
     }
@@ -13392,6 +13824,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule template_module = 2;</code>
      * @return Whether the templateModule field is set.
      */
+    @java.lang.Override
     public boolean hasTemplateModule() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -13403,6 +13836,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule template_module = 2;</code>
      * @return The templateModule.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule getTemplateModule() {
       return templateModule_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.getDefaultInstance() : templateModule_;
     }
@@ -13413,6 +13847,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateModule template_module = 2;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModuleOrBuilder getTemplateModuleOrBuilder() {
       return templateModule_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateModule.getDefaultInstance() : templateModule_;
     }
@@ -13427,6 +13862,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateProject template_project = 3;</code>
      * @return Whether the templateProject field is set.
      */
+    @java.lang.Override
     public boolean hasTemplateProject() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -13438,6 +13874,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateProject template_project = 3;</code>
      * @return The templateProject.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject getTemplateProject() {
       return templateProject_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject.getDefaultInstance() : templateProject_;
     }
@@ -13448,6 +13885,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage.TemplateProject template_project = 3;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProjectOrBuilder getTemplateProjectOrBuilder() {
       return templateProject_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.TemplateProject.getDefaultInstance() : templateProject_;
     }
@@ -13462,6 +13900,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.KotlinSupport kotlin_support = 4;</code>
      * @return Whether the kotlinSupport field is set.
      */
+    @java.lang.Override
     public boolean hasKotlinSupport() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -13473,6 +13912,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.KotlinSupport kotlin_support = 4;</code>
      * @return The kotlinSupport.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinSupport getKotlinSupport() {
       return kotlinSupport_ == null ? com.google.wireless.android.sdk.stats.KotlinSupport.getDefaultInstance() : kotlinSupport_;
     }
@@ -13483,6 +13923,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.KotlinSupport kotlin_support = 4;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.KotlinSupportOrBuilder getKotlinSupportOrBuilder() {
       return kotlinSupport_ == null ? com.google.wireless.android.sdk.stats.KotlinSupport.getDefaultInstance() : kotlinSupport_;
     }
@@ -14609,7 +15050,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.EventCategory category = 1;</code>
    * @return Whether the category field is set.
    */
-  public boolean hasCategory() {
+  @java.lang.Override public boolean hasCategory() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -14622,7 +15063,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.EventCategory category = 1;</code>
    * @return The category.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory getCategory() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory getCategory() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory.valueOf(category_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory.NO_EVENT_CATEGORY : result;
@@ -14639,7 +15080,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.EventKind kind = 2;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -14651,7 +15092,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.EventKind kind = 2;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind.UNKNOWN_EVENT_KIND : result;
@@ -14668,6 +15109,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_session_id = 3;</code>
    * @return Whether the studioSessionId field is set.
    */
+  @java.lang.Override
   public boolean hasStudioSessionId() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -14680,6 +15122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_session_id = 3;</code>
    * @return The studioSessionId.
    */
+  @java.lang.Override
   public java.lang.String getStudioSessionId() {
     java.lang.Object ref = studioSessionId_;
     if (ref instanceof java.lang.String) {
@@ -14703,6 +15146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string studio_session_id = 3;</code>
    * @return The bytes for studioSessionId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getStudioSessionIdBytes() {
     java.lang.Object ref = studioSessionId_;
@@ -14734,6 +15178,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails product_details = 4;</code>
    * @return Whether the productDetails field is set.
    */
+  @java.lang.Override
   public boolean hasProductDetails() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -14752,6 +15197,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProductDetails product_details = 4;</code>
    * @return The productDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProductDetails getProductDetails() {
     return productDetails_ == null ? com.google.wireless.android.sdk.stats.ProductDetails.getDefaultInstance() : productDetails_;
   }
@@ -14769,6 +15215,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProductDetails product_details = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProductDetailsOrBuilder getProductDetailsOrBuilder() {
     return productDetails_ == null ? com.google.wireless.android.sdk.stats.ProductDetails.getDefaultInstance() : productDetails_;
   }
@@ -14784,7 +15231,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
    * @return Whether the monitorType field is set.
    */
-  @java.lang.Deprecated public boolean hasMonitorType() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasMonitorType() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -14796,7 +15243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
    * @return The monitorType.
    */
-  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType getMonitorType() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType getMonitorType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType.valueOf(monitorType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType.UNKNOWN_MONITOR_TYPE : result;
@@ -14813,6 +15260,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
    * @return Whether the monitorPaused field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasMonitorPaused() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -14825,6 +15273,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
    * @return The monitorPaused.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean getMonitorPaused() {
     return monitorPaused_;
   }
@@ -14840,7 +15289,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
    * @return Whether the profilerCaptureType field is set.
    */
-  @java.lang.Deprecated public boolean hasProfilerCaptureType() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasProfilerCaptureType() {
     return ((bitField0_ & 0x00000040) != 0);
   }
   /**
@@ -14852,7 +15301,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
    * @return The profilerCaptureType.
    */
-  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType getProfilerCaptureType() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType getProfilerCaptureType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType.valueOf(profilerCaptureType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType.UNKNOWN_PROFILER_CAPTURE_TYPE : result;
@@ -14868,6 +15317,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cloud_testing_error_message = 8;</code>
    * @return Whether the cloudTestingErrorMessage field is set.
    */
+  @java.lang.Override
   public boolean hasCloudTestingErrorMessage() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -14879,6 +15329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cloud_testing_error_message = 8;</code>
    * @return The cloudTestingErrorMessage.
    */
+  @java.lang.Override
   public java.lang.String getCloudTestingErrorMessage() {
     java.lang.Object ref = cloudTestingErrorMessage_;
     if (ref instanceof java.lang.String) {
@@ -14901,6 +15352,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string cloud_testing_error_message = 8;</code>
    * @return The bytes for cloudTestingErrorMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCloudTestingErrorMessageBytes() {
     java.lang.Object ref = cloudTestingErrorMessage_;
@@ -14925,6 +15377,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 cloud_testing_loaded_screenshots_count = 9;</code>
    * @return Whether the cloudTestingLoadedScreenshotsCount field is set.
    */
+  @java.lang.Override
   public boolean hasCloudTestingLoadedScreenshotsCount() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -14936,6 +15389,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 cloud_testing_loaded_screenshots_count = 9;</code>
    * @return The cloudTestingLoadedScreenshotsCount.
    */
+  @java.lang.Override
   public int getCloudTestingLoadedScreenshotsCount() {
     return cloudTestingLoadedScreenshotsCount_;
   }
@@ -14951,7 +15405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
    * @return Whether the runConfigurationType field is set.
    */
-  @java.lang.Deprecated public boolean hasRunConfigurationType() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasRunConfigurationType() {
     return ((bitField0_ & 0x00000200) != 0);
   }
   /**
@@ -14963,7 +15417,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
    * @return The runConfigurationType.
    */
-  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.UNKNOWN_RUN_CONFIGURATION_TYPE : result;
@@ -14980,7 +15434,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
    * @return Whether the debuggerType field is set.
    */
-  @java.lang.Deprecated public boolean hasDebuggerType() {
+  @java.lang.Override @java.lang.Deprecated public boolean hasDebuggerType() {
     return ((bitField0_ & 0x00000400) != 0);
   }
   /**
@@ -14992,7 +15446,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
    * @return The debuggerType.
    */
-  @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
+  @java.lang.Override @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.UNKNOWN_DEBUGGER_TYPE : result;
@@ -15018,6 +15472,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
    * @return Whether the deviceInfo field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceInfo() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -15039,6 +15494,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
    * @return The deviceInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfo getDeviceInfo() {
     return deviceInfo_ == null ? com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance() : deviceInfo_;
   }
@@ -15059,6 +15515,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DeviceInfo device_info = 12;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceInfoOrBuilder getDeviceInfoOrBuilder() {
     return deviceInfo_ == null ? com.google.wireless.android.sdk.stats.DeviceInfo.getDefaultInstance() : deviceInfo_;
   }
@@ -15074,6 +15531,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_session_failure_message = 13;</code>
    * @return Whether the lldbSessionFailureMessage field is set.
    */
+  @java.lang.Override
   public boolean hasLldbSessionFailureMessage() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -15086,6 +15544,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_session_failure_message = 13;</code>
    * @return The lldbSessionFailureMessage.
    */
+  @java.lang.Override
   public java.lang.String getLldbSessionFailureMessage() {
     java.lang.Object ref = lldbSessionFailureMessage_;
     if (ref instanceof java.lang.String) {
@@ -15109,6 +15568,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string lldb_session_failure_message = 13;</code>
    * @return The bytes for lldbSessionFailureMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getLldbSessionFailureMessageBytes() {
     java.lang.Object ref = lldbSessionFailureMessage_;
@@ -15134,7 +15594,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DeveloperServiceKind developer_service_kind = 14;</code>
    * @return Whether the developerServiceKind field is set.
    */
-  public boolean hasDeveloperServiceKind() {
+  @java.lang.Override public boolean hasDeveloperServiceKind() {
     return ((bitField0_ & 0x00002000) != 0);
   }
   /**
@@ -15146,7 +15606,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.DeveloperServiceKind developer_service_kind = 14;</code>
    * @return The developerServiceKind.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind getDeveloperServiceKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind getDeveloperServiceKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind.valueOf(developerServiceKind_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind.UNKNOWN_DEVELOPER_SERVICE_KIND : result;
@@ -15162,6 +15622,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 15;</code>
    * @return Whether the gradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasGradleVersion() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -15173,6 +15634,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 15;</code>
    * @return The gradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getGradleVersion() {
     java.lang.Object ref = gradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -15195,6 +15657,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 15;</code>
    * @return The bytes for gradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGradleVersionBytes() {
     java.lang.Object ref = gradleVersion_;
@@ -15220,7 +15683,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.GradleSyncFailure gradle_sync_failure = 16;</code>
    * @return Whether the gradleSyncFailure field is set.
    */
-  public boolean hasGradleSyncFailure() {
+  @java.lang.Override public boolean hasGradleSyncFailure() {
     return ((bitField0_ & 0x00008000) != 0);
   }
   /**
@@ -15232,7 +15695,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.GradleSyncFailure gradle_sync_failure = 16;</code>
    * @return The gradleSyncFailure.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure getGradleSyncFailure() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure getGradleSyncFailure() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure.valueOf(gradleSyncFailure_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure.UNKNOWN_GRADLE_FAILURE : result;
@@ -15249,6 +15712,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_missing_signature = 17;</code>
    * @return Whether the gradleMissingSignature field is set.
    */
+  @java.lang.Override
   public boolean hasGradleMissingSignature() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -15261,6 +15725,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_missing_signature = 17;</code>
    * @return The gradleMissingSignature.
    */
+  @java.lang.Override
   public java.lang.String getGradleMissingSignature() {
     java.lang.Object ref = gradleMissingSignature_;
     if (ref instanceof java.lang.String) {
@@ -15284,6 +15749,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_missing_signature = 17;</code>
    * @return The bytes for gradleMissingSignature.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGradleMissingSignatureBytes() {
     java.lang.Object ref = gradleMissingSignature_;
@@ -15308,7 +15774,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.TemplateRenderer template_renderer = 18;</code>
    * @return Whether the templateRenderer field is set.
    */
-  public boolean hasTemplateRenderer() {
+  @java.lang.Override public boolean hasTemplateRenderer() {
     return ((bitField0_ & 0x00020000) != 0);
   }
   /**
@@ -15319,7 +15785,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.TemplateRenderer template_renderer = 18;</code>
    * @return The templateRenderer.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer getTemplateRenderer() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer getTemplateRenderer() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer.valueOf(templateRenderer_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer.UNKNOWN_TEMPLATE_RENDERER : result;
@@ -15335,6 +15801,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
    * @return Whether the studioCrash field is set.
    */
+  @java.lang.Override
   public boolean hasStudioCrash() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -15346,6 +15813,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
    * @return The studioCrash.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioCrash getStudioCrash() {
     return studioCrash_ == null ? com.google.wireless.android.sdk.stats.StudioCrash.getDefaultInstance() : studioCrash_;
   }
@@ -15356,6 +15824,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioCrash studio_crash = 19;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioCrashOrBuilder getStudioCrashOrBuilder() {
     return studioCrash_ == null ? com.google.wireless.android.sdk.stats.StudioCrash.getDefaultInstance() : studioCrash_;
   }
@@ -15371,6 +15840,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
    * @return Whether the gradleBuildDetails field is set.
    */
+  @java.lang.Override
   public boolean hasGradleBuildDetails() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -15383,6 +15853,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
    * @return The gradleBuildDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildDetails getGradleBuildDetails() {
     return gradleBuildDetails_ == null ? com.google.wireless.android.sdk.stats.GradleBuildDetails.getDefaultInstance() : gradleBuildDetails_;
   }
@@ -15394,6 +15865,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleBuildDetails gradle_build_details = 20;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildDetailsOrBuilder getGradleBuildDetailsOrBuilder() {
     return gradleBuildDetails_ == null ? com.google.wireless.android.sdk.stats.GradleBuildDetails.getDefaultInstance() : gradleBuildDetails_;
   }
@@ -15408,6 +15880,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun instant_run = 21;</code>
    * @return Whether the instantRun field is set.
    */
+  @java.lang.Override
   public boolean hasInstantRun() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -15419,6 +15892,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InstantRun instant_run = 21;</code>
    * @return The instantRun.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRun getInstantRun() {
     return instantRun_ == null ? com.google.wireless.android.sdk.stats.InstantRun.getDefaultInstance() : instantRun_;
   }
@@ -15429,6 +15903,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.InstantRun instant_run = 21;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InstantRunOrBuilder getInstantRunOrBuilder() {
     return instantRun_ == null ? com.google.wireless.android.sdk.stats.InstantRun.getDefaultInstance() : instantRun_;
   }
@@ -15443,6 +15918,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
    * @return Whether the metaMetrics field is set.
    */
+  @java.lang.Override
   public boolean hasMetaMetrics() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -15454,6 +15930,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
    * @return The metaMetrics.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MetaMetrics getMetaMetrics() {
     return metaMetrics_ == null ? com.google.wireless.android.sdk.stats.MetaMetrics.getDefaultInstance() : metaMetrics_;
   }
@@ -15464,6 +15941,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MetaMetrics meta_metrics = 22;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MetaMetricsOrBuilder getMetaMetricsOrBuilder() {
     return metaMetrics_ == null ? com.google.wireless.android.sdk.stats.MetaMetrics.getDefaultInstance() : metaMetrics_;
   }
@@ -15478,6 +15956,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
    * @return Whether the emulatorDetails field is set.
    */
+  @java.lang.Override
   public boolean hasEmulatorDetails() {
     return ((bitField0_ & 0x00400000) != 0);
   }
@@ -15489,6 +15968,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
    * @return The emulatorDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorDetails getEmulatorDetails() {
     return emulatorDetails_ == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.getDefaultInstance() : emulatorDetails_;
   }
@@ -15499,6 +15979,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorDetails emulator_details = 23;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorDetailsOrBuilder getEmulatorDetailsOrBuilder() {
     return emulatorDetails_ == null ? com.google.wireless.android.sdk.stats.EmulatorDetails.getDefaultInstance() : emulatorDetails_;
   }
@@ -15513,6 +15994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun test_run = 24;</code>
    * @return Whether the testRun field is set.
    */
+  @java.lang.Override
   public boolean hasTestRun() {
     return ((bitField0_ & 0x00800000) != 0);
   }
@@ -15524,6 +16006,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRun test_run = 24;</code>
    * @return The testRun.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRun getTestRun() {
     return testRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.getDefaultInstance() : testRun_;
   }
@@ -15534,6 +16017,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TestRun test_run = 24;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRunOrBuilder getTestRunOrBuilder() {
     return testRun_ == null ? com.google.wireless.android.sdk.stats.TestRun.getDefaultInstance() : testRun_;
   }
@@ -15549,6 +16033,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
    * @return Whether the emulatorUiEvent field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasEmulatorUiEvent() {
     return ((bitField0_ & 0x01000000) != 0);
   }
@@ -15561,6 +16046,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
    * @return The emulatorUiEvent.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EmulatorUiEvent getEmulatorUiEvent() {
     return emulatorUiEvent_ == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.getDefaultInstance() : emulatorUiEvent_;
   }
@@ -15572,6 +16058,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorUiEvent emulator_ui_event = 25 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.EmulatorUiEventOrBuilder getEmulatorUiEventOrBuilder() {
     return emulatorUiEvent_ == null ? com.google.wireless.android.sdk.stats.EmulatorUiEvent.getDefaultInstance() : emulatorUiEvent_;
   }
@@ -15586,6 +16073,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
    * @return Whether the hypervisor field is set.
    */
+  @java.lang.Override
   public boolean hasHypervisor() {
     return ((bitField0_ & 0x02000000) != 0);
   }
@@ -15597,6 +16085,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
    * @return The hypervisor.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.Hypervisor getHypervisor() {
     return hypervisor_ == null ? com.google.wireless.android.sdk.stats.Hypervisor.getDefaultInstance() : hypervisor_;
   }
@@ -15607,6 +16096,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.Hypervisor hypervisor = 26;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HypervisorOrBuilder getHypervisorOrBuilder() {
     return hypervisor_ == null ? com.google.wireless.android.sdk.stats.Hypervisor.getDefaultInstance() : hypervisor_;
   }
@@ -15621,6 +16111,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
    * @return Whether the emulatorHost field is set.
    */
+  @java.lang.Override
   public boolean hasEmulatorHost() {
     return ((bitField0_ & 0x04000000) != 0);
   }
@@ -15632,6 +16123,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
    * @return The emulatorHost.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorHost getEmulatorHost() {
     return emulatorHost_ == null ? com.google.wireless.android.sdk.stats.EmulatorHost.getDefaultInstance() : emulatorHost_;
   }
@@ -15642,6 +16134,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorHost emulator_host = 27;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorHostOrBuilder getEmulatorHostOrBuilder() {
     return emulatorHost_ == null ? com.google.wireless.android.sdk.stats.EmulatorHost.getDefaultInstance() : emulatorHost_;
   }
@@ -15656,6 +16149,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
    * @return Whether the gradleBuildProfile field is set.
    */
+  @java.lang.Override
   public boolean hasGradleBuildProfile() {
     return ((bitField0_ & 0x08000000) != 0);
   }
@@ -15667,6 +16161,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
    * @return The gradleBuildProfile.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProfile getGradleBuildProfile() {
     return gradleBuildProfile_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProfile.getDefaultInstance() : gradleBuildProfile_;
   }
@@ -15677,6 +16172,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleBuildProfile gradle_build_profile = 28;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProfileOrBuilder getGradleBuildProfileOrBuilder() {
     return gradleBuildProfile_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProfile.getDefaultInstance() : gradleBuildProfile_;
   }
@@ -15691,6 +16187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
    * @return Whether the lldbFrontendDetails field is set.
    */
+  @java.lang.Override
   public boolean hasLldbFrontendDetails() {
     return ((bitField0_ & 0x10000000) != 0);
   }
@@ -15702,6 +16199,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
    * @return The lldbFrontendDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LLDBFrontendDetails getLldbFrontendDetails() {
     return lldbFrontendDetails_ == null ? com.google.wireless.android.sdk.stats.LLDBFrontendDetails.getDefaultInstance() : lldbFrontendDetails_;
   }
@@ -15712,6 +16210,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LLDBFrontendDetails lldb_frontend_details = 29;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LLDBFrontendDetailsOrBuilder getLldbFrontendDetailsOrBuilder() {
     return lldbFrontendDetails_ == null ? com.google.wireless.android.sdk.stats.LLDBFrontendDetails.getDefaultInstance() : lldbFrontendDetails_;
   }
@@ -15727,6 +16226,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
    * @return Whether the firebaseErrorDetails field is set.
    */
+  @java.lang.Override
   public boolean hasFirebaseErrorDetails() {
     return ((bitField0_ & 0x20000000) != 0);
   }
@@ -15739,6 +16239,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
    * @return The firebaseErrorDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FirebaseErrorDetails getFirebaseErrorDetails() {
     return firebaseErrorDetails_ == null ? com.google.wireless.android.sdk.stats.FirebaseErrorDetails.getDefaultInstance() : firebaseErrorDetails_;
   }
@@ -15750,6 +16251,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.FirebaseErrorDetails firebase_error_details = 30;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FirebaseErrorDetailsOrBuilder getFirebaseErrorDetailsOrBuilder() {
     return firebaseErrorDetails_ == null ? com.google.wireless.android.sdk.stats.FirebaseErrorDetails.getDefaultInstance() : firebaseErrorDetails_;
   }
@@ -15765,6 +16267,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 31;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x40000000) != 0);
   }
@@ -15777,6 +16280,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 31;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -15800,6 +16304,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 31;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -15824,6 +16329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
    * @return Whether the gfxTracingDetails field is set.
    */
+  @java.lang.Override
   public boolean hasGfxTracingDetails() {
     return ((bitField0_ & 0x80000000) != 0);
   }
@@ -15835,6 +16341,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
    * @return The gfxTracingDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GfxTracingDetails getGfxTracingDetails() {
     return gfxTracingDetails_ == null ? com.google.wireless.android.sdk.stats.GfxTracingDetails.getDefaultInstance() : gfxTracingDetails_;
   }
@@ -15845,6 +16352,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GfxTracingDetails gfx_tracing_details = 32;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GfxTracingDetailsOrBuilder getGfxTracingDetailsOrBuilder() {
     return gfxTracingDetails_ == null ? com.google.wireless.android.sdk.stats.GfxTracingDetails.getDefaultInstance() : gfxTracingDetails_;
   }
@@ -15859,6 +16367,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
    * @return Whether the testRecorderDetails field is set.
    */
+  @java.lang.Override
   public boolean hasTestRecorderDetails() {
     return ((bitField1_ & 0x00000001) != 0);
   }
@@ -15870,6 +16379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
    * @return The testRecorderDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRecorderDetails getTestRecorderDetails() {
     return testRecorderDetails_ == null ? com.google.wireless.android.sdk.stats.TestRecorderDetails.getDefaultInstance() : testRecorderDetails_;
   }
@@ -15880,6 +16390,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TestRecorderDetails test_recorder_details = 33;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TestRecorderDetailsOrBuilder getTestRecorderDetailsOrBuilder() {
     return testRecorderDetails_ == null ? com.google.wireless.android.sdk.stats.TestRecorderDetails.getDefaultInstance() : testRecorderDetails_;
   }
@@ -15894,6 +16405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
    * @return Whether the uiActionStats field is set.
    */
+  @java.lang.Override
   public boolean hasUiActionStats() {
     return ((bitField1_ & 0x00000002) != 0);
   }
@@ -15905,6 +16417,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
    * @return The uiActionStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UIActionStats getUiActionStats() {
     return uiActionStats_ == null ? com.google.wireless.android.sdk.stats.UIActionStats.getDefaultInstance() : uiActionStats_;
   }
@@ -15915,6 +16428,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UIActionStats ui_action_stats = 34;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UIActionStatsOrBuilder getUiActionStatsOrBuilder() {
     return uiActionStats_ == null ? com.google.wireless.android.sdk.stats.UIActionStats.getDefaultInstance() : uiActionStats_;
   }
@@ -15929,6 +16443,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
    * @return Whether the machineDetails field is set.
    */
+  @java.lang.Override
   public boolean hasMachineDetails() {
     return ((bitField1_ & 0x00000004) != 0);
   }
@@ -15940,6 +16455,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
    * @return The machineDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MachineDetails getMachineDetails() {
     return machineDetails_ == null ? com.google.wireless.android.sdk.stats.MachineDetails.getDefaultInstance() : machineDetails_;
   }
@@ -15950,6 +16466,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MachineDetails machine_details = 35;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MachineDetailsOrBuilder getMachineDetailsOrBuilder() {
     return machineDetails_ == null ? com.google.wireless.android.sdk.stats.MachineDetails.getDefaultInstance() : machineDetails_;
   }
@@ -15964,6 +16481,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
    * @return Whether the jvmDetails field is set.
    */
+  @java.lang.Override
   public boolean hasJvmDetails() {
     return ((bitField1_ & 0x00000008) != 0);
   }
@@ -15975,6 +16493,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
    * @return The jvmDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JvmDetails getJvmDetails() {
     return jvmDetails_ == null ? com.google.wireless.android.sdk.stats.JvmDetails.getDefaultInstance() : jvmDetails_;
   }
@@ -15985,6 +16504,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JvmDetails jvm_details = 36;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JvmDetailsOrBuilder getJvmDetailsOrBuilder() {
     return jvmDetails_ == null ? com.google.wireless.android.sdk.stats.JvmDetails.getDefaultInstance() : jvmDetails_;
   }
@@ -16002,6 +16522,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
    * @return Whether the javaProcessStats field is set.
    */
+  @java.lang.Override
   public boolean hasJavaProcessStats() {
     return ((bitField1_ & 0x00000010) != 0);
   }
@@ -16016,6 +16537,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
    * @return The javaProcessStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JavaProcessStats getJavaProcessStats() {
     return javaProcessStats_ == null ? com.google.wireless.android.sdk.stats.JavaProcessStats.getDefaultInstance() : javaProcessStats_;
   }
@@ -16029,6 +16551,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JavaProcessStats java_process_stats = 37;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JavaProcessStatsOrBuilder getJavaProcessStatsOrBuilder() {
     return javaProcessStats_ == null ? com.google.wireless.android.sdk.stats.JavaProcessStats.getDefaultInstance() : javaProcessStats_;
   }
@@ -16043,6 +16566,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
    * @return Whether the studioPerformanceStats field is set.
    */
+  @java.lang.Override
   public boolean hasStudioPerformanceStats() {
     return ((bitField1_ & 0x00000020) != 0);
   }
@@ -16054,6 +16578,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
    * @return The studioPerformanceStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPerformanceStats getStudioPerformanceStats() {
     return studioPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.StudioPerformanceStats.getDefaultInstance() : studioPerformanceStats_;
   }
@@ -16064,6 +16589,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioPerformanceStats studio_performance_stats = 38;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPerformanceStatsOrBuilder getStudioPerformanceStatsOrBuilder() {
     return studioPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.StudioPerformanceStats.getDefaultInstance() : studioPerformanceStats_;
   }
@@ -16078,6 +16604,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
    * @return Whether the lldbPerformanceStats field is set.
    */
+  @java.lang.Override
   public boolean hasLldbPerformanceStats() {
     return ((bitField1_ & 0x00000040) != 0);
   }
@@ -16089,6 +16616,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
    * @return The lldbPerformanceStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbPerformanceStats getLldbPerformanceStats() {
     return lldbPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.LldbPerformanceStats.getDefaultInstance() : lldbPerformanceStats_;
   }
@@ -16099,6 +16627,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LldbPerformanceStats lldb_performance_stats = 39;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbPerformanceStatsOrBuilder getLldbPerformanceStatsOrBuilder() {
     return lldbPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.LldbPerformanceStats.getDefaultInstance() : lldbPerformanceStats_;
   }
@@ -16113,6 +16642,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
    * @return Whether the studioProjectChange field is set.
    */
+  @java.lang.Override
   public boolean hasStudioProjectChange() {
     return ((bitField1_ & 0x00000080) != 0);
   }
@@ -16124,6 +16654,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
    * @return The studioProjectChange.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioProjectChange getStudioProjectChange() {
     return studioProjectChange_ == null ? com.google.wireless.android.sdk.stats.StudioProjectChange.getDefaultInstance() : studioProjectChange_;
   }
@@ -16134,6 +16665,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioProjectChange studio_project_change = 40;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioProjectChangeOrBuilder getStudioProjectChangeOrBuilder() {
     return studioProjectChange_ == null ? com.google.wireless.android.sdk.stats.StudioProjectChange.getDefaultInstance() : studioProjectChange_;
   }
@@ -16148,6 +16680,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
    * @return Whether the firebaseContextDetails field is set.
    */
+  @java.lang.Override
   public boolean hasFirebaseContextDetails() {
     return ((bitField1_ & 0x00000100) != 0);
   }
@@ -16159,6 +16692,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
    * @return The firebaseContextDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FirebaseContextDetails getFirebaseContextDetails() {
     return firebaseContextDetails_ == null ? com.google.wireless.android.sdk.stats.FirebaseContextDetails.getDefaultInstance() : firebaseContextDetails_;
   }
@@ -16169,6 +16703,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.FirebaseContextDetails firebase_context_details = 41;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FirebaseContextDetailsOrBuilder getFirebaseContextDetailsOrBuilder() {
     return firebaseContextDetails_ == null ? com.google.wireless.android.sdk.stats.FirebaseContextDetails.getDefaultInstance() : firebaseContextDetails_;
   }
@@ -16183,6 +16718,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
    * @return Whether the layoutEditorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasLayoutEditorEvent() {
     return ((bitField1_ & 0x00000200) != 0);
   }
@@ -16194,6 +16730,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
    * @return The layoutEditorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorEvent getLayoutEditorEvent() {
     return layoutEditorEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorEvent.getDefaultInstance() : layoutEditorEvent_;
   }
@@ -16204,6 +16741,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutEditorEvent layout_editor_event = 42;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutEditorEventOrBuilder getLayoutEditorEventOrBuilder() {
     return layoutEditorEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutEditorEvent.getDefaultInstance() : layoutEditorEvent_;
   }
@@ -16218,6 +16756,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
    * @return Whether the appLinksAssistantEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAppLinksAssistantEvent() {
     return ((bitField1_ & 0x00000400) != 0);
   }
@@ -16229,6 +16768,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
    * @return The appLinksAssistantEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppLinksAssistantEvent getAppLinksAssistantEvent() {
     return appLinksAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.getDefaultInstance() : appLinksAssistantEvent_;
   }
@@ -16239,6 +16779,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AppLinksAssistantEvent app_links_assistant_event = 43;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppLinksAssistantEventOrBuilder getAppLinksAssistantEventOrBuilder() {
     return appLinksAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.AppLinksAssistantEvent.getDefaultInstance() : appLinksAssistantEvent_;
   }
@@ -16253,6 +16794,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
    * @return Whether the emulatorPerformanceStats field is set.
    */
+  @java.lang.Override
   public boolean hasEmulatorPerformanceStats() {
     return ((bitField1_ & 0x00000800) != 0);
   }
@@ -16264,6 +16806,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
    * @return The emulatorPerformanceStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorPerformanceStats getEmulatorPerformanceStats() {
     return emulatorPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.EmulatorPerformanceStats.getDefaultInstance() : emulatorPerformanceStats_;
   }
@@ -16274,6 +16817,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EmulatorPerformanceStats emulator_performance_stats = 44;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorPerformanceStatsOrBuilder getEmulatorPerformanceStatsOrBuilder() {
     return emulatorPerformanceStats_ == null ? com.google.wireless.android.sdk.stats.EmulatorPerformanceStats.getDefaultInstance() : emulatorPerformanceStats_;
   }
@@ -16288,6 +16832,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
    * @return Whether the adbAssistantStats field is set.
    */
+  @java.lang.Override
   public boolean hasAdbAssistantStats() {
     return ((bitField1_ & 0x00001000) != 0);
   }
@@ -16299,6 +16844,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
    * @return The adbAssistantStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdbAssistantStats getAdbAssistantStats() {
     return adbAssistantStats_ == null ? com.google.wireless.android.sdk.stats.AdbAssistantStats.getDefaultInstance() : adbAssistantStats_;
   }
@@ -16309,6 +16855,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AdbAssistantStats adb_assistant_stats = 45;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdbAssistantStatsOrBuilder getAdbAssistantStatsOrBuilder() {
     return adbAssistantStats_ == null ? com.google.wireless.android.sdk.stats.AdbAssistantStats.getDefaultInstance() : adbAssistantStats_;
   }
@@ -16323,6 +16870,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
    * @return Whether the lldbSessionStartDetails field is set.
    */
+  @java.lang.Override
   public boolean hasLldbSessionStartDetails() {
     return ((bitField1_ & 0x00002000) != 0);
   }
@@ -16334,6 +16882,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
    * @return The lldbSessionStartDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbSessionStartDetails getLldbSessionStartDetails() {
     return lldbSessionStartDetails_ == null ? com.google.wireless.android.sdk.stats.LldbSessionStartDetails.getDefaultInstance() : lldbSessionStartDetails_;
   }
@@ -16344,6 +16893,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LldbSessionStartDetails lldb_session_start_details = 46;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbSessionStartDetailsOrBuilder getLldbSessionStartDetailsOrBuilder() {
     return lldbSessionStartDetails_ == null ? com.google.wireless.android.sdk.stats.LldbSessionStartDetails.getDefaultInstance() : lldbSessionStartDetails_;
   }
@@ -16358,6 +16908,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
    * @return Whether the lldbSessionEndDetails field is set.
    */
+  @java.lang.Override
   public boolean hasLldbSessionEndDetails() {
     return ((bitField1_ & 0x00004000) != 0);
   }
@@ -16369,6 +16920,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
    * @return The lldbSessionEndDetails.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbSessionEndDetails getLldbSessionEndDetails() {
     return lldbSessionEndDetails_ == null ? com.google.wireless.android.sdk.stats.LldbSessionEndDetails.getDefaultInstance() : lldbSessionEndDetails_;
   }
@@ -16379,6 +16931,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LldbSessionEndDetails lldb_session_end_details = 47;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LldbSessionEndDetailsOrBuilder getLldbSessionEndDetailsOrBuilder() {
     return lldbSessionEndDetails_ == null ? com.google.wireless.android.sdk.stats.LldbSessionEndDetails.getDefaultInstance() : lldbSessionEndDetails_;
   }
@@ -16393,6 +16946,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
    * @return Whether the androidProfilerEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidProfilerEvent() {
     return ((bitField1_ & 0x00008000) != 0);
   }
@@ -16404,6 +16958,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
    * @return The androidProfilerEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerEvent getAndroidProfilerEvent() {
     return androidProfilerEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.getDefaultInstance() : androidProfilerEvent_;
   }
@@ -16414,6 +16969,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidProfilerEvent android_profiler_event = 48;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerEventOrBuilder getAndroidProfilerEventOrBuilder() {
     return androidProfilerEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.getDefaultInstance() : androidProfilerEvent_;
   }
@@ -16428,6 +16984,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
    * @return Whether the apkAnalyzerStats field is set.
    */
+  @java.lang.Override
   public boolean hasApkAnalyzerStats() {
     return ((bitField1_ & 0x00010000) != 0);
   }
@@ -16439,6 +16996,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
    * @return The apkAnalyzerStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApkAnalyzerStats getApkAnalyzerStats() {
     return apkAnalyzerStats_ == null ? com.google.wireless.android.sdk.stats.ApkAnalyzerStats.getDefaultInstance() : apkAnalyzerStats_;
   }
@@ -16449,6 +17007,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ApkAnalyzerStats apk_analyzer_stats = 49;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApkAnalyzerStatsOrBuilder getApkAnalyzerStatsOrBuilder() {
     return apkAnalyzerStats_ == null ? com.google.wireless.android.sdk.stats.ApkAnalyzerStats.getDefaultInstance() : apkAnalyzerStats_;
   }
@@ -16464,6 +17023,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
    * @return Whether the gradleSyncStats field is set.
    */
+  @java.lang.Override
   public boolean hasGradleSyncStats() {
     return ((bitField1_ & 0x00020000) != 0);
   }
@@ -16476,6 +17036,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
    * @return The gradleSyncStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleSyncStats getGradleSyncStats() {
     return gradleSyncStats_ == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.getDefaultInstance() : gradleSyncStats_;
   }
@@ -16487,6 +17048,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleSyncStats gradle_sync_stats = 50;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleSyncStatsOrBuilder getGradleSyncStatsOrBuilder() {
     return gradleSyncStats_ == null ? com.google.wireless.android.sdk.stats.GradleSyncStats.getDefaultInstance() : gradleSyncStats_;
   }
@@ -16501,6 +17063,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
    * @return Whether the gradleCppSyncStats field is set.
    */
+  @java.lang.Override
   public boolean hasGradleCppSyncStats() {
     return ((bitField1_ & 0x00040000) != 0);
   }
@@ -16512,6 +17075,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
    * @return The gradleCppSyncStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleCppSyncStats getGradleCppSyncStats() {
     return gradleCppSyncStats_ == null ? com.google.wireless.android.sdk.stats.GradleCppSyncStats.getDefaultInstance() : gradleCppSyncStats_;
   }
@@ -16522,6 +17086,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleCppSyncStats gradle_cpp_sync_stats = 113;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleCppSyncStatsOrBuilder getGradleCppSyncStatsOrBuilder() {
     return gradleCppSyncStats_ == null ? com.google.wireless.android.sdk.stats.GradleCppSyncStats.getDefaultInstance() : gradleCppSyncStats_;
   }
@@ -16536,6 +17101,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
    * @return Whether the apkDebugProject field is set.
    */
+  @java.lang.Override
   public boolean hasApkDebugProject() {
     return ((bitField1_ & 0x00080000) != 0);
   }
@@ -16547,6 +17113,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
    * @return The apkDebugProject.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApkDebugProject getApkDebugProject() {
     return apkDebugProject_ == null ? com.google.wireless.android.sdk.stats.ApkDebugProject.getDefaultInstance() : apkDebugProject_;
   }
@@ -16557,6 +17124,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ApkDebugProject apk_debug_project = 51;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApkDebugProjectOrBuilder getApkDebugProjectOrBuilder() {
     return apkDebugProject_ == null ? com.google.wireless.android.sdk.stats.ApkDebugProject.getDefaultInstance() : apkDebugProject_;
   }
@@ -16571,6 +17139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
    * @return Whether the layoutInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasLayoutInspectorEvent() {
     return ((bitField1_ & 0x00100000) != 0);
   }
@@ -16582,6 +17151,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
    * @return The layoutInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutInspectorEvent getLayoutInspectorEvent() {
     return layoutInspectorEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutInspectorEvent.getDefaultInstance() : layoutInspectorEvent_;
   }
@@ -16592,6 +17162,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LayoutInspectorEvent layout_inspector_event = 52;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LayoutInspectorEventOrBuilder getLayoutInspectorEventOrBuilder() {
     return layoutInspectorEvent_ == null ? com.google.wireless.android.sdk.stats.LayoutInspectorEvent.getDefaultInstance() : layoutInspectorEvent_;
   }
@@ -16606,6 +17177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
    * @return Whether the androidProfilerDbStats field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidProfilerDbStats() {
     return ((bitField1_ & 0x00200000) != 0);
   }
@@ -16617,6 +17189,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
    * @return The androidProfilerDbStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerDbStats getAndroidProfilerDbStats() {
     return androidProfilerDbStats_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerDbStats.getDefaultInstance() : androidProfilerDbStats_;
   }
@@ -16627,6 +17200,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidProfilerDbStats android_profiler_db_stats = 53;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerDbStatsOrBuilder getAndroidProfilerDbStatsOrBuilder() {
     return androidProfilerDbStats_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerDbStats.getDefaultInstance() : androidProfilerDbStats_;
   }
@@ -16642,6 +17216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
    * @return Whether the kotlinSupport field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinSupport() {
     return ((bitField1_ & 0x00400000) != 0);
   }
@@ -16654,6 +17229,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
    * @return The kotlinSupport.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.KotlinSupport getKotlinSupport() {
     return kotlinSupport_ == null ? com.google.wireless.android.sdk.stats.KotlinSupport.getDefaultInstance() : kotlinSupport_;
   }
@@ -16665,6 +17241,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.KotlinSupport kotlin_support = 54;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.KotlinSupportOrBuilder getKotlinSupportOrBuilder() {
     return kotlinSupport_ == null ? com.google.wireless.android.sdk.stats.KotlinSupport.getDefaultInstance() : kotlinSupport_;
   }
@@ -16679,6 +17256,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
    * @return Whether the connectionAssistantEvent field is set.
    */
+  @java.lang.Override
   public boolean hasConnectionAssistantEvent() {
     return ((bitField1_ & 0x00800000) != 0);
   }
@@ -16690,6 +17268,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
    * @return The connectionAssistantEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ConnectionAssistantEvent getConnectionAssistantEvent() {
     return connectionAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.getDefaultInstance() : connectionAssistantEvent_;
   }
@@ -16700,6 +17279,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ConnectionAssistantEvent connection_assistant_event = 55;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ConnectionAssistantEventOrBuilder getConnectionAssistantEventOrBuilder() {
     return connectionAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.ConnectionAssistantEvent.getDefaultInstance() : connectionAssistantEvent_;
   }
@@ -16714,6 +17294,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
    * @return Whether the oomDialogEvent field is set.
    */
+  @java.lang.Override
   public boolean hasOomDialogEvent() {
     return ((bitField1_ & 0x01000000) != 0);
   }
@@ -16725,6 +17306,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
    * @return The oomDialogEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OomDialogEvent getOomDialogEvent() {
     return oomDialogEvent_ == null ? com.google.wireless.android.sdk.stats.OomDialogEvent.getDefaultInstance() : oomDialogEvent_;
   }
@@ -16735,6 +17317,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.OomDialogEvent oom_dialog_event = 56;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OomDialogEventOrBuilder getOomDialogEventOrBuilder() {
     return oomDialogEvent_ == null ? com.google.wireless.android.sdk.stats.OomDialogEvent.getDefaultInstance() : oomDialogEvent_;
   }
@@ -16749,6 +17332,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
    * @return Whether the cmakeEditingEvent field is set.
    */
+  @java.lang.Override
   public boolean hasCmakeEditingEvent() {
     return ((bitField1_ & 0x02000000) != 0);
   }
@@ -16760,6 +17344,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
    * @return The cmakeEditingEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CMakeEditingEvent getCmakeEditingEvent() {
     return cmakeEditingEvent_ == null ? com.google.wireless.android.sdk.stats.CMakeEditingEvent.getDefaultInstance() : cmakeEditingEvent_;
   }
@@ -16770,6 +17355,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CMakeEditingEvent cmake_editing_event = 57;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CMakeEditingEventOrBuilder getCmakeEditingEventOrBuilder() {
     return cmakeEditingEvent_ == null ? com.google.wireless.android.sdk.stats.CMakeEditingEvent.getDefaultInstance() : cmakeEditingEvent_;
   }
@@ -16784,7 +17370,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.IdeBrand ide_brand = 58;</code>
    * @return Whether the ideBrand field is set.
    */
-  public boolean hasIdeBrand() {
+  @java.lang.Override public boolean hasIdeBrand() {
     return ((bitField1_ & 0x04000000) != 0);
   }
   /**
@@ -16795,7 +17381,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.IdeBrand ide_brand = 58;</code>
    * @return The ideBrand.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand getIdeBrand() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand getIdeBrand() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand.valueOf(ideBrand_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand.UNKNOWN_IDE_BRAND : result;
@@ -16811,6 +17397,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
    * @return Whether the cppHeadersViewEvent field is set.
    */
+  @java.lang.Override
   public boolean hasCppHeadersViewEvent() {
     return ((bitField1_ & 0x08000000) != 0);
   }
@@ -16822,6 +17409,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
    * @return The cppHeadersViewEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CppHeadersViewEvent getCppHeadersViewEvent() {
     return cppHeadersViewEvent_ == null ? com.google.wireless.android.sdk.stats.CppHeadersViewEvent.getDefaultInstance() : cppHeadersViewEvent_;
   }
@@ -16832,6 +17420,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CppHeadersViewEvent cpp_headers_view_event = 59;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CppHeadersViewEventOrBuilder getCppHeadersViewEventOrBuilder() {
     return cppHeadersViewEvent_ == null ? com.google.wireless.android.sdk.stats.CppHeadersViewEvent.getDefaultInstance() : cppHeadersViewEvent_;
   }
@@ -16847,6 +17436,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
    * @return Whether the whatsNewAssistantEvent field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasWhatsNewAssistantEvent() {
     return ((bitField1_ & 0x10000000) != 0);
   }
@@ -16859,6 +17449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
    * @return The whatsNewAssistantEvent.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent getWhatsNewAssistantEvent() {
     return whatsNewAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.getDefaultInstance() : whatsNewAssistantEvent_;
   }
@@ -16870,6 +17461,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.WhatsNewAssistantEvent whats_new_assistant_event = 60 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.WhatsNewAssistantEventOrBuilder getWhatsNewAssistantEventOrBuilder() {
     return whatsNewAssistantEvent_ == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantEvent.getDefaultInstance() : whatsNewAssistantEvent_;
   }
@@ -16887,6 +17479,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 61;</code>
    * @return Whether the rawProjectId field is set.
    */
+  @java.lang.Override
   public boolean hasRawProjectId() {
     return ((bitField1_ & 0x20000000) != 0);
   }
@@ -16901,6 +17494,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 61;</code>
    * @return The rawProjectId.
    */
+  @java.lang.Override
   public java.lang.String getRawProjectId() {
     java.lang.Object ref = rawProjectId_;
     if (ref instanceof java.lang.String) {
@@ -16926,6 +17520,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string raw_project_id = 61;</code>
    * @return The bytes for rawProjectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRawProjectIdBytes() {
     java.lang.Object ref = rawProjectId_;
@@ -16950,6 +17545,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
    * @return Whether the intellijIndexingStats field is set.
    */
+  @java.lang.Override
   public boolean hasIntellijIndexingStats() {
     return ((bitField1_ & 0x40000000) != 0);
   }
@@ -16961,6 +17557,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
    * @return The intellijIndexingStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijIndexingStats getIntellijIndexingStats() {
     return intellijIndexingStats_ == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.getDefaultInstance() : intellijIndexingStats_;
   }
@@ -16971,6 +17568,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.IntellijIndexingStats intellij_indexing_stats = 62;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijIndexingStatsOrBuilder getIntellijIndexingStatsOrBuilder() {
     return intellijIndexingStats_ == null ? com.google.wireless.android.sdk.stats.IntellijIndexingStats.getDefaultInstance() : intellijIndexingStats_;
   }
@@ -16985,6 +17583,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintSession lint_session = 63;</code>
    * @return Whether the lintSession field is set.
    */
+  @java.lang.Override
   public boolean hasLintSession() {
     return ((bitField1_ & 0x80000000) != 0);
   }
@@ -16996,6 +17595,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintSession lint_session = 63;</code>
    * @return The lintSession.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintSession getLintSession() {
     return lintSession_ == null ? com.google.wireless.android.sdk.stats.LintSession.getDefaultInstance() : lintSession_;
   }
@@ -17006,6 +17606,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LintSession lint_session = 63;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintSessionOrBuilder getLintSessionOrBuilder() {
     return lintSession_ == null ? com.google.wireless.android.sdk.stats.LintSession.getDefaultInstance() : lintSession_;
   }
@@ -17020,6 +17621,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintAction lint_action = 64;</code>
    * @return Whether the lintAction field is set.
    */
+  @java.lang.Override
   public boolean hasLintAction() {
     return ((bitField2_ & 0x00000001) != 0);
   }
@@ -17031,6 +17633,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintAction lint_action = 64;</code>
    * @return The lintAction.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintAction getLintAction() {
     return lintAction_ == null ? com.google.wireless.android.sdk.stats.LintAction.getDefaultInstance() : lintAction_;
   }
@@ -17041,6 +17644,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LintAction lint_action = 64;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LintActionOrBuilder getLintActionOrBuilder() {
     return lintAction_ == null ? com.google.wireless.android.sdk.stats.LintAction.getDefaultInstance() : lintAction_;
   }
@@ -17055,6 +17659,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
    * @return Whether the studioRunEvent field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasStudioRunEvent() {
     return ((bitField2_ & 0x00000002) != 0);
   }
@@ -17066,6 +17671,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
    * @return The studioRunEvent.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.StudioRunEvent getStudioRunEvent() {
     return studioRunEvent_ == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.getDefaultInstance() : studioRunEvent_;
   }
@@ -17076,6 +17682,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioRunEvent studio_run_event = 65 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.StudioRunEventOrBuilder getStudioRunEventOrBuilder() {
     return studioRunEvent_ == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.getDefaultInstance() : studioRunEvent_;
   }
@@ -17089,6 +17696,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijProjectSizeStats intellij_project_size_stats = 66;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.IntellijProjectSizeStats> getIntellijProjectSizeStatsList() {
     return intellijProjectSizeStats_;
   }
@@ -17099,6 +17707,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijProjectSizeStats intellij_project_size_stats = 66;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.IntellijProjectSizeStatsOrBuilder> 
       getIntellijProjectSizeStatsOrBuilderList() {
     return intellijProjectSizeStats_;
@@ -17110,6 +17719,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijProjectSizeStats intellij_project_size_stats = 66;</code>
    */
+  @java.lang.Override
   public int getIntellijProjectSizeStatsCount() {
     return intellijProjectSizeStats_.size();
   }
@@ -17120,6 +17730,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijProjectSizeStats intellij_project_size_stats = 66;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijProjectSizeStats getIntellijProjectSizeStats(int index) {
     return intellijProjectSizeStats_.get(index);
   }
@@ -17130,6 +17741,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.IntellijProjectSizeStats intellij_project_size_stats = 66;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IntellijProjectSizeStatsOrBuilder getIntellijProjectSizeStatsOrBuilder(
       int index) {
     return intellijProjectSizeStats_.get(index);
@@ -17145,6 +17757,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
    * @return Whether the studioToolWindowActionStats field is set.
    */
+  @java.lang.Override
   public boolean hasStudioToolWindowActionStats() {
     return ((bitField2_ & 0x00000004) != 0);
   }
@@ -17156,6 +17769,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
    * @return The studioToolWindowActionStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioToolWindowActionStats getStudioToolWindowActionStats() {
     return studioToolWindowActionStats_ == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.getDefaultInstance() : studioToolWindowActionStats_;
   }
@@ -17166,6 +17780,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioToolWindowActionStats studio_tool_window_action_stats = 67;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioToolWindowActionStatsOrBuilder getStudioToolWindowActionStatsOrBuilder() {
     return studioToolWindowActionStats_ == null ? com.google.wireless.android.sdk.stats.StudioToolWindowActionStats.getDefaultInstance() : studioToolWindowActionStats_;
   }
@@ -17180,6 +17795,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
    * @return Whether the psdEvent field is set.
    */
+  @java.lang.Override
   public boolean hasPsdEvent() {
     return ((bitField2_ & 0x00000008) != 0);
   }
@@ -17191,6 +17807,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
    * @return The psdEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PSDEvent getPsdEvent() {
     return psdEvent_ == null ? com.google.wireless.android.sdk.stats.PSDEvent.getDefaultInstance() : psdEvent_;
   }
@@ -17201,6 +17818,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PSDEvent psd_event = 68;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PSDEventOrBuilder getPsdEventOrBuilder() {
     return psdEvent_ == null ? com.google.wireless.android.sdk.stats.PSDEvent.getDefaultInstance() : psdEvent_;
   }
@@ -17217,6 +17835,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool idea_is_internal = 69;</code>
    * @return Whether the ideaIsInternal field is set.
    */
+  @java.lang.Override
   public boolean hasIdeaIsInternal() {
     return ((bitField2_ & 0x00000010) != 0);
   }
@@ -17230,6 +17849,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool idea_is_internal = 69;</code>
    * @return The ideaIsInternal.
    */
+  @java.lang.Override
   public boolean getIdeaIsInternal() {
     return ideaIsInternal_;
   }
@@ -17244,6 +17864,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
    * @return Whether the jniInspectionEvent field is set.
    */
+  @java.lang.Override
   public boolean hasJniInspectionEvent() {
     return ((bitField2_ & 0x00000020) != 0);
   }
@@ -17255,6 +17876,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
    * @return The jniInspectionEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JniInspectionEvent getJniInspectionEvent() {
     return jniInspectionEvent_ == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.getDefaultInstance() : jniInspectionEvent_;
   }
@@ -17265,6 +17887,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JniInspectionEvent jni_inspection_event = 70;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JniInspectionEventOrBuilder getJniInspectionEventOrBuilder() {
     return jniInspectionEvent_ == null ? com.google.wireless.android.sdk.stats.JniInspectionEvent.getDefaultInstance() : jniInspectionEvent_;
   }
@@ -17279,6 +17902,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
    * @return Whether the userSentiment field is set.
    */
+  @java.lang.Override
   public boolean hasUserSentiment() {
     return ((bitField2_ & 0x00000040) != 0);
   }
@@ -17290,6 +17914,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
    * @return The userSentiment.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UserSentiment getUserSentiment() {
     return userSentiment_ == null ? com.google.wireless.android.sdk.stats.UserSentiment.getDefaultInstance() : userSentiment_;
   }
@@ -17300,6 +17925,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UserSentiment user_sentiment = 71;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UserSentimentOrBuilder getUserSentimentOrBuilder() {
     return userSentiment_ == null ? com.google.wireless.android.sdk.stats.UserSentiment.getDefaultInstance() : userSentiment_;
   }
@@ -17314,6 +17940,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunEvent run_event = 72;</code>
    * @return Whether the runEvent field is set.
    */
+  @java.lang.Override
   public boolean hasRunEvent() {
     return ((bitField2_ & 0x00000080) != 0);
   }
@@ -17325,6 +17952,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunEvent run_event = 72;</code>
    * @return The runEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunEvent getRunEvent() {
     return runEvent_ == null ? com.google.wireless.android.sdk.stats.RunEvent.getDefaultInstance() : runEvent_;
   }
@@ -17335,6 +17963,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.RunEvent run_event = 72;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunEventOrBuilder getRunEventOrBuilder() {
     return runEvent_ == null ? com.google.wireless.android.sdk.stats.RunEvent.getDefaultInstance() : runEvent_;
   }
@@ -17349,6 +17978,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
    * @return Whether the navEditorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasNavEditorEvent() {
     return ((bitField2_ & 0x00000100) != 0);
   }
@@ -17360,6 +17990,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
    * @return The navEditorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavEditorEvent getNavEditorEvent() {
     return navEditorEvent_ == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.getDefaultInstance() : navEditorEvent_;
   }
@@ -17370,6 +18001,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavEditorEvent nav_editor_event = 73;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavEditorEventOrBuilder getNavEditorEventOrBuilder() {
     return navEditorEvent_ == null ? com.google.wireless.android.sdk.stats.NavEditorEvent.getDefaultInstance() : navEditorEvent_;
   }
@@ -17384,6 +18016,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
    * @return Whether the dialogStats field is set.
    */
+  @java.lang.Override
   public boolean hasDialogStats() {
     return ((bitField2_ & 0x00000200) != 0);
   }
@@ -17395,6 +18028,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
    * @return The dialogStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DialogStats getDialogStats() {
     return dialogStats_ == null ? com.google.wireless.android.sdk.stats.DialogStats.getDefaultInstance() : dialogStats_;
   }
@@ -17405,6 +18039,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DialogStats dialog_stats = 74;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DialogStatsOrBuilder getDialogStatsOrBuilder() {
     return dialogStats_ == null ? com.google.wireless.android.sdk.stats.DialogStats.getDefaultInstance() : dialogStats_;
   }
@@ -17419,6 +18054,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
    * @return Whether the gradlePluginUpgradeDialog field is set.
    */
+  @java.lang.Override
   public boolean hasGradlePluginUpgradeDialog() {
     return ((bitField2_ & 0x00000400) != 0);
   }
@@ -17430,6 +18066,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
    * @return The gradlePluginUpgradeDialog.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats getGradlePluginUpgradeDialog() {
     return gradlePluginUpgradeDialog_ == null ? com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.getDefaultInstance() : gradlePluginUpgradeDialog_;
   }
@@ -17440,6 +18077,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradlePluginUpgradeDialogStats gradle_plugin_upgrade_dialog = 75;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStatsOrBuilder getGradlePluginUpgradeDialogOrBuilder() {
     return gradlePluginUpgradeDialog_ == null ? com.google.wireless.android.sdk.stats.GradlePluginUpgradeDialogStats.getDefaultInstance() : gradlePluginUpgradeDialog_;
   }
@@ -17454,6 +18092,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
    * @return Whether the dataBindingEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDataBindingEvent() {
     return ((bitField2_ & 0x00000800) != 0);
   }
@@ -17465,6 +18104,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
    * @return The dataBindingEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEvent getDataBindingEvent() {
     return dataBindingEvent_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.getDefaultInstance() : dataBindingEvent_;
   }
@@ -17475,6 +18115,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DataBindingEvent data_binding_event = 76;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DataBindingEventOrBuilder getDataBindingEventOrBuilder() {
     return dataBindingEvent_ == null ? com.google.wireless.android.sdk.stats.DataBindingEvent.getDefaultInstance() : dataBindingEvent_;
   }
@@ -17489,6 +18130,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
    * @return Whether the typingLatencyStats field is set.
    */
+  @java.lang.Override
   public boolean hasTypingLatencyStats() {
     return ((bitField2_ & 0x00001000) != 0);
   }
@@ -17500,6 +18142,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
    * @return The typingLatencyStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TypingLatencyStats getTypingLatencyStats() {
     return typingLatencyStats_ == null ? com.google.wireless.android.sdk.stats.TypingLatencyStats.getDefaultInstance() : typingLatencyStats_;
   }
@@ -17510,6 +18153,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TypingLatencyStats typing_latency_stats = 77;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TypingLatencyStatsOrBuilder getTypingLatencyStatsOrBuilder() {
     return typingLatencyStats_ == null ? com.google.wireless.android.sdk.stats.TypingLatencyStats.getDefaultInstance() : typingLatencyStats_;
   }
@@ -17523,6 +18167,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleSyncIssue gradle_sync_issues = 78;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleSyncIssue> getGradleSyncIssuesList() {
     return gradleSyncIssues_;
   }
@@ -17533,6 +18178,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleSyncIssue gradle_sync_issues = 78;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleSyncIssueOrBuilder> 
       getGradleSyncIssuesOrBuilderList() {
     return gradleSyncIssues_;
@@ -17544,6 +18190,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleSyncIssue gradle_sync_issues = 78;</code>
    */
+  @java.lang.Override
   public int getGradleSyncIssuesCount() {
     return gradleSyncIssues_.size();
   }
@@ -17554,6 +18201,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleSyncIssue gradle_sync_issues = 78;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleSyncIssue getGradleSyncIssues(int index) {
     return gradleSyncIssues_.get(index);
   }
@@ -17564,6 +18212,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleSyncIssue gradle_sync_issues = 78;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleSyncIssueOrBuilder getGradleSyncIssuesOrBuilder(
       int index) {
     return gradleSyncIssues_.get(index);
@@ -17591,6 +18240,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.AndroidStudioEvent.GradleSyncQuickFix offered_quick_fixes = 79;</code>
    * @return A list containing the offeredQuickFixes.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix> getOfferedQuickFixesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix>(offeredQuickFixes_, offeredQuickFixes_converter_);
@@ -17603,8 +18253,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.AndroidStudioEvent.GradleSyncQuickFix offered_quick_fixes = 79;</code>
-   * @param value The offeredQuickFixes to add.
+   * @return The count of offeredQuickFixes.
    */
+  @java.lang.Override
   public int getOfferedQuickFixesCount() {
     return offeredQuickFixes_.size();
   }
@@ -17619,6 +18270,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The offeredQuickFixes at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix getOfferedQuickFixes(int index) {
     return offeredQuickFixes_converter_.convert(offeredQuickFixes_.get(index));
   }
@@ -17633,6 +18285,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
    * @return Whether the studioPatchUpdaterEvent field is set.
    */
+  @java.lang.Override
   public boolean hasStudioPatchUpdaterEvent() {
     return ((bitField2_ & 0x00002000) != 0);
   }
@@ -17644,6 +18297,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
    * @return The studioPatchUpdaterEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent getStudioPatchUpdaterEvent() {
     return studioPatchUpdaterEvent_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.getDefaultInstance() : studioPatchUpdaterEvent_;
   }
@@ -17654,6 +18308,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioPatchUpdaterEvent studio_patch_updater_event = 80;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEventOrBuilder getStudioPatchUpdaterEventOrBuilder() {
     return studioPatchUpdaterEvent_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.getDefaultInstance() : studioPatchUpdaterEvent_;
   }
@@ -17668,6 +18323,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
    * @return Whether the resourceManagerEvent field is set.
    */
+  @java.lang.Override
   public boolean hasResourceManagerEvent() {
     return ((bitField2_ & 0x00004000) != 0);
   }
@@ -17679,6 +18335,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
    * @return The resourceManagerEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ResourceManagerEvent getResourceManagerEvent() {
     return resourceManagerEvent_ == null ? com.google.wireless.android.sdk.stats.ResourceManagerEvent.getDefaultInstance() : resourceManagerEvent_;
   }
@@ -17689,6 +18346,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ResourceManagerEvent resource_manager_event = 81;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ResourceManagerEventOrBuilder getResourceManagerEventOrBuilder() {
     return resourceManagerEvent_ == null ? com.google.wireless.android.sdk.stats.ResourceManagerEvent.getDefaultInstance() : resourceManagerEvent_;
   }
@@ -17703,6 +18361,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
    * @return Whether the idePluginInfo field is set.
    */
+  @java.lang.Override
   public boolean hasIdePluginInfo() {
     return ((bitField2_ & 0x00008000) != 0);
   }
@@ -17714,6 +18373,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
    * @return The idePluginInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IdePluginInfo getIdePluginInfo() {
     return idePluginInfo_ == null ? com.google.wireless.android.sdk.stats.IdePluginInfo.getDefaultInstance() : idePluginInfo_;
   }
@@ -17724,6 +18384,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.IdePluginInfo ide_plugin_info = 82;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.IdePluginInfoOrBuilder getIdePluginInfoOrBuilder() {
     return idePluginInfo_ == null ? com.google.wireless.android.sdk.stats.IdePluginInfo.getDefaultInstance() : idePluginInfo_;
   }
@@ -17738,6 +18399,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
    * @return Whether the editorHighlightingStats field is set.
    */
+  @java.lang.Override
   public boolean hasEditorHighlightingStats() {
     return ((bitField2_ & 0x00010000) != 0);
   }
@@ -17749,6 +18411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
    * @return The editorHighlightingStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorHighlightingStats getEditorHighlightingStats() {
     return editorHighlightingStats_ == null ? com.google.wireless.android.sdk.stats.EditorHighlightingStats.getDefaultInstance() : editorHighlightingStats_;
   }
@@ -17759,6 +18422,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EditorHighlightingStats editor_highlighting_stats = 83;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorHighlightingStatsOrBuilder getEditorHighlightingStatsOrBuilder() {
     return editorHighlightingStats_ == null ? com.google.wireless.android.sdk.stats.EditorHighlightingStats.getDefaultInstance() : editorHighlightingStats_;
   }
@@ -17773,6 +18437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
    * @return Whether the windowsDefenderStatus field is set.
    */
+  @java.lang.Override
   public boolean hasWindowsDefenderStatus() {
     return ((bitField2_ & 0x00020000) != 0);
   }
@@ -17784,6 +18449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
    * @return The windowsDefenderStatus.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WindowsDefenderStatus getWindowsDefenderStatus() {
     return windowsDefenderStatus_ == null ? com.google.wireless.android.sdk.stats.WindowsDefenderStatus.getDefaultInstance() : windowsDefenderStatus_;
   }
@@ -17794,6 +18460,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.WindowsDefenderStatus windows_defender_status = 84;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WindowsDefenderStatusOrBuilder getWindowsDefenderStatusOrBuilder() {
     return windowsDefenderStatus_ == null ? com.google.wireless.android.sdk.stats.WindowsDefenderStatus.getDefaultInstance() : windowsDefenderStatus_;
   }
@@ -17808,6 +18475,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
    * @return Whether the memorySettingsEvent field is set.
    */
+  @java.lang.Override
   public boolean hasMemorySettingsEvent() {
     return ((bitField2_ & 0x00040000) != 0);
   }
@@ -17819,6 +18487,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
    * @return The memorySettingsEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsEvent getMemorySettingsEvent() {
     return memorySettingsEvent_ == null ? com.google.wireless.android.sdk.stats.MemorySettingsEvent.getDefaultInstance() : memorySettingsEvent_;
   }
@@ -17829,6 +18498,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MemorySettingsEvent memory_settings_event = 85;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemorySettingsEventOrBuilder getMemorySettingsEventOrBuilder() {
     return memorySettingsEvent_ == null ? com.google.wireless.android.sdk.stats.MemorySettingsEvent.getDefaultInstance() : memorySettingsEvent_;
   }
@@ -17843,6 +18513,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
    * @return Whether the studioUpdateFlowEvent field is set.
    */
+  @java.lang.Override
   public boolean hasStudioUpdateFlowEvent() {
     return ((bitField2_ & 0x00080000) != 0);
   }
@@ -17854,6 +18525,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
    * @return The studioUpdateFlowEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent getStudioUpdateFlowEvent() {
     return studioUpdateFlowEvent_ == null ? com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.getDefaultInstance() : studioUpdateFlowEvent_;
   }
@@ -17864,6 +18536,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioUpdateFlowEvent studio_update_flow_event = 86;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioUpdateFlowEventOrBuilder getStudioUpdateFlowEventOrBuilder() {
     return studioUpdateFlowEvent_ == null ? com.google.wireless.android.sdk.stats.StudioUpdateFlowEvent.getDefaultInstance() : studioUpdateFlowEvent_;
   }
@@ -17878,6 +18551,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
    * @return Whether the buildOutputWindowStats field is set.
    */
+  @java.lang.Override
   public boolean hasBuildOutputWindowStats() {
     return ((bitField2_ & 0x00100000) != 0);
   }
@@ -17889,6 +18563,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
    * @return The buildOutputWindowStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildOutputWindowStats getBuildOutputWindowStats() {
     return buildOutputWindowStats_ == null ? com.google.wireless.android.sdk.stats.BuildOutputWindowStats.getDefaultInstance() : buildOutputWindowStats_;
   }
@@ -17899,6 +18574,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.BuildOutputWindowStats build_output_window_stats = 87;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildOutputWindowStatsOrBuilder getBuildOutputWindowStatsOrBuilder() {
     return buildOutputWindowStats_ == null ? com.google.wireless.android.sdk.stats.BuildOutputWindowStats.getDefaultInstance() : buildOutputWindowStats_;
   }
@@ -17913,6 +18589,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
    * @return Whether the gradlePluginDslUsageStats field is set.
    */
+  @java.lang.Override
   public boolean hasGradlePluginDslUsageStats() {
     return ((bitField2_ & 0x00200000) != 0);
   }
@@ -17924,6 +18601,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
    * @return The gradlePluginDslUsageStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats getGradlePluginDslUsageStats() {
     return gradlePluginDslUsageStats_ == null ? com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.getDefaultInstance() : gradlePluginDslUsageStats_;
   }
@@ -17934,6 +18612,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradlePluginDslUsageStats gradle_plugin_dsl_usage_stats = 88;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginDslUsageStatsOrBuilder getGradlePluginDslUsageStatsOrBuilder() {
     return gradlePluginDslUsageStats_ == null ? com.google.wireless.android.sdk.stats.GradlePluginDslUsageStats.getDefaultInstance() : gradlePluginDslUsageStats_;
   }
@@ -17948,6 +18627,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
    * @return Whether the whatsNewAssistantUpdateEvent field is set.
    */
+  @java.lang.Override
   public boolean hasWhatsNewAssistantUpdateEvent() {
     return ((bitField2_ & 0x00400000) != 0);
   }
@@ -17959,6 +18639,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
    * @return The whatsNewAssistantUpdateEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent getWhatsNewAssistantUpdateEvent() {
     return whatsNewAssistantUpdateEvent_ == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.getDefaultInstance() : whatsNewAssistantUpdateEvent_;
   }
@@ -17969,6 +18650,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.WhatsNewAssistantUpdateEvent whats_new_assistant_update_event = 89;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEventOrBuilder getWhatsNewAssistantUpdateEventOrBuilder() {
     return whatsNewAssistantUpdateEvent_ == null ? com.google.wireless.android.sdk.stats.WhatsNewAssistantUpdateEvent.getDefaultInstance() : whatsNewAssistantUpdateEvent_;
   }
@@ -17983,6 +18665,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
    * @return Whether the defaultActivityLocatorStats field is set.
    */
+  @java.lang.Override
   public boolean hasDefaultActivityLocatorStats() {
     return ((bitField2_ & 0x00800000) != 0);
   }
@@ -17994,6 +18677,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
    * @return The defaultActivityLocatorStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats getDefaultActivityLocatorStats() {
     return defaultActivityLocatorStats_ == null ? com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats.getDefaultInstance() : defaultActivityLocatorStats_;
   }
@@ -18004,6 +18688,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DefaultActivityLocatorStats default_activity_locator_stats = 90;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DefaultActivityLocatorStatsOrBuilder getDefaultActivityLocatorStatsOrBuilder() {
     return defaultActivityLocatorStats_ == null ? com.google.wireless.android.sdk.stats.DefaultActivityLocatorStats.getDefaultInstance() : defaultActivityLocatorStats_;
   }
@@ -18018,6 +18703,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
    * @return Whether the motionLayoutEditorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasMotionLayoutEditorEvent() {
     return ((bitField2_ & 0x01000000) != 0);
   }
@@ -18029,6 +18715,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
    * @return The motionLayoutEditorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent getMotionLayoutEditorEvent() {
     return motionLayoutEditorEvent_ == null ? com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent.getDefaultInstance() : motionLayoutEditorEvent_;
   }
@@ -18039,6 +18726,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MotionLayoutEditorEvent motion_layout_editor_event = 91;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MotionLayoutEditorEventOrBuilder getMotionLayoutEditorEventOrBuilder() {
     return motionLayoutEditorEvent_ == null ? com.google.wireless.android.sdk.stats.MotionLayoutEditorEvent.getDefaultInstance() : motionLayoutEditorEvent_;
   }
@@ -18055,6 +18743,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
    * @return Whether the composeSampleEvent field is set.
    */
+  @java.lang.Override
   public boolean hasComposeSampleEvent() {
     return ((bitField2_ & 0x02000000) != 0);
   }
@@ -18068,6 +18757,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
    * @return The composeSampleEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeSampleEvent getComposeSampleEvent() {
     return composeSampleEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeSampleEvent.getDefaultInstance() : composeSampleEvent_;
   }
@@ -18080,6 +18770,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ComposeSampleEvent compose_sample_event = 92;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeSampleEventOrBuilder getComposeSampleEventOrBuilder() {
     return composeSampleEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeSampleEvent.getDefaultInstance() : composeSampleEvent_;
   }
@@ -18096,6 +18787,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
    * @return Whether the importSampleEvent field is set.
    */
+  @java.lang.Override
   public boolean hasImportSampleEvent() {
     return ((bitField2_ & 0x04000000) != 0);
   }
@@ -18109,6 +18801,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
    * @return The importSampleEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ImportSampleEvent getImportSampleEvent() {
     return importSampleEvent_ == null ? com.google.wireless.android.sdk.stats.ImportSampleEvent.getDefaultInstance() : importSampleEvent_;
   }
@@ -18121,6 +18814,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ImportSampleEvent import_sample_event = 93;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ImportSampleEventOrBuilder getImportSampleEventOrBuilder() {
     return importSampleEvent_ == null ? com.google.wireless.android.sdk.stats.ImportSampleEvent.getDefaultInstance() : importSampleEvent_;
   }
@@ -18135,6 +18829,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
    * @return Whether the dynamicLayoutInspectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDynamicLayoutInspectorEvent() {
     return ((bitField2_ & 0x08000000) != 0);
   }
@@ -18146,6 +18841,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
    * @return The dynamicLayoutInspectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent getDynamicLayoutInspectorEvent() {
     return dynamicLayoutInspectorEvent_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent.getDefaultInstance() : dynamicLayoutInspectorEvent_;
   }
@@ -18156,6 +18852,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DynamicLayoutInspectorEvent dynamic_layout_inspector_event = 94;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEventOrBuilder getDynamicLayoutInspectorEventOrBuilder() {
     return dynamicLayoutInspectorEvent_ == null ? com.google.wireless.android.sdk.stats.DynamicLayoutInspectorEvent.getDefaultInstance() : dynamicLayoutInspectorEvent_;
   }
@@ -18170,6 +18867,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
    * @return Whether the buildAttributionStats field is set.
    */
+  @java.lang.Override
   public boolean hasBuildAttributionStats() {
     return ((bitField2_ & 0x10000000) != 0);
   }
@@ -18181,6 +18879,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
    * @return The buildAttributionStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionStats getBuildAttributionStats() {
     return buildAttributionStats_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionStats.getDefaultInstance() : buildAttributionStats_;
   }
@@ -18191,6 +18890,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.BuildAttributionStats build_attribution_stats = 95;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionStatsOrBuilder getBuildAttributionStatsOrBuilder() {
     return buildAttributionStats_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionStats.getDefaultInstance() : buildAttributionStats_;
   }
@@ -18205,6 +18905,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
    * @return Whether the editorCompletionStats field is set.
    */
+  @java.lang.Override
   public boolean hasEditorCompletionStats() {
     return ((bitField2_ & 0x20000000) != 0);
   }
@@ -18216,6 +18917,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
    * @return The editorCompletionStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorCompletionStats getEditorCompletionStats() {
     return editorCompletionStats_ == null ? com.google.wireless.android.sdk.stats.EditorCompletionStats.getDefaultInstance() : editorCompletionStats_;
   }
@@ -18226,6 +18928,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EditorCompletionStats editor_completion_stats = 96;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EditorCompletionStatsOrBuilder getEditorCompletionStatsOrBuilder() {
     return editorCompletionStats_ == null ? com.google.wireless.android.sdk.stats.EditorCompletionStats.getDefaultInstance() : editorCompletionStats_;
   }
@@ -18240,6 +18943,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
    * @return Whether the multiViewEvent field is set.
    */
+  @java.lang.Override
   public boolean hasMultiViewEvent() {
     return ((bitField2_ & 0x40000000) != 0);
   }
@@ -18251,6 +18955,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
    * @return The multiViewEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MultiViewEvent getMultiViewEvent() {
     return multiViewEvent_ == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.getDefaultInstance() : multiViewEvent_;
   }
@@ -18261,6 +18966,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MultiViewEvent multi_view_event = 97;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MultiViewEventOrBuilder getMultiViewEventOrBuilder() {
     return multiViewEvent_ == null ? com.google.wireless.android.sdk.stats.MultiViewEvent.getDefaultInstance() : multiViewEvent_;
   }
@@ -18275,6 +18981,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
    * @return Whether the buildAttributionUiEvent field is set.
    */
+  @java.lang.Override
   public boolean hasBuildAttributionUiEvent() {
     return ((bitField2_ & 0x80000000) != 0);
   }
@@ -18286,6 +18993,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
    * @return The buildAttributionUiEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionUiEvent getBuildAttributionUiEvent() {
     return buildAttributionUiEvent_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.getDefaultInstance() : buildAttributionUiEvent_;
   }
@@ -18296,6 +19004,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.BuildAttributionUiEvent build_attribution_ui_event = 98;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.BuildAttributionUiEventOrBuilder getBuildAttributionUiEventOrBuilder() {
     return buildAttributionUiEvent_ == null ? com.google.wireless.android.sdk.stats.BuildAttributionUiEvent.getDefaultInstance() : buildAttributionUiEvent_;
   }
@@ -18310,6 +19019,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
    * @return Whether the androidCppExtensionEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidCppExtensionEvent() {
     return ((bitField3_ & 0x00000001) != 0);
   }
@@ -18321,6 +19031,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
    * @return The androidCppExtensionEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent getAndroidCppExtensionEvent() {
     return androidCppExtensionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
   }
@@ -18331,6 +19042,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidCppExtensionEvent android_cpp_extension_event = 99;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidCppExtensionEventOrBuilder getAndroidCppExtensionEventOrBuilder() {
     return androidCppExtensionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidCppExtensionEvent.getDefaultInstance() : androidCppExtensionEvent_;
   }
@@ -18345,6 +19057,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
    * @return Whether the designEditorHelpPanelEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDesignEditorHelpPanelEvent() {
     return ((bitField3_ & 0x00000002) != 0);
   }
@@ -18356,6 +19069,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
    * @return The designEditorHelpPanelEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent getDesignEditorHelpPanelEvent() {
     return designEditorHelpPanelEvent_ == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.getDefaultInstance() : designEditorHelpPanelEvent_;
   }
@@ -18366,6 +19080,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DesignEditorHelpPanelEvent design_editor_help_panel_event = 100;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEventOrBuilder getDesignEditorHelpPanelEventOrBuilder() {
     return designEditorHelpPanelEvent_ == null ? com.google.wireless.android.sdk.stats.DesignEditorHelpPanelEvent.getDefaultInstance() : designEditorHelpPanelEvent_;
   }
@@ -18380,6 +19095,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
    * @return Whether the appInspectionEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAppInspectionEvent() {
     return ((bitField3_ & 0x00000004) != 0);
   }
@@ -18391,6 +19107,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
    * @return The appInspectionEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEvent getAppInspectionEvent() {
     return appInspectionEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.getDefaultInstance() : appInspectionEvent_;
   }
@@ -18401,6 +19118,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AppInspectionEvent app_inspection_event = 101;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AppInspectionEventOrBuilder getAppInspectionEventOrBuilder() {
     return appInspectionEvent_ == null ? com.google.wireless.android.sdk.stats.AppInspectionEvent.getDefaultInstance() : appInspectionEvent_;
   }
@@ -18415,6 +19133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
    * @return Whether the mlModelBindingEvent field is set.
    */
+  @java.lang.Override
   public boolean hasMlModelBindingEvent() {
     return ((bitField3_ & 0x00000008) != 0);
   }
@@ -18426,6 +19145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
    * @return The mlModelBindingEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MlModelBindingEvent getMlModelBindingEvent() {
     return mlModelBindingEvent_ == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.getDefaultInstance() : mlModelBindingEvent_;
   }
@@ -18436,6 +19156,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MlModelBindingEvent ml_model_binding_event = 102;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MlModelBindingEventOrBuilder getMlModelBindingEventOrBuilder() {
     return mlModelBindingEvent_ == null ? com.google.wireless.android.sdk.stats.MlModelBindingEvent.getDefaultInstance() : mlModelBindingEvent_;
   }
@@ -18450,6 +19171,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
    * @return Whether the avdLaunchEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAvdLaunchEvent() {
     return ((bitField3_ & 0x00000010) != 0);
   }
@@ -18461,6 +19183,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
    * @return The avdLaunchEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AvdLaunchEvent getAvdLaunchEvent() {
     return avdLaunchEvent_ == null ? com.google.wireless.android.sdk.stats.AvdLaunchEvent.getDefaultInstance() : avdLaunchEvent_;
   }
@@ -18471,6 +19194,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AvdLaunchEvent avd_launch_event = 103;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AvdLaunchEventOrBuilder getAvdLaunchEventOrBuilder() {
     return avdLaunchEvent_ == null ? com.google.wireless.android.sdk.stats.AvdLaunchEvent.getDefaultInstance() : avdLaunchEvent_;
   }
@@ -18485,6 +19209,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
    * @return Whether the navSafeArgsEvent field is set.
    */
+  @java.lang.Override
   public boolean hasNavSafeArgsEvent() {
     return ((bitField3_ & 0x00000020) != 0);
   }
@@ -18496,6 +19221,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
    * @return The navSafeArgsEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSafeArgsEvent getNavSafeArgsEvent() {
     return navSafeArgsEvent_ == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.getDefaultInstance() : navSafeArgsEvent_;
   }
@@ -18506,6 +19232,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NavSafeArgsEvent nav_safe_args_event = 104;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSafeArgsEventOrBuilder getNavSafeArgsEventOrBuilder() {
     return navSafeArgsEvent_ == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.getDefaultInstance() : navSafeArgsEvent_;
   }
@@ -18520,6 +19247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
    * @return Whether the daggerEditorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDaggerEditorEvent() {
     return ((bitField3_ & 0x00000040) != 0);
   }
@@ -18531,6 +19259,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
    * @return The daggerEditorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DaggerEditorEvent getDaggerEditorEvent() {
     return daggerEditorEvent_ == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.getDefaultInstance() : daggerEditorEvent_;
   }
@@ -18541,6 +19270,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DaggerEditorEvent dagger_editor_event = 105;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DaggerEditorEventOrBuilder getDaggerEditorEventOrBuilder() {
     return daggerEditorEvent_ == null ? com.google.wireless.android.sdk.stats.DaggerEditorEvent.getDefaultInstance() : daggerEditorEvent_;
   }
@@ -18555,6 +19285,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
    * @return Whether the parallelAndroidTestReportUiEvent field is set.
    */
+  @java.lang.Override
   public boolean hasParallelAndroidTestReportUiEvent() {
     return ((bitField3_ & 0x00000080) != 0);
   }
@@ -18566,6 +19297,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
    * @return The parallelAndroidTestReportUiEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent getParallelAndroidTestReportUiEvent() {
     return parallelAndroidTestReportUiEvent_ == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.getDefaultInstance() : parallelAndroidTestReportUiEvent_;
   }
@@ -18576,6 +19308,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ParallelAndroidTestReportUiEvent parallel_android_test_report_ui_event = 106;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEventOrBuilder getParallelAndroidTestReportUiEventOrBuilder() {
     return parallelAndroidTestReportUiEvent_ == null ? com.google.wireless.android.sdk.stats.ParallelAndroidTestReportUiEvent.getDefaultInstance() : parallelAndroidTestReportUiEvent_;
   }
@@ -18590,6 +19323,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
    * @return Whether the applyChangesAgentError field is set.
    */
+  @java.lang.Override
   public boolean hasApplyChangesAgentError() {
     return ((bitField3_ & 0x00000100) != 0);
   }
@@ -18601,6 +19335,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
    * @return The applyChangesAgentError.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyChangesAgentError getApplyChangesAgentError() {
     return applyChangesAgentError_ == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.getDefaultInstance() : applyChangesAgentError_;
   }
@@ -18611,6 +19346,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ApplyChangesAgentError apply_changes_agent_error = 107;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ApplyChangesAgentErrorOrBuilder getApplyChangesAgentErrorOrBuilder() {
     return applyChangesAgentError_ == null ? com.google.wireless.android.sdk.stats.ApplyChangesAgentError.getDefaultInstance() : applyChangesAgentError_;
   }
@@ -18625,6 +19361,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
    * @return Whether the templateUsage field is set.
    */
+  @java.lang.Override
   public boolean hasTemplateUsage() {
     return ((bitField3_ & 0x00000200) != 0);
   }
@@ -18636,6 +19373,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
    * @return The templateUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage getTemplateUsage() {
     return templateUsage_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.getDefaultInstance() : templateUsage_;
   }
@@ -18646,6 +19384,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidStudioEvent.TemplatesUsage template_usage = 108;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsageOrBuilder getTemplateUsageOrBuilder() {
     return templateUsage_ == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplatesUsage.getDefaultInstance() : templateUsage_;
   }
@@ -18660,6 +19399,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
    * @return Whether the upgradeAssistantComponentEvent field is set.
    */
+  @java.lang.Override
   public boolean hasUpgradeAssistantComponentEvent() {
     return ((bitField3_ & 0x00000400) != 0);
   }
@@ -18671,6 +19411,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
    * @return The upgradeAssistantComponentEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent getUpgradeAssistantComponentEvent() {
     return upgradeAssistantComponentEvent_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent.getDefaultInstance() : upgradeAssistantComponentEvent_;
   }
@@ -18681,6 +19422,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UpgradeAssistantComponentEvent upgrade_assistant_component_event = 109;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEventOrBuilder getUpgradeAssistantComponentEventOrBuilder() {
     return upgradeAssistantComponentEvent_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantComponentEvent.getDefaultInstance() : upgradeAssistantComponentEvent_;
   }
@@ -18695,6 +19437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
    * @return Whether the upgradeAssistantProcessorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasUpgradeAssistantProcessorEvent() {
     return ((bitField3_ & 0x00000800) != 0);
   }
@@ -18706,6 +19449,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
    * @return The upgradeAssistantProcessorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent getUpgradeAssistantProcessorEvent() {
     return upgradeAssistantProcessorEvent_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent.getDefaultInstance() : upgradeAssistantProcessorEvent_;
   }
@@ -18716,6 +19460,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.UpgradeAssistantProcessorEvent upgrade_assistant_processor_event = 110;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEventOrBuilder getUpgradeAssistantProcessorEventOrBuilder() {
     return upgradeAssistantProcessorEvent_ == null ? com.google.wireless.android.sdk.stats.UpgradeAssistantProcessorEvent.getDefaultInstance() : upgradeAssistantProcessorEvent_;
   }
@@ -18730,6 +19475,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
    * @return Whether the interactivePreviewEvent field is set.
    */
+  @java.lang.Override
   public boolean hasInteractivePreviewEvent() {
     return ((bitField3_ & 0x00001000) != 0);
   }
@@ -18741,6 +19487,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
    * @return The interactivePreviewEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InteractivePreviewEvent getInteractivePreviewEvent() {
     return interactivePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.InteractivePreviewEvent.getDefaultInstance() : interactivePreviewEvent_;
   }
@@ -18751,6 +19498,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.InteractivePreviewEvent interactive_preview_event = 111;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.InteractivePreviewEventOrBuilder getInteractivePreviewEventOrBuilder() {
     return interactivePreviewEvent_ == null ? com.google.wireless.android.sdk.stats.InteractivePreviewEvent.getDefaultInstance() : interactivePreviewEvent_;
   }
@@ -18765,6 +19513,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
    * @return Whether the composeAnimationToolingEvent field is set.
    */
+  @java.lang.Override
   public boolean hasComposeAnimationToolingEvent() {
     return ((bitField3_ & 0x00002000) != 0);
   }
@@ -18776,6 +19525,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
    * @return The composeAnimationToolingEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent getComposeAnimationToolingEvent() {
     return composeAnimationToolingEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent.getDefaultInstance() : composeAnimationToolingEvent_;
   }
@@ -18786,6 +19536,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ComposeAnimationToolingEvent compose_animation_tooling_event = 112;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeAnimationToolingEventOrBuilder getComposeAnimationToolingEventOrBuilder() {
     return composeAnimationToolingEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeAnimationToolingEvent.getDefaultInstance() : composeAnimationToolingEvent_;
   }
@@ -18799,6 +19550,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorUiEvent emulator_ui_events = 114;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorUiEvent> getEmulatorUiEventsList() {
     return emulatorUiEvents_;
   }
@@ -18809,6 +19561,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorUiEvent emulator_ui_events = 114;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.EmulatorUiEventOrBuilder> 
       getEmulatorUiEventsOrBuilderList() {
     return emulatorUiEvents_;
@@ -18820,6 +19573,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorUiEvent emulator_ui_events = 114;</code>
    */
+  @java.lang.Override
   public int getEmulatorUiEventsCount() {
     return emulatorUiEvents_.size();
   }
@@ -18830,6 +19584,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorUiEvent emulator_ui_events = 114;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorUiEvent getEmulatorUiEvents(int index) {
     return emulatorUiEvents_.get(index);
   }
@@ -18840,6 +19595,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.EmulatorUiEvent emulator_ui_events = 114;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorUiEventOrBuilder getEmulatorUiEventsOrBuilder(
       int index) {
     return emulatorUiEvents_.get(index);
@@ -18855,6 +19611,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
    * @return Whether the surveyResponse field is set.
    */
+  @java.lang.Override
   public boolean hasSurveyResponse() {
     return ((bitField3_ & 0x00004000) != 0);
   }
@@ -18866,6 +19623,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
    * @return The surveyResponse.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SurveyResponse getSurveyResponse() {
     return surveyResponse_ == null ? com.google.wireless.android.sdk.stats.SurveyResponse.getDefaultInstance() : surveyResponse_;
   }
@@ -18876,6 +19634,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.SurveyResponse survey_response = 115;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SurveyResponseOrBuilder getSurveyResponseOrBuilder() {
     return surveyResponse_ == null ? com.google.wireless.android.sdk.stats.SurveyResponse.getDefaultInstance() : surveyResponse_;
   }
@@ -18890,6 +19649,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
    * @return Whether the composeDeployEvent field is set.
    */
+  @java.lang.Override
   public boolean hasComposeDeployEvent() {
     return ((bitField3_ & 0x00008000) != 0);
   }
@@ -18901,6 +19661,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
    * @return The composeDeployEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeDeployEvent getComposeDeployEvent() {
     return composeDeployEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeDeployEvent.getDefaultInstance() : composeDeployEvent_;
   }
@@ -18911,6 +19672,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ComposeDeployEvent compose_deploy_event = 116;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ComposeDeployEventOrBuilder getComposeDeployEventOrBuilder() {
     return composeDeployEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeDeployEvent.getDefaultInstance() : composeDeployEvent_;
   }
@@ -18926,6 +19688,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
    * @return Whether the autoImportEvent field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasAutoImportEvent() {
     return ((bitField3_ & 0x00010000) != 0);
   }
@@ -18938,6 +19701,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
    * @return The autoImportEvent.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AutoImportEvent getAutoImportEvent() {
     return autoImportEvent_ == null ? com.google.wireless.android.sdk.stats.AutoImportEvent.getDefaultInstance() : autoImportEvent_;
   }
@@ -18949,6 +19713,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AutoImportEvent auto_import_event = 117 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AutoImportEventOrBuilder getAutoImportEventOrBuilder() {
     return autoImportEvent_ == null ? com.google.wireless.android.sdk.stats.AutoImportEvent.getDefaultInstance() : autoImportEvent_;
   }
@@ -18963,6 +19728,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FileUsage file_usage = 118;</code>
    * @return Whether the fileUsage field is set.
    */
+  @java.lang.Override
   public boolean hasFileUsage() {
     return ((bitField3_ & 0x00020000) != 0);
   }
@@ -18974,6 +19740,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FileUsage file_usage = 118;</code>
    * @return The fileUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FileUsage getFileUsage() {
     return fileUsage_ == null ? com.google.wireless.android.sdk.stats.FileUsage.getDefaultInstance() : fileUsage_;
   }
@@ -18984,6 +19751,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.FileUsage file_usage = 118;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FileUsageOrBuilder getFileUsageOrBuilder() {
     return fileUsage_ == null ? com.google.wireless.android.sdk.stats.FileUsage.getDefaultInstance() : fileUsage_;
   }
@@ -18998,6 +19766,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
    * @return Whether the liveLiteralsEvent field is set.
    */
+  @java.lang.Override
   public boolean hasLiveLiteralsEvent() {
     return ((bitField3_ & 0x00040000) != 0);
   }
@@ -19009,6 +19778,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
    * @return The liveLiteralsEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LiveLiteralsEvent getLiveLiteralsEvent() {
     return liveLiteralsEvent_ == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.getDefaultInstance() : liveLiteralsEvent_;
   }
@@ -19019,6 +19789,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.LiveLiteralsEvent live_literals_event = 119;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LiveLiteralsEventOrBuilder getLiveLiteralsEventOrBuilder() {
     return liveLiteralsEvent_ == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.getDefaultInstance() : liveLiteralsEvent_;
   }
@@ -19033,6 +19804,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
    * @return Whether the nonTransitiveRClassMigrationEvent field is set.
    */
+  @java.lang.Override
   public boolean hasNonTransitiveRClassMigrationEvent() {
     return ((bitField3_ & 0x00080000) != 0);
   }
@@ -19044,6 +19816,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
    * @return The nonTransitiveRClassMigrationEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent getNonTransitiveRClassMigrationEvent() {
     return nonTransitiveRClassMigrationEvent_ == null ? com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.getDefaultInstance() : nonTransitiveRClassMigrationEvent_;
   }
@@ -19054,6 +19827,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.NonTransitiveRClassMigrationEvent non_transitive_r_class_migration_event = 120;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEventOrBuilder getNonTransitiveRClassMigrationEventOrBuilder() {
     return nonTransitiveRClassMigrationEvent_ == null ? com.google.wireless.android.sdk.stats.NonTransitiveRClassMigrationEvent.getDefaultInstance() : nonTransitiveRClassMigrationEvent_;
   }
@@ -19068,6 +19842,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
    * @return Whether the androidTestRetentionEvent field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidTestRetentionEvent() {
     return ((bitField3_ & 0x00100000) != 0);
   }
@@ -19079,6 +19854,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
    * @return The androidTestRetentionEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent getAndroidTestRetentionEvent() {
     return androidTestRetentionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.getDefaultInstance() : androidTestRetentionEvent_;
   }
@@ -19089,6 +19865,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidTestRetentionEvent android_test_retention_event = 121;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidTestRetentionEventOrBuilder getAndroidTestRetentionEventOrBuilder() {
     return androidTestRetentionEvent_ == null ? com.google.wireless.android.sdk.stats.AndroidTestRetentionEvent.getDefaultInstance() : androidTestRetentionEvent_;
   }
@@ -19103,6 +19880,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
    * @return Whether the suggestedImportEvent field is set.
    */
+  @java.lang.Override
   public boolean hasSuggestedImportEvent() {
     return ((bitField3_ & 0x00200000) != 0);
   }
@@ -19114,6 +19892,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
    * @return The suggestedImportEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SuggestedImportEvent getSuggestedImportEvent() {
     return suggestedImportEvent_ == null ? com.google.wireless.android.sdk.stats.SuggestedImportEvent.getDefaultInstance() : suggestedImportEvent_;
   }
@@ -19124,6 +19903,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.SuggestedImportEvent suggested_import_event = 122;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SuggestedImportEventOrBuilder getSuggestedImportEventOrBuilder() {
     return suggestedImportEvent_ == null ? com.google.wireless.android.sdk.stats.SuggestedImportEvent.getDefaultInstance() : suggestedImportEvent_;
   }
@@ -19138,6 +19918,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
    * @return Whether the vfsRefresh field is set.
    */
+  @java.lang.Override
   public boolean hasVfsRefresh() {
     return ((bitField3_ & 0x00400000) != 0);
   }
@@ -19149,6 +19930,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
    * @return The vfsRefresh.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VfsRefresh getVfsRefresh() {
     return vfsRefresh_ == null ? com.google.wireless.android.sdk.stats.VfsRefresh.getDefaultInstance() : vfsRefresh_;
   }
@@ -19159,6 +19941,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.VfsRefresh vfs_refresh = 123;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.VfsRefreshOrBuilder getVfsRefreshOrBuilder() {
     return vfsRefresh_ == null ? com.google.wireless.android.sdk.stats.VfsRefresh.getDefaultInstance() : vfsRefresh_;
   }
@@ -19173,6 +19956,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
    * @return Whether the signingWizardEvent field is set.
    */
+  @java.lang.Override
   public boolean hasSigningWizardEvent() {
     return ((bitField3_ & 0x00800000) != 0);
   }
@@ -19184,6 +19968,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
    * @return The signingWizardEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SigningWizardEvent getSigningWizardEvent() {
     return signingWizardEvent_ == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.getDefaultInstance() : signingWizardEvent_;
   }
@@ -19194,6 +19979,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.SigningWizardEvent signing_wizard_event = 124;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.SigningWizardEventOrBuilder getSigningWizardEventOrBuilder() {
     return signingWizardEvent_ == null ? com.google.wireless.android.sdk.stats.SigningWizardEvent.getDefaultInstance() : signingWizardEvent_;
   }
@@ -19208,6 +19994,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FileType file_type = 125;</code>
    * @return Whether the fileType field is set.
    */
+  @java.lang.Override
   public boolean hasFileType() {
     return ((bitField3_ & 0x01000000) != 0);
   }
@@ -19219,6 +20006,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FileType file_type = 125;</code>
    * @return The fileType.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FileType getFileType() {
     return fileType_ == null ? com.google.wireless.android.sdk.stats.FileType.getDefaultInstance() : fileType_;
   }
@@ -19229,6 +20017,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.FileType file_type = 125;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FileTypeOrBuilder getFileTypeOrBuilder() {
     return fileType_ == null ? com.google.wireless.android.sdk.stats.FileType.getDefaultInstance() : fileType_;
   }
@@ -19243,6 +20032,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
    * @return Whether the kotlinProjectConfiguration field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinProjectConfiguration() {
     return ((bitField3_ & 0x02000000) != 0);
   }
@@ -19254,6 +20044,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
    * @return The kotlinProjectConfiguration.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.KotlinProjectConfiguration getKotlinProjectConfiguration() {
     return kotlinProjectConfiguration_ == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.getDefaultInstance() : kotlinProjectConfiguration_;
   }
@@ -19264,6 +20055,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.KotlinProjectConfiguration kotlin_project_configuration = 126;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.KotlinProjectConfigurationOrBuilder getKotlinProjectConfigurationOrBuilder() {
     return kotlinProjectConfiguration_ == null ? com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.getDefaultInstance() : kotlinProjectConfiguration_;
   }
@@ -19278,6 +20070,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
    * @return Whether the runStartData field is set.
    */
+  @java.lang.Override
   public boolean hasRunStartData() {
     return ((bitField3_ & 0x04000000) != 0);
   }
@@ -19289,6 +20082,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
    * @return The runStartData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunStartData getRunStartData() {
     return runStartData_ == null ? com.google.wireless.android.sdk.stats.RunStartData.getDefaultInstance() : runStartData_;
   }
@@ -19299,6 +20093,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.RunStartData run_start_data = 127;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunStartDataOrBuilder getRunStartDataOrBuilder() {
     return runStartData_ == null ? com.google.wireless.android.sdk.stats.RunStartData.getDefaultInstance() : runStartData_;
   }
@@ -19313,6 +20108,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
    * @return Whether the runFinishData field is set.
    */
+  @java.lang.Override
   public boolean hasRunFinishData() {
     return ((bitField3_ & 0x08000000) != 0);
   }
@@ -19324,6 +20120,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
    * @return The runFinishData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunFinishData getRunFinishData() {
     return runFinishData_ == null ? com.google.wireless.android.sdk.stats.RunFinishData.getDefaultInstance() : runFinishData_;
   }
@@ -19334,6 +20131,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.RunFinishData run_finish_data = 128;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.RunFinishDataOrBuilder getRunFinishDataOrBuilder() {
     return runFinishData_ == null ? com.google.wireless.android.sdk.stats.RunFinishData.getDefaultInstance() : runFinishData_;
   }
@@ -19348,6 +20146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
    * @return Whether the deviceManagerEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceManagerEvent() {
     return ((bitField3_ & 0x10000000) != 0);
   }
@@ -19359,6 +20158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
    * @return The deviceManagerEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceManagerEvent getDeviceManagerEvent() {
     return deviceManagerEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceManagerEvent.getDefaultInstance() : deviceManagerEvent_;
   }
@@ -19369,6 +20169,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DeviceManagerEvent device_manager_event = 129;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceManagerEventOrBuilder getDeviceManagerEventOrBuilder() {
     return deviceManagerEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceManagerEvent.getDefaultInstance() : deviceManagerEvent_;
   }
@@ -19383,6 +20184,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
    * @return Whether the wearPairingEvent field is set.
    */
+  @java.lang.Override
   public boolean hasWearPairingEvent() {
     return ((bitField3_ & 0x20000000) != 0);
   }
@@ -19394,6 +20196,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
    * @return The wearPairingEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WearPairingEvent getWearPairingEvent() {
     return wearPairingEvent_ == null ? com.google.wireless.android.sdk.stats.WearPairingEvent.getDefaultInstance() : wearPairingEvent_;
   }
@@ -19404,6 +20207,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.WearPairingEvent wear_pairing_event = 130;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.WearPairingEventOrBuilder getWearPairingEventOrBuilder() {
     return wearPairingEvent_ == null ? com.google.wireless.android.sdk.stats.WearPairingEvent.getDefaultInstance() : wearPairingEvent_;
   }
@@ -19418,6 +20222,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
    * @return Whether the gradleJdkInvalidEvent field is set.
    */
+  @java.lang.Override
   public boolean hasGradleJdkInvalidEvent() {
     return ((bitField3_ & 0x40000000) != 0);
   }
@@ -19429,6 +20234,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
    * @return The gradleJdkInvalidEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent getGradleJdkInvalidEvent() {
     return gradleJdkInvalidEvent_ == null ? com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.getDefaultInstance() : gradleJdkInvalidEvent_;
   }
@@ -19439,6 +20245,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleJdkInvalidEvent gradle_jdk_invalid_event = 131;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleJdkInvalidEventOrBuilder getGradleJdkInvalidEventOrBuilder() {
     return gradleJdkInvalidEvent_ == null ? com.google.wireless.android.sdk.stats.GradleJdkInvalidEvent.getDefaultInstance() : gradleJdkInvalidEvent_;
   }
@@ -19453,6 +20260,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
    * @return Whether the deviceExplorerEvent field is set.
    */
+  @java.lang.Override
   public boolean hasDeviceExplorerEvent() {
     return ((bitField3_ & 0x80000000) != 0);
   }
@@ -19464,6 +20272,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
    * @return The deviceExplorerEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceExplorerEvent getDeviceExplorerEvent() {
     return deviceExplorerEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceExplorerEvent.getDefaultInstance() : deviceExplorerEvent_;
   }
@@ -19474,6 +20283,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.DeviceExplorerEvent device_explorer_event = 132;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.DeviceExplorerEventOrBuilder getDeviceExplorerEventOrBuilder() {
     return deviceExplorerEvent_ == null ? com.google.wireless.android.sdk.stats.DeviceExplorerEvent.getDefaultInstance() : deviceExplorerEvent_;
   }
@@ -19488,6 +20298,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
    * @return Whether the optInToMetrics field is set.
    */
+  @java.lang.Override
   public boolean hasOptInToMetrics() {
     return ((bitField4_ & 0x00000001) != 0);
   }
@@ -19499,6 +20310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
    * @return The optInToMetrics.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OptInToMetrics getOptInToMetrics() {
     return optInToMetrics_ == null ? com.google.wireless.android.sdk.stats.OptInToMetrics.getDefaultInstance() : optInToMetrics_;
   }
@@ -19509,6 +20321,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.OptInToMetrics opt_in_to_metrics = 133;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OptInToMetricsOrBuilder getOptInToMetricsOrBuilder() {
     return optInToMetrics_ == null ? com.google.wireless.android.sdk.stats.OptInToMetrics.getDefaultInstance() : optInToMetrics_;
   }
@@ -19523,6 +20336,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
    * @return Whether the optOutOfMetrics field is set.
    */
+  @java.lang.Override
   public boolean hasOptOutOfMetrics() {
     return ((bitField4_ & 0x00000002) != 0);
   }
@@ -19534,6 +20348,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
    * @return The optOutOfMetrics.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OptOutOfMetrics getOptOutOfMetrics() {
     return optOutOfMetrics_ == null ? com.google.wireless.android.sdk.stats.OptOutOfMetrics.getDefaultInstance() : optOutOfMetrics_;
   }
@@ -19544,6 +20359,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.OptOutOfMetrics opt_out_of_metrics = 134;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.OptOutOfMetricsOrBuilder getOptOutOfMetricsOrBuilder() {
     return optOutOfMetrics_ == null ? com.google.wireless.android.sdk.stats.OptOutOfMetrics.getDefaultInstance() : optOutOfMetrics_;
   }
@@ -19558,6 +20374,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
    * @return Whether the gradleVersionCatalogDetectorEvent field is set.
    */
+  @java.lang.Override
   public boolean hasGradleVersionCatalogDetectorEvent() {
     return ((bitField4_ & 0x00000004) != 0);
   }
@@ -19569,6 +20386,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
    * @return The gradleVersionCatalogDetectorEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent getGradleVersionCatalogDetectorEvent() {
     return gradleVersionCatalogDetectorEvent_ == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.getDefaultInstance() : gradleVersionCatalogDetectorEvent_;
   }
@@ -19579,6 +20397,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleVersionCatalogDetectorEvent gradle_version_catalog_detector_event = 135;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEventOrBuilder getGradleVersionCatalogDetectorEventOrBuilder() {
     return gradleVersionCatalogDetectorEvent_ == null ? com.google.wireless.android.sdk.stats.GradleVersionCatalogDetectorEvent.getDefaultInstance() : gradleVersionCatalogDetectorEvent_;
   }
@@ -19593,6 +20412,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
    * @return Whether the coroutineDebuggerEvent field is set.
    */
+  @java.lang.Override
   public boolean hasCoroutineDebuggerEvent() {
     return ((bitField4_ & 0x00000008) != 0);
   }
@@ -19604,6 +20424,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
    * @return The coroutineDebuggerEvent.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent getCoroutineDebuggerEvent() {
     return coroutineDebuggerEvent_ == null ? com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.getDefaultInstance() : coroutineDebuggerEvent_;
   }
@@ -19614,8 +20435,358 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CoroutineDebuggerEvent coroutine_debugger_event = 136;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CoroutineDebuggerEventOrBuilder getCoroutineDebuggerEventOrBuilder() {
     return coroutineDebuggerEvent_ == null ? com.google.wireless.android.sdk.stats.CoroutineDebuggerEvent.getDefaultInstance() : coroutineDebuggerEvent_;
+  }
+
+  public static final int SPLITTING_TABS_USAGE_EVENT_FIELD_NUMBER = 137;
+  private com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent splittingTabsUsageEvent_;
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * @return Whether the splittingTabsUsageEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasSplittingTabsUsageEvent() {
+    return ((bitField4_ & 0x00000010) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   * @return The splittingTabsUsageEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent getSplittingTabsUsageEvent() {
+    return splittingTabsUsageEvent_ == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.getDefaultInstance() : splittingTabsUsageEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = SPLITTING_TABS_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder getSplittingTabsUsageEventOrBuilder() {
+    return splittingTabsUsageEvent_ == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.getDefaultInstance() : splittingTabsUsageEvent_;
+  }
+
+  public static final int LOGCAT_USAGE_EVENT_FIELD_NUMBER = 138;
+  private com.google.wireless.android.sdk.stats.LogcatUsageEvent logcatUsageEvent_;
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * @return Whether the logcatUsageEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasLogcatUsageEvent() {
+    return ((bitField4_ & 0x00000020) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   * @return The logcatUsageEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.LogcatUsageEvent getLogcatUsageEvent() {
+    return logcatUsageEvent_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.getDefaultInstance() : logcatUsageEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = LOGCAT_USAGE
+   * </pre>
+   *
+   * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder getLogcatUsageEventOrBuilder() {
+    return logcatUsageEvent_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.getDefaultInstance() : logcatUsageEvent_;
+  }
+
+  public static final int RAW_PROJECT_IDS_FIELD_NUMBER = 139;
+  private com.google.protobuf.LazyStringList rawProjectIds_;
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @return A list containing the rawProjectIds.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getRawProjectIdsList() {
+    return rawProjectIds_;
+  }
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @return The count of rawProjectIds.
+   */
+  public int getRawProjectIdsCount() {
+    return rawProjectIds_.size();
+  }
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @param index The index of the element to return.
+   * @return The rawProjectIds at the given index.
+   */
+  public java.lang.String getRawProjectIds(int index) {
+    return rawProjectIds_.get(index);
+  }
+  /**
+   * <pre>
+   * the project ids as used in the playstore, e.g.
+   * 'com.google.android.apps.maps'. This is sensitive information and
+   * thus restricted to "raw" sawmill access. This data is only available in
+   * and for PWG approved scenarios.
+   * </pre>
+   *
+   * <code>repeated string raw_project_ids = 139;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the rawProjectIds at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getRawProjectIdsBytes(int index) {
+    return rawProjectIds_.getByteString(index);
+  }
+
+  public static final int PROJECT_IDS_FIELD_NUMBER = 140;
+  private com.google.protobuf.LazyStringList projectIds_;
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @return A list containing the projectIds.
+   */
+  public com.google.protobuf.ProtocolStringList
+      getProjectIdsList() {
+    return projectIds_;
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @return The count of projectIds.
+   */
+  public int getProjectIdsCount() {
+    return projectIds_.size();
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @param index The index of the element to return.
+   * @return The projectIds at the given index.
+   */
+  public java.lang.String getProjectIds(int index) {
+    return projectIds_.get(index);
+  }
+  /**
+   * <pre>
+   * Client-side salted (rotating every 28 days), sha256 of the project id.
+   * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+   * </pre>
+   *
+   * <code>repeated string project_ids = 140;</code>
+   * @param index The index of the value to return.
+   * @return The bytes of the projectIds at the given index.
+   */
+  public com.google.protobuf.ByteString
+      getProjectIdsBytes(int index) {
+    return projectIds_.getByteString(index);
+  }
+
+  public static final int OS_METRICS_FIELD_NUMBER = 141;
+  private com.google.wireless.android.sdk.stats.OSMetrics osMetrics_;
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * @return Whether the osMetrics field is set.
+   */
+  @java.lang.Override
+  public boolean hasOsMetrics() {
+    return ((bitField4_ & 0x00000040) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   * @return The osMetrics.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.OSMetrics getOsMetrics() {
+    return osMetrics_ == null ? com.google.wireless.android.sdk.stats.OSMetrics.getDefaultInstance() : osMetrics_;
+  }
+  /**
+   * <pre>
+   * set when kind = OS_METRICS
+   * </pre>
+   *
+   * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.OSMetricsOrBuilder getOsMetricsOrBuilder() {
+    return osMetrics_ == null ? com.google.wireless.android.sdk.stats.OSMetrics.getDefaultInstance() : osMetrics_;
+  }
+
+  public static final int SDK_INDEX_LIBRARY_DETAILS_FIELD_NUMBER = 142;
+  private com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails sdkIndexLibraryDetails_;
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * @return Whether the sdkIndexLibraryDetails field is set.
+   */
+  @java.lang.Override
+  public boolean hasSdkIndexLibraryDetails() {
+    return ((bitField4_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   * @return The sdkIndexLibraryDetails.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails getSdkIndexLibraryDetails() {
+    return sdkIndexLibraryDetails_ == null ? com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance() : sdkIndexLibraryDetails_;
+  }
+  /**
+   * <pre>
+   * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+   * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+   * </pre>
+   *
+   * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder getSdkIndexLibraryDetailsOrBuilder() {
+    return sdkIndexLibraryDetails_ == null ? com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance() : sdkIndexLibraryDetails_;
+  }
+
+  public static final int EDITOR_PICKER_EVENT_FIELD_NUMBER = 143;
+  private com.google.wireless.android.sdk.stats.EditorPickerEvent editorPickerEvent_;
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * @return Whether the editorPickerEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasEditorPickerEvent() {
+    return ((bitField4_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   * @return The editorPickerEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditorPickerEvent getEditorPickerEvent() {
+    return editorPickerEvent_ == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.getDefaultInstance() : editorPickerEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = EDITOR_PICKER
+   * </pre>
+   *
+   * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder getEditorPickerEventOrBuilder() {
+    return editorPickerEvent_ == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.getDefaultInstance() : editorPickerEvent_;
+  }
+
+  public static final int COMPOSE_MULTI_PREVIEW_EVENT_FIELD_NUMBER = 144;
+  private com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent composeMultiPreviewEvent_;
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * @return Whether the composeMultiPreviewEvent field is set.
+   */
+  @java.lang.Override
+  public boolean hasComposeMultiPreviewEvent() {
+    return ((bitField4_ & 0x00000200) != 0);
+  }
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   * @return The composeMultiPreviewEvent.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent getComposeMultiPreviewEvent() {
+    return composeMultiPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.getDefaultInstance() : composeMultiPreviewEvent_;
+  }
+  /**
+   * <pre>
+   * set when kind = COMPOSE_MULTI_PREVIEW
+   * </pre>
+   *
+   * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder getComposeMultiPreviewEventOrBuilder() {
+    return composeMultiPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.getDefaultInstance() : composeMultiPreviewEvent_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -20039,6 +21210,30 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField4_ & 0x00000008) != 0)) {
       output.writeMessage(136, getCoroutineDebuggerEvent());
+    }
+    if (((bitField4_ & 0x00000010) != 0)) {
+      output.writeMessage(137, getSplittingTabsUsageEvent());
+    }
+    if (((bitField4_ & 0x00000020) != 0)) {
+      output.writeMessage(138, getLogcatUsageEvent());
+    }
+    for (int i = 0; i < rawProjectIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 139, rawProjectIds_.getRaw(i));
+    }
+    for (int i = 0; i < projectIds_.size(); i++) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 140, projectIds_.getRaw(i));
+    }
+    if (((bitField4_ & 0x00000040) != 0)) {
+      output.writeMessage(141, getOsMetrics());
+    }
+    if (((bitField4_ & 0x00000080) != 0)) {
+      output.writeMessage(142, getSdkIndexLibraryDetails());
+    }
+    if (((bitField4_ & 0x00000100) != 0)) {
+      output.writeMessage(143, getEditorPickerEvent());
+    }
+    if (((bitField4_ & 0x00000200) != 0)) {
+      output.writeMessage(144, getComposeMultiPreviewEvent());
     }
     unknownFields.writeTo(output);
   }
@@ -20590,6 +21785,46 @@ private static final long serialVersionUID = 0L;
     if (((bitField4_ & 0x00000008) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(136, getCoroutineDebuggerEvent());
+    }
+    if (((bitField4_ & 0x00000010) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(137, getSplittingTabsUsageEvent());
+    }
+    if (((bitField4_ & 0x00000020) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(138, getLogcatUsageEvent());
+    }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < rawProjectIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(rawProjectIds_.getRaw(i));
+      }
+      size += dataSize;
+      size += 2 * getRawProjectIdsList().size();
+    }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < projectIds_.size(); i++) {
+        dataSize += computeStringSizeNoTag(projectIds_.getRaw(i));
+      }
+      size += dataSize;
+      size += 2 * getProjectIdsList().size();
+    }
+    if (((bitField4_ & 0x00000040) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(141, getOsMetrics());
+    }
+    if (((bitField4_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(142, getSdkIndexLibraryDetails());
+    }
+    if (((bitField4_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(143, getEditorPickerEvent());
+    }
+    if (((bitField4_ & 0x00000200) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(144, getComposeMultiPreviewEvent());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -21263,6 +22498,40 @@ private static final long serialVersionUID = 0L;
       if (!getCoroutineDebuggerEvent()
           .equals(other.getCoroutineDebuggerEvent())) return false;
     }
+    if (hasSplittingTabsUsageEvent() != other.hasSplittingTabsUsageEvent()) return false;
+    if (hasSplittingTabsUsageEvent()) {
+      if (!getSplittingTabsUsageEvent()
+          .equals(other.getSplittingTabsUsageEvent())) return false;
+    }
+    if (hasLogcatUsageEvent() != other.hasLogcatUsageEvent()) return false;
+    if (hasLogcatUsageEvent()) {
+      if (!getLogcatUsageEvent()
+          .equals(other.getLogcatUsageEvent())) return false;
+    }
+    if (!getRawProjectIdsList()
+        .equals(other.getRawProjectIdsList())) return false;
+    if (!getProjectIdsList()
+        .equals(other.getProjectIdsList())) return false;
+    if (hasOsMetrics() != other.hasOsMetrics()) return false;
+    if (hasOsMetrics()) {
+      if (!getOsMetrics()
+          .equals(other.getOsMetrics())) return false;
+    }
+    if (hasSdkIndexLibraryDetails() != other.hasSdkIndexLibraryDetails()) return false;
+    if (hasSdkIndexLibraryDetails()) {
+      if (!getSdkIndexLibraryDetails()
+          .equals(other.getSdkIndexLibraryDetails())) return false;
+    }
+    if (hasEditorPickerEvent() != other.hasEditorPickerEvent()) return false;
+    if (hasEditorPickerEvent()) {
+      if (!getEditorPickerEvent()
+          .equals(other.getEditorPickerEvent())) return false;
+    }
+    if (hasComposeMultiPreviewEvent() != other.hasComposeMultiPreviewEvent()) return false;
+    if (hasComposeMultiPreviewEvent()) {
+      if (!getComposeMultiPreviewEvent()
+          .equals(other.getComposeMultiPreviewEvent())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -21820,6 +23089,38 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + COROUTINE_DEBUGGER_EVENT_FIELD_NUMBER;
       hash = (53 * hash) + getCoroutineDebuggerEvent().hashCode();
     }
+    if (hasSplittingTabsUsageEvent()) {
+      hash = (37 * hash) + SPLITTING_TABS_USAGE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getSplittingTabsUsageEvent().hashCode();
+    }
+    if (hasLogcatUsageEvent()) {
+      hash = (37 * hash) + LOGCAT_USAGE_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getLogcatUsageEvent().hashCode();
+    }
+    if (getRawProjectIdsCount() > 0) {
+      hash = (37 * hash) + RAW_PROJECT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getRawProjectIdsList().hashCode();
+    }
+    if (getProjectIdsCount() > 0) {
+      hash = (37 * hash) + PROJECT_IDS_FIELD_NUMBER;
+      hash = (53 * hash) + getProjectIdsList().hashCode();
+    }
+    if (hasOsMetrics()) {
+      hash = (37 * hash) + OS_METRICS_FIELD_NUMBER;
+      hash = (53 * hash) + getOsMetrics().hashCode();
+    }
+    if (hasSdkIndexLibraryDetails()) {
+      hash = (37 * hash) + SDK_INDEX_LIBRARY_DETAILS_FIELD_NUMBER;
+      hash = (53 * hash) + getSdkIndexLibraryDetails().hashCode();
+    }
+    if (hasEditorPickerEvent()) {
+      hash = (37 * hash) + EDITOR_PICKER_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getEditorPickerEvent().hashCode();
+    }
+    if (hasComposeMultiPreviewEvent()) {
+      hash = (37 * hash) + COMPOSE_MULTI_PREVIEW_EVENT_FIELD_NUMBER;
+      hash = (53 * hash) + getComposeMultiPreviewEvent().hashCode();
+    }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -22063,6 +23364,12 @@ private static final long serialVersionUID = 0L;
         getOptOutOfMetricsFieldBuilder();
         getGradleVersionCatalogDetectorEventFieldBuilder();
         getCoroutineDebuggerEventFieldBuilder();
+        getSplittingTabsUsageEventFieldBuilder();
+        getLogcatUsageEventFieldBuilder();
+        getOsMetricsFieldBuilder();
+        getSdkIndexLibraryDetailsFieldBuilder();
+        getEditorPickerEventFieldBuilder();
+        getComposeMultiPreviewEventFieldBuilder();
       }
     }
     @java.lang.Override
@@ -22800,6 +24107,46 @@ private static final long serialVersionUID = 0L;
         coroutineDebuggerEventBuilder_.clear();
       }
       bitField4_ = (bitField4_ & ~0x00000080);
+      if (splittingTabsUsageEventBuilder_ == null) {
+        splittingTabsUsageEvent_ = null;
+      } else {
+        splittingTabsUsageEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00000100);
+      if (logcatUsageEventBuilder_ == null) {
+        logcatUsageEvent_ = null;
+      } else {
+        logcatUsageEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00000200);
+      rawProjectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField4_ = (bitField4_ & ~0x00000400);
+      projectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField4_ = (bitField4_ & ~0x00000800);
+      if (osMetricsBuilder_ == null) {
+        osMetrics_ = null;
+      } else {
+        osMetricsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00001000);
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        sdkIndexLibraryDetails_ = null;
+      } else {
+        sdkIndexLibraryDetailsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00002000);
+      if (editorPickerEventBuilder_ == null) {
+        editorPickerEvent_ = null;
+      } else {
+        editorPickerEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00004000);
+      if (composeMultiPreviewEventBuilder_ == null) {
+        composeMultiPreviewEvent_ = null;
+      } else {
+        composeMultiPreviewEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00008000);
       return this;
     }
 
@@ -23844,6 +25191,64 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField4_ |= 0x00000008;
       }
+      if (((from_bitField4_ & 0x00000100) != 0)) {
+        if (splittingTabsUsageEventBuilder_ == null) {
+          result.splittingTabsUsageEvent_ = splittingTabsUsageEvent_;
+        } else {
+          result.splittingTabsUsageEvent_ = splittingTabsUsageEventBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000010;
+      }
+      if (((from_bitField4_ & 0x00000200) != 0)) {
+        if (logcatUsageEventBuilder_ == null) {
+          result.logcatUsageEvent_ = logcatUsageEvent_;
+        } else {
+          result.logcatUsageEvent_ = logcatUsageEventBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000020;
+      }
+      if (((bitField4_ & 0x00000400) != 0)) {
+        rawProjectIds_ = rawProjectIds_.getUnmodifiableView();
+        bitField4_ = (bitField4_ & ~0x00000400);
+      }
+      result.rawProjectIds_ = rawProjectIds_;
+      if (((bitField4_ & 0x00000800) != 0)) {
+        projectIds_ = projectIds_.getUnmodifiableView();
+        bitField4_ = (bitField4_ & ~0x00000800);
+      }
+      result.projectIds_ = projectIds_;
+      if (((from_bitField4_ & 0x00001000) != 0)) {
+        if (osMetricsBuilder_ == null) {
+          result.osMetrics_ = osMetrics_;
+        } else {
+          result.osMetrics_ = osMetricsBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000040;
+      }
+      if (((from_bitField4_ & 0x00002000) != 0)) {
+        if (sdkIndexLibraryDetailsBuilder_ == null) {
+          result.sdkIndexLibraryDetails_ = sdkIndexLibraryDetails_;
+        } else {
+          result.sdkIndexLibraryDetails_ = sdkIndexLibraryDetailsBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000080;
+      }
+      if (((from_bitField4_ & 0x00004000) != 0)) {
+        if (editorPickerEventBuilder_ == null) {
+          result.editorPickerEvent_ = editorPickerEvent_;
+        } else {
+          result.editorPickerEvent_ = editorPickerEventBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000100;
+      }
+      if (((from_bitField4_ & 0x00008000) != 0)) {
+        if (composeMultiPreviewEventBuilder_ == null) {
+          result.composeMultiPreviewEvent_ = composeMultiPreviewEvent_;
+        } else {
+          result.composeMultiPreviewEvent_ = composeMultiPreviewEventBuilder_.build();
+        }
+        to_bitField4_ |= 0x00000200;
+      }
       result.bitField0_ = to_bitField0_;
       result.bitField1_ = to_bitField1_;
       result.bitField2_ = to_bitField2_;
@@ -24395,6 +25800,44 @@ private static final long serialVersionUID = 0L;
       if (other.hasCoroutineDebuggerEvent()) {
         mergeCoroutineDebuggerEvent(other.getCoroutineDebuggerEvent());
       }
+      if (other.hasSplittingTabsUsageEvent()) {
+        mergeSplittingTabsUsageEvent(other.getSplittingTabsUsageEvent());
+      }
+      if (other.hasLogcatUsageEvent()) {
+        mergeLogcatUsageEvent(other.getLogcatUsageEvent());
+      }
+      if (!other.rawProjectIds_.isEmpty()) {
+        if (rawProjectIds_.isEmpty()) {
+          rawProjectIds_ = other.rawProjectIds_;
+          bitField4_ = (bitField4_ & ~0x00000400);
+        } else {
+          ensureRawProjectIdsIsMutable();
+          rawProjectIds_.addAll(other.rawProjectIds_);
+        }
+        onChanged();
+      }
+      if (!other.projectIds_.isEmpty()) {
+        if (projectIds_.isEmpty()) {
+          projectIds_ = other.projectIds_;
+          bitField4_ = (bitField4_ & ~0x00000800);
+        } else {
+          ensureProjectIdsIsMutable();
+          projectIds_.addAll(other.projectIds_);
+        }
+        onChanged();
+      }
+      if (other.hasOsMetrics()) {
+        mergeOsMetrics(other.getOsMetrics());
+      }
+      if (other.hasSdkIndexLibraryDetails()) {
+        mergeSdkIndexLibraryDetails(other.getSdkIndexLibraryDetails());
+      }
+      if (other.hasEditorPickerEvent()) {
+        mergeEditorPickerEvent(other.getEditorPickerEvent());
+      }
+      if (other.hasComposeMultiPreviewEvent()) {
+        mergeComposeMultiPreviewEvent(other.getComposeMultiPreviewEvent());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -24440,7 +25883,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.EventCategory category = 1;</code>
      * @return Whether the category field is set.
      */
-    public boolean hasCategory() {
+    @java.lang.Override public boolean hasCategory() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -24453,6 +25896,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.EventCategory category = 1;</code>
      * @return The category.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory getCategory() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventCategory.valueOf(category_);
@@ -24505,7 +25949,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.EventKind kind = 2;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -24517,6 +25961,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.EventKind kind = 2;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.EventKind.valueOf(kind_);
@@ -24900,7 +26345,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
      * @return Whether the monitorType field is set.
      */
-    @java.lang.Deprecated public boolean hasMonitorType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasMonitorType() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -24912,6 +26357,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.MonitorType monitor_type = 5 [deprecated = true];</code>
      * @return The monitorType.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType getMonitorType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.MonitorType.valueOf(monitorType_);
@@ -24962,6 +26408,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
      * @return Whether the monitorPaused field is set.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean hasMonitorPaused() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -24974,6 +26421,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool monitor_paused = 6 [deprecated = true];</code>
      * @return The monitorPaused.
      */
+    @java.lang.Override
     @java.lang.Deprecated public boolean getMonitorPaused() {
       return monitorPaused_;
     }
@@ -25019,7 +26467,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
      * @return Whether the profilerCaptureType field is set.
      */
-    @java.lang.Deprecated public boolean hasProfilerCaptureType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasProfilerCaptureType() {
       return ((bitField0_ & 0x00000040) != 0);
     }
     /**
@@ -25031,6 +26479,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.ProfilerCaptureType profiler_capture_type = 7 [deprecated = true];</code>
      * @return The profilerCaptureType.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType getProfilerCaptureType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.ProfilerCaptureType.valueOf(profilerCaptureType_);
@@ -25188,6 +26637,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cloud_testing_loaded_screenshots_count = 9;</code>
      * @return Whether the cloudTestingLoadedScreenshotsCount field is set.
      */
+    @java.lang.Override
     public boolean hasCloudTestingLoadedScreenshotsCount() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -25199,6 +26649,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 cloud_testing_loaded_screenshots_count = 9;</code>
      * @return The cloudTestingLoadedScreenshotsCount.
      */
+    @java.lang.Override
     public int getCloudTestingLoadedScreenshotsCount() {
       return cloudTestingLoadedScreenshotsCount_;
     }
@@ -25242,7 +26693,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
      * @return Whether the runConfigurationType field is set.
      */
-    @java.lang.Deprecated public boolean hasRunConfigurationType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasRunConfigurationType() {
       return ((bitField0_ & 0x00000200) != 0);
     }
     /**
@@ -25254,6 +26705,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.RunConfigurationType run_configuration_type = 10 [deprecated = true];</code>
      * @return The runConfigurationType.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType getRunConfigurationType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.RunConfigurationType.valueOf(runConfigurationType_);
@@ -25304,7 +26756,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
      * @return Whether the debuggerType field is set.
      */
-    @java.lang.Deprecated public boolean hasDebuggerType() {
+    @java.lang.Override @java.lang.Deprecated public boolean hasDebuggerType() {
       return ((bitField0_ & 0x00000400) != 0);
     }
     /**
@@ -25316,6 +26768,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DebuggerType debugger_type = 11 [deprecated = true];</code>
      * @return The debuggerType.
      */
+    @java.lang.Override
     @java.lang.Deprecated public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType getDebuggerType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DebuggerType.valueOf(debuggerType_);
@@ -25726,7 +27179,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DeveloperServiceKind developer_service_kind = 14;</code>
      * @return Whether the developerServiceKind field is set.
      */
-    public boolean hasDeveloperServiceKind() {
+    @java.lang.Override public boolean hasDeveloperServiceKind() {
       return ((bitField0_ & 0x00002000) != 0);
     }
     /**
@@ -25738,6 +27191,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.DeveloperServiceKind developer_service_kind = 14;</code>
      * @return The developerServiceKind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind getDeveloperServiceKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.DeveloperServiceKind.valueOf(developerServiceKind_);
@@ -25896,7 +27350,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.GradleSyncFailure gradle_sync_failure = 16;</code>
      * @return Whether the gradleSyncFailure field is set.
      */
-    public boolean hasGradleSyncFailure() {
+    @java.lang.Override public boolean hasGradleSyncFailure() {
       return ((bitField0_ & 0x00008000) != 0);
     }
     /**
@@ -25908,6 +27362,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.GradleSyncFailure gradle_sync_failure = 16;</code>
      * @return The gradleSyncFailure.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure getGradleSyncFailure() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncFailure.valueOf(gradleSyncFailure_);
@@ -26071,7 +27526,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplateRenderer template_renderer = 18;</code>
      * @return Whether the templateRenderer field is set.
      */
-    public boolean hasTemplateRenderer() {
+    @java.lang.Override public boolean hasTemplateRenderer() {
       return ((bitField0_ & 0x00020000) != 0);
     }
     /**
@@ -26082,6 +27537,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.TemplateRenderer template_renderer = 18;</code>
      * @return The templateRenderer.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer getTemplateRenderer() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.TemplateRenderer.valueOf(templateRenderer_);
@@ -32399,7 +33855,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.IdeBrand ide_brand = 58;</code>
      * @return Whether the ideBrand field is set.
      */
-    public boolean hasIdeBrand() {
+    @java.lang.Override public boolean hasIdeBrand() {
       return ((bitField1_ & 0x04000000) != 0);
     }
     /**
@@ -32410,6 +33866,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.IdeBrand ide_brand = 58;</code>
      * @return The ideBrand.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand getIdeBrand() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.IdeBrand.valueOf(ideBrand_);
@@ -34154,6 +35611,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool idea_is_internal = 69;</code>
      * @return Whether the ideaIsInternal field is set.
      */
+    @java.lang.Override
     public boolean hasIdeaIsInternal() {
       return ((bitField2_ & 0x00000020) != 0);
     }
@@ -34167,6 +35625,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool idea_is_internal = 69;</code>
      * @return The ideaIsInternal.
      */
+    @java.lang.Override
     public boolean getIdeaIsInternal() {
       return ideaIsInternal_;
     }
@@ -44827,6 +46286,1277 @@ private static final long serialVersionUID = 0L;
         coroutineDebuggerEvent_ = null;
       }
       return coroutineDebuggerEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent splittingTabsUsageEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent, com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder, com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder> splittingTabsUsageEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     * @return Whether the splittingTabsUsageEvent field is set.
+     */
+    public boolean hasSplittingTabsUsageEvent() {
+      return ((bitField4_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     * @return The splittingTabsUsageEvent.
+     */
+    public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent getSplittingTabsUsageEvent() {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        return splittingTabsUsageEvent_ == null ? com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.getDefaultInstance() : splittingTabsUsageEvent_;
+      } else {
+        return splittingTabsUsageEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public Builder setSplittingTabsUsageEvent(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent value) {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        splittingTabsUsageEvent_ = value;
+        onChanged();
+      } else {
+        splittingTabsUsageEventBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public Builder setSplittingTabsUsageEvent(
+        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder builderForValue) {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        splittingTabsUsageEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        splittingTabsUsageEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public Builder mergeSplittingTabsUsageEvent(com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent value) {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        if (((bitField4_ & 0x00000100) != 0) &&
+            splittingTabsUsageEvent_ != null &&
+            splittingTabsUsageEvent_ != com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.getDefaultInstance()) {
+          splittingTabsUsageEvent_ =
+            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.newBuilder(splittingTabsUsageEvent_).mergeFrom(value).buildPartial();
+        } else {
+          splittingTabsUsageEvent_ = value;
+        }
+        onChanged();
+      } else {
+        splittingTabsUsageEventBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public Builder clearSplittingTabsUsageEvent() {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        splittingTabsUsageEvent_ = null;
+        onChanged();
+      } else {
+        splittingTabsUsageEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00000100);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder getSplittingTabsUsageEventBuilder() {
+      bitField4_ |= 0x00000100;
+      onChanged();
+      return getSplittingTabsUsageEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder getSplittingTabsUsageEventOrBuilder() {
+      if (splittingTabsUsageEventBuilder_ != null) {
+        return splittingTabsUsageEventBuilder_.getMessageOrBuilder();
+      } else {
+        return splittingTabsUsageEvent_ == null ?
+            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.getDefaultInstance() : splittingTabsUsageEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = SPLITTING_TABS_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.SplittingTabsUsageEvent splitting_tabs_usage_event = 137;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent, com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder, com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder> 
+        getSplittingTabsUsageEventFieldBuilder() {
+      if (splittingTabsUsageEventBuilder_ == null) {
+        splittingTabsUsageEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent, com.google.wireless.android.sdk.stats.SplittingTabsUsageEvent.Builder, com.google.wireless.android.sdk.stats.SplittingTabsUsageEventOrBuilder>(
+                getSplittingTabsUsageEvent(),
+                getParentForChildren(),
+                isClean());
+        splittingTabsUsageEvent_ = null;
+      }
+      return splittingTabsUsageEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.LogcatUsageEvent logcatUsageEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.LogcatUsageEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder> logcatUsageEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     * @return Whether the logcatUsageEvent field is set.
+     */
+    public boolean hasLogcatUsageEvent() {
+      return ((bitField4_ & 0x00000200) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     * @return The logcatUsageEvent.
+     */
+    public com.google.wireless.android.sdk.stats.LogcatUsageEvent getLogcatUsageEvent() {
+      if (logcatUsageEventBuilder_ == null) {
+        return logcatUsageEvent_ == null ? com.google.wireless.android.sdk.stats.LogcatUsageEvent.getDefaultInstance() : logcatUsageEvent_;
+      } else {
+        return logcatUsageEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public Builder setLogcatUsageEvent(com.google.wireless.android.sdk.stats.LogcatUsageEvent value) {
+      if (logcatUsageEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        logcatUsageEvent_ = value;
+        onChanged();
+      } else {
+        logcatUsageEventBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public Builder setLogcatUsageEvent(
+        com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder builderForValue) {
+      if (logcatUsageEventBuilder_ == null) {
+        logcatUsageEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        logcatUsageEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public Builder mergeLogcatUsageEvent(com.google.wireless.android.sdk.stats.LogcatUsageEvent value) {
+      if (logcatUsageEventBuilder_ == null) {
+        if (((bitField4_ & 0x00000200) != 0) &&
+            logcatUsageEvent_ != null &&
+            logcatUsageEvent_ != com.google.wireless.android.sdk.stats.LogcatUsageEvent.getDefaultInstance()) {
+          logcatUsageEvent_ =
+            com.google.wireless.android.sdk.stats.LogcatUsageEvent.newBuilder(logcatUsageEvent_).mergeFrom(value).buildPartial();
+        } else {
+          logcatUsageEvent_ = value;
+        }
+        onChanged();
+      } else {
+        logcatUsageEventBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00000200;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public Builder clearLogcatUsageEvent() {
+      if (logcatUsageEventBuilder_ == null) {
+        logcatUsageEvent_ = null;
+        onChanged();
+      } else {
+        logcatUsageEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00000200);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder getLogcatUsageEventBuilder() {
+      bitField4_ |= 0x00000200;
+      onChanged();
+      return getLogcatUsageEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    public com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder getLogcatUsageEventOrBuilder() {
+      if (logcatUsageEventBuilder_ != null) {
+        return logcatUsageEventBuilder_.getMessageOrBuilder();
+      } else {
+        return logcatUsageEvent_ == null ?
+            com.google.wireless.android.sdk.stats.LogcatUsageEvent.getDefaultInstance() : logcatUsageEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = LOGCAT_USAGE
+     * </pre>
+     *
+     * <code>optional .android_studio.LogcatUsageEvent logcat_usage_event = 138;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.LogcatUsageEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder> 
+        getLogcatUsageEventFieldBuilder() {
+      if (logcatUsageEventBuilder_ == null) {
+        logcatUsageEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.LogcatUsageEvent, com.google.wireless.android.sdk.stats.LogcatUsageEvent.Builder, com.google.wireless.android.sdk.stats.LogcatUsageEventOrBuilder>(
+                getLogcatUsageEvent(),
+                getParentForChildren(),
+                isClean());
+        logcatUsageEvent_ = null;
+      }
+      return logcatUsageEventBuilder_;
+    }
+
+    private com.google.protobuf.LazyStringList rawProjectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureRawProjectIdsIsMutable() {
+      if (!((bitField4_ & 0x00000400) != 0)) {
+        rawProjectIds_ = new com.google.protobuf.LazyStringArrayList(rawProjectIds_);
+        bitField4_ |= 0x00000400;
+       }
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @return A list containing the rawProjectIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getRawProjectIdsList() {
+      return rawProjectIds_.getUnmodifiableView();
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @return The count of rawProjectIds.
+     */
+    public int getRawProjectIdsCount() {
+      return rawProjectIds_.size();
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param index The index of the element to return.
+     * @return The rawProjectIds at the given index.
+     */
+    public java.lang.String getRawProjectIds(int index) {
+      return rawProjectIds_.get(index);
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the rawProjectIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getRawProjectIdsBytes(int index) {
+      return rawProjectIds_.getByteString(index);
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param index The index to set the value at.
+     * @param value The rawProjectIds to set.
+     * @return This builder for chaining.
+     */
+    public Builder setRawProjectIds(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawProjectIdsIsMutable();
+      rawProjectIds_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param value The rawProjectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addRawProjectIds(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawProjectIdsIsMutable();
+      rawProjectIds_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param values The rawProjectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllRawProjectIds(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureRawProjectIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, rawProjectIds_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearRawProjectIds() {
+      rawProjectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField4_ = (bitField4_ & ~0x00000400);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * the project ids as used in the playstore, e.g.
+     * 'com.google.android.apps.maps'. This is sensitive information and
+     * thus restricted to "raw" sawmill access. This data is only available in
+     * and for PWG approved scenarios.
+     * </pre>
+     *
+     * <code>repeated string raw_project_ids = 139;</code>
+     * @param value The bytes of the rawProjectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addRawProjectIdsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureRawProjectIdsIsMutable();
+      rawProjectIds_.add(value);
+      onChanged();
+      return this;
+    }
+
+    private com.google.protobuf.LazyStringList projectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    private void ensureProjectIdsIsMutable() {
+      if (!((bitField4_ & 0x00000800) != 0)) {
+        projectIds_ = new com.google.protobuf.LazyStringArrayList(projectIds_);
+        bitField4_ |= 0x00000800;
+       }
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @return A list containing the projectIds.
+     */
+    public com.google.protobuf.ProtocolStringList
+        getProjectIdsList() {
+      return projectIds_.getUnmodifiableView();
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @return The count of projectIds.
+     */
+    public int getProjectIdsCount() {
+      return projectIds_.size();
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param index The index of the element to return.
+     * @return The projectIds at the given index.
+     */
+    public java.lang.String getProjectIds(int index) {
+      return projectIds_.get(index);
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the projectIds at the given index.
+     */
+    public com.google.protobuf.ByteString
+        getProjectIdsBytes(int index) {
+      return projectIds_.getByteString(index);
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param index The index to set the value at.
+     * @param value The projectIds to set.
+     * @return This builder for chaining.
+     */
+    public Builder setProjectIds(
+        int index, java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureProjectIdsIsMutable();
+      projectIds_.set(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param value The projectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addProjectIds(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureProjectIdsIsMutable();
+      projectIds_.add(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param values The projectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllProjectIds(
+        java.lang.Iterable<java.lang.String> values) {
+      ensureProjectIdsIsMutable();
+      com.google.protobuf.AbstractMessageLite.Builder.addAll(
+          values, projectIds_);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearProjectIds() {
+      projectIds_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      bitField4_ = (bitField4_ & ~0x00000800);
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Client-side salted (rotating every 28 days), sha256 of the project id.
+     * set when kind = PROJECT_STRUCTURE_* or kind = APK_ANALYZER_STATS
+     * </pre>
+     *
+     * <code>repeated string project_ids = 140;</code>
+     * @param value The bytes of the projectIds to add.
+     * @return This builder for chaining.
+     */
+    public Builder addProjectIdsBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureProjectIdsIsMutable();
+      projectIds_.add(value);
+      onChanged();
+      return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.OSMetrics osMetrics_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.OSMetrics, com.google.wireless.android.sdk.stats.OSMetrics.Builder, com.google.wireless.android.sdk.stats.OSMetricsOrBuilder> osMetricsBuilder_;
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     * @return Whether the osMetrics field is set.
+     */
+    public boolean hasOsMetrics() {
+      return ((bitField4_ & 0x00001000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     * @return The osMetrics.
+     */
+    public com.google.wireless.android.sdk.stats.OSMetrics getOsMetrics() {
+      if (osMetricsBuilder_ == null) {
+        return osMetrics_ == null ? com.google.wireless.android.sdk.stats.OSMetrics.getDefaultInstance() : osMetrics_;
+      } else {
+        return osMetricsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public Builder setOsMetrics(com.google.wireless.android.sdk.stats.OSMetrics value) {
+      if (osMetricsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        osMetrics_ = value;
+        onChanged();
+      } else {
+        osMetricsBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public Builder setOsMetrics(
+        com.google.wireless.android.sdk.stats.OSMetrics.Builder builderForValue) {
+      if (osMetricsBuilder_ == null) {
+        osMetrics_ = builderForValue.build();
+        onChanged();
+      } else {
+        osMetricsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public Builder mergeOsMetrics(com.google.wireless.android.sdk.stats.OSMetrics value) {
+      if (osMetricsBuilder_ == null) {
+        if (((bitField4_ & 0x00001000) != 0) &&
+            osMetrics_ != null &&
+            osMetrics_ != com.google.wireless.android.sdk.stats.OSMetrics.getDefaultInstance()) {
+          osMetrics_ =
+            com.google.wireless.android.sdk.stats.OSMetrics.newBuilder(osMetrics_).mergeFrom(value).buildPartial();
+        } else {
+          osMetrics_ = value;
+        }
+        onChanged();
+      } else {
+        osMetricsBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00001000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public Builder clearOsMetrics() {
+      if (osMetricsBuilder_ == null) {
+        osMetrics_ = null;
+        onChanged();
+      } else {
+        osMetricsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00001000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public com.google.wireless.android.sdk.stats.OSMetrics.Builder getOsMetricsBuilder() {
+      bitField4_ |= 0x00001000;
+      onChanged();
+      return getOsMetricsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    public com.google.wireless.android.sdk.stats.OSMetricsOrBuilder getOsMetricsOrBuilder() {
+      if (osMetricsBuilder_ != null) {
+        return osMetricsBuilder_.getMessageOrBuilder();
+      } else {
+        return osMetrics_ == null ?
+            com.google.wireless.android.sdk.stats.OSMetrics.getDefaultInstance() : osMetrics_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = OS_METRICS
+     * </pre>
+     *
+     * <code>optional .android_studio.OSMetrics os_metrics = 141;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.OSMetrics, com.google.wireless.android.sdk.stats.OSMetrics.Builder, com.google.wireless.android.sdk.stats.OSMetricsOrBuilder> 
+        getOsMetricsFieldBuilder() {
+      if (osMetricsBuilder_ == null) {
+        osMetricsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.OSMetrics, com.google.wireless.android.sdk.stats.OSMetrics.Builder, com.google.wireless.android.sdk.stats.OSMetricsOrBuilder>(
+                getOsMetrics(),
+                getParentForChildren(),
+                isClean());
+        osMetrics_ = null;
+      }
+      return osMetricsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails sdkIndexLibraryDetails_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder> sdkIndexLibraryDetailsBuilder_;
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     * @return Whether the sdkIndexLibraryDetails field is set.
+     */
+    public boolean hasSdkIndexLibraryDetails() {
+      return ((bitField4_ & 0x00002000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     * @return The sdkIndexLibraryDetails.
+     */
+    public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails getSdkIndexLibraryDetails() {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        return sdkIndexLibraryDetails_ == null ? com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance() : sdkIndexLibraryDetails_;
+      } else {
+        return sdkIndexLibraryDetailsBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public Builder setSdkIndexLibraryDetails(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails value) {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        sdkIndexLibraryDetails_ = value;
+        onChanged();
+      } else {
+        sdkIndexLibraryDetailsBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public Builder setSdkIndexLibraryDetails(
+        com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder builderForValue) {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        sdkIndexLibraryDetails_ = builderForValue.build();
+        onChanged();
+      } else {
+        sdkIndexLibraryDetailsBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public Builder mergeSdkIndexLibraryDetails(com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails value) {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        if (((bitField4_ & 0x00002000) != 0) &&
+            sdkIndexLibraryDetails_ != null &&
+            sdkIndexLibraryDetails_ != com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance()) {
+          sdkIndexLibraryDetails_ =
+            com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.newBuilder(sdkIndexLibraryDetails_).mergeFrom(value).buildPartial();
+        } else {
+          sdkIndexLibraryDetails_ = value;
+        }
+        onChanged();
+      } else {
+        sdkIndexLibraryDetailsBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00002000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public Builder clearSdkIndexLibraryDetails() {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        sdkIndexLibraryDetails_ = null;
+        onChanged();
+      } else {
+        sdkIndexLibraryDetailsBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00002000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder getSdkIndexLibraryDetailsBuilder() {
+      bitField4_ |= 0x00002000;
+      onChanged();
+      return getSdkIndexLibraryDetailsFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    public com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder getSdkIndexLibraryDetailsOrBuilder() {
+      if (sdkIndexLibraryDetailsBuilder_ != null) {
+        return sdkIndexLibraryDetailsBuilder_.getMessageOrBuilder();
+      } else {
+        return sdkIndexLibraryDetails_ == null ?
+            com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.getDefaultInstance() : sdkIndexLibraryDetails_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind is SDK_INDEX_LIBRARY_HAS_CRITICAL_ISSUES,
+     * SDK_INDEX_LIBRARY_IS_OUTDATED or SDK_INDEX_LIBRARY_IS_NON_COMPLIANT
+     * </pre>
+     *
+     * <code>optional .android_studio.SdkIndexLibraryDetails sdk_index_library_details = 142;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder> 
+        getSdkIndexLibraryDetailsFieldBuilder() {
+      if (sdkIndexLibraryDetailsBuilder_ == null) {
+        sdkIndexLibraryDetailsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetails.Builder, com.google.wireless.android.sdk.stats.SdkIndexLibraryDetailsOrBuilder>(
+                getSdkIndexLibraryDetails(),
+                getParentForChildren(),
+                isClean());
+        sdkIndexLibraryDetails_ = null;
+      }
+      return sdkIndexLibraryDetailsBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.EditorPickerEvent editorPickerEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditorPickerEvent, com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder, com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder> editorPickerEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     * @return Whether the editorPickerEvent field is set.
+     */
+    public boolean hasEditorPickerEvent() {
+      return ((bitField4_ & 0x00004000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     * @return The editorPickerEvent.
+     */
+    public com.google.wireless.android.sdk.stats.EditorPickerEvent getEditorPickerEvent() {
+      if (editorPickerEventBuilder_ == null) {
+        return editorPickerEvent_ == null ? com.google.wireless.android.sdk.stats.EditorPickerEvent.getDefaultInstance() : editorPickerEvent_;
+      } else {
+        return editorPickerEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public Builder setEditorPickerEvent(com.google.wireless.android.sdk.stats.EditorPickerEvent value) {
+      if (editorPickerEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        editorPickerEvent_ = value;
+        onChanged();
+      } else {
+        editorPickerEventBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public Builder setEditorPickerEvent(
+        com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder builderForValue) {
+      if (editorPickerEventBuilder_ == null) {
+        editorPickerEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        editorPickerEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public Builder mergeEditorPickerEvent(com.google.wireless.android.sdk.stats.EditorPickerEvent value) {
+      if (editorPickerEventBuilder_ == null) {
+        if (((bitField4_ & 0x00004000) != 0) &&
+            editorPickerEvent_ != null &&
+            editorPickerEvent_ != com.google.wireless.android.sdk.stats.EditorPickerEvent.getDefaultInstance()) {
+          editorPickerEvent_ =
+            com.google.wireless.android.sdk.stats.EditorPickerEvent.newBuilder(editorPickerEvent_).mergeFrom(value).buildPartial();
+        } else {
+          editorPickerEvent_ = value;
+        }
+        onChanged();
+      } else {
+        editorPickerEventBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00004000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public Builder clearEditorPickerEvent() {
+      if (editorPickerEventBuilder_ == null) {
+        editorPickerEvent_ = null;
+        onChanged();
+      } else {
+        editorPickerEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00004000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder getEditorPickerEventBuilder() {
+      bitField4_ |= 0x00004000;
+      onChanged();
+      return getEditorPickerEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    public com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder getEditorPickerEventOrBuilder() {
+      if (editorPickerEventBuilder_ != null) {
+        return editorPickerEventBuilder_.getMessageOrBuilder();
+      } else {
+        return editorPickerEvent_ == null ?
+            com.google.wireless.android.sdk.stats.EditorPickerEvent.getDefaultInstance() : editorPickerEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = EDITOR_PICKER
+     * </pre>
+     *
+     * <code>optional .android_studio.EditorPickerEvent editor_picker_event = 143;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.EditorPickerEvent, com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder, com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder> 
+        getEditorPickerEventFieldBuilder() {
+      if (editorPickerEventBuilder_ == null) {
+        editorPickerEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.EditorPickerEvent, com.google.wireless.android.sdk.stats.EditorPickerEvent.Builder, com.google.wireless.android.sdk.stats.EditorPickerEventOrBuilder>(
+                getEditorPickerEvent(),
+                getParentForChildren(),
+                isClean());
+        editorPickerEvent_ = null;
+      }
+      return editorPickerEventBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent composeMultiPreviewEvent_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder> composeMultiPreviewEventBuilder_;
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     * @return Whether the composeMultiPreviewEvent field is set.
+     */
+    public boolean hasComposeMultiPreviewEvent() {
+      return ((bitField4_ & 0x00008000) != 0);
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     * @return The composeMultiPreviewEvent.
+     */
+    public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent getComposeMultiPreviewEvent() {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        return composeMultiPreviewEvent_ == null ? com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.getDefaultInstance() : composeMultiPreviewEvent_;
+      } else {
+        return composeMultiPreviewEventBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public Builder setComposeMultiPreviewEvent(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent value) {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        composeMultiPreviewEvent_ = value;
+        onChanged();
+      } else {
+        composeMultiPreviewEventBuilder_.setMessage(value);
+      }
+      bitField4_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public Builder setComposeMultiPreviewEvent(
+        com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder builderForValue) {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        composeMultiPreviewEvent_ = builderForValue.build();
+        onChanged();
+      } else {
+        composeMultiPreviewEventBuilder_.setMessage(builderForValue.build());
+      }
+      bitField4_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public Builder mergeComposeMultiPreviewEvent(com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent value) {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        if (((bitField4_ & 0x00008000) != 0) &&
+            composeMultiPreviewEvent_ != null &&
+            composeMultiPreviewEvent_ != com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.getDefaultInstance()) {
+          composeMultiPreviewEvent_ =
+            com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.newBuilder(composeMultiPreviewEvent_).mergeFrom(value).buildPartial();
+        } else {
+          composeMultiPreviewEvent_ = value;
+        }
+        onChanged();
+      } else {
+        composeMultiPreviewEventBuilder_.mergeFrom(value);
+      }
+      bitField4_ |= 0x00008000;
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public Builder clearComposeMultiPreviewEvent() {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        composeMultiPreviewEvent_ = null;
+        onChanged();
+      } else {
+        composeMultiPreviewEventBuilder_.clear();
+      }
+      bitField4_ = (bitField4_ & ~0x00008000);
+      return this;
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder getComposeMultiPreviewEventBuilder() {
+      bitField4_ |= 0x00008000;
+      onChanged();
+      return getComposeMultiPreviewEventFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    public com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder getComposeMultiPreviewEventOrBuilder() {
+      if (composeMultiPreviewEventBuilder_ != null) {
+        return composeMultiPreviewEventBuilder_.getMessageOrBuilder();
+      } else {
+        return composeMultiPreviewEvent_ == null ?
+            com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.getDefaultInstance() : composeMultiPreviewEvent_;
+      }
+    }
+    /**
+     * <pre>
+     * set when kind = COMPOSE_MULTI_PREVIEW
+     * </pre>
+     *
+     * <code>optional .android_studio.ComposeMultiPreviewEvent compose_multi_preview_event = 144;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder> 
+        getComposeMultiPreviewEventFieldBuilder() {
+      if (composeMultiPreviewEventBuilder_ == null) {
+        composeMultiPreviewEventBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEvent.Builder, com.google.wireless.android.sdk.stats.ComposeMultiPreviewEventOrBuilder>(
+                getComposeMultiPreviewEvent(),
+                getParentForChildren(),
+                isClean());
+        composeMultiPreviewEvent_ = null;
+      }
+      return composeMultiPreviewEventBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AnnotationProcessorsAnalyzerData}
  */
-public  final class AnnotationProcessorsAnalyzerData extends
+public final class AnnotationProcessorsAnalyzerData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AnnotationProcessorsAnalyzerData)
     AnnotationProcessorsAnalyzerDataOrBuilder {
@@ -159,7 +159,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor}
    */
-  public  static final class NonIncrementalAnnotationProcessor extends
+  public static final class NonIncrementalAnnotationProcessor extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor)
       NonIncrementalAnnotationProcessorOrBuilder {
@@ -257,6 +257,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 compilation_duration_ms = 1;</code>
      * @return Whether the compilationDurationMs field is set.
      */
+    @java.lang.Override
     public boolean hasCompilationDurationMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -268,6 +269,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 compilation_duration_ms = 1;</code>
      * @return The compilationDurationMs.
      */
+    @java.lang.Override
     public long getCompilationDurationMs() {
       return compilationDurationMs_;
     }
@@ -284,6 +286,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string annotation_processor_class_name = 2;</code>
      * @return Whether the annotationProcessorClassName field is set.
      */
+    @java.lang.Override
     public boolean hasAnnotationProcessorClassName() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -297,6 +300,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string annotation_processor_class_name = 2;</code>
      * @return The annotationProcessorClassName.
      */
+    @java.lang.Override
     public java.lang.String getAnnotationProcessorClassName() {
       java.lang.Object ref = annotationProcessorClassName_;
       if (ref instanceof java.lang.String) {
@@ -321,6 +325,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string annotation_processor_class_name = 2;</code>
      * @return The bytes for annotationProcessorClassName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAnnotationProcessorClassNameBytes() {
       java.lang.Object ref = annotationProcessorClassName_;
@@ -685,6 +690,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 compilation_duration_ms = 1;</code>
        * @return Whether the compilationDurationMs field is set.
        */
+      @java.lang.Override
       public boolean hasCompilationDurationMs() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -696,6 +702,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional int64 compilation_duration_ms = 1;</code>
        * @return The compilationDurationMs.
        */
+      @java.lang.Override
       public long getCompilationDurationMs() {
         return compilationDurationMs_;
       }
@@ -910,6 +917,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor non_incremental_annotation_processors = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor> getNonIncrementalAnnotationProcessorsList() {
     return nonIncrementalAnnotationProcessors_;
   }
@@ -920,6 +928,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor non_incremental_annotation_processors = 1;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessorOrBuilder> 
       getNonIncrementalAnnotationProcessorsOrBuilderList() {
     return nonIncrementalAnnotationProcessors_;
@@ -931,6 +940,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor non_incremental_annotation_processors = 1;</code>
    */
+  @java.lang.Override
   public int getNonIncrementalAnnotationProcessorsCount() {
     return nonIncrementalAnnotationProcessors_.size();
   }
@@ -941,6 +951,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor non_incremental_annotation_processors = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor getNonIncrementalAnnotationProcessors(int index) {
     return nonIncrementalAnnotationProcessors_.get(index);
   }
@@ -951,6 +962,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessor non_incremental_annotation_processors = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.NonIncrementalAnnotationProcessorOrBuilder getNonIncrementalAnnotationProcessorsOrBuilder(
       int index) {
     return nonIncrementalAnnotationProcessors_.get(index);

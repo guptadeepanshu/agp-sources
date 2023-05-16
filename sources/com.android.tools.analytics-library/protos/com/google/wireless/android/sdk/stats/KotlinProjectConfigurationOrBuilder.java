@@ -170,4 +170,23 @@ public interface KotlinProjectConfigurationOrBuilder extends
    * @return The isMultiplatform.
    */
   boolean getIsMultiplatform();
+
+  /**
+   * <pre>
+   * indicates the type of the configuration event (i.e. build)
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+   * @return Whether the eventType field is set.
+   */
+  boolean hasEventType();
+  /**
+   * <pre>
+   * indicates the type of the configuration event (i.e. build)
+   * </pre>
+   *
+   * <code>optional .android_studio.KotlinProjectConfiguration.EventType event_type = 7;</code>
+   * @return The eventType.
+   */
+  com.google.wireless.android.sdk.stats.KotlinProjectConfiguration.EventType getEventType();
 }

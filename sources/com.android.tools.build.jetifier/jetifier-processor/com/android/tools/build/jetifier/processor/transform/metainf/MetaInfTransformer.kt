@@ -42,11 +42,14 @@ class MetaInfTransformer internal constructor(
             "androidx.car_car-moderator.version",
             "androidx.activity_activity-ktx.version",
             "androidx.lifecycle_lifecycle-runtime-ktx.version",
+            "androidx.lifecycle_lifecycle-runtime-testing.version",
             "androidx.dynamicanimation_dynamicanimation-ktx.version",
             "androidx.annotation_annotation-experimental.version",
             "androidx.navigation_navigation-dynamic-features-fragment.version",
             "androidx.navigation_navigation-dynamic-features-runtime.version",
-            "androidx.navigation_navigation-testing.version"
+            "androidx.navigation_navigation-testing.version",
+            "androidx.paging_paging-rxjava3.version",
+            "androidx.savedstate_savedstate-ktx.version"
         )
     }
 

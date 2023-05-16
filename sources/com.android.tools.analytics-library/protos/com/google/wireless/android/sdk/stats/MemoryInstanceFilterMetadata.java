@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.MemoryInstanceFilterMetadata}
  */
-public  final class MemoryInstanceFilterMetadata extends
+public final class MemoryInstanceFilterMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.MemoryInstanceFilterMetadata)
     MemoryInstanceFilterMetadataOrBuilder {
@@ -206,14 +206,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemoryInstanceFilterMetadata.FilterType filter_type = 1;</code>
    * @return Whether the filterType field is set.
    */
-  public boolean hasFilterType() {
+  @java.lang.Override public boolean hasFilterType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.MemoryInstanceFilterMetadata.FilterType filter_type = 1;</code>
    * @return The filterType.
    */
-  public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType getFilterType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType getFilterType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType result = com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType.valueOf(filterType_);
     return result == null ? com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType.UNKNOWN_FILTER_TYPE : result;
@@ -537,13 +537,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.MemoryInstanceFilterMetadata.FilterType filter_type = 1;</code>
      * @return Whether the filterType field is set.
      */
-    public boolean hasFilterType() {
+    @java.lang.Override public boolean hasFilterType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.MemoryInstanceFilterMetadata.FilterType filter_type = 1;</code>
      * @return The filterType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType getFilterType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType result = com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.FilterType.valueOf(filterType_);

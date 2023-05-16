@@ -143,6 +143,10 @@ public final class ManifestOuterClass {
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalStateException(
+            "Can't get the descriptor of an unrecognized enum value.");
+      }
       return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
@@ -381,7 +385,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.Manifest}
    */
-  public  static final class Manifest extends
+  public static final class Manifest extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.Manifest)
       ManifestOrBuilder {
@@ -530,6 +534,7 @@ public final class ManifestOuterClass {
      * <code>int32 version_code = 1;</code>
      * @return The versionCode.
      */
+    @java.lang.Override
     public int getVersionCode() {
       return versionCode_;
     }
@@ -544,6 +549,7 @@ public final class ManifestOuterClass {
      * <code>string version_name = 2;</code>
      * @return The versionName.
      */
+    @java.lang.Override
     public java.lang.String getVersionName() {
       java.lang.Object ref = versionName_;
       if (ref instanceof java.lang.String) {
@@ -564,6 +570,7 @@ public final class ManifestOuterClass {
      * <code>string version_name = 2;</code>
      * @return The bytes for versionName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getVersionNameBytes() {
       java.lang.Object ref = versionName_;
@@ -587,6 +594,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.ApkVersionInfo apks = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.ApkVersionInfo> getApksList() {
       return apks_;
     }
@@ -597,6 +605,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.ApkVersionInfo apks = 3;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.ApkVersionInfoOrBuilder> 
         getApksOrBuilderList() {
       return apks_;
@@ -608,6 +617,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.ApkVersionInfo apks = 3;</code>
      */
+    @java.lang.Override
     public int getApksCount() {
       return apks_.size();
     }
@@ -618,6 +628,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.ApkVersionInfo apks = 3;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.ApkVersionInfo getApks(int index) {
       return apks_.get(index);
     }
@@ -628,6 +639,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.ApkVersionInfo apks = 3;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.ApkVersionInfoOrBuilder getApksOrBuilder(
         int index) {
       return apks_.get(index);
@@ -643,6 +655,7 @@ public final class ManifestOuterClass {
      * <code>.wireless.android.instantapps.sdk.LibraryCompatibility library_compatibility = 4;</code>
      * @return Whether the libraryCompatibility field is set.
      */
+    @java.lang.Override
     public boolean hasLibraryCompatibility() {
       return libraryCompatibility_ != null;
     }
@@ -654,6 +667,7 @@ public final class ManifestOuterClass {
      * <code>.wireless.android.instantapps.sdk.LibraryCompatibility library_compatibility = 4;</code>
      * @return The libraryCompatibility.
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.LibraryCompatibility getLibraryCompatibility() {
       return libraryCompatibility_ == null ? wireless.android.instantapps.sdk.ManifestOuterClass.LibraryCompatibility.getDefaultInstance() : libraryCompatibility_;
     }
@@ -664,6 +678,7 @@ public final class ManifestOuterClass {
      *
      * <code>.wireless.android.instantapps.sdk.LibraryCompatibility library_compatibility = 4;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.LibraryCompatibilityOrBuilder getLibraryCompatibilityOrBuilder() {
       return getLibraryCompatibility();
     }
@@ -677,6 +692,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device enabled_devices = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.Device> getEnabledDevicesList() {
       return enabledDevices_;
     }
@@ -687,6 +703,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device enabled_devices = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder> 
         getEnabledDevicesOrBuilderList() {
       return enabledDevices_;
@@ -698,6 +715,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device enabled_devices = 5;</code>
      */
+    @java.lang.Override
     public int getEnabledDevicesCount() {
       return enabledDevices_.size();
     }
@@ -708,6 +726,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device enabled_devices = 5;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.Device getEnabledDevices(int index) {
       return enabledDevices_.get(index);
     }
@@ -718,6 +737,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device enabled_devices = 5;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder getEnabledDevicesOrBuilder(
         int index) {
       return enabledDevices_.get(index);
@@ -732,6 +752,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride gservices_overrides = 6;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverride> getGservicesOverridesList() {
       return gservicesOverrides_;
     }
@@ -742,6 +763,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride gservices_overrides = 6;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverrideOrBuilder> 
         getGservicesOverridesOrBuilderList() {
       return gservicesOverrides_;
@@ -753,6 +775,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride gservices_overrides = 6;</code>
      */
+    @java.lang.Override
     public int getGservicesOverridesCount() {
       return gservicesOverrides_.size();
     }
@@ -763,6 +786,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride gservices_overrides = 6;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverride getGservicesOverrides(int index) {
       return gservicesOverrides_.get(index);
     }
@@ -773,6 +797,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride gservices_overrides = 6;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverrideOrBuilder getGservicesOverridesOrBuilder(
         int index) {
       return gservicesOverrides_.get(index);
@@ -1311,6 +1336,7 @@ public final class ManifestOuterClass {
        * <code>int32 version_code = 1;</code>
        * @return The versionCode.
        */
+      @java.lang.Override
       public int getVersionCode() {
         return versionCode_;
       }
@@ -2704,7 +2730,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.Device}
    */
-  public  static final class Device extends
+  public static final class Device extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.Device)
       DeviceOrBuilder {
@@ -2842,6 +2868,7 @@ public final class ManifestOuterClass {
      * <code>string manufacturer = 1;</code>
      * @return The manufacturer.
      */
+    @java.lang.Override
     public java.lang.String getManufacturer() {
       java.lang.Object ref = manufacturer_;
       if (ref instanceof java.lang.String) {
@@ -2862,6 +2889,7 @@ public final class ManifestOuterClass {
      * <code>string manufacturer = 1;</code>
      * @return The bytes for manufacturer.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getManufacturerBytes() {
       java.lang.Object ref = manufacturer_;
@@ -2886,6 +2914,7 @@ public final class ManifestOuterClass {
      * <code>string android_device = 2;</code>
      * @return The androidDevice.
      */
+    @java.lang.Override
     public java.lang.String getAndroidDevice() {
       java.lang.Object ref = androidDevice_;
       if (ref instanceof java.lang.String) {
@@ -2906,6 +2935,7 @@ public final class ManifestOuterClass {
      * <code>string android_device = 2;</code>
      * @return The bytes for androidDevice.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getAndroidDeviceBytes() {
       java.lang.Object ref = androidDevice_;
@@ -2930,6 +2960,7 @@ public final class ManifestOuterClass {
      * <code>repeated int32 sdk_int = 3;</code>
      * @return A list containing the sdkInt.
      */
+    @java.lang.Override
     public java.util.List<java.lang.Integer>
         getSdkIntList() {
       return sdkInt_;
@@ -2969,6 +3000,7 @@ public final class ManifestOuterClass {
      * <code>string product = 4;</code>
      * @return The product.
      */
+    @java.lang.Override
     public java.lang.String getProduct() {
       java.lang.Object ref = product_;
       if (ref instanceof java.lang.String) {
@@ -2989,6 +3021,7 @@ public final class ManifestOuterClass {
      * <code>string product = 4;</code>
      * @return The bytes for product.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getProductBytes() {
       java.lang.Object ref = product_;
@@ -3013,6 +3046,7 @@ public final class ManifestOuterClass {
      * <code>string hardware = 5;</code>
      * @return The hardware.
      */
+    @java.lang.Override
     public java.lang.String getHardware() {
       java.lang.Object ref = hardware_;
       if (ref instanceof java.lang.String) {
@@ -3033,6 +3067,7 @@ public final class ManifestOuterClass {
      * <code>string hardware = 5;</code>
      * @return The bytes for hardware.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getHardwareBytes() {
       java.lang.Object ref = hardware_;
@@ -4090,7 +4125,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.GservicesOverride}
    */
-  public  static final class GservicesOverride extends
+  public static final class GservicesOverride extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.GservicesOverride)
       GservicesOverrideOrBuilder {
@@ -4201,6 +4236,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.Device> getDeviceList() {
       return device_;
     }
@@ -4211,6 +4247,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder> 
         getDeviceOrBuilderList() {
       return device_;
@@ -4222,6 +4259,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public int getDeviceCount() {
       return device_.size();
     }
@@ -4232,6 +4270,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.Device getDevice(int index) {
       return device_.get(index);
     }
@@ -4242,6 +4281,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder getDeviceOrBuilder(
         int index) {
       return device_.get(index);
@@ -4257,6 +4297,7 @@ public final class ManifestOuterClass {
      * <code>string key = 2;</code>
      * @return The key.
      */
+    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -4277,6 +4318,7 @@ public final class ManifestOuterClass {
      * <code>string key = 2;</code>
      * @return The bytes for key.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -4301,6 +4343,7 @@ public final class ManifestOuterClass {
      * <code>string value = 3;</code>
      * @return The value.
      */
+    @java.lang.Override
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
       if (ref instanceof java.lang.String) {
@@ -4321,6 +4364,7 @@ public final class ManifestOuterClass {
      * <code>string value = 3;</code>
      * @return The bytes for value.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getValueBytes() {
       java.lang.Object ref = value_;
@@ -5337,7 +5381,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.LibraryCompatibility}
    */
-  public  static final class LibraryCompatibility extends
+  public static final class LibraryCompatibility extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.LibraryCompatibility)
       LibraryCompatibilityOrBuilder {
@@ -5440,6 +5484,7 @@ public final class ManifestOuterClass {
      * <code>int32 aia_compat_api_min_version = 1;</code>
      * @return The aiaCompatApiMinVersion.
      */
+    @java.lang.Override
     public int getAiaCompatApiMinVersion() {
       return aiaCompatApiMinVersion_;
     }
@@ -5453,6 +5498,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GcoreLibraryCompatibility gcore_compat = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.GcoreLibraryCompatibility> getGcoreCompatList() {
       return gcoreCompat_;
     }
@@ -5463,6 +5509,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GcoreLibraryCompatibility gcore_compat = 2;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.GcoreLibraryCompatibilityOrBuilder> 
         getGcoreCompatOrBuilderList() {
       return gcoreCompat_;
@@ -5474,6 +5521,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GcoreLibraryCompatibility gcore_compat = 2;</code>
      */
+    @java.lang.Override
     public int getGcoreCompatCount() {
       return gcoreCompat_.size();
     }
@@ -5484,6 +5532,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GcoreLibraryCompatibility gcore_compat = 2;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GcoreLibraryCompatibility getGcoreCompat(int index) {
       return gcoreCompat_.get(index);
     }
@@ -5494,6 +5543,7 @@ public final class ManifestOuterClass {
      *
      * <code>repeated .wireless.android.instantapps.sdk.GcoreLibraryCompatibility gcore_compat = 2;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GcoreLibraryCompatibilityOrBuilder getGcoreCompatOrBuilder(
         int index) {
       return gcoreCompat_.get(index);
@@ -5872,6 +5922,7 @@ public final class ManifestOuterClass {
        * <code>int32 aia_compat_api_min_version = 1;</code>
        * @return The aiaCompatApiMinVersion.
        */
+      @java.lang.Override
       public int getAiaCompatApiMinVersion() {
         return aiaCompatApiMinVersion_;
       }
@@ -6314,7 +6365,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.GcoreLibraryCompatibility}
    */
-  public  static final class GcoreLibraryCompatibility extends
+  public static final class GcoreLibraryCompatibility extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.GcoreLibraryCompatibility)
       GcoreLibraryCompatibilityOrBuilder {
@@ -6411,6 +6462,7 @@ public final class ManifestOuterClass {
      * <code>string name = 1;</code>
      * @return The name.
      */
+    @java.lang.Override
     public java.lang.String getName() {
       java.lang.Object ref = name_;
       if (ref instanceof java.lang.String) {
@@ -6432,6 +6484,7 @@ public final class ManifestOuterClass {
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getNameBytes() {
       java.lang.Object ref = name_;
@@ -6458,6 +6511,7 @@ public final class ManifestOuterClass {
      * <code>int32 minimum_version = 2;</code>
      * @return The minimumVersion.
      */
+    @java.lang.Override
     public int getMinimumVersion() {
       return minimumVersion_;
     }
@@ -6897,6 +6951,7 @@ public final class ManifestOuterClass {
        * <code>int32 minimum_version = 2;</code>
        * @return The minimumVersion.
        */
+      @java.lang.Override
       public int getMinimumVersion() {
         return minimumVersion_;
       }
@@ -7115,7 +7170,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.ApkVersionInfo}
    */
-  public  static final class ApkVersionInfo extends
+  public static final class ApkVersionInfo extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.ApkVersionInfo)
       ApkVersionInfoOrBuilder {
@@ -7258,6 +7313,7 @@ public final class ManifestOuterClass {
      * <code>string path = 1;</code>
      * @return The path.
      */
+    @java.lang.Override
     public java.lang.String getPath() {
       java.lang.Object ref = path_;
       if (ref instanceof java.lang.String) {
@@ -7278,6 +7334,7 @@ public final class ManifestOuterClass {
      * <code>string path = 1;</code>
      * @return The bytes for path.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPathBytes() {
       java.lang.Object ref = path_;
@@ -7302,7 +7359,7 @@ public final class ManifestOuterClass {
      * <code>.wireless.android.instantapps.sdk.Arch arch = 2;</code>
      * @return The enum numeric value on the wire for arch.
      */
-    public int getArchValue() {
+    @java.lang.Override public int getArchValue() {
       return arch_;
     }
     /**
@@ -7313,7 +7370,7 @@ public final class ManifestOuterClass {
      * <code>.wireless.android.instantapps.sdk.Arch arch = 2;</code>
      * @return The arch.
      */
-    public wireless.android.instantapps.sdk.ManifestOuterClass.Arch getArch() {
+    @java.lang.Override public wireless.android.instantapps.sdk.ManifestOuterClass.Arch getArch() {
       @SuppressWarnings("deprecation")
       wireless.android.instantapps.sdk.ManifestOuterClass.Arch result = wireless.android.instantapps.sdk.ManifestOuterClass.Arch.valueOf(arch_);
       return result == null ? wireless.android.instantapps.sdk.ManifestOuterClass.Arch.UNRECOGNIZED : result;
@@ -7329,6 +7386,7 @@ public final class ManifestOuterClass {
      * <code>string package_name = 3;</code>
      * @return The packageName.
      */
+    @java.lang.Override
     public java.lang.String getPackageName() {
       java.lang.Object ref = packageName_;
       if (ref instanceof java.lang.String) {
@@ -7349,6 +7407,7 @@ public final class ManifestOuterClass {
      * <code>string package_name = 3;</code>
      * @return The bytes for packageName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getPackageNameBytes() {
       java.lang.Object ref = packageName_;
@@ -7373,6 +7432,7 @@ public final class ManifestOuterClass {
      * <code>int32 version_code = 4;</code>
      * @return The versionCode.
      */
+    @java.lang.Override
     public int getVersionCode() {
       return versionCode_;
     }
@@ -7387,6 +7447,7 @@ public final class ManifestOuterClass {
      * <code>string version_name = 5;</code>
      * @return The versionName.
      */
+    @java.lang.Override
     public java.lang.String getVersionName() {
       java.lang.Object ref = versionName_;
       if (ref instanceof java.lang.String) {
@@ -7407,6 +7468,7 @@ public final class ManifestOuterClass {
      * <code>string version_name = 5;</code>
      * @return The bytes for versionName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getVersionNameBytes() {
       java.lang.Object ref = versionName_;
@@ -7431,6 +7493,7 @@ public final class ManifestOuterClass {
      * <code>repeated int32 sdk_int = 6;</code>
      * @return A list containing the sdkInt.
      */
+    @java.lang.Override
     public java.util.List<java.lang.Integer>
         getSdkIntList() {
       return sdkInt_;
@@ -7985,7 +8048,7 @@ public final class ManifestOuterClass {
        * <code>.wireless.android.instantapps.sdk.Arch arch = 2;</code>
        * @return The enum numeric value on the wire for arch.
        */
-      public int getArchValue() {
+      @java.lang.Override public int getArchValue() {
         return arch_;
       }
       /**
@@ -7998,6 +8061,7 @@ public final class ManifestOuterClass {
        * @return This builder for chaining.
        */
       public Builder setArchValue(int value) {
+        
         arch_ = value;
         onChanged();
         return this;
@@ -8010,6 +8074,7 @@ public final class ManifestOuterClass {
        * <code>.wireless.android.instantapps.sdk.Arch arch = 2;</code>
        * @return The arch.
        */
+      @java.lang.Override
       public wireless.android.instantapps.sdk.ManifestOuterClass.Arch getArch() {
         @SuppressWarnings("deprecation")
         wireless.android.instantapps.sdk.ManifestOuterClass.Arch result = wireless.android.instantapps.sdk.ManifestOuterClass.Arch.valueOf(arch_);
@@ -8153,6 +8218,7 @@ public final class ManifestOuterClass {
        * <code>int32 version_code = 4;</code>
        * @return The versionCode.
        */
+      @java.lang.Override
       public int getVersionCode() {
         return versionCode_;
       }
@@ -8476,7 +8542,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.GservicesOverridesList}
    */
-  public  static final class GservicesOverridesList extends
+  public static final class GservicesOverridesList extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.GservicesOverridesList)
       GservicesOverridesListOrBuilder {
@@ -8569,12 +8635,14 @@ public final class ManifestOuterClass {
     /**
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride override = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverride> getOverrideList() {
       return override_;
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride override = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverrideOrBuilder> 
         getOverrideOrBuilderList() {
       return override_;
@@ -8582,18 +8650,21 @@ public final class ManifestOuterClass {
     /**
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride override = 1;</code>
      */
+    @java.lang.Override
     public int getOverrideCount() {
       return override_.size();
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride override = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverride getOverride(int index) {
       return override_.get(index);
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.GservicesOverride override = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.GservicesOverrideOrBuilder getOverrideOrBuilder(
         int index) {
       return override_.get(index);
@@ -9272,7 +9343,7 @@ public final class ManifestOuterClass {
    *
    * Protobuf type {@code wireless.android.instantapps.sdk.EnabledDevicesList}
    */
-  public  static final class EnabledDevicesList extends
+  public static final class EnabledDevicesList extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:wireless.android.instantapps.sdk.EnabledDevicesList)
       EnabledDevicesListOrBuilder {
@@ -9365,12 +9436,14 @@ public final class ManifestOuterClass {
     /**
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<wireless.android.instantapps.sdk.ManifestOuterClass.Device> getDeviceList() {
       return device_;
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder> 
         getDeviceOrBuilderList() {
       return device_;
@@ -9378,18 +9451,21 @@ public final class ManifestOuterClass {
     /**
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public int getDeviceCount() {
       return device_.size();
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.Device getDevice(int index) {
       return device_.get(index);
     }
     /**
      * <code>repeated .wireless.android.instantapps.sdk.Device device = 1;</code>
      */
+    @java.lang.Override
     public wireless.android.instantapps.sdk.ManifestOuterClass.DeviceOrBuilder getDeviceOrBuilder(
         int index) {
       return device_.get(index);

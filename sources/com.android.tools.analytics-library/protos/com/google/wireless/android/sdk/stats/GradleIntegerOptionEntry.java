@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleIntegerOptionEntry}
  */
-public  final class GradleIntegerOptionEntry extends
+public final class GradleIntegerOptionEntry extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleIntegerOptionEntry)
     GradleIntegerOptionEntryOrBuilder {
@@ -108,6 +108,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 integer_option = 1;</code>
    * @return Whether the integerOption field is set.
    */
+  @java.lang.Override
   public boolean hasIntegerOption() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -121,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 integer_option = 1;</code>
    * @return The integerOption.
    */
+  @java.lang.Override
   public int getIntegerOption() {
     return integerOption_;
   }
@@ -140,6 +142,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 integer_option_value = 2;</code>
    * @return Whether the integerOptionValue field is set.
    */
+  @java.lang.Override
   public boolean hasIntegerOptionValue() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -156,6 +159,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 integer_option_value = 2;</code>
    * @return The integerOptionValue.
    */
+  @java.lang.Override
   public int getIntegerOptionValue() {
     return integerOptionValue_;
   }
@@ -514,6 +518,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 integer_option = 1;</code>
      * @return Whether the integerOption field is set.
      */
+    @java.lang.Override
     public boolean hasIntegerOption() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -527,6 +532,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 integer_option = 1;</code>
      * @return The integerOption.
      */
+    @java.lang.Override
     public int getIntegerOption() {
       return integerOption_;
     }
@@ -578,6 +584,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 integer_option_value = 2;</code>
      * @return Whether the integerOptionValue field is set.
      */
+    @java.lang.Override
     public boolean hasIntegerOptionValue() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -594,6 +601,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 integer_option_value = 2;</code>
      * @return The integerOptionValue.
      */
+    @java.lang.Override
     public int getIntegerOptionValue() {
       return integerOptionValue_;
     }

@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.DeviceManagerEvent}
  */
-public  final class DeviceManagerEvent extends
+public final class DeviceManagerEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.DeviceManagerEvent)
     DeviceManagerEventOrBuilder {
@@ -486,7 +486,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceManagerEvent.EventKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -497,7 +497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.DeviceManagerEvent.EventKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind result = com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind.UNSPECIFIED : result;
@@ -514,6 +514,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 virtual_device_count = 2;</code>
    * @return Whether the virtualDeviceCount field is set.
    */
+  @java.lang.Override
   public boolean hasVirtualDeviceCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -526,6 +527,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 virtual_device_count = 2;</code>
    * @return The virtualDeviceCount.
    */
+  @java.lang.Override
   public int getVirtualDeviceCount() {
     return virtualDeviceCount_;
   }
@@ -882,7 +884,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceManagerEvent.EventKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -893,6 +895,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.DeviceManagerEvent.EventKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind result = com.google.wireless.android.sdk.stats.DeviceManagerEvent.EventKind.valueOf(kind_);
@@ -941,6 +944,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 virtual_device_count = 2;</code>
      * @return Whether the virtualDeviceCount field is set.
      */
+    @java.lang.Override
     public boolean hasVirtualDeviceCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -953,6 +957,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 virtual_device_count = 2;</code>
      * @return The virtualDeviceCount.
      */
+    @java.lang.Override
     public int getVirtualDeviceCount() {
       return virtualDeviceCount_;
     }

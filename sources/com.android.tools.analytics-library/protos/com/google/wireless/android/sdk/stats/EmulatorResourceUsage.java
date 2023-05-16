@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorResourceUsage}
  */
-public  final class EmulatorResourceUsage extends
+public final class EmulatorResourceUsage extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorResourceUsage)
     EmulatorResourceUsageOrBuilder {
@@ -472,14 +472,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorResourceUsage.RunCondition run_condition = 1;</code>
    * @return Whether the runCondition field is set.
    */
-  public boolean hasRunCondition() {
+  @java.lang.Override public boolean hasRunCondition() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.EmulatorResourceUsage.RunCondition run_condition = 1;</code>
    * @return The runCondition.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.valueOf(runCondition_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.RUN_CONDITION_DEFAULT : result;
@@ -491,6 +491,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
    * @return Whether the mainLoopSlice field is set.
    */
+  @java.lang.Override
   public boolean hasMainLoopSlice() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -498,12 +499,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
    * @return The mainLoopSlice.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSlice getMainLoopSlice() {
     return mainLoopSlice_ == null ? com.google.wireless.android.sdk.stats.CpuTimeSlice.getDefaultInstance() : mainLoopSlice_;
   }
   /**
    * <code>optional .android_studio.CpuTimeSlice main_loop_slice = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getMainLoopSliceOrBuilder() {
     return mainLoopSlice_ == null ? com.google.wireless.android.sdk.stats.CpuTimeSlice.getDefaultInstance() : mainLoopSlice_;
   }
@@ -513,12 +516,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.CpuTimeSlice> getVcpuSlicesList() {
     return vcpuSlices_;
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder> 
       getVcpuSlicesOrBuilderList() {
     return vcpuSlices_;
@@ -526,18 +531,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
    */
+  @java.lang.Override
   public int getVcpuSlicesCount() {
     return vcpuSlices_.size();
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSlice getVcpuSlices(int index) {
     return vcpuSlices_.get(index);
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice vcpu_slices = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getVcpuSlicesOrBuilder(
       int index) {
     return vcpuSlices_.get(index);
@@ -548,12 +556,14 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.CpuTimeSlice> getGuestCpuSlicesList() {
     return guestCpuSlices_;
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder> 
       getGuestCpuSlicesOrBuilderList() {
     return guestCpuSlices_;
@@ -561,18 +571,21 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
    */
+  @java.lang.Override
   public int getGuestCpuSlicesCount() {
     return guestCpuSlices_.size();
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSlice getGuestCpuSlices(int index) {
     return guestCpuSlices_.get(index);
   }
   /**
    * <code>repeated .android_studio.CpuTimeSlice guest_cpu_slices = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuTimeSliceOrBuilder getGuestCpuSlicesOrBuilder(
       int index) {
     return guestCpuSlices_.get(index);
@@ -594,14 +607,16 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorResourceUsage.GuestCpuUsageSource top_guest_cpu_usage_sources = 5;</code>
    * @return A list containing the topGuestCpuUsageSources.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource> getTopGuestCpuUsageSourcesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource>(topGuestCpuUsageSources_, topGuestCpuUsageSources_converter_);
   }
   /**
    * <code>repeated .android_studio.EmulatorResourceUsage.GuestCpuUsageSource top_guest_cpu_usage_sources = 5;</code>
-   * @param value The topGuestCpuUsageSources to add.
+   * @return The count of topGuestCpuUsageSources.
    */
+  @java.lang.Override
   public int getTopGuestCpuUsageSourcesCount() {
     return topGuestCpuUsageSources_.size();
   }
@@ -610,6 +625,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The topGuestCpuUsageSources at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.GuestCpuUsageSource getTopGuestCpuUsageSources(int index) {
     return topGuestCpuUsageSources_converter_.convert(topGuestCpuUsageSources_.get(index));
   }
@@ -620,6 +636,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
    * @return Whether the memoryUsage field is set.
    */
+  @java.lang.Override
   public boolean hasMemoryUsage() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -627,12 +644,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
    * @return The memoryUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMemoryUsage getMemoryUsage() {
     return memoryUsage_ == null ? com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.getDefaultInstance() : memoryUsage_;
   }
   /**
    * <code>optional .android_studio.EmulatorMemoryUsage memory_usage = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorMemoryUsageOrBuilder getMemoryUsageOrBuilder() {
     return memoryUsage_ == null ? com.google.wireless.android.sdk.stats.EmulatorMemoryUsage.getDefaultInstance() : memoryUsage_;
   }
@@ -643,6 +662,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
    * @return Whether the graphicsResourceUsage field is set.
    */
+  @java.lang.Override
   public boolean hasGraphicsResourceUsage() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -650,12 +670,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
    * @return The graphicsResourceUsage.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GraphicsResourceUsage getGraphicsResourceUsage() {
     return graphicsResourceUsage_ == null ? com.google.wireless.android.sdk.stats.GraphicsResourceUsage.getDefaultInstance() : graphicsResourceUsage_;
   }
   /**
    * <code>optional .android_studio.GraphicsResourceUsage graphics_resource_usage = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GraphicsResourceUsageOrBuilder getGraphicsResourceUsageOrBuilder() {
     return graphicsResourceUsage_ == null ? com.google.wireless.android.sdk.stats.GraphicsResourceUsage.getDefaultInstance() : graphicsResourceUsage_;
   }
@@ -1228,13 +1250,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorResourceUsage.RunCondition run_condition = 1;</code>
      * @return Whether the runCondition field is set.
      */
-    public boolean hasRunCondition() {
+    @java.lang.Override public boolean hasRunCondition() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EmulatorResourceUsage.RunCondition run_condition = 1;</code>
      * @return The runCondition.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition getRunCondition() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition result = com.google.wireless.android.sdk.stats.EmulatorResourceUsage.RunCondition.valueOf(runCondition_);

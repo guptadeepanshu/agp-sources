@@ -69,6 +69,8 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         return name
     }
 
+    abstract override var enableAndroidTestCoverage: Boolean
+
     abstract override var enableUnitTestCoverage: Boolean
 
     abstract var _isDebuggable: Boolean
@@ -87,6 +89,8 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
     abstract override var isRenderscriptDebuggable: Boolean
 
     abstract override var renderscriptOptimLevel: Int
+
+    abstract override var isProfileable: Boolean
 
     @Deprecated("This property is deprecated. Changing its value has no effect.")
     override var isZipAlignEnabled: Boolean
@@ -154,24 +158,9 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         matchingFallbacks.add(fallback)
     }
 
-    override val javaCompileOptions: JavaCompileOptions =
-        dslServices.newInstance(JavaCompileOptions::class.java, dslServices)
-
-    override fun javaCompileOptions(action: com.android.build.api.dsl.JavaCompileOptions.() -> Unit) {
-        action.invoke(javaCompileOptions)
-    }
+    abstract override val javaCompileOptions: JavaCompileOptions
 
     override val shaders: ShaderOptions = dslServices.newInstance(ShaderOptions::class.java)
-
-    override val aarMetadata: AarMetadata = dslServices.newInstance(AarMetadata::class.java)
-
-    override fun aarMetadata(action: com.android.build.api.dsl.AarMetadata.() -> Unit) {
-        action.invoke(aarMetadata)
-    }
-
-    override fun aarMetadata(action: Action<com.android.build.api.dsl.AarMetadata>) {
-        action.execute(aarMetadata)
-    }
 
     /**
      * Initialize the DSL object with the debug signingConfig. Not meant to be used from the build
@@ -248,6 +237,7 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         _shrinkResources = thatBuildType._shrinkResources
         shaders._initWith(thatBuildType.shaders)
         enableUnitTestCoverage = thatBuildType.enableUnitTestCoverage
+        enableAndroidTestCoverage = thatBuildType.enableAndroidTestCoverage
         externalNativeBuildOptions._initWith(thatBuildType.externalNativeBuildOptions)
         _postProcessing.initWith(that.postprocessing)
         isCrunchPngs = thatBuildType.isCrunchPngs
@@ -255,7 +245,9 @@ abstract class BuildType @Inject @WithLazyInitialization(methodName="lazyInit") 
         setMatchingFallbacks(thatBuildType.matchingFallbacks)
         // we don't want to dynamically link these values. We just want to copy the current value.
         isDefault = thatBuildType.isDefault
+        isProfileable = thatBuildType.isProfileable
         aarMetadata.minCompileSdk = thatBuildType.aarMetadata.minCompileSdk
+        (optimization as OptimizationImpl).initWith(that.optimization as OptimizationImpl)
     }
 
     /** Override as DSL objects have no reason to be compared for equality.  */

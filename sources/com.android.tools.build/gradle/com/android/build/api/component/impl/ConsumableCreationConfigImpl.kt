@@ -21,7 +21,7 @@ import com.android.build.api.variant.impl.getFeatureLevel
 import com.android.build.gradle.internal.component.ConsumableCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.scope.VariantScope
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.builder.dexing.DexingType
 import com.android.builder.errors.IssueReporter
 
@@ -45,8 +45,8 @@ import com.android.builder.errors.IssueReporter
  * @param globalScope pointer to the global scope to access project wide options.
  * @param variantDslInfo variant configuration coming from the DSL.
  */
-open class ConsumableCreationConfigImpl(
-        open val config: ConsumableCreationConfig,
+open class ConsumableCreationConfigImpl<T: ConsumableCreationConfig>(
+        val config: T,
         val variantDslInfo: VariantDslInfo) {
 
     val dexingType: DexingType
@@ -64,7 +64,7 @@ open class ConsumableCreationConfigImpl(
     open fun getNeedsMergedJavaResStream(): Boolean {
         // We need to create a stream from the merged java resources if we're in a library module,
         // or if we're in an app/feature module which uses the transform pipeline.
-        return (variantDslInfo.variantType.isAar
+        return (variantDslInfo.componentType.isAar
                 || variantDslInfo.transforms.isNotEmpty()
                 || config.minifiedEnabled)
     }
@@ -122,7 +122,7 @@ open class ConsumableCreationConfigImpl(
      open val minSdkVersionForDexing: AndroidVersion
         get() = config.minSdkVersion
 
-    fun renderscript(internalServices: VariantPropertiesApiServices): Renderscript? {
+    fun renderscript(internalServices: VariantServices): Renderscript? {
         return if (config.buildFeatures.renderScript) {
             internalServices.newInstance(Renderscript::class.java).also {
                 it.supportModeEnabled.set(variantDslInfo.renderscriptSupportModeEnabled)

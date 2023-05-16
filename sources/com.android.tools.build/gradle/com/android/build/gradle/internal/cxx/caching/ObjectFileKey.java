@@ -13,7 +13,7 @@ package com.android.build.gradle.internal.cxx.caching;
  *
  * Protobuf type {@code ObjectFileKey}
  */
-public  final class ObjectFileKey extends
+public final class ObjectFileKey extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:ObjectFileKey)
     ObjectFileKeyOrBuilder {
@@ -123,6 +123,7 @@ private static final long serialVersionUID = 0L;
    * <code>.DependenciesKey dependency_key = 1;</code>
    * @return Whether the dependencyKey field is set.
    */
+  @java.lang.Override
   public boolean hasDependencyKey() {
     return dependencyKey_ != null;
   }
@@ -133,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>.DependenciesKey dependency_key = 1;</code>
    * @return The dependencyKey.
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.DependenciesKey getDependencyKey() {
     return dependencyKey_ == null ? com.android.build.gradle.internal.cxx.caching.DependenciesKey.getDefaultInstance() : dependencyKey_;
   }
@@ -142,6 +144,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>.DependenciesKey dependency_key = 1;</code>
    */
+  @java.lang.Override
   public com.android.build.gradle.internal.cxx.caching.DependenciesKeyOrBuilder getDependencyKeyOrBuilder() {
     return getDependencyKey();
   }

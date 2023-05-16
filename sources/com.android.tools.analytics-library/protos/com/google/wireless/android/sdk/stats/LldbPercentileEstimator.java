@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.LldbPercentileEstimator}
  */
-public  final class LldbPercentileEstimator extends
+public final class LldbPercentileEstimator extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LldbPercentileEstimator)
     LldbPercentileEstimatorOrBuilder {
@@ -263,7 +263,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbPercentileEstimator.Metric metric = 1;</code>
    * @return Whether the metric field is set.
    */
-  public boolean hasMetric() {
+  @java.lang.Override public boolean hasMetric() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -274,7 +274,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LldbPercentileEstimator.Metric metric = 1;</code>
    * @return The metric.
    */
-  public com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric getMetric() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric getMetric() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.valueOf(metric_);
     return result == null ? com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.ATTACH_TIME_MICROS : result;
@@ -290,6 +290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
    * @return Whether the estimator field is set.
    */
+  @java.lang.Override
   public boolean hasEstimator() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -301,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
    * @return The estimator.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimator getEstimator() {
     return estimator_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : estimator_;
   }
@@ -311,6 +313,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PercentileEstimator estimator = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getEstimatorOrBuilder() {
     return estimator_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : estimator_;
   }
@@ -671,7 +674,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LldbPercentileEstimator.Metric metric = 1;</code>
      * @return Whether the metric field is set.
      */
-    public boolean hasMetric() {
+    @java.lang.Override public boolean hasMetric() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -682,6 +685,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LldbPercentileEstimator.Metric metric = 1;</code>
      * @return The metric.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric getMetric() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric result = com.google.wireless.android.sdk.stats.LldbPercentileEstimator.Metric.valueOf(metric_);

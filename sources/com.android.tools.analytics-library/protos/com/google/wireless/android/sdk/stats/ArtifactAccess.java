@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ArtifactAccess}
  */
-public  final class ArtifactAccess extends
+public final class ArtifactAccess extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ArtifactAccess)
     ArtifactAccessOrBuilder {
@@ -260,7 +260,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ArtifactAccess.AccessType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -271,7 +271,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ArtifactAccess.AccessType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.UNKNOWN_ACCESS_TYPE : result;
@@ -290,6 +290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 input_artifact_type = 2;</code>
    * @return Whether the inputArtifactType field is set.
    */
+  @java.lang.Override
   public boolean hasInputArtifactType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -304,6 +305,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 input_artifact_type = 2;</code>
    * @return The inputArtifactType.
    */
+  @java.lang.Override
   public int getInputArtifactType() {
     return inputArtifactType_;
   }
@@ -320,6 +322,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 output_artifact_type = 3;</code>
    * @return Whether the outputArtifactType field is set.
    */
+  @java.lang.Override
   public boolean hasOutputArtifactType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -333,6 +336,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 output_artifact_type = 3;</code>
    * @return The outputArtifactType.
    */
+  @java.lang.Override
   public int getOutputArtifactType() {
     return outputArtifactType_;
   }
@@ -713,7 +717,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ArtifactAccess.AccessType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -724,6 +728,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ArtifactAccess.AccessType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType result = com.google.wireless.android.sdk.stats.ArtifactAccess.AccessType.valueOf(type_);
@@ -774,6 +779,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 input_artifact_type = 2;</code>
      * @return Whether the inputArtifactType field is set.
      */
+    @java.lang.Override
     public boolean hasInputArtifactType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -788,6 +794,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 input_artifact_type = 2;</code>
      * @return The inputArtifactType.
      */
+    @java.lang.Override
     public int getInputArtifactType() {
       return inputArtifactType_;
     }
@@ -838,6 +845,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 output_artifact_type = 3;</code>
      * @return Whether the outputArtifactType field is set.
      */
+    @java.lang.Override
     public boolean hasOutputArtifactType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -851,6 +859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 output_artifact_type = 3;</code>
      * @return The outputArtifactType.
      */
+    @java.lang.Override
     public int getOutputArtifactType() {
       return outputArtifactType_;
     }

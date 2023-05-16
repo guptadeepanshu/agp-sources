@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.StudioRunEvent}
  */
-@java.lang.Deprecated public  final class StudioRunEvent extends
+@java.lang.Deprecated public final class StudioRunEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioRunEvent)
     StudioRunEventOrBuilder {
@@ -936,6 +936,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_id = 1;</code>
    * @return Whether the runId field is set.
    */
+  @java.lang.Override
   public boolean hasRunId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -948,6 +949,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_id = 1;</code>
    * @return The runId.
    */
+  @java.lang.Override
   public java.lang.String getRunId() {
     java.lang.Object ref = runId_;
     if (ref instanceof java.lang.String) {
@@ -971,6 +973,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string run_id = 1;</code>
    * @return The bytes for runId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getRunIdBytes() {
     java.lang.Object ref = runId_;
@@ -995,7 +998,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.RunType run_type = 2;</code>
    * @return Whether the runType field is set.
    */
-  public boolean hasRunType() {
+  @java.lang.Override public boolean hasRunType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -1006,7 +1009,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.RunType run_type = 2;</code>
    * @return The runType.
    */
-  public com.google.wireless.android.sdk.stats.StudioRunEvent.RunType getRunType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioRunEvent.RunType getRunType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioRunEvent.RunType result = com.google.wireless.android.sdk.stats.StudioRunEvent.RunType.valueOf(runType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.RunType.UNKNOWN : result;
@@ -1022,7 +1025,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.SectionType section_type = 3;</code>
    * @return Whether the sectionType field is set.
    */
-  public boolean hasSectionType() {
+  @java.lang.Override public boolean hasSectionType() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -1033,7 +1036,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.SectionType section_type = 3;</code>
    * @return The sectionType.
    */
-  public com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType getSectionType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType getSectionType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType result = com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType.valueOf(sectionType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType.UNKNOWN_SECTION : result;
@@ -1049,7 +1052,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.EventType event_type = 4;</code>
    * @return Whether the eventType field is set.
    */
-  public boolean hasEventType() {
+  @java.lang.Override public boolean hasEventType() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -1060,7 +1063,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.EventType event_type = 4;</code>
    * @return The eventType.
    */
-  public com.google.wireless.android.sdk.stats.StudioRunEvent.EventType getEventType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioRunEvent.EventType getEventType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioRunEvent.EventType result = com.google.wireless.android.sdk.stats.StudioRunEvent.EventType.valueOf(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.EventType.NONE : result;
@@ -1076,6 +1079,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 duration_ms = 5;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1087,6 +1091,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 duration_ms = 5;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public int getDurationMs() {
     return durationMs_;
   }
@@ -1101,7 +1106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.BuildMode build_mode = 6;</code>
    * @return Whether the buildMode field is set.
    */
-  public boolean hasBuildMode() {
+  @java.lang.Override public boolean hasBuildMode() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -1112,7 +1117,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.BuildMode build_mode = 6;</code>
    * @return The buildMode.
    */
-  public com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode getBuildMode() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode getBuildMode() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode result = com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode.valueOf(buildMode_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode.UNKNOWN_BUILD_MODE : result;
@@ -1128,6 +1133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_successful = 7;</code>
    * @return Whether the isSuccessful field is set.
    */
+  @java.lang.Override
   public boolean hasIsSuccessful() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1139,6 +1145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_successful = 7;</code>
    * @return The isSuccessful.
    */
+  @java.lang.Override
   public boolean getIsSuccessful() {
     return isSuccessful_;
   }
@@ -1153,6 +1160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 artifact_count = 8;</code>
    * @return Whether the artifactCount field is set.
    */
+  @java.lang.Override
   public boolean hasArtifactCount() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1164,6 +1172,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 artifact_count = 8;</code>
    * @return The artifactCount.
    */
+  @java.lang.Override
   public int getArtifactCount() {
     return artifactCount_;
   }
@@ -1178,7 +1187,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.DeployTask deploy_task = 9;</code>
    * @return Whether the deployTask field is set.
    */
-  public boolean hasDeployTask() {
+  @java.lang.Override public boolean hasDeployTask() {
     return ((bitField0_ & 0x00000100) != 0);
   }
   /**
@@ -1189,7 +1198,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioRunEvent.DeployTask deploy_task = 9;</code>
    * @return The deployTask.
    */
-  public com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask getDeployTask() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask getDeployTask() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask result = com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask.valueOf(deployTask_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask.UNKNOWN_TASK : result;
@@ -1207,6 +1216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 disabled_dynamic_features_count = 11;</code>
    * @return Whether the disabledDynamicFeaturesCount field is set.
    */
+  @java.lang.Override
   public boolean hasDisabledDynamicFeaturesCount() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -1220,6 +1230,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 disabled_dynamic_features_count = 11;</code>
    * @return The disabledDynamicFeaturesCount.
    */
+  @java.lang.Override
   public int getDisabledDynamicFeaturesCount() {
     return disabledDynamicFeaturesCount_;
   }
@@ -1236,6 +1247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run = 12;</code>
    * @return Whether the instantRun field is set.
    */
+  @java.lang.Override
   public boolean hasInstantRun() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -1249,6 +1261,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run = 12;</code>
    * @return The instantRun.
    */
+  @java.lang.Override
   public boolean getInstantRun() {
     return instantRun_;
   }
@@ -1264,6 +1277,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool patch_build = 13;</code>
    * @return Whether the patchBuild field is set.
    */
+  @java.lang.Override
   public boolean hasPatchBuild() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -1276,6 +1290,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool patch_build = 13;</code>
    * @return The patchBuild.
    */
+  @java.lang.Override
   public boolean getPatchBuild() {
     return patchBuild_;
   }
@@ -1292,6 +1307,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool do_not_restart = 14;</code>
    * @return Whether the doNotRestart field is set.
    */
+  @java.lang.Override
   public boolean hasDoNotRestart() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -1305,6 +1321,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool do_not_restart = 14;</code>
    * @return The doNotRestart.
    */
+  @java.lang.Override
   public boolean getDoNotRestart() {
     return doNotRestart_;
   }
@@ -1320,6 +1337,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool debuggable = 15;</code>
    * @return Whether the debuggable field is set.
    */
+  @java.lang.Override
   public boolean hasDebuggable() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -1332,6 +1350,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool debuggable = 15;</code>
    * @return The debuggable.
    */
+  @java.lang.Override
   public boolean getDebuggable() {
     return debuggable_;
   }
@@ -1347,6 +1366,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_selected_target = 16;</code>
    * @return Whether the userSelectedTarget field is set.
    */
+  @java.lang.Override
   public boolean hasUserSelectedTarget() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -1359,6 +1379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_selected_target = 16;</code>
    * @return The userSelectedTarget.
    */
+  @java.lang.Override
   public boolean getUserSelectedTarget() {
     return userSelectedTarget_;
   }
@@ -1373,6 +1394,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact_details = 17;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.ArtifactDetail> getArtifactDetailsList() {
     return artifactDetails_;
   }
@@ -1384,6 +1406,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact_details = 17;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.ArtifactDetailOrBuilder> 
       getArtifactDetailsOrBuilderList() {
     return artifactDetails_;
@@ -1396,6 +1419,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact_details = 17;</code>
    */
+  @java.lang.Override
   public int getArtifactDetailsCount() {
     return artifactDetails_.size();
   }
@@ -1407,6 +1431,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact_details = 17;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactDetail getArtifactDetails(int index) {
     return artifactDetails_.get(index);
   }
@@ -1418,6 +1443,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.ArtifactDetail artifact_details = 17;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ArtifactDetailOrBuilder getArtifactDetailsOrBuilder(
       int index) {
     return artifactDetails_.get(index);
@@ -1434,6 +1460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool force_coldswap = 18;</code>
    * @return Whether the forceColdswap field is set.
    */
+  @java.lang.Override
   public boolean hasForceColdswap() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -1446,6 +1473,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool force_coldswap = 18;</code>
    * @return The forceColdswap.
    */
+  @java.lang.Override
   public boolean getForceColdswap() {
     return forceColdswap_;
   }
@@ -1461,6 +1489,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run_enabled = 19;</code>
    * @return Whether the instantRunEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasInstantRunEnabled() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -1473,6 +1502,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool instant_run_enabled = 19;</code>
    * @return The instantRunEnabled.
    */
+  @java.lang.Override
   public boolean getInstantRunEnabled() {
     return instantRunEnabled_;
   }
@@ -2373,7 +2403,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.RunType run_type = 2;</code>
      * @return Whether the runType field is set.
      */
-    public boolean hasRunType() {
+    @java.lang.Override public boolean hasRunType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -2384,6 +2414,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.RunType run_type = 2;</code>
      * @return The runType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioRunEvent.RunType getRunType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioRunEvent.RunType result = com.google.wireless.android.sdk.stats.StudioRunEvent.RunType.valueOf(runType_);
@@ -2431,7 +2462,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.SectionType section_type = 3;</code>
      * @return Whether the sectionType field is set.
      */
-    public boolean hasSectionType() {
+    @java.lang.Override public boolean hasSectionType() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -2442,6 +2473,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.SectionType section_type = 3;</code>
      * @return The sectionType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType getSectionType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType result = com.google.wireless.android.sdk.stats.StudioRunEvent.SectionType.valueOf(sectionType_);
@@ -2489,7 +2521,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.EventType event_type = 4;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -2500,6 +2532,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.EventType event_type = 4;</code>
      * @return The eventType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioRunEvent.EventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioRunEvent.EventType result = com.google.wireless.android.sdk.stats.StudioRunEvent.EventType.valueOf(eventType_);
@@ -2547,6 +2580,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 duration_ms = 5;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -2558,6 +2592,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 duration_ms = 5;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public int getDurationMs() {
       return durationMs_;
     }
@@ -2600,7 +2635,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.BuildMode build_mode = 6;</code>
      * @return Whether the buildMode field is set.
      */
-    public boolean hasBuildMode() {
+    @java.lang.Override public boolean hasBuildMode() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -2611,6 +2646,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.BuildMode build_mode = 6;</code>
      * @return The buildMode.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode getBuildMode() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode result = com.google.wireless.android.sdk.stats.StudioRunEvent.BuildMode.valueOf(buildMode_);
@@ -2658,6 +2694,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_successful = 7;</code>
      * @return Whether the isSuccessful field is set.
      */
+    @java.lang.Override
     public boolean hasIsSuccessful() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -2669,6 +2706,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_successful = 7;</code>
      * @return The isSuccessful.
      */
+    @java.lang.Override
     public boolean getIsSuccessful() {
       return isSuccessful_;
     }
@@ -2711,6 +2749,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 artifact_count = 8;</code>
      * @return Whether the artifactCount field is set.
      */
+    @java.lang.Override
     public boolean hasArtifactCount() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -2722,6 +2761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 artifact_count = 8;</code>
      * @return The artifactCount.
      */
+    @java.lang.Override
     public int getArtifactCount() {
       return artifactCount_;
     }
@@ -2764,7 +2804,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.DeployTask deploy_task = 9;</code>
      * @return Whether the deployTask field is set.
      */
-    public boolean hasDeployTask() {
+    @java.lang.Override public boolean hasDeployTask() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
@@ -2775,6 +2815,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioRunEvent.DeployTask deploy_task = 9;</code>
      * @return The deployTask.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask getDeployTask() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask result = com.google.wireless.android.sdk.stats.StudioRunEvent.DeployTask.valueOf(deployTask_);
@@ -2824,6 +2865,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 disabled_dynamic_features_count = 11;</code>
      * @return Whether the disabledDynamicFeaturesCount field is set.
      */
+    @java.lang.Override
     public boolean hasDisabledDynamicFeaturesCount() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -2837,6 +2879,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 disabled_dynamic_features_count = 11;</code>
      * @return The disabledDynamicFeaturesCount.
      */
+    @java.lang.Override
     public int getDisabledDynamicFeaturesCount() {
       return disabledDynamicFeaturesCount_;
     }
@@ -2885,6 +2928,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run = 12;</code>
      * @return Whether the instantRun field is set.
      */
+    @java.lang.Override
     public boolean hasInstantRun() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -2898,6 +2942,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run = 12;</code>
      * @return The instantRun.
      */
+    @java.lang.Override
     public boolean getInstantRun() {
       return instantRun_;
     }
@@ -2945,6 +2990,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool patch_build = 13;</code>
      * @return Whether the patchBuild field is set.
      */
+    @java.lang.Override
     public boolean hasPatchBuild() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -2957,6 +3003,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool patch_build = 13;</code>
      * @return The patchBuild.
      */
+    @java.lang.Override
     public boolean getPatchBuild() {
       return patchBuild_;
     }
@@ -3003,6 +3050,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool do_not_restart = 14;</code>
      * @return Whether the doNotRestart field is set.
      */
+    @java.lang.Override
     public boolean hasDoNotRestart() {
       return ((bitField0_ & 0x00001000) != 0);
     }
@@ -3016,6 +3064,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool do_not_restart = 14;</code>
      * @return The doNotRestart.
      */
+    @java.lang.Override
     public boolean getDoNotRestart() {
       return doNotRestart_;
     }
@@ -3063,6 +3112,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool debuggable = 15;</code>
      * @return Whether the debuggable field is set.
      */
+    @java.lang.Override
     public boolean hasDebuggable() {
       return ((bitField0_ & 0x00002000) != 0);
     }
@@ -3075,6 +3125,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool debuggable = 15;</code>
      * @return The debuggable.
      */
+    @java.lang.Override
     public boolean getDebuggable() {
       return debuggable_;
     }
@@ -3120,6 +3171,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_selected_target = 16;</code>
      * @return Whether the userSelectedTarget field is set.
      */
+    @java.lang.Override
     public boolean hasUserSelectedTarget() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -3132,6 +3184,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_selected_target = 16;</code>
      * @return The userSelectedTarget.
      */
+    @java.lang.Override
     public boolean getUserSelectedTarget() {
       return userSelectedTarget_;
     }
@@ -3507,6 +3560,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool force_coldswap = 18;</code>
      * @return Whether the forceColdswap field is set.
      */
+    @java.lang.Override
     public boolean hasForceColdswap() {
       return ((bitField0_ & 0x00010000) != 0);
     }
@@ -3519,6 +3573,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool force_coldswap = 18;</code>
      * @return The forceColdswap.
      */
+    @java.lang.Override
     public boolean getForceColdswap() {
       return forceColdswap_;
     }
@@ -3564,6 +3619,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run_enabled = 19;</code>
      * @return Whether the instantRunEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasInstantRunEnabled() {
       return ((bitField0_ & 0x00020000) != 0);
     }
@@ -3576,6 +3632,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool instant_run_enabled = 19;</code>
      * @return The instantRunEnabled.
      */
+    @java.lang.Override
     public boolean getInstantRunEnabled() {
       return instantRunEnabled_;
     }

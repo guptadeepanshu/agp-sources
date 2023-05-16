@@ -137,14 +137,9 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
     }
 
     private fun createTempLibraryManifest(): File {
-        Preconditions.checkNotNull(
-                namespace.get(),
-                "namespace cannot be null."
-        )
         val manifestFile = File.createTempFile("tempAndroidManifest", ".xml", FileUtils.mkdirs(tmpDir.get().asFile))
         val content = """<?xml version="1.0" encoding="utf-8"?>
-            <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-               package="${namespace.get()}" />
+            <manifest xmlns:android="http://schemas.android.com/apk/res/android"/>
             """.trimIndent()
         manifestFile.writeText(content)
         return manifestFile
@@ -188,18 +183,21 @@ abstract class ProcessLibraryManifest : ManifestProcessorTask() {
                 featureName = null,
                 packageOverride = parameters.namespace.get(),
                 namespace = parameters.namespace.get(),
+                profileable = false,
                 versionCode = null,
                 versionName = null,
                 parameters.minSdkVersion.orNull,
                 parameters.targetSdkVersion.orNull,
                 parameters.maxSdkVersion.orNull,
+                testOnly = false,
                 parameters.manifestOutputFile.asFile.get().absolutePath,
-                parameters.aaptFriendlyManifestOutputFile.asFile.orNull?.absolutePath,
-                ManifestMerger2.MergeType.LIBRARY /* outInstantRunManifestLocation */,
-                parameters.manifestPlaceholders.get() /* outInstantAppManifestLocation */,
+                parameters.aaptFriendlyManifestOutputFile.asFile.orNull?.absolutePath /* outInstantRunManifestLocation */,
+                ManifestMerger2.MergeType.LIBRARY /* outInstantAppManifestLocation */,
+                parameters.manifestPlaceholders.get(),
                 optionalFeatures,
                 emptyList(),
-                parameters.reportFile.asFile.get(), LoggerWrapper.getLogger(ProcessLibraryManifest::class.java)
+                parameters.reportFile.asFile.get(),
+                LoggerWrapper.getLogger(ProcessLibraryManifest::class.java)
             )
             val mergedXmlDocument =
                 mergingReport.getMergedXmlDocument(MergingReport.MergedManifestKind.MERGED)

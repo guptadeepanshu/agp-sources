@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.EnergyEventMetadata}
  */
-public  final class EnergyEventMetadata extends
+public final class EnergyEventMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EnergyEventMetadata)
     EnergyEventMetadataOrBuilder {
@@ -153,14 +153,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EnergyEvent.Type result = com.google.wireless.android.sdk.stats.EnergyEvent.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.EnergyEvent.Type.UNKNOWN_EVENT_TYPE : result;
@@ -172,14 +172,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyEvent.Subtype subtype = 2;</code>
    * @return Whether the subtype field is set.
    */
-  public boolean hasSubtype() {
+  @java.lang.Override public boolean hasSubtype() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>optional .android_studio.EnergyEvent.Subtype subtype = 2;</code>
    * @return The subtype.
    */
-  public com.google.wireless.android.sdk.stats.EnergyEvent.Subtype getSubtype() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EnergyEvent.Subtype getSubtype() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EnergyEvent.Subtype result = com.google.wireless.android.sdk.stats.EnergyEvent.Subtype.valueOf(subtype_);
     return result == null ? com.google.wireless.android.sdk.stats.EnergyEvent.Subtype.UNKNOWN_EVENT_SUBTYPE : result;
@@ -201,14 +201,16 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EnergyEvent.Subevent subevents = 3;</code>
    * @return A list containing the subevents.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EnergyEvent.Subevent> getSubeventsList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EnergyEvent.Subevent>(subevents_, subevents_converter_);
   }
   /**
    * <code>repeated .android_studio.EnergyEvent.Subevent subevents = 3;</code>
-   * @param value The subevents to add.
+   * @return The count of subevents.
    */
+  @java.lang.Override
   public int getSubeventsCount() {
     return subevents_.size();
   }
@@ -217,6 +219,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The subevents at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEvent.Subevent getSubevents(int index) {
     return subevents_converter_.convert(subevents_.get(index));
   }
@@ -597,13 +600,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.EnergyEvent.Type type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EnergyEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EnergyEvent.Type result = com.google.wireless.android.sdk.stats.EnergyEvent.Type.valueOf(type_);
@@ -639,13 +643,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EnergyEvent.Subtype subtype = 2;</code>
      * @return Whether the subtype field is set.
      */
-    public boolean hasSubtype() {
+    @java.lang.Override public boolean hasSubtype() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>optional .android_studio.EnergyEvent.Subtype subtype = 2;</code>
      * @return The subtype.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EnergyEvent.Subtype getSubtype() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EnergyEvent.Subtype result = com.google.wireless.android.sdk.stats.EnergyEvent.Subtype.valueOf(subtype_);

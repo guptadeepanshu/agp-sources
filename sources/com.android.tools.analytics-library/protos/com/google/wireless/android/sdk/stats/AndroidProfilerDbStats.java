@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AndroidProfilerDbStats}
  */
-public  final class AndroidProfilerDbStats extends
+public final class AndroidProfilerDbStats extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidProfilerDbStats)
     AndroidProfilerDbStatsOrBuilder {
@@ -119,6 +119,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 age_sec = 1;</code>
    * @return Whether the ageSec field is set.
    */
+  @java.lang.Override
   public boolean hasAgeSec() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -130,6 +131,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 age_sec = 1;</code>
    * @return The ageSec.
    */
+  @java.lang.Override
   public int getAgeSec() {
     return ageSec_;
   }
@@ -144,6 +146,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_disk_mb = 2;</code>
    * @return Whether the totalDiskMb field is set.
    */
+  @java.lang.Override
   public boolean hasTotalDiskMb() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -155,6 +158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 total_disk_mb = 2;</code>
    * @return The totalDiskMb.
    */
+  @java.lang.Override
   public int getTotalDiskMb() {
     return totalDiskMb_;
   }
@@ -168,6 +172,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidProfilerDbTable tables = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AndroidProfilerDbTable> getTablesList() {
     return tables_;
   }
@@ -178,6 +183,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidProfilerDbTable tables = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.AndroidProfilerDbTableOrBuilder> 
       getTablesOrBuilderList() {
     return tables_;
@@ -189,6 +195,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidProfilerDbTable tables = 3;</code>
    */
+  @java.lang.Override
   public int getTablesCount() {
     return tables_.size();
   }
@@ -199,6 +206,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidProfilerDbTable tables = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerDbTable getTables(int index) {
     return tables_.get(index);
   }
@@ -209,6 +217,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.AndroidProfilerDbTable tables = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidProfilerDbTableOrBuilder getTablesOrBuilder(
       int index) {
     return tables_.get(index);
@@ -621,6 +630,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 age_sec = 1;</code>
      * @return Whether the ageSec field is set.
      */
+    @java.lang.Override
     public boolean hasAgeSec() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -632,6 +642,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 age_sec = 1;</code>
      * @return The ageSec.
      */
+    @java.lang.Override
     public int getAgeSec() {
       return ageSec_;
     }
@@ -674,6 +685,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_disk_mb = 2;</code>
      * @return Whether the totalDiskMb field is set.
      */
+    @java.lang.Override
     public boolean hasTotalDiskMb() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -685,6 +697,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 total_disk_mb = 2;</code>
      * @return The totalDiskMb.
      */
+    @java.lang.Override
     public int getTotalDiskMb() {
       return totalDiskMb_;
     }

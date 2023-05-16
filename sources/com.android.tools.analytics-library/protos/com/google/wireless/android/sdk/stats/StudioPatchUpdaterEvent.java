@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.StudioPatchUpdaterEvent}
  */
-public  final class StudioPatchUpdaterEvent extends
+public final class StudioPatchUpdaterEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent)
     StudioPatchUpdaterEventOrBuilder {
@@ -678,7 +678,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.StudioPatchUpdaterEvent.Patch}
    */
-  public  static final class Patch extends
+  public static final class Patch extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent.Patch)
       PatchOrBuilder {
@@ -778,6 +778,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_from = 1;</code>
      * @return Whether the studioVersionFrom field is set.
      */
+    @java.lang.Override
     public boolean hasStudioVersionFrom() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -789,6 +790,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_from = 1;</code>
      * @return The studioVersionFrom.
      */
+    @java.lang.Override
     public java.lang.String getStudioVersionFrom() {
       java.lang.Object ref = studioVersionFrom_;
       if (ref instanceof java.lang.String) {
@@ -811,6 +813,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_from = 1;</code>
      * @return The bytes for studioVersionFrom.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getStudioVersionFromBytes() {
       java.lang.Object ref = studioVersionFrom_;
@@ -835,6 +838,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_to = 2;</code>
      * @return Whether the studioVersionTo field is set.
      */
+    @java.lang.Override
     public boolean hasStudioVersionTo() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -846,6 +850,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_to = 2;</code>
      * @return The studioVersionTo.
      */
+    @java.lang.Override
     public java.lang.String getStudioVersionTo() {
       java.lang.Object ref = studioVersionTo_;
       if (ref instanceof java.lang.String) {
@@ -868,6 +873,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional string studio_version_to = 2;</code>
      * @return The bytes for studioVersionTo.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getStudioVersionToBytes() {
       java.lang.Object ref = studioVersionTo_;
@@ -1555,7 +1561,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.StudioPatchUpdaterEvent.IssueDialog}
    */
-  public  static final class IssueDialog extends
+  public static final class IssueDialog extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent.IssueDialog)
       IssueDialogOrBuilder {
@@ -1717,7 +1723,7 @@ private static final long serialVersionUID = 0L;
     /**
      * Protobuf type {@code android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue}
      */
-    public  static final class Issue extends
+    public static final class Issue extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue)
         IssueOrBuilder {
@@ -2122,7 +2128,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind kind = 1;</code>
        * @return Whether the kind field is set.
        */
-      public boolean hasKind() {
+      @java.lang.Override public boolean hasKind() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -2133,7 +2139,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind kind = 1;</code>
        * @return The kind.
        */
-      public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind getKind() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind getKind() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.valueOf(kind_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.UNKNOWN_KIND : result;
@@ -2149,7 +2155,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Action action = 2;</code>
        * @return Whether the action field is set.
        */
-      public boolean hasAction() {
+      @java.lang.Override public boolean hasAction() {
         return ((bitField0_ & 0x00000002) != 0);
       }
       /**
@@ -2160,7 +2166,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Action action = 2;</code>
        * @return The action.
        */
-      public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action getAction() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action getAction() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.valueOf(action_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.UNKNOWN_ACTION : result;
@@ -2186,6 +2192,7 @@ private static final long serialVersionUID = 0L;
        * <code>repeated .android_studio.StudioPatchUpdaterEvent.ValidationOption presented_option = 3;</code>
        * @return A list containing the presentedOption.
        */
+      @java.lang.Override
       public java.util.List<com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption> getPresentedOptionList() {
         return new com.google.protobuf.Internal.ListAdapter<
             java.lang.Integer, com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption>(presentedOption_, presentedOption_converter_);
@@ -2196,8 +2203,9 @@ private static final long serialVersionUID = 0L;
        * </pre>
        *
        * <code>repeated .android_studio.StudioPatchUpdaterEvent.ValidationOption presented_option = 3;</code>
-       * @param value The presentedOption to add.
+       * @return The count of presentedOption.
        */
+      @java.lang.Override
       public int getPresentedOptionCount() {
         return presentedOption_.size();
       }
@@ -2210,6 +2218,7 @@ private static final long serialVersionUID = 0L;
        * @param index The index of the element to return.
        * @return The presentedOption at the given index.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getPresentedOption(int index) {
         return presentedOption_converter_.convert(presentedOption_.get(index));
       }
@@ -2594,7 +2603,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind kind = 1;</code>
          * @return Whether the kind field is set.
          */
-        public boolean hasKind() {
+        @java.lang.Override public boolean hasKind() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
@@ -2605,6 +2614,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind kind = 1;</code>
          * @return The kind.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind getKind() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Kind.valueOf(kind_);
@@ -2652,7 +2662,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Action action = 2;</code>
          * @return Whether the action field is set.
          */
-        public boolean hasAction() {
+        @java.lang.Override public boolean hasAction() {
           return ((bitField0_ & 0x00000002) != 0);
         }
         /**
@@ -2663,6 +2673,7 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue.Action action = 2;</code>
          * @return The action.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action getAction() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue.Action.valueOf(action_);
@@ -2877,6 +2888,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue issue = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue> getIssueList() {
       return issue_;
     }
@@ -2888,6 +2900,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue issue = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.IssueOrBuilder> 
         getIssueOrBuilderList() {
       return issue_;
@@ -2900,6 +2913,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue issue = 1;</code>
      */
+    @java.lang.Override
     public int getIssueCount() {
       return issue_.size();
     }
@@ -2911,6 +2925,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue issue = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.Issue getIssue(int index) {
       return issue_.get(index);
     }
@@ -2922,6 +2937,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialog.Issue issue = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.IssueOrBuilder getIssueOrBuilder(
         int index) {
       return issue_.get(index);
@@ -3690,7 +3706,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.StudioPatchUpdaterEvent.IssueDialogChoices}
    */
-  public  static final class IssueDialogChoices extends
+  public static final class IssueDialogChoices extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent.IssueDialogChoices)
       IssueDialogChoicesOrBuilder {
@@ -3800,7 +3816,7 @@ private static final long serialVersionUID = 0L;
      *
      * Protobuf type {@code android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice}
      */
-    public  static final class Choice extends
+    public static final class Choice extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice)
         ChoiceOrBuilder {
@@ -3895,14 +3911,14 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.StudioPatchUpdaterEvent.ValidationOption chosen_option = 1;</code>
        * @return Whether the chosenOption field is set.
        */
-      public boolean hasChosenOption() {
+      @java.lang.Override public boolean hasChosenOption() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
        * <code>optional .android_studio.StudioPatchUpdaterEvent.ValidationOption chosen_option = 1;</code>
        * @return The chosenOption.
        */
-      public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getChosenOption() {
+      @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getChosenOption() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.valueOf(chosenOption_);
         return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.UNKNOWN_VALIDATION_OPTION : result;
@@ -4230,13 +4246,14 @@ private static final long serialVersionUID = 0L;
          * <code>optional .android_studio.StudioPatchUpdaterEvent.ValidationOption chosen_option = 1;</code>
          * @return Whether the chosenOption field is set.
          */
-        public boolean hasChosenOption() {
+        @java.lang.Override public boolean hasChosenOption() {
           return ((bitField0_ & 0x00000001) != 0);
         }
         /**
          * <code>optional .android_studio.StudioPatchUpdaterEvent.ValidationOption chosen_option = 1;</code>
          * @return The chosenOption.
          */
+        @java.lang.Override
         public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption getChosenOption() {
           @SuppressWarnings("deprecation")
           com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.ValidationOption.valueOf(chosenOption_);
@@ -4324,12 +4341,14 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice> getChoiceList() {
       return choice_;
     }
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.ChoiceOrBuilder> 
         getChoiceOrBuilderList() {
       return choice_;
@@ -4337,18 +4356,21 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
      */
+    @java.lang.Override
     public int getChoiceCount() {
       return choice_.size();
     }
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.Choice getChoice(int index) {
       return choice_.get(index);
     }
     /**
      * <code>repeated .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices.Choice choice = 1;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.ChoiceOrBuilder getChoiceOrBuilder(
         int index) {
       return choice_.get(index);
@@ -4999,14 +5021,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Kind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Kind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.UNKNOWN_EVENT_KIND : result;
@@ -5022,6 +5044,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
    * @return Whether the patch field is set.
    */
+  @java.lang.Override
   public boolean hasPatch() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -5033,6 +5056,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
    * @return The patch.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch getPatch() {
     return patch_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.getDefaultInstance() : patch_;
   }
@@ -5043,6 +5067,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioPatchUpdaterEvent.Patch patch = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.PatchOrBuilder getPatchOrBuilder() {
     return patch_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Patch.getDefaultInstance() : patch_;
   }
@@ -5057,6 +5082,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
    * @return Whether the issueDialog field is set.
    */
+  @java.lang.Override
   public boolean hasIssueDialog() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -5068,6 +5094,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
    * @return The issueDialog.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog getIssueDialog() {
     return issueDialog_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.getDefaultInstance() : issueDialog_;
   }
@@ -5078,6 +5105,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialog issue_dialog = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogOrBuilder getIssueDialogOrBuilder() {
     return issueDialog_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialog.getDefaultInstance() : issueDialog_;
   }
@@ -5092,6 +5120,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
    * @return Whether the issueDialogChoices field is set.
    */
+  @java.lang.Override
   public boolean hasIssueDialogChoices() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -5103,6 +5132,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
    * @return The issueDialogChoices.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices getIssueDialogChoices() {
     return issueDialogChoices_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.getDefaultInstance() : issueDialogChoices_;
   }
@@ -5113,6 +5143,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.StudioPatchUpdaterEvent.IssueDialogChoices issue_dialog_choices = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoicesOrBuilder getIssueDialogChoicesOrBuilder() {
     return issueDialogChoices_ == null ? com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.IssueDialogChoices.getDefaultInstance() : issueDialogChoices_;
   }
@@ -5541,13 +5572,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.StudioPatchUpdaterEvent.Kind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.StudioPatchUpdaterEvent.Kind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind result = com.google.wireless.android.sdk.stats.StudioPatchUpdaterEvent.Kind.valueOf(kind_);

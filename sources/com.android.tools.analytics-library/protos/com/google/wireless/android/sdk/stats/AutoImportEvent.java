@@ -11,7 +11,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AutoImportEvent}
  */
-@java.lang.Deprecated public  final class AutoImportEvent extends
+@java.lang.Deprecated public final class AutoImportEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AutoImportEvent)
     AutoImportEventOrBuilder {
@@ -104,6 +104,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string artifact_id = 1;</code>
    * @return Whether the artifactId field is set.
    */
+  @java.lang.Override
   public boolean hasArtifactId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -115,6 +116,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string artifact_id = 1;</code>
    * @return The artifactId.
    */
+  @java.lang.Override
   public java.lang.String getArtifactId() {
     java.lang.Object ref = artifactId_;
     if (ref instanceof java.lang.String) {
@@ -137,6 +139,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string artifact_id = 1;</code>
    * @return The bytes for artifactId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getArtifactIdBytes() {
     java.lang.Object ref = artifactId_;

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleBuildDetails}
  */
-public  final class GradleBuildDetails extends
+public final class GradleBuildDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildDetails)
     GradleBuildDetailsOrBuilder {
@@ -184,6 +184,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 1;</code>
    * @return Whether the androidPluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidPluginVersion() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -195,6 +196,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 1;</code>
    * @return The androidPluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getAndroidPluginVersion() {
     java.lang.Object ref = androidPluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -217,6 +219,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 1;</code>
    * @return The bytes for androidPluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAndroidPluginVersionBytes() {
     java.lang.Object ref = androidPluginVersion_;
@@ -241,6 +244,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return Whether the gradleVersion field is set.
    */
+  @java.lang.Override
   public boolean hasGradleVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -252,6 +256,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return The gradleVersion.
    */
+  @java.lang.Override
   public java.lang.String getGradleVersion() {
     java.lang.Object ref = gradleVersion_;
     if (ref instanceof java.lang.String) {
@@ -274,6 +279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string gradle_version = 2;</code>
    * @return The bytes for gradleVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getGradleVersionBytes() {
     java.lang.Object ref = gradleVersion_;
@@ -298,6 +304,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_enabled_ir = 3;</code>
    * @return Whether the userEnabledIr field is set.
    */
+  @java.lang.Override
   public boolean hasUserEnabledIr() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -309,6 +316,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool user_enabled_ir = 3;</code>
    * @return The userEnabledIr.
    */
+  @java.lang.Override
   public boolean getUserEnabledIr() {
     return userEnabledIr_;
   }
@@ -323,6 +331,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool model_supports_ir = 4;</code>
    * @return Whether the modelSupportsIr field is set.
    */
+  @java.lang.Override
   public boolean hasModelSupportsIr() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -334,6 +343,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool model_supports_ir = 4;</code>
    * @return The modelSupportsIr.
    */
+  @java.lang.Override
   public boolean getModelSupportsIr() {
     return modelSupportsIr_;
   }
@@ -349,6 +359,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool variant_supports_ir = 5;</code>
    * @return Whether the variantSupportsIr field is set.
    */
+  @java.lang.Override
   public boolean hasVariantSupportsIr() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -361,6 +372,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool variant_supports_ir = 5;</code>
    * @return The variantSupportsIr.
    */
+  @java.lang.Override
   public boolean getVariantSupportsIr() {
     return variantSupportsIr_;
   }
@@ -374,6 +386,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleLibrary libraries = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleLibrary> getLibrariesList() {
     return libraries_;
   }
@@ -384,6 +397,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleLibrary libraries = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleLibraryOrBuilder> 
       getLibrariesOrBuilderList() {
     return libraries_;
@@ -395,6 +409,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleLibrary libraries = 6;</code>
    */
+  @java.lang.Override
   public int getLibrariesCount() {
     return libraries_.size();
   }
@@ -405,6 +420,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleLibrary libraries = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleLibrary getLibraries(int index) {
     return libraries_.get(index);
   }
@@ -415,6 +431,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleLibrary libraries = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleLibraryOrBuilder getLibrariesOrBuilder(
       int index) {
     return libraries_.get(index);
@@ -429,6 +446,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleModule modules = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleModule> getModulesList() {
     return modules_;
   }
@@ -439,6 +457,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleModule modules = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleModuleOrBuilder> 
       getModulesOrBuilderList() {
     return modules_;
@@ -450,6 +469,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleModule modules = 7;</code>
    */
+  @java.lang.Override
   public int getModulesCount() {
     return modules_.size();
   }
@@ -460,6 +480,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleModule modules = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleModule getModules(int index) {
     return modules_.get(index);
   }
@@ -470,6 +491,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleModule modules = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleModuleOrBuilder getModulesOrBuilder(
       int index) {
     return modules_.get(index);
@@ -484,6 +506,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleAndroidModule android_modules = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleAndroidModule> getAndroidModulesList() {
     return androidModules_;
   }
@@ -494,6 +517,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleAndroidModule android_modules = 8;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleAndroidModuleOrBuilder> 
       getAndroidModulesOrBuilderList() {
     return androidModules_;
@@ -505,6 +529,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleAndroidModule android_modules = 8;</code>
    */
+  @java.lang.Override
   public int getAndroidModulesCount() {
     return androidModules_.size();
   }
@@ -515,6 +540,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleAndroidModule android_modules = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleAndroidModule getAndroidModules(int index) {
     return androidModules_.get(index);
   }
@@ -525,6 +551,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleAndroidModule android_modules = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleAndroidModuleOrBuilder getAndroidModulesOrBuilder(
       int index) {
     return androidModules_.get(index);
@@ -539,6 +566,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleNativeAndroidModule native_android_modules = 9;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleNativeAndroidModule> getNativeAndroidModulesList() {
     return nativeAndroidModules_;
   }
@@ -549,6 +577,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleNativeAndroidModule native_android_modules = 9;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleNativeAndroidModuleOrBuilder> 
       getNativeAndroidModulesOrBuilderList() {
     return nativeAndroidModules_;
@@ -560,6 +589,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleNativeAndroidModule native_android_modules = 9;</code>
    */
+  @java.lang.Override
   public int getNativeAndroidModulesCount() {
     return nativeAndroidModules_.size();
   }
@@ -570,6 +600,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleNativeAndroidModule native_android_modules = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleNativeAndroidModule getNativeAndroidModules(int index) {
     return nativeAndroidModules_.get(index);
   }
@@ -580,6 +611,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleNativeAndroidModule native_android_modules = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleNativeAndroidModuleOrBuilder getNativeAndroidModulesOrBuilder(
       int index) {
     return nativeAndroidModules_.get(index);
@@ -597,6 +629,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 10;</code>
    * @return Whether the appId field is set.
    */
+  @java.lang.Override
   public boolean hasAppId() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -610,6 +643,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 10;</code>
    * @return The appId.
    */
+  @java.lang.Override
   public java.lang.String getAppId() {
     java.lang.Object ref = appId_;
     if (ref instanceof java.lang.String) {
@@ -634,6 +668,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 10;</code>
    * @return The bytes for appId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAppIdBytes() {
     java.lang.Object ref = appId_;
@@ -1542,6 +1577,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_enabled_ir = 3;</code>
      * @return Whether the userEnabledIr field is set.
      */
+    @java.lang.Override
     public boolean hasUserEnabledIr() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1553,6 +1589,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool user_enabled_ir = 3;</code>
      * @return The userEnabledIr.
      */
+    @java.lang.Override
     public boolean getUserEnabledIr() {
       return userEnabledIr_;
     }
@@ -1595,6 +1632,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool model_supports_ir = 4;</code>
      * @return Whether the modelSupportsIr field is set.
      */
+    @java.lang.Override
     public boolean hasModelSupportsIr() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1606,6 +1644,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool model_supports_ir = 4;</code>
      * @return The modelSupportsIr.
      */
+    @java.lang.Override
     public boolean getModelSupportsIr() {
       return modelSupportsIr_;
     }
@@ -1649,6 +1688,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool variant_supports_ir = 5;</code>
      * @return Whether the variantSupportsIr field is set.
      */
+    @java.lang.Override
     public boolean hasVariantSupportsIr() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1661,6 +1701,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool variant_supports_ir = 5;</code>
      * @return The variantSupportsIr.
      */
+    @java.lang.Override
     public boolean getVariantSupportsIr() {
       return variantSupportsIr_;
     }

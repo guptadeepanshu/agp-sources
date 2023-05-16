@@ -17,13 +17,13 @@
 package com.android.build.api.variant.impl
 
 import com.android.build.api.variant.BundleConfig
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Provider
 
 class BundleConfigImpl(
     override val codeTransparency: CodeTransparencyImpl,
-    val variantServices: VariantPropertiesApiServices,
+    val variantServices: VariantServices,
 ): BundleConfig {
 
     internal val metadataFiles = variantServices.listPropertyOf(MetadataRecord::class.java) {}

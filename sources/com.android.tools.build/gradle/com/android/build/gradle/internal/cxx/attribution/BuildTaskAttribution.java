@@ -14,7 +14,7 @@ package com.android.build.gradle.internal.cxx.attribution;
  *
  * Protobuf type {@code BuildTaskAttribution}
  */
-public  final class BuildTaskAttribution extends
+public final class BuildTaskAttribution extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:BuildTaskAttribution)
     BuildTaskAttributionOrBuilder {
@@ -115,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>string output_file = 1;</code>
    * @return The outputFile.
    */
+  @java.lang.Override
   public java.lang.String getOutputFile() {
     java.lang.Object ref = outputFile_;
     if (ref instanceof java.lang.String) {
@@ -135,6 +136,7 @@ private static final long serialVersionUID = 0L;
    * <code>string output_file = 1;</code>
    * @return The bytes for outputFile.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getOutputFileBytes() {
     java.lang.Object ref = outputFile_;
@@ -160,6 +162,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 start_time_offset_ms = 3;</code>
    * @return The startTimeOffsetMs.
    */
+  @java.lang.Override
   public int getStartTimeOffsetMs() {
     return startTimeOffsetMs_;
   }
@@ -174,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 end_time_offset_ms = 4;</code>
    * @return The endTimeOffsetMs.
    */
+  @java.lang.Override
   public int getEndTimeOffsetMs() {
     return endTimeOffsetMs_;
   }
@@ -628,6 +632,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 start_time_offset_ms = 3;</code>
      * @return The startTimeOffsetMs.
      */
+    @java.lang.Override
     public int getStartTimeOffsetMs() {
       return startTimeOffsetMs_;
     }
@@ -672,6 +677,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 end_time_offset_ms = 4;</code>
      * @return The endTimeOffsetMs.
      */
+    @java.lang.Override
     public int getEndTimeOffsetMs() {
       return endTimeOffsetMs_;
     }

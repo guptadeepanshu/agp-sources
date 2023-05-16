@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.ProfilerSessionCreationMetaData}
  */
-public  final class ProfilerSessionCreationMetaData extends
+public final class ProfilerSessionCreationMetaData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.ProfilerSessionCreationMetaData)
     ProfilerSessionCreationMetaDataOrBuilder {
@@ -340,7 +340,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData.SessionType created_type = 1;</code>
    * @return Whether the createdType field is set.
    */
-  public boolean hasCreatedType() {
+  @java.lang.Override public boolean hasCreatedType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -351,7 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData.SessionType created_type = 1;</code>
    * @return The createdType.
    */
-  public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType getCreatedType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType getCreatedType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.valueOf(createdType_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.UNKNOWN_SESSION : result;
@@ -367,7 +367,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData.CreationSource creation_source = 2;</code>
    * @return Whether the creationSource field is set.
    */
-  public boolean hasCreationSource() {
+  @java.lang.Override public boolean hasCreationSource() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -378,7 +378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData.CreationSource creation_source = 2;</code>
    * @return The creationSource.
    */
-  public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource getCreationSource() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource getCreationSource() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.valueOf(creationSource_);
     return result == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.UNKNOWN_SOURCE : result;
@@ -734,7 +734,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionCreationMetaData.SessionType created_type = 1;</code>
      * @return Whether the createdType field is set.
      */
-    public boolean hasCreatedType() {
+    @java.lang.Override public boolean hasCreatedType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -745,6 +745,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionCreationMetaData.SessionType created_type = 1;</code>
      * @return The createdType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType getCreatedType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.SessionType.valueOf(createdType_);
@@ -792,7 +793,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionCreationMetaData.CreationSource creation_source = 2;</code>
      * @return Whether the creationSource field is set.
      */
-    public boolean hasCreationSource() {
+    @java.lang.Override public boolean hasCreationSource() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -803,6 +804,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.ProfilerSessionCreationMetaData.CreationSource creation_source = 2;</code>
      * @return The creationSource.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource getCreationSource() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource result = com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.CreationSource.valueOf(creationSource_);

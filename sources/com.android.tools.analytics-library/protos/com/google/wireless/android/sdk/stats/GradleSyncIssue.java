@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleSyncIssue}
  */
-public  final class GradleSyncIssue extends
+public final class GradleSyncIssue extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleSyncIssue)
     GradleSyncIssueOrBuilder {
@@ -148,7 +148,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.GradleSyncIssueType type = 1;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -159,7 +159,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidStudioEvent.GradleSyncIssueType type = 1;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.UNKNOWN_GRADLE_SYNC_ISSUE_TYPE : result;
@@ -185,6 +185,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.AndroidStudioEvent.GradleSyncQuickFix offered_quick_fixes = 2;</code>
    * @return A list containing the offeredQuickFixes.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix> getOfferedQuickFixesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix>(offeredQuickFixes_, offeredQuickFixes_converter_);
@@ -195,8 +196,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.AndroidStudioEvent.GradleSyncQuickFix offered_quick_fixes = 2;</code>
-   * @param value The offeredQuickFixes to add.
+   * @return The count of offeredQuickFixes.
    */
+  @java.lang.Override
   public int getOfferedQuickFixesCount() {
     return offeredQuickFixes_.size();
   }
@@ -209,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The offeredQuickFixes at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncQuickFix getOfferedQuickFixes(int index) {
     return offeredQuickFixes_converter_.convert(offeredQuickFixes_.get(index));
   }
@@ -573,7 +576,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.GradleSyncIssueType type = 1;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -584,6 +587,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidStudioEvent.GradleSyncIssueType type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType result = com.google.wireless.android.sdk.stats.AndroidStudioEvent.GradleSyncIssueType.valueOf(type_);

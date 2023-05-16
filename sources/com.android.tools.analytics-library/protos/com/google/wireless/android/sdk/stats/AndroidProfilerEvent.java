@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AndroidProfilerEvent}
  */
-public  final class AndroidProfilerEvent extends
+public final class AndroidProfilerEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidProfilerEvent)
     AndroidProfilerEventOrBuilder {
@@ -329,6 +329,19 @@ private static final long serialVersionUID = 0L;
           case 176: {
             bitField0_ |= 0x00200000;
             eventCount_ = input.readUInt32();
+            break;
+          }
+          case 186: {
+            com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder subBuilder = null;
+            if (((bitField0_ & 0x00400000) != 0)) {
+              subBuilder = loading_.toBuilder();
+            }
+            loading_ = input.readMessage(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(loading_);
+              loading_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00400000;
             break;
           }
           default: {
@@ -873,6 +886,14 @@ private static final long serialVersionUID = 0L;
     TRACK_GROUP_ACTION(116),
     /**
      * <pre>
+     * A loading event
+     * </pre>
+     *
+     * <code>LOADING = 117;</code>
+     */
+    LOADING(117),
+    /**
+     * <pre>
      * Deprecated since 3.0.0.5. Use TRACE_CPU.
      * </pre>
      *
@@ -1305,6 +1326,14 @@ private static final long serialVersionUID = 0L;
     public static final int TRACK_GROUP_ACTION_VALUE = 116;
     /**
      * <pre>
+     * A loading event
+     * </pre>
+     *
+     * <code>LOADING = 117;</code>
+     */
+    public static final int LOADING_VALUE = 117;
+    /**
+     * <pre>
      * Deprecated since 3.0.0.5. Use TRACE_CPU.
      * </pre>
      *
@@ -1613,6 +1642,7 @@ private static final long serialVersionUID = 0L;
         case 113: return AUTO_PROFILING_SUCCEEDED;
         case 115: return SELECT_BOX;
         case 116: return TRACK_GROUP_ACTION;
+        case 117: return LOADING;
         case 201: return TRACE_SAMPLED;
         case 202: return TRACE_INSTRUMENTED;
         case 204: return SELECT_THREAD;
@@ -1718,6 +1748,1789 @@ private static final long serialVersionUID = 0L;
     // @@protoc_insertion_point(enum_scope:android_studio.AndroidProfilerEvent.Type)
   }
 
+  public interface LoadingOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:android_studio.AndroidProfilerEvent.Loading)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Type of recording event
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    boolean hasType();
+    /**
+     * <pre>
+     * Type of recording event
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+     * @return The type.
+     */
+    com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type getType();
+
+    /**
+     * <pre>
+     * Whether this is an attempt or a success
+     * </pre>
+     *
+     * <code>optional bool is_success = 2;</code>
+     * @return Whether the isSuccess field is set.
+     */
+    boolean hasIsSuccess();
+    /**
+     * <pre>
+     * Whether this is an attempt or a success
+     * </pre>
+     *
+     * <code>optional bool is_success = 2;</code>
+     * @return The isSuccess.
+     */
+    boolean getIsSuccess();
+
+    /**
+     * <pre>
+     * Size of the trace or file to load (in KB)
+     * </pre>
+     *
+     * <code>optional uint32 size_kb = 3;</code>
+     * @return Whether the sizeKb field is set.
+     */
+    boolean hasSizeKb();
+    /**
+     * <pre>
+     * Size of the trace or file to load (in KB)
+     * </pre>
+     *
+     * <code>optional uint32 size_kb = 3;</code>
+     * @return The sizeKb.
+     */
+    int getSizeKb();
+
+    /**
+     * <pre>
+     * Event count or instance count, depending on the type
+     * </pre>
+     *
+     * <code>optional uint64 event_count = 4;</code>
+     * @return Whether the eventCount field is set.
+     */
+    boolean hasEventCount();
+    /**
+     * <pre>
+     * Event count or instance count, depending on the type
+     * </pre>
+     *
+     * <code>optional uint64 event_count = 4;</code>
+     * @return The eventCount.
+     */
+    long getEventCount();
+
+    /**
+     * <pre>
+     * Set if |is_success|
+     * </pre>
+     *
+     * <code>optional uint32 elapsed_ms = 5;</code>
+     * @return Whether the elapsedMs field is set.
+     */
+    boolean hasElapsedMs();
+    /**
+     * <pre>
+     * Set if |is_success|
+     * </pre>
+     *
+     * <code>optional uint32 elapsed_ms = 5;</code>
+     * @return The elapsedMs.
+     */
+    int getElapsedMs();
+
+    /**
+     * <pre>
+     * Number of logical cores
+     * </pre>
+     *
+     * <code>optional uint32 core_count = 6;</code>
+     * @return Whether the coreCount field is set.
+     */
+    boolean hasCoreCount();
+    /**
+     * <pre>
+     * Number of logical cores
+     * </pre>
+     *
+     * <code>optional uint32 core_count = 6;</code>
+     * @return The coreCount.
+     */
+    int getCoreCount();
+
+    /**
+     * <pre>
+     * Memory available in the machine (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 machine_memory_mb = 7;</code>
+     * @return Whether the machineMemoryMb field is set.
+     */
+    boolean hasMachineMemoryMb();
+    /**
+     * <pre>
+     * Memory available in the machine (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 machine_memory_mb = 7;</code>
+     * @return The machineMemoryMb.
+     */
+    int getMachineMemoryMb();
+
+    /**
+     * <pre>
+     * Memory set aside for studio (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 studio_max_memory_mb = 8;</code>
+     * @return Whether the studioMaxMemoryMb field is set.
+     */
+    boolean hasStudioMaxMemoryMb();
+    /**
+     * <pre>
+     * Memory set aside for studio (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 studio_max_memory_mb = 8;</code>
+     * @return The studioMaxMemoryMb.
+     */
+    int getStudioMaxMemoryMb();
+
+    /**
+     * <pre>
+     * Memory available for studio (in MB) when event is sent
+     * </pre>
+     *
+     * <code>optional uint32 studio_free_memory_mb = 9;</code>
+     * @return Whether the studioFreeMemoryMb field is set.
+     */
+    boolean hasStudioFreeMemoryMb();
+    /**
+     * <pre>
+     * Memory available for studio (in MB) when event is sent
+     * </pre>
+     *
+     * <code>optional uint32 studio_free_memory_mb = 9;</code>
+     * @return The studioFreeMemoryMb.
+     */
+    int getStudioFreeMemoryMb();
+  }
+  /**
+   * Protobuf type {@code android_studio.AndroidProfilerEvent.Loading}
+   */
+  public static final class Loading extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:android_studio.AndroidProfilerEvent.Loading)
+      LoadingOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Loading.newBuilder() to construct.
+    private Loading(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Loading() {
+      type_ = 0;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Loading();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Loading(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              int rawValue = input.readEnum();
+                @SuppressWarnings("deprecation")
+              com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type value = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = rawValue;
+              }
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              isSuccess_ = input.readBool();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              sizeKb_ = input.readUInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              eventCount_ = input.readUInt64();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              elapsedMs_ = input.readUInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
+              coreCount_ = input.readUInt32();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              machineMemoryMb_ = input.readUInt32();
+              break;
+            }
+            case 64: {
+              bitField0_ |= 0x00000080;
+              studioMaxMemoryMb_ = input.readUInt32();
+              break;
+            }
+            case 72: {
+              bitField0_ |= 0x00000100;
+              studioFreeMemoryMb_ = input.readUInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidProfilerEvent_Loading_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidProfilerEvent_Loading_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.class, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder.class);
+    }
+
+    /**
+     * Protobuf enum {@code android_studio.AndroidProfilerEvent.Loading.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>UNSPECIFIED = 0;</code>
+       */
+      UNSPECIFIED(0),
+      /**
+       * <code>HPROF = 1;</code>
+       */
+      HPROF(1),
+      /**
+       * <code>HEAP_PROFD = 2;</code>
+       */
+      HEAP_PROFD(2),
+      /**
+       * <pre>
+       * pre-O
+       * </pre>
+       *
+       * <code>LEGACY_ALLOC = 3;</code>
+       */
+      LEGACY_ALLOC(3),
+      /**
+       * <code>LIVE_ALLOC = 4;</code>
+       */
+      LIVE_ALLOC(4),
+      /**
+       * <code>PERFETTO_PROCESS_LIST = 5;</code>
+       */
+      PERFETTO_PROCESS_LIST(5),
+      /**
+       * <code>PERFETTO_PROCESS = 6;</code>
+       */
+      PERFETTO_PROCESS(6),
+      /**
+       * <code>SIMPLEPERF = 7;</code>
+       */
+      SIMPLEPERF(7),
+      /**
+       * <code>ART = 8;</code>
+       */
+      ART(8),
+      ;
+
+      /**
+       * <code>UNSPECIFIED = 0;</code>
+       */
+      public static final int UNSPECIFIED_VALUE = 0;
+      /**
+       * <code>HPROF = 1;</code>
+       */
+      public static final int HPROF_VALUE = 1;
+      /**
+       * <code>HEAP_PROFD = 2;</code>
+       */
+      public static final int HEAP_PROFD_VALUE = 2;
+      /**
+       * <pre>
+       * pre-O
+       * </pre>
+       *
+       * <code>LEGACY_ALLOC = 3;</code>
+       */
+      public static final int LEGACY_ALLOC_VALUE = 3;
+      /**
+       * <code>LIVE_ALLOC = 4;</code>
+       */
+      public static final int LIVE_ALLOC_VALUE = 4;
+      /**
+       * <code>PERFETTO_PROCESS_LIST = 5;</code>
+       */
+      public static final int PERFETTO_PROCESS_LIST_VALUE = 5;
+      /**
+       * <code>PERFETTO_PROCESS = 6;</code>
+       */
+      public static final int PERFETTO_PROCESS_VALUE = 6;
+      /**
+       * <code>SIMPLEPERF = 7;</code>
+       */
+      public static final int SIMPLEPERF_VALUE = 7;
+      /**
+       * <code>ART = 8;</code>
+       */
+      public static final int ART_VALUE = 8;
+
+
+      public final int getNumber() {
+        return value;
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static Type valueOf(int value) {
+        return forNumber(value);
+      }
+
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
+      public static Type forNumber(int value) {
+        switch (value) {
+          case 0: return UNSPECIFIED;
+          case 1: return HPROF;
+          case 2: return HEAP_PROFD;
+          case 3: return LEGACY_ALLOC;
+          case 4: return LIVE_ALLOC;
+          case 5: return PERFETTO_PROCESS_LIST;
+          case 6: return PERFETTO_PROCESS;
+          case 7: return SIMPLEPERF;
+          case 8: return ART;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          Type> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private Type(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:android_studio.AndroidProfilerEvent.Loading.Type)
+    }
+
+    private int bitField0_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private int type_;
+    /**
+     * <pre>
+     * Type of recording event
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+     * @return Whether the type field is set.
+     */
+    @java.lang.Override public boolean hasType() {
+      return ((bitField0_ & 0x00000001) != 0);
+    }
+    /**
+     * <pre>
+     * Type of recording event
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+     * @return The type.
+     */
+    @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type getType() {
+      @SuppressWarnings("deprecation")
+      com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type.valueOf(type_);
+      return result == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type.UNSPECIFIED : result;
+    }
+
+    public static final int IS_SUCCESS_FIELD_NUMBER = 2;
+    private boolean isSuccess_;
+    /**
+     * <pre>
+     * Whether this is an attempt or a success
+     * </pre>
+     *
+     * <code>optional bool is_success = 2;</code>
+     * @return Whether the isSuccess field is set.
+     */
+    @java.lang.Override
+    public boolean hasIsSuccess() {
+      return ((bitField0_ & 0x00000002) != 0);
+    }
+    /**
+     * <pre>
+     * Whether this is an attempt or a success
+     * </pre>
+     *
+     * <code>optional bool is_success = 2;</code>
+     * @return The isSuccess.
+     */
+    @java.lang.Override
+    public boolean getIsSuccess() {
+      return isSuccess_;
+    }
+
+    public static final int SIZE_KB_FIELD_NUMBER = 3;
+    private int sizeKb_;
+    /**
+     * <pre>
+     * Size of the trace or file to load (in KB)
+     * </pre>
+     *
+     * <code>optional uint32 size_kb = 3;</code>
+     * @return Whether the sizeKb field is set.
+     */
+    @java.lang.Override
+    public boolean hasSizeKb() {
+      return ((bitField0_ & 0x00000004) != 0);
+    }
+    /**
+     * <pre>
+     * Size of the trace or file to load (in KB)
+     * </pre>
+     *
+     * <code>optional uint32 size_kb = 3;</code>
+     * @return The sizeKb.
+     */
+    @java.lang.Override
+    public int getSizeKb() {
+      return sizeKb_;
+    }
+
+    public static final int EVENT_COUNT_FIELD_NUMBER = 4;
+    private long eventCount_;
+    /**
+     * <pre>
+     * Event count or instance count, depending on the type
+     * </pre>
+     *
+     * <code>optional uint64 event_count = 4;</code>
+     * @return Whether the eventCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasEventCount() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <pre>
+     * Event count or instance count, depending on the type
+     * </pre>
+     *
+     * <code>optional uint64 event_count = 4;</code>
+     * @return The eventCount.
+     */
+    @java.lang.Override
+    public long getEventCount() {
+      return eventCount_;
+    }
+
+    public static final int ELAPSED_MS_FIELD_NUMBER = 5;
+    private int elapsedMs_;
+    /**
+     * <pre>
+     * Set if |is_success|
+     * </pre>
+     *
+     * <code>optional uint32 elapsed_ms = 5;</code>
+     * @return Whether the elapsedMs field is set.
+     */
+    @java.lang.Override
+    public boolean hasElapsedMs() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |is_success|
+     * </pre>
+     *
+     * <code>optional uint32 elapsed_ms = 5;</code>
+     * @return The elapsedMs.
+     */
+    @java.lang.Override
+    public int getElapsedMs() {
+      return elapsedMs_;
+    }
+
+    public static final int CORE_COUNT_FIELD_NUMBER = 6;
+    private int coreCount_;
+    /**
+     * <pre>
+     * Number of logical cores
+     * </pre>
+     *
+     * <code>optional uint32 core_count = 6;</code>
+     * @return Whether the coreCount field is set.
+     */
+    @java.lang.Override
+    public boolean hasCoreCount() {
+      return ((bitField0_ & 0x00000020) != 0);
+    }
+    /**
+     * <pre>
+     * Number of logical cores
+     * </pre>
+     *
+     * <code>optional uint32 core_count = 6;</code>
+     * @return The coreCount.
+     */
+    @java.lang.Override
+    public int getCoreCount() {
+      return coreCount_;
+    }
+
+    public static final int MACHINE_MEMORY_MB_FIELD_NUMBER = 7;
+    private int machineMemoryMb_;
+    /**
+     * <pre>
+     * Memory available in the machine (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 machine_memory_mb = 7;</code>
+     * @return Whether the machineMemoryMb field is set.
+     */
+    @java.lang.Override
+    public boolean hasMachineMemoryMb() {
+      return ((bitField0_ & 0x00000040) != 0);
+    }
+    /**
+     * <pre>
+     * Memory available in the machine (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 machine_memory_mb = 7;</code>
+     * @return The machineMemoryMb.
+     */
+    @java.lang.Override
+    public int getMachineMemoryMb() {
+      return machineMemoryMb_;
+    }
+
+    public static final int STUDIO_MAX_MEMORY_MB_FIELD_NUMBER = 8;
+    private int studioMaxMemoryMb_;
+    /**
+     * <pre>
+     * Memory set aside for studio (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 studio_max_memory_mb = 8;</code>
+     * @return Whether the studioMaxMemoryMb field is set.
+     */
+    @java.lang.Override
+    public boolean hasStudioMaxMemoryMb() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Memory set aside for studio (in MB)
+     * </pre>
+     *
+     * <code>optional uint32 studio_max_memory_mb = 8;</code>
+     * @return The studioMaxMemoryMb.
+     */
+    @java.lang.Override
+    public int getStudioMaxMemoryMb() {
+      return studioMaxMemoryMb_;
+    }
+
+    public static final int STUDIO_FREE_MEMORY_MB_FIELD_NUMBER = 9;
+    private int studioFreeMemoryMb_;
+    /**
+     * <pre>
+     * Memory available for studio (in MB) when event is sent
+     * </pre>
+     *
+     * <code>optional uint32 studio_free_memory_mb = 9;</code>
+     * @return Whether the studioFreeMemoryMb field is set.
+     */
+    @java.lang.Override
+    public boolean hasStudioFreeMemoryMb() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Memory available for studio (in MB) when event is sent
+     * </pre>
+     *
+     * <code>optional uint32 studio_free_memory_mb = 9;</code>
+     * @return The studioFreeMemoryMb.
+     */
+    @java.lang.Override
+    public int getStudioFreeMemoryMb() {
+      return studioFreeMemoryMb_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (((bitField0_ & 0x00000001) != 0)) {
+        output.writeEnum(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        output.writeBool(2, isSuccess_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        output.writeUInt32(3, sizeKb_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        output.writeUInt64(4, eventCount_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        output.writeUInt32(5, elapsedMs_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        output.writeUInt32(6, coreCount_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        output.writeUInt32(7, machineMemoryMb_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        output.writeUInt32(8, studioMaxMemoryMb_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        output.writeUInt32(9, studioFreeMemoryMb_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_);
+      }
+      if (((bitField0_ & 0x00000002) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, isSuccess_);
+      }
+      if (((bitField0_ & 0x00000004) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(3, sizeKb_);
+      }
+      if (((bitField0_ & 0x00000008) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt64Size(4, eventCount_);
+      }
+      if (((bitField0_ & 0x00000010) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(5, elapsedMs_);
+      }
+      if (((bitField0_ & 0x00000020) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(6, coreCount_);
+      }
+      if (((bitField0_ & 0x00000040) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(7, machineMemoryMb_);
+      }
+      if (((bitField0_ & 0x00000080) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(8, studioMaxMemoryMb_);
+      }
+      if (((bitField0_ & 0x00000100) != 0)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32Size(9, studioFreeMemoryMb_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading)) {
+        return super.equals(obj);
+      }
+      com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading other = (com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading) obj;
+
+      if (hasType() != other.hasType()) return false;
+      if (hasType()) {
+        if (type_ != other.type_) return false;
+      }
+      if (hasIsSuccess() != other.hasIsSuccess()) return false;
+      if (hasIsSuccess()) {
+        if (getIsSuccess()
+            != other.getIsSuccess()) return false;
+      }
+      if (hasSizeKb() != other.hasSizeKb()) return false;
+      if (hasSizeKb()) {
+        if (getSizeKb()
+            != other.getSizeKb()) return false;
+      }
+      if (hasEventCount() != other.hasEventCount()) return false;
+      if (hasEventCount()) {
+        if (getEventCount()
+            != other.getEventCount()) return false;
+      }
+      if (hasElapsedMs() != other.hasElapsedMs()) return false;
+      if (hasElapsedMs()) {
+        if (getElapsedMs()
+            != other.getElapsedMs()) return false;
+      }
+      if (hasCoreCount() != other.hasCoreCount()) return false;
+      if (hasCoreCount()) {
+        if (getCoreCount()
+            != other.getCoreCount()) return false;
+      }
+      if (hasMachineMemoryMb() != other.hasMachineMemoryMb()) return false;
+      if (hasMachineMemoryMb()) {
+        if (getMachineMemoryMb()
+            != other.getMachineMemoryMb()) return false;
+      }
+      if (hasStudioMaxMemoryMb() != other.hasStudioMaxMemoryMb()) return false;
+      if (hasStudioMaxMemoryMb()) {
+        if (getStudioMaxMemoryMb()
+            != other.getStudioMaxMemoryMb()) return false;
+      }
+      if (hasStudioFreeMemoryMb() != other.hasStudioFreeMemoryMb()) return false;
+      if (hasStudioFreeMemoryMb()) {
+        if (getStudioFreeMemoryMb()
+            != other.getStudioFreeMemoryMb()) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasType()) {
+        hash = (37 * hash) + TYPE_FIELD_NUMBER;
+        hash = (53 * hash) + type_;
+      }
+      if (hasIsSuccess()) {
+        hash = (37 * hash) + IS_SUCCESS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getIsSuccess());
+      }
+      if (hasSizeKb()) {
+        hash = (37 * hash) + SIZE_KB_FIELD_NUMBER;
+        hash = (53 * hash) + getSizeKb();
+      }
+      if (hasEventCount()) {
+        hash = (37 * hash) + EVENT_COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            getEventCount());
+      }
+      if (hasElapsedMs()) {
+        hash = (37 * hash) + ELAPSED_MS_FIELD_NUMBER;
+        hash = (53 * hash) + getElapsedMs();
+      }
+      if (hasCoreCount()) {
+        hash = (37 * hash) + CORE_COUNT_FIELD_NUMBER;
+        hash = (53 * hash) + getCoreCount();
+      }
+      if (hasMachineMemoryMb()) {
+        hash = (37 * hash) + MACHINE_MEMORY_MB_FIELD_NUMBER;
+        hash = (53 * hash) + getMachineMemoryMb();
+      }
+      if (hasStudioMaxMemoryMb()) {
+        hash = (37 * hash) + STUDIO_MAX_MEMORY_MB_FIELD_NUMBER;
+        hash = (53 * hash) + getStudioMaxMemoryMb();
+      }
+      if (hasStudioFreeMemoryMb()) {
+        hash = (37 * hash) + STUDIO_FREE_MEMORY_MB_FIELD_NUMBER;
+        hash = (53 * hash) + getStudioFreeMemoryMb();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code android_studio.AndroidProfilerEvent.Loading}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:android_studio.AndroidProfilerEvent.Loading)
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidProfilerEvent_Loading_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidProfilerEvent_Loading_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.class, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder.class);
+      }
+
+      // Construct using com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        type_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        isSuccess_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sizeKb_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        eventCount_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        elapsedMs_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
+        coreCount_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000020);
+        machineMemoryMb_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000040);
+        studioMaxMemoryMb_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000080);
+        studioFreeMemoryMb_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000100);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.google.wireless.android.sdk.stats.AndroidStudioStats.internal_static_android_studio_AndroidProfilerEvent_Loading_descriptor;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getDefaultInstanceForType() {
+        return com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading build() {
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading buildPartial() {
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading result = new com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) != 0)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) != 0)) {
+          result.isSuccess_ = isSuccess_;
+          to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000004) != 0)) {
+          result.sizeKb_ = sizeKb_;
+          to_bitField0_ |= 0x00000004;
+        }
+        if (((from_bitField0_ & 0x00000008) != 0)) {
+          result.eventCount_ = eventCount_;
+          to_bitField0_ |= 0x00000008;
+        }
+        if (((from_bitField0_ & 0x00000010) != 0)) {
+          result.elapsedMs_ = elapsedMs_;
+          to_bitField0_ |= 0x00000010;
+        }
+        if (((from_bitField0_ & 0x00000020) != 0)) {
+          result.coreCount_ = coreCount_;
+          to_bitField0_ |= 0x00000020;
+        }
+        if (((from_bitField0_ & 0x00000040) != 0)) {
+          result.machineMemoryMb_ = machineMemoryMb_;
+          to_bitField0_ |= 0x00000040;
+        }
+        if (((from_bitField0_ & 0x00000080) != 0)) {
+          result.studioMaxMemoryMb_ = studioMaxMemoryMb_;
+          to_bitField0_ |= 0x00000080;
+        }
+        if (((from_bitField0_ & 0x00000100) != 0)) {
+          result.studioFreeMemoryMb_ = studioFreeMemoryMb_;
+          to_bitField0_ |= 0x00000100;
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading) {
+          return mergeFrom((com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading other) {
+        if (other == com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasIsSuccess()) {
+          setIsSuccess(other.getIsSuccess());
+        }
+        if (other.hasSizeKb()) {
+          setSizeKb(other.getSizeKb());
+        }
+        if (other.hasEventCount()) {
+          setEventCount(other.getEventCount());
+        }
+        if (other.hasElapsedMs()) {
+          setElapsedMs(other.getElapsedMs());
+        }
+        if (other.hasCoreCount()) {
+          setCoreCount(other.getCoreCount());
+        }
+        if (other.hasMachineMemoryMb()) {
+          setMachineMemoryMb(other.getMachineMemoryMb());
+        }
+        if (other.hasStudioMaxMemoryMb()) {
+          setStudioMaxMemoryMb(other.getStudioMaxMemoryMb());
+        }
+        if (other.hasStudioFreeMemoryMb()) {
+          setStudioFreeMemoryMb(other.getStudioFreeMemoryMb());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int type_ = 0;
+      /**
+       * <pre>
+       * Type of recording event
+       * </pre>
+       *
+       * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+       * @return Whether the type field is set.
+       */
+      @java.lang.Override public boolean hasType() {
+        return ((bitField0_ & 0x00000001) != 0);
+      }
+      /**
+       * <pre>
+       * Type of recording event
+       * </pre>
+       *
+       * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+       * @return The type.
+       */
+      @java.lang.Override
+      public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type getType() {
+        @SuppressWarnings("deprecation")
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type.valueOf(type_);
+        return result == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type.UNSPECIFIED : result;
+      }
+      /**
+       * <pre>
+       * Type of recording event
+       * </pre>
+       *
+       * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Type of recording event
+       * </pre>
+       *
+       * <code>optional .android_studio.AndroidProfilerEvent.Loading.Type type = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean isSuccess_ ;
+      /**
+       * <pre>
+       * Whether this is an attempt or a success
+       * </pre>
+       *
+       * <code>optional bool is_success = 2;</code>
+       * @return Whether the isSuccess field is set.
+       */
+      @java.lang.Override
+      public boolean hasIsSuccess() {
+        return ((bitField0_ & 0x00000002) != 0);
+      }
+      /**
+       * <pre>
+       * Whether this is an attempt or a success
+       * </pre>
+       *
+       * <code>optional bool is_success = 2;</code>
+       * @return The isSuccess.
+       */
+      @java.lang.Override
+      public boolean getIsSuccess() {
+        return isSuccess_;
+      }
+      /**
+       * <pre>
+       * Whether this is an attempt or a success
+       * </pre>
+       *
+       * <code>optional bool is_success = 2;</code>
+       * @param value The isSuccess to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIsSuccess(boolean value) {
+        bitField0_ |= 0x00000002;
+        isSuccess_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Whether this is an attempt or a success
+       * </pre>
+       *
+       * <code>optional bool is_success = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIsSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        isSuccess_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int sizeKb_ ;
+      /**
+       * <pre>
+       * Size of the trace or file to load (in KB)
+       * </pre>
+       *
+       * <code>optional uint32 size_kb = 3;</code>
+       * @return Whether the sizeKb field is set.
+       */
+      @java.lang.Override
+      public boolean hasSizeKb() {
+        return ((bitField0_ & 0x00000004) != 0);
+      }
+      /**
+       * <pre>
+       * Size of the trace or file to load (in KB)
+       * </pre>
+       *
+       * <code>optional uint32 size_kb = 3;</code>
+       * @return The sizeKb.
+       */
+      @java.lang.Override
+      public int getSizeKb() {
+        return sizeKb_;
+      }
+      /**
+       * <pre>
+       * Size of the trace or file to load (in KB)
+       * </pre>
+       *
+       * <code>optional uint32 size_kb = 3;</code>
+       * @param value The sizeKb to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSizeKb(int value) {
+        bitField0_ |= 0x00000004;
+        sizeKb_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Size of the trace or file to load (in KB)
+       * </pre>
+       *
+       * <code>optional uint32 size_kb = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSizeKb() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        sizeKb_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private long eventCount_ ;
+      /**
+       * <pre>
+       * Event count or instance count, depending on the type
+       * </pre>
+       *
+       * <code>optional uint64 event_count = 4;</code>
+       * @return Whether the eventCount field is set.
+       */
+      @java.lang.Override
+      public boolean hasEventCount() {
+        return ((bitField0_ & 0x00000008) != 0);
+      }
+      /**
+       * <pre>
+       * Event count or instance count, depending on the type
+       * </pre>
+       *
+       * <code>optional uint64 event_count = 4;</code>
+       * @return The eventCount.
+       */
+      @java.lang.Override
+      public long getEventCount() {
+        return eventCount_;
+      }
+      /**
+       * <pre>
+       * Event count or instance count, depending on the type
+       * </pre>
+       *
+       * <code>optional uint64 event_count = 4;</code>
+       * @param value The eventCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEventCount(long value) {
+        bitField0_ |= 0x00000008;
+        eventCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Event count or instance count, depending on the type
+       * </pre>
+       *
+       * <code>optional uint64 event_count = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEventCount() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        eventCount_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private int elapsedMs_ ;
+      /**
+       * <pre>
+       * Set if |is_success|
+       * </pre>
+       *
+       * <code>optional uint32 elapsed_ms = 5;</code>
+       * @return Whether the elapsedMs field is set.
+       */
+      @java.lang.Override
+      public boolean hasElapsedMs() {
+        return ((bitField0_ & 0x00000010) != 0);
+      }
+      /**
+       * <pre>
+       * Set if |is_success|
+       * </pre>
+       *
+       * <code>optional uint32 elapsed_ms = 5;</code>
+       * @return The elapsedMs.
+       */
+      @java.lang.Override
+      public int getElapsedMs() {
+        return elapsedMs_;
+      }
+      /**
+       * <pre>
+       * Set if |is_success|
+       * </pre>
+       *
+       * <code>optional uint32 elapsed_ms = 5;</code>
+       * @param value The elapsedMs to set.
+       * @return This builder for chaining.
+       */
+      public Builder setElapsedMs(int value) {
+        bitField0_ |= 0x00000010;
+        elapsedMs_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Set if |is_success|
+       * </pre>
+       *
+       * <code>optional uint32 elapsed_ms = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearElapsedMs() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        elapsedMs_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int coreCount_ ;
+      /**
+       * <pre>
+       * Number of logical cores
+       * </pre>
+       *
+       * <code>optional uint32 core_count = 6;</code>
+       * @return Whether the coreCount field is set.
+       */
+      @java.lang.Override
+      public boolean hasCoreCount() {
+        return ((bitField0_ & 0x00000020) != 0);
+      }
+      /**
+       * <pre>
+       * Number of logical cores
+       * </pre>
+       *
+       * <code>optional uint32 core_count = 6;</code>
+       * @return The coreCount.
+       */
+      @java.lang.Override
+      public int getCoreCount() {
+        return coreCount_;
+      }
+      /**
+       * <pre>
+       * Number of logical cores
+       * </pre>
+       *
+       * <code>optional uint32 core_count = 6;</code>
+       * @param value The coreCount to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCoreCount(int value) {
+        bitField0_ |= 0x00000020;
+        coreCount_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Number of logical cores
+       * </pre>
+       *
+       * <code>optional uint32 core_count = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCoreCount() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        coreCount_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int machineMemoryMb_ ;
+      /**
+       * <pre>
+       * Memory available in the machine (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 machine_memory_mb = 7;</code>
+       * @return Whether the machineMemoryMb field is set.
+       */
+      @java.lang.Override
+      public boolean hasMachineMemoryMb() {
+        return ((bitField0_ & 0x00000040) != 0);
+      }
+      /**
+       * <pre>
+       * Memory available in the machine (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 machine_memory_mb = 7;</code>
+       * @return The machineMemoryMb.
+       */
+      @java.lang.Override
+      public int getMachineMemoryMb() {
+        return machineMemoryMb_;
+      }
+      /**
+       * <pre>
+       * Memory available in the machine (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 machine_memory_mb = 7;</code>
+       * @param value The machineMemoryMb to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMachineMemoryMb(int value) {
+        bitField0_ |= 0x00000040;
+        machineMemoryMb_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Memory available in the machine (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 machine_memory_mb = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMachineMemoryMb() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        machineMemoryMb_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int studioMaxMemoryMb_ ;
+      /**
+       * <pre>
+       * Memory set aside for studio (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 studio_max_memory_mb = 8;</code>
+       * @return Whether the studioMaxMemoryMb field is set.
+       */
+      @java.lang.Override
+      public boolean hasStudioMaxMemoryMb() {
+        return ((bitField0_ & 0x00000080) != 0);
+      }
+      /**
+       * <pre>
+       * Memory set aside for studio (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 studio_max_memory_mb = 8;</code>
+       * @return The studioMaxMemoryMb.
+       */
+      @java.lang.Override
+      public int getStudioMaxMemoryMb() {
+        return studioMaxMemoryMb_;
+      }
+      /**
+       * <pre>
+       * Memory set aside for studio (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 studio_max_memory_mb = 8;</code>
+       * @param value The studioMaxMemoryMb to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStudioMaxMemoryMb(int value) {
+        bitField0_ |= 0x00000080;
+        studioMaxMemoryMb_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Memory set aside for studio (in MB)
+       * </pre>
+       *
+       * <code>optional uint32 studio_max_memory_mb = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStudioMaxMemoryMb() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        studioMaxMemoryMb_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int studioFreeMemoryMb_ ;
+      /**
+       * <pre>
+       * Memory available for studio (in MB) when event is sent
+       * </pre>
+       *
+       * <code>optional uint32 studio_free_memory_mb = 9;</code>
+       * @return Whether the studioFreeMemoryMb field is set.
+       */
+      @java.lang.Override
+      public boolean hasStudioFreeMemoryMb() {
+        return ((bitField0_ & 0x00000100) != 0);
+      }
+      /**
+       * <pre>
+       * Memory available for studio (in MB) when event is sent
+       * </pre>
+       *
+       * <code>optional uint32 studio_free_memory_mb = 9;</code>
+       * @return The studioFreeMemoryMb.
+       */
+      @java.lang.Override
+      public int getStudioFreeMemoryMb() {
+        return studioFreeMemoryMb_;
+      }
+      /**
+       * <pre>
+       * Memory available for studio (in MB) when event is sent
+       * </pre>
+       *
+       * <code>optional uint32 studio_free_memory_mb = 9;</code>
+       * @param value The studioFreeMemoryMb to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStudioFreeMemoryMb(int value) {
+        bitField0_ |= 0x00000100;
+        studioFreeMemoryMb_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Memory available for studio (in MB) when event is sent
+       * </pre>
+       *
+       * <code>optional uint32 studio_free_memory_mb = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStudioFreeMemoryMb() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        studioFreeMemoryMb_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:android_studio.AndroidProfilerEvent.Loading)
+    }
+
+    // @@protoc_insertion_point(class_scope:android_studio.AndroidProfilerEvent.Loading)
+    private static final com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading();
+    }
+
+    public static com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Loading>
+        PARSER = new com.google.protobuf.AbstractParser<Loading>() {
+      @java.lang.Override
+      public Loading parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Loading(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Loading> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Loading> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private int bitField0_;
   public static final int STAGE_FIELD_NUMBER = 1;
   private int stage_;
@@ -1729,7 +3542,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.Stage stage = 1;</code>
    * @return Whether the stage field is set.
    */
-  public boolean hasStage() {
+  @java.lang.Override public boolean hasStage() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1740,7 +3553,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.Stage stage = 1;</code>
    * @return The stage.
    */
-  public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage getStage() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage getStage() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage.valueOf(stage_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage.UNKNOWN_STAGE : result;
@@ -1756,7 +3569,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.Type type = 2;</code>
    * @return Whether the type field is set.
    */
-  public boolean hasType() {
+  @java.lang.Override public boolean hasType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -1767,7 +3580,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.Type type = 2;</code>
    * @return The type.
    */
-  public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type getType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type getType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type.valueOf(type_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type.UNKNOWN_TYPE : result;
@@ -1784,6 +3597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
    * @return Whether the cpuConfig field is set.
    */
+  @java.lang.Override
   @java.lang.Deprecated public boolean hasCpuConfig() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -1796,6 +3610,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
    * @return The cpuConfig.
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.CpuProfilingConfig getCpuConfig() {
     return cpuConfig_ == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance() : cpuConfig_;
   }
@@ -1807,6 +3622,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CpuProfilingConfig cpu_config = 3 [deprecated = true];</code>
    */
+  @java.lang.Override
   @java.lang.Deprecated public com.google.wireless.android.sdk.stats.CpuProfilingConfigOrBuilder getCpuConfigOrBuilder() {
     return cpuConfig_ == null ? com.google.wireless.android.sdk.stats.CpuProfilingConfig.getDefaultInstance() : cpuConfig_;
   }
@@ -1821,6 +3637,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
    * @return Whether the cpuCaptureMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasCpuCaptureMetadata() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -1832,6 +3649,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
    * @return The cpuCaptureMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuCaptureMetadata getCpuCaptureMetadata() {
     return cpuCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuCaptureMetadata.getDefaultInstance() : cpuCaptureMetadata_;
   }
@@ -1842,6 +3660,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CpuCaptureMetadata cpu_capture_metadata = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuCaptureMetadataOrBuilder getCpuCaptureMetadataOrBuilder() {
     return cpuCaptureMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuCaptureMetadata.getDefaultInstance() : cpuCaptureMetadata_;
   }
@@ -1856,6 +3675,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
    * @return Whether the filterMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasFilterMetadata() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1867,6 +3687,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
    * @return The filterMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FilterMetadata getFilterMetadata() {
     return filterMetadata_ == null ? com.google.wireless.android.sdk.stats.FilterMetadata.getDefaultInstance() : filterMetadata_;
   }
@@ -1877,6 +3698,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.FilterMetadata filter_metadata = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.FilterMetadataOrBuilder getFilterMetadataOrBuilder() {
     return filterMetadata_ == null ? com.google.wireless.android.sdk.stats.FilterMetadata.getDefaultInstance() : filterMetadata_;
   }
@@ -1891,7 +3713,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.MemoryHeap memory_heap = 6;</code>
    * @return Whether the memoryHeap field is set.
    */
-  public boolean hasMemoryHeap() {
+  @java.lang.Override public boolean hasMemoryHeap() {
     return ((bitField0_ & 0x00000020) != 0);
   }
   /**
@@ -1902,7 +3724,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidProfilerEvent.MemoryHeap memory_heap = 6;</code>
    * @return The memoryHeap.
    */
-  public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap getMemoryHeap() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap getMemoryHeap() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap.valueOf(memoryHeap_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap.UNKNOWN_HEAP : result;
@@ -1918,6 +3740,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
    * @return Whether the sessionStartMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasSessionStartMetadata() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1929,6 +3752,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
    * @return The sessionStartMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData getSessionStartMetadata() {
     return sessionStartMetadata_ == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.getDefaultInstance() : sessionStartMetadata_;
   }
@@ -1939,6 +3763,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProfilerSessionCreationMetaData session_start_metadata = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaDataOrBuilder getSessionStartMetadataOrBuilder() {
     return sessionStartMetadata_ == null ? com.google.wireless.android.sdk.stats.ProfilerSessionCreationMetaData.getDefaultInstance() : sessionStartMetadata_;
   }
@@ -1953,6 +3778,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
    * @return Whether the sessionArtifactMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasSessionArtifactMetadata() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1964,6 +3790,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
    * @return The sessionArtifactMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData getSessionArtifactMetadata() {
     return sessionArtifactMetadata_ == null ? com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.getDefaultInstance() : sessionArtifactMetadata_;
   }
@@ -1974,6 +3801,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProfilerSessionSelectionMetaData session_artifact_metadata = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaDataOrBuilder getSessionArtifactMetadataOrBuilder() {
     return sessionArtifactMetadata_ == null ? com.google.wireless.android.sdk.stats.ProfilerSessionSelectionMetaData.getDefaultInstance() : sessionArtifactMetadata_;
   }
@@ -1988,6 +3816,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
    * @return Whether the cpuStartupProfilingMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasCpuStartupProfilingMetadata() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1999,6 +3828,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
    * @return The cpuStartupProfilingMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata getCpuStartupProfilingMetadata() {
     return cpuStartupProfilingMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata.getDefaultInstance() : cpuStartupProfilingMetadata_;
   }
@@ -2009,6 +3839,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CpuStartupProfilingMetadata cpu_startup_profiling_metadata = 9;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadataOrBuilder getCpuStartupProfilingMetadataOrBuilder() {
     return cpuStartupProfilingMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuStartupProfilingMetadata.getDefaultInstance() : cpuStartupProfilingMetadata_;
   }
@@ -2023,6 +3854,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
    * @return Whether the cpuImportTraceMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasCpuImportTraceMetadata() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -2034,6 +3866,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
    * @return The cpuImportTraceMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuImportTraceMetadata getCpuImportTraceMetadata() {
     return cpuImportTraceMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.getDefaultInstance() : cpuImportTraceMetadata_;
   }
@@ -2044,6 +3877,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CpuImportTraceMetadata cpu_import_trace_metadata = 10;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuImportTraceMetadataOrBuilder getCpuImportTraceMetadataOrBuilder() {
     return cpuImportTraceMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuImportTraceMetadata.getDefaultInstance() : cpuImportTraceMetadata_;
   }
@@ -2058,6 +3892,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
    * @return Whether the cpuApiTracingMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasCpuApiTracingMetadata() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -2069,6 +3904,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
    * @return The cpuApiTracingMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuApiTracingMetadata getCpuApiTracingMetadata() {
     return cpuApiTracingMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuApiTracingMetadata.getDefaultInstance() : cpuApiTracingMetadata_;
   }
@@ -2079,6 +3915,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CpuApiTracingMetadata cpu_api_tracing_metadata = 11;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CpuApiTracingMetadataOrBuilder getCpuApiTracingMetadataOrBuilder() {
     return cpuApiTracingMetadata_ == null ? com.google.wireless.android.sdk.stats.CpuApiTracingMetadata.getDefaultInstance() : cpuApiTracingMetadata_;
   }
@@ -2093,6 +3930,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
    * @return Whether the energyRangeMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasEnergyRangeMetadata() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -2104,6 +3942,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
    * @return The energyRangeMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyRangeMetadata getEnergyRangeMetadata() {
     return energyRangeMetadata_ == null ? com.google.wireless.android.sdk.stats.EnergyRangeMetadata.getDefaultInstance() : energyRangeMetadata_;
   }
@@ -2114,6 +3953,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EnergyRangeMetadata energy_range_metadata = 12;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyRangeMetadataOrBuilder getEnergyRangeMetadataOrBuilder() {
     return energyRangeMetadata_ == null ? com.google.wireless.android.sdk.stats.EnergyRangeMetadata.getDefaultInstance() : energyRangeMetadata_;
   }
@@ -2128,6 +3968,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
    * @return Whether the energyEventMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasEnergyEventMetadata() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -2139,6 +3980,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
    * @return The energyEventMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEventMetadata getEnergyEventMetadata() {
     return energyEventMetadata_ == null ? com.google.wireless.android.sdk.stats.EnergyEventMetadata.getDefaultInstance() : energyEventMetadata_;
   }
@@ -2149,6 +3991,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.EnergyEventMetadata energy_event_metadata = 13;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EnergyEventMetadataOrBuilder getEnergyEventMetadataOrBuilder() {
     return energyEventMetadata_ == null ? com.google.wireless.android.sdk.stats.EnergyEventMetadata.getDefaultInstance() : energyEventMetadata_;
   }
@@ -2163,6 +4006,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
    * @return Whether the perfdCrashInfo field is set.
    */
+  @java.lang.Override
   public boolean hasPerfdCrashInfo() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -2174,6 +4018,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
    * @return The perfdCrashInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PerfdCrashInfo getPerfdCrashInfo() {
     return perfdCrashInfo_ == null ? com.google.wireless.android.sdk.stats.PerfdCrashInfo.getDefaultInstance() : perfdCrashInfo_;
   }
@@ -2184,6 +4029,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.PerfdCrashInfo perfd_crash_info = 14;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PerfdCrashInfoOrBuilder getPerfdCrashInfoOrBuilder() {
     return perfdCrashInfo_ == null ? com.google.wireless.android.sdk.stats.PerfdCrashInfo.getDefaultInstance() : perfdCrashInfo_;
   }
@@ -2198,6 +4044,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
    * @return Whether the transportFailureMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasTransportFailureMetadata() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -2209,6 +4056,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
    * @return The transportFailureMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportFailureMetadata getTransportFailureMetadata() {
     return transportFailureMetadata_ == null ? com.google.wireless.android.sdk.stats.TransportFailureMetadata.getDefaultInstance() : transportFailureMetadata_;
   }
@@ -2219,6 +4067,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TransportFailureMetadata transport_failure_metadata = 15;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportFailureMetadataOrBuilder getTransportFailureMetadataOrBuilder() {
     return transportFailureMetadata_ == null ? com.google.wireless.android.sdk.stats.TransportFailureMetadata.getDefaultInstance() : transportFailureMetadata_;
   }
@@ -2233,6 +4082,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
    * @return Whether the memoryInstanceFilterMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasMemoryInstanceFilterMetadata() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -2244,6 +4094,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
    * @return The memoryInstanceFilterMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata getMemoryInstanceFilterMetadata() {
     return memoryInstanceFilterMetadata_ == null ? com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.getDefaultInstance() : memoryInstanceFilterMetadata_;
   }
@@ -2254,6 +4105,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.MemoryInstanceFilterMetadata memory_instance_filter_metadata = 16;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadataOrBuilder getMemoryInstanceFilterMetadataOrBuilder() {
     return memoryInstanceFilterMetadata_ == null ? com.google.wireless.android.sdk.stats.MemoryInstanceFilterMetadata.getDefaultInstance() : memoryInstanceFilterMetadata_;
   }
@@ -2268,6 +4120,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
    * @return Whether the transportDaemonStartedInfo field is set.
    */
+  @java.lang.Override
   public boolean hasTransportDaemonStartedInfo() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -2279,6 +4132,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
    * @return The transportDaemonStartedInfo.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo getTransportDaemonStartedInfo() {
     return transportDaemonStartedInfo_ == null ? com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo.getDefaultInstance() : transportDaemonStartedInfo_;
   }
@@ -2289,6 +4143,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TransportDaemonStartedInfo transport_daemon_started_info = 17;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TransportDaemonStartedInfoOrBuilder getTransportDaemonStartedInfoOrBuilder() {
     return transportDaemonStartedInfo_ == null ? com.google.wireless.android.sdk.stats.TransportDaemonStartedInfo.getDefaultInstance() : transportDaemonStartedInfo_;
   }
@@ -2303,6 +4158,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
    * @return Whether the tpdManagerStats field is set.
    */
+  @java.lang.Override
   public boolean hasTpdManagerStats() {
     return ((bitField0_ & 0x00020000) != 0);
   }
@@ -2314,6 +4170,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
    * @return The tpdManagerStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats getTpdManagerStats() {
     return tpdManagerStats_ == null ? com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats.getDefaultInstance() : tpdManagerStats_;
   }
@@ -2324,6 +4181,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TraceProcessorDaemonManagerStats tpd_manager_stats = 18;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStatsOrBuilder getTpdManagerStatsOrBuilder() {
     return tpdManagerStats_ == null ? com.google.wireless.android.sdk.stats.TraceProcessorDaemonManagerStats.getDefaultInstance() : tpdManagerStats_;
   }
@@ -2338,6 +4196,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
    * @return Whether the tpdQueryStats field is set.
    */
+  @java.lang.Override
   public boolean hasTpdQueryStats() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -2349,6 +4208,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
    * @return The tpdQueryStats.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats getTpdQueryStats() {
     return tpdQueryStats_ == null ? com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.getDefaultInstance() : tpdQueryStats_;
   }
@@ -2359,6 +4219,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TraceProcessorDaemonQueryStats tpd_query_stats = 19;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStatsOrBuilder getTpdQueryStatsOrBuilder() {
     return tpdQueryStats_ == null ? com.google.wireless.android.sdk.stats.TraceProcessorDaemonQueryStats.getDefaultInstance() : tpdQueryStats_;
   }
@@ -2373,6 +4234,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
    * @return Whether the boxSelectionMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasBoxSelectionMetadata() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -2384,6 +4246,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
    * @return The boxSelectionMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata getBoxSelectionMetadata() {
     return boxSelectionMetadata_ == null ? com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata.getDefaultInstance() : boxSelectionMetadata_;
   }
@@ -2394,6 +4257,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AdtUiBoxSelectionMetadata box_selection_metadata = 20;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadataOrBuilder getBoxSelectionMetadataOrBuilder() {
     return boxSelectionMetadata_ == null ? com.google.wireless.android.sdk.stats.AdtUiBoxSelectionMetadata.getDefaultInstance() : boxSelectionMetadata_;
   }
@@ -2408,6 +4272,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
    * @return Whether the trackGroupMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasTrackGroupMetadata() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -2419,6 +4284,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
    * @return The trackGroupMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata getTrackGroupMetadata() {
     return trackGroupMetadata_ == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.getDefaultInstance() : trackGroupMetadata_;
   }
@@ -2429,6 +4295,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AdtUiTrackGroupMetadata track_group_metadata = 21;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadataOrBuilder getTrackGroupMetadataOrBuilder() {
     return trackGroupMetadata_ == null ? com.google.wireless.android.sdk.stats.AdtUiTrackGroupMetadata.getDefaultInstance() : trackGroupMetadata_;
   }
@@ -2443,6 +4310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 event_count = 22;</code>
    * @return Whether the eventCount field is set.
    */
+  @java.lang.Override
   public boolean hasEventCount() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -2454,8 +4322,47 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 event_count = 22;</code>
    * @return The eventCount.
    */
+  @java.lang.Override
   public int getEventCount() {
     return eventCount_;
+  }
+
+  public static final int LOADING_FIELD_NUMBER = 23;
+  private com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading loading_;
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * @return Whether the loading field is set.
+   */
+  @java.lang.Override
+  public boolean hasLoading() {
+    return ((bitField0_ & 0x00400000) != 0);
+  }
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * @return The loading.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getLoading() {
+    return loading_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance() : loading_;
+  }
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder() {
+    return loading_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance() : loading_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -2537,6 +4444,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00200000) != 0)) {
       output.writeUInt32(22, eventCount_);
+    }
+    if (((bitField0_ & 0x00400000) != 0)) {
+      output.writeMessage(23, getLoading());
     }
     unknownFields.writeTo(output);
   }
@@ -2634,6 +4544,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00200000) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeUInt32Size(22, eventCount_);
+    }
+    if (((bitField0_ & 0x00400000) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(23, getLoading());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -2757,6 +4671,11 @@ private static final long serialVersionUID = 0L;
       if (getEventCount()
           != other.getEventCount()) return false;
     }
+    if (hasLoading() != other.hasLoading()) return false;
+    if (hasLoading()) {
+      if (!getLoading()
+          .equals(other.getLoading())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -2855,6 +4774,10 @@ private static final long serialVersionUID = 0L;
     if (hasEventCount()) {
       hash = (37 * hash) + EVENT_COUNT_FIELD_NUMBER;
       hash = (53 * hash) + getEventCount();
+    }
+    if (hasLoading()) {
+      hash = (37 * hash) + LOADING_FIELD_NUMBER;
+      hash = (53 * hash) + getLoading().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -3006,6 +4929,7 @@ private static final long serialVersionUID = 0L;
         getTpdQueryStatsFieldBuilder();
         getBoxSelectionMetadataFieldBuilder();
         getTrackGroupMetadataFieldBuilder();
+        getLoadingFieldBuilder();
       }
     }
     @java.lang.Override
@@ -3127,6 +5051,12 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00100000);
       eventCount_ = 0;
       bitField0_ = (bitField0_ & ~0x00200000);
+      if (loadingBuilder_ == null) {
+        loading_ = null;
+      } else {
+        loadingBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00400000);
       return this;
     }
 
@@ -3315,6 +5245,14 @@ private static final long serialVersionUID = 0L;
         result.eventCount_ = eventCount_;
         to_bitField0_ |= 0x00200000;
       }
+      if (((from_bitField0_ & 0x00400000) != 0)) {
+        if (loadingBuilder_ == null) {
+          result.loading_ = loading_;
+        } else {
+          result.loading_ = loadingBuilder_.build();
+        }
+        to_bitField0_ |= 0x00400000;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -3430,6 +5368,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasEventCount()) {
         setEventCount(other.getEventCount());
       }
+      if (other.hasLoading()) {
+        mergeLoading(other.getLoading());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -3469,7 +5410,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.Stage stage = 1;</code>
      * @return Whether the stage field is set.
      */
-    public boolean hasStage() {
+    @java.lang.Override public boolean hasStage() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -3480,6 +5421,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.Stage stage = 1;</code>
      * @return The stage.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage getStage() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Stage.valueOf(stage_);
@@ -3527,7 +5469,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.Type type = 2;</code>
      * @return Whether the type field is set.
      */
-    public boolean hasType() {
+    @java.lang.Override public boolean hasType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -3538,6 +5480,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.Type type = 2;</code>
      * @return The type.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type getType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Type.valueOf(type_);
@@ -4062,7 +6005,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.MemoryHeap memory_heap = 6;</code>
      * @return Whether the memoryHeap field is set.
      */
-    public boolean hasMemoryHeap() {
+    @java.lang.Override public boolean hasMemoryHeap() {
       return ((bitField0_ & 0x00000020) != 0);
     }
     /**
@@ -4073,6 +6016,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidProfilerEvent.MemoryHeap memory_heap = 6;</code>
      * @return The memoryHeap.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap getMemoryHeap() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap result = com.google.wireless.android.sdk.stats.AndroidProfilerEvent.MemoryHeap.valueOf(memoryHeap_);
@@ -6460,6 +8404,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 event_count = 22;</code>
      * @return Whether the eventCount field is set.
      */
+    @java.lang.Override
     public boolean hasEventCount() {
       return ((bitField0_ & 0x00200000) != 0);
     }
@@ -6471,6 +8416,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 event_count = 22;</code>
      * @return The eventCount.
      */
+    @java.lang.Override
     public int getEventCount() {
       return eventCount_;
     }
@@ -6502,6 +8448,162 @@ private static final long serialVersionUID = 0L;
       eventCount_ = 0;
       onChanged();
       return this;
+    }
+
+    private com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading loading_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder> loadingBuilder_;
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * @return Whether the loading field is set.
+     */
+    public boolean hasLoading() {
+      return ((bitField0_ & 0x00400000) != 0);
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     * @return The loading.
+     */
+    public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getLoading() {
+      if (loadingBuilder_ == null) {
+        return loading_ == null ? com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance() : loading_;
+      } else {
+        return loadingBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public Builder setLoading(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading value) {
+      if (loadingBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        loading_ = value;
+        onChanged();
+      } else {
+        loadingBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public Builder setLoading(
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder builderForValue) {
+      if (loadingBuilder_ == null) {
+        loading_ = builderForValue.build();
+        onChanged();
+      } else {
+        loadingBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public Builder mergeLoading(com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading value) {
+      if (loadingBuilder_ == null) {
+        if (((bitField0_ & 0x00400000) != 0) &&
+            loading_ != null &&
+            loading_ != com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance()) {
+          loading_ =
+            com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.newBuilder(loading_).mergeFrom(value).buildPartial();
+        } else {
+          loading_ = value;
+        }
+        onChanged();
+      } else {
+        loadingBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00400000;
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public Builder clearLoading() {
+      if (loadingBuilder_ == null) {
+        loading_ = null;
+        onChanged();
+      } else {
+        loadingBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00400000);
+      return this;
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder getLoadingBuilder() {
+      bitField0_ |= 0x00400000;
+      onChanged();
+      return getLoadingFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    public com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder() {
+      if (loadingBuilder_ != null) {
+        return loadingBuilder_.getMessageOrBuilder();
+      } else {
+        return loading_ == null ?
+            com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.getDefaultInstance() : loading_;
+      }
+    }
+    /**
+     * <pre>
+     * Set if |type| is |LOADING|
+     * </pre>
+     *
+     * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder> 
+        getLoadingFieldBuilder() {
+      if (loadingBuilder_ == null) {
+        loadingBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading.Builder, com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder>(
+                getLoading(),
+                getParentForChildren(),
+                isClean());
+        loading_ = null;
+      }
+      return loadingBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

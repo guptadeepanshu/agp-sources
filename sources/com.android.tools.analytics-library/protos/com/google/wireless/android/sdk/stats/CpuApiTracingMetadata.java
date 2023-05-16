@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CpuApiTracingMetadata}
  */
-public  final class CpuApiTracingMetadata extends
+public final class CpuApiTracingMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CpuApiTracingMetadata)
     CpuApiTracingMetadataOrBuilder {
@@ -121,6 +121,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool use_sampling = 1;</code>
    * @return Whether the useSampling field is set.
    */
+  @java.lang.Override
   public boolean hasUseSampling() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -132,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool use_sampling = 1;</code>
    * @return The useSampling.
    */
+  @java.lang.Override
   public boolean getUseSampling() {
     return useSampling_;
   }
@@ -147,6 +149,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool arg_trace_path = 2;</code>
    * @return Whether the argTracePath field is set.
    */
+  @java.lang.Override
   public boolean hasArgTracePath() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -159,6 +162,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool arg_trace_path = 2;</code>
    * @return The argTracePath.
    */
+  @java.lang.Override
   public boolean getArgTracePath() {
     return argTracePath_;
   }
@@ -173,6 +177,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_buffer_size = 3;</code>
    * @return Whether the argBufferSize field is set.
    */
+  @java.lang.Override
   public boolean hasArgBufferSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -184,6 +189,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_buffer_size = 3;</code>
    * @return The argBufferSize.
    */
+  @java.lang.Override
   public int getArgBufferSize() {
     return argBufferSize_;
   }
@@ -198,6 +204,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_flags = 4;</code>
    * @return Whether the argFlags field is set.
    */
+  @java.lang.Override
   public boolean hasArgFlags() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -209,6 +216,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_flags = 4;</code>
    * @return The argFlags.
    */
+  @java.lang.Override
   public int getArgFlags() {
     return argFlags_;
   }
@@ -223,6 +231,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_interval_us = 5;</code>
    * @return Whether the argIntervalUs field is set.
    */
+  @java.lang.Override
   public boolean hasArgIntervalUs() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -234,6 +243,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 arg_interval_us = 5;</code>
    * @return The argIntervalUs.
    */
+  @java.lang.Override
   public int getArgIntervalUs() {
     return argIntervalUs_;
   }
@@ -667,6 +677,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool use_sampling = 1;</code>
      * @return Whether the useSampling field is set.
      */
+    @java.lang.Override
     public boolean hasUseSampling() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -678,6 +689,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool use_sampling = 1;</code>
      * @return The useSampling.
      */
+    @java.lang.Override
     public boolean getUseSampling() {
       return useSampling_;
     }
@@ -721,6 +733,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool arg_trace_path = 2;</code>
      * @return Whether the argTracePath field is set.
      */
+    @java.lang.Override
     public boolean hasArgTracePath() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -733,6 +746,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool arg_trace_path = 2;</code>
      * @return The argTracePath.
      */
+    @java.lang.Override
     public boolean getArgTracePath() {
       return argTracePath_;
     }
@@ -777,6 +791,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_buffer_size = 3;</code>
      * @return Whether the argBufferSize field is set.
      */
+    @java.lang.Override
     public boolean hasArgBufferSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -788,6 +803,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_buffer_size = 3;</code>
      * @return The argBufferSize.
      */
+    @java.lang.Override
     public int getArgBufferSize() {
       return argBufferSize_;
     }
@@ -830,6 +846,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_flags = 4;</code>
      * @return Whether the argFlags field is set.
      */
+    @java.lang.Override
     public boolean hasArgFlags() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -841,6 +858,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_flags = 4;</code>
      * @return The argFlags.
      */
+    @java.lang.Override
     public int getArgFlags() {
       return argFlags_;
     }
@@ -883,6 +901,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_interval_us = 5;</code>
      * @return Whether the argIntervalUs field is set.
      */
+    @java.lang.Override
     public boolean hasArgIntervalUs() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -894,6 +913,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 arg_interval_us = 5;</code>
      * @return The argIntervalUs.
      */
+    @java.lang.Override
     public int getArgIntervalUs() {
       return argIntervalUs_;
     }

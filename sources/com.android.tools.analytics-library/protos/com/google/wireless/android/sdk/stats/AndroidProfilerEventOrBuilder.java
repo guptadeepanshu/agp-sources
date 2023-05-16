@@ -571,4 +571,31 @@ public interface AndroidProfilerEventOrBuilder extends
    * @return The eventCount.
    */
   int getEventCount();
+
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * @return Whether the loading field is set.
+   */
+  boolean hasLoading();
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   * @return The loading.
+   */
+  com.google.wireless.android.sdk.stats.AndroidProfilerEvent.Loading getLoading();
+  /**
+   * <pre>
+   * Set if |type| is |LOADING|
+   * </pre>
+   *
+   * <code>optional .android_studio.AndroidProfilerEvent.Loading loading = 23;</code>
+   */
+  com.google.wireless.android.sdk.stats.AndroidProfilerEvent.LoadingOrBuilder getLoadingOrBuilder();
 }

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LiveLiteralsEvent}
  */
-public  final class LiveLiteralsEvent extends
+public final class LiveLiteralsEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LiveLiteralsEvent)
     LiveLiteralsEventOrBuilder {
@@ -555,7 +555,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats}
    */
-  public  static final class LiveLiteralsDeployStats extends
+  public static final class LiveLiteralsDeployStats extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats)
       LiveLiteralsDeployStatsOrBuilder {
@@ -695,7 +695,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 1;</code>
      * @return Whether the deviceType field is set.
      */
-    public boolean hasDeviceType() {
+    @java.lang.Override public boolean hasDeviceType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -706,7 +706,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 1;</code>
      * @return The deviceType.
      */
-    public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
       return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
@@ -722,6 +722,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 devices_count = 2;</code>
      * @return Whether the devicesCount field is set.
      */
+    @java.lang.Override
     public boolean hasDevicesCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -733,6 +734,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 devices_count = 2;</code>
      * @return The devicesCount.
      */
+    @java.lang.Override
     public int getDevicesCount() {
       return devicesCount_;
     }
@@ -747,6 +749,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 successful_deployments = 3;</code>
      * @return Whether the successfulDeployments field is set.
      */
+    @java.lang.Override
     public boolean hasSuccessfulDeployments() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -758,6 +761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 successful_deployments = 3;</code>
      * @return The successfulDeployments.
      */
+    @java.lang.Override
     public int getSuccessfulDeployments() {
       return successfulDeployments_;
     }
@@ -772,6 +776,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 failed_deployments = 4;</code>
      * @return Whether the failedDeployments field is set.
      */
+    @java.lang.Override
     public boolean hasFailedDeployments() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -783,6 +788,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 failed_deployments = 4;</code>
      * @return The failedDeployments.
      */
+    @java.lang.Override
     public int getFailedDeployments() {
       return failedDeployments_;
     }
@@ -797,6 +803,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
      * @return Whether the numberOfProblems field is set.
      */
+    @java.lang.Override
     public boolean hasNumberOfProblems() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -808,6 +815,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
      * @return The numberOfProblems.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimator getNumberOfProblems() {
       return numberOfProblems_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : numberOfProblems_;
     }
@@ -818,6 +826,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.PercentileEstimator number_of_problems = 5;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getNumberOfProblemsOrBuilder() {
       return numberOfProblems_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : numberOfProblems_;
     }
@@ -832,6 +841,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
      * @return Whether the deploymentTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasDeploymentTimeMs() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -843,6 +853,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
      * @return The deploymentTimeMs.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimator getDeploymentTimeMs() {
       return deploymentTimeMs_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : deploymentTimeMs_;
     }
@@ -853,6 +864,7 @@ private static final long serialVersionUID = 0L;
      *
      * <code>optional .android_studio.PercentileEstimator deployment_time_ms = 6;</code>
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PercentileEstimatorOrBuilder getDeploymentTimeMsOrBuilder() {
       return deploymentTimeMs_ == null ? com.google.wireless.android.sdk.stats.PercentileEstimator.getDefaultInstance() : deploymentTimeMs_;
     }
@@ -1326,7 +1338,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 1;</code>
        * @return Whether the deviceType field is set.
        */
-      public boolean hasDeviceType() {
+      @java.lang.Override public boolean hasDeviceType() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -1337,6 +1349,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 1;</code>
        * @return The deviceType.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
@@ -1384,6 +1397,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 devices_count = 2;</code>
        * @return Whether the devicesCount field is set.
        */
+      @java.lang.Override
       public boolean hasDevicesCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -1395,6 +1409,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 devices_count = 2;</code>
        * @return The devicesCount.
        */
+      @java.lang.Override
       public int getDevicesCount() {
         return devicesCount_;
       }
@@ -1437,6 +1452,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 successful_deployments = 3;</code>
        * @return Whether the successfulDeployments field is set.
        */
+      @java.lang.Override
       public boolean hasSuccessfulDeployments() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -1448,6 +1464,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 successful_deployments = 3;</code>
        * @return The successfulDeployments.
        */
+      @java.lang.Override
       public int getSuccessfulDeployments() {
         return successfulDeployments_;
       }
@@ -1490,6 +1507,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 failed_deployments = 4;</code>
        * @return Whether the failedDeployments field is set.
        */
+      @java.lang.Override
       public boolean hasFailedDeployments() {
         return ((bitField0_ & 0x00000008) != 0);
       }
@@ -1501,6 +1519,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 failed_deployments = 4;</code>
        * @return The failedDeployments.
        */
+      @java.lang.Override
       public int getFailedDeployments() {
         return failedDeployments_;
       }
@@ -1909,7 +1928,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsEventType event_type = 1;</code>
    * @return Whether the eventType field is set.
    */
-  public boolean hasEventType() {
+  @java.lang.Override public boolean hasEventType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -1920,7 +1939,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsEventType event_type = 1;</code>
    * @return The eventType.
    */
-  public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType getEventType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType getEventType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.valueOf(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.UNKNOWN_EVENT_TYPE : result;
@@ -1936,7 +1955,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 2;</code>
    * @return Whether the deviceType field is set.
    */
-  public boolean hasDeviceType() {
+  @java.lang.Override public boolean hasDeviceType() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -1947,7 +1966,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 2;</code>
    * @return The deviceType.
    */
-  public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);
     return result == null ? com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.UNKNOWN_DEVICE_TYPE : result;
@@ -1962,6 +1981,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats deploy_stats = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats> getDeployStatsList() {
     return deployStats_;
   }
@@ -1972,6 +1992,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats deploy_stats = 3;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStatsOrBuilder> 
       getDeployStatsOrBuilderList() {
     return deployStats_;
@@ -1983,6 +2004,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats deploy_stats = 3;</code>
    */
+  @java.lang.Override
   public int getDeployStatsCount() {
     return deployStats_.size();
   }
@@ -1993,6 +2015,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats deploy_stats = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStats getDeployStats(int index) {
     return deployStats_.get(index);
   }
@@ -2003,6 +2026,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.LiveLiteralsEvent.LiveLiteralsDeployStats deploy_stats = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeployStatsOrBuilder getDeployStatsOrBuilder(
       int index) {
     return deployStats_.get(index);
@@ -2413,7 +2437,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsEventType event_type = 1;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -2424,6 +2448,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsEventType event_type = 1;</code>
      * @return The eventType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsEventType.valueOf(eventType_);
@@ -2471,7 +2496,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 2;</code>
      * @return Whether the deviceType field is set.
      */
-    public boolean hasDeviceType() {
+    @java.lang.Override public boolean hasDeviceType() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -2482,6 +2507,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LiveLiteralsEvent.LiveLiteralsDeviceType device_type = 2;</code>
      * @return The deviceType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType getDeviceType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType result = com.google.wireless.android.sdk.stats.LiveLiteralsEvent.LiveLiteralsDeviceType.valueOf(deviceType_);

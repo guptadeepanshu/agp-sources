@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.OomDialogEvent}
  */
-public  final class OomDialogEvent extends
+public final class OomDialogEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.OomDialogEvent)
     OomDialogEventOrBuilder {
@@ -477,7 +477,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent.OomDialogEventType event_type = 1;</code>
    * @return Whether the eventType field is set.
    */
-  public boolean hasEventType() {
+  @java.lang.Override public boolean hasEventType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -488,7 +488,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent.OomDialogEventType event_type = 1;</code>
    * @return The eventType.
    */
-  public com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType getEventType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType getEventType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType result = com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType.valueOf(eventType_);
     return result == null ? com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType.UNKNOWN_EVENT_TYPE : result;
@@ -504,6 +504,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_heap_size = 2;</code>
    * @return Whether the initialHeapSize field is set.
    */
+  @java.lang.Override
   public boolean hasInitialHeapSize() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -515,6 +516,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_heap_size = 2;</code>
    * @return The initialHeapSize.
    */
+  @java.lang.Override
   public int getInitialHeapSize() {
     return initialHeapSize_;
   }
@@ -529,6 +531,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_metaspace_size = 3;</code>
    * @return Whether the initialMetaspaceSize field is set.
    */
+  @java.lang.Override
   public boolean hasInitialMetaspaceSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -540,6 +543,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_metaspace_size = 3;</code>
    * @return The initialMetaspaceSize.
    */
+  @java.lang.Override
   public int getInitialMetaspaceSize() {
     return initialMetaspaceSize_;
   }
@@ -554,6 +558,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_codecache_size = 4;</code>
    * @return Whether the initialCodecacheSize field is set.
    */
+  @java.lang.Override
   public boolean hasInitialCodecacheSize() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -565,6 +570,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 initial_codecache_size = 4;</code>
    * @return The initialCodecacheSize.
    */
+  @java.lang.Override
   public int getInitialCodecacheSize() {
     return initialCodecacheSize_;
   }
@@ -579,6 +585,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_heap_size = 5;</code>
    * @return Whether the savedHeapSize field is set.
    */
+  @java.lang.Override
   public boolean hasSavedHeapSize() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -590,6 +597,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_heap_size = 5;</code>
    * @return The savedHeapSize.
    */
+  @java.lang.Override
   public int getSavedHeapSize() {
     return savedHeapSize_;
   }
@@ -604,6 +612,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_metaspace_size = 6;</code>
    * @return Whether the savedMetaspaceSize field is set.
    */
+  @java.lang.Override
   public boolean hasSavedMetaspaceSize() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -615,6 +624,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_metaspace_size = 6;</code>
    * @return The savedMetaspaceSize.
    */
+  @java.lang.Override
   public int getSavedMetaspaceSize() {
     return savedMetaspaceSize_;
   }
@@ -629,6 +639,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_codecache_size = 7;</code>
    * @return Whether the savedCodecacheSize field is set.
    */
+  @java.lang.Override
   public boolean hasSavedCodecacheSize() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -640,6 +651,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 saved_codecache_size = 7;</code>
    * @return The savedCodecacheSize.
    */
+  @java.lang.Override
   public int getSavedCodecacheSize() {
     return savedCodecacheSize_;
   }
@@ -654,6 +666,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool editing_enabled = 8;</code>
    * @return Whether the editingEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasEditingEnabled() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -665,6 +678,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool editing_enabled = 8;</code>
    * @return The editingEnabled.
    */
+  @java.lang.Override
   public boolean getEditingEnabled() {
     return editingEnabled_;
   }
@@ -679,7 +693,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent.SelectedAction selected_action = 9;</code>
    * @return Whether the selectedAction field is set.
    */
-  public boolean hasSelectedAction() {
+  @java.lang.Override public boolean hasSelectedAction() {
     return ((bitField0_ & 0x00000100) != 0);
   }
   /**
@@ -690,7 +704,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.OomDialogEvent.SelectedAction selected_action = 9;</code>
    * @return The selectedAction.
    */
-  public com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction getSelectedAction() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction getSelectedAction() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction result = com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction.valueOf(selectedAction_);
     return result == null ? com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction.UNKNOWN_ACTION : result;
@@ -1222,7 +1236,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.OomDialogEvent.OomDialogEventType event_type = 1;</code>
      * @return Whether the eventType field is set.
      */
-    public boolean hasEventType() {
+    @java.lang.Override public boolean hasEventType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -1233,6 +1247,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.OomDialogEvent.OomDialogEventType event_type = 1;</code>
      * @return The eventType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType getEventType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType result = com.google.wireless.android.sdk.stats.OomDialogEvent.OomDialogEventType.valueOf(eventType_);
@@ -1280,6 +1295,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_heap_size = 2;</code>
      * @return Whether the initialHeapSize field is set.
      */
+    @java.lang.Override
     public boolean hasInitialHeapSize() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1291,6 +1307,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_heap_size = 2;</code>
      * @return The initialHeapSize.
      */
+    @java.lang.Override
     public int getInitialHeapSize() {
       return initialHeapSize_;
     }
@@ -1333,6 +1350,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_metaspace_size = 3;</code>
      * @return Whether the initialMetaspaceSize field is set.
      */
+    @java.lang.Override
     public boolean hasInitialMetaspaceSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1344,6 +1362,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_metaspace_size = 3;</code>
      * @return The initialMetaspaceSize.
      */
+    @java.lang.Override
     public int getInitialMetaspaceSize() {
       return initialMetaspaceSize_;
     }
@@ -1386,6 +1405,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_codecache_size = 4;</code>
      * @return Whether the initialCodecacheSize field is set.
      */
+    @java.lang.Override
     public boolean hasInitialCodecacheSize() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1397,6 +1417,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 initial_codecache_size = 4;</code>
      * @return The initialCodecacheSize.
      */
+    @java.lang.Override
     public int getInitialCodecacheSize() {
       return initialCodecacheSize_;
     }
@@ -1439,6 +1460,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_heap_size = 5;</code>
      * @return Whether the savedHeapSize field is set.
      */
+    @java.lang.Override
     public boolean hasSavedHeapSize() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1450,6 +1472,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_heap_size = 5;</code>
      * @return The savedHeapSize.
      */
+    @java.lang.Override
     public int getSavedHeapSize() {
       return savedHeapSize_;
     }
@@ -1492,6 +1515,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_metaspace_size = 6;</code>
      * @return Whether the savedMetaspaceSize field is set.
      */
+    @java.lang.Override
     public boolean hasSavedMetaspaceSize() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1503,6 +1527,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_metaspace_size = 6;</code>
      * @return The savedMetaspaceSize.
      */
+    @java.lang.Override
     public int getSavedMetaspaceSize() {
       return savedMetaspaceSize_;
     }
@@ -1545,6 +1570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_codecache_size = 7;</code>
      * @return Whether the savedCodecacheSize field is set.
      */
+    @java.lang.Override
     public boolean hasSavedCodecacheSize() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1556,6 +1582,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 saved_codecache_size = 7;</code>
      * @return The savedCodecacheSize.
      */
+    @java.lang.Override
     public int getSavedCodecacheSize() {
       return savedCodecacheSize_;
     }
@@ -1598,6 +1625,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool editing_enabled = 8;</code>
      * @return Whether the editingEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasEditingEnabled() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1609,6 +1637,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool editing_enabled = 8;</code>
      * @return The editingEnabled.
      */
+    @java.lang.Override
     public boolean getEditingEnabled() {
       return editingEnabled_;
     }
@@ -1651,7 +1680,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.OomDialogEvent.SelectedAction selected_action = 9;</code>
      * @return Whether the selectedAction field is set.
      */
-    public boolean hasSelectedAction() {
+    @java.lang.Override public boolean hasSelectedAction() {
       return ((bitField0_ & 0x00000100) != 0);
     }
     /**
@@ -1662,6 +1691,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.OomDialogEvent.SelectedAction selected_action = 9;</code>
      * @return The selectedAction.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction getSelectedAction() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction result = com.google.wireless.android.sdk.stats.OomDialogEvent.SelectedAction.valueOf(selectedAction_);

@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LayoutPaletteEvent}
  */
-public  final class LayoutPaletteEvent extends
+public final class LayoutPaletteEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LayoutPaletteEvent)
     LayoutPaletteEventOrBuilder {
@@ -776,6 +776,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidView view = 1;</code>
    * @return Whether the view field is set.
    */
+  @java.lang.Override
   public boolean hasView() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -787,6 +788,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidView view = 1;</code>
    * @return The view.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidView getView() {
     return view_ == null ? com.google.wireless.android.sdk.stats.AndroidView.getDefaultInstance() : view_;
   }
@@ -797,6 +799,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AndroidView view = 1;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AndroidViewOrBuilder getViewOrBuilder() {
     return view_ == null ? com.google.wireless.android.sdk.stats.AndroidView.getDefaultInstance() : view_;
   }
@@ -811,7 +814,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewOption view_option = 2;</code>
    * @return Whether the viewOption field is set.
    */
-  public boolean hasViewOption() {
+  @java.lang.Override public boolean hasViewOption() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -822,7 +825,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewOption view_option = 2;</code>
    * @return The viewOption.
    */
-  public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption getViewOption() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption getViewOption() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.valueOf(viewOption_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.NORMAL : result;
@@ -838,7 +841,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewGroup selected_group = 3;</code>
    * @return Whether the selectedGroup field is set.
    */
-  public boolean hasSelectedGroup() {
+  @java.lang.Override public boolean hasSelectedGroup() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -849,7 +852,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewGroup selected_group = 3;</code>
    * @return The selectedGroup.
    */
-  public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup getSelectedGroup() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup getSelectedGroup() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.valueOf(selectedGroup_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.UNKNOWN_GROUP : result;
@@ -865,7 +868,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SearchOption search_option = 4;</code>
    * @return Whether the searchOption field is set.
    */
-  public boolean hasSearchOption() {
+  @java.lang.Override public boolean hasSearchOption() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -876,7 +879,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.SearchOption search_option = 4;</code>
    * @return The searchOption.
    */
-  public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
     return result == null ? com.google.wireless.android.sdk.stats.SearchOption.UNKNOWN_SEARCH_OPTION : result;
@@ -892,7 +895,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewType view_type = 5;</code>
    * @return Whether the viewType field is set.
    */
-  public boolean hasViewType() {
+  @java.lang.Override public boolean hasViewType() {
     return ((bitField0_ & 0x00000010) != 0);
   }
   /**
@@ -903,7 +906,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LayoutPaletteEvent.ViewType view_type = 5;</code>
    * @return The viewType.
    */
-  public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType getViewType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType getViewType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.valueOf(viewType_);
     return result == null ? com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.UNKNOWN_VIEW_TYPE : result;
@@ -1497,7 +1500,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewOption view_option = 2;</code>
      * @return Whether the viewOption field is set.
      */
-    public boolean hasViewOption() {
+    @java.lang.Override public boolean hasViewOption() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -1508,6 +1511,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewOption view_option = 2;</code>
      * @return The viewOption.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption getViewOption() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewOption.valueOf(viewOption_);
@@ -1555,7 +1559,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewGroup selected_group = 3;</code>
      * @return Whether the selectedGroup field is set.
      */
-    public boolean hasSelectedGroup() {
+    @java.lang.Override public boolean hasSelectedGroup() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -1566,6 +1570,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewGroup selected_group = 3;</code>
      * @return The selectedGroup.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup getSelectedGroup() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewGroup.valueOf(selectedGroup_);
@@ -1613,7 +1618,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SearchOption search_option = 4;</code>
      * @return Whether the searchOption field is set.
      */
-    public boolean hasSearchOption() {
+    @java.lang.Override public boolean hasSearchOption() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -1624,6 +1629,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.SearchOption search_option = 4;</code>
      * @return The searchOption.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.SearchOption getSearchOption() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.SearchOption result = com.google.wireless.android.sdk.stats.SearchOption.valueOf(searchOption_);
@@ -1671,7 +1677,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewType view_type = 5;</code>
      * @return Whether the viewType field is set.
      */
-    public boolean hasViewType() {
+    @java.lang.Override public boolean hasViewType() {
       return ((bitField0_ & 0x00000010) != 0);
     }
     /**
@@ -1682,6 +1688,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LayoutPaletteEvent.ViewType view_type = 5;</code>
      * @return The viewType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType getViewType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType result = com.google.wireless.android.sdk.stats.LayoutPaletteEvent.ViewType.valueOf(viewType_);

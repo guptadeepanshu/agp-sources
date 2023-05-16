@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradleAndroidModule}
  */
-public  final class GradleAndroidModule extends
+public final class GradleAndroidModule extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleAndroidModule)
     GradleAndroidModuleOrBuilder {
@@ -22,6 +22,7 @@ private static final long serialVersionUID = 0L;
   private GradleAndroidModule() {
     appId_ = "";
     moduleName_ = "";
+    requiredHardware_ = "";
   }
 
   @java.lang.Override
@@ -92,6 +93,12 @@ private static final long serialVersionUID = 0L;
             signingConfigCount_ = input.readInt64();
             break;
           }
+          case 66: {
+            com.google.protobuf.ByteString bs = input.readBytes();
+            bitField0_ |= 0x00000080;
+            requiredHardware_ = bs;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -138,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return Whether the appId field is set.
    */
+  @java.lang.Override
   public boolean hasAppId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -152,6 +160,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return The appId.
    */
+  @java.lang.Override
   public java.lang.String getAppId() {
     java.lang.Object ref = appId_;
     if (ref instanceof java.lang.String) {
@@ -177,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string app_id = 1;</code>
    * @return The bytes for appId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAppIdBytes() {
     java.lang.Object ref = appId_;
@@ -201,6 +211,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return Whether the moduleName field is set.
    */
+  @java.lang.Override
   public boolean hasModuleName() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -212,6 +223,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return The moduleName.
    */
+  @java.lang.Override
   public java.lang.String getModuleName() {
     java.lang.Object ref = moduleName_;
     if (ref instanceof java.lang.String) {
@@ -234,6 +246,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string module_name = 2;</code>
    * @return The bytes for moduleName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getModuleNameBytes() {
     java.lang.Object ref = moduleName_;
@@ -258,6 +271,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_library = 3;</code>
    * @return Whether the isLibrary field is set.
    */
+  @java.lang.Override
   public boolean hasIsLibrary() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -269,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_library = 3;</code>
    * @return The isLibrary.
    */
+  @java.lang.Override
   public boolean getIsLibrary() {
     return isLibrary_;
   }
@@ -283,6 +298,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_type_count = 4;</code>
    * @return Whether the buildTypeCount field is set.
    */
+  @java.lang.Override
   public boolean hasBuildTypeCount() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -294,6 +310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 build_type_count = 4;</code>
    * @return The buildTypeCount.
    */
+  @java.lang.Override
   public long getBuildTypeCount() {
     return buildTypeCount_;
   }
@@ -308,6 +325,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 flavor_count = 5;</code>
    * @return Whether the flavorCount field is set.
    */
+  @java.lang.Override
   public boolean hasFlavorCount() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -319,6 +337,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 flavor_count = 5;</code>
    * @return The flavorCount.
    */
+  @java.lang.Override
   public long getFlavorCount() {
     return flavorCount_;
   }
@@ -333,6 +352,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 flavor_dimension = 6;</code>
    * @return Whether the flavorDimension field is set.
    */
+  @java.lang.Override
   public boolean hasFlavorDimension() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -344,6 +364,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 flavor_dimension = 6;</code>
    * @return The flavorDimension.
    */
+  @java.lang.Override
   public long getFlavorDimension() {
     return flavorDimension_;
   }
@@ -358,6 +379,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 signing_config_count = 7;</code>
    * @return Whether the signingConfigCount field is set.
    */
+  @java.lang.Override
   public boolean hasSigningConfigCount() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -369,8 +391,72 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 signing_config_count = 7;</code>
    * @return The signingConfigCount.
    */
+  @java.lang.Override
   public long getSigningConfigCount() {
     return signingConfigCount_;
+  }
+
+  public static final int REQUIRED_HARDWARE_FIELD_NUMBER = 8;
+  private volatile java.lang.Object requiredHardware_;
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return Whether the requiredHardware field is set.
+   */
+  @java.lang.Override
+  public boolean hasRequiredHardware() {
+    return ((bitField0_ & 0x00000080) != 0);
+  }
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return The requiredHardware.
+   */
+  @java.lang.Override
+  public java.lang.String getRequiredHardware() {
+    java.lang.Object ref = requiredHardware_;
+    if (ref instanceof java.lang.String) {
+      return (java.lang.String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      java.lang.String s = bs.toStringUtf8();
+      if (bs.isValidUtf8()) {
+        requiredHardware_ = s;
+      }
+      return s;
+    }
+  }
+  /**
+   * <pre>
+   * Hardware specified as required in the manifest. Only logging the types
+   * from the allow-list. E.g. "android.hardware.type.watch".
+   * </pre>
+   *
+   * <code>optional string required_hardware = 8;</code>
+   * @return The bytes for requiredHardware.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getRequiredHardwareBytes() {
+    java.lang.Object ref = requiredHardware_;
+    if (ref instanceof java.lang.String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (java.lang.String) ref);
+      requiredHardware_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -408,6 +494,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       output.writeInt64(7, signingConfigCount_);
     }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 8, requiredHardware_);
+    }
     unknownFields.writeTo(output);
   }
 
@@ -442,6 +531,9 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000040) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeInt64Size(7, signingConfigCount_);
+    }
+    if (((bitField0_ & 0x00000080) != 0)) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, requiredHardware_);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -493,6 +585,11 @@ private static final long serialVersionUID = 0L;
       if (getSigningConfigCount()
           != other.getSigningConfigCount()) return false;
     }
+    if (hasRequiredHardware() != other.hasRequiredHardware()) return false;
+    if (hasRequiredHardware()) {
+      if (!getRequiredHardware()
+          .equals(other.getRequiredHardware())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -536,6 +633,10 @@ private static final long serialVersionUID = 0L;
       hash = (37 * hash) + SIGNING_CONFIG_COUNT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
           getSigningConfigCount());
+    }
+    if (hasRequiredHardware()) {
+      hash = (37 * hash) + REQUIRED_HARDWARE_FIELD_NUMBER;
+      hash = (53 * hash) + getRequiredHardware().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -688,6 +789,8 @@ private static final long serialVersionUID = 0L;
       bitField0_ = (bitField0_ & ~0x00000020);
       signingConfigCount_ = 0L;
       bitField0_ = (bitField0_ & ~0x00000040);
+      requiredHardware_ = "";
+      bitField0_ = (bitField0_ & ~0x00000080);
       return this;
     }
 
@@ -744,6 +847,10 @@ private static final long serialVersionUID = 0L;
         result.signingConfigCount_ = signingConfigCount_;
         to_bitField0_ |= 0x00000040;
       }
+      if (((from_bitField0_ & 0x00000080) != 0)) {
+        to_bitField0_ |= 0x00000080;
+      }
+      result.requiredHardware_ = requiredHardware_;
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -817,6 +924,11 @@ private static final long serialVersionUID = 0L;
       }
       if (other.hasSigningConfigCount()) {
         setSigningConfigCount(other.getSigningConfigCount());
+      }
+      if (other.hasRequiredHardware()) {
+        bitField0_ |= 0x00000080;
+        requiredHardware_ = other.requiredHardware_;
+        onChanged();
       }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
@@ -1091,6 +1203,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_library = 3;</code>
      * @return Whether the isLibrary field is set.
      */
+    @java.lang.Override
     public boolean hasIsLibrary() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1102,6 +1215,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_library = 3;</code>
      * @return The isLibrary.
      */
+    @java.lang.Override
     public boolean getIsLibrary() {
       return isLibrary_;
     }
@@ -1144,6 +1258,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_type_count = 4;</code>
      * @return Whether the buildTypeCount field is set.
      */
+    @java.lang.Override
     public boolean hasBuildTypeCount() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1155,6 +1270,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 build_type_count = 4;</code>
      * @return The buildTypeCount.
      */
+    @java.lang.Override
     public long getBuildTypeCount() {
       return buildTypeCount_;
     }
@@ -1197,6 +1313,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 flavor_count = 5;</code>
      * @return Whether the flavorCount field is set.
      */
+    @java.lang.Override
     public boolean hasFlavorCount() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1208,6 +1325,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 flavor_count = 5;</code>
      * @return The flavorCount.
      */
+    @java.lang.Override
     public long getFlavorCount() {
       return flavorCount_;
     }
@@ -1250,6 +1368,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 flavor_dimension = 6;</code>
      * @return Whether the flavorDimension field is set.
      */
+    @java.lang.Override
     public boolean hasFlavorDimension() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1261,6 +1380,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 flavor_dimension = 6;</code>
      * @return The flavorDimension.
      */
+    @java.lang.Override
     public long getFlavorDimension() {
       return flavorDimension_;
     }
@@ -1303,6 +1423,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 signing_config_count = 7;</code>
      * @return Whether the signingConfigCount field is set.
      */
+    @java.lang.Override
     public boolean hasSigningConfigCount() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1314,6 +1435,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 signing_config_count = 7;</code>
      * @return The signingConfigCount.
      */
+    @java.lang.Override
     public long getSigningConfigCount() {
       return signingConfigCount_;
     }
@@ -1343,6 +1465,120 @@ private static final long serialVersionUID = 0L;
     public Builder clearSigningConfigCount() {
       bitField0_ = (bitField0_ & ~0x00000040);
       signingConfigCount_ = 0L;
+      onChanged();
+      return this;
+    }
+
+    private java.lang.Object requiredHardware_ = "";
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @return Whether the requiredHardware field is set.
+     */
+    public boolean hasRequiredHardware() {
+      return ((bitField0_ & 0x00000080) != 0);
+    }
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @return The requiredHardware.
+     */
+    public java.lang.String getRequiredHardware() {
+      java.lang.Object ref = requiredHardware_;
+      if (!(ref instanceof java.lang.String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          requiredHardware_ = s;
+        }
+        return s;
+      } else {
+        return (java.lang.String) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @return The bytes for requiredHardware.
+     */
+    public com.google.protobuf.ByteString
+        getRequiredHardwareBytes() {
+      java.lang.Object ref = requiredHardware_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        requiredHardware_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @param value The requiredHardware to set.
+     * @return This builder for chaining.
+     */
+    public Builder setRequiredHardware(
+        java.lang.String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+      requiredHardware_ = value;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearRequiredHardware() {
+      bitField0_ = (bitField0_ & ~0x00000080);
+      requiredHardware_ = getDefaultInstance().getRequiredHardware();
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * Hardware specified as required in the manifest. Only logging the types
+     * from the allow-list. E.g. "android.hardware.type.watch".
+     * </pre>
+     *
+     * <code>optional string required_hardware = 8;</code>
+     * @param value The bytes for requiredHardware to set.
+     * @return This builder for chaining.
+     */
+    public Builder setRequiredHardwareBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+      requiredHardware_ = value;
       onChanged();
       return this;
     }

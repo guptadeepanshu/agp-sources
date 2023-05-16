@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleTaskExecution}
  */
-public  final class GradleTaskExecution extends
+public final class GradleTaskExecution extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleTaskExecution)
     GradleTaskExecutionOrBuilder {
@@ -120,6 +120,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 type = 1;</code>
    * @return Whether the type field is set.
    */
+  @java.lang.Override
   public boolean hasType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -134,6 +135,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int32 type = 1;</code>
    * @return The type.
    */
+  @java.lang.Override
   public int getType() {
     return type_;
   }
@@ -150,6 +152,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool did_work = 2;</code>
    * @return Whether the didWork field is set.
    */
+  @java.lang.Override
   public boolean hasDidWork() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -163,6 +166,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool did_work = 2;</code>
    * @return The didWork.
    */
+  @java.lang.Override
   public boolean getDidWork() {
     return didWork_;
   }
@@ -177,6 +181,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool skipped = 3;</code>
    * @return Whether the skipped field is set.
    */
+  @java.lang.Override
   public boolean hasSkipped() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -188,6 +193,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool skipped = 3;</code>
    * @return The skipped.
    */
+  @java.lang.Override
   public boolean getSkipped() {
     return skipped_;
   }
@@ -202,6 +208,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool up_to_date = 4;</code>
    * @return Whether the upToDate field is set.
    */
+  @java.lang.Override
   public boolean hasUpToDate() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -213,6 +220,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool up_to_date = 4;</code>
    * @return The upToDate.
    */
+  @java.lang.Override
   public boolean getUpToDate() {
     return upToDate_;
   }
@@ -227,6 +235,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool failed = 5;</code>
    * @return Whether the failed field is set.
    */
+  @java.lang.Override
   public boolean hasFailed() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -238,6 +247,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool failed = 5;</code>
    * @return The failed.
    */
+  @java.lang.Override
   public boolean getFailed() {
     return failed_;
   }
@@ -672,6 +682,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1;</code>
      * @return Whether the type field is set.
      */
+    @java.lang.Override
     public boolean hasType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -686,6 +697,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int32 type = 1;</code>
      * @return The type.
      */
+    @java.lang.Override
     public int getType() {
       return type_;
     }
@@ -736,6 +748,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool did_work = 2;</code>
      * @return Whether the didWork field is set.
      */
+    @java.lang.Override
     public boolean hasDidWork() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -749,6 +762,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool did_work = 2;</code>
      * @return The didWork.
      */
+    @java.lang.Override
     public boolean getDidWork() {
       return didWork_;
     }
@@ -795,6 +809,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool skipped = 3;</code>
      * @return Whether the skipped field is set.
      */
+    @java.lang.Override
     public boolean hasSkipped() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -806,6 +821,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool skipped = 3;</code>
      * @return The skipped.
      */
+    @java.lang.Override
     public boolean getSkipped() {
       return skipped_;
     }
@@ -848,6 +864,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool up_to_date = 4;</code>
      * @return Whether the upToDate field is set.
      */
+    @java.lang.Override
     public boolean hasUpToDate() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -859,6 +876,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool up_to_date = 4;</code>
      * @return The upToDate.
      */
+    @java.lang.Override
     public boolean getUpToDate() {
       return upToDate_;
     }
@@ -901,6 +919,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool failed = 5;</code>
      * @return Whether the failed field is set.
      */
+    @java.lang.Override
     public boolean hasFailed() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -912,6 +931,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool failed = 5;</code>
      * @return The failed.
      */
+    @java.lang.Override
     public boolean getFailed() {
       return failed_;
     }

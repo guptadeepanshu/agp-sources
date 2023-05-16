@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.PSDEvent}
  */
-public  final class PSDEvent extends
+public final class PSDEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.PSDEvent)
     PSDEventOrBuilder {
@@ -1869,7 +1869,7 @@ private static final long serialVersionUID = 0L;
    *
    * Protobuf type {@code android_studio.PSDEvent.PSDRepositoryUsage}
    */
-  public  static final class PSDRepositoryUsage extends
+  public static final class PSDRepositoryUsage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.PSDEvent.PSDRepositoryUsage)
       PSDRepositoryUsageOrBuilder {
@@ -2109,7 +2109,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDRepositoryUsage.PSDRepository repository = 1;</code>
      * @return Whether the repository field is set.
      */
-    public boolean hasRepository() {
+    @java.lang.Override public boolean hasRepository() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -2120,7 +2120,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDRepositoryUsage.PSDRepository repository = 1;</code>
      * @return The repository.
      */
-    public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository getRepository() {
+    @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository getRepository() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.valueOf(repository_);
       return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.PROJECT_STRUCTURE_DIALOG_REPOSITORY_UNKNOWN : result;
@@ -2138,6 +2138,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -2151,6 +2152,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 2;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }
@@ -2507,7 +2509,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.PSDEvent.PSDRepositoryUsage.PSDRepository repository = 1;</code>
        * @return Whether the repository field is set.
        */
-      public boolean hasRepository() {
+      @java.lang.Override public boolean hasRepository() {
         return ((bitField0_ & 0x00000001) != 0);
       }
       /**
@@ -2518,6 +2520,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional .android_studio.PSDEvent.PSDRepositoryUsage.PSDRepository repository = 1;</code>
        * @return The repository.
        */
+      @java.lang.Override
       public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository getRepository() {
         @SuppressWarnings("deprecation")
         com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository result = com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage.PSDRepository.valueOf(repository_);
@@ -2567,6 +2570,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 duration_ms = 2;</code>
        * @return Whether the durationMs field is set.
        */
+      @java.lang.Override
       public boolean hasDurationMs() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -2580,6 +2584,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint64 duration_ms = 2;</code>
        * @return The durationMs.
        */
+      @java.lang.Override
       public long getDurationMs() {
         return durationMs_;
       }
@@ -2680,7 +2685,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDGeneration generation = 1;</code>
    * @return Whether the generation field is set.
    */
-  public boolean hasGeneration() {
+  @java.lang.Override public boolean hasGeneration() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -2691,7 +2696,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDGeneration generation = 1;</code>
    * @return The generation.
    */
-  public com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration getGeneration() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration getGeneration() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.valueOf(generation_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.PROJECT_STRUCTURE_DIALOG_GENERATION_UNKNOWN : result;
@@ -2707,7 +2712,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDLeftConfigurable left_configurable = 2;</code>
    * @return Whether the leftConfigurable field is set.
    */
-  public boolean hasLeftConfigurable() {
+  @java.lang.Override public boolean hasLeftConfigurable() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -2718,7 +2723,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDLeftConfigurable left_configurable = 2;</code>
    * @return The leftConfigurable.
    */
-  public com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable getLeftConfigurable() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable getLeftConfigurable() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.valueOf(leftConfigurable_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.PROJECT_STRUCTURE_DIALOG_LEFT_CONFIGURABLE_UNKNOWN : result;
@@ -2734,7 +2739,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDTopTab top_tab = 3;</code>
    * @return Whether the topTab field is set.
    */
-  public boolean hasTopTab() {
+  @java.lang.Override public boolean hasTopTab() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -2745,7 +2750,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.PSDEvent.PSDTopTab top_tab = 3;</code>
    * @return The topTab.
    */
-  public com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab getTopTab() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab getTopTab() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.valueOf(topTab_);
     return result == null ? com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.PROJECT_STRUCTURE_DIALOG_TOP_TAB_UNKNOWN : result;
@@ -2761,6 +2766,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 4;</code>
    * @return Whether the durationMs field is set.
    */
+  @java.lang.Override
   public boolean hasDurationMs() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -2772,6 +2778,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 duration_ms = 4;</code>
    * @return The durationMs.
    */
+  @java.lang.Override
   public long getDurationMs() {
     return durationMs_;
   }
@@ -2796,6 +2803,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.PSDEvent.PSDField modified_fields = 5;</code>
    * @return A list containing the modifiedFields.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.PSDEvent.PSDField> getModifiedFieldsList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.PSDEvent.PSDField>(modifiedFields_, modifiedFields_converter_);
@@ -2806,8 +2814,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.PSDEvent.PSDField modified_fields = 5;</code>
-   * @param value The modifiedFields to add.
+   * @return The count of modifiedFields.
    */
+  @java.lang.Override
   public int getModifiedFieldsCount() {
     return modifiedFields_.size();
   }
@@ -2820,6 +2829,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The modifiedFields at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PSDEvent.PSDField getModifiedFields(int index) {
     return modifiedFields_converter_.convert(modifiedFields_.get(index));
   }
@@ -2833,6 +2843,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PSDEvent.PSDRepositoryUsage repositories_searched = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage> getRepositoriesSearchedList() {
     return repositoriesSearched_;
   }
@@ -2843,6 +2854,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PSDEvent.PSDRepositoryUsage repositories_searched = 6;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsageOrBuilder> 
       getRepositoriesSearchedOrBuilderList() {
     return repositoriesSearched_;
@@ -2854,6 +2866,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PSDEvent.PSDRepositoryUsage repositories_searched = 6;</code>
    */
+  @java.lang.Override
   public int getRepositoriesSearchedCount() {
     return repositoriesSearched_.size();
   }
@@ -2864,6 +2877,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PSDEvent.PSDRepositoryUsage repositories_searched = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsage getRepositoriesSearched(int index) {
     return repositoriesSearched_.get(index);
   }
@@ -2874,6 +2888,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.PSDEvent.PSDRepositoryUsage repositories_searched = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.PSDEvent.PSDRepositoryUsageOrBuilder getRepositoriesSearchedOrBuilder(
       int index) {
     return repositoriesSearched_.get(index);
@@ -3368,7 +3383,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDGeneration generation = 1;</code>
      * @return Whether the generation field is set.
      */
-    public boolean hasGeneration() {
+    @java.lang.Override public boolean hasGeneration() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -3379,6 +3394,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDGeneration generation = 1;</code>
      * @return The generation.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration getGeneration() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration result = com.google.wireless.android.sdk.stats.PSDEvent.PSDGeneration.valueOf(generation_);
@@ -3426,7 +3442,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDLeftConfigurable left_configurable = 2;</code>
      * @return Whether the leftConfigurable field is set.
      */
-    public boolean hasLeftConfigurable() {
+    @java.lang.Override public boolean hasLeftConfigurable() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -3437,6 +3453,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDLeftConfigurable left_configurable = 2;</code>
      * @return The leftConfigurable.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable getLeftConfigurable() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable result = com.google.wireless.android.sdk.stats.PSDEvent.PSDLeftConfigurable.valueOf(leftConfigurable_);
@@ -3484,7 +3501,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDTopTab top_tab = 3;</code>
      * @return Whether the topTab field is set.
      */
-    public boolean hasTopTab() {
+    @java.lang.Override public boolean hasTopTab() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -3495,6 +3512,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.PSDEvent.PSDTopTab top_tab = 3;</code>
      * @return The topTab.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab getTopTab() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab result = com.google.wireless.android.sdk.stats.PSDEvent.PSDTopTab.valueOf(topTab_);
@@ -3542,6 +3560,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 4;</code>
      * @return Whether the durationMs field is set.
      */
+    @java.lang.Override
     public boolean hasDurationMs() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -3553,6 +3572,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 duration_ms = 4;</code>
      * @return The durationMs.
      */
+    @java.lang.Override
     public long getDurationMs() {
       return durationMs_;
     }

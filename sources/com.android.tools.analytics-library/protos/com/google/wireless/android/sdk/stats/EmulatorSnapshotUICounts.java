@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorSnapshotUICounts}
  */
-public  final class EmulatorSnapshotUICounts extends
+public final class EmulatorSnapshotUICounts extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorSnapshotUICounts)
     EmulatorSnapshotUICountsOrBuilder {
@@ -206,6 +206,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_yes = 1;</code>
    * @return Whether the quickbootSelectionYes field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootSelectionYes() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -217,6 +218,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_yes = 1;</code>
    * @return The quickbootSelectionYes.
    */
+  @java.lang.Override
   public int getQuickbootSelectionYes() {
     return quickbootSelectionYes_;
   }
@@ -227,6 +229,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_no = 2;</code>
    * @return Whether the quickbootSelectionNo field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootSelectionNo() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -234,6 +237,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_no = 2;</code>
    * @return The quickbootSelectionNo.
    */
+  @java.lang.Override
   public int getQuickbootSelectionNo() {
     return quickbootSelectionNo_;
   }
@@ -248,6 +252,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_ask = 3;</code>
    * @return Whether the quickbootSelectionAsk field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootSelectionAsk() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -259,6 +264,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_selection_ask = 3;</code>
    * @return The quickbootSelectionAsk.
    */
+  @java.lang.Override
   public int getQuickbootSelectionAsk() {
     return quickbootSelectionAsk_;
   }
@@ -273,6 +279,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_canceled = 10;</code>
    * @return Whether the quickbootAskCanceled field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootAskCanceled() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -284,6 +291,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_canceled = 10;</code>
    * @return The quickbootAskCanceled.
    */
+  @java.lang.Override
   public int getQuickbootAskCanceled() {
     return quickbootAskCanceled_;
   }
@@ -294,6 +302,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_yes = 11;</code>
    * @return Whether the quickbootAskYes field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootAskYes() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -301,6 +310,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_yes = 11;</code>
    * @return The quickbootAskYes.
    */
+  @java.lang.Override
   public int getQuickbootAskYes() {
     return quickbootAskYes_;
   }
@@ -311,6 +321,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_no = 12;</code>
    * @return Whether the quickbootAskNo field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootAskNo() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -318,6 +329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_no = 12;</code>
    * @return The quickbootAskNo.
    */
+  @java.lang.Override
   public int getQuickbootAskNo() {
     return quickbootAskNo_;
   }
@@ -332,6 +344,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_total_time_ms = 13;</code>
    * @return Whether the quickbootAskTotalTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootAskTotalTimeMs() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -343,6 +356,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_ask_total_time_ms = 13;</code>
    * @return The quickbootAskTotalTimeMs.
    */
+  @java.lang.Override
   public int getQuickbootAskTotalTimeMs() {
     return quickbootAskTotalTimeMs_;
   }
@@ -357,6 +371,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_save_now = 100;</code>
    * @return Whether the quickbootSaveNow field is set.
    */
+  @java.lang.Override
   public boolean hasQuickbootSaveNow() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -368,6 +383,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 quickboot_save_now = 100;</code>
    * @return The quickbootSaveNow.
    */
+  @java.lang.Override
   public int getQuickbootSaveNow() {
     return quickbootSaveNow_;
   }
@@ -382,6 +398,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_save = 1000;</code>
    * @return Whether the genericSave field is set.
    */
+  @java.lang.Override
   public boolean hasGenericSave() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -393,6 +410,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_save = 1000;</code>
    * @return The genericSave.
    */
+  @java.lang.Override
   public int getGenericSave() {
     return genericSave_;
   }
@@ -403,6 +421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_load = 1001;</code>
    * @return Whether the genericLoad field is set.
    */
+  @java.lang.Override
   public boolean hasGenericLoad() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -410,6 +429,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_load = 1001;</code>
    * @return The genericLoad.
    */
+  @java.lang.Override
   public int getGenericLoad() {
     return genericLoad_;
   }
@@ -420,6 +440,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_delete = 1002;</code>
    * @return Whether the genericDelete field is set.
    */
+  @java.lang.Override
   public boolean hasGenericDelete() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -427,6 +448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_delete = 1002;</code>
    * @return The genericDelete.
    */
+  @java.lang.Override
   public int getGenericDelete() {
     return genericDelete_;
   }
@@ -437,6 +459,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_clone = 1003;</code>
    * @return Whether the genericClone field is set.
    */
+  @java.lang.Override
   public boolean hasGenericClone() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -444,6 +467,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_clone = 1003;</code>
    * @return The genericClone.
    */
+  @java.lang.Override
   public int getGenericClone() {
     return genericClone_;
   }
@@ -454,6 +478,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edit = 1004;</code>
    * @return Whether the genericEdit field is set.
    */
+  @java.lang.Override
   public boolean hasGenericEdit() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -461,6 +486,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edit = 1004;</code>
    * @return The genericEdit.
    */
+  @java.lang.Override
   public int getGenericEdit() {
     return genericEdit_;
   }
@@ -471,6 +497,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edited_name = 1005;</code>
    * @return Whether the genericEditedName field is set.
    */
+  @java.lang.Override
   public boolean hasGenericEditedName() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -478,6 +505,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edited_name = 1005;</code>
    * @return The genericEditedName.
    */
+  @java.lang.Override
   public int getGenericEditedName() {
     return genericEditedName_;
   }
@@ -488,6 +516,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edited_description = 1006;</code>
    * @return Whether the genericEditedDescription field is set.
    */
+  @java.lang.Override
   public boolean hasGenericEditedDescription() {
     return ((bitField0_ & 0x00004000) != 0);
   }
@@ -495,6 +524,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_edited_description = 1006;</code>
    * @return The genericEditedDescription.
    */
+  @java.lang.Override
   public int getGenericEditedDescription() {
     return genericEditedDescription_;
   }
@@ -505,6 +535,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_export = 1007;</code>
    * @return Whether the genericExport field is set.
    */
+  @java.lang.Override
   public boolean hasGenericExport() {
     return ((bitField0_ & 0x00008000) != 0);
   }
@@ -512,6 +543,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_export = 1007;</code>
    * @return The genericExport.
    */
+  @java.lang.Override
   public int getGenericExport() {
     return genericExport_;
   }
@@ -522,6 +554,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_import = 1008;</code>
    * @return Whether the genericImport field is set.
    */
+  @java.lang.Override
   public boolean hasGenericImport() {
     return ((bitField0_ & 0x00010000) != 0);
   }
@@ -529,6 +562,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_import = 1008;</code>
    * @return The genericImport.
    */
+  @java.lang.Override
   public int getGenericImport() {
     return genericImport_;
   }
@@ -539,6 +573,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_flat_view = 1009;</code>
    * @return Whether the genericFlatView field is set.
    */
+  @java.lang.Override
   public boolean hasGenericFlatView() {
     return ((bitField0_ & 0x00020000) != 0);
   }
@@ -546,6 +581,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_flat_view = 1009;</code>
    * @return The genericFlatView.
    */
+  @java.lang.Override
   public int getGenericFlatView() {
     return genericFlatView_;
   }
@@ -556,6 +592,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_tree_view = 1010;</code>
    * @return Whether the genericTreeView field is set.
    */
+  @java.lang.Override
   public boolean hasGenericTreeView() {
     return ((bitField0_ & 0x00040000) != 0);
   }
@@ -563,6 +600,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_tree_view = 1010;</code>
    * @return The genericTreeView.
    */
+  @java.lang.Override
   public int getGenericTreeView() {
     return genericTreeView_;
   }
@@ -573,6 +611,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_flat_view_ms = 1011;</code>
    * @return Whether the genericTotalTimeFlatViewMs field is set.
    */
+  @java.lang.Override
   public boolean hasGenericTotalTimeFlatViewMs() {
     return ((bitField0_ & 0x00080000) != 0);
   }
@@ -580,6 +619,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_flat_view_ms = 1011;</code>
    * @return The genericTotalTimeFlatViewMs.
    */
+  @java.lang.Override
   public int getGenericTotalTimeFlatViewMs() {
     return genericTotalTimeFlatViewMs_;
   }
@@ -590,6 +630,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_tree_view_ms = 1012;</code>
    * @return Whether the genericTotalTimeTreeViewMs field is set.
    */
+  @java.lang.Override
   public boolean hasGenericTotalTimeTreeViewMs() {
     return ((bitField0_ & 0x00100000) != 0);
   }
@@ -597,6 +638,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_tree_view_ms = 1012;</code>
    * @return The genericTotalTimeTreeViewMs.
    */
+  @java.lang.Override
   public int getGenericTotalTimeTreeViewMs() {
     return genericTotalTimeTreeViewMs_;
   }
@@ -611,6 +653,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_ms = 1013;</code>
    * @return Whether the genericTotalTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasGenericTotalTimeMs() {
     return ((bitField0_ & 0x00200000) != 0);
   }
@@ -622,6 +665,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 generic_total_time_ms = 1013;</code>
    * @return The genericTotalTimeMs.
    */
+  @java.lang.Override
   public int getGenericTotalTimeMs() {
     return genericTotalTimeMs_;
   }
@@ -1478,6 +1522,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_yes = 1;</code>
      * @return Whether the quickbootSelectionYes field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootSelectionYes() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1489,6 +1534,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_yes = 1;</code>
      * @return The quickbootSelectionYes.
      */
+    @java.lang.Override
     public int getQuickbootSelectionYes() {
       return quickbootSelectionYes_;
     }
@@ -1527,6 +1573,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_no = 2;</code>
      * @return Whether the quickbootSelectionNo field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootSelectionNo() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -1534,6 +1581,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_no = 2;</code>
      * @return The quickbootSelectionNo.
      */
+    @java.lang.Override
     public int getQuickbootSelectionNo() {
       return quickbootSelectionNo_;
     }
@@ -1568,6 +1616,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_ask = 3;</code>
      * @return Whether the quickbootSelectionAsk field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootSelectionAsk() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -1579,6 +1628,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_selection_ask = 3;</code>
      * @return The quickbootSelectionAsk.
      */
+    @java.lang.Override
     public int getQuickbootSelectionAsk() {
       return quickbootSelectionAsk_;
     }
@@ -1621,6 +1671,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_canceled = 10;</code>
      * @return Whether the quickbootAskCanceled field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootAskCanceled() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1632,6 +1683,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_canceled = 10;</code>
      * @return The quickbootAskCanceled.
      */
+    @java.lang.Override
     public int getQuickbootAskCanceled() {
       return quickbootAskCanceled_;
     }
@@ -1670,6 +1722,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_yes = 11;</code>
      * @return Whether the quickbootAskYes field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootAskYes() {
       return ((bitField0_ & 0x00000010) != 0);
     }
@@ -1677,6 +1730,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_yes = 11;</code>
      * @return The quickbootAskYes.
      */
+    @java.lang.Override
     public int getQuickbootAskYes() {
       return quickbootAskYes_;
     }
@@ -1707,6 +1761,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_no = 12;</code>
      * @return Whether the quickbootAskNo field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootAskNo() {
       return ((bitField0_ & 0x00000020) != 0);
     }
@@ -1714,6 +1769,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_no = 12;</code>
      * @return The quickbootAskNo.
      */
+    @java.lang.Override
     public int getQuickbootAskNo() {
       return quickbootAskNo_;
     }
@@ -1748,6 +1804,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_total_time_ms = 13;</code>
      * @return Whether the quickbootAskTotalTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootAskTotalTimeMs() {
       return ((bitField0_ & 0x00000040) != 0);
     }
@@ -1759,6 +1816,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_ask_total_time_ms = 13;</code>
      * @return The quickbootAskTotalTimeMs.
      */
+    @java.lang.Override
     public int getQuickbootAskTotalTimeMs() {
       return quickbootAskTotalTimeMs_;
     }
@@ -1801,6 +1859,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_save_now = 100;</code>
      * @return Whether the quickbootSaveNow field is set.
      */
+    @java.lang.Override
     public boolean hasQuickbootSaveNow() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -1812,6 +1871,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 quickboot_save_now = 100;</code>
      * @return The quickbootSaveNow.
      */
+    @java.lang.Override
     public int getQuickbootSaveNow() {
       return quickbootSaveNow_;
     }
@@ -1854,6 +1914,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_save = 1000;</code>
      * @return Whether the genericSave field is set.
      */
+    @java.lang.Override
     public boolean hasGenericSave() {
       return ((bitField0_ & 0x00000100) != 0);
     }
@@ -1865,6 +1926,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_save = 1000;</code>
      * @return The genericSave.
      */
+    @java.lang.Override
     public int getGenericSave() {
       return genericSave_;
     }
@@ -1903,6 +1965,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_load = 1001;</code>
      * @return Whether the genericLoad field is set.
      */
+    @java.lang.Override
     public boolean hasGenericLoad() {
       return ((bitField0_ & 0x00000200) != 0);
     }
@@ -1910,6 +1973,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_load = 1001;</code>
      * @return The genericLoad.
      */
+    @java.lang.Override
     public int getGenericLoad() {
       return genericLoad_;
     }
@@ -1940,6 +2004,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_delete = 1002;</code>
      * @return Whether the genericDelete field is set.
      */
+    @java.lang.Override
     public boolean hasGenericDelete() {
       return ((bitField0_ & 0x00000400) != 0);
     }
@@ -1947,6 +2012,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_delete = 1002;</code>
      * @return The genericDelete.
      */
+    @java.lang.Override
     public int getGenericDelete() {
       return genericDelete_;
     }
@@ -1977,6 +2043,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_clone = 1003;</code>
      * @return Whether the genericClone field is set.
      */
+    @java.lang.Override
     public boolean hasGenericClone() {
       return ((bitField0_ & 0x00000800) != 0);
     }
@@ -1984,6 +2051,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_clone = 1003;</code>
      * @return The genericClone.
      */
+    @java.lang.Override
     public int getGenericClone() {
       return genericClone_;
     }
@@ -2014,6 +2082,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edit = 1004;</code>
      * @return Whether the genericEdit field is set.
      */
+    @java.lang.Override
     public boolean hasGenericEdit() {
       return ((bitField0_ & 0x00001000) != 0);
     }
@@ -2021,6 +2090,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edit = 1004;</code>
      * @return The genericEdit.
      */
+    @java.lang.Override
     public int getGenericEdit() {
       return genericEdit_;
     }
@@ -2051,6 +2121,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edited_name = 1005;</code>
      * @return Whether the genericEditedName field is set.
      */
+    @java.lang.Override
     public boolean hasGenericEditedName() {
       return ((bitField0_ & 0x00002000) != 0);
     }
@@ -2058,6 +2129,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edited_name = 1005;</code>
      * @return The genericEditedName.
      */
+    @java.lang.Override
     public int getGenericEditedName() {
       return genericEditedName_;
     }
@@ -2088,6 +2160,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edited_description = 1006;</code>
      * @return Whether the genericEditedDescription field is set.
      */
+    @java.lang.Override
     public boolean hasGenericEditedDescription() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -2095,6 +2168,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_edited_description = 1006;</code>
      * @return The genericEditedDescription.
      */
+    @java.lang.Override
     public int getGenericEditedDescription() {
       return genericEditedDescription_;
     }
@@ -2125,6 +2199,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_export = 1007;</code>
      * @return Whether the genericExport field is set.
      */
+    @java.lang.Override
     public boolean hasGenericExport() {
       return ((bitField0_ & 0x00008000) != 0);
     }
@@ -2132,6 +2207,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_export = 1007;</code>
      * @return The genericExport.
      */
+    @java.lang.Override
     public int getGenericExport() {
       return genericExport_;
     }
@@ -2162,6 +2238,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_import = 1008;</code>
      * @return Whether the genericImport field is set.
      */
+    @java.lang.Override
     public boolean hasGenericImport() {
       return ((bitField0_ & 0x00010000) != 0);
     }
@@ -2169,6 +2246,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_import = 1008;</code>
      * @return The genericImport.
      */
+    @java.lang.Override
     public int getGenericImport() {
       return genericImport_;
     }
@@ -2199,6 +2277,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_flat_view = 1009;</code>
      * @return Whether the genericFlatView field is set.
      */
+    @java.lang.Override
     public boolean hasGenericFlatView() {
       return ((bitField0_ & 0x00020000) != 0);
     }
@@ -2206,6 +2285,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_flat_view = 1009;</code>
      * @return The genericFlatView.
      */
+    @java.lang.Override
     public int getGenericFlatView() {
       return genericFlatView_;
     }
@@ -2236,6 +2316,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_tree_view = 1010;</code>
      * @return Whether the genericTreeView field is set.
      */
+    @java.lang.Override
     public boolean hasGenericTreeView() {
       return ((bitField0_ & 0x00040000) != 0);
     }
@@ -2243,6 +2324,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_tree_view = 1010;</code>
      * @return The genericTreeView.
      */
+    @java.lang.Override
     public int getGenericTreeView() {
       return genericTreeView_;
     }
@@ -2273,6 +2355,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_flat_view_ms = 1011;</code>
      * @return Whether the genericTotalTimeFlatViewMs field is set.
      */
+    @java.lang.Override
     public boolean hasGenericTotalTimeFlatViewMs() {
       return ((bitField0_ & 0x00080000) != 0);
     }
@@ -2280,6 +2363,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_flat_view_ms = 1011;</code>
      * @return The genericTotalTimeFlatViewMs.
      */
+    @java.lang.Override
     public int getGenericTotalTimeFlatViewMs() {
       return genericTotalTimeFlatViewMs_;
     }
@@ -2310,6 +2394,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_tree_view_ms = 1012;</code>
      * @return Whether the genericTotalTimeTreeViewMs field is set.
      */
+    @java.lang.Override
     public boolean hasGenericTotalTimeTreeViewMs() {
       return ((bitField0_ & 0x00100000) != 0);
     }
@@ -2317,6 +2402,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_tree_view_ms = 1012;</code>
      * @return The genericTotalTimeTreeViewMs.
      */
+    @java.lang.Override
     public int getGenericTotalTimeTreeViewMs() {
       return genericTotalTimeTreeViewMs_;
     }
@@ -2351,6 +2437,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_ms = 1013;</code>
      * @return Whether the genericTotalTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasGenericTotalTimeMs() {
       return ((bitField0_ & 0x00200000) != 0);
     }
@@ -2362,6 +2449,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 generic_total_time_ms = 1013;</code>
      * @return The genericTotalTimeMs.
      */
+    @java.lang.Override
     public int getGenericTotalTimeMs() {
       return genericTotalTimeMs_;
     }

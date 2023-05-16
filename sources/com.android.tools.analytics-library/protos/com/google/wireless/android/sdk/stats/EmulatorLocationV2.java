@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorLocationV2}
  */
-public  final class EmulatorLocationV2 extends
+public final class EmulatorLocationV2 extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorLocationV2)
     EmulatorLocationV2OrBuilder {
@@ -106,6 +106,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 set_loc_count = 1;</code>
    * @return Whether the setLocCount field is set.
    */
+  @java.lang.Override
   public boolean hasSetLocCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 set_loc_count = 1;</code>
    * @return The setLocCount.
    */
+  @java.lang.Override
   public int getSetLocCount() {
     return setLocCount_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 play_route_count = 2;</code>
    * @return Whether the playRouteCount field is set.
    */
+  @java.lang.Override
   public boolean hasPlayRouteCount() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint32 play_route_count = 2;</code>
    * @return The playRouteCount.
    */
+  @java.lang.Override
   public int getPlayRouteCount() {
     return playRouteCount_;
   }
@@ -498,6 +502,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 set_loc_count = 1;</code>
      * @return Whether the setLocCount field is set.
      */
+    @java.lang.Override
     public boolean hasSetLocCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -509,6 +514,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 set_loc_count = 1;</code>
      * @return The setLocCount.
      */
+    @java.lang.Override
     public int getSetLocCount() {
       return setLocCount_;
     }
@@ -551,6 +557,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 play_route_count = 2;</code>
      * @return Whether the playRouteCount field is set.
      */
+    @java.lang.Override
     public boolean hasPlayRouteCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -562,6 +569,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 play_route_count = 2;</code>
      * @return The playRouteCount.
      */
+    @java.lang.Override
     public int getPlayRouteCount() {
       return playRouteCount_;
     }

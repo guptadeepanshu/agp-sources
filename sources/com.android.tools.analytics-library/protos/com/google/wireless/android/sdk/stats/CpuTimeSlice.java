@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.CpuTimeSlice}
  */
-public  final class CpuTimeSlice extends
+public final class CpuTimeSlice extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.CpuTimeSlice)
     CpuTimeSliceOrBuilder {
@@ -107,6 +107,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 wall_time_us = 1;</code>
    * @return Whether the wallTimeUs field is set.
    */
+  @java.lang.Override
   public boolean hasWallTimeUs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 wall_time_us = 1;</code>
    * @return The wallTimeUs.
    */
+  @java.lang.Override
   public long getWallTimeUs() {
     return wallTimeUs_;
   }
@@ -124,6 +126,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 user_time_us = 2;</code>
    * @return Whether the userTimeUs field is set.
    */
+  @java.lang.Override
   public boolean hasUserTimeUs() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -131,6 +134,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 user_time_us = 2;</code>
    * @return The userTimeUs.
    */
+  @java.lang.Override
   public long getUserTimeUs() {
     return userTimeUs_;
   }
@@ -141,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 system_time_us = 3;</code>
    * @return Whether the systemTimeUs field is set.
    */
+  @java.lang.Override
   public boolean hasSystemTimeUs() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -148,6 +153,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional uint64 system_time_us = 3;</code>
    * @return The systemTimeUs.
    */
+  @java.lang.Override
   public long getSystemTimeUs() {
     return systemTimeUs_;
   }
@@ -528,6 +534,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 wall_time_us = 1;</code>
      * @return Whether the wallTimeUs field is set.
      */
+    @java.lang.Override
     public boolean hasWallTimeUs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -535,6 +542,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 wall_time_us = 1;</code>
      * @return The wallTimeUs.
      */
+    @java.lang.Override
     public long getWallTimeUs() {
       return wallTimeUs_;
     }
@@ -565,6 +573,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 user_time_us = 2;</code>
      * @return Whether the userTimeUs field is set.
      */
+    @java.lang.Override
     public boolean hasUserTimeUs() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -572,6 +581,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 user_time_us = 2;</code>
      * @return The userTimeUs.
      */
+    @java.lang.Override
     public long getUserTimeUs() {
       return userTimeUs_;
     }
@@ -602,6 +612,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 system_time_us = 3;</code>
      * @return Whether the systemTimeUs field is set.
      */
+    @java.lang.Override
     public boolean hasSystemTimeUs() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -609,6 +620,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint64 system_time_us = 3;</code>
      * @return The systemTimeUs.
      */
+    @java.lang.Override
     public long getSystemTimeUs() {
       return systemTimeUs_;
     }

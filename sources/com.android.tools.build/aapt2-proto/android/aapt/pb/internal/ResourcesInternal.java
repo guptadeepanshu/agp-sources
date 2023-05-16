@@ -158,7 +158,7 @@ public final class ResourcesInternal {
    *
    * Protobuf type {@code aapt.pb.internal.CompiledFile}
    */
-  public  static final class CompiledFile extends
+  public static final class CompiledFile extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:aapt.pb.internal.CompiledFile)
       CompiledFileOrBuilder {
@@ -334,7 +334,7 @@ public final class ResourcesInternal {
     /**
      * Protobuf type {@code aapt.pb.internal.CompiledFile.Symbol}
      */
-    public  static final class Symbol extends
+    public static final class Symbol extends
         com.google.protobuf.GeneratedMessageV3 implements
         // @@protoc_insertion_point(message_implements:aapt.pb.internal.CompiledFile.Symbol)
         SymbolOrBuilder {
@@ -438,6 +438,7 @@ public final class ResourcesInternal {
        * <code>string resource_name = 1;</code>
        * @return The resourceName.
        */
+      @java.lang.Override
       public java.lang.String getResourceName() {
         java.lang.Object ref = resourceName_;
         if (ref instanceof java.lang.String) {
@@ -458,6 +459,7 @@ public final class ResourcesInternal {
        * <code>string resource_name = 1;</code>
        * @return The bytes for resourceName.
        */
+      @java.lang.Override
       public com.google.protobuf.ByteString
           getResourceNameBytes() {
         java.lang.Object ref = resourceName_;
@@ -482,6 +484,7 @@ public final class ResourcesInternal {
        * <code>.aapt.pb.SourcePosition source = 2;</code>
        * @return Whether the source field is set.
        */
+      @java.lang.Override
       public boolean hasSource() {
         return source_ != null;
       }
@@ -493,6 +496,7 @@ public final class ResourcesInternal {
        * <code>.aapt.pb.SourcePosition source = 2;</code>
        * @return The source.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourcePosition getSource() {
         return source_ == null ? com.android.aapt.Resources.SourcePosition.getDefaultInstance() : source_;
       }
@@ -503,6 +507,7 @@ public final class ResourcesInternal {
        *
        * <code>.aapt.pb.SourcePosition source = 2;</code>
        */
+      @java.lang.Override
       public com.android.aapt.Resources.SourcePositionOrBuilder getSourceOrBuilder() {
         return getSource();
       }
@@ -1152,6 +1157,7 @@ public final class ResourcesInternal {
      * <code>string resource_name = 1;</code>
      * @return The resourceName.
      */
+    @java.lang.Override
     public java.lang.String getResourceName() {
       java.lang.Object ref = resourceName_;
       if (ref instanceof java.lang.String) {
@@ -1172,6 +1178,7 @@ public final class ResourcesInternal {
      * <code>string resource_name = 1;</code>
      * @return The bytes for resourceName.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getResourceNameBytes() {
       java.lang.Object ref = resourceName_;
@@ -1196,6 +1203,7 @@ public final class ResourcesInternal {
      * <code>.aapt.pb.Configuration config = 2;</code>
      * @return Whether the config field is set.
      */
+    @java.lang.Override
     public boolean hasConfig() {
       return config_ != null;
     }
@@ -1207,6 +1215,7 @@ public final class ResourcesInternal {
      * <code>.aapt.pb.Configuration config = 2;</code>
      * @return The config.
      */
+    @java.lang.Override
     public com.android.aapt.ConfigurationOuterClass.Configuration getConfig() {
       return config_ == null ? com.android.aapt.ConfigurationOuterClass.Configuration.getDefaultInstance() : config_;
     }
@@ -1217,6 +1226,7 @@ public final class ResourcesInternal {
      *
      * <code>.aapt.pb.Configuration config = 2;</code>
      */
+    @java.lang.Override
     public com.android.aapt.ConfigurationOuterClass.ConfigurationOrBuilder getConfigOrBuilder() {
       return getConfig();
     }
@@ -1231,7 +1241,7 @@ public final class ResourcesInternal {
      * <code>.aapt.pb.FileReference.Type type = 3;</code>
      * @return The enum numeric value on the wire for type.
      */
-    public int getTypeValue() {
+    @java.lang.Override public int getTypeValue() {
       return type_;
     }
     /**
@@ -1242,7 +1252,7 @@ public final class ResourcesInternal {
      * <code>.aapt.pb.FileReference.Type type = 3;</code>
      * @return The type.
      */
-    public com.android.aapt.Resources.FileReference.Type getType() {
+    @java.lang.Override public com.android.aapt.Resources.FileReference.Type getType() {
       @SuppressWarnings("deprecation")
       com.android.aapt.Resources.FileReference.Type result = com.android.aapt.Resources.FileReference.Type.valueOf(type_);
       return result == null ? com.android.aapt.Resources.FileReference.Type.UNRECOGNIZED : result;
@@ -1259,6 +1269,7 @@ public final class ResourcesInternal {
      * <code>string source_path = 4;</code>
      * @return The sourcePath.
      */
+    @java.lang.Override
     public java.lang.String getSourcePath() {
       java.lang.Object ref = sourcePath_;
       if (ref instanceof java.lang.String) {
@@ -1280,6 +1291,7 @@ public final class ResourcesInternal {
      * <code>string source_path = 4;</code>
      * @return The bytes for sourcePath.
      */
+    @java.lang.Override
     public com.google.protobuf.ByteString
         getSourcePathBytes() {
       java.lang.Object ref = sourcePath_;
@@ -1303,6 +1315,7 @@ public final class ResourcesInternal {
      *
      * <code>repeated .aapt.pb.internal.CompiledFile.Symbol exported_symbol = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<android.aapt.pb.internal.ResourcesInternal.CompiledFile.Symbol> getExportedSymbolList() {
       return exportedSymbol_;
     }
@@ -1313,6 +1326,7 @@ public final class ResourcesInternal {
      *
      * <code>repeated .aapt.pb.internal.CompiledFile.Symbol exported_symbol = 5;</code>
      */
+    @java.lang.Override
     public java.util.List<? extends android.aapt.pb.internal.ResourcesInternal.CompiledFile.SymbolOrBuilder> 
         getExportedSymbolOrBuilderList() {
       return exportedSymbol_;
@@ -1324,6 +1338,7 @@ public final class ResourcesInternal {
      *
      * <code>repeated .aapt.pb.internal.CompiledFile.Symbol exported_symbol = 5;</code>
      */
+    @java.lang.Override
     public int getExportedSymbolCount() {
       return exportedSymbol_.size();
     }
@@ -1334,6 +1349,7 @@ public final class ResourcesInternal {
      *
      * <code>repeated .aapt.pb.internal.CompiledFile.Symbol exported_symbol = 5;</code>
      */
+    @java.lang.Override
     public android.aapt.pb.internal.ResourcesInternal.CompiledFile.Symbol getExportedSymbol(int index) {
       return exportedSymbol_.get(index);
     }
@@ -1344,6 +1360,7 @@ public final class ResourcesInternal {
      *
      * <code>repeated .aapt.pb.internal.CompiledFile.Symbol exported_symbol = 5;</code>
      */
+    @java.lang.Override
     public android.aapt.pb.internal.ResourcesInternal.CompiledFile.SymbolOrBuilder getExportedSymbolOrBuilder(
         int index) {
       return exportedSymbol_.get(index);
@@ -2036,7 +2053,7 @@ public final class ResourcesInternal {
        * <code>.aapt.pb.FileReference.Type type = 3;</code>
        * @return The enum numeric value on the wire for type.
        */
-      public int getTypeValue() {
+      @java.lang.Override public int getTypeValue() {
         return type_;
       }
       /**
@@ -2049,6 +2066,7 @@ public final class ResourcesInternal {
        * @return This builder for chaining.
        */
       public Builder setTypeValue(int value) {
+        
         type_ = value;
         onChanged();
         return this;
@@ -2061,6 +2079,7 @@ public final class ResourcesInternal {
        * <code>.aapt.pb.FileReference.Type type = 3;</code>
        * @return The type.
        */
+      @java.lang.Override
       public com.android.aapt.Resources.FileReference.Type getType() {
         @SuppressWarnings("deprecation")
         com.android.aapt.Resources.FileReference.Type result = com.android.aapt.Resources.FileReference.Type.valueOf(type_);

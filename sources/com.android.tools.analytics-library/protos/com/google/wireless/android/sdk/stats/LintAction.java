@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.LintAction}
  */
-public  final class LintAction extends
+public final class LintAction extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.LintAction)
     LintActionOrBuilder {
@@ -281,6 +281,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return Whether the issueId field is set.
    */
+  @java.lang.Override
   public boolean hasIssueId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -293,6 +294,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return The issueId.
    */
+  @java.lang.Override
   public java.lang.String getIssueId() {
     java.lang.Object ref = issueId_;
     if (ref instanceof java.lang.String) {
@@ -316,6 +318,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string issue_id = 1;</code>
    * @return The bytes for issueId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getIssueIdBytes() {
     java.lang.Object ref = issueId_;
@@ -345,6 +348,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 2;</code>
    * @return Whether the projectId field is set.
    */
+  @java.lang.Override
   public boolean hasProjectId() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -361,6 +365,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 2;</code>
    * @return The projectId.
    */
+  @java.lang.Override
   public java.lang.String getProjectId() {
     java.lang.Object ref = projectId_;
     if (ref instanceof java.lang.String) {
@@ -388,6 +393,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string project_id = 2;</code>
    * @return The bytes for projectId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getProjectIdBytes() {
     java.lang.Object ref = projectId_;
@@ -412,6 +418,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fix_id = 3;</code>
    * @return Whether the fixId field is set.
    */
+  @java.lang.Override
   public boolean hasFixId() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -423,6 +430,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fix_id = 3;</code>
    * @return The fixId.
    */
+  @java.lang.Override
   public java.lang.String getFixId() {
     java.lang.Object ref = fixId_;
     if (ref instanceof java.lang.String) {
@@ -445,6 +453,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string fix_id = 3;</code>
    * @return The bytes for fixId.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFixIdBytes() {
     java.lang.Object ref = fixId_;
@@ -469,7 +478,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintAction.LintFeedback lint_feedback = 4;</code>
    * @return Whether the lintFeedback field is set.
    */
-  public boolean hasLintFeedback() {
+  @java.lang.Override public boolean hasLintFeedback() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -480,7 +489,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.LintAction.LintFeedback lint_feedback = 4;</code>
    * @return The lintFeedback.
    */
-  public com.google.wireless.android.sdk.stats.LintAction.LintFeedback getLintFeedback() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.LintAction.LintFeedback getLintFeedback() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.LintAction.LintFeedback result = com.google.wireless.android.sdk.stats.LintAction.LintFeedback.valueOf(lintFeedback_);
     return result == null ? com.google.wireless.android.sdk.stats.LintAction.LintFeedback.UNKNOWN_FEEDBACK : result;
@@ -1250,7 +1259,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintAction.LintFeedback lint_feedback = 4;</code>
      * @return Whether the lintFeedback field is set.
      */
-    public boolean hasLintFeedback() {
+    @java.lang.Override public boolean hasLintFeedback() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -1261,6 +1270,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.LintAction.LintFeedback lint_feedback = 4;</code>
      * @return The lintFeedback.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.LintAction.LintFeedback getLintFeedback() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.LintAction.LintFeedback result = com.google.wireless.android.sdk.stats.LintAction.LintFeedback.valueOf(lintFeedback_);

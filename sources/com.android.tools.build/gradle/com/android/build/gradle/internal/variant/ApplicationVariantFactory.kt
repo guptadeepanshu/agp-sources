@@ -30,6 +30,7 @@ import com.android.build.api.variant.impl.GlobalVariantBuilderConfig
 import com.android.build.api.variant.impl.VariantOutputConfigurationImpl
 import com.android.build.api.variant.impl.VariantOutputImpl
 import com.android.build.api.variant.impl.VariantOutputList
+import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.core.VariantDslInfo
 import com.android.build.gradle.internal.core.VariantSources
 import com.android.build.gradle.internal.dependency.VariantDependencies
@@ -40,13 +41,13 @@ import com.android.build.gradle.internal.scope.TestFixturesBuildFeaturesValuesIm
 import com.android.build.gradle.internal.scope.VariantScope
 import com.android.build.gradle.internal.services.ProjectServices
 import com.android.build.gradle.internal.services.TaskCreationServices
-import com.android.build.gradle.internal.services.VariantApiServices
-import com.android.build.gradle.internal.services.VariantPropertiesApiServices
+import com.android.build.gradle.internal.services.VariantBuilderServices
+import com.android.build.gradle.internal.services.VariantServices
 import com.android.build.gradle.internal.tasks.factory.GlobalTaskCreationConfig
 import com.android.build.gradle.options.BooleanOption
 import com.android.build.gradle.options.ProjectOptions
 import com.android.build.gradle.options.StringOption
-import com.android.builder.core.VariantTypeImpl
+import com.android.builder.core.ComponentTypeImpl
 import com.android.builder.errors.IssueReporter
 import com.android.ide.common.build.GenericBuiltArtifact
 import com.android.ide.common.build.GenericBuiltArtifactsSplitOutputMatcher
@@ -67,7 +68,7 @@ class ApplicationVariantFactory(
         globalVariantBuilderConfig: GlobalVariantBuilderConfig,
         componentIdentity: ComponentIdentity,
         variantDslInfo: VariantDslInfo,
-        variantApiServices: VariantApiServices
+        variantBuilderServices: VariantBuilderServices
     ): ApplicationVariantBuilderImpl {
 
         return projectServices
@@ -77,7 +78,7 @@ class ApplicationVariantFactory(
                 globalVariantBuilderConfig,
                 variantDslInfo,
                 componentIdentity,
-                variantApiServices
+                variantBuilderServices
             )
     }
 
@@ -93,7 +94,7 @@ class ApplicationVariantFactory(
         variantScope: VariantScope,
         variantData: BaseVariantData,
         transformManager: TransformManager,
-        variantPropertiesApiServices: VariantPropertiesApiServices,
+        variantServices: VariantServices,
         taskCreationServices: TaskCreationServices,
         globalConfig: GlobalTaskCreationConfig,
         ): ApplicationVariantImpl {
@@ -112,7 +113,7 @@ class ApplicationVariantFactory(
                 variantData,
                 variantBuilder.dependenciesInfo,
                 transformManager,
-                variantPropertiesApiServices,
+                variantServices,
                 taskCreationServices,
                 globalConfig,
             )
@@ -167,8 +168,8 @@ class ApplicationVariantFactory(
         )
     }
 
-    override val variantType
-        get() = VariantTypeImpl.BASE_APK
+    override val componentType
+        get() = ComponentTypeImpl.BASE_APK
 
     private fun computeOutputs(
         appVariant: ApplicationVariantImpl,
@@ -180,7 +181,7 @@ class ApplicationVariantFactory(
             variant.getFilters(VariantOutput.FilterType.DENSITY)
         val abis =
             variant.getFilters(VariantOutput.FilterType.ABI)
-        checkSplitsConflicts(appVariant.variantDslInfo, abis, globalConfig)
+        checkSplitsConflicts(appVariant, abis, globalConfig)
         if (!densities.isEmpty()) {
             variant.compatibleScreens = globalConfig.splits.density
                 .compatibleScreens
@@ -189,7 +190,7 @@ class ApplicationVariantFactory(
             populateMultiApkOutputs(abis, densities, globalConfig)
         variantOutputs.forEach { appVariant.addVariantOutput(it) }
         restrictEnabledOutputs(
-                appVariant.variantDslInfo,
+                appVariant,
                 appVariant.outputs,
                 globalConfig
         )
@@ -272,7 +273,7 @@ class ApplicationVariantFactory(
     }
 
     private fun checkSplitsConflicts(
-        variantDslInfo: VariantDslInfo,
+        component: ComponentCreationConfig,
         abiFilters: Set<String?>,
         globalConfig: GlobalTaskCreationConfig,
     ) { // if we don't have any ABI splits, nothing is conflicting.
@@ -284,7 +285,7 @@ class ApplicationVariantFactory(
             return
         }
         // check supportedAbis in Ndk configuration versus ABI splits.
-        val ndkConfigAbiFilters = variantDslInfo.ndkConfig.abiFilters
+        val ndkConfigAbiFilters = component.ndkConfig.abiFilters
         if (ndkConfigAbiFilters.isEmpty()) {
             return
         }
@@ -301,11 +302,11 @@ class ApplicationVariantFactory(
     }
 
     private fun restrictEnabledOutputs(
-        variantDslInfo: VariantDslInfo,
+        component: ComponentCreationConfig,
         variantOutputs: VariantOutputList,
         globalConfig: GlobalTaskCreationConfig
     ) {
-        val supportedAbis: Set<String> = variantDslInfo.supportedAbis
+        val supportedAbis: Set<String> = component.supportedAbis
         val projectOptions = projectServices.projectOptions
         val buildTargetAbi =
             (if (projectOptions[BooleanOption.BUILD_ONLY_TARGET_ABI]

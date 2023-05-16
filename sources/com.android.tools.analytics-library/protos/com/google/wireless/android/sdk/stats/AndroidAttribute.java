@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.AndroidAttribute}
  */
-public  final class AndroidAttribute extends
+public final class AndroidAttribute extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.AndroidAttribute)
     AndroidAttributeOrBuilder {
@@ -268,6 +268,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string attribute_name = 1;</code>
    * @return Whether the attributeName field is set.
    */
+  @java.lang.Override
   public boolean hasAttributeName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -283,6 +284,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string attribute_name = 1;</code>
    * @return The attributeName.
    */
+  @java.lang.Override
   public java.lang.String getAttributeName() {
     java.lang.Object ref = attributeName_;
     if (ref instanceof java.lang.String) {
@@ -309,6 +311,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string attribute_name = 1;</code>
    * @return The bytes for attributeName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAttributeNameBytes() {
     java.lang.Object ref = attributeName_;
@@ -333,7 +336,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute.AttributeNamespace attribute_namespace = 2;</code>
    * @return Whether the attributeNamespace field is set.
    */
-  public boolean hasAttributeNamespace() {
+  @java.lang.Override public boolean hasAttributeNamespace() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -344,7 +347,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AndroidAttribute.AttributeNamespace attribute_namespace = 2;</code>
    * @return The attributeNamespace.
    */
-  public com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace getAttributeNamespace() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace getAttributeNamespace() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.valueOf(attributeNamespace_);
     return result == null ? com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.UNKNOWN_NAMESPACE : result;
@@ -834,7 +837,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidAttribute.AttributeNamespace attribute_namespace = 2;</code>
      * @return Whether the attributeNamespace field is set.
      */
-    public boolean hasAttributeNamespace() {
+    @java.lang.Override public boolean hasAttributeNamespace() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -845,6 +848,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.AndroidAttribute.AttributeNamespace attribute_namespace = 2;</code>
      * @return The attributeNamespace.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace getAttributeNamespace() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace result = com.google.wireless.android.sdk.stats.AndroidAttribute.AttributeNamespace.valueOf(attributeNamespace_);

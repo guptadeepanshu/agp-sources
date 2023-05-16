@@ -270,7 +270,7 @@ public enum GradleTransformExecutionType
   /**
    * <code>DEPRECATED_JACOCO = 9 [deprecated = true];</code>
    */
-  public static final int DEPRECATED_JACOCO_VALUE = 9;
+  @java.lang.Deprecated public static final int DEPRECATED_JACOCO_VALUE = 9;
   /**
    * <code>JAR_MERGING = 10;</code>
    */
@@ -282,7 +282,7 @@ public enum GradleTransformExecutionType
   /**
    * <code>LIBRARY_JNI_LIBS_TRANSFORM = 12 [deprecated = true];</code>
    */
-  public static final int LIBRARY_JNI_LIBS_TRANSFORM_VALUE = 12;
+  @java.lang.Deprecated public static final int LIBRARY_JNI_LIBS_TRANSFORM_VALUE = 12;
   /**
    * <code>MERGE_JAVA_RESOURCES_TRANSFORM = 13;</code>
    */
@@ -310,7 +310,7 @@ public enum GradleTransformExecutionType
   /**
    * <code>DATA_BINDING_MERGE_ARTIFACTS = 19 [deprecated = true];</code>
    */
-  public static final int DATA_BINDING_MERGE_ARTIFACTS_VALUE = 19;
+  @java.lang.Deprecated public static final int DATA_BINDING_MERGE_ARTIFACTS_VALUE = 19;
   /**
    * <code>INSTANT_RUN_VERIFIER_TRANSFORM = 20;</code>
    */
@@ -318,7 +318,7 @@ public enum GradleTransformExecutionType
   /**
    * <code>STRIP_DEBUG_SYMBOL_TRANSFORM = 21 [deprecated = true];</code>
    */
-  public static final int STRIP_DEBUG_SYMBOL_TRANSFORM_VALUE = 21;
+  @java.lang.Deprecated public static final int STRIP_DEBUG_SYMBOL_TRANSFORM_VALUE = 21;
   /**
    * <code>LIBRARY_API = 22;</code>
    */
@@ -362,11 +362,11 @@ public enum GradleTransformExecutionType
   /**
    * <code>DESUGAR_TRANSFORM = 32 [deprecated = true];</code>
    */
-  public static final int DESUGAR_TRANSFORM_VALUE = 32;
+  @java.lang.Deprecated public static final int DESUGAR_TRANSFORM_VALUE = 32;
   /**
    * <code>FIX_STACK_FRAMES = 33 [deprecated = true];</code>
    */
-  public static final int FIX_STACK_FRAMES_VALUE = 33;
+  @java.lang.Deprecated public static final int FIX_STACK_FRAMES_VALUE = 33;
   /**
    * <code>EXTERNAL_LIBS_MERGER_TRANSFORM = 34;</code>
    */
@@ -374,15 +374,15 @@ public enum GradleTransformExecutionType
   /**
    * <code>D8_MAIN_DEX_LIST_TRANSFORM = 35 [deprecated = true];</code>
    */
-  public static final int D8_MAIN_DEX_LIST_TRANSFORM_VALUE = 35;
+  @java.lang.Deprecated public static final int D8_MAIN_DEX_LIST_TRANSFORM_VALUE = 35;
   /**
    * <code>DATA_BINDING_MERGE_GEN_CLASS_LOG = 36 [deprecated = true];</code>
    */
-  public static final int DATA_BINDING_MERGE_GEN_CLASS_LOG_VALUE = 36;
+  @java.lang.Deprecated public static final int DATA_BINDING_MERGE_GEN_CLASS_LOG_VALUE = 36;
   /**
    * <code>R8_TRANSFORM = 37 [deprecated = true];</code>
    */
-  public static final int R8_TRANSFORM_VALUE = 37;
+  @java.lang.Deprecated public static final int R8_TRANSFORM_VALUE = 37;
   /**
    * <code>DEX_SPLITTER_TRANSFORM = 38;</code>
    */
@@ -390,7 +390,7 @@ public enum GradleTransformExecutionType
   /**
    * <code>MERGE_CLASSES_TRANSFORM = 39 [deprecated = true];</code>
    */
-  public static final int MERGE_CLASSES_TRANSFORM_VALUE = 39;
+  @java.lang.Deprecated public static final int MERGE_CLASSES_TRANSFORM_VALUE = 39;
   /**
    * <code>LIBRARY_AAR_JARS_TRANSFORM = 40;</code>
    */
@@ -398,11 +398,11 @@ public enum GradleTransformExecutionType
   /**
    * <code>LIBRARY_INTERMEDIATE_JARS = 41 [deprecated = true];</code>
    */
-  public static final int LIBRARY_INTERMEDIATE_JARS_VALUE = 41;
+  @java.lang.Deprecated public static final int LIBRARY_INTERMEDIATE_JARS_VALUE = 41;
   /**
    * <code>TEST_TRANSFORM = 42 [deprecated = true];</code>
    */
-  public static final int TEST_TRANSFORM_VALUE = 42;
+  @java.lang.Deprecated public static final int TEST_TRANSFORM_VALUE = 42;
   /**
    * <code>FIREBASE_TRANSFORM = 43;</code>
    */
@@ -534,6 +534,10 @@ public enum GradleTransformExecutionType
 
   public final com.google.protobuf.Descriptors.EnumValueDescriptor
       getValueDescriptor() {
+    if (this == UNRECOGNIZED) {
+      throw new java.lang.IllegalStateException(
+          "Can't get the descriptor of an unrecognized enum value.");
+    }
     return getDescriptor().getValues().get(ordinal());
   }
   public final com.google.protobuf.Descriptors.EnumDescriptor

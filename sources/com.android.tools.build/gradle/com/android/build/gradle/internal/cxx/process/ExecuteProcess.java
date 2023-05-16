@@ -16,7 +16,7 @@ package com.android.build.gradle.internal.cxx.process;
  *
  * Protobuf type {@code ExecuteProcess}
  */
-public  final class ExecuteProcess extends
+public final class ExecuteProcess extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:ExecuteProcess)
     ExecuteProcessOrBuilder {
@@ -186,6 +186,7 @@ private static final long serialVersionUID = 0L;
    * <code>string executable = 1;</code>
    * @return The executable.
    */
+  @java.lang.Override
   public java.lang.String getExecutable() {
     java.lang.Object ref = executable_;
     if (ref instanceof java.lang.String) {
@@ -206,6 +207,7 @@ private static final long serialVersionUID = 0L;
    * <code>string executable = 1;</code>
    * @return The bytes for executable.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getExecutableBytes() {
     java.lang.Object ref = executable_;
@@ -281,6 +283,7 @@ private static final long serialVersionUID = 0L;
    * <code>string description = 3;</code>
    * @return The description.
    */
+  @java.lang.Override
   public java.lang.String getDescription() {
     java.lang.Object ref = description_;
     if (ref instanceof java.lang.String) {
@@ -301,6 +304,7 @@ private static final long serialVersionUID = 0L;
    * <code>string description = 3;</code>
    * @return The bytes for description.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getDescriptionBytes() {
     java.lang.Object ref = description_;
@@ -427,6 +431,7 @@ private static final long serialVersionUID = 0L;
    * <code>string jvm_class_path = 6;</code>
    * @return The jvmClassPath.
    */
+  @java.lang.Override
   public java.lang.String getJvmClassPath() {
     java.lang.Object ref = jvmClassPath_;
     if (ref instanceof java.lang.String) {
@@ -447,6 +452,7 @@ private static final long serialVersionUID = 0L;
    * <code>string jvm_class_path = 6;</code>
    * @return The bytes for jvmClassPath.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJvmClassPathBytes() {
     java.lang.Object ref = jvmClassPath_;
@@ -471,6 +477,7 @@ private static final long serialVersionUID = 0L;
    * <code>string jvm_main_class = 7;</code>
    * @return The jvmMainClass.
    */
+  @java.lang.Override
   public java.lang.String getJvmMainClass() {
     java.lang.Object ref = jvmMainClass_;
     if (ref instanceof java.lang.String) {
@@ -491,6 +498,7 @@ private static final long serialVersionUID = 0L;
    * <code>string jvm_main_class = 7;</code>
    * @return The bytes for jvmMainClass.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJvmMainClassBytes() {
     java.lang.Object ref = jvmMainClass_;
@@ -566,6 +574,7 @@ private static final long serialVersionUID = 0L;
    * <code>int32 exit_code = 9;</code>
    * @return The exitCode.
    */
+  @java.lang.Override
   public int getExitCode() {
     return exitCode_;
   }
@@ -2065,6 +2074,7 @@ private static final long serialVersionUID = 0L;
      * <code>int32 exit_code = 9;</code>
      * @return The exitCode.
      */
+    @java.lang.Override
     public int getExitCode() {
       return exitCode_;
     }

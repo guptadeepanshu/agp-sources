@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.FirebaseErrorDetails}
  */
-public  final class FirebaseErrorDetails extends
+public final class FirebaseErrorDetails extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.FirebaseErrorDetails)
     FirebaseErrorDetailsOrBuilder {
@@ -103,6 +103,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 1;</code>
    * @return Whether the errorMessage field is set.
    */
+  @java.lang.Override
   public boolean hasErrorMessage() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -114,6 +115,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 1;</code>
    * @return The errorMessage.
    */
+  @java.lang.Override
   public java.lang.String getErrorMessage() {
     java.lang.Object ref = errorMessage_;
     if (ref instanceof java.lang.String) {
@@ -136,6 +138,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string error_message = 1;</code>
    * @return The bytes for errorMessage.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getErrorMessageBytes() {
     java.lang.Object ref = errorMessage_;

@@ -12,7 +12,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorFeatureFlagState}
  */
-public  final class EmulatorFeatureFlagState extends
+public final class EmulatorFeatureFlagState extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorFeatureFlagState)
     EmulatorFeatureFlagStateOrBuilder {
@@ -534,7 +534,7 @@ private static final long serialVersionUID = 0L;
     /**
      * <code>DEPRECATED_GENERIC_INCREMENTAL_SNAPSHOT = 24 [deprecated = true];</code>
      */
-    public static final int DEPRECATED_GENERIC_INCREMENTAL_SNAPSHOT_VALUE = 24;
+    @java.lang.Deprecated public static final int DEPRECATED_GENERIC_INCREMENTAL_SNAPSHOT_VALUE = 24;
     /**
      * <code>WINDOWS_ON_DEMAND_SNAPSHOT_LOAD = 25;</code>
      */
@@ -745,6 +745,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag attempted_enabled_feature_flags = 1;</code>
    * @return A list containing the attemptedEnabledFeatureFlags.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> getAttemptedEnabledFeatureFlagsList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>(attemptedEnabledFeatureFlags_, attemptedEnabledFeatureFlags_converter_);
@@ -755,8 +756,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag attempted_enabled_feature_flags = 1;</code>
-   * @param value The attemptedEnabledFeatureFlags to add.
+   * @return The count of attemptedEnabledFeatureFlags.
    */
+  @java.lang.Override
   public int getAttemptedEnabledFeatureFlagsCount() {
     return attemptedEnabledFeatureFlags_.size();
   }
@@ -769,6 +771,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The attemptedEnabledFeatureFlags at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag getAttemptedEnabledFeatureFlags(int index) {
     return attemptedEnabledFeatureFlags_converter_.convert(attemptedEnabledFeatureFlags_.get(index));
   }
@@ -793,6 +796,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag user_overridden_enabled_features = 2;</code>
    * @return A list containing the userOverriddenEnabledFeatures.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> getUserOverriddenEnabledFeaturesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>(userOverriddenEnabledFeatures_, userOverriddenEnabledFeatures_converter_);
@@ -803,8 +807,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag user_overridden_enabled_features = 2;</code>
-   * @param value The userOverriddenEnabledFeatures to add.
+   * @return The count of userOverriddenEnabledFeatures.
    */
+  @java.lang.Override
   public int getUserOverriddenEnabledFeaturesCount() {
     return userOverriddenEnabledFeatures_.size();
   }
@@ -817,6 +822,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The userOverriddenEnabledFeatures at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag getUserOverriddenEnabledFeatures(int index) {
     return userOverriddenEnabledFeatures_converter_.convert(userOverriddenEnabledFeatures_.get(index));
   }
@@ -841,6 +847,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag user_overridden_disabled_features = 3;</code>
    * @return A list containing the userOverriddenDisabledFeatures.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> getUserOverriddenDisabledFeaturesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>(userOverriddenDisabledFeatures_, userOverriddenDisabledFeatures_converter_);
@@ -851,8 +858,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag user_overridden_disabled_features = 3;</code>
-   * @param value The userOverriddenDisabledFeatures to add.
+   * @return The count of userOverriddenDisabledFeatures.
    */
+  @java.lang.Override
   public int getUserOverriddenDisabledFeaturesCount() {
     return userOverriddenDisabledFeatures_.size();
   }
@@ -865,6 +873,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The userOverriddenDisabledFeatures at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag getUserOverriddenDisabledFeatures(int index) {
     return userOverriddenDisabledFeatures_converter_.convert(userOverriddenDisabledFeatures_.get(index));
   }
@@ -889,6 +898,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag resulting_enabled_features = 4;</code>
    * @return A list containing the resultingEnabledFeatures.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag> getResultingEnabledFeaturesList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag>(resultingEnabledFeatures_, resultingEnabledFeatures_converter_);
@@ -899,8 +909,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.EmulatorFeatureFlagState.EmulatorFeatureFlag resulting_enabled_features = 4;</code>
-   * @param value The resultingEnabledFeatures to add.
+   * @return The count of resultingEnabledFeatures.
    */
+  @java.lang.Override
   public int getResultingEnabledFeaturesCount() {
     return resultingEnabledFeatures_.size();
   }
@@ -913,6 +924,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The resultingEnabledFeatures at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.EmulatorFeatureFlagState.EmulatorFeatureFlag getResultingEnabledFeatures(int index) {
     return resultingEnabledFeatures_converter_.convert(resultingEnabledFeatures_.get(index));
   }

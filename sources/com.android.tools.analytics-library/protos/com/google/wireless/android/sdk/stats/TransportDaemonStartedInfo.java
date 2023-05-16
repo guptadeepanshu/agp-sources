@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.TransportDaemonStartedInfo}
  */
-public  final class TransportDaemonStartedInfo extends
+public final class TransportDaemonStartedInfo extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TransportDaemonStartedInfo)
     TransportDaemonStartedInfoOrBuilder {
@@ -104,6 +104,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_restart = 1;</code>
    * @return Whether the isRestart field is set.
    */
+  @java.lang.Override
   public boolean hasIsRestart() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -117,6 +118,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool is_restart = 1;</code>
    * @return The isRestart.
    */
+  @java.lang.Override
   public boolean getIsRestart() {
     return isRestart_;
   }
@@ -131,6 +133,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 millisec_since_last_start = 2;</code>
    * @return Whether the millisecSinceLastStart field is set.
    */
+  @java.lang.Override
   public boolean hasMillisecSinceLastStart() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -142,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 millisec_since_last_start = 2;</code>
    * @return The millisecSinceLastStart.
    */
+  @java.lang.Override
   public long getMillisecSinceLastStart() {
     return millisecSinceLastStart_;
   }
@@ -498,6 +502,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_restart = 1;</code>
      * @return Whether the isRestart field is set.
      */
+    @java.lang.Override
     public boolean hasIsRestart() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -511,6 +516,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool is_restart = 1;</code>
      * @return The isRestart.
      */
+    @java.lang.Override
     public boolean getIsRestart() {
       return isRestart_;
     }
@@ -557,6 +563,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 millisec_since_last_start = 2;</code>
      * @return Whether the millisecSinceLastStart field is set.
      */
+    @java.lang.Override
     public boolean hasMillisecSinceLastStart() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -568,6 +575,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 millisec_since_last_start = 2;</code>
      * @return The millisecSinceLastStart.
      */
+    @java.lang.Override
     public long getMillisecSinceLastStart() {
       return millisecSinceLastStart_;
     }

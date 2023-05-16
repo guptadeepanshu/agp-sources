@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.NavSafeArgsEvent}
  */
-public  final class NavSafeArgsEvent extends
+public final class NavSafeArgsEvent extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.NavSafeArgsEvent)
     NavSafeArgsEventOrBuilder {
@@ -276,7 +276,7 @@ private static final long serialVersionUID = 0L;
   /**
    * Protobuf type {@code android_studio.NavSafeArgsEvent.ProjectMetadata}
    */
-  public  static final class ProjectMetadata extends
+  public static final class ProjectMetadata extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:android_studio.NavSafeArgsEvent.ProjectMetadata)
       ProjectMetadataOrBuilder {
@@ -377,6 +377,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 module_count = 1;</code>
      * @return Whether the moduleCount field is set.
      */
+    @java.lang.Override
     public boolean hasModuleCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -388,6 +389,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 module_count = 1;</code>
      * @return The moduleCount.
      */
+    @java.lang.Override
     public int getModuleCount() {
       return moduleCount_;
     }
@@ -402,6 +404,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 java_plugin_count = 2;</code>
      * @return Whether the javaPluginCount field is set.
      */
+    @java.lang.Override
     public boolean hasJavaPluginCount() {
       return ((bitField0_ & 0x00000002) != 0);
     }
@@ -413,6 +416,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 java_plugin_count = 2;</code>
      * @return The javaPluginCount.
      */
+    @java.lang.Override
     public int getJavaPluginCount() {
       return javaPluginCount_;
     }
@@ -427,6 +431,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 kotlin_plugin_count = 3;</code>
      * @return Whether the kotlinPluginCount field is set.
      */
+    @java.lang.Override
     public boolean hasKotlinPluginCount() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -438,6 +443,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional uint32 kotlin_plugin_count = 3;</code>
      * @return The kotlinPluginCount.
      */
+    @java.lang.Override
     public int getKotlinPluginCount() {
       return kotlinPluginCount_;
     }
@@ -815,6 +821,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 module_count = 1;</code>
        * @return Whether the moduleCount field is set.
        */
+      @java.lang.Override
       public boolean hasModuleCount() {
         return ((bitField0_ & 0x00000001) != 0);
       }
@@ -826,6 +833,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 module_count = 1;</code>
        * @return The moduleCount.
        */
+      @java.lang.Override
       public int getModuleCount() {
         return moduleCount_;
       }
@@ -868,6 +876,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 java_plugin_count = 2;</code>
        * @return Whether the javaPluginCount field is set.
        */
+      @java.lang.Override
       public boolean hasJavaPluginCount() {
         return ((bitField0_ & 0x00000002) != 0);
       }
@@ -879,6 +888,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 java_plugin_count = 2;</code>
        * @return The javaPluginCount.
        */
+      @java.lang.Override
       public int getJavaPluginCount() {
         return javaPluginCount_;
       }
@@ -921,6 +931,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 kotlin_plugin_count = 3;</code>
        * @return Whether the kotlinPluginCount field is set.
        */
+      @java.lang.Override
       public boolean hasKotlinPluginCount() {
         return ((bitField0_ & 0x00000004) != 0);
       }
@@ -932,6 +943,7 @@ private static final long serialVersionUID = 0L;
        * <code>optional uint32 kotlin_plugin_count = 3;</code>
        * @return The kotlinPluginCount.
        */
+      @java.lang.Override
       public int getKotlinPluginCount() {
         return kotlinPluginCount_;
       }
@@ -1024,14 +1036,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSafeArgsEvent.EventContext event_context = 1;</code>
    * @return Whether the eventContext field is set.
    */
-  public boolean hasEventContext() {
+  @java.lang.Override public boolean hasEventContext() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.NavSafeArgsEvent.EventContext event_context = 1;</code>
    * @return The eventContext.
    */
-  public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext getEventContext() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext getEventContext() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext result = com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext.valueOf(eventContext_);
     return result == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext.UNKNOWN_EVENT_CONTEXT : result;
@@ -1043,6 +1055,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
    * @return Whether the projectMetadata field is set.
    */
+  @java.lang.Override
   public boolean hasProjectMetadata() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1050,12 +1063,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
    * @return The projectMetadata.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata getProjectMetadata() {
     return projectMetadata_ == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.getDefaultInstance() : projectMetadata_;
   }
   /**
    * <code>optional .android_studio.NavSafeArgsEvent.ProjectMetadata project_metadata = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadataOrBuilder getProjectMetadataOrBuilder() {
     return projectMetadata_ == null ? com.google.wireless.android.sdk.stats.NavSafeArgsEvent.ProjectMetadata.getDefaultInstance() : projectMetadata_;
   }
@@ -1412,13 +1427,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.NavSafeArgsEvent.EventContext event_context = 1;</code>
      * @return Whether the eventContext field is set.
      */
-    public boolean hasEventContext() {
+    @java.lang.Override public boolean hasEventContext() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.NavSafeArgsEvent.EventContext event_context = 1;</code>
      * @return The eventContext.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext getEventContext() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext result = com.google.wireless.android.sdk.stats.NavSafeArgsEvent.EventContext.valueOf(eventContext_);

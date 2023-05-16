@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.EmulatorAvdFile}
  */
-public  final class EmulatorAvdFile extends
+public final class EmulatorAvdFile extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.EmulatorAvdFile)
     EmulatorAvdFileOrBuilder {
@@ -351,7 +351,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileKind kind = 1;</code>
    * @return Whether the kind field is set.
    */
-  public boolean hasKind() {
+  @java.lang.Override public boolean hasKind() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
@@ -362,7 +362,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileKind kind = 1;</code>
    * @return The kind.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind getKind() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind getKind() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind result = com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind.valueOf(kind_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind.UNKNOWN_EMULATOR_AVD_FILE_KIND : result;
@@ -378,7 +378,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileLocation location = 2;</code>
    * @return Whether the location field is set.
    */
-  public boolean hasLocation() {
+  @java.lang.Override public boolean hasLocation() {
     return ((bitField0_ & 0x00000002) != 0);
   }
   /**
@@ -389,7 +389,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileLocation location = 2;</code>
    * @return The location.
    */
-  public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation getLocation() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation getLocation() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation result = com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation.valueOf(location_);
     return result == null ? com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation.UNKNOWN_EMULATOR_AVD_FILE_LOCATION : result;
@@ -405,6 +405,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 size = 3;</code>
    * @return Whether the size field is set.
    */
+  @java.lang.Override
   public boolean hasSize() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -416,6 +417,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 size = 3;</code>
    * @return The size.
    */
+  @java.lang.Override
   public long getSize() {
     return size_;
   }
@@ -430,6 +432,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 creation_timestamp = 4;</code>
    * @return Whether the creationTimestamp field is set.
    */
+  @java.lang.Override
   public boolean hasCreationTimestamp() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -441,6 +444,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 creation_timestamp = 4;</code>
    * @return The creationTimestamp.
    */
+  @java.lang.Override
   public long getCreationTimestamp() {
     return creationTimestamp_;
   }
@@ -847,7 +851,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileKind kind = 1;</code>
      * @return Whether the kind field is set.
      */
-    public boolean hasKind() {
+    @java.lang.Override public boolean hasKind() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
@@ -858,6 +862,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileKind kind = 1;</code>
      * @return The kind.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind getKind() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind result = com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileKind.valueOf(kind_);
@@ -905,7 +910,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileLocation location = 2;</code>
      * @return Whether the location field is set.
      */
-    public boolean hasLocation() {
+    @java.lang.Override public boolean hasLocation() {
       return ((bitField0_ & 0x00000002) != 0);
     }
     /**
@@ -916,6 +921,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.EmulatorAvdFile.EmulatorAvdFileLocation location = 2;</code>
      * @return The location.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation getLocation() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation result = com.google.wireless.android.sdk.stats.EmulatorAvdFile.EmulatorAvdFileLocation.valueOf(location_);
@@ -963,6 +969,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 size = 3;</code>
      * @return Whether the size field is set.
      */
+    @java.lang.Override
     public boolean hasSize() {
       return ((bitField0_ & 0x00000004) != 0);
     }
@@ -974,6 +981,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 size = 3;</code>
      * @return The size.
      */
+    @java.lang.Override
     public long getSize() {
       return size_;
     }
@@ -1016,6 +1024,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 creation_timestamp = 4;</code>
      * @return Whether the creationTimestamp field is set.
      */
+    @java.lang.Override
     public boolean hasCreationTimestamp() {
       return ((bitField0_ & 0x00000008) != 0);
     }
@@ -1027,6 +1036,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 creation_timestamp = 4;</code>
      * @return The creationTimestamp.
      */
+    @java.lang.Override
     public long getCreationTimestamp() {
       return creationTimestamp_;
     }

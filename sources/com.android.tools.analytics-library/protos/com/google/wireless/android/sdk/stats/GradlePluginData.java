@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.GradlePluginData}
  */
-public  final class GradlePluginData extends
+public final class GradlePluginData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradlePluginData)
     GradlePluginDataOrBuilder {
@@ -110,6 +110,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_name = 1;</code>
    * @return Whether the className field is set.
    */
+  @java.lang.Override
   public boolean hasClassName() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -121,6 +122,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_name = 1;</code>
    * @return The className.
    */
+  @java.lang.Override
   public java.lang.String getClassName() {
     java.lang.Object ref = className_;
     if (ref instanceof java.lang.String) {
@@ -143,6 +145,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string class_name = 1;</code>
    * @return The bytes for className.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getClassNameBytes() {
     java.lang.Object ref = className_;
@@ -168,6 +171,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string jar_name = 2;</code>
    * @return Whether the jarName field is set.
    */
+  @java.lang.Override
   public boolean hasJarName() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -180,6 +184,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string jar_name = 2;</code>
    * @return The jarName.
    */
+  @java.lang.Override
   public java.lang.String getJarName() {
     java.lang.Object ref = jarName_;
     if (ref instanceof java.lang.String) {
@@ -203,6 +208,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string jar_name = 2;</code>
    * @return The bytes for jarName.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getJarNameBytes() {
     java.lang.Object ref = jarName_;

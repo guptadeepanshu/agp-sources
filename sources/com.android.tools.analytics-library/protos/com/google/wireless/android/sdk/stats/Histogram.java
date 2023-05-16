@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.Histogram}
  */
-public  final class Histogram extends
+public final class Histogram extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.Histogram)
     HistogramOrBuilder {
@@ -114,6 +114,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_count = 1;</code>
    * @return Whether the totalCount field is set.
    */
+  @java.lang.Override
   public boolean hasTotalCount() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -125,6 +126,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_count = 1;</code>
    * @return The totalCount.
    */
+  @java.lang.Override
   public long getTotalCount() {
     return totalCount_;
   }
@@ -138,6 +140,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.HistogramBin bin = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.HistogramBin> getBinList() {
     return bin_;
   }
@@ -148,6 +151,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.HistogramBin bin = 2;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.HistogramBinOrBuilder> 
       getBinOrBuilderList() {
     return bin_;
@@ -159,6 +163,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.HistogramBin bin = 2;</code>
    */
+  @java.lang.Override
   public int getBinCount() {
     return bin_.size();
   }
@@ -169,6 +174,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.HistogramBin bin = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramBin getBin(int index) {
     return bin_.get(index);
   }
@@ -179,6 +185,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.HistogramBin bin = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.HistogramBinOrBuilder getBinOrBuilder(
       int index) {
     return bin_.get(index);
@@ -567,6 +574,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_count = 1;</code>
      * @return Whether the totalCount field is set.
      */
+    @java.lang.Override
     public boolean hasTotalCount() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -578,6 +586,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_count = 1;</code>
      * @return The totalCount.
      */
+    @java.lang.Override
     public long getTotalCount() {
       return totalCount_;
     }

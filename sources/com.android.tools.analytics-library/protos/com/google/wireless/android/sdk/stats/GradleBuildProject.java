@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.GradleBuildProject}
  */
-public  final class GradleBuildProject extends
+public final class GradleBuildProject extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.GradleBuildProject)
     GradleBuildProjectOrBuilder {
@@ -365,6 +365,14 @@ private static final long serialVersionUID = 0L;
      * <code>DYNAMIC_FEATURE = 7;</code>
      */
     DYNAMIC_FEATURE(7),
+    /**
+     * <pre>
+     * The 'com.android.fused-libraries' plugin
+     * </pre>
+     *
+     * <code>FUSED_LIBRARIES = 8;</code>
+     */
+    FUSED_LIBRARIES(8),
     ;
 
     /**
@@ -427,6 +435,14 @@ private static final long serialVersionUID = 0L;
      * <code>DYNAMIC_FEATURE = 7;</code>
      */
     public static final int DYNAMIC_FEATURE_VALUE = 7;
+    /**
+     * <pre>
+     * The 'com.android.fused-libraries' plugin
+     * </pre>
+     *
+     * <code>FUSED_LIBRARIES = 8;</code>
+     */
+    public static final int FUSED_LIBRARIES_VALUE = 8;
 
 
     public final int getNumber() {
@@ -457,6 +473,7 @@ private static final long serialVersionUID = 0L;
         case 5: return INSTANTAPP;
         case 6: return FEATURE;
         case 7: return DYNAMIC_FEATURE;
+        case 8: return FUSED_LIBRARIES;
         default: return null;
       }
     }
@@ -1296,6 +1313,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 id = 1;</code>
    * @return Whether the id field is set.
    */
+  @java.lang.Override
   public boolean hasId() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -1311,6 +1329,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 id = 1;</code>
    * @return The id.
    */
+  @java.lang.Override
   public long getId() {
     return id_;
   }
@@ -1327,6 +1346,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 2;</code>
    * @return Whether the androidPluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasAndroidPluginVersion() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -1340,6 +1360,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 2;</code>
    * @return The androidPluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getAndroidPluginVersion() {
     java.lang.Object ref = androidPluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -1364,6 +1385,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string android_plugin_version = 2;</code>
    * @return The bytes for androidPluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getAndroidPluginVersionBytes() {
     java.lang.Object ref = androidPluginVersion_;
@@ -1388,7 +1410,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProject.PluginType android_plugin = 3;</code>
    * @return Whether the androidPlugin field is set.
    */
-  public boolean hasAndroidPlugin() {
+  @java.lang.Override public boolean hasAndroidPlugin() {
     return ((bitField0_ & 0x00000004) != 0);
   }
   /**
@@ -1399,7 +1421,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProject.PluginType android_plugin = 3;</code>
    * @return The androidPlugin.
    */
-  public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType getAndroidPlugin() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType getAndroidPlugin() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType result = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType.valueOf(androidPlugin_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType.UNKNOWN_PLUGIN_TYPE : result;
@@ -1415,7 +1437,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProject.PluginGeneration plugin_generation = 4;</code>
    * @return Whether the pluginGeneration field is set.
    */
-  public boolean hasPluginGeneration() {
+  @java.lang.Override public boolean hasPluginGeneration() {
     return ((bitField0_ & 0x00000008) != 0);
   }
   /**
@@ -1426,7 +1448,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProject.PluginGeneration plugin_generation = 4;</code>
    * @return The pluginGeneration.
    */
-  public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration getPluginGeneration() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration getPluginGeneration() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration result = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration.valueOf(pluginGeneration_);
     return result == null ? com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration.UNKNOWN_PLUGIN_GENERATION : result;
@@ -1442,6 +1464,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tools_version = 5;</code>
    * @return Whether the buildToolsVersion field is set.
    */
+  @java.lang.Override
   public boolean hasBuildToolsVersion() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -1453,6 +1476,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tools_version = 5;</code>
    * @return The buildToolsVersion.
    */
+  @java.lang.Override
   public java.lang.String getBuildToolsVersion() {
     java.lang.Object ref = buildToolsVersion_;
     if (ref instanceof java.lang.String) {
@@ -1475,6 +1499,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string build_tools_version = 5;</code>
    * @return The bytes for buildToolsVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getBuildToolsVersionBytes() {
     java.lang.Object ref = buildToolsVersion_;
@@ -1500,6 +1525,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
    * @return Whether the metrics field is set.
    */
+  @java.lang.Override
   public boolean hasMetrics() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -1512,6 +1538,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
    * @return The metrics.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics getMetrics() {
     return metrics_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.getDefaultInstance() : metrics_;
   }
@@ -1523,6 +1550,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleBuildProjectMetrics metrics = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProjectMetricsOrBuilder getMetricsOrBuilder() {
     return metrics_ == null ? com.google.wireless.android.sdk.stats.GradleBuildProjectMetrics.getDefaultInstance() : metrics_;
   }
@@ -1536,6 +1564,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildVariant variant = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildVariant> getVariantList() {
     return variant_;
   }
@@ -1546,6 +1575,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildVariant variant = 7;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradleBuildVariantOrBuilder> 
       getVariantOrBuilderList() {
     return variant_;
@@ -1557,6 +1587,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildVariant variant = 7;</code>
    */
+  @java.lang.Override
   public int getVariantCount() {
     return variant_.size();
   }
@@ -1567,6 +1598,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildVariant variant = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildVariant getVariant(int index) {
     return variant_.get(index);
   }
@@ -1577,6 +1609,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradleBuildVariant variant = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildVariantOrBuilder getVariantOrBuilder(
       int index) {
     return variant_.get(index);
@@ -1592,6 +1625,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 atoms = 8;</code>
    * @return Whether the atoms field is set.
    */
+  @java.lang.Override
   public boolean hasAtoms() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -1603,6 +1637,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 atoms = 8;</code>
    * @return The atoms.
    */
+  @java.lang.Override
   public long getAtoms() {
     return atoms_;
   }
@@ -1619,6 +1654,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string compile_sdk = 9;</code>
    * @return Whether the compileSdk field is set.
    */
+  @java.lang.Override
   public boolean hasCompileSdk() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -1632,6 +1668,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string compile_sdk = 9;</code>
    * @return The compileSdk.
    */
+  @java.lang.Override
   public java.lang.String getCompileSdk() {
     java.lang.Object ref = compileSdk_;
     if (ref instanceof java.lang.String) {
@@ -1656,6 +1693,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string compile_sdk = 9;</code>
    * @return The bytes for compileSdk.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getCompileSdkBytes() {
     java.lang.Object ref = compileSdk_;
@@ -1680,6 +1718,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
    * @return Whether the splits field is set.
    */
+  @java.lang.Override
   public boolean hasSplits() {
     return ((bitField0_ & 0x00000100) != 0);
   }
@@ -1691,6 +1730,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
    * @return The splits.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildSplits getSplits() {
     return splits_ == null ? com.google.wireless.android.sdk.stats.GradleBuildSplits.getDefaultInstance() : splits_;
   }
@@ -1701,6 +1741,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleBuildSplits splits = 10;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildSplitsOrBuilder getSplitsOrBuilder() {
     return splits_ == null ? com.google.wireless.android.sdk.stats.GradleBuildSplits.getDefaultInstance() : splits_;
   }
@@ -1716,6 +1757,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_plugin_version = 11;</code>
    * @return Whether the kotlinPluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasKotlinPluginVersion() {
     return ((bitField0_ & 0x00000200) != 0);
   }
@@ -1728,6 +1770,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_plugin_version = 11;</code>
    * @return The kotlinPluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getKotlinPluginVersion() {
     java.lang.Object ref = kotlinPluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -1751,6 +1794,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string kotlin_plugin_version = 11;</code>
    * @return The bytes for kotlinPluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getKotlinPluginVersionBytes() {
     java.lang.Object ref = kotlinPluginVersion_;
@@ -1775,6 +1819,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
    * @return Whether the options field is set.
    */
+  @java.lang.Override
   public boolean hasOptions() {
     return ((bitField0_ & 0x00000400) != 0);
   }
@@ -1786,6 +1831,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
    * @return The options.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings getOptions() {
     return options_ == null ? com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.getDefaultInstance() : options_;
   }
@@ -1796,6 +1842,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.GradleProjectOptionsSettings options = 12;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleProjectOptionsSettingsOrBuilder getOptionsOrBuilder() {
     return options_ == null ? com.google.wireless.android.sdk.stats.GradleProjectOptionsSettings.getDefaultInstance() : options_;
   }
@@ -1820,6 +1867,7 @@ private static final long serialVersionUID = 0L;
    * <code>repeated .android_studio.GradleBuildProject.GradlePlugin plugin = 13;</code>
    * @return A list containing the plugin.
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin> getPluginList() {
     return new com.google.protobuf.Internal.ListAdapter<
         java.lang.Integer, com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin>(plugin_, plugin_converter_);
@@ -1830,8 +1878,9 @@ private static final long serialVersionUID = 0L;
    * </pre>
    *
    * <code>repeated .android_studio.GradleBuildProject.GradlePlugin plugin = 13;</code>
-   * @param value The plugin to add.
+   * @return The count of plugin.
    */
+  @java.lang.Override
   public int getPluginCount() {
     return plugin_.size();
   }
@@ -1844,6 +1893,7 @@ private static final long serialVersionUID = 0L;
    * @param index The index of the element to return.
    * @return The plugin at the given index.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradleBuildProject.GradlePlugin getPlugin(int index) {
     return plugin_converter_.convert(plugin_.get(index));
   }
@@ -1859,6 +1909,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string firebase_performance_plugin_version = 14;</code>
    * @return Whether the firebasePerformancePluginVersion field is set.
    */
+  @java.lang.Override
   public boolean hasFirebasePerformancePluginVersion() {
     return ((bitField0_ & 0x00000800) != 0);
   }
@@ -1871,6 +1922,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string firebase_performance_plugin_version = 14;</code>
    * @return The firebasePerformancePluginVersion.
    */
+  @java.lang.Override
   public java.lang.String getFirebasePerformancePluginVersion() {
     java.lang.Object ref = firebasePerformancePluginVersion_;
     if (ref instanceof java.lang.String) {
@@ -1894,6 +1946,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional string firebase_performance_plugin_version = 14;</code>
    * @return The bytes for firebasePerformancePluginVersion.
    */
+  @java.lang.Override
   public com.google.protobuf.ByteString
       getFirebasePerformancePluginVersionBytes() {
     java.lang.Object ref = firebasePerformancePluginVersion_;
@@ -1918,6 +1971,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool compose_enabled = 15;</code>
    * @return Whether the composeEnabled field is set.
    */
+  @java.lang.Override
   public boolean hasComposeEnabled() {
     return ((bitField0_ & 0x00001000) != 0);
   }
@@ -1929,6 +1983,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional bool compose_enabled = 15;</code>
    * @return The composeEnabled.
    */
+  @java.lang.Override
   public boolean getComposeEnabled() {
     return composeEnabled_;
   }
@@ -2057,6 +2112,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
    * @return Whether the projectApiUse field is set.
    */
+  @java.lang.Override
   public boolean hasProjectApiUse() {
     return ((bitField0_ & 0x00002000) != 0);
   }
@@ -2068,6 +2124,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
    * @return The projectApiUse.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectApiUse getProjectApiUse() {
     return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
   }
@@ -2078,6 +2135,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProjectApiUse project_api_use = 18;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectApiUseOrBuilder getProjectApiUseOrBuilder() {
     return projectApiUse_ == null ? com.google.wireless.android.sdk.stats.ProjectApiUse.getDefaultInstance() : projectApiUse_;
   }
@@ -2091,6 +2149,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
    */
+  @java.lang.Override
   public java.util.List<com.google.wireless.android.sdk.stats.GradlePluginData> getAppliedPluginsList() {
     return appliedPlugins_;
   }
@@ -2101,6 +2160,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
    */
+  @java.lang.Override
   public java.util.List<? extends com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder> 
       getAppliedPluginsOrBuilderList() {
     return appliedPlugins_;
@@ -2112,6 +2172,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
    */
+  @java.lang.Override
   public int getAppliedPluginsCount() {
     return appliedPlugins_.size();
   }
@@ -2122,6 +2183,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginData getAppliedPlugins(int index) {
     return appliedPlugins_.get(index);
   }
@@ -2132,6 +2194,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>repeated .android_studio.GradlePluginData applied_plugins = 19;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.GradlePluginDataOrBuilder getAppliedPluginsOrBuilder(
       int index) {
     return appliedPlugins_.get(index);
@@ -3043,6 +3106,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 id = 1;</code>
      * @return Whether the id field is set.
      */
+    @java.lang.Override
     public boolean hasId() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -3058,6 +3122,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 id = 1;</code>
      * @return The id.
      */
+    @java.lang.Override
     public long getId() {
       return id_;
     }
@@ -3228,7 +3293,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProject.PluginType android_plugin = 3;</code>
      * @return Whether the androidPlugin field is set.
      */
-    public boolean hasAndroidPlugin() {
+    @java.lang.Override public boolean hasAndroidPlugin() {
       return ((bitField0_ & 0x00000004) != 0);
     }
     /**
@@ -3239,6 +3304,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProject.PluginType android_plugin = 3;</code>
      * @return The androidPlugin.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType getAndroidPlugin() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType result = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginType.valueOf(androidPlugin_);
@@ -3286,7 +3352,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProject.PluginGeneration plugin_generation = 4;</code>
      * @return Whether the pluginGeneration field is set.
      */
-    public boolean hasPluginGeneration() {
+    @java.lang.Override public boolean hasPluginGeneration() {
       return ((bitField0_ & 0x00000008) != 0);
     }
     /**
@@ -3297,6 +3363,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.GradleBuildProject.PluginGeneration plugin_generation = 4;</code>
      * @return The pluginGeneration.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration getPluginGeneration() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration result = com.google.wireless.android.sdk.stats.GradleBuildProject.PluginGeneration.valueOf(pluginGeneration_);
@@ -3929,6 +3996,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 atoms = 8;</code>
      * @return Whether the atoms field is set.
      */
+    @java.lang.Override
     public boolean hasAtoms() {
       return ((bitField0_ & 0x00000080) != 0);
     }
@@ -3940,6 +4008,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 atoms = 8;</code>
      * @return The atoms.
      */
+    @java.lang.Override
     public long getAtoms() {
       return atoms_;
     }
@@ -4756,6 +4825,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool compose_enabled = 15;</code>
      * @return Whether the composeEnabled field is set.
      */
+    @java.lang.Override
     public boolean hasComposeEnabled() {
       return ((bitField0_ & 0x00004000) != 0);
     }
@@ -4767,6 +4837,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional bool compose_enabled = 15;</code>
      * @return The composeEnabled.
      */
+    @java.lang.Override
     public boolean getComposeEnabled() {
       return composeEnabled_;
     }

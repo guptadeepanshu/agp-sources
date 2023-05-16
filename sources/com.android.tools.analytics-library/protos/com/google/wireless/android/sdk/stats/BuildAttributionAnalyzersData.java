@@ -10,7 +10,7 @@ package com.google.wireless.android.sdk.stats;
  *
  * Protobuf type {@code android_studio.BuildAttributionAnalyzersData}
  */
-public  final class BuildAttributionAnalyzersData extends
+public final class BuildAttributionAnalyzersData extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.BuildAttributionAnalyzersData)
     BuildAttributionAnalyzersDataOrBuilder {
@@ -149,6 +149,19 @@ private static final long serialVersionUID = 0L;
             bitField0_ |= 0x00000080;
             break;
           }
+          case 74: {
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder subBuilder = null;
+            if (((bitField0_ & 0x00000100) != 0)) {
+              subBuilder = downloadsAnalysisData_.toBuilder();
+            }
+            downloadsAnalysisData_ = input.readMessage(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.PARSER, extensionRegistry);
+            if (subBuilder != null) {
+              subBuilder.mergeFrom(downloadsAnalysisData_);
+              downloadsAnalysisData_ = subBuilder.buildPartial();
+            }
+            bitField0_ |= 0x00000100;
+            break;
+          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -192,6 +205,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_build_time_ms = 1;</code>
    * @return Whether the totalBuildTimeMs field is set.
    */
+  @java.lang.Override
   public boolean hasTotalBuildTimeMs() {
     return ((bitField0_ & 0x00000001) != 0);
   }
@@ -203,6 +217,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional int64 total_build_time_ms = 1;</code>
    * @return The totalBuildTimeMs.
    */
+  @java.lang.Override
   public long getTotalBuildTimeMs() {
     return totalBuildTimeMs_;
   }
@@ -217,6 +232,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
    * @return Whether the alwaysRunTasksAnalyzerData field is set.
    */
+  @java.lang.Override
   public boolean hasAlwaysRunTasksAnalyzerData() {
     return ((bitField0_ & 0x00000002) != 0);
   }
@@ -228,6 +244,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
    * @return The alwaysRunTasksAnalyzerData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData getAlwaysRunTasksAnalyzerData() {
     return alwaysRunTasksAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.getDefaultInstance() : alwaysRunTasksAnalyzerData_;
   }
@@ -238,6 +255,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AlwaysRunTasksAnalyzerData always_run_tasks_analyzer_data = 2;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerDataOrBuilder getAlwaysRunTasksAnalyzerDataOrBuilder() {
     return alwaysRunTasksAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.AlwaysRunTasksAnalyzerData.getDefaultInstance() : alwaysRunTasksAnalyzerData_;
   }
@@ -252,6 +270,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
    * @return Whether the annotationProcessorsAnalyzerData field is set.
    */
+  @java.lang.Override
   public boolean hasAnnotationProcessorsAnalyzerData() {
     return ((bitField0_ & 0x00000004) != 0);
   }
@@ -263,6 +282,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
    * @return The annotationProcessorsAnalyzerData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData getAnnotationProcessorsAnalyzerData() {
     return annotationProcessorsAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.getDefaultInstance() : annotationProcessorsAnalyzerData_;
   }
@@ -273,6 +293,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.AnnotationProcessorsAnalyzerData annotation_processors_analyzer_data = 3;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerDataOrBuilder getAnnotationProcessorsAnalyzerDataOrBuilder() {
     return annotationProcessorsAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.AnnotationProcessorsAnalyzerData.getDefaultInstance() : annotationProcessorsAnalyzerData_;
   }
@@ -287,6 +308,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
    * @return Whether the criticalPathAnalyzerData field is set.
    */
+  @java.lang.Override
   public boolean hasCriticalPathAnalyzerData() {
     return ((bitField0_ & 0x00000008) != 0);
   }
@@ -298,6 +320,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
    * @return The criticalPathAnalyzerData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData getCriticalPathAnalyzerData() {
     return criticalPathAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.getDefaultInstance() : criticalPathAnalyzerData_;
   }
@@ -308,6 +331,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.CriticalPathAnalyzerData critical_path_analyzer_data = 4;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.CriticalPathAnalyzerDataOrBuilder getCriticalPathAnalyzerDataOrBuilder() {
     return criticalPathAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.CriticalPathAnalyzerData.getDefaultInstance() : criticalPathAnalyzerData_;
   }
@@ -322,6 +346,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
    * @return Whether the projectConfigurationAnalyzerData field is set.
    */
+  @java.lang.Override
   public boolean hasProjectConfigurationAnalyzerData() {
     return ((bitField0_ & 0x00000010) != 0);
   }
@@ -333,6 +358,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
    * @return The projectConfigurationAnalyzerData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData getProjectConfigurationAnalyzerData() {
     return projectConfigurationAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.getDefaultInstance() : projectConfigurationAnalyzerData_;
   }
@@ -343,6 +369,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ProjectConfigurationAnalyzerData project_configuration_analyzer_data = 5;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerDataOrBuilder getProjectConfigurationAnalyzerDataOrBuilder() {
     return projectConfigurationAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.ProjectConfigurationAnalyzerData.getDefaultInstance() : projectConfigurationAnalyzerData_;
   }
@@ -357,6 +384,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
    * @return Whether the tasksConfigurationIssuesAnalyzerData field is set.
    */
+  @java.lang.Override
   public boolean hasTasksConfigurationIssuesAnalyzerData() {
     return ((bitField0_ & 0x00000020) != 0);
   }
@@ -368,6 +396,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
    * @return The tasksConfigurationIssuesAnalyzerData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData getTasksConfigurationIssuesAnalyzerData() {
     return tasksConfigurationIssuesAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.getDefaultInstance() : tasksConfigurationIssuesAnalyzerData_;
   }
@@ -378,6 +407,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.TasksConfigurationIssuesAnalyzerData tasks_configuration_issues_analyzer_data = 6;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerDataOrBuilder getTasksConfigurationIssuesAnalyzerDataOrBuilder() {
     return tasksConfigurationIssuesAnalyzerData_ == null ? com.google.wireless.android.sdk.stats.TasksConfigurationIssuesAnalyzerData.getDefaultInstance() : tasksConfigurationIssuesAnalyzerData_;
   }
@@ -392,6 +422,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
    * @return Whether the configurationCacheCompatibilityData field is set.
    */
+  @java.lang.Override
   public boolean hasConfigurationCacheCompatibilityData() {
     return ((bitField0_ & 0x00000040) != 0);
   }
@@ -403,6 +434,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
    * @return The configurationCacheCompatibilityData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData getConfigurationCacheCompatibilityData() {
     return configurationCacheCompatibilityData_ == null ? com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.getDefaultInstance() : configurationCacheCompatibilityData_;
   }
@@ -413,6 +445,7 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.ConfigurationCacheCompatibilityData configuration_cache_compatibility_data = 7;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityDataOrBuilder getConfigurationCacheCompatibilityDataOrBuilder() {
     return configurationCacheCompatibilityData_ == null ? com.google.wireless.android.sdk.stats.ConfigurationCacheCompatibilityData.getDefaultInstance() : configurationCacheCompatibilityData_;
   }
@@ -427,6 +460,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
    * @return Whether the jetifierUsageData field is set.
    */
+  @java.lang.Override
   public boolean hasJetifierUsageData() {
     return ((bitField0_ & 0x00000080) != 0);
   }
@@ -438,6 +472,7 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
    * @return The jetifierUsageData.
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JetifierUsageData getJetifierUsageData() {
     return jetifierUsageData_ == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
   }
@@ -448,8 +483,47 @@ private static final long serialVersionUID = 0L;
    *
    * <code>optional .android_studio.JetifierUsageData jetifier_usage_data = 8;</code>
    */
+  @java.lang.Override
   public com.google.wireless.android.sdk.stats.JetifierUsageDataOrBuilder getJetifierUsageDataOrBuilder() {
     return jetifierUsageData_ == null ? com.google.wireless.android.sdk.stats.JetifierUsageData.getDefaultInstance() : jetifierUsageData_;
+  }
+
+  public static final int DOWNLOADS_ANALYSIS_DATA_FIELD_NUMBER = 9;
+  private com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData downloadsAnalysisData_;
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * @return Whether the downloadsAnalysisData field is set.
+   */
+  @java.lang.Override
+  public boolean hasDownloadsAnalysisData() {
+    return ((bitField0_ & 0x00000100) != 0);
+  }
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   * @return The downloadsAnalysisData.
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsAnalysisData() {
+    return downloadsAnalysisData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsAnalysisData_;
+  }
+  /**
+   * <pre>
+   * Data from downloads analyzer
+   * </pre>
+   *
+   * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+   */
+  @java.lang.Override
+  public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder() {
+    return downloadsAnalysisData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsAnalysisData_;
   }
 
   private byte memoizedIsInitialized = -1;
@@ -489,6 +563,9 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000080) != 0)) {
       output.writeMessage(8, getJetifierUsageData());
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      output.writeMessage(9, getDownloadsAnalysisData());
     }
     unknownFields.writeTo(output);
   }
@@ -530,6 +607,10 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000080) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(8, getJetifierUsageData());
+    }
+    if (((bitField0_ & 0x00000100) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(9, getDownloadsAnalysisData());
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -586,6 +667,11 @@ private static final long serialVersionUID = 0L;
       if (!getJetifierUsageData()
           .equals(other.getJetifierUsageData())) return false;
     }
+    if (hasDownloadsAnalysisData() != other.hasDownloadsAnalysisData()) return false;
+    if (hasDownloadsAnalysisData()) {
+      if (!getDownloadsAnalysisData()
+          .equals(other.getDownloadsAnalysisData())) return false;
+    }
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -629,6 +715,10 @@ private static final long serialVersionUID = 0L;
     if (hasJetifierUsageData()) {
       hash = (37 * hash) + JETIFIER_USAGE_DATA_FIELD_NUMBER;
       hash = (53 * hash) + getJetifierUsageData().hashCode();
+    }
+    if (hasDownloadsAnalysisData()) {
+      hash = (37 * hash) + DOWNLOADS_ANALYSIS_DATA_FIELD_NUMBER;
+      hash = (53 * hash) + getDownloadsAnalysisData().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -769,6 +859,7 @@ private static final long serialVersionUID = 0L;
         getTasksConfigurationIssuesAnalyzerDataFieldBuilder();
         getConfigurationCacheCompatibilityDataFieldBuilder();
         getJetifierUsageDataFieldBuilder();
+        getDownloadsAnalysisDataFieldBuilder();
       }
     }
     @java.lang.Override
@@ -818,6 +909,12 @@ private static final long serialVersionUID = 0L;
         jetifierUsageDataBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000080);
+      if (downloadsAnalysisDataBuilder_ == null) {
+        downloadsAnalysisData_ = null;
+      } else {
+        downloadsAnalysisDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000100);
       return this;
     }
 
@@ -906,6 +1003,14 @@ private static final long serialVersionUID = 0L;
         }
         to_bitField0_ |= 0x00000080;
       }
+      if (((from_bitField0_ & 0x00000100) != 0)) {
+        if (downloadsAnalysisDataBuilder_ == null) {
+          result.downloadsAnalysisData_ = downloadsAnalysisData_;
+        } else {
+          result.downloadsAnalysisData_ = downloadsAnalysisDataBuilder_.build();
+        }
+        to_bitField0_ |= 0x00000100;
+      }
       result.bitField0_ = to_bitField0_;
       onBuilt();
       return result;
@@ -979,6 +1084,9 @@ private static final long serialVersionUID = 0L;
       if (other.hasJetifierUsageData()) {
         mergeJetifierUsageData(other.getJetifierUsageData());
       }
+      if (other.hasDownloadsAnalysisData()) {
+        mergeDownloadsAnalysisData(other.getDownloadsAnalysisData());
+      }
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -1018,6 +1126,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_build_time_ms = 1;</code>
      * @return Whether the totalBuildTimeMs field is set.
      */
+    @java.lang.Override
     public boolean hasTotalBuildTimeMs() {
       return ((bitField0_ & 0x00000001) != 0);
     }
@@ -1029,6 +1138,7 @@ private static final long serialVersionUID = 0L;
      * <code>optional int64 total_build_time_ms = 1;</code>
      * @return The totalBuildTimeMs.
      */
+    @java.lang.Override
     public long getTotalBuildTimeMs() {
       return totalBuildTimeMs_;
     }
@@ -2152,6 +2262,162 @@ private static final long serialVersionUID = 0L;
         jetifierUsageData_ = null;
       }
       return jetifierUsageDataBuilder_;
+    }
+
+    private com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData downloadsAnalysisData_;
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> downloadsAnalysisDataBuilder_;
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * @return Whether the downloadsAnalysisData field is set.
+     */
+    public boolean hasDownloadsAnalysisData() {
+      return ((bitField0_ & 0x00000100) != 0);
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     * @return The downloadsAnalysisData.
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData getDownloadsAnalysisData() {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        return downloadsAnalysisData_ == null ? com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsAnalysisData_;
+      } else {
+        return downloadsAnalysisDataBuilder_.getMessage();
+      }
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public Builder setDownloadsAnalysisData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        downloadsAnalysisData_ = value;
+        onChanged();
+      } else {
+        downloadsAnalysisDataBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public Builder setDownloadsAnalysisData(
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder builderForValue) {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        downloadsAnalysisData_ = builderForValue.build();
+        onChanged();
+      } else {
+        downloadsAnalysisDataBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public Builder mergeDownloadsAnalysisData(com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData value) {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        if (((bitField0_ & 0x00000100) != 0) &&
+            downloadsAnalysisData_ != null &&
+            downloadsAnalysisData_ != com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance()) {
+          downloadsAnalysisData_ =
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.newBuilder(downloadsAnalysisData_).mergeFrom(value).buildPartial();
+        } else {
+          downloadsAnalysisData_ = value;
+        }
+        onChanged();
+      } else {
+        downloadsAnalysisDataBuilder_.mergeFrom(value);
+      }
+      bitField0_ |= 0x00000100;
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public Builder clearDownloadsAnalysisData() {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        downloadsAnalysisData_ = null;
+        onChanged();
+      } else {
+        downloadsAnalysisDataBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000100);
+      return this;
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder getDownloadsAnalysisDataBuilder() {
+      bitField0_ |= 0x00000100;
+      onChanged();
+      return getDownloadsAnalysisDataFieldBuilder().getBuilder();
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    public com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder getDownloadsAnalysisDataOrBuilder() {
+      if (downloadsAnalysisDataBuilder_ != null) {
+        return downloadsAnalysisDataBuilder_.getMessageOrBuilder();
+      } else {
+        return downloadsAnalysisData_ == null ?
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.getDefaultInstance() : downloadsAnalysisData_;
+      }
+    }
+    /**
+     * <pre>
+     * Data from downloads analyzer
+     * </pre>
+     *
+     * <code>optional .android_studio.BuildDownloadsAnalysisData downloads_analysis_data = 9;</code>
+     */
+    private com.google.protobuf.SingleFieldBuilderV3<
+        com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder> 
+        getDownloadsAnalysisDataFieldBuilder() {
+      if (downloadsAnalysisDataBuilder_ == null) {
+        downloadsAnalysisDataBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+            com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisData.Builder, com.google.wireless.android.sdk.stats.BuildDownloadsAnalysisDataOrBuilder>(
+                getDownloadsAnalysisData(),
+                getParentForChildren(),
+                isClean());
+        downloadsAnalysisData_ = null;
+      }
+      return downloadsAnalysisDataBuilder_;
     }
     @java.lang.Override
     public final Builder setUnknownFields(

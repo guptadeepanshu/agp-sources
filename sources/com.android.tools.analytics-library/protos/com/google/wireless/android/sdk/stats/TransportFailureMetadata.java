@@ -6,7 +6,7 @@ package com.google.wireless.android.sdk.stats;
 /**
  * Protobuf type {@code android_studio.TransportFailureMetadata}
  */
-public  final class TransportFailureMetadata extends
+public final class TransportFailureMetadata extends
     com.google.protobuf.GeneratedMessageV3 implements
     // @@protoc_insertion_point(message_implements:android_studio.TransportFailureMetadata)
     TransportFailureMetadataOrBuilder {
@@ -242,14 +242,14 @@ private static final long serialVersionUID = 0L;
    * <code>optional .android_studio.TransportFailureMetadata.FailureType failure_type = 1;</code>
    * @return Whether the failureType field is set.
    */
-  public boolean hasFailureType() {
+  @java.lang.Override public boolean hasFailureType() {
     return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>optional .android_studio.TransportFailureMetadata.FailureType failure_type = 1;</code>
    * @return The failureType.
    */
-  public com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType getFailureType() {
+  @java.lang.Override public com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType getFailureType() {
     @SuppressWarnings("deprecation")
     com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType result = com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType.valueOf(failureType_);
     return result == null ? com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType.UNKNOWN_FAILURE_TYPE : result;
@@ -573,13 +573,14 @@ private static final long serialVersionUID = 0L;
      * <code>optional .android_studio.TransportFailureMetadata.FailureType failure_type = 1;</code>
      * @return Whether the failureType field is set.
      */
-    public boolean hasFailureType() {
+    @java.lang.Override public boolean hasFailureType() {
       return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>optional .android_studio.TransportFailureMetadata.FailureType failure_type = 1;</code>
      * @return The failureType.
      */
+    @java.lang.Override
     public com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType getFailureType() {
       @SuppressWarnings("deprecation")
       com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType result = com.google.wireless.android.sdk.stats.TransportFailureMetadata.FailureType.valueOf(failureType_);

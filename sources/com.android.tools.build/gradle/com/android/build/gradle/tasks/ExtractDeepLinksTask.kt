@@ -17,44 +17,65 @@
 package com.android.build.gradle.tasks
 
 import com.android.SdkConstants.FD_RES_NAVIGATION
+import com.android.SdkConstants.FN_NAVIGATION_JSON
 import com.android.build.gradle.internal.component.ComponentCreationConfig
 import com.android.build.gradle.internal.scope.InternalArtifactType
-import com.android.build.gradle.internal.tasks.AndroidVariantTask
+import com.android.build.gradle.internal.tasks.NonIncrementalTask
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction
-import com.android.ide.common.resources.ANDROID_AAPT_IGNORE
+import com.android.ide.common.blame.SourceFilePosition
 import com.android.manifmerger.NavigationXmlDocumentData
 import com.android.manifmerger.NavigationXmlLoader
 import com.android.utils.FileUtils
 import com.google.gson.GsonBuilder
+import org.gradle.api.file.Directory
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.CacheableTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity
-import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
-import java.io.File
-import java.util.stream.Collectors
 
 private val DOT_XML_EXT = Regex("\\.xml$")
 
+/**
+ * A task that parses the navigation xml files and produces a single navigation.json file with the
+ * deep link data needed for any downstream app manifest merging.
+ */
 @CacheableTask
-abstract class ExtractDeepLinksTask: AndroidVariantTask() {
+abstract class ExtractDeepLinksTask: NonIncrementalTask() {
 
     @get:InputFiles
     @get:PathSensitive(PathSensitivity.RELATIVE)
-    lateinit var navFilesFolders: List<File>
-        private set
+    abstract val navFilesFolders: ListProperty<Directory>
+
+    @get:Optional
+    @get:Input
+    abstract val manifestPlaceholders: MapProperty<String, String>
+
+    /**
+     * If [forAar] is true, (1) use [SourceFilePosition.UNKNOWN] to avoid leaking source file
+     * locations into the AAR, and (2) don't write an output navigation.json when there are no
+     * navigation xml inputs because we don't want to package an empty navigation.json in the AAR.
+     */
+    @get:Optional
+    @get:Input
+    abstract val forAar: Property<Boolean>
 
     @get:OutputFile
     abstract val navigationJson: RegularFileProperty
 
-    @TaskAction
-    fun create() {
+    override fun doTaskAction() {
         val navigationIds = mutableSetOf<String>()
         val navDatas = mutableListOf<NavigationXmlDocumentData>()
-        navFilesFolders.forEach { folder ->
+        navFilesFolders.get().forEach { directory ->
+            val folder = directory.asFile
             if (folder.exists()) {
                 folder.listFiles().map { navigationFile ->
                     val navigationId = navigationFile.name.replace(DOT_XML_EXT, "")
@@ -63,25 +84,48 @@ abstract class ExtractDeepLinksTask: AndroidVariantTask() {
                             navDatas.add(
                                 NavigationXmlLoader
                                     .load(navigationId, navigationFile, inputStream)
-                                    .convertToData())
+                                    .convertToData(manifestPlaceholders.get().toMap(), forAar.get())
+                            )
                         }
                     }
                 }
             }
         }
-        FileUtils.writeToFile(
-            navigationJson.asFile.get(),
-            GsonBuilder().setPrettyPrinting().create().toJson(navDatas))
+        if (!forAar.get() || navDatas.isNotEmpty()) {
+            FileUtils.writeToFile(
+                navigationJson.asFile.get(),
+                GsonBuilder().setPrettyPrinting().create().toJson(navDatas)
+            )
+        }
     }
 
     class CreationAction(
+        creationConfig: ComponentCreationConfig
+    ) : BaseCreationAction(creationConfig) {
+        override val forAar = false
+        override val internalArtifactType = InternalArtifactType.NAVIGATION_JSON
+        override val name: String
+            get() = computeTaskName("extractDeepLinks")
+    }
+
+    class AarCreationAction(
+        creationConfig: ComponentCreationConfig
+    ) : BaseCreationAction(creationConfig) {
+        override val forAar = true
+        override val internalArtifactType = InternalArtifactType.NAVIGATION_JSON_FOR_AAR
+        override val name: String
+            get() = computeTaskName("extractDeepLinksForAar")
+    }
+
+    abstract class BaseCreationAction(
         creationConfig: ComponentCreationConfig
     ) : VariantTaskCreationAction<ExtractDeepLinksTask, ComponentCreationConfig>(
         creationConfig
     ) {
 
-        override val name: String
-            get() = computeTaskName("extractDeepLinks")
+        abstract val forAar: Boolean
+        abstract val internalArtifactType: InternalArtifactType<RegularFile>
+
         override val type: Class<ExtractDeepLinksTask>
             get() = ExtractDeepLinksTask::class.java
 
@@ -92,22 +136,24 @@ abstract class ExtractDeepLinksTask: AndroidVariantTask() {
             creationConfig.artifacts.setInitialProvider(
                 taskProvider,
                 ExtractDeepLinksTask::navigationJson
-            ).withName("navigation.json").on(InternalArtifactType.NAVIGATION_JSON)
+            ).withName(FN_NAVIGATION_JSON).on(internalArtifactType)
         }
 
         override fun configure(
             task: ExtractDeepLinksTask
         ) {
             super.configure(task)
-            val aaptEnv = creationConfig.services.gradleEnvironmentProvider.getEnvVariable(
-                ANDROID_AAPT_IGNORE
-            ).forUseAtConfigurationTime().orNull
-            task.navFilesFolders =
-                creationConfig.variantSources
-                    .getResourceSets(false, aaptEnv).stream()
-                    .flatMap {
-                        it.sourceFiles.stream().map { File(it, FD_RES_NAVIGATION) }
-                    }.collect(Collectors.toList()).reversed()
+            task.navFilesFolders.set(
+                creationConfig.sources.res.all.map {
+                    it.flatten()
+                }.map { directories ->
+                    directories.map { directory ->
+                        directory.dir(FD_RES_NAVIGATION)
+                    }
+                }
+            )
+            task.manifestPlaceholders.set(creationConfig.manifestPlaceholders)
+            task.forAar.set(forAar)
         }
     }
 }
