@@ -708,6 +708,7 @@ To learn more, go to https://d.android.com/r/tools/java-8-support-message.html
         val apiObjectFactory = ApiObjectFactory(extension, variantFactory, dslServices)
         for (variant in variants) {
             apiObjectFactory.create(variant.variant)
+            variant.variant.oldVariantApiCompleted()
         }
 
         // lock the Properties of the variant API after the old API because

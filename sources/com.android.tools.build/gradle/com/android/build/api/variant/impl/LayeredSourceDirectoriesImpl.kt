@@ -19,7 +19,6 @@ package com.android.build.api.variant.impl
 import com.android.build.api.variant.SourceDirectories
 import com.android.build.gradle.internal.services.VariantServices
 import org.gradle.api.file.Directory
-import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.util.PatternFilterable
@@ -53,8 +52,18 @@ open class LayeredSourceDirectoriesImpl(
     // Internal APIs
     //
     override fun addSource(directoryEntry: DirectoryEntry) {
-        variantSources.add(DirectoryEntries(directoryEntry.name, listOf(directoryEntry)))
-        variantServices.newListPropertyForInternalUse(Directory::class.java).also {
+        // we check first if we have existing instance of [DirectoryEntries] under the name
+        // provided by the passed [DirectoryEntry]. If we do, we just add it to the list of
+        // directories under that name to respect the priority.
+        // otherwise, we just add a new one.
+        val existingDirectories = variantSources.get().find { entries -> entries.name == directoryEntry.name }
+        if (existingDirectories != null) {
+            existingDirectories.directoryEntries.add(directoryEntry)
+        } else {
+            variantSources.add(DirectoryEntries(
+                directoryEntry.name, mutableListOf(directoryEntry)
+            ))
+            variantServices.newListPropertyForInternalUse(Directory::class.java).also {
             it.addAll(
                 directoryEntry.asFiles(
                   variantServices.provider {
@@ -62,7 +71,7 @@ open class LayeredSourceDirectoriesImpl(
                   }
                 )
             )
-            directories.add(it)
+            directories.add(it)}
         }
     }
 
@@ -82,25 +91,47 @@ open class LayeredSourceDirectoriesImpl(
         }
     }
 
-    fun getVariantSources(): Provider<List<DirectoryEntries>> = variantSources
+    /**
+     * Returns the [List] of [DirectoryEntries] for these sources. This [List] can be
+     * queried at configuration time provided it is after all variant APIs ran (during
+     * task configuration basically). It is better to use this method a execution time if
+     * possible.
+     */
+    fun getVariantSources(): List<DirectoryEntries> = variantSources.get()
 
     /**
      * Returns the list of local source files which filters out the user added folders as well as
      * any generated folders.
      */
-    fun getLocalSourcesAsFileCollection(): Provider<Map<String, FileCollection>> =
-        getVariantSources().map { allSources ->
-            allSources.associate { directoryEntries ->
-                directoryEntries.name to
-                        variantServices.fileCollection(directoryEntries.directoryEntries
-                            .filterNot { it.isUserAdded || it.isGenerated}
-                            .map { it.asFiles(
-                              variantServices.provider {
-                                  variantServices.projectInfo.projectDirectory
-                              })
-                            }
-                        )
+    fun getLocalSources(): Map<String, Provider<out Collection<Directory>>> =
+        getVariantSources().associate { directoryEntries ->
+                val projectDir = variantServices.provider {
+                        variantServices.projectInfo.projectDirectory
             }
+
+            // each [DirectoryEntries] contains a list of [DirectoryEntry] but we need
+            // to return a [Provider] on a single collection of [Directory].
+            //
+            // In order to achieve that, basically, use [Provider]'s zip method to zip
+            // up providers together and flatten the list of list into just one list.
+            var currentZippedValue: Provider<out Collection<Directory>>? = null
+            directoryEntries.directoryEntries
+                            .filterNot { it.isUserAdded || it.isGenerated}
+                            .forEach {
+                    currentZippedValue = if (currentZippedValue == null) {
+                        it.asFiles(projectDir)
+                              } else {
+                                  currentZippedValue!!.zip(it.asFiles(projectDir)) {
+                                d1: Collection<Directory>, d2: Collection<Directory> ->
+                            mutableListOf<Directory>().also { result ->
+                                result.addAll(d1)
+                                result.addAll(d2)
+                            }
+                        }
+                    }
+                              }
+                            directoryEntries.name to (currentZippedValue ?:
+                        variantServices.provider { listOf() })
         }
 
     /*

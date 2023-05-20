@@ -91,6 +91,8 @@ class FlatSourceDirectoriesImpl(
             }.flatten()
         }
 
+    internal fun getVariantSources(): List<DirectoryEntry> = variantSources.get()
+
     internal fun addSources(sourceDirectories: Iterable<DirectoryEntry>) {
         sourceDirectories.forEach(::addSource)
     }

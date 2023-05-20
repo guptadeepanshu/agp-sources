@@ -506,11 +506,8 @@ class AnalyticsSettingsData {
                 val reader = JsonReader(InputStreamReader(inputStream))
                 reader.isLenient = true
                 DataTypeAdapter.read(reader)
-            } catch (e: JsonParseException) {
-                logger?.warning("Unable to parse settings file %s: %s", file.toString(), e)
-                null
-            } catch (e: IllegalStateException) {
-                logger?.warning("Unable to parse settings file %s: %s", file.toString(), e)
+            } catch (t: Throwable) {
+                logger?.warning("Unable to parse settings file %s: %s", file.toString(), t)
                 null
             }
         }

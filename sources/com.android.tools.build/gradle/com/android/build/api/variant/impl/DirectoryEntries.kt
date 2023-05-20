@@ -21,5 +21,7 @@ package com.android.build.api.variant.impl
  */
 class DirectoryEntries(
     val name: String,
-    val directoryEntries: Collection<DirectoryEntry>
-)
+    val directoryEntries: MutableList<DirectoryEntry>,
+) {
+    fun getEntries(): Collection<DirectoryEntry> = directoryEntries
+}

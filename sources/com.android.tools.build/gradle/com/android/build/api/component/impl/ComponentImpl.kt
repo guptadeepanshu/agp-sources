@@ -88,6 +88,7 @@ import org.gradle.api.provider.Provider
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.Callable
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.function.Predicate
 import java.util.stream.Collectors
 
@@ -525,6 +526,29 @@ abstract class ComponentImpl<DslInfoT: ComponentDslInfo>(
                         AndroidAttributes(null, libraryElements)
                     )
                 }
+            }
+        }
+    }
+
+    // registrar for all post old variant API actions.
+    private val postOldVariantActions = mutableListOf<() -> Unit>()
+
+    private val oldVariantAPICompleted = AtomicBoolean(false)
+
+    override fun oldVariantApiCompleted() {
+        synchronized(postOldVariantActions) {
+            oldVariantAPICompleted.set(true)
+            postOldVariantActions.forEach { action -> action() }
+            postOldVariantActions.clear()
+        }
+    }
+
+    override fun registerPostOldVariantApiAction(action: () -> Unit) {
+        synchronized(postOldVariantActions) {
+            if (oldVariantAPICompleted.get()) {
+                action()
+            } else {
+                postOldVariantActions.add(action)
             }
         }
     }

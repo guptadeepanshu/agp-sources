@@ -74,9 +74,11 @@ class DefaultAndroidSourceDirectorySet(
         source.add(srcDir)
         if (lateAdditionsDelegates.isNotEmpty()) {
             val directoryEntry = ProviderBasedDirectoryEntryImpl(
-                name,
+                sourceSetName,
                 project.files(srcDir).getDirectories(project.layout.projectDirectory),
-                filter
+                filter,
+                isUserAdded = false,
+                isGenerated = false,
             )
             lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
         }
@@ -113,7 +115,9 @@ class DefaultAndroidSourceDirectorySet(
                 val directoryEntry = ProviderBasedDirectoryEntryImpl(
                     name,
                     project.files(newFile).getDirectories(project.layout.projectDirectory),
-                    filter
+                    filter,
+                    isUserAdded = false,
+                    isGenerated = false,
                 )
                 lateAdditionsDelegates.forEach { it.addSource(directoryEntry) }
             }

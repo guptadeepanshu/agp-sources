@@ -36,6 +36,7 @@ import com.android.build.gradle.internal.publishing.AndroidArtifacts;
 import com.android.build.gradle.internal.scope.BootClasspathBuilder;
 import com.android.build.gradle.internal.scope.InternalArtifactType;
 import com.android.build.gradle.internal.tasks.BuildAnalyzer;
+import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.android.build.gradle.internal.tasks.VariantAwareTask;
 import com.android.build.gradle.internal.tasks.factory.VariantTaskCreationAction;
 import com.android.build.gradle.options.BooleanOption;
@@ -43,7 +44,6 @@ import com.android.build.gradle.options.ProjectOptions;
 import com.android.build.gradle.tasks.AndroidAnalyticsTestListener;
 import com.android.build.gradle.tasks.GenerateTestConfig;
 import com.android.builder.core.ComponentType;
-import com.android.build.gradle.internal.tasks.TaskCategory;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.Serializable;
@@ -53,7 +53,7 @@ import org.gradle.api.artifacts.ArtifactCollection;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.RegularFileProperty;
 import org.gradle.api.plugins.JavaBasePlugin;
-import org.gradle.api.reporting.ConfigurableReport;
+import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Internal;
@@ -62,6 +62,7 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputFile;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskProvider;
+import org.gradle.api.tasks.testing.JUnitXmlReport;
 import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.TestTaskReports;
 import org.gradle.testing.jacoco.plugins.JacocoPlugin;
@@ -222,17 +223,27 @@ public abstract class AndroidUnitTest extends Test implements VariantAwareTask {
             // yet configured.  We get a hardcoded value matching Gradle's default. This will
             // eventually be replaced with the new Java plugin.
             TestTaskReports testTaskReports = task.getReports();
-            ConfigurableReport xmlReport = testTaskReports.getJunitXml();
-            xmlReport.setDestination(
-                    new File(
-                            creationConfig.getServices().getProjectInfo().getTestResultsFolder(),
-                            task.getName()));
+            JUnitXmlReport xmlReport = testTaskReports.getJunitXml();
+            xmlReport
+                    .getOutputLocation()
+                    .set(
+                            new File(
+                                    creationConfig
+                                            .getServices()
+                                            .getProjectInfo()
+                                            .getTestResultsFolder(),
+                                    task.getName()));
 
-            ConfigurableReport htmlReport = testTaskReports.getHtml();
-            htmlReport.setDestination(
-                    new File(
-                            creationConfig.getServices().getProjectInfo().getTestReportFolder(),
-                            task.getName()));
+            DirectoryReport htmlReport = testTaskReports.getHtml();
+            htmlReport
+                    .getOutputLocation()
+                    .set(
+                            new File(
+                                    creationConfig
+                                            .getServices()
+                                            .getProjectInfo()
+                                            .getTestReportFolder(),
+                                    task.getName()));
 
             ((UnitTestOptions) testOptions.getUnitTests()).applyConfiguration(task);
 

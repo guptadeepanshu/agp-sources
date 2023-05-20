@@ -221,19 +221,18 @@ class OldVariantApiLegacySupportImpl(
             allRawAndroidResources!!.from(component.artifacts.get(InternalArtifactType.MICRO_APK_RES))
         }
 
-        allRawAndroidResources!!.from(component.sources.res.getVariantSources().map { allRes ->
-            allRes.map { directoryEntries ->
-                directoryEntries.directoryEntries
+        allRawAndroidResources!!.from(component.sources.res.getVariantSources().map {  directoryEntries ->
+                directoryEntries.getEntries()
                     .map {
-                                    if (it is TaskProviderBasedDirectoryEntryImpl) {
-                                        it.directoryProvider
-                                    } else {
-                                        it.asFiles(
-                                          component.services.provider {
-                                              component.services.projectInfo.projectDirectory
-                                          })
-                                    }
-                                }
+                        if (it is TaskProviderBasedDirectoryEntryImpl) {
+                            it.directoryProvider
+                        } else {
+                            it.asFiles(
+                              component.services.provider {
+                                  component.services.projectInfo.projectDirectory
+                              })
+
+                    }
             }
         })
         return allRawAndroidResources!!

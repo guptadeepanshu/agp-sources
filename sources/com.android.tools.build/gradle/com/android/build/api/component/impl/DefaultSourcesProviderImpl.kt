@@ -205,7 +205,7 @@ class DefaultSourcesProviderImpl(
                                 sourceProvider.name,
                                 directory,
                         )
-                    }
+                    }.toMutableList()
             )
 
         }

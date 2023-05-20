@@ -51,7 +51,7 @@ class AssetSourceDirectoriesImpl(
                 val assetName = if (directoryEntries.name == SdkConstants.FD_MAIN)
                     BuilderConstants.MAIN else directoryEntries.name
 
-                directoryEntries.directoryEntries.map { directoryEntry ->
+                directoryEntries.getEntries().map { directoryEntry ->
                     directoryEntry.asFiles(
                       variantServices.provider {
                           variantServices.projectInfo.projectDirectory
