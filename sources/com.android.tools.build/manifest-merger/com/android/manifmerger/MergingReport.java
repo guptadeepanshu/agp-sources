@@ -106,8 +106,9 @@ public class MergingReport {
         actions.log(logger);
 
         if (!result.isSuccess()) {
-            logger.warning("\nSee http://g.co/androidstudio/manifest-merger for more information"
-                    + " about the manifest merger.\n");
+            logger.warning(
+                    "\nSee https://developer.android.com/r/studio-ui/build/manifest-merger for more information"
+                            + " about the manifest merger.\n");
         }
     }
 

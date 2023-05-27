@@ -71,8 +71,6 @@ class MutableMapBackedUpWithMapProperty<K, V>(
     }
 
     private fun _get(): MutableMap<K, V> {
-        logger.warning("Values of variant API $propertyName are queried and may return non final values, " +
-                               "this is unsupported")
         return mapProperty.get()
     }
 }

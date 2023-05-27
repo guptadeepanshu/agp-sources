@@ -203,10 +203,7 @@ abstract class VariantImpl<DslInfoT: VariantDslInfo>(
     }
 
     override val manifestPlaceholdersCreationConfig: ManifestPlaceholdersCreationConfig by lazy(LazyThreadSafetyMode.NONE) {
-        ManifestPlaceholdersCreationConfigImpl(
-            dslInfo,
-            internalServices
-        )
+        createManifestPlaceholdersCreationConfig(dslInfo.manifestPlaceholders)
     }
 
     override val testComponents = mutableMapOf<ComponentType, TestComponentCreationConfig>()

@@ -141,10 +141,10 @@ val CxxAbiModel.miniConfigFile: File
 
 /**
  * Location of model generation metadata
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta
+ *   ex, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64
  */
 private val CxxAbiModel.modelMetadataFolder: File
-    get() = join(intermediatesParentFolder, "meta", abi.tag)
+    get() = cxxBuildFolder
 
 /**
  * Location of spawned process logs file
@@ -236,14 +236,14 @@ val CxxAbiModel.objFolder: File
 
 /**
  * Output file of the Cxx*Model structure
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/build_model.json
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/x86_64/build_model.json
  */
 val CxxAbiModel.modelOutputFile: File
     get() = join(logsFolder, "build_model.json")
 
 /**
  * Json Generation logging record
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_record.json
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/x86_64/metadata_generation_record.json
  */
 val CxxAbiModel.jsonGenerationLoggingRecordFile: File
     get() = join(logsFolder, "metadata_generation_record.json")
@@ -257,14 +257,14 @@ val CxxAbiModel.metadataGenerationCommandFile: File
 
 /**
  * Text file containing STDOUT for the process run to generate C/C++ metadata.
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_stdout.txt
+ *   ex, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64/metadata_generation_stdout.txt
  */
 val CxxAbiModel.metadataGenerationStdoutFile: File
     get() = join(modelMetadataFolder, "metadata_generation_stdout.txt")
 
 /**
  * Text file containing STDERR for the process run to generate C/C++ metadata.
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/metadata_generation_stderr.txt
+ *   ex, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64/metadata_generation_stderr.txt
  */
 val CxxAbiModel.metadataGenerationStderrFile: File
     get() = join(modelMetadataFolder, "metadata_generation_stderr.txt")
@@ -277,7 +277,7 @@ val CxxAbiModel.metadataGenerationTimingFolder: File
 
 /**
  * When CMake server is used, this is the log of the interaction with it.
- *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/x86_64/cmake_server_log.txt
+ *   ex, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/x86_64/cmake_server_log.txt
  */
 val CxxAbiModel.cmakeServerLogFile: File
     get() = join(logsFolder, "cmake_server_log.txt")
@@ -299,7 +299,7 @@ val CxxAbiModel.lastConfigureFingerPrintFile: File
 
 /**
  * compile_commands.json file for this ABI.
- * For example, $moduleRootFolder/.cxx/ndkBuild/debug/armeabi-v7a/compile_commands.json
+ * For example, $moduleRootFolder/.cxx/{hashcode}/armeabi-v7a/compile_commands.json
  */
 val CxxAbiModel.compileCommandsJsonFile: File
     get() = join(cxxBuildFolder, "compile_commands.json")
@@ -315,13 +315,14 @@ val CxxAbiModel.compileCommandsJsonBinFile: File
 /**
  * additional_project_files.txt file for this ABI. This file contains a newline separated list of
  * filenames that are known by the build system and considered to be part of the project.
+ * For example, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64/additional_project_files.txt
  */
 val CxxAbiModel.additionalProjectFilesIndexFile: File
     get() = join(modelMetadataFolder, "additional_project_files.txt")
 
 /**
  * Text file containing absolute paths to folders containing the generated symbols, one per line.
- * For example, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/armeabi-v7a/symbol_folder_index.txt
+ * For example, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64/symbol_folder_index.txt
  */
 val CxxAbiModel.symbolFolderIndexFile: File
     get() = join(modelMetadataFolder, "symbol_folder_index.txt")
@@ -329,7 +330,7 @@ val CxxAbiModel.symbolFolderIndexFile: File
 /**
  * Text file containing absolute paths to native build files (For example, CMakeLists.txt for
  * CMake). One per line.
- * For example, $moduleRootFolder/build/intermediates/cxx/Debug/{hashcode}/meta/armeabi-v7a/build_file_index.txt
+ * For example, $moduleRootFolder/.cxx/Debug/{hashcode}/x86_64/meta/build_file_index.txt
  */
 val CxxAbiModel.buildFileIndexFile: File
     get() = join(modelMetadataFolder, "build_file_index.txt")
